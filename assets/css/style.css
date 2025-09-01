@@ -1,0 +1,67 @@
+body {
+  background: #fcfcfc;
+  color: #111;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.intro {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #eaeaea;
+  margin: 40px 0;
+}
+
+h1, h2, h3 {
+  font-weight: 500;
+  margin-bottom: 0.2em;
+  letter-spacing: -0.5px;
+}
+
+a {
+  color: #0182ff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: #005bb5;
+}
+
+.project-card {
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  padding: 18px 22px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 700px) {
+  main {
+    padding: 0 8px;
+  }
+  .project-card {
+    padding: 14px 12px;
+  }
+}
