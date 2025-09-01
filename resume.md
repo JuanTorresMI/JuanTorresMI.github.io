@@ -3,10 +3,15 @@ layout: default
 title: Resume
 ---
 
-# My Resume
+# Resume
 
-[Download PDF](assets/resume.pdf)
+Download my resume as a [PDF](/assets/resume.pdf).
 
 ## Experience
 - Certified Meat Cutter @ Meijer
-- Logistics & Supply Chain Specialist
+- Logistics & Supply Chain Management
+
+## Skills
+- Inventory Optimization
+- Food Safety
+- Team Leadership
