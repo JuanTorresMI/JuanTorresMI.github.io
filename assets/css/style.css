@@ -1,64 +1,125 @@
 body {
   background: #fcfcfc;
-  color: #111;
+  color: #222;
   font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
 main {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 0 20px;
+  max-width: 730px;
+  margin: 40px auto 60px auto;
+  padding: 0 22px;
 }
 
 .intro {
   text-align: center;
   margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
+}
+
+.intro h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.intro p {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 14px;
+}
+
+.intro a {
+  font-size: 1rem;
+  color: #0182ff;
+  margin: 0 6px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.intro a:hover {
+  color: #005bb5;
+  text-decoration: underline;
 }
 
 hr {
   border: none;
   border-top: 1px solid #eaeaea;
-  margin: 40px 0;
+  margin: 38px 0 36px 0;
 }
 
-h1, h2, h3 {
-  font-weight: 500;
-  margin-bottom: 0.2em;
+h2 {
+  font-size: 1.24rem;
+  font-weight: 600;
+  margin-bottom: 14px;
+  margin-top: 0;
   letter-spacing: -0.5px;
+  color: #1a1a1a;
 }
 
-a {
-  color: #0182ff;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-a:hover {
-  color: #005bb5;
+h3 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  margin-top: 26px;
+  color: #303030;
 }
 
 ul {
-  margin-top: 0.5em;
-  margin-bottom: 1.5em;
-  padding-left: 1.5em;
+  margin-top: 0px;
+  margin-bottom: 18px;
+  padding-left: 20px;
+  font-size: 1rem;
 }
 
-.project-card {
-  background: #fff;
-  border-radius: 7px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-  padding: 18px 22px;
-  margin-bottom: 22px;
+li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+strong {
+  font-weight: 600;
+  color: #0b56a3;
+}
+
+p {
+  font-size: 1.04rem;
+  line-height: 1.7;
+  margin-bottom: 14px;
+  margin-top: 0;
+}
+
+#contact a,
+#contact a:visited {
+  color: #0182ff;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+#contact a:hover {
+  color: #005bb5;
+  text-decoration: underline;
 }
 
 @media (max-width: 700px) {
   main {
     padding: 0 8px;
   }
-  .project-card {
-    padding: 14px 12px;
+  .intro h1 {
+    font-size: 1.6rem;
+  }
+  h2 {
+    font-size: 1.09rem;
+  }
+  h3 {
+    font-size: 0.98rem;
+  }
+  ul {
+    font-size: 0.98rem;
+  }
+  p {
+    font-size: 0.97rem;
   }
 }
