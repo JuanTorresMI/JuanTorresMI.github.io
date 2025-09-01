@@ -1,2 +1,7 @@
-title: Juan Torres Portfolio
-theme: minima
+title: Juan Torres
+description: Data Scientist & Developer
+baseurl: "" # DO NOT change
+url: "https://JuanTorres.xyz" # Your custom domain
+theme: null # Use custom styling
+markdown: kramdown
+permalink: pretty
