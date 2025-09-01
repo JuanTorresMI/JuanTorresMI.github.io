@@ -3,41 +3,43 @@ layout: default
 title: Juan Torres
 ---
 
-<p style="margin-top:40px; text-align:center;">Juan Torres</p>
 <div class="intro">
   <h1>Juan Torres</h1>
-  <p>Certified Meat Cutter @ Meijer</p>
-  <p>Logistics & Supply Chain Management</p>
+  <p>Certified Meat Cutter @ Meijer | Logistics, Supply Chain Management</p>
   <p>
-    <a href="#highlights">Highlights</a> &middot;
-    <a href="#about">About</a> &middot;
+    <a href="#summary">Summary</a> &middot;
+    <a href="#experience">Experience</a> &middot;
     <a href="#contact">Contact</a>
   </p>
 </div>
 
 <hr>
 
-<div id="highlights">
-  <h2>Highlights</h2>
-  {% for highlight in site.data.highlights %}
-    <div class="project-card">
-      <h3>{{ highlight.title }}</h3>
-      <p>{{ highlight.description }}</p>
-      {% if highlight.link %}
-        <p><a href="{{ highlight.link }}" target="_blank">Learn More</a></p>
-      {% endif %}
-    </div>
-  {% endfor %}
+<div id="summary">
+  <h2>Professional Summary</h2>
+  <p>
+    Certified Meat Cutter and logistics specialist with hands-on experience in food processing, inventory management, and customer service. Proven record of leading teams, optimizing workflow, and maintaining high standards in safety and quality. Currently pursuing a bachelor’s degree in Logistics Management to further develop expertise in supply chain operations and leadership.
+  </p>
 </div>
 
 <hr>
 
-<div id="about">
-  <h2>About</h2>
-  <p>
-    Currently pursuing a bachelor's degree in Logistics management at Central Michigan University, with an associate's degree in General Studies from Baker College. As a Certified Meat Cutter at Meijer, I focus on precision cutting, maintaining safety protocols, and ensuring compliance with food safety regulations. My core competencies include meat processing, customer service, and inventory monitoring.<br><br>
-    I’m passionate about operational efficiency and fostering positive customer experiences. My recent contributions at Meijer include supporting inventory accuracy with management systems and maintaining high standards in food safety compliance. I aim to leverage my diverse skills in supply chain management for organizational success and professional growth.
-  </p>
+<div id="experience">
+  <h2>Professional Experience</h2>
+
+  <h3>Meat Cutter – Meijer, Cadillac, MI <span style="font-weight:normal;">2023 – Present</span></h3>
+  <ul>
+    <li>Lead a team of 3–4 clerks per shift, coordinating workflow to maintain efficiency and quality standards.<br>
+    Provide exceptional customer service by addressing needs and recommending products, resulting in <strong>market-leading ground beef sales in Q2 2025</strong>.
+    </li>
+    <li>Perform certified pork and beef cutting to company and industry specifications, ensuring accuracy, safety, and product consistency.</li>
+  </ul>
+
+  <h3>Union Member – United Food and Commercial Workers (UFCW) <span style="font-weight:normal;">2023 – Present</span></h3>
+  <ul>
+    <li>Support coworkers by sharing knowledge of union contract rights and workplace policies, helping peers understand benefits and protections.</li>
+    <li>Encourage collaboration between team members and management by fostering awareness of fair workplace practices, contributing to a stronger work environment.</li>
+  </ul>
 </div>
 
 <hr>
