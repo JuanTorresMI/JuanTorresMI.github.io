@@ -3,15 +3,15 @@ layout: default
 title: Resume
 ---
 
-# Resume
+<h1>Resume</h1>
 
-Download my resume as a [PDF](/assets/resume.pdf).
+<p>Download my resume or view my professional experience below.</p>
 
-## Experience
-- Certified Meat Cutter @ Meijer
-- Logistics & Supply Chain Management
+<ul>
+  <li>Certified Meat Cutter @ Meijer</li>
+  <li>Logistics & Supply Chain Management</li>
+  <li>Factory Operator @ FIAMM Technologies</li>
+  <li>Union Member @ UFCW</li>
+</ul>
 
-## Skills
-- Inventory Optimization
-- Food Safety
-- Team Leadership
+<p><a href="/assets/resume.pdf" download>Download PDF</a></p>

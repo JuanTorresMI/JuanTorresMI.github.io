@@ -16,5 +16,3 @@ title: Blog
     </li>
   {% endfor %}
 </ul>
-
-<!-- Tag filter UI can be added with JavaScript for interactivity -->

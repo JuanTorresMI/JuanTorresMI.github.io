@@ -8,9 +8,9 @@ title: Juan Torres
   <p class="subtitle">Certified Meat Cutter & Logistics Specialist</p>
   <p class="summary">Experienced in food processing, inventory management, and customer service. Passionate about operational efficiency and continuous growth.</p>
   <div class="links">
-    <a href="resume.md">Resume</a>
+    <a href="/resume/">Resume</a>
     <a href="#projects">Projects</a>
-    <a href="blog.html">Blog</a>
+    <a href="/blog/">Blog</a>
     <a href="#contact">Contact</a>
   </div>
 </div>
