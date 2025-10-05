@@ -1,6 +1,6 @@
 body {
-  font-family: 'Inter', Arial, sans-serif;
-  background: #f7f7f7;
+  font-family: 'Copperplate Gothic', 'Copperplate', Arial, sans-serif;
+  background: #e5e6e8;
   color: #222;
   margin: 0;
   padding: 0;
@@ -10,7 +10,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #fff;
+  background: #007aff;
   border-bottom: 1px solid #eee;
   padding: 1.2rem 0;
   font-weight: 300;
@@ -19,7 +19,7 @@ body {
 }
 
 .navbar a {
-  color: #222;
+  color: #fff;
   text-decoration: none;
   margin: 0 1.5rem;
   font-weight: 300;
@@ -27,7 +27,7 @@ body {
 }
 
 .navbar a:hover {
-  color: #007aff;
+  color: #e0eaff;
 }
 
 .container {
@@ -37,6 +37,7 @@ body {
   border-radius: 16px;
   box-shadow: 0 4px 32px rgba(0,0,0,0.07);
   padding: 2.5rem 2rem;
+  text-align: left;
 }
 
 .intro {

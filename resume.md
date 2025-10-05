@@ -14,4 +14,4 @@ title: Resume
   <li>Union Member @ UFCW</li>
 </ul>
 
-<p><a href="/assets/resume.pdf" download>Download PDF</a></p>
+<p><a href="/assets/resume.pdf" download class="button">Download PDF</a></p>
