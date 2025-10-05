@@ -21,7 +21,7 @@ title: Juan Torres
 <section id="contact">
   <h2>Contact</h2>
   <p>
-    <a href="mailto:juan.torres@email.com">Email</a> &middot;
+    <a href="mailto:Torre10j@cmich.edu">Email</a> &middot;
     <a href="https://www.linkedin.com/in/juan-torres-0ab3471bb">LinkedIn</a>
   </p>
 </section>
