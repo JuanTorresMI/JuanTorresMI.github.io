@@ -5,22 +5,21 @@ title: Juan Torres
 
 <div class="intro">
   <h1>Juan Torres</h1>
-  <p class="subtitle">Certified Meat Cutter & Logistics Specialist</p>
-  <p class="summary">Experienced in food processing, inventory management, and customer service. Passionate about operational efficiency and continuous growth.</p>
+  <p class="subtitle">Business Administration Student</p>
+  <p class="summary">Active Meat Cutter, Junior at Central Michigan University, and League of Legends eSports team member.</p>
   <div class="links">
     <a href="/resume/">Resume</a>
     <a href="#projects">Projects</a>
     <a href="/blog/">Blog</a>
-    <a href="#contact">Contact</a>
   </div>
 </div>
 
 <section id="projects">
   <h2>Featured Projects</h2>
   <ul>
-    <li>Market-leading ground beef sales (Meijer, Q2 2025)</li>
-    <li>Inventory accuracy improvements (FIAMM Technologies)</li>
-    <li>Team leadership and workflow optimization</li>
+    <li>Active Meat Cutter at Meijer</li>
+    <li>Junior in Business Administration & Logistics, Central Michigan University</li>
+    <li>League of Legends Team Member, CMU eSports</li>
   </ul>
 </section>
 

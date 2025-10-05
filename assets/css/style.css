@@ -1,9 +1,17 @@
 body {
-  font-family: 'Copperplate Gothic', 'Copperplate', Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
   background: #e5e6e8;
   color: #222;
   margin: 0;
   padding: 0;
+}
+
+h1, h2, h3 {
+  font-family: 'Copperplate Gothic', 'Copperplate', serif;
+  font-weight: 400;
+  margin-top: 0;
+  letter-spacing: 0.01em;
+  text-align: left;
 }
 
 .navbar {
@@ -113,6 +121,8 @@ strong {
 }
 
 p {
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 300;
   font-size: 1rem;
   line-height: 1.7;
   margin-bottom: 14px;
