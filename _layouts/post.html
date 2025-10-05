@@ -5,7 +5,16 @@
   <title>{{ page.title }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{ site.description }}">
+    <meta property="og:title" content="{{ page.title }}">
+    <meta property="og:description" content="{{ site.description }}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    <meta property="og:image" content="/assets/favicon.ico">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ page.title }}">
+    <meta name="twitter:description" content="{{ site.description }}">
   <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Copperplate+Gothic:wght@400&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -20,5 +29,10 @@
       </article>
     </main>
   </div>
+  </main>
+  <footer style="text-align:center; margin-top:2rem; color:#888; font-size:0.95rem;">
+    <hr>
+    <p>&copy; 2025 Juan Torres &middot; <a href="mailto:Torre10j@cmich.edu">Contact</a></p>
+  </footer>
 </body>
 </html>

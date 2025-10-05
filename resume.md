@@ -13,4 +13,8 @@ title: Resume
   <li>League of Legends Team Member, CMU eSports</li>
 </ul>
 
-<p><a href="/assets/resume.pdf" download class="button">Download PDF</a></p>
+<p>
+  <a href="/assets/docs/Juan%20Torres%20Resume.docx" download class="button">Download Resume (DOCX)</a>
+  &nbsp;|&nbsp;
+  <a href="/assets/docs/resume.pdf" target="_blank" class="button">View Resume (PDF)</a>
+</p>
