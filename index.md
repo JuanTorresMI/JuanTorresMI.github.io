@@ -10,7 +10,7 @@ title: Juan Torres
   <div class="links">
     <a href="resume.md">Resume</a>
     <a href="#projects">Projects</a>
-    <a href="blog.md">Blog</a>
+    <a href="blog.html">Blog</a>
     <a href="#contact">Contact</a>
   </div>
 </div>
