@@ -7,11 +7,6 @@ title: Juan Torres
   <h1>Juan Torres</h1>
   <p class="subtitle">Business Administration Student</p>
   <p class="summary">Active Meat Cutter, Junior at Central Michigan University, and League of Legends eSports team member.</p>
-  <div class="links">
-    <a href="/resume/">Resume</a>
-    <a href="#projects">Projects</a>
-    <a href="/blog/">Blog</a>
-  </div>
 </div>
 
 <section id="projects">
