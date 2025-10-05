@@ -14,7 +14,7 @@ title: Resume
 </ul>
 
 <p>
-  <a href="/assets/docs/Juan%20Torres%20Resume.docx" download class="button">Download Resume (DOCX)</a>
-  &nbsp;|&nbsp;
-  <a href="/assets/docs/resume.pdf" target="_blank" class="button">View Resume (PDF)</a>
+  <a href="/assets/Juan%20Torres%20Resume.pdf" download class="button">Download Resume (PDF)</a>
 </p>
+
+<iframe src="/assets/Juan%20Torres%20Resume.pdf" width="100%" height="800px" style="border:none; margin-top:2rem;"></iframe>
