@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Talon Jungle Build Guide</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .tabs {
+            display: flex;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .tab {
+            flex: 1;
+            padding: 10px;
+            background: #eee;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-bottom: none;
+        }
+        .tab:hover {
+            background: #ddd;
+        }
+        .active {
+            background: white;
+            border-top: 2px solid #007bff;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Talon Jungle Build Guide</h1>
+        <div class="tabs">
+            <div class="tab active">Standard Build</div>
+            <div class="tab">Phase Rush Build</div>
+        </div>
+        <div id="standard-build" class="build">
+            <h2>Standard Build</h2>
+            <div class="card">Item 1</div>
+            <div class="card">Item 2</div>
+            <div class="card">Item 3</div>
+        </div>
+        <div id="phase-rush-build" class="build" style="display: none;">
+            <h2>Phase Rush Build</h2>
+            <div class="card">Item A</div>
+            <div class="card">Item B</div>
+            <div class="card">Item C</div>
+        </div>
+        <div class="footer">
+            <p>&copy; 2026 Talon Jungle Guide</p>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.build').forEach(b => b.style.display = 'none');
+                document.getElementById(tab.textContent.toLowerCase().replace(' ', '-') + '-build').style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
