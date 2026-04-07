@@ -5,37 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talon Jungle Build Guide</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
     <header>
         <h1>Talon Jungle Build Guide</h1>
     </header>
-    <main>
-        <section id="runes">
-            <h2>Runes</h2>
-            <ul>
-                <li>Electrocute</li>
-                <li>Sudden Impact</li>
-                <li>Zombie Ward</li>
-            </ul>
-        </section>
-        <section id="items">
-            <h2>Items</h2>
-            <ul>
-                <li>Warrior</li>
-                <li>Black Cleaver</li>
-                <li>Guardian Angel</li>
-            </ul>
-        </section>
-        <section id="traps">
-            <h2>Traps</h2>
-            <p>Utilize traps effectively for ambushes and to secure objectives.</p>
-        </section>
-        <section id="interactions">
-            <h2>Interactions</h2>
-            <p>Learn how Talon interacts with various champions and objectives.</p>
-        </section>
-    </main>
-    <script src="script.js"></script>
+    <nav>
+        <ul>
+            <li><a href="#runes">Runes</a></li>
+            <li><a href="#items">Items</a></li>
+            <li><a href="#wpa">WPA Data</a></li>
+        </ul>
+    </nav>
+    <section id="runes">
+        <h2>Runes</h2>
+        <table>
+            <tr>
+                <th>Rune</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Precision</td>
+                <td>Gain bonus AD based on level.</td>
+            </tr>
+            <tr>
+                <td>Triumph</td>
+                <td>Heals for a percentage on takedown.</td>
+            </tr>
+        </table>
+    </section>
+    <section id="items">
+        <h2>Items</h2>
+        <ul>
+            <li>Skirmisher's Sabre</li>
+            <li>Warrior</li>
+            <li>Edge of Night</li>
+        </ul>
+    </section>
+    <section id="wpa">
+        <h2>WPA Data</h2>
+        <canvas id="wpa-chart"></canvas>
+    </section>
+    <footer>
+        <p>Updated on 2026-04-07 18:01:55 UTC</p>
+    </footer>
+    <script>
+        // JavaScript functionality for interactive tabs and data visualization
+        const ctx = document.getElementById('wpa-chart').getContext('2d');
+        const wpaChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Talon', 'Other Champs'],
+                datasets: [{
+                    label: 'WPA',
+                    data: [75, 25],
+                    backgroundColor: ['#4CAF50', '#f44336'],
+                }],
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+    </script>
 </body>
 </html>
