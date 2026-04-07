@@ -14,7 +14,6 @@ title: Juan Torres
   <ul>
     <li>Active Meat Cutter at Meijer</li>
     <li>Junior in Business Administration & Logistics, Central Michigan University</li>
-    <li>League of Legends Team Member, CMU eSports</li>
   </ul>
 </section>
 
