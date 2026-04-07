@@ -1,77 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talon Jungle Build Guide</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talon Jungle Build Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+  .container { max-width: 520px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 24px; }
+  .header-tag { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.15em; color: #6366f1; text-transform: uppercase; margin-bottom: 4px; }
+  .header h1 { font-size: 1.6rem; font-weight: 800; color: #0f172a; line-height: 1.1; }
+  .header p { margin-top: 4px; font-size: 0.8rem; color: #64748b; }
+
+  .tabs { display: flex; gap: 6px; margin-bottom: 20px; }
+  .tab {
+    flex: 1; padding: 10px 8px; border-radius: 8px; border: none; cursor: pointer;
+    font-size: 0.78rem; font-weight: 700; font-family: inherit; transition: all 0.15s;
+    background: #fff; color: #475569; box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .tab.active { background: #6366f1; color: #fff; box-shadow: 0 2px 8px rgba(99,102,241,0.3); }
+
+  .desc-box {
+    background: #eef2ff; border-radius: 8px; padding: 10px 14px;
+    font-size: 0.78rem; color: #4338ca; margin-bottom: 20px; line-height: 1.5;
+    border-left: 3px solid #6366f1;
+  }
+
+  .section { margin-bottom: 20px; }
+  .section-title {
+    font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 6px; padding-left: 2px;
+  }
+  .section-card {
+    background: #fff; border-radius: 10px; border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow: hidden;
+  }
+
+  .item-row {
+    display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 6px;
+    border-left: 3px solid transparent;
+  }
+  .item-row.highlight { background: #f0fdf4; border-left-color: #22c55e; }
+  .item-name { flex: 1; font-weight: 600; font-size: 0.85rem; color: #1e293b; }
+  .item-note { font-size: 0.7rem; color: #64748b; max-width: 120px; }
+
+  .slot-label {
+    font-size: 0.6rem; font-weight: 800; color: #94a3b8;
+    text-transform: uppercase; letter-spacing: 0.08em; min-width: 60px;
+    padding: 6px 10px 0;
+  }
+
+  .wpa {
+    font-weight: 700; font-family: 'JetBrains Mono', monospace;
+  }
+  .wpa-lg { font-size: 1.1rem; }
+  .wpa-sm { font-size: 0.75rem; }
+  .wpa-md { font-size: 0.85rem; }
+
+  .badge {
+    padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.03em;
+  }
+
+  .rune-block { padding: 10px 12px; font-size: 0.8rem; line-height: 1.7; color: #334155; }
+  .rune-block strong { color: #1e293b; }
+
+  .trap-row {
+    display: flex; align-items: baseline; gap: 8px; padding: 7px 12px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .trap-row:last-child { border-bottom: none; }
+  .trap-name { font-weight: 700; font-size: 0.82rem; color: #1e293b; min-width: 130px; }
+  .trap-why { font-size: 0.7rem; color: #64748b; flex: 1; }
+
+  .interactions { padding: 10px 12px; font-size: 0.78rem; color: #334155; line-height: 1.8; }
+
+  .footer { text-align: center; font-size: 0.65rem; color: #94a3b8; margin-top: 16px; }
+
+  .build-content { display: none; }
+  .build-content.active { display: block; }
+</style>
 </head>
 <body>
-    <header>
-        <h1>Talon Jungle Build Guide</h1>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="#runes">Runes</a></li>
-            <li><a href="#items">Items</a></li>
-            <li><a href="#wpa">WPA Data</a></li>
-        </ul>
-    </nav>
-    <section id="runes">
-        <h2>Runes</h2>
-        <table>
-            <tr>
-                <th>Rune</th>
-                <th>Description</th>
-            </tr>
-            <tr>
-                <td>Precision</td>
-                <td>Gain bonus AD based on level.</td>
-            </tr>
-            <tr>
-                <td>Triumph</td>
-                <td>Heals for a percentage on takedown.</td>
-            </tr>
-        </table>
-    </section>
-    <section id="items">
-        <h2>Items</h2>
-        <ul>
-            <li>Skirmisher's Sabre</li>
-            <li>Warrior</li>
-            <li>Edge of Night</li>
-        </ul>
-    </section>
-    <section id="wpa">
-        <h2>WPA Data</h2>
-        <canvas id="wpa-chart"></canvas>
-    </section>
-    <footer>
-        <p>Updated on 2026-04-07 18:01:55 UTC</p>
-    </footer>
-    <script>
-        // JavaScript functionality for interactive tabs and data visualization
-        const ctx = document.getElementById('wpa-chart').getContext('2d');
-        const wpaChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Talon', 'Other Champs'],
-                datasets: [{
-                    label: 'WPA',
-                    data: [75, 25],
-                    backgroundColor: ['#4CAF50', '#f44336'],
-                }],
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-    </script>
+<div class="container">
+  <div class="header">
+    <div class="header-tag">Coachless WPA Analysis</div>
+    <h1>Talon Jungle</h1>
+    <p>Optimal builds by Win Probability Added</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('standard')">Conqueror — Standard</button>
+    <button class="tab" onclick="switchTab('phaseRush')">Phase Rush — Advanced</button>
+  </div>
+
+  <!-- STANDARD BUILD -->
+  <div id="standard" class="build-content active">
+    <div class="desc-box">Highest-data, most flexible. Enables bruiser options late.</div>
+
+    <div class="section">
+      <div class="section-title" style="color:#8b5cf6">Runes</div>
+      <div class="section-card">
+        <div class="rune-block">
+          <div><strong>Keystone:</strong> Conqueror <span class="wpa wpa-sm" style="color:#86efac">+0.70</span> <span class="badge" style="background:#22c55e18;border:1px solid #22c55e40;color:#22c55e">61.5K</span></div>
+          <div><strong>Primary:</strong> Conqueror → Triumph (+0.02) → Legend: Haste (+0.47) → Last Stand (+0.08)</div>
+          <div><strong>Secondary:</strong> Domination: Sudden Impact (+2.61) + Zombie Ward (+2.41)</div>
+          <div><strong>Shards:</strong> Adaptive / Ability Haste / Scaling HP (+0.91)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title" style="color:#f59e0b">Starter</div>
+      <div class="section-card">
+        <div class="item-row highlight">
+          <div class="item-name">Scorchclaw Pup</div>
+          <span class="wpa wpa-md" style="color:#22c55e">+1.18</span>
+          <span class="badge" style="background:#22c55e18;border:1px solid #22c55e40;color:#22c55e">42K</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title" style="color:#6366f1">Item Path</div>
+      <div class="section-card" id="standard-items"></div>
+    </div>
+  </div>
+
+  <!-- PHASE RUSH BUILD -->
+  <div id="phaseRush" class="build-content">
+    <div class="desc-box">Highest keystone WPA (+2.12). Inflates item WPA across the board. Low total games — treat directionally.</div>
+
+    <div class="section">
+      <div class="section-title" style="color:#8b5cf6">Runes</div>
+      <div class="section-card">
+        <div class="rune-block">
+          <div><strong>Keystone:</strong> Phase Rush <span class="wpa wpa-sm" style="color:#22c55e">+2.12</span> <span class="badge" style="background:#fbbf2418;border:1px solid #fbbf2440;color:#fbbf24">3.4K</span></div>
+          <div><strong>Primary:</strong> Phase Rush → Nimbus Cloak (+0.53) → Celerity (+0.67) → Gathering Storm (+0.85)</div>
+          <div><strong>Secondary:</strong> Inspiration: Magical Footwear (+1.26) + Cosmic Insight (+0.99)</div>
+          <div><strong>Shards:</strong> Adaptive / Ability Haste / Scaling HP (+1.51)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title" style="color:#f59e0b">Starter</div>
+      <div class="section-card">
+        <div class="item-row highlight">
+          <div class="item-name">Scorchclaw Pup</div>
+          <span class="wpa wpa-md" style="color:#22c55e">+3.75</span>
+          <span class="badge" style="background:#fbbf2418;border:1px solid #fbbf2440;color:#fbbf24">2.2K</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title" style="color:#6366f1">Item Path</div>
+      <div class="section-card" id="phaseRush-items"></div>
+    </div>
+  </div>
+
+  <!-- TRAPS (shared) -->
+  <div class="section">
+    <div class="section-title" style="color:#ef4444">⚠ Common Traps — Stop Building These</div>
+    <div class="section-card" id="traps"></div>
+  </div>
+
+  <!-- INTERACTIONS (shared) -->
+  <div class="section">
+    <div class="section-title" style="color:#0ea5e9">Key Item-Path Interactions</div>
+    <div class="section-card">
+      <div class="interactions">
+        <div>Axiom Arc 3rd after <strong>Umbral</strong> 1st: <span class="wpa wpa-sm" style="color:#86efac">+0.59</span> vs after <strong>Hubris</strong> 1st: <span class="wpa wpa-sm" style="color:#ef4444">-0.83</span></div>
+        <div>Youmuu's 2nd after <strong>Umbral</strong> 1st: <span class="wpa wpa-sm" style="color:#86efac">+0.97</span> vs after <strong>Hubris</strong> 1st: <span class="wpa wpa-sm" style="color:#ef4444">-0.81</span></div>
+        <div>Death's Dance 3rd w/ <strong>Conq</strong>: <span class="wpa wpa-sm" style="color:#22c55e">+3.59</span> vs w/ <strong>First Strike</strong>: <span class="wpa wpa-sm" style="color:#ef4444">-2.97</span></div>
+        <div>Edge of Night vs AP comps: <span class="wpa wpa-sm" style="color:#86efac">+0.93</span> — vs phys: <span class="wpa wpa-sm" style="color:#86efac">+0.20</span></div>
+        <div>Maw vs AP comps: <span class="wpa wpa-sm" style="color:#22c55e">+1.51</span> — vs phys: <span class="wpa wpa-sm" style="color:#ef4444">-3.94</span> (never build into AD)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Data from Coachless.gg · WPA = Win Rate − Pre-Buy Win Probability · Sample sizes shown as colored badges</div>
+</div>
+
+<script>
+const standardItems = [
+  { slot:"1st", name:"Umbral Glaive", wpa:"+2.77", buys:"10.1K", note:"Best by far w/ Conq" },
+  { slot:"Boots", name:"Plated Steelcaps", wpa:"+2.67", buys:"5.8K", note:"Default; Mercs vs AP/CC" },
+  { slot:"2nd", name:"Youmuu's Ghostblade", wpa:"+0.97", buys:"10.9K", note:"Umbral-filtered" },
+  { slot:"3rd", name:"Death's Dance", wpa:"+3.59", buys:"1.4K", note:"Best 3rd w/ Conq" },
+  { slot:"Alt 3rd", name:"Edge of Night", wpa:"+1.21", buys:"6.7K", note:"Safe reliable 3rd" },
+  { slot:"4th+", name:"Serylda's Grudge", wpa:"+1.06", buys:"16.7K", note:"Default late" },
+  { slot:"4th+", name:"Guardian Angel", wpa:"+2.05", buys:"2.5K", note:"Strong w/ Conq" },
+  { slot:"Situational", name:"Maw of Malmortius", wpa:"+2.53", buys:"1.3K", note:"vs heavy AP only" },
+];
+
+const phaseRushItems = [
+  { slot:"1st", name:"Umbral Glaive", wpa:"+5.11", buys:"1.2K", note:"Incredible WPA, low sample" },
+  { slot:"Boots", name:"Mercury's Treads", wpa:"+8.71", buys:"188", note:"Insane but tiny sample" },
+  { slot:"2nd", name:"Youmuu's Ghostblade", wpa:"+1.93", buys:"1.4K", note:"" },
+  { slot:"Alt 2nd", name:"Umbral Glaive", wpa:"+3.16", buys:"774", note:"If not built 1st" },
+  { slot:"3rd", name:"Edge of Night", wpa:"+2.86", buys:"548", note:"Best reliable 3rd" },
+  { slot:"Alt 3rd", name:"Youmuu's Ghostblade", wpa:"+5.35", buys:"256", note:"Low sample" },
+  { slot:"4th+", name:"Edge of Night", wpa:"+4.35", buys:"735", note:"" },
+  { slot:"4th+", name:"Serylda's Grudge", wpa:"+0.45", buys:"1.1K", note:"Safe default" },
+];
+
+const traps = [
+  { what:"Electrocute", wpa:"-2.49", picks:"37.4K", why:"Confirmed bad across 37K games" },
+  { what:"Hubris 1st", wpa:"+0.06", picks:"77.5K", why:"Adds nothing vs Umbral's +1.69" },
+  { what:"Ionian Boots", wpa:"-1.02", picks:"71.5K", why:"Most popular boot = worst boot" },
+  { what:"Eyeball Collection", wpa:"-0.97", picks:"30.7K", why:"Zombie Ward is +2.41 — 3.4% swing" },
+  { what:"Cheap Shot", wpa:"+0.01", picks:"43.6K", why:"Sudden Impact is +2.61 — 2.6% swing" },
+  { what:"Gustwalker", wpa:"-0.98", picks:"73.9K", why:"Scorchclaw wins every keystone filter" },
+  { what:"Flat HP shard", wpa:"-0.05", picks:"138.6K", why:"Scaling HP is +0.91 — free value" },
+];
+
+function wpaColor(v) {
+  const n = parseFloat(v);
+  if (n > 1) return "#22c55e";
+  if (n > 0) return "#86efac";
+  if (n > -0.5) return "#fbbf24";
+  return "#ef4444";
+}
+
+function badgeColor(s) {
+  const n = parseFloat(s.replace("K","")) * (s.includes("K") ? 1000 : 1);
+  if (n >= 3000) return "#22c55e";
+  if (n >= 1000) return "#fbbf24";
+  return "#ef4444";
+}
+
+function renderItems(containerId, items) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = items.map(item => {
+    const hl = parseFloat(item.wpa) >= 2;
+    const bc = badgeColor(item.buys);
+    return `
+      <div class="slot-label">${item.slot}</div>
+      <div class="item-row${hl ? ' highlight' : ''}">
+        <div class="item-name">${item.name}</div>
+        <span class="wpa wpa-md" style="color:${wpaColor(item.wpa)}">${item.wpa}</span>
+        <span class="badge" style="background:${bc}18;border:1px solid ${bc}40;color:${bc}">${item.buys}</span>
+        ${item.note ? `<span class="item-note">${item.note}</span>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function renderTraps() {
+  document.getElementById('traps').innerHTML = traps.map(t => `
+    <div class="trap-row">
+      <span class="trap-name">${t.what}</span>
+      <span class="wpa wpa-sm" style="color:${wpaColor(t.wpa)}">${t.wpa}</span>
+      <span class="trap-why">${t.why}</span>
+    </div>`).join('');
+}
+
+function switchTab(id) {
+  document.querySelectorAll('.build-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = id === 'standard' ? 0 : 1;
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+}
+
+renderItems('standard-items', standardItems);
+renderItems('phaseRush-items', phaseRushItems);
+renderTraps();
+</script>
 </body>
 </html>
