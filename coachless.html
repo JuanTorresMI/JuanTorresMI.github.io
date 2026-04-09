@@ -1,0 +1,377 @@
+---
+layout: coachless
+title: Coachless Dashboard
+---
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+.upload-screen { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 60px); flex-direction: column; gap: 16px; }
+.upload-screen h1 { color: #e8e8ff; font-size: 32px; font-weight: 800; }
+.upload-screen p { color: #6666aa; font-size: 14px; }
+.upload-btn { padding: 14px 40px; background: #3a3a6e; color: #e8e8ff; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 600; border: 2px solid #5555aa; transition: all 0.2s; display: inline-block; }
+.upload-btn:hover { background: #4a4a8e; border-color: #7777cc; }
+.upload-btn input { display: none; }
+
+.app { max-width: 1400px; margin: 0 auto; padding: 0 16px 40px; }
+.cl-header { padding: 16px 0 12px; border-bottom: 1px solid #1a1a3e; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.cl-header h1 { color: #e8e8ff; font-size: 22px; font-weight: 800; font-family: 'DM Sans', sans-serif; }
+.cl-header .sub { color: #6666aa; font-size: 12px; }
+.reload-btn { padding: 6px 16px; background: #2a2a4e; color: #aab; border-radius: 6px; cursor: pointer; font-size: 11px; border: 1px solid #3a3a6e; font-family: 'DM Sans', sans-serif; }
+
+.cl-tabs { display: flex; gap: 6px; padding: 14px 0; border-bottom: 1px solid #1a1a3e; flex-wrap: wrap; }
+.cl-tab { padding: 7px 18px; border-radius: 6px; border: 2px solid transparent; background: #2a2a4e; color: #9999bb; cursor: pointer; font-size: 13px; font-weight: 400; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+.cl-tab.active { border-color: #7c6ef0; background: #3a3a6e; color: #e8e8ff; font-weight: 700; }
+.cl-tab:hover { background: #33335e; }
+
+.dims { display: flex; flex-wrap: wrap; gap: 18px; padding: 16px 0 8px; }
+.dim-group label { font-size: 10px; color: #6666aa; text-transform: uppercase; letter-spacing: 1.2px; display: block; margin-bottom: 5px; }
+.dim-options { display: flex; gap: 4px; flex-wrap: wrap; }
+.pill { padding: 6px 14px; border-radius: 6px; border: 2px solid transparent; background: #2a2a4e; color: #9999bb; cursor: pointer; font-size: 12px; font-weight: 400; font-family: 'DM Sans', sans-serif; transition: all 0.12s; }
+.pill.active { border-color: #7c6ef0; background: #3a3a6e; color: #e8e8ff; font-weight: 700; }
+.pill:hover { background: #33335e; }
+
+.table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid #2a2a4e; margin-top: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { padding: 9px 10px; background: #1a1a2e; color: #aab; cursor: pointer; text-align: left; border-bottom: 2px solid #2a2a5e; white-space: nowrap; user-select: none; font-size: 11px; font-weight: 600; position: sticky; top: 0; z-index: 1; font-family: 'DM Sans', sans-serif; }
+th:hover { color: #ddf; }
+td { padding: 6px 10px; border-bottom: 1px solid #1a1a3e; white-space: nowrap; font-size: 12px; color: #ccc; font-family: 'DM Sans', sans-serif; }
+tr:nth-child(even) { background: #12121e; }
+tr:nth-child(odd) { background: #16162a; }
+tr:hover { background: #1e1e3a !important; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.bold { font-weight: 700; color: #e8e8ff; }
+.count { color: #6666aa; font-size: 11px; margin: 8px 0 4px; }
+.section-title { color: #e8e8ff; font-size: 15px; font-weight: 700; margin: 16px 0 10px; font-family: 'DM Sans', sans-serif; }
+.wpa-pos { color: #44dd77; }
+.wpa-neg { color: #dd6644; }
+.wpa-high { color: #00ff88; }
+.wpa-low { color: #ff4444; }
+</style>
+
+<div id="root"></div>
+
+{% raw %}
+<script>
+let DATA = null;
+let state = {
+  tab: 'solver',
+  filters: { damage: 'Mixed', tankiness: 'Balanced', cc: 'Normal CC', state: 'Even', gold: 'Gold Even' },
+  sort: { col: null, dir: 'desc' },
+  guideKeystone: null,
+  guideSlot: 'All'
+};
+
+const DIMS = {
+  damage:    { label: 'Enemy Damage',    options: ['Physical', 'Mixed', 'Magic'] },
+  tankiness: { label: 'Enemy Tankiness', options: ['Squishy', 'Balanced', 'Tanky'] },
+  cc:        { label: 'Enemy CC',        options: ['Low CC', 'Normal CC', 'High CC'] },
+  state:     { label: 'Game State',      options: ['Even', 'Ahead', 'Behind'] },
+  gold:      { label: 'Gold State',      options: ['Gold Even', 'Gold Ahead', 'Gold Behind'] },
+};
+
+function wpaFmt(v) {
+  if (v === null || v === undefined || v === '') return '';
+  const n = typeof v === 'number' ? v : parseFloat(v);
+  if (isNaN(n)) return String(v);
+  const cls = n > 3 ? 'wpa-high' : n > 0 ? 'wpa-pos' : n > -3 ? 'wpa-neg' : 'wpa-low';
+  return `<span class="mono ${cls}">${n > 0 ? '+' : ''}${n.toFixed(2)}</span>`;
+}
+
+function sortRows(rows, col, dir) {
+  if (col === null) return rows;
+  return [...rows].sort((a, b) => {
+    let av = a[col], bv = b[col];
+    if (typeof av === 'number' && typeof bv === 'number') return dir === 'desc' ? bv - av : av - bv;
+    av = String(av || ''); bv = String(bv || '');
+    return dir === 'desc' ? bv.localeCompare(av) : av.localeCompare(bv);
+  });
+}
+
+function makeTable(headers, rows, wpaIdxs = []) {
+  const sorted = sortRows(rows, state.sort.col, state.sort.dir);
+  let html = '<div class="table-wrap"><table><thead><tr>';
+  headers.forEach((h, i) => {
+    const arrow = state.sort.col === i ? (state.sort.dir === 'desc' ? ' ▼' : ' ▲') : '';
+    html += `<th onclick="clickSort(${i})">${h}${arrow}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+  sorted.forEach(row => {
+    html += '<tr>';
+    row.forEach((cell, ci) => {
+      const isWpa = wpaIdxs.includes(ci);
+      const content = isWpa && typeof cell === 'number' ? wpaFmt(cell) : (cell ?? '');
+      const cls = ci === 0 ? ' class="bold"' : '';
+      html += `<td${cls}>${content}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function clickSort(col) {
+  if (state.sort.col === col) state.sort.dir = state.sort.dir === 'desc' ? 'asc' : 'desc';
+  else { state.sort.col = col; state.sort.dir = 'desc'; }
+  render();
+}
+
+function setFilter(dim, val) { state.filters[dim] = val; state.sort = { col: null, dir: 'desc' }; render(); }
+function setTab(t) { state.tab = t; state.sort = { col: null, dir: 'desc' }; render(); }
+function setGuideFilter(key, val) { state[key] = val; state.sort = { col: null, dir: 'desc' }; render(); }
+
+function render() {
+  const root = document.getElementById('root');
+  if (!DATA) {
+    root.innerHTML = `
+      <div class="upload-screen">
+        <h1>Coachless Toolkit</h1>
+        <p>Upload the JSON output from the toolkit</p>
+        <label class="upload-btn">Upload JSON<input type="file" accept=".json" onchange="loadFile(event)"></label>
+      </div>`;
+    return;
+  }
+
+  const m = DATA.meta || {};
+  const tabs = [
+    ['solver','Solver'],
+    ['archetypes','Archetypes'],
+    ['runes','Rune Pages'],
+    ['items','Items'],
+    ['spells','Spells'],
+    ['guide','Guide'],
+  ];
+
+  let html = '<div class="app">';
+  html += `<div class="cl-header">
+    <div>
+      <h1>${m.champion || '?'}</h1>
+      <span class="sub">${m.role || ''} &bull; Patch ${m.patch || '?'} &bull; ${(m.ranks || []).join(', ')}</span>
+    </div>
+    <label class="reload-btn">Load different file<input type="file" accept=".json" onchange="loadFile(event)" style="display:none"></label>
+  </div>`;
+
+  html += '<div class="cl-tabs">';
+  tabs.forEach(([id, label]) => {
+    html += `<button class="cl-tab${state.tab === id ? ' active' : ''}" onclick="setTab('${id}')">${label}</button>`;
+  });
+  html += '</div>';
+
+  if      (state.tab === 'solver')     html += renderSolver();
+  else if (state.tab === 'archetypes') html += renderArchetypes();
+  else if (state.tab === 'runes')      html += renderRunes();
+  else if (state.tab === 'items')      html += renderItems();
+  else if (state.tab === 'spells')     html += renderSpells();
+  else if (state.tab === 'guide')      html += renderGuide();
+
+  html += '</div>';
+  root.innerHTML = html;
+}
+
+/* ── Solver ──────────────────────────────────────────────── */
+function renderSolver() {
+  let html = '<div class="dims">';
+  for (const [dim, cfg] of Object.entries(DIMS)) {
+    html += `<div class="dim-group"><label>${cfg.label}</label><div class="dim-options">`;
+    cfg.options.forEach(opt => {
+      html += `<button class="pill${state.filters[dim] === opt ? ' active' : ''}" onclick="setFilter('${dim}','${opt}')">${opt}</button>`;
+    });
+    html += '</div></div>';
+  }
+  html += '</div>';
+
+  const rows = (DATA.solver || []).filter(r =>
+    r.damage === state.filters.damage &&
+    r.tankiness === state.filters.tankiness &&
+    r.cc === state.filters.cc &&
+    r.state === state.filters.state &&
+    r.gold === state.filters.gold
+  );
+
+  html += `<div class="count">${rows.length} results</div>`;
+  html += makeTable(
+    ['#','Keystone','Starter','Boots','1st Item','2nd Item','3rd Item','4th Item','Cond WPA','Sit WPA','Combined','Rune Adj'],
+    rows.map(r => [r.rank, r.keystone, r.starter, r.boots, r['1st'], r['2nd'], r['3rd'], r['4th'],
+      r.conditionalWPA, r.situationalWPA, r.combinedScore, r.runeAdj]),
+    [8, 9, 10, 11]
+  );
+  return html;
+}
+
+/* ── Archetypes ──────────────────────────────────────────── */
+function renderArchetypes() {
+  const rows = [];
+  for (const [ks, d] of Object.entries(DATA.explorer?.perKeystone || {})) {
+    for (const a of d.archetypes || []) {
+      rows.push([ks, a.legendaryAdjWPA,
+        a['1st']?.name, a['1st']?.adjWpa, a['1st']?.games,
+        a['2nd']?.name, a['2nd']?.adjWpa, a['2nd']?.games,
+        a['3rd_options']?.[0]?.name || '', a['4th_options']?.[0]?.name || '',
+        a.boots_options?.[0]?.name || '', a.starter_options?.[0]?.name || '']);
+    }
+  }
+  rows.sort((a, b) => b[1] - a[1]);
+  let html = '<div class="section-title">Build Archetypes</div>';
+  html += makeTable(
+    ['Keystone','Leg WPA','1st Item','1st Adj','Games','2nd Item','2nd Adj','Games','3rd','4th','Boots','Starter'],
+    rows, [1, 3, 6]
+  );
+  return html;
+}
+
+/* ── Rune Pages ──────────────────────────────────────────── */
+function renderRunes() {
+  const rows = [];
+  for (const [ks, d] of Object.entries(DATA.explorer?.perKeystone || {})) {
+    for (const p of d.allRunePages || []) {
+      rows.push([p.keystone?.name || ks, p.primaryTree,
+        p.primaryRunes?.[0]?.name || '', p.primaryRunes?.[1]?.name || '', p.primaryRunes?.[2]?.name || '',
+        p.secondaryTree, p.secondaryRunes?.[0]?.name || '', p.secondaryRunes?.[1]?.name || '',
+        p.totalAdjWPA]);
+    }
+  }
+  rows.sort((a, b) => b[8] - a[8]);
+  let html = '<div class="section-title">Rune Pages</div>';
+  html += makeTable(['Keystone','Primary','Row 1','Row 2','Row 3','Secondary','Sec 1','Sec 2','Adj WPA'], rows, [8]);
+  return html;
+}
+
+/* ── Items ───────────────────────────────────────────────── */
+function renderItems() {
+  let html = '';
+  const globals = DATA.scraper?.global || {};
+  for (const [typeName, items] of Object.entries(globals)) {
+    if (typeName === 'Spells') continue;
+    const sorted = [...items].sort((a, b) => (b.wpaOverall || 0) - (a.wpaOverall || 0));
+    html += `<div class="section-title">${typeName} (${items.length})</div>`;
+    html += makeTable(
+      ['Item','WPA','Buys','Pick %','Pre-Buy WP','Win Rate','Bias'],
+      sorted.map(i => [i.itemId,
+        Math.round((i.wpaOverall || 0) * 100) / 100,
+        i.occurrence || 0,
+        Math.round((i.occurrenceRelative || 0) * 100) / 100,
+        Math.round((i.winrateExpected || 0) * 10) / 10,
+        Math.round((i.winrateObserved || 0) * 10) / 10,
+        Math.round((i.bias || 0) * 1000) / 1000]),
+      [1]
+    );
+  }
+  return html;
+}
+
+/* ── Spells ──────────────────────────────────────────────── */
+function renderSpells() {
+  let html = '';
+
+  // Name lookup from explorer.spells
+  const spellNames = {};
+  (DATA.explorer?.spells || []).forEach(s => { spellNames[s.id] = s.name; });
+
+  // Top spells by WPA
+  const topSpells = (DATA.explorer?.spells || []).slice().sort((a, b) => b.wpa - a.wpa);
+  html += '<div class="section-title">Top Summoner Spells (by WPA)</div>';
+  if (topSpells.length) {
+    html += makeTable(
+      ['Spell', 'WPA', 'Games'],
+      topSpells.map(s => [s.name, s.wpa, s.games]),
+      [1]
+    );
+  } else {
+    html += '<p style="color:#6666aa;font-size:13px;margin-top:8px;">No spell data available.</p>';
+  }
+
+  // Full global spell data
+  const globalSpells = (DATA.scraper?.global?.Spells || []).slice()
+    .sort((a, b) => (b.wpaOverall || 0) - (a.wpaOverall || 0));
+
+  if (globalSpells.length) {
+    html += '<div class="section-title" style="margin-top:20px;">All Spells — Full Data</div>';
+    html += makeTable(
+      ['Spell', 'WPA', 'Occurrences', 'Pick %', 'Pre-Buy WP', 'Win Rate'],
+      globalSpells.map(s => [
+        spellNames[s.summonerSpell] || `Spell #${s.summonerSpell}`,
+        Math.round((s.wpaOverall || 0) * 100) / 100,
+        s.occurrence || 0,
+        Math.round((s.occurrenceRelative || 0) * 100) / 100,
+        Math.round((s.winrateExpected || 0) * 10) / 10,
+        Math.round((s.winrateObserved || 0) * 10) / 10,
+      ]),
+      [1]
+    );
+  }
+
+  return html;
+}
+
+/* ── Guide ───────────────────────────────────────────────── */
+function renderGuide() {
+  const allRows = DATA.explorer?.conditionalData || [];
+  if (!allRows.length) {
+    return '<p style="color:#6666aa;font-size:13px;margin-top:16px;">No guide data available in this file.</p>';
+  }
+
+  const keystones = [...new Set(allRows.map(r => r.keystone))].sort();
+  const slotOrder = ['Starter', 'Boots', '1st Legendary', '2nd Legendary', '3rd Legendary', '4th+ Legendary'];
+  const slots = ['All', ...slotOrder.filter(s => allRows.some(r => r.slot === s))];
+
+  // Default to first keystone
+  if (!state.guideKeystone || !keystones.includes(state.guideKeystone)) {
+    state.guideKeystone = keystones[0];
+  }
+
+  let html = '<div class="section-title">Step-by-Step Build Guide</div>';
+
+  // Keystone filter
+  html += '<div class="dims"><div class="dim-group"><label>Keystone</label><div class="dim-options">';
+  keystones.forEach(ks => {
+    html += `<button class="pill${state.guideKeystone === ks ? ' active' : ''}" onclick="setGuideFilter('guideKeystone','${ks.replace(/'/g,"\\'")}'">${ks}</button>`;
+  });
+  html += '</div></div>';
+
+  // Slot filter
+  html += '<div class="dim-group"><label>Slot</label><div class="dim-options">';
+  slots.forEach(sl => {
+    html += `<button class="pill${state.guideSlot === sl ? ' active' : ''}" onclick="setGuideFilter('guideSlot','${sl.replace(/'/g,"\\'")}'">${sl}</button>`;
+  });
+  html += '</div></div></div>';
+
+  // Filter rows
+  let filtered = allRows.filter(r => r.keystone === state.guideKeystone);
+  if (state.guideSlot !== 'All') filtered = filtered.filter(r => r.slot === state.guideSlot);
+
+  html += `<div class="count">${filtered.length} items</div>`;
+  html += makeTable(
+    ['Slot', 'Condition', 'Item', 'Adj WPA', 'Raw WPA', 'Games', 'Pick %', 'Win %', 'Pre-Buy WP'],
+    filtered.map(r => [r.slot, r.condition, r.name, r.adjWpa, r.rawWpa, r.games,
+      Math.round((r.pickRate || 0) * 10) / 10,
+      Math.round((r.winRate || 0) * 10) / 10,
+      Math.round((r.preBuyWP || 0) * 10) / 10]),
+    [3, 4]
+  );
+
+  return html;
+}
+
+/* ── File loader ─────────────────────────────────────────── */
+function loadFile(e) {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      let text = reader.result;
+      text = text.replace(/\bNaN\b/g, 'null').replace(/\bInfinity\b/g, 'null').replace(/\b-Infinity\b/g, 'null');
+      DATA = JSON.parse(text);
+      state.sort = { col: null, dir: 'desc' };
+      state.guideKeystone = null;
+      state.guideSlot = 'All';
+      render();
+    } catch(err) { alert('Error loading JSON: ' + err.message); }
+  };
+  reader.readAsText(file);
+}
+
+render();
+</script>
+{% endraw %}
