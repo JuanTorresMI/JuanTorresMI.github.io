@@ -55,6 +55,7 @@ tr:hover { background: #1e1e3a !important; }
 {% raw %}
 <script>
 let DATA = null;
+let ITEM_NAMES = {};  // {itemId: name} built from loaded data
 let state = {
   tab: 'solver',
   filters: { damage: 'Mixed', tankiness: 'Balanced', cc: 'Normal CC', state: 'Even', gold: 'Gold Even' },
@@ -247,7 +248,7 @@ function renderItems() {
     html += `<div class="section-title">${typeName} (${items.length})</div>`;
     html += makeTable(
       ['Item','WPA','Buys','Pick %','Pre-Buy WP','Win Rate','Bias'],
-      sorted.map(i => [i.itemId,
+      sorted.map(i => [itemName(i.itemId),
         Math.round((i.wpaOverall || 0) * 100) / 100,
         i.occurrence || 0,
         Math.round((i.occurrenceRelative || 0) * 100) / 100,
@@ -325,14 +326,14 @@ function renderGuide() {
   // Keystone filter
   html += '<div class="dims"><div class="dim-group"><label>Keystone</label><div class="dim-options">';
   keystones.forEach(ks => {
-    html += `<button class="pill${state.guideKeystone === ks ? ' active' : ''}" onclick="setGuideFilter('guideKeystone','${ks.replace(/'/g,"\\'")}'">${ks}</button>`;
+    html += `<button class="pill${state.guideKeystone === ks ? ' active' : ''}" onclick="setGuideFilter('guideKeystone','${ks.replace(/'/g,"\\'")}')">${ks}</button>`;
   });
   html += '</div></div>';
 
   // Slot filter
   html += '<div class="dim-group"><label>Slot</label><div class="dim-options">';
   slots.forEach(sl => {
-    html += `<button class="pill${state.guideSlot === sl ? ' active' : ''}" onclick="setGuideFilter('guideSlot','${sl.replace(/'/g,"\\'")}'">${sl}</button>`;
+    html += `<button class="pill${state.guideSlot === sl ? ' active' : ''}" onclick="setGuideFilter('guideSlot','${sl.replace(/'/g,"\\'")}')">${sl}</button>`;
   });
   html += '</div></div></div>';
 
@@ -353,6 +354,37 @@ function renderGuide() {
   return html;
 }
 
+function buildItemNames() {
+  ITEM_NAMES = {};
+  // From conditional data (most comprehensive)
+  (DATA.explorer?.conditionalData || []).forEach(r => {
+    if (r.id && r.name) ITEM_NAMES[r.id] = r.name;
+  });
+  // From archetypes
+  for (const d of Object.values(DATA.explorer?.perKeystone || {})) {
+    for (const a of d.archetypes || []) {
+      if (a['1st']?.id) ITEM_NAMES[a['1st'].id] = a['1st'].name;
+      if (a['2nd']?.id) ITEM_NAMES[a['2nd'].id] = a['2nd'].name;
+      for (const opt of (a['3rd_options'] || [])) if (opt.id) ITEM_NAMES[opt.id] = opt.name;
+      for (const opt of (a['4th_options'] || [])) if (opt.id) ITEM_NAMES[opt.id] = opt.name;
+      for (const opt of (a.boots_options || [])) if (opt.id) ITEM_NAMES[opt.id] = opt.name;
+      for (const opt of (a.starter_options || [])) if (opt.id) ITEM_NAMES[opt.id] = opt.name;
+      for (const opt of (a.boots_all || [])) if (opt.id) ITEM_NAMES[opt.id] = opt.name;
+      for (const opt of (a['3rd_all'] || [])) if (opt.id) ITEM_NAMES[opt.id] = opt.name;
+      for (const opt of (a['4th_all'] || [])) if (opt.id) ITEM_NAMES[opt.id] = opt.name;
+    }
+  }
+  // From scraper users data (has championId not itemId, skip)
+  // From solver results
+  (DATA.solver || []).forEach(r => {
+    // solver rows have names directly, no IDs — but we can still use them
+  });
+}
+
+function itemName(id) {
+  return ITEM_NAMES[id] || `Item #${id}`;
+}
+
 /* ── File loader ─────────────────────────────────────────── */
 function loadFile(e) {
   const file = e.target.files?.[0];
@@ -363,6 +395,7 @@ function loadFile(e) {
       let text = reader.result;
       text = text.replace(/\bNaN\b/g, 'null').replace(/\bInfinity\b/g, 'null').replace(/\b-Infinity\b/g, 'null');
       DATA = JSON.parse(text);
+      buildItemNames();
       state.sort = { col: null, dir: 'desc' };
       state.guideKeystone = null;
       state.guideSlot = 'All';
