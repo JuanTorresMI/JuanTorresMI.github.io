@@ -1,5 +1,5 @@
 body {
-  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-family: 'Inter', 'Source Sans Pro', Arial, sans-serif;
   background: #e5e6e8;
   color: #222;
   margin: 0;
@@ -7,8 +7,8 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: 'Copperplate Gothic', 'Copperplate', serif;
-  font-weight: 400;
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-weight: 300;
   margin-top: 0;
   letter-spacing: 0.01em;
   text-align: left;
@@ -19,11 +19,11 @@ h1, h2, h3 {
   justify-content: center;
   align-items: center;
   background: #007aff;
-  border-bottom: 1px solid #eee;
   padding: 1.2rem 0;
-  font-weight: 300;
-  font-size: 1.1rem;
-  letter-spacing: 0.05em;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .navbar a {
@@ -31,115 +31,151 @@ h1, h2, h3 {
   text-decoration: none;
   margin: 0 1.5rem;
   font-weight: 300;
-  transition: color 0.2s;
+  transition: opacity 0.2s;
 }
 
 .navbar a:hover {
-  color: #e0eaff;
+  opacity: 0.75;
 }
 
 .container {
-  max-width: 700px;
+  max-width: 680px;
   margin: 2.5rem auto;
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.07);
-  padding: 2.5rem 2rem;
-  text-align: left;
+  border-radius: 14px;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+  padding: 2.8rem 2.4rem;
 }
 
 .intro {
   text-align: center;
-  margin-top: 40px;
-  margin-bottom: 32px;
+  margin-bottom: 2.2rem;
 }
 
 .intro h1 {
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   font-weight: 300;
-  margin-bottom: 0.5rem;
-  margin-top: 0;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.02em;
   text-align: center;
 }
 
-.intro p {
-  font-size: 1.1rem;
-  color: #444;
-  margin-bottom: 14px;
-}
-
-.intro a {
+.intro .subtitle {
   font-size: 1rem;
   color: #007aff;
-  margin: 0 6px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+}
+
+.intro .summary {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1.2rem;
+  line-height: 1.7;
+}
+
+.intro-links a {
+  font-size: 0.95rem;
+  color: #007aff;
+  margin: 0 8px;
   text-decoration: none;
+  font-weight: 400;
   transition: color 0.2s;
 }
 
-.intro a:hover {
+.intro-links a:hover {
   color: #005bb5;
   text-decoration: underline;
 }
 
 hr {
   border: none;
-  border-top: 1px solid #eaeaea;
-  margin: 38px 0 36px 0;
+  border-top: 1px solid #ebebeb;
+  margin: 2.2rem 0;
 }
 
 h2 {
-  font-size: 1.5rem;
-  font-weight: 300;
-  margin-bottom: 1rem;
-  margin-top: 0;
-  letter-spacing: 0.01em;
-  color: #1a1a1a;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 1.1rem;
 }
 
 h3 {
-  font-size: 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  margin-top: 0;
+  color: #222;
+}
+
+p {
+  font-family: 'Inter', 'Source Sans Pro', Arial, sans-serif;
   font-weight: 300;
-  margin-bottom: 0.5rem;
-  margin-top: 26px;
-  color: #303030;
+  font-size: 1rem;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+  margin-top: 0;
+  color: #444;
 }
 
 ul {
-  margin-top: 0px;
-  margin-bottom: 18px;
-  padding-left: 20px;
-  font-size: 1rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding-left: 0;
+  list-style: none;
 }
 
 li {
-  margin-bottom: 8px;
+  margin-bottom: 1rem;
   line-height: 1.6;
+  font-size: 1rem;
+  color: #444;
+}
+
+.highlight-title {
+  font-weight: 600;
+  color: #222;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.highlight-desc {
+  font-size: 0.95rem;
+  color: #666;
 }
 
 strong {
   font-weight: 600;
-  color: #0b56a3;
+  color: #222;
 }
 
-p {
-  font-family: 'Inter', Arial, sans-serif;
-  font-weight: 300;
-  font-size: 1rem;
-  line-height: 1.7;
-  margin-bottom: 14px;
-  margin-top: 0;
+a {
+  color: #007aff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: #005bb5;
+  text-decoration: underline;
 }
 
 .button {
   display: inline-block;
   background: #007aff;
-  color: #fff;
-  padding: 0.6rem 1.4rem;
-  border-radius: 8px;
-  font-size: 1rem;
+  color: #fff !important;
+  padding: 0.55rem 1.3rem;
+  border-radius: 7px;
+  font-size: 0.9rem;
   font-weight: 400;
-  text-decoration: none;
-  margin: 1rem 0;
+  text-decoration: none !important;
+  margin: 0.5rem 0.4rem 0.5rem 0;
+  letter-spacing: 0.02em;
   transition: background 0.2s;
 }
 
@@ -147,24 +183,36 @@ p {
   background: #005bb5;
 }
 
+.button-outline {
+  background: transparent;
+  color: #007aff !important;
+  border: 1px solid #007aff;
+}
+
+.button-outline:hover {
+  background: #007aff;
+  color: #fff !important;
+}
+
 iframe {
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid #eee;
 }
 
 .tags, .date {
-  color: #888;
-  font-size: 0.95rem;
+  color: #aaa;
+  font-size: 0.9rem;
   font-weight: 300;
-  margin-left: 0.5rem;
 }
 
 @media (max-width: 800px) {
   .container {
-    padding: 1.2rem 0.5rem;
+    margin: 1rem 0.5rem;
+    padding: 1.6rem 1.2rem;
+    border-radius: 10px;
   }
   .navbar {
-    font-size: 1rem;
-    padding: 0.8rem 0;
+    font-size: 0.9rem;
+    padding: 0.9rem 0;
   }
 }
