@@ -98,6 +98,9 @@ tbody tr.sel{background:var(--lapis-dim)}
   border-radius:3px;max-height:300px;overflow:auto;min-width:300px;box-shadow:0 12px 32px rgba(0,0,0,.5)}
 .results div{padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--line)}
 .results div:hover{background:var(--lapis-dim)}
+.results .rmore{padding:8px 12px;color:var(--faint);font-size:12px;cursor:default;
+  border-bottom:none;background:var(--panel)}
+.results .rmore:hover{background:var(--panel)}
 .results .rid{font-family:var(--mono);font-size:11px;color:var(--faint);margin-left:8px}
 
 /* ---------- detail drawer ---------- */
@@ -589,15 +592,30 @@ function renderDetail(){
 
 /* ============================ item search ============================ */
 const addInput=document.getElementById('addsearch'), addRes=document.getElementById('addres');
+/* Rank matches by how well they fit, so an exact name never gets buried
+   behind its own variants ("stone" vs. 96 other things containing "stone"). */
+function score(i,q){
+  const id=IDS[i], n=NM[i].toLowerCase();
+  if(id===q||n===q) return 0;                 // exact
+  if(id.startsWith(q+'_')) return 1;          // stone_axe
+  if(id.startsWith(q)||n.startsWith(q)) return 2;
+  if(('_'+id).includes('_'+q)) return 3;      // end_stone
+  if((' '+n).includes(' '+q)) return 4;
+  if(id.includes(q)||n.includes(q)) return 5; // cobblestone
+  return -1;
+}
+const CAP=80;
 addInput.oninput=()=>{
   const q=addInput.value.trim().toLowerCase();
   if(q.length<2){ addRes.hidden=true; return; }
-  const hits=[];
-  for(let i=0;i<N && hits.length<60;i++){
-    if(NM[i].toLowerCase().includes(q)||IDS[i].includes(q)) hits.push(i);
-  }
-  if(!hits.length){ addRes.hidden=true; return; }
-  addRes.innerHTML=hits.map(i=>`<div data-a="${IDS[i]}">${nm(i)}<span class="rid">${IDS[i]}</span></div>`).join('');
+  const scored=[];
+  for(let i=0;i<N;i++){ const s=score(i,q); if(s>=0) scored.push([s,IDS[i].length,i]); }
+  if(!scored.length){ addRes.hidden=true; return; }
+  scored.sort((a,b)=>a[0]-b[0]||a[1]-b[1]||IDS[a[2]].localeCompare(IDS[b[2]]));
+  const hits=scored.slice(0,CAP).map(x=>x[2]);
+  const more=scored.length-hits.length;
+  addRes.innerHTML=hits.map(i=>`<div data-a="${IDS[i]}">${nm(i)}<span class="rid">${IDS[i]}</span></div>`).join('')
+    +(more?`<div class="rmore">${more} more &mdash; keep typing to narrow it down</div>`:'');
   addRes.hidden=false;
   addRes.querySelectorAll('[data-a]').forEach(el=>el.onclick=()=>{
     if(!(S.price[el.dataset.a]>0)) S.price[el.dataset.a]=0;
