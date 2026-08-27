@@ -40,6 +40,10 @@ header{position:sticky;top:0;z-index:40;background:rgba(20,22,28,.94);backdrop-f
 .setting{display:flex;align-items:center;gap:7px}
 .setting label{font-family:var(--cond);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--mute);white-space:nowrap}
+.setting select.fuelsel{background:var(--panel2);border:1px solid var(--line2);border-radius:3px;
+  padding:5px 8px;font-size:13px}
+.fuelnote{font-family:var(--mono);font-size:11px;color:var(--faint);white-space:nowrap}
+.fuelnote.warn{color:var(--redstone)}
 .setting input{width:74px;background:var(--panel2);border:1px solid var(--line2);border-radius:3px;
   padding:5px 8px;font-family:var(--mono);font-size:13px;text-align:right}
 .btn{background:var(--panel2);border:1px solid var(--line2);border-radius:3px;padding:6px 12px;
@@ -186,7 +190,8 @@ aside.on{transform:none}
       <span class="vtag" id="vtag"></span>
     </div>
     <div class="setting"><label for="fee">Fee</label><input id="fee" type="number" step="0.1" value="0"></div>
-    <div class="setting"><label for="fuel" title="Cost of fuel per item smelted">Fuel</label><input id="fuel" type="number" step="0.01" value="0"></div>
+    <div class="setting"><label for="fuel">Fuel</label><select class="sel fuelsel" id="fuel"></select>
+      <span class="fuelnote" id="fuelnote"></span></div>
     <button class="btn" id="exp">Export</button>
     <button class="btn" id="imp">Import</button>
   </div>
@@ -268,10 +273,16 @@ aside.on{transform:none}
       <p>When a recipe accepts a group of items, like any plank or any log, it picks whichever one is cheapest
       for you and shows how many alternatives it had.</p>
 
-      <h2>The fee and fuel boxes</h2>
-      <p><b>Fee</b> is the cut taken off every sale, entered as a percent. <b>Fuel</b> is what one smelt costs you
-      in fuel, and it is added to smelting, blasting, smoking and campfire recipes only. Leave either at zero
-      if it does not apply.</p>
+      <h2>The fee and fuel controls</h2>
+      <p><b>Fee</b> is the cut taken off every sale, entered as a percent.</p>
+      <p><b>Fuel</b> is a dropdown, not a price. Pick what you actually burn and the cost per item is worked out
+      from that fuel's burn time and whatever you priced it at, so you never divide anything by hand. Price coal at
+      30 and pick Coal, and a furnace smelt costs 3.75 while a blast furnace smelt costs 1.88.</p>
+      <p>That gap is real. A furnace spends 200 ticks on an item and a blast furnace or smoker only 100, so one
+      coal does 8 items in a furnace but 16 in either fast one. A campfire burns no fuel at all, so campfire
+      recipes are never charged for it.</p>
+      <p>If the fuel you picked has no price yet the box says so, and smelting is costed without it. Set it to
+      <b>None</b> if fuel is genuinely free to you.</p>
 
       <h2>Where the recipes come from</h2>
       <p>The full vanilla recipe set, read straight from the game's own data files. That covers crafting,
@@ -325,13 +336,20 @@ const R = D.r.map(r=>({k:r[0], o:r[1], n:r[2], g:r[3]}));
 const BYOUT = new Map();
 R.forEach((r,i)=>{ if(!BYOUT.has(r.o)) BYOUT.set(r.o,[]); BYOUT.get(r.o).push(i); });
 const COOK = {smelt:1,blast:1,smoke:1,campfire:1};
+/* Burn time in ticks per fuel item, and ticks consumed per item cooked.
+   A furnace spends 200 ticks an item, a blast furnace and a smoker 100,
+   so one coal does 8 in a furnace but 16 in either fast one.
+   A campfire burns nothing at all. */
+const FUELS = {coal:1600, charcoal:1600, coal_block:16000, blaze_rod:2400, lava_bucket:20000,
+  dried_kelp_block:4000, oak_planks:300, bamboo:50, stick:100};
+const COOKTICKS = {smelt:200, blast:100, smoke:100, campfire:0};
 const KLABEL = {craft:'craft',smelt:'smelt',blast:'blast',smoke:'smoke',campfire:'campfire',cut:'stonecut',smith:'smith'};
 document.getElementById('vtag').textContent = `Vanilla ${D.v} · ${R.length.toLocaleString()} recipes`;
 
 /* ============================ state ============================ */
 const SEED = {paper:173,leather:642,book:2000,sand:220,gunpowder:95,tnt:1500,oak_planks:20,
   bookshelf:15000,carrot:1,gold_nugget:.5,gold_ingot:4,gold_block:35,golden_carrot:15};
-let S = {price:{}, basis:{}, fee:0, fuel:0};
+let S = {price:{}, basis:{}, fee:0, fuelItem:'coal'};
 const KEY='craftledger.v1';
 function load(){
   try{ const raw=localStorage.getItem(KEY); if(raw){ S=Object.assign(S,JSON.parse(raw)); return true; } }catch(e){}
@@ -350,6 +368,7 @@ const basisOf = id => S.basis[id] || 'market';
    ================================================================= */
 const INF = Infinity;
 let comp = new Float64Array(N), best = new Float64Array(N), bestR = new Int32Array(N);
+let fuelTick = 0;   // cost of one tick of burn time
 function solve(){
   comp = new Float64Array(N).fill(INF);
   best = new Float64Array(N).fill(INF);
@@ -360,10 +379,13 @@ function solve(){
   for(let i=0;i<N;i++) if(price[i]<INF && basisOf(IDS[i])==='market') mkt[i]=1;
   for(let i=0;i<N;i++) comp[i] = price[i];
 
+  const fI = FUELS[S.fuelItem] ? IDX.get(S.fuelItem) : undefined;
   for(let pass=0; pass<16; pass++){
+    /* recomputed each pass: charcoal is itself smelted, so this settles with everything else */
+    fuelTick = (fI!==undefined && isFinite(comp[fI])) ? comp[fI]/FUELS[S.fuelItem] : 0;
     let moved=false;
     for(let ri=0; ri<R.length; ri++){
-      const r=R[ri]; let sum = COOK[r.k] ? (+S.fuel||0)*r.n : 0; let ok=true;
+      const r=R[ri]; let sum = (COOKTICKS[r.k]||0)*fuelTick*r.n; let ok=true;
       for(const [opts,c] of r.g){
         let lo=INF;
         for(const o of opts){ const v=comp[o]; if(v<lo) lo=v; }
@@ -398,8 +420,9 @@ function cheapest(opts){
   for(const o of opts){ if(comp[o]<lo){ lo=comp[o]; pick=o; } }
   return [pick,lo];
 }
+const fuelPerItem = k => (COOKTICKS[k]||0)*fuelTick;
 function recipeCost(ri){
-  const r=R[ri]; let sum = COOK[r.k] ? (+S.fuel||0)*r.n : 0;
+  const r=R[ri]; let sum = fuelPerItem(r.k)*r.n;
   for(const [opts,c] of r.g){ const [,lo]=cheapest(opts); if(!isFinite(lo)) return INF; sum+=lo*c; }
   return sum/r.n;
 }
@@ -519,9 +542,11 @@ function treeHTML(itemIdx, qty, depth, seen){
     h+='<div class="kids">';
     for(const [opts,c] of r.g){ const [pick]=cheapest(opts); if(pick<0) continue;
       h+=treeHTML(pick, c*crafts, depth+1, s2); }
-    if(COOK[r.k] && +S.fuel>0)
-      h+=`<div class="node"><span class="q dim">—</span><span class="nm dim">fuel</span>
-        <span class="c">${fmt(+S.fuel*crafts*r.n)}</span></div>`;
+    const fpi=fuelPerItem(r.k);
+    if(fpi>0)
+      h+=`<div class="node"><span class="q">${fmt(crafts*r.n*COOKTICKS[r.k]/FUELS[S.fuelItem])}&times;</span>
+        <span class="nm">${nm(IDX.get(S.fuelItem))}</span><span class="src">fuel</span>
+        <span class="c">${fmt(fpi*crafts*r.n)}</span></div>`;
     h+='</div>';
   }
   return h;
@@ -550,7 +575,7 @@ function renderDetail(){
   const crafts=Math.ceil(curQty/r.n), made=crafts*r.n;
   const lines=r.g.map(([opts,c])=>{ const [pick,lo]=cheapest(opts);
     return {pick, need:c*crafts, unit:lo, line:c*crafts*lo, alts:opts.length}; }).filter(l=>l.pick>=0);
-  const fuelTot = COOK[r.k] ? (+S.fuel||0)*made : 0;
+  const fuelTot = fuelPerItem(r.k)*made;
   const matTot = lines.reduce((a,l)=>a+l.line,0)+fuelTot;
   const rev = made*sell, fees = rev*(+S.fee||0)/100, np = rev-fees-matTot;
 
@@ -575,7 +600,9 @@ function renderDetail(){
         <td class="num" style="padding:5px 0">${fmt(l.need)}</td>
         <td class="num dim" style="padding:5px 0">@ ${fmt(l.unit)}</td>
         <td class="num" style="padding:5px 0">${fmt(l.line)}</td></tr>`).join('')}
-        ${fuelTot?`<tr><td class="dim">fuel</td><td></td><td></td><td class="num">${fmt(fuelTot)}</td></tr>`:''}
+        ${fuelTot?`<tr><td class="dim">fuel (${nm(IDX.get(S.fuelItem))})</td><td class="num dim">${
+          fmt(made*COOKTICKS[r.k]/FUELS[S.fuelItem])}</td><td class="num dim">@ ${fmt(comp[IDX.get(S.fuelItem)])}</td>
+          <td class="num">${fmt(fuelTot)}</td></tr>`:''}
       </tbody></table>
       <div class="totline"><span class="dim">${crafts.toLocaleString()} crafts → ${made.toLocaleString()} units${
         made>curQty?` (${(made-curQty).toLocaleString()} surplus)`:''}</span></div>
@@ -627,7 +654,7 @@ addInput.oninput=()=>{
 document.addEventListener('click',e=>{ if(!addRes.contains(e.target)&&e.target!==addInput) addRes.hidden=true; });
 
 /* ============================ wiring ============================ */
-function commit(){ save(); solve(); renderOps(); renderPrices(); if(curItem>=0) renderDetail(); }
+function commit(){ save(); solve(); renderFuelNote(); renderOps(); renderPrices(); if(curItem>=0) renderDetail(); }
 function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('on');
   setTimeout(()=>t.classList.remove('on'),2200); }
 
@@ -645,7 +672,20 @@ document.querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>{
 document.getElementById('sort').onchange=e=>{ sortF=e.target.value; renderOps(); };
 document.getElementById('opsearch').oninput=e=>{ qOps=e.target.value.trim().toLowerCase(); renderOps(); };
 document.getElementById('fee').onchange=e=>{ S.fee=parseFloat(e.target.value)||0; commit(); };
-document.getElementById('fuel').onchange=e=>{ S.fuel=parseFloat(e.target.value)||0; commit(); };
+const fuelSel=document.getElementById('fuel');
+fuelSel.innerHTML='<option value="none">None</option>'+Object.keys(FUELS)
+  .filter(f=>IDX.has(f))
+  .sort((a,b)=>nm(IDX.get(a)).localeCompare(nm(IDX.get(b))))
+  .map(f=>`<option value="${f}">${nm(IDX.get(f))}</option>`).join('');
+fuelSel.onchange=e=>{ S.fuelItem=e.target.value; commit(); };
+function renderFuelNote(){
+  const el=document.getElementById('fuelnote'), f=S.fuelItem;
+  if(!FUELS[f]){ el.textContent=''; el.classList.remove('warn'); return; }
+  const c=comp[IDX.get(f)];
+  if(!isFinite(c)){ el.textContent=`no price for ${nm(IDX.get(f))}`; el.classList.add('warn'); return; }
+  el.classList.remove('warn');
+  el.textContent=`${fmt(c*200/FUELS[f])}/smelt · ${fmt(c*100/FUELS[f])}/blast`;
+}
 document.getElementById('dclose').onclick=closeDetail;
 document.getElementById('scrim').onclick=closeDetail;
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDetail(); });
@@ -660,8 +700,9 @@ document.getElementById('file').onchange=e=>{
   const f=e.target.files[0]; if(!f) return;
   const rd=new FileReader();
   rd.onload=()=>{ try{ const j=JSON.parse(rd.result);
-      S.price=j.price||{}; S.basis=j.basis||{}; S.fee=j.fee||0; S.fuel=j.fuel||0;
-      document.getElementById('fee').value=S.fee; document.getElementById('fuel').value=S.fuel;
+      S.price=j.price||{}; S.basis=j.basis||{}; S.fee=j.fee||0;
+      S.fuelItem = FUELS[j.fuelItem] ? j.fuelItem : 'coal';
+      document.getElementById('fee').value=S.fee; fuelSel.value=S.fuelItem;
       commit(); toast('Prices imported');
     }catch(err){ toast("That file isn't a Craft Ledger export"); } };
   rd.readAsText(f); e.target.value='';
@@ -675,8 +716,9 @@ document.getElementById('stats').innerHTML=[
 ].map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('');
 
 const had=load();
-document.getElementById('fee').value=S.fee; document.getElementById('fuel').value=S.fuel;
-solve(); renderOps(); renderPrices();
+if(!FUELS[S.fuelItem] && S.fuelItem!=='none') S.fuelItem='coal';
+document.getElementById('fee').value=S.fee; fuelSel.value=S.fuelItem;
+solve(); renderFuelNote(); renderOps(); renderPrices();
 if(!had){ showTab('about'); toast('Loaded your 13 prices from the spreadsheet'); }
 </script>
 </body>
