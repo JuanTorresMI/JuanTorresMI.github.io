@@ -98,6 +98,15 @@ tbody tr.sel{background:var(--lapis-dim)}
 .x{color:var(--faint);font-size:16px;line-height:1;padding:2px 6px}
 .x:hover{color:var(--redstone)}
 
+.bulkta{width:100%;min-height:150px;background:var(--panel);border:1px solid var(--line2);border-radius:4px;
+  padding:12px;font-family:var(--mono);font-size:13px;line-height:1.6;resize:vertical}
+.bulkta:focus{border-color:var(--lapis);outline:none}
+.bulkbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 14px}
+.tick{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;
+  border-radius:2px;border:1px solid var(--line2);color:var(--faint);white-space:nowrap}
+.tick.ok{border-color:var(--lapis-dim);color:var(--lapis)}
+.tick.guess{border-color:#5a4520;color:var(--gold)}
+.tick.bad{border-color:#5c2b28;color:var(--redstone)}
 .results{position:absolute;z-index:30;background:var(--panel2);border:1px solid var(--line2);
   border-radius:3px;max-height:300px;overflow:auto;min-width:300px;box-shadow:0 12px 32px rgba(0,0,0,.5)}
 .results div{padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--line)}
@@ -145,6 +154,18 @@ aside.on{transform:none}
 .empty{padding:44px 20px;text-align:center;color:var(--mute);border:1px dashed var(--line2);border-radius:4px}
 .empty strong{display:block;color:var(--ink);font-size:15px;margin-bottom:6px}
 .hint{color:var(--faint);font-size:12.5px;margin:10px 0 0}
+.covh{font-family:var(--cond);font-size:13px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--gold);margin:28px 0 8px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+.st{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;
+  border-radius:2px;border:1px solid var(--line2);color:var(--faint);white-space:nowrap}
+.st.live{border-color:#4a6b3a;color:#7fb069}
+.st.nosell{border-color:#5a4520;color:var(--gold)}
+.st.blocked{border-color:var(--line2);color:var(--faint)}
+.age{font-family:var(--mono);font-size:12px;color:var(--faint);white-space:nowrap}
+.age.old{color:var(--gold)}
+.age.stale{color:var(--redstone)}
+.mini{width:88px;background:var(--panel2);border:1px solid var(--line2);border-radius:3px;
+  padding:4px 7px;font-family:var(--mono);font-size:12px;text-align:right}
 .doc{max-width:760px}
 .doc h2{font-family:var(--cond);font-size:13px;letter-spacing:.11em;text-transform:uppercase;
   color:var(--gold);margin:32px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line)}
@@ -198,6 +219,7 @@ aside.on{transform:none}
   <nav>
     <button data-tab="ops" class="on">Opportunities</button>
     <button data-tab="prices">My prices</button>
+    <button data-tab="coverage">Coverage</button>
     <button data-tab="about">How it works</button>
   </nav>
 </header>
@@ -226,8 +248,36 @@ aside.on{transform:none}
         <input class="search" id="addsearch" placeholder="Search 2,770 items to add a price..." autocomplete="off">
         <div class="results" id="addres" hidden></div>
       </div>
+      <button class="btn" id="bulktog">Bulk paste</button>
+    </div>
+    <div id="bulk" hidden>
+      <textarea id="bulktext" class="bulkta" spellcheck="false"
+        placeholder="One item per line, name then price:&#10;&#10;diamond 900&#10;Gold Ingot 4&#10;cobblestone_wall: 1.5&#10;netherite ingot, 1,250,000&#10;bookshelf 15k"></textarea>
+      <div class="bulkbar">
+        <button class="btn on" id="bulkgo">Check</button>
+        <button class="btn" id="bulkclear">Clear</button>
+        <span class="hint" style="margin:0">Reads k, m and b suffixes and comma separators. Nothing is saved until you confirm.</span>
+      </div>
+      <div id="bulkprev"></div>
     </div>
     <div id="pricesout"></div>
+  </section>
+
+  <section id="coverage" hidden>
+    <div class="stats" id="covstats"></div>
+    <h3 class="covh">What to price next</h3>
+    <p class="hint" style="margin:0 0 10px">Items you have not priced that no recipe can reach either. The number is
+    how many more craftable items open up the moment you give it a price.</p>
+    <div id="unlocks"></div>
+    <h3 class="covh">Every craftable item</h3>
+    <div class="tools">
+      <input class="search" id="covsearch" placeholder="Filter by item name...">
+      <button class="btn on" data-cov="all">All</button>
+      <button class="btn" data-cov="live">Done</button>
+      <button class="btn" data-cov="nosell">Need sell price</button>
+      <button class="btn" data-cov="blocked">Blocked</button>
+    </div>
+    <div id="covout"></div>
   </section>
 
   <section id="about" hidden>
@@ -300,6 +350,21 @@ aside.on{transform:none}
         The per-craft figures are the whole story it can tell.</li>
       </ul>
 
+      <h2>Coverage</h2>
+      <p>The <b>Coverage</b> tab is the map of what is left. Every craftable item sits in one of three states:
+      <b>done</b> means you have priced it and everything it needs, <b>no sell price</b> means you can already
+      cost it but have not said what it sells for, and <b>blocked</b> means something further down is unpriced.
+      Blocked rows show what they are waiting on.</p>
+      <p><b>What to price next</b> ranks the missing items by how many craftable items each one would open up.
+      That number is measured, not guessed — it re-runs the whole graph with that one item priced and counts the
+      difference. Price the top of that list and the largest part of the tree comes alive at once.</p>
+
+      <h2>How old a price is</h2>
+      <p>Every price is stamped when you set it, and the <b>Set</b> column on the prices tab shows its age.
+      Anything past a week turns amber and past a month turns red. Coverage counts the stale ones for you.</p>
+      <p>This matters more than it sounds. A price you entered three weeks ago is being treated as fact by every
+      recipe that touches it, and one stale entry deep in a chain quietly skews everything above it.</p>
+
       <h2>Where your prices live</h2>
       <p>In this browser, on this device, and nowhere else. Nothing is uploaded. That also means a phone and a
       laptop keep separate sets, and clearing browser data wipes them.</p>
@@ -349,14 +414,27 @@ document.getElementById('vtag').textContent = `Vanilla ${D.v} · ${R.length.toLo
 /* ============================ state ============================ */
 const SEED = {paper:173,leather:642,book:2000,sand:220,gunpowder:95,tnt:1500,oak_planks:20,
   bookshelf:15000,carrot:1,gold_nugget:.5,gold_ingot:4,gold_block:35,golden_carrot:15};
-let S = {price:{}, basis:{}, fee:0, fuelItem:'coal'};
+let S = {price:{}, basis:{}, ts:{}, fee:0, fuelItem:'coal'};
 const KEY='craftledger.v1';
 function load(){
   try{ const raw=localStorage.getItem(KEY); if(raw){ S=Object.assign(S,JSON.parse(raw)); return true; } }catch(e){}
   S.price = Object.assign({}, SEED);
+  const now=Date.now(); Object.keys(SEED).forEach(k=>S.ts[k]=now);
   return false;
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function setPrice(id,v){ S.price[id]=v; S.ts[id]=Date.now(); }
+function ageOf(id){ const t=S.ts&&S.ts[id]; return t?Date.now()-t:null; }
+function ageText(ms){
+  if(ms===null) return ['unknown','stale'];
+  const m=ms/6e4, h=m/60, d=h/24;
+  if(m<2) return ['just now',''];
+  if(h<1) return [Math.round(m)+'m',''];
+  if(d<1) return [Math.round(h)+'h',''];
+  if(d<7) return [Math.round(d)+'d',''];
+  if(d<30) return [Math.round(d)+'d','old'];
+  return [Math.round(d/7)+'w','stale'];
+}
 const basisOf = id => S.basis[id] || 'market';
 
 /* ============================ solver ============================
@@ -404,6 +482,30 @@ function solve(){
     if(!moved && pass>1) break;
   }
 }
+
+/* Boolean reachability: can this item be obtained at all, given a price set?
+   Much cheaper than the cost solve, so it can be run hundreds of times to
+   answer "what would pricing this one thing open up?". */
+function reachable(extra){
+  const ok=new Uint8Array(N);
+  for(const k in S.price){ const i=IDX.get(k); if(i!==undefined && S.price[k]>0) ok[i]=1; }
+  if(extra!==undefined) ok[extra]=1;
+  for(let pass=0; pass<24; pass++){
+    let moved=false;
+    for(let ri=0; ri<R.length; ri++){
+      const r=R[ri]; if(ok[r.o]) continue;
+      let all=true;
+      for(const [opts] of r.g){ let any=false;
+        for(const o of opts) if(ok[o]){ any=true; break; }
+        if(!any){ all=false; break; } }
+      if(all){ ok[r.o]=1; moved=true; }
+    }
+    if(!moved) break;
+  }
+  return ok;
+}
+const OUTPUTS=[...new Set(R.map(r=>r.o))];
+function countReach(ok){ let c=0; for(const i of OUTPUTS) if(ok[i]) c++; return c; }
 
 /* ============================ helpers ============================ */
 const fmt = v => !isFinite(v) ? '—' :
@@ -487,7 +589,7 @@ function renderPrices(){
     return;
   }
   host.innerHTML=`<div class="wrap"><table><thead><tr>
-      <th>Item</th><th style="text-align:right">Order price</th><th>Cost basis</th>
+      <th>Item</th><th style="text-align:right">Order price</th><th>Set</th><th>Cost basis</th>
       <th style="text-align:right">Craft cost</th><th style="text-align:right">Profit if crafted</th>
       <th class="hide-s">Cheaper to</th><th></th></tr></thead><tbody>${
     keys.map(k=>{
@@ -497,6 +599,7 @@ function renderPrices(){
       return `<tr>
         <td class="iname">${nm(i)}<span class="rid dim num" style="font-size:11px"> ${k}</span></td>
         <td style="text-align:right"><input class="pinput" data-p="${k}" type="number" step="any" value="${S.price[k]}"></td>
+        <td><span class="age ${ageText(ageOf(k))[1]}">${ageText(ageOf(k))[0]}</span></td>
         <td><span class="basis" data-b="${k}">
           <button data-v="market" class="${basisOf(k)==='market'?'on':''}">Market</button>
           <button data-v="cheapest" class="${basisOf(k)==='cheapest'?'on':''}">Cheapest</button>
@@ -514,13 +617,14 @@ function renderPrices(){
   host.querySelectorAll('input[data-p]').forEach(el=>{
     el.onchange=()=>{ const v=parseFloat(el.value);
       if(isNaN(v)||v<0){ el.value=S.price[el.dataset.p]; return; }
-      S.price[el.dataset.p]=v; commit(); };
+      setPrice(el.dataset.p, v); commit(); };
   });
   host.querySelectorAll('.basis').forEach(g=>g.querySelectorAll('button').forEach(b=>{
     b.onclick=()=>{ S.basis[g.dataset.b]=b.dataset.v; commit(); };
   }));
   host.querySelectorAll('[data-del]').forEach(b=>{
-    b.onclick=()=>{ delete S.price[b.dataset.del]; delete S.basis[b.dataset.del]; commit(); };
+    b.onclick=()=>{ delete S.price[b.dataset.del]; delete S.basis[b.dataset.del];
+      if(S.ts) delete S.ts[b.dataset.del]; commit(); };
   });
 }
 
@@ -653,13 +757,164 @@ addInput.oninput=()=>{
 };
 document.addEventListener('click',e=>{ if(!addRes.contains(e.target)&&e.target!==addInput) addRes.hidden=true; });
 
+/* ============================ coverage ============================ */
+let covF='all', covQ='', covCache=null;
+function covStatus(i){
+  const priced=S.price[IDS[i]]>0, costable=isFinite(best[i]);
+  if(!costable) return 'blocked';
+  return priced ? 'live' : 'nosell';
+}
+function missingFor(i){
+  const ri=BYOUT.get(i); if(!ri) return [];
+  let bestMiss=null;
+  for(const r0 of ri){ const r=R[r0]; const miss=[];
+    for(const [opts] of r.g){ let any=false;
+      for(const o of opts) if(isFinite(comp[o])){ any=true; break; }
+      if(!any) miss.push(opts.slice().sort((a,b)=>IDS[a].length-IDS[b].length)[0]); }
+    if(bestMiss===null||miss.length<bestMiss.length) bestMiss=miss; }
+  return bestMiss||[];
+}
+function renderCoverage(){
+  const done=[],nosell=[],blocked=[];
+  for(const i of OUTPUTS){ const s=covStatus(i); (s==='live'?done:s==='nosell'?nosell:blocked).push(i); }
+  const ages=Object.keys(S.price).map(k=>ageOf(k)).filter(a=>a!==null);
+  const stale=ages.filter(a=>a>7*864e5).length;
+  document.getElementById('covstats').innerHTML=[
+    [done.length, 'done'], [nosell.length,'need sell price'], [blocked.length,'blocked'],
+    [OUTPUTS.length,'craftable items'], [stale,'prices over a week old'],
+  ].map(([a,b])=>`<div><b>${a.toLocaleString()}</b><span>${b}</span></div>`).join('');
+
+  /* what to price next — heuristic shortlist, then an exact simulation on each */
+  const host=document.getElementById('unlocks');
+  if(covCache===null){
+    const tally=new Map();
+    for(const i of blocked) for(const m of missingFor(i)) tally.set(m,(tally.get(m)||0)+1);
+    const shortlist=[...tally.entries()].sort((a,b)=>b[1]-a[1]).slice(0,60).map(x=>x[0]);
+    const base=countReach(reachable());
+    covCache=shortlist.map(i=>({i, gain:countReach(reachable(i))-base}))
+      .filter(x=>x.gain>0).sort((a,b)=>b.gain-a.gain).slice(0,25);
+  }
+  host.innerHTML = !covCache.length
+    ? `<div class="empty">Nothing is waiting on a missing price. Everything reachable is priced.</div>`
+    : `<div class="wrap"><table><thead><tr><th>Item</th><th style="text-align:right">Unlocks</th>
+        <th style="width:120px">Price it now</th></tr></thead><tbody>${
+      covCache.map(x=>`<tr>
+        <td class="iname">${nm(x.i)} <span class="dim num" style="font-size:11px">${IDS[x.i]}</span></td>
+        <td class="num pos">+${x.gain}</td>
+        <td><input class="mini" data-u="${IDS[x.i]}" type="number" step="any" placeholder="price"></td>
+      </tr>`).join('')}</tbody></table></div>`;
+  host.querySelectorAll('[data-u]').forEach(el=>{
+    el.onchange=()=>{ const v=parseFloat(el.value);
+      if(!(v>0)) return; setPrice(el.dataset.u,v); covCache=null; commit(); };
+  });
+
+  /* full list */
+  let rows = covF==='live'?done : covF==='nosell'?nosell : covF==='blocked'?blocked : OUTPUTS;
+  if(covQ) rows=rows.filter(i=>nm(i).toLowerCase().includes(covQ));
+  rows=rows.slice().sort((a,b)=>{
+    const oa=['live','nosell','blocked'].indexOf(covStatus(a)),
+          ob=['live','nosell','blocked'].indexOf(covStatus(b));
+    return oa-ob || nm(a).localeCompare(nm(b)); });
+  const out=document.getElementById('covout');
+  out.innerHTML=`<div class="wrap"><table><thead><tr>
+      <th>Item</th><th>Status</th><th style="text-align:right">Cost</th>
+      <th style="text-align:right">Profit</th><th>Waiting on</th></tr></thead><tbody>${
+    rows.slice(0,400).map(i=>{
+      const s=covStatus(i), sell=sellOf(i), p=sell*feeMul()-best[i];
+      const miss=s==='blocked'?missingFor(i).slice(0,3).map(m=>nm(m)).join(', '):'';
+      return `<tr class="${s!=='blocked'?'clk':''}" ${s!=='blocked'?`data-i="${i}"`:''}>
+        <td class="iname">${nm(i)}</td>
+        <td><span class="st ${s}">${s==='live'?'done':s==='nosell'?'no sell price':'blocked'}</span></td>
+        <td class="num">${isFinite(best[i])?fmt(best[i]):'—'}</td>
+        <td class="num ${p>=0?'pos':'neg'}">${s==='live'?fmt(p):''}</td>
+        <td class="dim" style="font-size:12px">${miss}</td></tr>`;}).join('')}</tbody></table></div>
+    ${rows.length>400?`<p class="hint">Showing 400 of ${rows.length.toLocaleString()}. Narrow it with the filter.</p>`:''}`;
+  out.querySelectorAll('tr.clk').forEach(tr=>tr.onclick=()=>openDetail(+tr.dataset.i));
+}
+document.querySelectorAll('[data-cov]').forEach(b=>b.onclick=()=>{
+  covF=b.dataset.cov;
+  document.querySelectorAll('[data-cov]').forEach(x=>x.classList.toggle('on',x===b));
+  renderCoverage(); });
+document.getElementById('covsearch').oninput=e=>{ covQ=e.target.value.trim().toLowerCase(); renderCoverage(); };
+
+/* ============================ bulk paste ============================ */
+function parseNum(s){
+  s=String(s).replace(/[,\s$]/g,'').toLowerCase();
+  const m=s.match(/^(\d*\.?\d+)([kmb])?$/); if(!m) return NaN;
+  return parseFloat(m[1])*({k:1e3,m:1e6,b:1e9}[m[2]]||1);
+}
+function matchItem(raw){
+  const q=raw.trim().toLowerCase().replace(/\s+/g,' ');
+  if(!q) return [-1,'bad'];
+  const under=q.replace(/[\s\-]+/g,'_');
+  if(IDX.has(under)) return [IDX.get(under),'ok'];
+  if(IDX.has(q))     return [IDX.get(q),'ok'];
+  for(let i=0;i<N;i++) if(NM[i].toLowerCase()===q) return [i,'ok'];
+  let bi=-1,bs=99,bl=1e9;
+  for(let i=0;i<N;i++){ const s=score(i,q); if(s<0) continue;
+    const l=IDS[i].length;
+    if(s<bs||(s===bs&&l<bl)){ bs=s; bi=i; bl=l; } }
+  return bs<=4 ? [bi,'guess'] : [-1,'bad'];
+}
+function parseBulk(text){
+  return text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map(line=>{
+    const m=line.match(/^(.*?)[\s:=,\t]+([\d.,]+\s*[kmb]?)$/i);
+    if(!m) return {line, state:'bad', why:'no price found'};
+    const v=parseNum(m[2]);
+    if(!isFinite(v)||v<0) return {line, state:'bad', why:'price not a number'};
+    const [i,st]=matchItem(m[1]);
+    if(i<0) return {line, state:'bad', why:'no item matches "'+m[1].trim()+'"'};
+    return {line, state:st, i, id:IDS[i], name:nm(i), price:v};
+  });
+}
+let bulkRows=[];
+function renderBulk(){
+  const host=document.getElementById('bulkprev');
+  if(!bulkRows.length){ host.innerHTML=''; return; }
+  const good=bulkRows.filter(r=>r.state!=='bad');
+  const bad=bulkRows.filter(r=>r.state==='bad');
+  const guesses=good.filter(r=>r.state==='guess').length;
+  host.innerHTML=`<div class="wrap"><table><thead><tr>
+      <th>Line</th><th>Matched to</th><th style="text-align:right">Price</th><th></th></tr></thead><tbody>${
+    bulkRows.map(r=>`<tr>
+      <td class="num dim" style="font-size:12px">${r.line.replace(/</g,'&lt;')}</td>
+      <td>${r.state==='bad'?`<span class="dim">${r.why}</span>`
+        :`<span class="iname">${r.name}</span> <span class="dim num" style="font-size:11px">${r.id}</span>`}</td>
+      <td class="num">${r.state==='bad'?'':fmt(r.price)}</td>
+      <td><span class="tick ${r.state}">${r.state==='ok'?'exact':r.state==='guess'?'guessed':'skipped'}</span></td>
+    </tr>`).join('')}</tbody></table></div>
+    <div class="bulkbar">
+      <button class="btn on" id="bulkapply">Apply ${good.length} price${good.length===1?'':'s'}</button>
+      ${guesses?`<span class="hint" style="margin:0;color:var(--gold)">${guesses} guessed &mdash; check those rows before applying.</span>`:''}
+      ${bad.length?`<span class="hint" style="margin:0">${bad.length} line${bad.length===1?'':'s'} will be skipped.</span>`:''}
+    </div>`;
+  const btn=document.getElementById('bulkapply');
+  if(btn) btn.onclick=()=>{
+    good.forEach(r=>{ setPrice(r.id, r.price); });
+    bulkRows=[]; document.getElementById('bulktext').value='';
+    document.getElementById('bulk').hidden=true;
+    commit(); toast(`${good.length} price${good.length===1?'':'s'} applied`);
+  };
+}
+document.getElementById('bulktog').onclick=()=>{
+  const b=document.getElementById('bulk'); b.hidden=!b.hidden;
+  if(!b.hidden) document.getElementById('bulktext').focus();
+};
+document.getElementById('bulkgo').onclick=()=>{
+  bulkRows=parseBulk(document.getElementById('bulktext').value); renderBulk(); };
+document.getElementById('bulkclear').onclick=()=>{
+  document.getElementById('bulktext').value=''; bulkRows=[]; renderBulk(); };
+
 /* ============================ wiring ============================ */
-function commit(){ save(); solve(); renderFuelNote(); renderOps(); renderPrices(); if(curItem>=0) renderDetail(); }
+function commit(){ save(); solve(); covCache=null; renderFuelNote(); renderOps(); renderPrices();
+  if(!document.getElementById('coverage').hidden) renderCoverage();
+  if(curItem>=0) renderDetail(); }
 function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('on');
   setTimeout(()=>t.classList.remove('on'),2200); }
 
-const TABS=['ops','prices','about'];
+const TABS=['ops','prices','coverage','about'];
 function showTab(name){
+  if(name==='coverage') renderCoverage();
   document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.tab===name));
   TABS.forEach(t=>document.getElementById(t).hidden = t!==name);
 }
@@ -700,7 +955,7 @@ document.getElementById('file').onchange=e=>{
   const f=e.target.files[0]; if(!f) return;
   const rd=new FileReader();
   rd.onload=()=>{ try{ const j=JSON.parse(rd.result);
-      S.price=j.price||{}; S.basis=j.basis||{}; S.fee=j.fee||0;
+      S.price=j.price||{}; S.basis=j.basis||{}; S.ts=j.ts||{}; S.fee=j.fee||0;
       S.fuelItem = FUELS[j.fuelItem] ? j.fuelItem : 'coal';
       document.getElementById('fee').value=S.fee; fuelSel.value=S.fuelItem;
       commit(); toast('Prices imported');
