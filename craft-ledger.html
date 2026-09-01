@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Craft Ledger">
 <title>Craft Ledger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +23,8 @@
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;
-  -webkit-font-smoothing:antialiased}
+  -webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;text-size-adjust:100%;
+  overflow-x:hidden}
 button,input,select{font-family:inherit;font-size:inherit;color:inherit}
 input[type=number]{-moz-appearance:textfield;appearance:textfield}
 input[type=number]::-webkit-outer-spin-button,
@@ -28,8 +33,9 @@ button{cursor:pointer;border:none;background:none}
 :focus-visible{outline:2px solid var(--lapis);outline-offset:2px}
 
 /* ---------- shell ---------- */
-header{position:sticky;top:0;z-index:40;background:rgba(20,22,28,.94);backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:40;background:rgba(20,22,28,.94);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
 .hbar{display:flex;align-items:center;gap:18px;padding:12px 20px;flex-wrap:wrap}
 .brand{display:flex;align-items:baseline;gap:10px;margin-right:auto}
 .brand h1{font-family:var(--cond);font-size:20px;font-weight:600;letter-spacing:.06em;
@@ -61,7 +67,8 @@ nav button{font-family:var(--cond);font-size:12px;letter-spacing:.1em;text-trans
 nav button:hover{color:var(--mute)}
 nav button.on{color:var(--gold);border-bottom-color:var(--gold)}
 
-main{padding:18px 20px 80px;max-width:1500px}
+main{padding:18px 20px 80px;max-width:1500px;
+  padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
 .tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
 .search{flex:1;min-width:200px;background:var(--panel);border:1px solid var(--line2);border-radius:3px;
   padding:9px 12px;font-size:14px}
@@ -69,7 +76,9 @@ main{padding:18px 20px 80px;max-width:1500px}
 select.sel{background:var(--panel);border:1px solid var(--line2);border-radius:3px;padding:8px 10px}
 
 /* ---------- tables ---------- */
-.wrap{border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--panel)}
+.wrap{border:1px solid var(--line);border-radius:4px;overflow-x:auto;overflow-y:hidden;
+  background:var(--panel);-webkit-overflow-scrolling:touch}
+.wrap table{min-width:max-content}
 table{width:100%;border-collapse:collapse}
 thead th{font-family:var(--cond);font-size:11px;letter-spacing:.09em;text-transform:uppercase;
   color:var(--faint);text-align:left;padding:9px 12px;background:var(--panel2);
@@ -125,6 +134,7 @@ tbody tr.sel{background:var(--lapis-dim)}
   transition:opacity .18s}
 .scrim.on{opacity:1;pointer-events:auto}
 aside{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--panel);z-index:60;
+  padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);
   border-left:1px solid var(--line2);transform:translateX(100%);transition:transform .22s ease;
   display:flex;flex-direction:column}
 aside.on{transform:none}
@@ -198,11 +208,29 @@ aside.on{transform:none}
   border:1px solid var(--lapis);border-radius:4px;padding:10px 18px;z-index:90;font-size:13px;
   opacity:0;pointer-events:none;transition:opacity .2s}
 .toast.on{opacity:1}
+/* iOS zooms the whole page when a focused field is under 16px, which throws the
+   layout off every time you tap a number. Only applies to touch pointers. */
+@media (pointer:coarse){
+  input,select,textarea{font-size:16px}
+  .setting input{width:86px}
+  .btn,nav button{padding-top:10px;padding-bottom:10px}
+  .x{padding:8px 12px;font-size:20px}
+}
+@media (max-width:900px){
+  .hide-m{display:none}
+}
 @media (max-width:720px){
   main{padding:14px 12px 70px}
-  .hbar{padding:10px 12px;gap:12px}
-  nav{padding:0 12px}
+  .hbar{padding:10px 12px;gap:10px}
+  .brand h1{font-size:17px}
+  nav{padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav button{padding:11px 12px;white-space:nowrap}
   .hide-s{display:none}
+  thead th,tbody td{padding:9px 8px}
+  aside{width:100%;border-left:none}
+  .doc p,.doc ol,.doc ul{max-width:none}
+  .stats div{min-width:90px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -214,7 +242,7 @@ aside.on{transform:none}
       <h1>Craft <span>Ledger</span></h1>
       <span class="vtag" id="vtag"></span>
     </div>
-    <div class="setting"><label for="fee">Fee</label><input id="fee" type="number" step="0.1" value="0"></div>
+    <div class="setting"><label for="fee">Fee</label><input id="fee" type="number" step="0.1" value="0" inputmode="decimal"></div>
     <div class="setting"><label for="fuel">Fuel</label><select class="sel fuelsel" id="fuel"></select>
       <span class="fuelnote" id="fuelnote"></span></div>
     <button class="btn" id="link">Link scanner</button>
@@ -240,7 +268,7 @@ aside.on{transform:none}
       <button class="btn" data-kind="cut">Cut</button>
       <button class="btn" data-kind="smith">Smith</button>
       <div class="setting"><label for="vol">Volume</label>
-        <input id="vol" type="number" min="1" step="1" value="1000"></div>
+        <input id="vol" type="number" min="1" step="1" value="1000" inputmode="numeric"></div>
       <select class="sel" id="sort">
         <option value="total">Sort: total profit at volume</option>
         <option value="unit">Sort: profit per unit at volume</option>
@@ -407,8 +435,9 @@ aside.on{transform:none}
       <p><b>Link scanner</b> points this page at <code>craft-ledger-prices.json</code> once. After that it
       re-reads that file every fifteen seconds and whenever you reload, so a sweep in game shows up here
       without importing anything. The badge next to the button says how long ago it last read.</p>
-      <p>Chrome and Edge only — the file access it needs does not exist in Firefox or Safari. Import still
-      works everywhere.</p>
+      <p>Chrome and Edge only — the file access it needs does not exist in Firefox or Safari, so the button
+      is hidden there. Import still works everywhere, including on a phone: put the file in iCloud Drive or
+      Google Drive and pick it through the Files app.</p>
       <p>Browsers forget file permission when you close the tab, so the first load after reopening asks you
       to click Link scanner again. That is a browser rule, not a setting.</p>
 
@@ -417,6 +446,9 @@ aside.on{transform:none}
       laptop keep separate sets, and clearing browser data wipes them.</p>
       <p>Use <b>Export</b> for a backup file and <b>Import</b> to load it somewhere else. Worth doing once you
       have real numbers in.</p>
+      <p>Order books are stored as price levels rather than individual orders — ten orders at the same price
+      spend down identically, so keeping them apart only wastes space. If storage fills anyway, prices and
+      settings stay saved and only the depth data falls back to reloading from the linked file.</p>
 
       <p class="foot">Made by <b>AlAkhirah</b>. Prices are yours to keep; the recipes are the game's.</p>
     </div>
@@ -469,7 +501,16 @@ function load(){
   const now=Date.now(); Object.keys(SEED).forEach(k=>S.ts[k]=now);
   return false;
 }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+let storageWarned=false;
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(S)); return; }catch(e){}
+  // Quota hit: keep the essentials, drop the bulky order books from disk only.
+  try{
+    localStorage.setItem(KEY, JSON.stringify(Object.assign({}, S, {orders:{}, hist:{}})));
+    if(!storageWarned){ storageWarned=true;
+      toast('Browser storage is full — order depth will reload from the linked file, not from memory'); }
+  }catch(e2){}
+}
 function setPrice(id,v){ S.price[id]=v; S.ts[id]=Date.now(); }
 function ageOf(id){ const t=S.ts&&S.ts[id]; return t?Date.now()-t:null; }
 function ageText(ms){
@@ -554,6 +595,30 @@ function reachable(extra){
 const OUTPUTS=[...new Set(R.map(r=>r.o))];
 function countReach(ok){ let c=0; for(const i of OUTPUTS) if(ok[i]) c++; return c; }
 
+/* Collapse each book to price levels. Ten orders at 71.1 and the walk-down
+   maths cannot tell them apart, so storing them separately only burns space —
+   the raw sweep grows past the browser's storage quota around a few thousand
+   items. Exhausted rows are dropped and the tail is capped. Lossless for
+   sellInto up to the cap. */
+function compactBooks(){
+  for(const id in (S.orders||{})){
+    const b=S.orders[id]; if(!Array.isArray(b)) continue;
+    const lv=new Map();
+    for(const r of b){
+      if(!r || !(r.price>0)) continue;
+      if(r.remaining!==undefined && r.remaining!==null && r.remaining<=0) continue;
+      const cur=lv.get(r.price)||{price:r.price, remaining:0, unbounded:false};
+      if(r.remaining===undefined||r.remaining===null) cur.unbounded=true;
+      else cur.remaining+=r.remaining;
+      lv.set(r.price,cur);
+    }
+    let rows=[...lv.values()].sort((a,b2)=>b2.price-a.price)
+      .map(r=>r.unbounded?{price:r.price}:{price:r.price, remaining:r.remaining});
+    if(rows.length>250) rows=rows.slice(0,250);
+    if(rows.length) S.orders[id]=rows; else delete S.orders[id];
+  }
+}
+
 /* ============================ order book ============================
    S.orders[id] = [{price, remaining}, ...] straight from the scanner.
    The top order only absorbs so many units, so selling a batch walks down
@@ -571,7 +636,8 @@ function reconcileWithBook(){
   for(const id in (S.orders||{})){
     const b=bookFor(id); if(!b) continue;
     const top=b[0].price;
-    if(S.price[id]===undefined || Math.abs(S.price[id]-top)>1e-9){ S.price[id]=top; fixed++; }
+    if(S.price[id]===undefined || Math.abs(S.price[id]-top)>1e-9){
+      S.price[id]=top; if(S.ts[id]===undefined) S.ts[id]=Date.now(); fixed++; }
   }
   return fixed;
 }
@@ -670,20 +736,22 @@ function renderOps(){
   const top=Math.max(...rows.map(r=>Math.max(r.total,0)))||1;
   host.innerHTML=`<div class="wrap"><table><thead><tr>
       <th>Output</th><th class="hide-s">Via</th>
-      <th style="text-align:right">Cost</th><th style="text-align:right">Top order</th>
+      <th class="hide-m" style="text-align:right">Cost</th>
+      <th class="hide-m" style="text-align:right">Top order</th>
       <th style="text-align:right">Effective</th><th style="text-align:right">Sellable</th>
-      <th style="text-align:right">Profit / unit</th><th style="text-align:right">Margin</th>
+      <th style="text-align:right">Profit / unit</th>
+      <th class="hide-m" style="text-align:right">Margin</th>
       <th style="text-align:right">Total profit</th>
       <th class="hide-s" style="width:70px"></th></tr></thead><tbody>${
     rows.slice(0,400).map(r=>`<tr class="clk" data-i="${r.i}">
       <td class="iname">${nm(r.i)}${R[r.ri].n>1?` <span class="dim num">x${R[r.ri].n}</span>`:''}</td>
       <td class="hide-s"><span class="kind">${KLABEL[R[r.ri].k]}</span></td>
-      <td class="num">${fmt(r.cost)}</td>
-      <td class="num dim">${fmt(r.sell)}</td>
+      <td class="num hide-m">${fmt(r.cost)}</td>
+      <td class="num dim hide-m">${fmt(r.sell)}</td>
       <td class="num ${Math.abs(r.effective-r.sell)>r.sell*0.02?'warnv':''}">${fmt(r.effective)}</td>
       <td class="num ${r.capped?'neg':'dim'}">${r.cap===null?'—':fmt(r.units)}</td>
       <td class="num ${r.profit>=0?'pos':'neg'}">${fmt(r.profit)}</td>
-      <td class="num ${r.profit>=0?'pos':'neg'}">${pct(r.margin)}</td>
+      <td class="num hide-m ${r.profit>=0?'pos':'neg'}">${pct(r.margin)}</td>
       <td class="num ${r.total>=0?'pos':'neg'}"><b>${fmt(r.total)}</b></td>
       <td class="hide-s"><div class="bar"><i style="width:${Math.max(0,Math.min(100,r.total/top*100))}%"></i></div></td>
     </tr>`).join('')}</tbody></table></div>
@@ -707,7 +775,8 @@ function renderPrices(){
   }
   host.innerHTML=`<div class="wrap"><table><thead><tr>
       <th>Item</th><th style="text-align:right">Order price</th><th style="text-align:right">Depth</th><th>Set</th><th>Cost basis</th>
-      <th style="text-align:right">Craft cost</th><th style="text-align:right">Profit if crafted</th>
+      <th class="hide-m" style="text-align:right">Craft cost</th>
+      <th style="text-align:right">Profit if crafted</th>
       <th class="hide-s">Cheaper to</th><th></th></tr></thead><tbody>${
     keys.map(k=>{
       const i=IDX.get(k), c=best[i], sell=sellOf(i);
@@ -715,7 +784,7 @@ function renderPrices(){
       const cheaper = !isFinite(c) ? 'order' : (c < sell ? 'make' : 'order');
       return `<tr>
         <td class="iname">${nm(i)}<span class="rid dim num" style="font-size:11px"> ${k}</span></td>
-        <td style="text-align:right"><input class="pinput" data-p="${k}" type="number" step="any" value="${S.price[k]}"></td>
+        <td style="text-align:right"><input class="pinput" data-p="${k}" type="number" step="any" inputmode="decimal" value="${S.price[k]}"></td>
         <td class="num ${depthAtBest(k)!==null&&depthAtBest(k)<1000?'neg':'dim'}">${
           depthAtBest(k)!==null?fmt(depthAtBest(k)):'—'}</td>
         <td><span class="age ${ageText(ageOf(k))[1]}">${ageText(ageOf(k))[0]}</span></td>
@@ -723,7 +792,7 @@ function renderPrices(){
           <button data-v="market" class="${basisOf(k)==='market'?'on':''}">Market</button>
           <button data-v="cheapest" class="${basisOf(k)==='cheapest'?'on':''}">Cheapest</button>
         </span></td>
-        <td class="num">${fmt(c)}</td>
+        <td class="num hide-m">${fmt(c)}</td>
         <td class="num ${pc>=0?'pos':'neg'}">${isFinite(pc)?fmt(pc):'—'}</td>
         <td class="hide-s"><span class="kind">${isFinite(c)?cheaper:'—'}</span></td>
         <td><button class="x" data-del="${k}" title="Remove">&times;</button></td>
@@ -801,7 +870,7 @@ function renderDetail(){
   const fuelTot = fuelPerItem(r.k)*made;
   const matTot = lines.reduce((a,l)=>a+l.line,0)+fuelTot;
   const fill = sellInto(IDS[i], made);
-  const rev = fill ? fill.revenue + fill.short*0 : made*sell;
+  const rev = fill ? fill.revenue : made*sell;   // unsold surplus earns nothing
   const fees = rev*(+S.fee||0)/100, np = rev-fees-matTot;
 
   document.getElementById('dbody').innerHTML=`
@@ -811,6 +880,9 @@ function renderDetail(){
     <div class="kv"><span>Profit after fee</span><b class="num ${profit>=0?'pos':'neg'}">${fmt(profit)}</b></div>
     <div class="kv"><span>Margin</span><b class="num ${profit>=0?'pos':'neg'}">${pct(sell?profit/sell:0)}</b></div>
 
+    ${(S.hist&&S.hist[IDS[i]]&&S.hist[IDS[i]].n>1)?`
+    <div class="kv"><span>Seen across ${S.hist[IDS[i]].n} captures</span>
+      <b class="num">${fmt(S.hist[IDS[i]].lo)} &ndash; ${fmt(S.hist[IDS[i]].hi)}</b></div>`:''}
     ${bookFor(IDS[i])?`<div class="sect">Order book</div>
     <div class="kv"><span>Best order</span><b class="num">${fmt(bookFor(IDS[i])[0].price)}</b></div>
     <div class="kv"><span>Units wanted at that price</span><b class="num">${fmt(depthAtBest(IDS[i]))}</b></div>
@@ -824,7 +896,7 @@ function renderDetail(){
     so its own ingredients don't matter. Switch it to Cheapest on the prices tab to open it up.</p>
 
     <div class="sect">Batch</div>
-    <input class="qty" id="dqty" type="number" min="1" step="1" value="${curQty}">
+    <input class="qty" id="dqty" type="number" min="1" step="1" inputmode="numeric" value="${curQty}">
     <div style="margin-top:12px">
       <table style="width:100%"><tbody>${lines.map(l=>`<tr>
         <td style="padding:5px 0"><span class="iname">${nm(l.pick)}</span>${
@@ -933,7 +1005,7 @@ function renderCoverage(){
       covCache.map(x=>`<tr>
         <td class="iname">${nm(x.i)} <span class="dim num" style="font-size:11px">${IDS[x.i]}</span></td>
         <td class="num pos">+${x.gain}</td>
-        <td><input class="mini" data-u="${IDS[x.i]}" type="number" step="any" placeholder="price"></td>
+        <td><input class="mini" data-u="${IDS[x.i]}" type="number" step="any" inputmode="decimal" placeholder="price"></td>
       </tr>`).join('')}</tbody></table></div>`;
   host.querySelectorAll('[data-u]').forEach(el=>{
     el.onchange=()=>{ const v=parseFloat(el.value);
@@ -1081,7 +1153,7 @@ async function readLinked(announce){
     S.price=j.price||{}; S.basis=j.basis||{}; S.ts=j.ts||{};
     S.orders=j.orders||{}; if(j.fee!==undefined) S.fee=j.fee;
     if(FUELS[j.fuelItem]) S.fuelItem=j.fuelItem;
-    reconcileWithBook();
+    compactBooks(); reconcileWithBook();
     lastSync=Date.now();
     const changed = JSON.stringify(S.price)!==before;
     document.getElementById('fee').value=S.fee; fuelSel.value=S.fuelItem;
@@ -1106,7 +1178,7 @@ document.getElementById('link').onclick=async()=>{
 };
 
 (async()=>{
-  if(!FS_OK) return;
+  if(!FS_OK){ document.getElementById('link').hidden = true; return; }
   try{
     const h=await idbGet('handle');
     if(h){ fileHandle=h; await readLinked(false); startSync(); renderSynced(); }
@@ -1160,7 +1232,8 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDetail(); });
 document.getElementById('exp').onclick=()=>{
   const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download='craft-ledger-prices.json'; a.click(); toast('Prices exported');
+  a.download='craft-ledger-prices-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click(); toast('Prices exported');
 };
 document.getElementById('imp').onclick=()=>document.getElementById('file').click();
 function importCsv(text){
@@ -1189,13 +1262,11 @@ function importCsv(text){
   for(const [id,v] of latest){
     setPrice(id,v.p); if(v.t) S.ts[id]=v.t;
     if(v.d>0||v.td>0){
-      /* one synthetic level at the best price, plus the rest of the depth below it */
-      const rows=[{price:v.p, remaining:v.d>0?v.d:v.td}];
-      if(v.td>v.d) rows.push({price:v.p, remaining:0});
-      S.orders[id]=rows;
+      S.orders[id]=[{price:v.p, remaining:v.d>0?v.d:v.td}];
     }
   }
   for(const [id,st] of stat) S.hist[id]={n:st.n, lo:st.lo, hi:st.hi};
+  compactBooks();
   return latest.size;
 }
 document.getElementById('file').onchange=e=>{
@@ -1214,6 +1285,7 @@ document.getElementById('file').onchange=e=>{
         S.orders=j.orders||{}; S.hist=S.hist||{}; S.fee=j.fee||0;
         S.fuelItem = FUELS[j.fuelItem] ? j.fuelItem : 'coal';
         document.getElementById('fee').value=S.fee; fuelSel.value=S.fuelItem;
+        compactBooks();
         const d=Object.keys(S.orders).length;
         const r=reconcileWithBook();
         commit(); toast(`Prices imported${d?` with order depth for ${d} items`:''}`
