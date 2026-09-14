@@ -17,7 +17,7 @@ title: Juan Torres
       <div class="bc-bot">
         <a href="mailto:Torre10j@cmich.edu">Torre10j@cmich.edu</a>
         <a href="https://www.linkedin.com/in/juan-torres-0ab3471bb">in/juan-torres</a>
-        <a href="https://juantorres.xyz">juantorres.xyz</a>
+        <a href="https://juantorresmi.github.io/">juantorresmi.github.io/</a>
       </div>
     </article>
   </div>
@@ -81,7 +81,7 @@ title: Juan Torres
   document.getElementById("vcard").addEventListener("click", () => {
     const v = ["BEGIN:VCARD", "VERSION:3.0", "N:Torres;Juan;;;", "FN:Juan Torres", "ORG:Central Michigan University",
       "TITLE:Business Administration, Logistics Management", "EMAIL;TYPE=INTERNET:Torre10j@cmich.edu",
-      "URL:https://juantorres.xyz", "URL:https://www.linkedin.com/in/juan-torres-0ab3471bb", "END:VCARD"].join("\r\n");
+      "URL:https://juantorresmi.github.io/", "URL:https://www.linkedin.com/in/juan-torres-0ab3471bb", "END:VCARD"].join("\r\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([v], { type: "text/vcard" }));
     a.download = "Juan-Torres.vcf";
