@@ -1,0 +1,93 @@
+---
+layout: default
+title: Projects
+permalink: /projects/
+description: Projects by Juan Torres, and a live log of what he's building, pulled from GitHub.
+---
+<p class="eyebrow">Projects · {{ site.data.projects.size }}</p>
+<h1>Things I've built</h1>
+<p class="lede">Working projects, each running here on the site. Open one to use it; the bar at the top of every project takes you to the next.</p>
+
+<div class="pcards">
+  {% for p in site.data.projects %}
+  <a class="pcard" href="{{ p.url }}">
+    <div class="glyph" aria-hidden="true">{% include glyph.html name=p.slug %}</div>
+    <div>
+      <p class="meta">{{ forloop.index | prepend: "0" | slice: -2, 2 }} · {{ p.kind }} · <span class="status">{{ p.status }}</span></p>
+      <h2>{{ p.title }}</h2>
+      <p class="d">{{ p.summary }}</p>
+      <p class="metric">{{ p.metric }}</p>
+      <div class="tags">{% for s in p.stack %}<span class="tag">{{ s }}</span>{% endfor %}</div>
+      <span class="open">Open {{ p.title }} <span class="arrow">→</span></span>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+<section class="section" id="log">
+  <div class="section-head"><h2>Project log</h2><a class="link small" href="https://github.com/JuanTorresMI">GitHub ↗</a></div>
+  <p class="lede" style="font-size:16px;margin-bottom:22px">What I've been working on, straight from GitHub: my most active public repositories, then every recent change, newest first.</p>
+  <div class="repos" id="repos"></div>
+  <div class="log" id="plog" aria-live="polite"><p class="log-note">Loading recent work from GitHub…</p></div>
+</section>
+
+<script>
+(() => {
+  const USER = "JuanTorresMI";
+  const SITE_REPO = "JuanTorresMI.github.io";
+  const PROJECTS = {{ site.data.projects | jsonify }};
+  const KEY = "jt-project-log-v1", TTL = 20 * 60 * 1000;
+  const esc = (s) => String(s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const api = (path) => fetch("https://api.github.com" + path, { headers: { Accept: "application/vnd.github+json" } })
+    .then((r) => { if (!r.ok) throw new Error("GitHub said " + r.status); return r.json(); });
+
+  async function load() {
+    try { const c = JSON.parse(localStorage.getItem(KEY) || "null"); if (c && Date.now() - c.at < TTL) return c.data; } catch (e) {}
+    const repos = (await api(`/users/${USER}/repos?sort=pushed&per_page=10`)).filter((r) => !r.fork && !r.archived);
+    const lists = await Promise.all(repos.slice(0, 4).map((r) =>
+      api(`/repos/${USER}/${r.name}/commits?per_page=20`).then((cs) => cs.map((c) => ({
+        repo: r.name, url: c.html_url, sha: c.sha.slice(0, 7),
+        msg: (c.commit.message || "").split("\n")[0], date: c.commit.author ? c.commit.author.date : c.commit.committer.date,
+      })), () => [])));
+    const data = {
+      repos: repos.slice(0, 6).map((r) => ({ name: r.name, url: r.html_url, desc: r.description, lang: r.language, pushed: r.pushed_at })),
+      commits: lists.flat().sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 40),
+    };
+    try { localStorage.setItem(KEY, JSON.stringify({ at: Date.now(), data })); } catch (e) {}
+    return data;
+  }
+  function ago(iso) {
+    const s = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (s < 3600) return Math.max(1, Math.round(s / 60)) + " min ago";
+    if (s < 86400) return Math.round(s / 3600) + " h ago";
+    const d = Math.round(s / 86400);
+    return d < 30 ? d + (d === 1 ? " day ago" : " days ago") : new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  }
+  function projectFor(c) {
+    const text = (c.repo + " " + c.msg).toLowerCase();
+    return PROJECTS.find((p) => (p.keywords || []).some((k) => text.includes(k)));
+  }
+  function render({ repos, commits }) {
+    document.getElementById("repos").innerHTML = repos.map((r) => `<a class="repo" href="${esc(r.url)}">
+      <span class="name">${esc(r.name === SITE_REPO ? "juantorres.xyz (this site)" : r.name)}</span>
+      ${r.desc ? `<span class="desc">${esc(r.desc)}</span>` : ""}
+      <span class="when">${r.lang ? esc(r.lang) + " · " : ""}pushed ${ago(r.pushed)}</span></a>`).join("");
+    const days = new Map();
+    for (const c of commits) {
+      const day = new Date(c.date).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+      if (!days.has(day)) days.set(day, []);
+      days.get(day).push(c);
+    }
+    const box = document.getElementById("plog");
+    if (!commits.length) { box.innerHTML = `<p class="log-note">No public changes yet.</p>`; return; }
+    box.innerHTML = [...days].map(([day, cs]) => `<div class="log-day"><span class="log-date">${esc(day)}</span><div class="log-items">${cs.map((c) => {
+      const p = projectFor(c);
+      const tag = p ? `<span class="tag accent">${esc(p.title)}</span>` : c.repo === SITE_REPO ? `<span class="tag">Site</span>` : `<span class="tag">${esc(c.repo)}</span>`;
+      return `<a class="log-item" href="${esc(c.url)}">${tag}<span class="msg">${esc(c.msg)}</span><span class="sha">${esc(c.sha)}</span></a>`;
+    }).join("")}</div></div>`).join("");
+  }
+  load().then(render).catch((e) => {
+    document.getElementById("plog").innerHTML = `<p class="log-note">Couldn't reach GitHub right now (${esc(e.message)}). The full history is on <a class="link" href="https://github.com/${USER}">GitHub</a>.</p>`;
+  });
+})();
+</script>

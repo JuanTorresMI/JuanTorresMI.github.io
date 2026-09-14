@@ -1,0 +1,53 @@
+---
+layout: default
+title: Writing
+permalink: /blog/
+narrow: true
+description: Juan Torres writes about finance, school and work on Substack.
+---
+<p class="eyebrow">Writing</p>
+<h1>Notes on finance, school and work</h1>
+<p class="lede">I write on Substack about finance, school, work and whatever I'm learning. Everything I've published is listed here, newest first.</p>
+<div class="actions">
+  <a class="btn primary" href="https://juantorresis.substack.com/subscribe">Subscribe</a>
+  <a class="btn" href="https://juantorresis.substack.com">Open Substack ↗</a>
+</div>
+
+<section class="section">
+  <div class="section-head"><h2>All writing</h2><span class="count" id="count"></span></div>
+  <div class="rows" id="posts" aria-live="polite"></div>
+  <p class="muted small" id="feedNote" style="margin-top:14px"></p>
+</section>
+
+<script>
+(() => {
+  const LOCAL = [{% for post in site.posts %}{ "title": {{ post.title | jsonify }}, "url": {{ post.url | jsonify }}, "date": {{ post.date | date_to_xmlschema | jsonify }}, "excerpt": {{ post.excerpt | strip_html | strip_newlines | truncate: 180 | jsonify }}, "source": "On this site" }{% unless forloop.last %},{% endunless %}{% endfor %}];
+  const FEED = "https://juantorresis.substack.com/feed";
+  const esc = (s) => String(s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const text = (html) => { const d = document.createElement("div"); d.innerHTML = html || ""; return (d.textContent || "").replace(/\s+/g, " ").trim(); };
+  const clip = (s, n) => (s.length > n ? s.slice(0, n).replace(/\s+\S*$/, "") + "…" : s);
+  function render(items) {
+    items.sort((a, b) => (a.date < b.date ? 1 : -1));
+    document.getElementById("count").textContent = items.length + (items.length === 1 ? " piece" : " pieces");
+    document.getElementById("posts").innerHTML = items.map((p) => {
+      const d = new Date(p.date);
+      const when = isNaN(d) ? "" : d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+      const ext = p.source === "Substack";
+      return `<a class="row" href="${esc(p.url)}"${ext ? ' rel="noopener"' : ""}>
+        <span class="idx">${esc(when)}</span>
+        <span><span class="t">${esc(p.title)}</span>${p.excerpt ? `<span class="d">${esc(clip(p.excerpt, 170))}</span>` : ""}</span>
+        <span class="tag">${esc(p.source)}${ext ? " ↗" : ""}</span></a>`;
+    }).join("");
+  }
+  render(LOCAL.slice());
+  fetch("https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(FEED))
+    .then((r) => r.json())
+    .then((data) => {
+      if (data.status !== "ok") throw new Error("feed unavailable");
+      const subs = (data.items || []).map((it) => ({ title: it.title, url: it.link, date: String(it.pubDate || "").replace(" ", "T"),
+        excerpt: text(it.description), source: "Substack" }));
+      render(LOCAL.concat(subs));
+    })
+    .catch(() => { document.getElementById("feedNote").innerHTML = `Couldn't load the Substack feed just now; everything is at <a class="link" href="https://juantorresis.substack.com">juantorresis.substack.com</a>.`; });
+})();
+</script>

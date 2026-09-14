@@ -1,0 +1,92 @@
+---
+layout: default
+title: Juan Torres
+---
+<section class="hero">
+  <div class="card-stage" id="stage">
+    <article class="bcard" id="bcard" aria-label="Business card">
+      <div class="bc-top">
+        <span class="eyebrow">Logistics · Supply chain · Operations</span>
+        <span class="emboss" aria-hidden="true">JT</span>
+      </div>
+      <div class="bc-mid">
+        <h1 class="bc-name">Juan Torres</h1>
+        <span class="bc-rule" aria-hidden="true"></span>
+        <p class="bc-role">Business Administration, Logistics Management<br><span>Central Michigan University</span></p>
+      </div>
+      <div class="bc-bot">
+        <a href="mailto:Torre10j@cmich.edu">Torre10j@cmich.edu</a>
+        <a href="https://www.linkedin.com/in/juan-torres-0ab3471bb">in/juan-torres</a>
+        <a href="https://juantorres.xyz">juantorres.xyz</a>
+      </div>
+    </article>
+  </div>
+  <div class="actions center">
+    <button class="btn primary" type="button" id="vcard">Save contact</button>
+    <a class="btn" href="/resume/">Resume</a>
+    <a class="btn" href="/projects/">Projects</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><h2>About</h2></div>
+  <div class="prose">
+    <p>I'm a junior at Central Michigan University studying Business Administration with a concentration in Logistics Management. I work as a meat cutter at Meijer, where I've built strong habits in food safety, inventory management and training new team members.</p>
+    <p>I'm interested in supply chain operations, operational analytics and process improvement, and I like testing ideas by building them: the projects below simulate, price and route real problems end to end.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><h2>Selected projects</h2><a class="link small" href="/projects/">All projects and the project log →</a></div>
+  <div class="rows">
+    {% for p in site.data.projects %}
+    <a class="row" href="{{ p.url }}">
+      <span class="idx">{{ forloop.index | prepend: "0" | slice: -2, 2 }} · {{ p.kind }}</span>
+      <span><span class="t">{{ p.title }}</span><span class="d">{{ p.short }}</span></span>
+      <span class="arrow" aria-hidden="true">→</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><h2>Experience</h2><span class="count">Meijer · Central Michigan University</span></div>
+  <ol class="hl">
+    {% for item in site.data.highlights %}
+    <li><span class="idx">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span><div><h3>{{ item.title }}</h3><p>{{ item.description }}</p></div></li>
+    {% endfor %}
+  </ol>
+</section>
+
+<section class="section">
+  <div class="section-head"><h2>Contact</h2></div>
+  <div class="prose"><p>The fastest way to reach me is email, <a href="mailto:Torre10j@cmich.edu">Torre10j@cmich.edu</a>. I'm also on <a href="https://www.linkedin.com/in/juan-torres-0ab3471bb">LinkedIn</a>, and I write on <a href="https://juantorresis.substack.com">Substack</a>.</p></div>
+</section>
+
+<script>
+(() => {
+  const card = document.getElementById("bcard"), stage = document.getElementById("stage");
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!still && window.matchMedia("(hover: hover)").matches) {
+    stage.addEventListener("pointermove", (e) => {
+      const r = card.getBoundingClientRect();
+      const x = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), y = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+      card.style.transform = `rotateX(${((0.5 - y) * 5).toFixed(2)}deg) rotateY(${((x - 0.5) * 7).toFixed(2)}deg)`;
+      card.style.setProperty("--mx", (x * 100).toFixed(1) + "%");
+      card.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+      card.classList.add("lit");
+    });
+    stage.addEventListener("pointerleave", () => { card.style.transform = ""; card.classList.remove("lit"); });
+  }
+  document.getElementById("vcard").addEventListener("click", () => {
+    const v = ["BEGIN:VCARD", "VERSION:3.0", "N:Torres;Juan;;;", "FN:Juan Torres", "ORG:Central Michigan University",
+      "TITLE:Business Administration, Logistics Management", "EMAIL;TYPE=INTERNET:Torre10j@cmich.edu",
+      "URL:https://juantorres.xyz", "URL:https://www.linkedin.com/in/juan-torres-0ab3471bb", "END:VCARD"].join("\r\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([v], { type: "text/vcard" }));
+    a.download = "Juan-Torres.vcf";
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+  });
+})();
+</script>

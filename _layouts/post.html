@@ -1,33 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>{{ page.title }}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="{{ site.description }}">
-    <meta property="og:title" content="{{ page.title }}">
-    <meta property="og:description" content="{{ site.description }}">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
-    <meta property="og:image" content="/assets/favicon.ico">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="{{ page.title }}">
-    <meta name="twitter:description" content="{{ site.description }}">
-  <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
-</head>
-<body>
-  {% include navbar.html %}
-  <div class="container">
-    <main>
-      <article>
-        <h1>{{ page.title }}</h1>
-        <p class="date">{{ page.date | date: "%b %d, %Y" }}</p>
-        <p class="tags">Tags: {{ page.tags | join: ', ' }}</p>
-        {{ content }}
-      </article>
-    </main>
+---
+layout: default
+---
+<article class="post">
+  <a class="back" href="/blog/">← All writing</a>
+  <h1>{{ page.title }}</h1>
+  <p class="eyebrow">{{ page.date | date: "%B %-d, %Y" }}{% if page.tags and page.tags.size > 0 %} · {{ page.tags | join: " · " }}{% endif %}</p>
+  <div class="prose">
+    {{ content }}
   </div>
-</body>
-</html>
+</article>

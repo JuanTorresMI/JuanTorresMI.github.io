@@ -1,5 +1,6 @@
 ---
 layout: app
+project: fruit-fly-dispatcher
 title: Fruit Fly Dispatcher
 description: "A week of fresh-food deliveries run by a FlyWire fly brain, a foraging rule and OR-Tools, at four levels of knowledge from a dumb fly to company data."
 fonts: "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&display=swap"
@@ -56,7 +57,7 @@ fonts: "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght
 
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
-.wrap { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 h1, h2, h3 { font-family: var(--font-display); font-weight: 700; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
 h1 { font-size: 34px; line-height: 1.05; }
 h2 { font-size: 24px; line-height: 1.15; }
@@ -1315,7 +1316,7 @@ function onChange() {
 }
 function buildSpeeds() {
   const box = $("#speeds");
-  for (const sp of [1, 4, 12]) { const b = el("button", { type: "button", class: "btn", "aria-pressed": String(sp === state.speed) }, sp + "×"); b.addEventListener("click", () => { state.speed = sp; [...box.children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); }); box.appendChild(b); }
+  for (const sp of [0.25, 0.5, 1, 4, 12]) { const b = el("button", { type: "button", class: "btn", "aria-pressed": String(sp === state.speed), "aria-label": `${sp}× speed` }, (sp === 0.25 ? "¼" : sp === 0.5 ? "½" : sp) + "×"); b.addEventListener("click", () => { state.speed = sp; [...box.children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); }); box.appendChild(b); }
 }
 let last = 0;
 function tick(now) {

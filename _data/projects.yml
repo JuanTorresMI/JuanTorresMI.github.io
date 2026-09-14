@@ -1,11 +1,31 @@
-- title: Workstation Organization
-  description: Developed and maintained a clean, organized meat cutting station, improving safety and workflow.
-  link: ""
+# Every project on the site, in the order the Projects page and the project bar show them.
+# keywords tag commits in the Project log (matched against the repository name and commit message).
 
-- title: Food Safety Advocate
-  description: Consistently applied and promoted food safety best practices, ensuring compliance and high standards.
-  link: ""
+- slug: fruit-fly-dispatcher
+  title: Fruit Fly Dispatcher
+  url: /fruit-fly-dispatcher/
+  kind: Research simulation
+  status: Live
+  short: A fruit fly's wired navigation circuit runs a week of fresh-food deliveries against Google OR-Tools.
+  summary: >-
+    A fruit fly's navigation circuit, wired neuron by neuron from the FlyWire connectome, runs a week of
+    fresh-food deliveries against Google OR-Tools. Every brain is tested at four levels of knowledge, from a
+    fly that finds stores only by smell to live company data, to see what matters more for logistics:
+    the decision-maker or the information.
+  metric: 55 stores · 7 days · 4 brains × 4 levels of knowledge · 300+ simulated weeks
+  stack: [Python, OR-Tools CP-SAT, FlyWire connectome, Simulation, JavaScript]
+  keywords: [fly, dispatcher, flywire, flyroute]
 
-- title: Team Support
-  description: Assisted in training new team members, sharing knowledge and fostering a supportive work environment.
-  link: ""
+- slug: craft-ledger
+  title: Craft Ledger
+  url: /craft-ledger.html
+  kind: Trading tool
+  status: Live
+  short: A market ledger for a Minecraft economy that ranks what's worth crafting from the prices you trade at.
+  summary: >-
+    A trading ledger for a Minecraft server economy. Enter the order prices you trade at; it pulls every
+    recipe from the game and ranks what pays to craft, costing each component at what you could have sold
+    it for. Imports live prices from a scanner and shows how deep and how fresh each price is.
+  metric: 2,770 craftable items · market-basis costing · scanner import
+  stack: [JavaScript, Single-file web app, Opportunity cost, Local-first]
+  keywords: [craft, ledger]

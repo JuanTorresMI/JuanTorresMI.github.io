@@ -1,7 +1,10 @@
-<nav class="navbar">
-  <a href="/" class="nav-home">Home</a>
-  <a href="/resume/">Resume</a>
-  <a href="/blog/">Blog</a>
-  <a href="/coachless/">Coachless</a>
-  <a href="/fruit-fly-dispatcher/">Fly Dispatcher</a>
-</nav>
+<header class="site-nav">
+  <div class="in">
+    <a class="wordmark" href="/" aria-label="Juan Torres, home"><span class="mark" aria-hidden="true">JT</span><span class="name">Juan Torres</span></a>
+    <nav class="links" aria-label="Site">
+      <a href="/projects/"{% if page.url contains '/projects' or page.project %} aria-current="page"{% endif %}>Projects</a>
+      <a href="/blog/"{% if page.url contains '/blog' or page.layout == 'post' %} aria-current="page"{% endif %}>Writing</a>
+      <a href="/resume/"{% if page.url contains '/resume' %} aria-current="page"{% endif %}>Resume</a>
+    </nav>
+  </div>
+</header>
