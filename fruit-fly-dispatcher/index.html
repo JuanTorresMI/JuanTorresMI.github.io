@@ -1,7 +1,7 @@
 ---
 layout: app
 title: Fruit Fly Dispatcher
-description: "Replay a fresh-food delivery day run by a FlyWire fly brain, OR-Tools (live and planned-day) and a foraging rule, on the same truck, nose and memory."
+description: "A week of fresh-food deliveries run by a FlyWire fly brain, a foraging rule and OR-Tools, at four levels of knowledge from a dumb fly to company data."
 fonts: "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&display=swap"
 ---
 {% raw %}
@@ -22,6 +22,10 @@ fonts: "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght
   --b-dayplan: #b77d00;
   --b-flywire: #eb6834;
   --b-flyrule: #16976a;
+  --lv-company: #2f3d44;
+  --lv-perfect: #5b45c9;
+  --lv-learning: #0f8b8d;
+  --lv-dumb: #c2410c;
   --stock-full: #dde2d9;
   --stock-low: #2f3d44;
   --stockout: #d03b3b;
@@ -37,6 +41,7 @@ fonts: "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght
     --ground: #0e1215; --panel: #151a1e; --panel-2: #1d2328; --ink: #e8ebe8; --ink-2: #b2bab6; --muted: #818b90;
     --rule: #283036; --accent: #9a8cf0; --accent-soft: rgba(154, 140, 240, 0.16); --on-accent: #0e1215;
     --b-ortools: #3987e5; --b-dayplan: #d69a17; --b-flywire: #e8703f; --b-flyrule: #22b07f;
+    --lv-company: #c9d3cf; --lv-perfect: #9a8cf0; --lv-learning: #2cc2c4; --lv-dumb: #f0834a;
     --stock-full: #222b30; --stock-low: #c9d3cf; --stockout: #e66767; --good: #3bbf62;
   }
 }
@@ -45,6 +50,7 @@ fonts: "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght
   --ground: #0e1215; --panel: #151a1e; --panel-2: #1d2328; --ink: #e8ebe8; --ink-2: #b2bab6; --muted: #818b90;
   --rule: #283036; --accent: #9a8cf0; --accent-soft: rgba(154, 140, 240, 0.16); --on-accent: #0e1215;
   --b-ortools: #3987e5; --b-dayplan: #d69a17; --b-flywire: #e8703f; --b-flyrule: #22b07f;
+  --lv-company: #c9d3cf; --lv-perfect: #9a8cf0; --lv-learning: #2cc2c4; --lv-dumb: #f0834a;
   --stock-full: #222b30; --stock-low: #c9d3cf; --stockout: #e66767; --good: #3bbf62;
 }
 
@@ -66,62 +72,93 @@ h1, h2, h3 { text-transform: none; color: inherit; text-align: left; }
 .ink2 { color: var(--ink-2); }
 button { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sw { width: 10px; height: 10px; border-radius: 50%; flex: none; display: inline-block; }
 
 /* ---------- masthead ---------- */
-.mast { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: end; padding: 28px 0 20px; border-bottom: 1px solid var(--rule); }
-.mast .kicker { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+.mast { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 32px; align-items: end; padding: 28px 0 20px; border-bottom: 1px solid var(--rule); }
+.mast .kicker { margin-bottom: 10px; }
 .mast .thesis { font-size: 17px; color: var(--ink-2); max-width: 60ch; margin-top: 10px; }
 .mast .thesis b { color: var(--ink); }
-.scen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; background: var(--panel); }
-.scen button { border: 0; background: transparent; padding: 10px 12px; text-align: left; cursor: pointer; display: grid; gap: 2px; border-right: 1px solid var(--rule); }
-.scen button:last-child { border-right: 0; }
-.scen button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
-.scen button[aria-pressed="true"] .muted { color: inherit; opacity: 0.8; }
-.scen .s-name { font-family: var(--font-display); font-weight: 700; font-size: 15px; }
-.scen .s-meta { font-size: 12px; }
-.scen-note { margin-top: 8px; font-size: 13px; color: var(--ink-2); }
+.picker { display: grid; gap: 0; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; background: var(--panel); }
+.picker.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.picker.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.picker button { border: 0; background: transparent; padding: 9px 11px; text-align: left; cursor: pointer; display: grid; gap: 2px; border-right: 1px solid var(--rule); }
+.picker button:last-child { border-right: 0; }
+.picker button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.picker button[aria-pressed="true"] .muted { color: inherit; opacity: 0.85; }
+.picker .s-name { font-family: var(--font-display); font-weight: 700; font-size: 14px; display: flex; gap: 6px; align-items: center; }
+.picker .s-meta { font-size: 12px; }
+.pick-note { margin-top: 6px; font-size: 13px; color: var(--ink-2); min-height: 20px; }
+.pick-label { margin: 10px 0 6px; }
 
-/* ---------- replay ---------- */
 section { padding: 26px 0; border-bottom: 1px solid var(--rule); }
 .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
-.sec-head p { max-width: 70ch; color: var(--ink-2); }
+.sec-head p { max-width: 72ch; color: var(--ink-2); }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius); padding: 16px; }
+
+/* ---------- grid ---------- */
+.gridwrap { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.bxi { width: 100%; border-collapse: separate; border-spacing: 4px; }
+.bxi th { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 700; text-align: left; padding: 2px 4px; vertical-align: bottom; }
+.bxi th.row { text-transform: none; letter-spacing: 0; font-size: 13px; color: var(--ink); white-space: nowrap; }
+.bxi td { padding: 0; }
+.bxi button { width: 100%; border: 1px solid var(--rule); border-radius: 5px; padding: 8px 9px; text-align: left; cursor: pointer; background: var(--panel); display: grid; gap: 1px; min-height: 58px; }
+.bxi button[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.bxi .v { font-family: var(--font-mono); font-size: 16px; font-variant-numeric: tabular-nums; }
+.bxi .s { font-size: 11px; color: var(--ink-2); font-family: var(--font-mono); }
+.bxi .na { font-size: 12px; color: var(--muted); padding: 8px 9px; border: 1px dashed var(--rule); border-radius: 5px; min-height: 58px; display: flex; align-items: center; }
+.insights { display: grid; gap: 14px; }
+.insight h3 { margin-bottom: 3px; }
+.insight p { color: var(--ink-2); max-width: 62ch; }
+.insight .num { color: var(--ink); }
+.bars svg { width: 100%; height: auto; display: block; }
+
+/* ---------- learning ---------- */
+.learn { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.learn svg { width: 100%; height: auto; display: block; }
+.chart-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--ink-2); margin-top: 8px; }
+.chart-legend span { display: inline-flex; gap: 6px; align-items: center; }
+.seg { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn { border: 1px solid var(--rule); background: var(--panel); border-radius: var(--radius); padding: 6px 11px; cursor: pointer; font-weight: 700; font-size: 13px; }
+.btn.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); min-width: 84px; }
+.btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+
+/* ---------- replay ---------- */
 .maps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.maps.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .mapcard { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius); padding: 10px 10px 8px; display: grid; gap: 6px; cursor: pointer; text-align: left; }
 .mapcard[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-.mapcard .mc-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .mapcard .mc-name { display: flex; align-items: center; gap: 7px; font-weight: 700; font-size: 14px; }
-.sw { width: 10px; height: 10px; border-radius: 50%; flex: none; display: inline-block; }
 .mapcard canvas { width: 100%; aspect-ratio: 1 / 1; display: block; border-radius: 4px; background: var(--ground); }
 .mapcard .mc-live { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; font-size: 12px; }
 .mapcard .mc-live b { display: block; font-family: var(--font-mono); font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; }
-.mapcard .mc-status { font-size: 12px; color: var(--ink-2); min-height: 18px; }
+.mapcard .mc-status { font-size: 12px; color: var(--ink-2); min-height: 36px; }
+.modes { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--ink-2); margin: -4px 0 12px; }
+.modes span { display: inline-flex; gap: 6px; align-items: center; }
+.modes i { display: inline-block; width: 22px; height: 0; border-top: 2px solid var(--ink-2); }
+.loading { padding: 40px; text-align: center; color: var(--muted); }
 
 .transport { display: grid; grid-template-columns: auto auto 1fr auto; gap: 12px; align-items: center; margin-top: 14px; }
-.btn { border: 1px solid var(--rule); background: var(--panel); border-radius: var(--radius); padding: 7px 12px; cursor: pointer; font-weight: 700; font-size: 13px; }
-.btn.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); min-width: 84px; }
-.btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
 .speeds { display: flex; gap: 4px; }
 .clock { font-family: var(--font-mono); font-size: 26px; font-variant-numeric: tabular-nums; min-width: 150px; text-align: right; }
-.bydays svg { width: 100%; height: auto; display: block; }
 .timeline { position: relative; margin-top: 6px; }
 .timeline canvas { width: 100%; height: 150px; display: block; cursor: pointer; }
 input[type="range"].scrub { width: 100%; accent-color: var(--accent); margin: 4px 0 0; }
+.bydays svg { width: 100%; height: auto; display: block; }
 
 /* ---------- detail ---------- */
 .detail { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 24px; }
-.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius); padding: 16px; }
 .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
 .tabs button { border: 1px solid var(--rule); background: transparent; border-radius: 999px; padding: 5px 11px; cursor: pointer; font-size: 13px; display: inline-flex; gap: 6px; align-items: center; }
 .tabs button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); font-weight: 700; }
 .why-lede { font-size: 16px; margin-bottom: 12px; max-width: 62ch; }
 .why-lede b { font-family: var(--font-mono); font-weight: 500; }
 .cands { display: grid; gap: 5px; }
-.cand { display: grid; grid-template-columns: 58px minmax(0, 1fr) 96px 64px; gap: 10px; align-items: center; font-size: 13px; }
+.cand, .cand-head { display: grid; grid-template-columns: 58px minmax(0, 1fr) 96px 64px; gap: 10px; align-items: center; font-size: 13px; }
+.cand-head { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
 .cand .bar { height: 10px; border-radius: 2px; background: var(--panel-2); position: relative; overflow: hidden; }
 .cand .bar i { position: absolute; inset: 0 auto 0 0; border-radius: 2px; }
-.cand .tag { font-size: 11px; color: var(--muted); }
 .cand.chosen { font-weight: 700; }
-.cand-head { font-size: 11px; color: var(--muted); display: grid; grid-template-columns: 58px minmax(0, 1fr) 96px 64px; gap: 10px; margin-bottom: 2px; }
 .circuit { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 16px; align-items: start; }
 .circuit svg { width: 100%; height: auto; }
 .meter { display: grid; grid-template-columns: 84px minmax(0, 1fr) 54px; gap: 8px; align-items: center; font-size: 13px; margin-bottom: 6px; }
@@ -132,16 +169,14 @@ input[type="range"].scrub { width: 100%; accent-color: var(--accent); margin: 4p
 .plan-trips { display: grid; gap: 6px; font-size: 13px; }
 .plan-trip { display: grid; grid-template-columns: 64px 1fr; gap: 10px; padding: 6px 0; border-top: 1px solid var(--rule); }
 .plan-trip.now { background: var(--accent-soft); }
-
 .shelves canvas { width: 100%; height: 260px; display: block; }
 .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--ink-2); align-items: center; margin-top: 8px; }
 .legend .ramp { width: 90px; height: 8px; border-radius: 2px; display: inline-block; vertical-align: middle; }
 .lost svg { width: 100%; height: 170px; display: block; }
-
 .eod { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 14px; }
 .eod th { text-align: right; font-weight: 700; color: var(--muted); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 8px; border-bottom: 1px solid var(--rule); }
 .eod th:first-child, .eod td:first-child { text-align: left; }
-.eod td { text-align: right; padding: 7px 8px; border-bottom: 1px solid var(--rule); font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.eod td { text-align: right; padding: 7px 8px; border-bottom: 1px solid var(--rule); font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .eod td:first-child { font-family: var(--font-body); }
 .eod td.best { color: var(--good); font-weight: 500; }
 .eod td.best::after { content: " ▲"; font-size: 9px; }
@@ -156,16 +191,13 @@ input[type="range"].scrub { width: 100%; accent-color: var(--accent); margin: 4p
 .handle { cursor: grab; }
 
 /* ---------- findings ---------- */
-.find-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; }
-.metric-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.find-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 28px; }
 .charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
 .charts svg { width: 100%; height: auto; display: block; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius); }
 .findings { display: grid; gap: 16px; align-content: start; }
 .finding h3 { margin-bottom: 3px; }
 .finding p { color: var(--ink-2); max-width: 60ch; }
 .finding .num { color: var(--ink); }
-.chart-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--ink-2); margin-top: 8px; }
-.chart-legend span { display: inline-flex; gap: 6px; align-items: center; }
 
 /* ---------- basis ---------- */
 .basis { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
@@ -174,22 +206,21 @@ input[type="range"].scrub { width: 100%; accent-color: var(--accent); margin: 4p
 .vtable th { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 .vtable td.num { white-space: nowrap; }
 ul.assume { list-style: disc; margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 13px; color: var(--ink-2); max-width: 64ch; }
-footer { padding: 22px 0 40px; font-size: 12px; color: var(--muted); max-width: 90ch; }
+footer { padding: 22px 0 40px; font-size: 12px; color: var(--muted); max-width: 100ch; }
 
-.mast > *, .detail > *, .find-grid > *, .basis > *, .lab > *, .circuit > *, .maps > *, .transport > * { min-width: 0; }
+.mast > *, .gridwrap > *, .learn > *, .detail > *, .find-grid > *, .basis > *, .lab > *, .circuit > *, .maps > *, .transport > * { min-width: 0; }
 @media (max-width: 1100px) {
-  .maps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .detail, .find-grid, .basis, .mast, .lab, .circuit { grid-template-columns: minmax(0, 1fr); }
+  .maps, .maps.n3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gridwrap, .detail, .find-grid, .basis, .mast, .lab, .circuit { grid-template-columns: minmax(0, 1fr); }
   .circuit svg { max-width: 300px; }
 }
 .wrap { overflow-x: clip; }
 @media (max-width: 640px) {
-  .maps { grid-template-columns: minmax(0, 1fr); }
+  .maps, .maps.n3, .learn, .charts { grid-template-columns: minmax(0, 1fr); }
   .clock { min-width: 0; font-size: 20px; }
   .cand, .cand-head { grid-template-columns: 46px minmax(0, 1fr) 70px 54px; gap: 6px; }
-  .charts { grid-template-columns: 1fr; }
-  .scen { grid-template-columns: 1fr; }
-  .scen button { border-right: 0; border-bottom: 1px solid var(--rule); }
+  .picker.three, .picker.four { grid-template-columns: minmax(0, 1fr); }
+  .picker button { border-right: 0; border-bottom: 1px solid var(--rule); }
   .transport { grid-template-columns: auto 1fr; }
 }
 </style>
@@ -197,22 +228,62 @@ footer { padding: 22px 0 40px; font-size: 12px; color: var(--muted); max-width: 
 <div class="wrap">
   <header class="mast">
     <div>
-      <div class="kicker"><span class="label">FlyWire v783 · OR-Tools CP-SAT · 55 fresh-food stores</span></div>
+      <div class="kicker"><span class="label">FlyWire v783 · OR-Tools CP-SAT · 55 fresh-food stores · one week</span></div>
       <h1>Fruit Fly Dispatcher</h1>
-      <p class="thesis">Four brains run the same delivery week with <b>the same truck, the same nose, the same memory</b>. Only the way they decide differs. One is a fruit fly's navigation circuit, wired neuron by neuron from the FlyWire connectome.</p>
+      <p class="thesis">A fruit fly's navigation circuit, wired neuron by neuron from the FlyWire connectome, runs a week of fresh-food deliveries against Google's OR-Tools. Each brain is tested at <b>four levels of knowledge</b>, from a fly with no memory that finds stores only by smell up to the live shelf data and GPS a real dispatcher has. At each level every brain drives the <b>same truck with the same senses</b>, so only the way it decides differs.</p>
     </div>
     <div>
-      <div class="label" style="margin-bottom:6px">Pick a day</div>
-      <div class="scen" id="scen" role="group" aria-label="Example day"></div>
-      <p class="scen-note" id="scenNote"></p>
+      <div class="label pick-label">Store layout</div>
+      <div class="picker three" id="scen" role="group" aria-label="Store layout"></div>
+      <p class="pick-note" id="scenNote"></p>
+      <div class="label pick-label">What the truck knows</div>
+      <div class="picker four" id="levels" role="group" aria-label="Information level"></div>
+      <p class="pick-note" id="levelNote"></p>
     </div>
   </header>
 
+  <section id="grid">
+    <div class="sec-head">
+      <h2>Every brain at every level of knowledge</h2>
+      <p>Profit for the week (margin on fresh sales made, minus ¥200 per km driven) and share of demand served, on the layout picked above. Click a cell to replay it.</p>
+    </div>
+    <div class="gridwrap">
+      <div>
+        <div class="tablewrap"><table class="bxi" id="bxi"></table></div>
+        <div class="bars" style="margin-top:14px">
+          <div class="label" style="margin-bottom:4px">Same comparison on all three layouts (profit, share of the best on that layout)</div>
+          <svg id="allLayouts" viewBox="0 0 760 230" role="img" aria-label="Profit of every brain and level on each layout"></svg>
+        </div>
+      </div>
+      <div class="insights" id="insights"></div>
+    </div>
+  </section>
+
+  <section id="learn">
+    <div class="sec-head">
+      <h2>Day by day: does knowledge build up?</h2>
+      <div class="seg" id="learnMetric" role="group" aria-label="Metric"></div>
+    </div>
+    <div class="learn">
+      <div class="panel" style="padding:10px 12px">
+        <div class="label" id="learnTitle">Share of demand served, by day</div>
+        <svg id="learnChart" viewBox="0 0 600 240" role="img" aria-label="Daily results at each information level"></svg>
+        <div class="chart-legend" id="learnLegend"></div>
+      </div>
+      <div class="panel" style="padding:10px 12px">
+        <div class="label">Stores it knows the location of, and km spent exploring</div>
+        <svg id="knownChart" viewBox="0 0 600 240" role="img" aria-label="Known stores and exploring by day"></svg>
+        <div class="chart-legend" id="knownLegend"></div>
+      </div>
+    </div>
+  </section>
+
   <section id="replay">
     <div class="sec-head">
-      <h2>One week, four brains</h2>
-      <p>Store dots show shelf level (red = empty, sales lost). The colored line is where the truck went today; a hollow ring shows where the truck <i>believes</i> it is after drift. Dashed lines show what each brain intends next. Numbers under each map count from Monday 00:00. Click a map to inspect that brain below.</p>
+      <h2 id="replayTitle">One week, replayed</h2>
+      <p id="replayNote"></p>
     </div>
+    <div class="modes" id="modes"></div>
     <div class="maps" id="maps"></div>
     <div class="transport">
       <button class="btn primary" id="play" type="button">Play</button>
@@ -234,14 +305,14 @@ footer { padding: 22px 0 40px; font-size: 12px; color: var(--muted); max-width: 
   <section id="detail">
     <div class="detail">
       <div class="panel">
-        <div class="sec-head" style="margin-bottom:8px"><h2>Why this stop?</h2><span class="label" id="whyClock"></span></div>
+        <div class="sec-head" style="margin-bottom:8px"><h2>Why this move?</h2><span class="label" id="whyClock"></span></div>
         <div class="tabs" id="whyTabs" role="group" aria-label="Brain to inspect"></div>
         <div id="why"></div>
       </div>
       <div class="panel shelves">
-        <div class="sec-head" style="margin-bottom:8px"><h2>Shelves through the day</h2><span class="label" id="shelfBrain"></span></div>
-        <p class="ink2" style="font-size:13px;margin-bottom:8px">Each row is a store, nearest the DC at the top. Each column is ten minutes. Red is an empty shelf: customers leave without buying.</p>
-        <canvas id="shelves" aria-label="Shelf level of every store over the day"></canvas>
+        <div class="sec-head" style="margin-bottom:8px"><h2>Shelves through the week</h2><span class="label" id="shelfBrain"></span></div>
+        <p class="ink2" style="font-size:13px;margin-bottom:8px">Each row is a store, nearest the DC at the top; time runs left to right. Red is an empty shelf: customers leave without buying.</p>
+        <canvas id="shelves" aria-label="Shelf level of every store over the week"></canvas>
         <div class="legend"><span>Full <span class="ramp" id="ramp"></span> Low</span><span><span class="sw" style="background:var(--stockout);border-radius:2px"></span> Empty</span></div>
         <div class="lost" style="margin-top:16px">
           <div class="label" style="margin-bottom:4px">Fresh sales lost so far</div>
@@ -253,17 +324,18 @@ footer { padding: 22px 0 40px; font-size: 12px; color: var(--muted); max-width: 
 
   <section id="lab">
     <div class="sec-head">
-      <h2>Inside the fly's decision</h2>
-      <p>Drag the two smells around the compass; pull a handle toward the center to weaken it. The page runs the real FlyWire circuit (47 heading cells, 82 goal cells, 24 steering cells, 12 turning boosters) and finds every heading the fly would settle on.</p>
+      <h2>Memory against smell, inside the fly</h2>
+      <p>A is where the fly remembers a store. B is a whiff: odor switches on hΔC cells that read the wind, and they write an upwind goal into the same goal cells, through their FlyWire synapses. Drag either around the compass; pull it toward the center to weaken it. The page runs the real circuit and finds every heading the fly would settle on.</p>
     </div>
     <div class="lab">
       <div class="panel">
-        <svg class="compass" id="compass" viewBox="-160 -160 320 320" role="img" aria-label="Two goal directions and where the fly settles"></svg>
+        <svg class="compass" id="compass" viewBox="-160 -160 320 320" role="img" aria-label="Memory goal, smell and where the fly settles"></svg>
       </div>
       <div>
         <div class="verdict" id="verdict"></div>
         <p class="ink2" id="verdictSub" style="max-width:66ch"></p>
         <div class="presets" id="presets"></div>
+        <div class="seg" id="bKind" role="group" aria-label="What B is" style="margin-bottom:12px"></div>
         <div class="panel" style="padding:10px 12px">
           <div class="label">Steering command at every heading</div>
           <svg class="curve" id="curve" viewBox="0 0 640 220" role="img" aria-label="Turn signal versus heading"></svg>
@@ -274,14 +346,15 @@ footer { padding: 22px 0 40px; font-size: 12px; color: var(--muted); max-width: 
 
   <section id="findings">
     <div class="sec-head">
-      <h2>Across 14 store layouts</h2>
-      <p>Same experiment at every spacing from tightly packed to scattered: 55 stores, clustered or even, 2-day runs, 3 seeds each. Lines are means; bands span the seeds.</p>
+      <h2>As stores spread out</h2>
+      <p id="sweepNote"></p>
     </div>
     <div class="find-grid">
       <div>
-        <div class="metric-tabs" id="metricTabs" role="group" aria-label="Metric"></div>
+        <div class="seg" id="metricTabs" role="group" aria-label="Metric"></div>
         <div class="charts" id="charts"></div>
         <div class="chart-legend" id="chartLegend"></div>
+        <div id="sensWrap" style="margin-top:22px"></div>
       </div>
       <div class="findings" id="findingsList"></div>
     </div>
@@ -302,7 +375,7 @@ footer { padding: 22px 0 40px; font-size: 12px; color: var(--muted); max-width: 
   </section>
 
   <footer>
-    FlyWire whole-brain connectome v783, FlyWire Consortium, Princeton University (CC-BY 4.0): Dorkenwald et al. 2024; Schlegel et al. 2024; Matsliah et al. 2024; Eckstein, Bates et al. 2024; Buhmann et al. 2021; Heinrich et al. 2018; Berg et al. 2025. Steering model form: Mussells Pires et al. 2024; Westeinde et al. 2024; Hulse et al. 2021. FC2 normalization: arXiv 2607.18969. Store economics from the 7-Eleven Japan case (Pearson, 2026). Simulation: flyroute, OR-Tools CP-SAT. <span id="gen"></span>
+    FlyWire whole-brain connectome v783, FlyWire Consortium, Princeton University (CC-BY 4.0): Dorkenwald et al. 2024; Schlegel et al. 2024; Matsliah et al. 2024; Eckstein, Bates et al. 2024; Buhmann et al. 2021; Heinrich et al. 2018; Berg et al. 2025. Steering model form: Mussells Pires et al. 2024; Westeinde et al. 2024; Hulse et al. 2021. FC2 normalization: arXiv 2607.18969. Odor and wind: Matheson et al. 2022 (Nat. Commun.) and its 2024 addendum; Currier et al. 2020 (eLife); hΔ persistence, Nat. Commun. 2026. Plume behavior: Álvarez-Salvado et al. 2018 (eLife); van Breugel &amp; Dickinson 2014; Celani, Villermaux &amp; Vergassola 2014. Path integration and local search: Kim &amp; Dickinson 2017; Behbahani et al. 2021. Store economics from the 7-Eleven Japan case (Pearson, 2026). Simulation: flyroute, OR-Tools CP-SAT. <span id="gen"></span>
   </footer>
 </div>
 
@@ -311,22 +384,26 @@ footer { padding: 22px 0 40px; font-size: 12px; color: var(--muted); max-width: 
 (() => {
 "use strict";
 const D = window.SHOWCASE;
-const BRAINS = [
-  { key: "ortools", label: "OR-Tools · live", short: "Live solver", color: "--b-ortools",
-    blurb: "Re-plans the rest of the trip at every stop" },
-  { key: "ortools-dayplan", label: "OR-Tools · planned day", short: "Planned day", color: "--b-dayplan",
-    blurb: "Plans every trip at the start of the day" },
-  { key: "flywire", label: "FlyWire brain", short: "Fly brain", color: "--b-flywire",
-    blurb: "Steered by the fly's wired navigation circuit" },
-  { key: "fly-rule", label: "Fly rule", short: "Fly rule", color: "--b-flyrule",
-    blurb: "Greedy: best profit per hour, one stop at a time" },
-];
+const BRAIN_META = {
+  "flywire": { label: "FlyWire brain", short: "Fly brain", color: "--b-flywire", blurb: "Steered by the fly's wired navigation circuit" },
+  "fly-rule": { label: "Fly rule", short: "Fly rule", color: "--b-flyrule", blurb: "Greedy: best profit per hour, one stop at a time" },
+  "ortools": { label: "OR-Tools · live", short: "Live solver", color: "--b-ortools", blurb: "Re-plans the rest of the trip at every stop" },
+  "ortools-dayplan": { label: "OR-Tools · planned day", short: "Planned day", color: "--b-dayplan", blurb: "Plans every trip at dawn from that morning's shelf data" },
+};
+const BRAIN_KEYS = ["flywire", "fly-rule", "ortools", "ortools-dayplan"];
+const LEVEL_META = {
+  company: { short: "Company", color: "--lv-company" }, perfect: { short: "Perfect memory", color: "--lv-perfect" },
+  learning: { short: "Learning fly", color: "--lv-learning" }, dumb: { short: "Dumb fly", color: "--lv-dumb" },
+};
+const LEVELS = D.levels.map((l) => l.key);
+const FLY_BRAINS = ["flywire", "fly-rule", "ortools"];
+const brainsAt = (info) => BRAIN_KEYS.filter((k) => k !== "ortools-dayplan" || info === "company");
 const HOURLY = [0.3,0.2,0.2,0.2,0.3,0.5,1.0,1.8,1.8,1.0,0.9,1.6,2.4,1.6,0.9,0.9,1.0,1.4,1.8,1.8,1.4,1.0,0.7,0.5];
 const TAU = Math.PI * 2;
-const DAYS = D.meta.days, HOURS = DAYS * 24, STEP = D.meta.grid_min / 60;
-const NG = D.scenarios[0].brains[0].stock[0].length;
+const DAYS = D.meta.days, HOURS = DAYS * 24, STEP = D.meta.grid_min / 60, NG = Math.round(HOURS / STEP) + 1;
 const DAYN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const state = { sc: 1, t: 12.5, playing: false, speed: 4, sel: "flywire", metric: "fill" };
+const MODE = { travel: 0, search: 1, dcsearch: 2, surge: 3, cast: 4, explore: 5, homein: 6 };
+const state = { sc: 1, info: "perfect", t: 12.5, playing: false, speed: 4, sel: "flywire", metric: "profit_day", learnMetric: "fill_rate", bOdor: true };
 
 // ---------- helpers ----------
 const $ = (s) => document.querySelector(s);
@@ -334,10 +411,14 @@ const el = (tag, attrs = {}, html = "") => { const e = document.createElement(ta
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const clock = (h) => { const m = Math.round(h * 60); return String(Math.floor(m / 60) % 24).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0"); };
 const clockW = (h) => { if (h >= HOURS - 1e-6) return DAYN[(DAYS - 1) % 7] + " 24:00"; const m = Math.round(h * 60); return DAYN[Math.floor(m / 1440) % 7] + " " + clock(h); };
-const yen = (v) => Math.abs(v) >= 1e6 ? "¥" + (v / 1e6).toFixed(2) + "M" : Math.abs(v) >= 1e3 ? "¥" + Math.round(v / 1e3) + "k" : "¥" + Math.round(v);
+const yen = (v) => Math.abs(v) >= 1e6 ? (v < 0 ? "−" : "") + "¥" + (Math.abs(v) / 1e6).toFixed(2) + "M" : Math.abs(v) >= 1e3 ? (v < 0 ? "−" : "") + "¥" + Math.round(Math.abs(v) / 1e3) + "k" : "¥" + Math.round(v);
 const pct = (v, d = 1) => (v * 100).toFixed(d) + "%";
+const sgnPct = (v, d = 1) => (v >= 0 ? "+" : "−") + Math.abs(v * 100).toFixed(d) + "%";
 const wrap = (a) => Math.atan2(Math.sin(a), Math.cos(a));
 const deg = (a) => a * 180 / Math.PI;
+const distText = (v) => v < 1 ? Math.round(v * 1000) + " m" : v.toFixed(1) + " km";
+// SVG built as markup: document.createElement("svg") would make an HTML element and render the contents as text.
+function svgEl(w, h, label, inner) { const d = document.createElement("div"); d.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img">${inner}</svg>`; const s = d.firstChild; s.setAttribute("aria-label", label); return s; }
 function bisect(arr, t) { let lo = 0, hi = arr.length - 1, ans = -1; while (lo <= hi) { const mid = (lo + hi) >> 1; if (arr[mid] <= t) { ans = mid; lo = mid + 1; } else hi = mid - 1; } return ans; }
 function hexToRgb(h) { h = h.replace("#", ""); if (h.length === 3) h = h.split("").map((c) => c + c).join(""); const n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
 function mix(a, b, f) { return "rgb(" + a.map((x, i) => Math.round(x + (b[i] - x) * f)).join(",") + ")"; }
@@ -346,61 +427,87 @@ function readTokens() {
   T = { ground: css("--ground"), panel: css("--panel"), panel2: css("--panel-2"), ink: css("--ink"), ink2: css("--ink-2"),
         muted: css("--muted"), rule: css("--rule"), accent: css("--accent"), stockout: css("--stockout"),
         full: hexToRgb(css("--stock-full")), low: hexToRgb(css("--stock-low")) };
-  for (const b of BRAINS) T[b.key] = css(b.color);
+  for (const k of BRAIN_KEYS) T[k] = css(BRAIN_META[k].color);
 }
 function stockColor(level) { if (level <= 0.02) return T.stockout; const f = 1 - Math.min(1, Math.max(0, (level - 0.02) / 0.98)); return mix(T.full, T.low, Math.pow(f, 0.85)); }
 function fitCanvas(c) { const r = c.getBoundingClientRect(); const dpr = window.devicePixelRatio || 1; const w = Math.max(1, Math.round(r.width * dpr)), h = Math.max(1, Math.round(r.height * dpr)); if (c.width !== w || c.height !== h) { c.width = w; c.height = h; } const ctx = c.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); return { ctx, w: r.width, h: r.height }; }
+const levelLabel = (k) => D.levels.find((l) => l.key === k).label;
 
-// ---------- prepare data ----------
+// ---------- data ----------
 for (const sc of D.scenarios) {
   let maxR = 0.1;
   for (const s of sc.stores) { maxR = Math.max(maxR, Math.hypot(s.x, s.y)); s.dist = Math.hypot(s.x, s.y); }
   sc.extent = maxR * 1.08;
   sc.order = sc.stores.map((s, i) => i).sort((a, b) => sc.stores[a].dist - sc.stores[b].dist);
-  for (const b of sc.brains) {
-    b.pt = b.path.map((p) => p[0]);
-    b.cum = [0];
-    for (let i = 1; i < b.path.length; i++) b.cum.push(b.cum[i - 1] + Math.hypot(b.path[i][1] - b.path[i - 1][1], b.path[i][2] - b.path[i - 1][2]));
-    b.delT = b.events.filter((e) => e.kind === "deliver").map((e) => e.t);
-    b.dels = b.events.filter((e) => e.kind === "deliver");
-    b.decT = b.decisions.map((d) => d.t);
-    b.trips = [];
-    let dep = null;
-    for (const e of b.events) { if (e.kind === "depart") dep = e.t; if (e.kind === "home" && dep !== null) { b.trips.push({ a: dep, b: e.t, drift: e.drift_km }); dep = null; } }
-  }
 }
 const scen = () => D.scenarios[state.sc];
-const brainData = (key, sc = scen()) => sc.brains.find((b) => b.key === key);
-
+const run = (brain, info = state.info, sc = scen()) => (sc.runs[info] || {})[brain];
+const runKey = (sc = scen(), info = state.info) => `${sc.key}-${info}`;
+function detail(brain) { const r = (window.SHOWCASE_RUNS || {})[runKey()]; return r && r.__ready ? r[brain] : null; }
+function prepRun(b) {
+  b.pt = b.path.map((p) => p[0]);
+  b.cum = [0];
+  for (let i = 1; i < b.path.length; i++) b.cum.push(b.cum[i - 1] + Math.hypot(b.path[i][1] - b.path[i - 1][1], b.path[i][2] - b.path[i - 1][2]));
+  b.dels = b.events.filter((e) => e.kind === "deliver");
+  b.delT = b.dels.map((e) => e.t);
+  b.decT = b.decisions.map((d) => d.t);
+  b.whT = b.whiffs.map((w) => w[0]);
+  b.trips = [];
+  let dep = null;
+  for (const e of b.events) { if (e.kind === "depart") dep = e.t; if (e.kind === "home" && dep !== null) { b.trips.push({ a: dep, b: e.t, drift: e.drift_km }); dep = null; } }
+}
+const loading = {};
+function ensureRuns(sc = scen(), info = state.info) {
+  const key = runKey(sc, info);
+  const R = window.SHOWCASE_RUNS || {};
+  if (R[key] && R[key].__ready) return Promise.resolve(R[key]);
+  if (!loading[key]) loading[key] = new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = `runs/${key}.js`;
+    s.onload = () => { const r = window.SHOWCASE_RUNS[key]; for (const b of Object.values(r)) prepRun(b); r.__ready = true; resolve(r); };
+    s.onerror = () => { delete loading[key]; reject(new Error("could not load " + key)); };
+    document.head.appendChild(s);
+  });
+  return loading[key];
+}
 function positionAt(b, t) {
   const i = bisect(b.pt, t);
-  if (i < 0) return { x: 0, y: 0, xh: 0, yh: 0, i: 0, km: 0, search: 0 };
+  if (i < 0) return { x: 0, y: 0, xh: 0, yh: 0, i: 0, km: 0, mode: 0 };
   const p = b.path[i];
-  if (i === b.path.length - 1 || t <= p[0]) return { x: p[1], y: p[2], xh: p[3], yh: p[4], i, km: b.cum[i], search: p[5] };
+  if (i === b.path.length - 1 || t <= p[0]) return { x: p[1], y: p[2], xh: p[3], yh: p[4], i, km: b.cum[i], mode: p[5] };
   const q = b.path[i + 1], f = (t - p[0]) / Math.max(1e-9, q[0] - p[0]);
   return { x: p[1] + (q[1] - p[1]) * f, y: p[2] + (q[2] - p[2]) * f, xh: p[3] + (q[3] - p[3]) * f, yh: p[4] + (q[4] - p[4]) * f,
-           i, km: b.cum[i] + Math.hypot(q[1] - p[1], q[2] - p[2]) * f, search: q[5] };
+           i, km: b.cum[i] + Math.hypot(q[1] - p[1], q[2] - p[2]) * f, mode: q[5] };
 }
 function tripAt(b, t) { for (const tr of b.trips) { if (t >= tr.a && t < tr.b) return tr; } return null; }
 function decisionAt(b, t) { const j = bisect(b.decT, t); return j < 0 ? null : b.decisions[j]; }
 function gridIdx(t) { return Math.min(NG - 1, Math.max(0, Math.floor(t / STEP + 1e-9))); }
 function lostAt(b, t) { const f = t / STEP, i = Math.min(NG - 2, Math.floor(f)), r = Math.min(1, f - i); return b.lost_curve[i] + (b.lost_curve[i + 1] - b.lost_curve[i]) * r; }
+function windAt(sc, t) { const k = Math.min(sc.wind.length - 1, Math.max(0, Math.floor(t / 0.25))); return sc.wind[k]; }
 
 // ---------- FlyWire circuit, from the exported weights ----------
 const C = D.circuit, CF = C.cfg, M = C.mirror;
 const EPG = C.epg_angle.map((a) => M * a), FC2 = C.fc2_angle.map((a) => M * a);
 const matvec = (W, v) => W.map((row) => { let s = 0; for (let i = 0; i < row.length; i++) s += row[i] * v[i]; return s; });
-function fc2Act(goals) {
-  if (!goals.length) return FC2.map(() => 0);
-  const smax = Math.max(...goals.map((g) => g.s));
+function hdcDrive(dir) {
+  const center = M * dir - C.hdc_shift;
+  const act = C.hdc_in.map((a, i) => C.hdc_gate[i] * Math.exp(CF.bump_kappa * (Math.cos(a - center) - 1)));
+  const drive = matvec(C.w_hdc, act), mx = Math.max(1e-12, ...drive);
+  return drive.map((d) => d / mx);
+}
+function fc2Act(goals, odor) {
+  const has = odor && odor.s > 0;
+  if (!goals.length && !has) return FC2.map(() => 0);
+  const smax = Math.max(0, ...goals.map((g) => g.s), has ? odor.s : 0);
   const drive = FC2.map((p) => goals.reduce((acc, g) => acc + (g.s / smax) * Math.exp(CF.bump_kappa * (Math.cos(p - g.dir) - 1)), 0));
+  if (has) { const hd = hdcDrive(odor.dir); hd.forEach((v, i) => { drive[i] += (odor.s / smax) * v; }); }
   const pw = drive.map((d) => Math.pow(d, CF.norm_power));
   const mean = pw.reduce((a, b) => a + b, 0) / pw.length;
   return pw.map((v) => v / (Math.pow(CF.norm_sigma, CF.norm_power) + mean));
 }
-function circuit(heading, goals) {
+function circuit(heading, goals, odor) {
   const epg = EPG.map((p) => Math.exp(CF.bump_kappa * (Math.cos(p - heading) - 1)));
-  const fc2 = fc2Act(goals);
+  const fc2 = fc2Act(goals, odor);
   const h = matvec(C.heading_w, epg), g = matvec(C.goal_w, fc2);
   const r3 = h.map((x, i) => Math.exp(CF.beta * (x + CF.goal_weight * g[i])));
   let raw = 0, left = 0, right = 0;
@@ -411,80 +518,256 @@ function circuit(heading, goals) {
     const tot = h2.reduce((a, x, i) => a + Math.exp(CF.beta * (x + CF.goal_weight * g2[i])), 0);
     boost = 1 + CF.pfl2_gain * Math.max(tot / C.pfl2_ref - 1, 0);
   }
-  const turn = goals.length ? raw * boost : 0;
-  const steer = goals.length ? -Math.max(-CF.max_turn_rad, Math.min(CF.max_turn_rad, CF.turn_gain * turn / C.turn_scale)) : 0;
+  const any = goals.length || (odor && odor.s > 0);
+  const turn = any ? raw * boost : 0;
+  const steer = any ? -Math.max(-CF.max_turn_rad, Math.min(CF.max_turn_rad, CF.turn_gain * turn / C.turn_scale)) : 0;
   return { epg, fc2, left, right, boost, turn, steer };
 }
-function stableHeadings(goals, N = 180) {
+function stableHeadings(goals, odor, N = 180) {
   const hs = [], Ts = [];
-  for (let i = 0; i < N; i++) { const h = -Math.PI + TAU * i / N; hs.push(h); Ts.push(circuit(h, goals).turn); }
+  for (let i = 0; i < N; i++) { const h = -Math.PI + TAU * i / N; hs.push(h); Ts.push(circuit(h, goals, odor).turn); }
   const out = [];
   for (let i = 0; i < N; i++) { const a = Ts[i], b = Ts[(i + 1) % N]; if (a < 0 && b >= 0) { const f = a / (a - b); out.push(wrap(hs[i] + f * TAU / N)); } }
   return { hs, Ts, out };
 }
 
-// ---------- masthead: scenario picker ----------
-function buildScenarios() {
+// ---------- pickers ----------
+function buildPickers() {
   const box = $("#scen"); box.innerHTML = "";
   D.scenarios.forEach((sc, i) => {
     const b = el("button", { type: "button", "aria-pressed": String(i === state.sc) },
-      `<span class="s-name">${sc.label}</span><span class="s-meta muted mono">${sc.mean_nn_km < 1 ? Math.round(sc.mean_nn_km * 1000) + " m" : sc.mean_nn_km.toFixed(1) + " km"} between stores</span>`);
-    b.addEventListener("click", () => { state.sc = i; buildScenarios(); onScenario(); });
+      `<span class="s-name">${sc.label}</span><span class="s-meta muted mono">${distText(sc.mean_nn_km)} between stores</span>`);
+    b.addEventListener("click", () => { state.sc = i; buildPickers(); onChange(); });
     box.appendChild(b);
   });
   const sc = scen();
-  $("#scenNote").textContent = `${sc.note}. ${sc.regime === "clustered" ? "Three tight sub-clusters" : "Stores spread evenly"} within ${sc.radius_km} km of the distribution center; one truck, ${D.meta.service_min}-minute stops, ${D.meta.truck_speed_kmh} km/h. Simulated Monday to Sunday.`;
+  $("#scenNote").textContent = `${sc.note}. ${sc.regime === "clustered" ? "Three tight sub-clusters" : "Stores spread evenly"} within ${sc.radius_km} km of the distribution center; one truck, ${D.meta.service_min}-minute stops, ${D.meta.truck_speed_kmh} km/h, Monday to Sunday.`;
+  const lb = $("#levels"); lb.innerHTML = "";
+  for (const l of D.levels) {
+    const b = el("button", { type: "button", "aria-pressed": String(l.key === state.info) },
+      `<span class="s-name"><span class="sw" style="background:var(${LEVEL_META[l.key].color})"></span>${LEVEL_META[l.key].short}</span>`);
+    b.addEventListener("click", () => setLevel(l.key));
+    lb.appendChild(b);
+  }
+  $("#levelNote").textContent = D.levels.find((l) => l.key === state.info).note;
+}
+function setLevel(info, brain) {
+  state.info = info;
+  if (brain) state.sel = brain;
+  if (!brainsAt(info).includes(state.sel)) state.sel = "flywire";
+  buildPickers(); onChange();
+}
+
+// ---------- the grid ----------
+function buildGrid() {
+  const sc = scen();
+  const vals = [];
+  for (const b of BRAIN_KEYS) for (const i of LEVELS) { const r = run(b, i); if (r) vals.push(r.summary.profit_yen); }
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  let html = `<thead><tr><th></th>${LEVELS.map((i) => `<th><span class="sw" style="background:var(${LEVEL_META[i].color});margin-right:6px"></span>${LEVEL_META[i].short}</th>`).join("")}</tr></thead><tbody>`;
+  for (const b of BRAIN_KEYS) {
+    html += `<tr><th class="row"><span class="sw" style="background:var(${BRAIN_META[b].color});margin-right:7px"></span>${BRAIN_META[b].label}</th>`;
+    for (const i of LEVELS) {
+      const r = run(b, i);
+      if (!r) { html += `<td><div class="na" title="Plans the whole day from that morning's shelf levels, which only company data has">needs company data</div></td>`; continue; }
+      const s = r.summary, f = hi > lo ? (s.profit_yen - lo) / (hi - lo) : 1;
+      const on = i === state.info && b === state.sel;
+      html += `<td><button type="button" data-b="${b}" data-i="${i}" aria-pressed="${on}" style="background:color-mix(in srgb, var(--accent) ${Math.round(4 + 34 * f)}%, var(--panel))" title="${BRAIN_META[b].label}, ${levelLabel(i)}: ${yen(s.profit_yen)} profit, ${pct(s.fill_rate)} of demand served, ${Math.round(s.km)} km">
+        <span class="v">${yen(s.profit_yen)}</span><span class="s">${pct(s.fill_rate)} served · ${Math.round(s.km)} km</span></button></td>`;
+    }
+    html += `</tr>`;
+  }
+  $("#bxi").innerHTML = html + `</tbody>`;
+  $("#bxi").querySelectorAll("button").forEach((btn) => btn.addEventListener("click", () => {
+    setLevel(btn.dataset.i, btn.dataset.b);
+    document.getElementById("replay").scrollIntoView({ behavior: "smooth", block: "start" });
+  }));
+  drawAllLayouts();
+  buildInsights();
+}
+function drawAllLayouts() {
+  const W = 760, H = 230, padL = 10, padR = 10, padT = 22, padB = 30;
+  const groups = D.scenarios, gw = (W - padL - padR) / groups.length;
+  const bars = [];
+  for (const i of LEVELS) for (const b of brainsAt(i)) bars.push({ b, i });
+  const bw = Math.min(12, (gw - 30) / bars.length);
+  const Y = (v) => padT + (H - padT - padB) * (1 - v);
+  let s = "";
+  for (const v of [0.25, 0.5, 0.75, 1]) s += `<line x1="${padL}" x2="${W - padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${W - padR}" y="${Y(v) - 3}" text-anchor="end" font-size="9" fill="var(--muted)" font-family="var(--font-mono)">${v * 100}%</text>`;
+  groups.forEach((sc, g) => {
+    const best = Math.max(...bars.map(({ b, i }) => (sc.runs[i] && sc.runs[i][b] ? sc.runs[i][b].summary.profit_yen : -Infinity)));
+    const x0 = padL + g * gw + (gw - bw * bars.length - 3 * (LEVELS.length - 1)) / 2;
+    let x = x0, lastI = null;
+    for (const { b, i } of bars) {
+      if (lastI && lastI !== i) x += 3;
+      lastI = i;
+      const r = sc.runs[i] && sc.runs[i][b];
+      if (r) {
+        const v = Math.max(0, r.summary.profit_yen / best);
+        s += `<rect x="${x.toFixed(1)}" y="${Y(v).toFixed(1)}" width="${(bw - 1.5).toFixed(1)}" height="${(Y(0) - Y(v)).toFixed(1)}" rx="1.5" fill="var(${BRAIN_META[b].color})" fill-opacity="${g === state.sc && i === state.info ? 1 : 0.7}"><title>${sc.label} · ${levelLabel(i)} · ${BRAIN_META[b].label}: ${yen(r.summary.profit_yen)} (${pct(v, 0)} of the best on this layout)</title></rect>`;
+      }
+      x += bw;
+    }
+    let lx = x0;
+    for (const i of LEVELS) { const n = brainsAt(i).length; s += `<line x1="${lx.toFixed(1)}" x2="${(lx + n * bw - 1.5).toFixed(1)}" y1="${H - padB + 5}" y2="${H - padB + 5}" stroke="var(${LEVEL_META[i].color})" stroke-width="3"/>`; lx += n * bw + 3; }
+    s += `<text x="${(padL + g * gw + gw / 2).toFixed(1)}" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" font-family="var(--font-display)">${sc.label}</text>`;
+    s += `<text x="${(padL + g * gw + gw / 2).toFixed(1)}" y="${H - 8}" text-anchor="middle" font-size="10" fill="var(--muted)">${distText(sc.mean_nn_km)} apart</text>`;
+  });
+  $("#allLayouts").innerHTML = s;
+}
+function profitOf(sc, b, i) { const r = sc.runs[i] && sc.runs[i][b]; return r ? r.summary.profit_yen : null; }
+function buildInsights() {
+  const sc = scen();
+  const P = (b, i) => profitOf(sc, b, i);
+  const infoSpan = FLY_BRAINS.map((b) => P(b, "company") - P(b, "dumb"));
+  const brainSpan = LEVELS.map((i) => { const v = brainsAt(i).map((b) => P(b, i)).filter((x) => x !== null); return Math.max(...v) - Math.min(...v); });
+  const avg = (a) => a.reduce((x, y) => x + y, 0) / a.length;
+  const bestAt = (i) => brainsAt(i).reduce((a, b) => (P(b, i) > P(a, i) ? b : a));
+  const rel = (a, b) => a / b - 1;
+  const items = [];
+  const bigInfo = avg(infoSpan) > Math.max(...brainSpan);
+  items.push([bigInfo ? "Knowing beats deciding." : "Here the brain matters as much as the knowledge.", `On this layout, moving a brain from a dumb fly's knowledge to company data is worth <span class="num">${yen(avg(infoSpan))}</span> a week on average. Swapping one brain for another at the same level changes profit by at most <span class="num">${yen(Math.max(...brainSpan))}</span>.`]);
+  const cb = brainsAt("company"), cv = cb.map((b) => P(b, "company")), cSpread = 1 - Math.min(...cv) / Math.max(...cv);
+  const best = bestAt("company"), worst = cb.reduce((a, b) => (P(b, "company") < P(a, "company") ? b : a));
+  items.push([cSpread < 0.02 ? "With company data, the brains land close together." : "With company data, planning pulls ahead.",
+    `${cb.map((b) => `${BRAIN_META[b].label} <span class="num">${yen(P(b, "company"))}</span>`).join(", ")}. ${cSpread < 0.02
+      ? `All within <span class="num">${pct(cSpread)}</span> of each other: when stores are this close, any sensible rule keeps shelves full.`
+      : `<b>${BRAIN_META[best].label}</b> leads <b>${BRAIN_META[worst].label}</b> by <span class="num">${pct(P(best, "company") / P(worst, "company") - 1)}</span>: with stores far apart, bundling the right stops into each trip is worth real money.`}`]);
+  const vsOr = LEVELS.filter((i) => i !== "company").map((i) => [i, rel(P("flywire", i), P("ortools", i))]);
+  const ahead = vsOr.filter(([, r]) => r > 0.01).map(([i]) => i);
+  const kmOf = (b, i) => sc.runs[i][b].summary.km;
+  items.push(["On fly senses, the fly's circuit against the solver.", `FlyWire against OR-Tools, same senses: ${vsOr.map(([i, r]) => `${LEVEL_META[i].short.toLowerCase()} <span class="num">${sgnPct(r)}</span>`).join(", ")}. ${ahead.length
+    ? `The circuit comes out ahead as a ${ahead.map((i) => LEVEL_META[i].short.toLowerCase()).join(" and ")}, driving ${ahead.map((i) => `<span class="num">${pct(1 - kmOf("flywire", i) / kmOf("ortools", i), 0)}</span>`).join(" and ")} fewer km: it serves stores it smells along the way.`
+    : `The solver keeps its edge at every level on this layout.`}`]);
+  const lr = run("flywire", "learning"), pr = run("flywire", "perfect");
+  if (lr && pr) {
+    const firstFull = lr.days.findIndex((d) => d.known_stores >= 50), fL = lr.days[DAYS - 1].fill_rate, fP = pr.days[DAYS - 1].fill_rate;
+    const closes = fL >= 0.9 * fP;
+    items.push([closes ? "A learning fly catches up within the week." : "A learning fly is still learning at week's end.",
+      `Day 1 the FlyWire learning fly serves <span class="num">${pct(lr.days[0].fill_rate, 0)}</span> of demand; by day ${DAYS} <span class="num">${pct(fL, 0)}</span>, against <span class="num">${pct(fP, 0)}</span> for a fly that knew the map from the start. ${firstFull >= 0 ? `It knows 50+ stores by day ${firstFull + 1}.` : `It has found <span class="num">${lr.days[DAYS - 1].known_stores}</span> of 55 stores by the end: far apart, a nose finds new stores slowly.`}`]);
+  }
+  const dr = run("fly-rule", "dumb");
+  if (dr) items.push(["Smell alone is expensive.", `The dumb fly drives <span class="num">${Math.round(dr.summary.explore_km)} km</span> exploring and <span class="num">${Math.round(dr.summary.search_km)} km</span> searching over the week and serves <span class="num">${pct(dr.summary.fill_rate, 0)}</span> of demand. Memory is what turns a nose into a delivery route.`]);
+  $("#insights").innerHTML = items.map(([h, p]) => `<div class="insight"><h3>${h}</h3><p>${p}</p></div>`).join("");
+}
+
+// ---------- learning ----------
+const LEARN_METRICS = [
+  { key: "fill_rate", name: "Demand served", fmt: (v) => Math.round(v * 100) + "%", lo: 0, hi: 1 },
+  { key: "profit_yen", name: "Profit", fmt: (v) => yen(v) },
+  { key: "km", name: "Km driven", fmt: (v) => Math.round(v) + "" },
+];
+function buildLearnTabs() {
+  const box = $("#learnMetric"); box.innerHTML = "";
+  for (const m of LEARN_METRICS) { const b = el("button", { type: "button", class: "btn", "aria-pressed": String(state.learnMetric === m.key) }, m.name); b.addEventListener("click", () => { state.learnMetric = m.key; buildLearnTabs(); drawLearn(); }); box.appendChild(b); }
+}
+function lineChart(svg, series, { yfmt, y0, y1, W = 600, H = 240, xlabels }) {
+  const padL = 50, padR = 14, padT = 12, padB = 26;
+  const all = series.flatMap((s) => s.v).filter((v) => v !== null && isFinite(v));
+  let lo = y0 !== undefined ? y0 : Math.min(0, ...all), hi = y1 !== undefined ? y1 : Math.max(...all) * 1.05;
+  if (hi <= lo) hi = lo + 1;
+  const n = series[0] ? series[0].v.length : 1;
+  const X = (i) => padL + (W - padL - padR) * (n > 1 ? i / (n - 1) : 0.5), Y = (v) => padT + (H - padT - padB) * (1 - (v - lo) / (hi - lo));
+  let s = "";
+  for (let k = 0; k <= 4; k++) { const v = lo + (hi - lo) * k / 4; s += `<line x1="${padL}" x2="${W - padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${padL - 6}" y="${Y(v) + 3}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">${yfmt(v)}</text>`; }
+  for (let i = 0; i < n; i++) s += `<text x="${X(i)}" y="${H - 8}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">${xlabels[i]}</text>`;
+  for (const se of series) {
+    const pts = se.v.map((v, i) => (v === null ? null : [X(i), Y(v)])).filter(Boolean);
+    s += `<path d="${pts.map((p, i) => `${i ? "L" : "M"}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join("")}" fill="none" stroke="var(${se.color})" stroke-width="${se.bold ? 2.6 : 1.6}" ${se.dash ? 'stroke-dasharray="5 4"' : ""}/>`;
+    se.v.forEach((v, i) => { if (v !== null) s += `<circle cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="3" fill="var(${se.color})"><title>${se.name} · ${xlabels[i]}: ${yfmt(v)}</title></circle>`; });
+  }
+  svg.innerHTML = s;
+}
+function drawLearn() {
+  const sc = scen(), m = LEARN_METRICS.find((x) => x.key === state.learnMetric);
+  const brain = state.sel === "ortools-dayplan" ? "ortools" : state.sel;
+  $("#learnTitle").textContent = `${m.name} by day · ${BRAIN_META[brain].label} at each level`;
+  const series = LEVELS.map((i) => { const r = run(brain, i); return { name: levelLabel(i), color: LEVEL_META[i].color, bold: i === state.info, v: r ? r.days.map((d) => d[m.key]) : Array(DAYS).fill(null) }; });
+  lineChart($("#learnChart"), series, { yfmt: m.fmt, y0: m.lo, y1: m.hi, xlabels: DAYN.slice(0, DAYS) });
+  $("#learnLegend").innerHTML = LEVELS.map((i) => `<span><span class="sw" style="background:var(${LEVEL_META[i].color})"></span>${LEVEL_META[i].short}</span>`).join("");
+  const known = ["perfect", "learning", "dumb"].map((i) => { const r = run(brain, i); return { name: `${LEVEL_META[i].short}: stores known`, color: LEVEL_META[i].color, bold: i === state.info, v: r ? r.days.map((d) => d.known_stores) : Array(DAYS).fill(null) }; });
+  const explore = ["learning", "dumb"].map((i) => { const r = run(brain, i); return { name: `${LEVEL_META[i].short}: km exploring ÷ 10`, color: LEVEL_META[i].color, dash: true, v: r ? r.days.map((d) => d.explore_km / 10) : Array(DAYS).fill(null) }; });
+  lineChart($("#knownChart"), [...known, ...explore], { yfmt: (v) => Math.round(v) + "", y0: 0, xlabels: DAYN.slice(0, DAYS) });
+  $("#knownLegend").innerHTML = `<span>solid: stores known (of 55)</span><span>dashed: km spent exploring ÷ 10</span>` + ["perfect", "learning", "dumb"].map((i) => `<span><span class="sw" style="background:var(${LEVEL_META[i].color})"></span>${LEVEL_META[i].short}</span>`).join("");
 }
 
 // ---------- replay maps ----------
+const MODE_TEXT = {
+  1: "Searching: the store isn't where memory put it",
+  2: "Searching for the DC: its position estimate drifted on the way home",
+  3: "Surging upwind on a whiff",
+  4: "Casting crosswind: lost the plume",
+  5: "Exploring: holding a course, sniffing for a store",
+  6: "Homing in: close enough to smell or see it",
+};
+const MODE_STYLE = { 1: { dash: [2, 3], color: () => T.stockout }, 2: { dash: [2, 3], color: () => T.stockout }, 3: { width: 2.6 }, 4: { dash: [1, 3] }, 5: { alpha: 0.3 } };
+function buildModes() {
+  $("#modes").innerHTML = state.info === "company"
+    ? `<span>GPS and live shelf data: no smelling, searching or drift at this level.</span>`
+    : `<span><i style="border-top-width:3px"></i>surging upwind on a whiff</span><span><i style="border-top-style:dotted"></i>casting crosswind</span><span><i style="border-top-style:dashed;border-color:var(--stockout)"></i>searching</span><span><i style="opacity:.35"></i>exploring</span><span><svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor"/></svg>where it believes it is</span><span><svg width="14" height="14"><circle cx="7" cy="7" r="4" fill="none" stroke="currentColor" stroke-dasharray="2 2"/></svg>store it doesn't know yet</span><span>→ wind</span>`;
+}
 const mapCanvases = {};
 function buildMaps() {
   const box = $("#maps"); box.innerHTML = "";
-  for (const b of BRAINS) {
-    const card = el("div", { class: "mapcard", role: "button", tabindex: "0", "aria-pressed": String(state.sel === b.key), "data-key": b.key });
-    card.innerHTML = `<div class="mc-head"><span class="mc-name"><span class="sw" style="background:var(${b.color})"></span>${b.label}</span></div>
-      <div class="muted" style="font-size:12px;margin-top:-4px">${b.blurb}</div>
-      <canvas aria-label="${b.label} map"></canvas>
+  const keys = brainsAt(state.info);
+  box.className = "maps" + (keys.length === 3 ? " n3" : "");
+  for (const k of keys) {
+    const bm = BRAIN_META[k];
+    const card = el("div", { class: "mapcard", role: "button", tabindex: "0", "aria-pressed": String(state.sel === k), "data-key": k });
+    card.innerHTML = `<div class="mc-name"><span class="sw" style="background:var(${bm.color})"></span>${bm.label}</div>
+      <div class="muted" style="font-size:12px;margin-top:-4px">${bm.blurb}</div>
+      <canvas aria-label="${bm.label} map"></canvas>
       <div class="mc-live"><div><span class="muted">Drops</span><b data-f="drops">0</b></div><div><span class="muted">Sales lost</span><b data-f="lost">¥0</b></div><div><span class="muted">Driven</span><b data-f="km">0 km</b></div></div>
       <div class="mc-status" data-f="status"></div>`;
-    const pick = () => { state.sel = b.key; syncSelection(); drawAll(); };
+    const pick = () => { state.sel = k; syncSelection(); drawAll(); drawLearn(); };
     card.addEventListener("click", pick);
     card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
     box.appendChild(card);
-    mapCanvases[b.key] = { canvas: card.querySelector("canvas"), card };
+    mapCanvases[k] = { canvas: card.querySelector("canvas"), card };
   }
+  for (const k of Object.keys(mapCanvases)) if (!keys.includes(k)) delete mapCanvases[k];
 }
 function drawMap(key) {
   const { canvas, card } = mapCanvases[key];
   const { ctx, w, h } = fitCanvas(canvas);
-  const sc = scen(), b = brainData(key), t = state.t, color = T[key];
+  const sc = scen(), b = detail(key), t = state.t, color = T[key];
+  ctx.fillStyle = T.ground; ctx.fillRect(0, 0, w, h);
+  if (!b) { ctx.fillStyle = T.muted; ctx.font = "12px " + css("--font-body"); ctx.textAlign = "center"; ctx.fillText("Loading this week…", w / 2, h / 2); ctx.textAlign = "left"; return; }
   const s = Math.min(w, h) / (2 * sc.extent), cx = w / 2, cy = h / 2;
   const X = (x) => cx + x * s, Y = (y) => cy - y * s;
-  ctx.fillStyle = T.ground; ctx.fillRect(0, 0, w, h);
   ctx.strokeStyle = T.rule; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
   ctx.beginPath(); ctx.arc(cx, cy, sc.radius_km * s, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
-  // trail
+  // today's trail, styled by what the truck was doing
   const pos = positionAt(b, t);
-  ctx.lineWidth = 1.4; ctx.lineJoin = "round";
-  ctx.strokeStyle = color; ctx.globalAlpha = 0.5;
-  ctx.beginPath();
-  let started = false;
   const i0 = Math.max(0, bisect(b.pt, Math.floor(t / 24) * 24));
+  ctx.lineJoin = "round";
+  let prev = null;
   for (let i = i0; i <= pos.i && i < b.path.length; i++) {
     const p = b.path[i];
-    if (!started) { ctx.moveTo(X(p[1]), Y(p[2])); started = true; } else ctx.lineTo(X(p[1]), Y(p[2]));
+    if (prev) {
+      const st = MODE_STYLE[p[5]] || {};
+      ctx.strokeStyle = st.color ? st.color() : color; ctx.lineWidth = st.width || 1.3;
+      ctx.globalAlpha = st.alpha || 0.6; ctx.setLineDash(st.dash || []);
+      ctx.beginPath(); ctx.moveTo(X(prev[1]), Y(prev[2])); ctx.lineTo(X(p[1]), Y(p[2])); ctx.stroke();
+    }
+    prev = p;
   }
-  if (started) ctx.lineTo(X(pos.x), Y(pos.y));
-  ctx.stroke(); ctx.globalAlpha = 1;
-  // stores coloured by shelf level
+  ctx.globalAlpha = 1; ctx.setLineDash([]);
+  // stores: shelf level; unknown ones dashed
   const gi = gridIdx(t);
+  const known = (i) => b.learned_t[i] !== null && b.learned_t[i] <= t;
+  const recent = new Set();
+  for (let j = bisect(b.whT, t); j >= 0 && b.whiffs[j][0] > t - 0.25; j--) recent.add(b.whiffs[j][1]);
   sc.stores.forEach((st, i) => {
     const lvl = b.stock[i][gi];
-    ctx.beginPath(); ctx.arc(X(st.x), Y(st.y), lvl <= 0.02 ? 3.6 : 3, 0, TAU);
-    ctx.fillStyle = stockColor(lvl); ctx.fill();
-    ctx.lineWidth = 0.8; ctx.strokeStyle = T.ground; ctx.stroke();
+    if (state.info !== "company" && !known(i)) {
+      ctx.beginPath(); ctx.arc(X(st.x), Y(st.y), 3.4, 0, TAU); ctx.setLineDash([2, 2]); ctx.lineWidth = 1; ctx.strokeStyle = stockColor(lvl); ctx.stroke(); ctx.setLineDash([]);
+    } else {
+      ctx.beginPath(); ctx.arc(X(st.x), Y(st.y), lvl <= 0.02 ? 3.6 : 3, 0, TAU);
+      ctx.fillStyle = stockColor(lvl); ctx.fill(); ctx.lineWidth = 0.8; ctx.strokeStyle = T.ground; ctx.stroke();
+    }
+    if (recent.has(i + 1)) { ctx.beginPath(); ctx.arc(X(st.x), Y(st.y), 7, 0, TAU); ctx.strokeStyle = color; ctx.lineWidth = 1.2; ctx.stroke(); }
   });
-  // DC
   ctx.fillStyle = T.ink; ctx.fillRect(X(0) - 4, Y(0) - 4, 8, 8);
   // intent
   const trip = tripAt(b, t), dec = decisionAt(b, t);
@@ -492,15 +775,16 @@ function drawMap(key) {
   ctx.setLineDash([4, 4]); ctx.strokeStyle = color; ctx.lineWidth = 1.3;
   if (trip && dec && dec.t >= trip.a - 1e-6) {
     const storeXY = (id) => sc.stores[id - 1];
-    if (key === "flywire" && dec.goals) {
-      for (const g of dec.goals) {
-        const st = storeXY(g[2]);
-        if (g[3] === "memory") { ctx.beginPath(); ctx.moveTo(X(pos.x), Y(pos.y)); ctx.lineTo(X(st.x), Y(st.y)); ctx.stroke(); }
-        else { ctx.save(); ctx.setLineDash([]); ctx.globalAlpha = 0.8; ctx.beginPath(); ctx.moveTo(X(pos.x), Y(pos.y)); ctx.lineTo(X(st.x), Y(st.y)); ctx.stroke(); ctx.restore(); }
+    if (key === "flywire") {
+      const goals = dec.goals || [];
+      for (const g of goals) {
+        if (g[3] === "memory") { const st = storeXY(g[2]); ctx.beginPath(); ctx.moveTo(X(pos.x), Y(pos.y)); ctx.lineTo(X(st.x), Y(st.y)); ctx.stroke(); }
+        else { ctx.save(); ctx.setLineDash([]); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(X(pos.x), Y(pos.y)); ctx.lineTo(X(pos.x) + 22 * Math.cos(g[0]), Y(pos.y) - 22 * Math.sin(g[0])); ctx.stroke(); ctx.restore(); }
       }
-      const mem = dec.goals.find((g) => g[3] === "memory");
-      const nSmell = dec.goals.filter((g) => g[3] === "smell").length;
-      status = (mem ? `Heading for store ${mem[2]} from memory` : `Following its nose`) + (nSmell ? ` · smells ${nSmell} store${nSmell > 1 ? "s" : ""}` : "");
+      const mem = goals.find((g) => g[3] === "memory"), odor = goals.find((g) => g[3] === "odor");
+      status = dec.mode === "explore" ? "Exploring: holding a course through the circuit (menotaxis)"
+        : dec.mode === "cast" ? `Lost the plume of store ${dec.committed}: casting` : dec.mode === "search" ? `Searching for store ${dec.committed}`
+        : (mem ? `Heading for store ${mem[2]} from memory` : `Store ${dec.committed}: no memory left to follow`) + (odor ? ` · smells store ${odor[2]}, upwind goal on` : "");
     } else if (dec.plan || dec.choice) {
       let stops = dec.plan || [dec.choice];
       if (key === "ortools-dayplan") { const done = new Set(b.dels.filter((e) => e.t >= trip.a && e.t <= t).map((e) => e.store)); stops = stops.filter((id) => !done.has(id)); }
@@ -512,29 +796,33 @@ function drawMap(key) {
         status = key === "ortools-dayplan" ? `Following the plan · ${stops.length} stops left on this trip` : key === "ortools" ? `Next: store ${stops[0]}, then ${Math.max(0, stops.length - 1)} more before home` : `Next: store ${stops[0]}, the best profit per hour`;
       }
     }
-    if (pos.search) status = "Searching: the store isn't where it thought";
+    if (MODE_TEXT[pos.mode] && !(key === "flywire" && pos.mode === 3)) status = MODE_TEXT[pos.mode];
   } else {
     status = t < 0.01 ? "" : "At the DC, waiting for a trip worth making";
   }
   ctx.setLineDash([]);
-  // believed position (drift)
   const drift = Math.hypot(pos.xh - pos.x, pos.yh - pos.y);
   if (trip && drift > 0.01) {
     ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.globalAlpha = 0.7;
     ctx.beginPath(); ctx.moveTo(X(pos.x), Y(pos.y)); ctx.lineTo(X(pos.xh), Y(pos.yh)); ctx.stroke();
     ctx.beginPath(); ctx.arc(X(pos.xh), Y(pos.yh), 5, 0, TAU); ctx.stroke(); ctx.globalAlpha = 1;
   }
-  // truck
   ctx.beginPath(); ctx.arc(X(pos.x), Y(pos.y), 5.5, 0, TAU); ctx.fillStyle = color; ctx.fill();
   ctx.lineWidth = 2; ctx.strokeStyle = T.ground; ctx.stroke();
-  // scale bar
+  // wind arrow
+  if (state.info !== "company") {
+    const a = windAt(sc, t), ax = w - 24, ay = 22, L = 12;
+    ctx.strokeStyle = T.ink2; ctx.fillStyle = T.ink2; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(ax - L * Math.cos(a), ay + L * Math.sin(a)); ctx.lineTo(ax + L * Math.cos(a), ay - L * Math.sin(a)); ctx.stroke();
+    const hx = ax + L * Math.cos(a), hy = ay - L * Math.sin(a);
+    ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(hx - 6 * Math.cos(a - 0.5), hy + 6 * Math.sin(a - 0.5)); ctx.lineTo(hx - 6 * Math.cos(a + 0.5), hy + 6 * Math.sin(a + 0.5)); ctx.closePath(); ctx.fill();
+    ctx.font = "9px " + css("--font-mono"); ctx.fillText("wind", ax - 12, ay + 22);
+  }
   const niceKm = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20].find((k) => k * s > 36) || 20;
   ctx.fillStyle = T.muted; ctx.strokeStyle = T.muted; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(8, h - 10); ctx.lineTo(8 + niceKm * s, h - 10); ctx.stroke();
   ctx.font = "10px " + css("--font-mono"); ctx.fillText(niceKm < 1 ? niceKm * 1000 + " m" : niceKm + " km", 8, h - 14);
-  // live numbers
-  const drops = bisect(b.delT, t) + 1;
-  card.querySelector('[data-f="drops"]').textContent = drops;
+  card.querySelector('[data-f="drops"]').textContent = bisect(b.delT, t) + 1;
   card.querySelector('[data-f="lost"]').textContent = yen(lostAt(b, t));
   card.querySelector('[data-f="km"]').textContent = pos.km.toFixed(pos.km < 100 ? 1 : 0) + " km";
   card.querySelector('[data-f="status"]').textContent = status;
@@ -543,11 +831,11 @@ function drawMap(key) {
 // ---------- timeline ----------
 function drawTimeline() {
   const { ctx, w, h } = fitCanvas($("#timeline"));
-  const padL = 132, padR = 10, top = 8, demandH = 34, rowH = 17, axisY = top + demandH + BRAINS.length * rowH + 10;
+  const keys = brainsAt(state.info);
+  const padL = 132, padR = 10, top = 8, demandH = 34, rowH = 17, axisY = top + demandH + keys.length * rowH + 10;
   const X = (hr) => padL + (w - padL - padR) * hr / HOURS;
   ctx.clearRect(0, 0, w, h);
   ctx.font = "11px " + css("--font-body");
-  // demand profile, repeated each day
   const maxD = Math.max(...HOURLY);
   ctx.beginPath(); ctx.moveTo(X(0), top + demandH);
   for (let d = 0; d < DAYS; d++) for (let i = 0; i < 24; i++) { const y = top + demandH - (HOURLY[i] / maxD) * (demandH - 4); ctx.lineTo(X(d * 24 + i), y); ctx.lineTo(X(d * 24 + i + 1), y); }
@@ -555,23 +843,20 @@ function drawTimeline() {
   ctx.fillStyle = T.panel2; ctx.fill();
   ctx.fillStyle = T.muted; ctx.fillText("Fresh-food demand", 4, top + demandH - 8);
   ctx.fillText("(meal peaks, assumed)", 4, top + demandH + 4);
-  // rows
-  const sc = scen();
-  BRAINS.forEach((bm, r) => {
-    const b = brainData(bm.key), y = top + demandH + 6 + r * rowH;
-    ctx.fillStyle = T.ink2; ctx.fillText(bm.short, 4, y + 10);
+  keys.forEach((k, r) => {
+    const b = detail(k), y = top + demandH + 6 + r * rowH;
+    ctx.fillStyle = T.ink2; ctx.fillText(BRAIN_META[k].short, 4, y + 10);
     ctx.fillStyle = T.rule; ctx.fillRect(X(0), y + 7, X(HOURS) - X(0), 1);
-    for (const tr of b.trips) { ctx.fillStyle = T[bm.key]; ctx.globalAlpha = 0.85; ctx.fillRect(X(tr.a), y + 2, Math.max(1.5, X(Math.min(HOURS, tr.b)) - X(tr.a)), 11); }
+    if (!b) return;
+    for (const tr of b.trips) { ctx.fillStyle = T[k]; ctx.globalAlpha = 0.85; ctx.fillRect(X(tr.a), y + 2, Math.max(1.5, X(Math.min(HOURS, tr.b)) - X(tr.a)), 11); }
     ctx.globalAlpha = 1;
-    if (bm.key === "ortools-dayplan" && b.day_plans) {
+    if (k === "ortools-dayplan" && b.day_plans) {
       ctx.strokeStyle = T.ink; ctx.lineWidth = 1;
       for (const p of b.day_plans) for (const tr of p.trips) { const x = X(tr.depart); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 3, y - 4); ctx.lineTo(x + 3, y - 4); ctx.closePath(); ctx.stroke(); }
     }
   });
-  // axis: day boundaries and names
   ctx.fillStyle = T.muted; ctx.strokeStyle = T.rule;
   for (let d = 0; d <= DAYS; d++) { const x = X(d * 24); ctx.beginPath(); ctx.moveTo(x, top); ctx.lineTo(x, axisY - 6); ctx.stroke(); if (d < DAYS) ctx.fillText(DAYN[d % 7], X(d * 24 + 12) - 10, axisY + 6); }
-  // cursor
   const x = X(state.t);
   ctx.strokeStyle = T.accent; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x, top - 4); ctx.lineTo(x, axisY - 4); ctx.stroke();
 }
@@ -581,51 +866,55 @@ function timelineSeek(e) {
   if (hr >= 0 && hr <= HOURS) setTime(hr);
 }
 
-// ---------- end-of-day table ----------
+// ---------- week table and days ----------
 function buildEod() {
-  const sc = scen();
-  const rows = BRAINS.map((bm) => ({ bm, s: brainData(bm.key).summary }));
+  const keys = brainsAt(state.info);
+  const rows = keys.map((k) => ({ k, s: run(k).summary }));
   const best = { profit_yen: Math.max(...rows.map((r) => r.s.profit_yen)), fill_rate: Math.max(...rows.map((r) => r.s.fill_rate)),
                  km: Math.min(...rows.map((r) => r.s.km)), lost_margin_yen: Math.min(...rows.map((r) => r.s.lost_margin_yen)) };
-  let html = `<thead><tr><th>Week total</th><th>Profit</th><th>Shelves stocked</th><th>Margin lost to empty shelves</th><th>Driven</th><th>Drops</th><th>Trips</th></tr></thead><tbody>`;
-  for (const { bm, s } of rows) {
-    html += `<tr><td><span class="sw" style="background:var(${bm.color});margin-right:8px"></span>${bm.label}</td>
+  const fly = state.info !== "company";
+  let html = `<thead><tr><th>Week total · ${levelLabel(state.info)}</th><th>Profit</th><th>Demand served</th><th>Margin lost to empty shelves</th><th>Driven</th>${fly ? "<th>Searching</th><th>Exploring</th><th>Whiffs</th>" : ""}<th>Drops</th><th>Trips</th>${fly ? "<th>Gave up</th>" : ""}</tr></thead><tbody>`;
+  for (const { k, s } of rows) {
+    html += `<tr><td><span class="sw" style="background:var(${BRAIN_META[k].color});margin-right:8px"></span>${BRAIN_META[k].label}</td>
       <td class="${s.profit_yen === best.profit_yen ? "best" : ""}">${yen(s.profit_yen)}</td>
       <td class="${s.fill_rate === best.fill_rate ? "best" : ""}">${pct(s.fill_rate)}</td>
       <td class="${s.lost_margin_yen === best.lost_margin_yen ? "best" : ""}">${yen(s.lost_margin_yen)}</td>
-      <td class="${s.km === best.km ? "best" : ""}">${s.km.toFixed(0)} km</td><td>${s.deliveries}</td><td>${s.trips}</td></tr>`;
+      <td class="${s.km === best.km ? "best" : ""}">${s.km.toFixed(0)} km</td>
+      ${fly ? `<td>${s.search_km.toFixed(0)} km</td><td>${s.explore_km.toFixed(0)} km</td><td>${s.whiffs}</td>` : ""}
+      <td>${s.deliveries}</td><td>${s.trips}</td>${fly ? `<td>${s.missed}</td>` : ""}</tr>`;
   }
   $("#eod").innerHTML = html + `</tbody>`;
   drawDays();
 }
 function drawDays() {
   const W = 960, H = 210, padL = 56, padR = 10, padT = 10, padB = 28;
-  const days = BRAINS.map((bm) => brainData(bm.key).days);
-  const maxV = Math.max(...days.flat().map((d) => d.profit_yen));
-  const step = [2e5, 5e5, 1e6, 2e6].find((s) => maxV / s <= 5) || 2e6;
-  const top = Math.ceil(maxV / step) * step;
-  const groupW = (W - padL - padR) / DAYS, barW = Math.min(22, (groupW - 16) / BRAINS.length);
-  const Y = (v) => padT + (H - padT - padB) * (1 - v / top);
+  const keys = brainsAt(state.info);
+  const days = keys.map((k) => run(k).days);
+  const maxV = Math.max(1, ...days.flat().map((d) => d.profit_yen)), minV = Math.min(0, ...days.flat().map((d) => d.profit_yen));
+  const step = [2e5, 5e5, 1e6, 2e6].find((s) => (maxV - minV) / s <= 5) || 2e6;
+  const top = Math.ceil(maxV / step) * step, bot = Math.floor(minV / step) * step;
+  const groupW = (W - padL - padR) / DAYS, barW = Math.min(22, (groupW - 16) / keys.length);
+  const Y = (v) => padT + (H - padT - padB) * (1 - (v - bot) / (top - bot));
   let s = "";
-  for (let v = 0; v <= top + 1; v += step) s += `<line x1="${padL}" x2="${W - padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${padL - 6}" y="${Y(v) + 3}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">${yen(v)}</text>`;
+  for (let v = bot; v <= top + 1; v += step) s += `<line x1="${padL}" x2="${W - padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${padL - 6}" y="${Y(v) + 3}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">${yen(v)}</text>`;
   for (let d = 0; d < DAYS; d++) {
-    const gx = padL + d * groupW + (groupW - barW * BRAINS.length) / 2;
+    const gx = padL + d * groupW + (groupW - barW * keys.length) / 2;
     const best = Math.max(...days.map((ds) => ds[d].profit_yen));
-    BRAINS.forEach((bm, i) => {
-      const v = days[i][d], x = gx + i * barW, y = Y(Math.max(0, v.profit_yen));
-      s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(barW - 2).toFixed(1)}" height="${(Y(0) - y).toFixed(1)}" rx="2" fill="var(${bm.color})" fill-opacity="${v.profit_yen === best ? 1 : 0.55}"><title>${bm.label} · ${DAYN[d % 7]}: ${yen(v.profit_yen)} profit · ${pct(v.fill_rate)} shelves stocked · ${v.km.toFixed(0)} km · ${v.deliveries} drops</title></rect>`;
+    keys.forEach((k, i) => {
+      const v = days[i][d], x = gx + i * barW, y0 = Y(Math.max(0, v.profit_yen)), y1 = Y(Math.min(0, v.profit_yen));
+      s += `<rect x="${x.toFixed(1)}" y="${y0.toFixed(1)}" width="${(barW - 2).toFixed(1)}" height="${Math.max(0.5, y1 - y0).toFixed(1)}" rx="2" fill="var(${BRAIN_META[k].color})" fill-opacity="${v.profit_yen === best ? 1 : 0.55}"><title>${BRAIN_META[k].label} · ${DAYN[d % 7]}: ${yen(v.profit_yen)} profit · ${pct(v.fill_rate)} served · ${v.km.toFixed(0)} km · ${v.deliveries} drops${state.info === "learning" ? ` · knows ${v.known_stores} stores` : ""}</title></rect>`;
     });
     s += `<text x="${(padL + d * groupW + groupW / 2).toFixed(1)}" y="${H - 8}" text-anchor="middle" font-size="11" fill="var(--ink-2)">${DAYN[d % 7]}</text>`;
   }
   $("#bydays").innerHTML = s;
 }
 
-// ---------- why this stop ----------
+// ---------- why this move ----------
 function buildWhyTabs() {
   const box = $("#whyTabs"); box.innerHTML = "";
-  for (const bm of BRAINS) {
-    const b = el("button", { type: "button", "aria-pressed": String(state.sel === bm.key) }, `<span class="sw" style="background:var(${bm.color})"></span>${bm.label}`);
-    b.addEventListener("click", () => { state.sel = bm.key; syncSelection(); drawAll(); });
+  for (const k of brainsAt(state.info)) {
+    const b = el("button", { type: "button", "aria-pressed": String(state.sel === k), "data-key": k }, `<span class="sw" style="background:var(${BRAIN_META[k].color})"></span>${BRAIN_META[k].label}`);
+    b.addEventListener("click", () => { state.sel = k; syncSelection(); drawAll(); drawLearn(); });
     box.appendChild(b);
   }
 }
@@ -638,10 +927,10 @@ function candTable(dec, key) {
   for (const x of c) {
     const chosen = x.store === dec.choice;
     html += `<div class="cand ${chosen ? "chosen" : ""}"><span class="mono">#${x.store}${chosen ? " ◀" : planned.has(x.store) ? " ·" : ""}</span>
-      <span class="bar"><i style="width:${(x.rate / maxR * 100).toFixed(1)}%;background:var(${BRAINS.find((b) => b.key === key).color});opacity:${chosen ? 1 : 0.45}"></i></span>
+      <span class="bar"><i style="width:${(x.rate / maxR * 100).toFixed(1)}%;background:var(${BRAIN_META[key].color});opacity:${chosen ? 1 : 0.45}"></i></span>
       <span class="mono" style="text-align:right">${yen(x.value)}</span><span class="mono" style="text-align:right">${x.km.toFixed(2)} km</span></div>`;
   }
-  return html + `</div><p class="muted" style="font-size:12px;margin-top:8px">◀ chosen${key === "ortools" ? " · planned for later in this trip" : ""}. Sales it saves = margin on sales a visit prevents from being lost over the next ${D.meta.lookahead_h} hours.</p>`;
+  return html + `</div><p class="muted" style="font-size:12px;margin-top:8px">◀ chosen${key === "ortools" ? " · planned for later in this trip" : ""}. Sales it saves = margin on sales a visit prevents from being lost over the next ${D.meta.lookahead_h} hours, as this brain believes them.</p>`;
 }
 function circuitSvg(dec, res, color) {
   const R1 = 108, R2 = 80, R3 = 52;
@@ -651,7 +940,7 @@ function circuitSvg(dec, res, color) {
   const eMax = Math.max(...res.epg), fMax = Math.max(1e-9, ...res.fc2);
   EPG.forEach((a, i) => { const [x, y] = P(R1, a); s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="var(--ink)" fill-opacity="${(0.12 + 0.88 * res.epg[i] / eMax).toFixed(2)}"/>`; });
   FC2.forEach((a, i) => { const [x, y] = P(R2, a); const v = res.fc2[i] / fMax; s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.2 + 3.2 * v).toFixed(2)}" fill="${color}" fill-opacity="${(0.2 + 0.8 * v).toFixed(2)}"/>`; });
-  const gmax = Math.max(...dec.goals.map((g) => g[1]));
+  const gmax = Math.max(1e-9, ...dec.goals.map((g) => g[1]));
   for (const g of dec.goals) {
     const [x, y] = P(R3 * (0.35 + 0.65 * g[1] / gmax), g[0]);
     s += `<line x1="0" y1="0" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--ink-2)" stroke-width="1.5" ${g[3] === "memory" ? 'stroke-dasharray="4 3"' : ""}/>`;
@@ -663,9 +952,10 @@ function circuitSvg(dec, res, color) {
   return s + `</svg>`;
 }
 function renderWhy() {
-  const sc = scen(), key = state.sel, b = brainData(key), t = state.t, bm = BRAINS.find((x) => x.key === key);
+  const key = state.sel, b = detail(key), t = state.t, bm = BRAIN_META[key];
   $("#whyClock").textContent = clockW(t);
   const box = $("#why");
+  if (!b) { box.innerHTML = `<p class="muted">Loading…</p>`; return; }
   const trip = tripAt(b, t), dec = decisionAt(b, t);
   if (key === "ortools-dayplan") {
     const day = Math.min(DAYS - 1, Math.floor(t / 24));
@@ -674,49 +964,58 @@ function renderWhy() {
     const doneTrips = b.trips.filter((tr) => tr.a >= plan.made_at - 1e-6 && tr.a < nextAt - 1e-6);
     let html = `<p class="why-lede">At <b>${clockW(plan.made_at)}</b> the solver took the shelf levels at that moment, forecast the day's sales, and planned <b>${plan.trips.length}</b> trips. The truck follows them without adjusting to what actually sells.</p><div class="plan-trips">`;
     plan.trips.forEach((tr, i) => {
-      const actual = doneTrips[i];
-      const now = actual && t >= actual.a && t < actual.b;
-      const late = actual ? actual.a - tr.depart : null;
+      const actual = doneTrips[i], now = actual && t >= actual.a && t < actual.b, late = actual ? actual.a - tr.depart : null;
       html += `<div class="plan-trip ${now ? "now" : ""}"><span class="mono">Trip ${i + 1}</span><span>Planned <b class="mono">${clockW(tr.depart)}</b> · ${tr.stops.length} stops · ${actual ? `left <span class="mono">${clockW(actual.a)}</span>${late > 0.05 ? ` (<span class="mono">${Math.round(late * 60)}</span> min late)` : ""}, home <span class="mono">${clockW(Math.min(actual.b, HOURS))}</span>` : `<span class="muted">${tr.depart > t ? "not yet" : "dropped: the next day's plan replaced it"}</span>`}${now ? " · <b>underway</b>" : ""}</span></div>`;
     });
-    box.innerHTML = html + `</div><p class="muted" style="font-size:12px;margin-top:10px">Planning ahead can bundle stores efficiently, but a fixed plan can't see a store selling out early, and delays from searching push every later trip back.</p>`;
+    box.innerHTML = html + `</div>`;
     return;
   }
   if (!trip || !dec || dec.t < trip.a - 1e-6) {
     const nxt = b.trips.find((tr) => tr.a > t);
-    box.innerHTML = `<p class="why-lede">At the DC. ${bm.label} sees no trip worth making yet: every shelf it knows about can wait. ${nxt ? `It leaves at <b>${clockW(nxt.a)}</b>.` : "No more trips this week."}</p>`;
+    box.innerHTML = `<p class="why-lede">At the DC. ${bm.label} sees no trip worth making yet${state.info === "learning" || state.info === "dumb" ? ", and it isn't exploring (flies are day-active; it explores only 05:00–22:00)" : ""}. ${nxt ? `It leaves at <b>${clockW(nxt.a)}</b>.` : "No more trips this week."}</p>`;
     return;
   }
   if (key === "flywire") {
-    const goals = dec.goals.map((g) => ({ dir: g[0], s: g[1] }));
-    const res = circuit(dec.heading, goals);
-    const mem = dec.goals.find((g) => g[3] === "memory"), smells = dec.goals.filter((g) => g[3] === "smell");
+    const goals = (dec.goals || []).filter((g) => g[3] === "memory").map((g) => ({ dir: g[0], s: g[1] }));
+    const og = (dec.goals || []).find((g) => g[3] === "odor");
+    const odor = og ? { dir: og[0], s: og[1] } : null;
+    if (dec.mode === "cast" || dec.mode === "search") {
+      box.innerHTML = `<p class="why-lede">${dec.mode === "cast" ? `It lost the plume of <b>store ${dec.committed}</b> and memory has nothing better, so a body reflex takes over: casting crosswind to find the odor again (flies do this; it isn't the central complex).` : `It reached where it remembered <b>store ${dec.committed}</b> and found nothing, so it searches in a widening spiral, like a fly's local search.`}</p>`;
+      return;
+    }
+    const res = circuit(dec.heading, dec.mode === "explore" ? (dec.goals || []).map((g) => ({ dir: g[0], s: g[1] })) : goals, odor);
+    const mem = (dec.goals || []).find((g) => g[3] === "memory");
     const turnDeg = deg(res.steer), side = turnDeg > 0.5 ? "left" : turnDeg < -0.5 ? "right" : null;
     const tot = res.left + res.right;
-    let html = `<p class="why-lede">${mem ? `Holding a goal from memory: <b>store ${mem[2]}</b>.` : "Following its nose."} ${smells.length ? `It smells <b>${smells.length}</b> wanted store${smells.length > 1 ? "s" : ""} nearby, each pulling on the same goal cells.` : "Nothing wanted within smelling range."} The circuit says <b>${side ? `turn ${side} ${Math.abs(turnDeg).toFixed(0)}°` : "hold course"}</b> this step.</p>`;
+    const lead = dec.mode === "explore" ? `Exploring: the goal cells hold one arbitrary course (menotaxis), and it drives until it catches a whiff.`
+      : `${mem ? `Holding a goal from memory: <b>store ${mem[2]}</b>.` : `No remembered direction left for store ${dec.committed}.`} ${og ? `It is smelling <b>store ${og[2]}</b>: odor switches on hΔC cells, which write an upwind goal into the same goal cells.` : "No odor right now."}`;
+    let html = `<p class="why-lede">${lead} The circuit says <b>${side ? `turn ${side} ${Math.abs(turnDeg).toFixed(0)}°` : "hold course"}</b> this step.</p>`;
     html += `<div class="circuit">${circuitSvg(dec, res, T.flywire)}<div>`;
     html += `<div class="label" style="margin-bottom:6px">Steering cells (PFL3) output</div>`;
     html += `<div class="meter"><span>Left side</span><span class="track"><i style="width:${(res.left / tot * 100).toFixed(1)}%"></i></span><span class="mono">${(res.left / tot * 100).toFixed(0)}%</span></div>`;
     html += `<div class="meter"><span>Right side</span><span class="track"><i style="width:${(res.right / tot * 100).toFixed(1)}%"></i></span><span class="mono">${(res.right / tot * 100).toFixed(0)}%</span></div>`;
     html += `<div class="kv" style="margin-top:8px"><span class="muted">Turning boost (PFL2)</span><span class="mono">×${res.boost.toFixed(2)}</span><span class="muted">Heading</span><span class="mono">${((deg(dec.heading) % 360) + 360).toFixed(0) % 360}°</span></div>`;
-    html += `<div class="goal-list"><div class="label">Goals fed in</div>${dec.goals.slice().sort((a, b2) => b2[1] - a[1]).slice(0, 6).map((g) => `<div><span class="mono">#${g[2]}</span> · ${g[3] === "memory" ? "remembered" : "smelled"} · <span class="mono">${yen(g[1])}</span>/h</div>`).join("")}</div>`;
-    html += `</div></div><p class="muted" style="font-size:12px;margin-top:10px">Outer ring: 47 heading cells (EPG), bright around the current heading. Inner ring: 82 goal cells (FC2) placed by their wired direction; size is activity. Grey lines are goals (dashed = memory). Recomputed live from FlyWire weights.</p>`;
+    html += `<div class="goal-list"><div class="label">Goals fed in</div>${(dec.goals || []).map((g) => `<div><span class="mono">${g[3] === "explore" || dec.mode === "explore" ? "course" : "#" + g[2]}</span> · ${g[3] === "memory" ? "remembered" : g[3] === "odor" ? "odor → upwind (hΔC)" : "held course"} · <span class="mono">${dec.mode === "explore" ? "" : yen(g[1]) + "/h"}</span></div>`).join("")}</div>`;
+    html += `</div></div><p class="muted" style="font-size:12px;margin-top:10px">Outer ring: 47 heading cells (EPG), bright around the current heading. Inner ring: goal cells (FC2) placed by their wired direction; size is activity. Grey lines are goals (dashed = memory). Recomputed live from FlyWire weights.</p>`;
     box.innerHTML = html;
     return;
   }
+  if (!dec.choice) { box.innerHTML = `<p class="why-lede">${dec.why === "knows no stores" ? "It doesn't know where any store is yet, so it explores for a smell." : "No stop it knows of is worth the drive right now."}</p>`; return; }
+  const knowNote = { company: "It sees live shelf levels at every store.", perfect: "It knows where every store is and their usual sales, but shelf levels only from smell and past visits.", learning: "It plans only over stores it has found, with the sales rates it has learned.", dumb: "It knows only the stores it can smell right now, placed somewhere upwind." }[state.info];
   const lede = key === "ortools"
     ? `The solver searched every route through the stores it knows about and picked the best rest-of-trip: <b>${(dec.plan || []).map((x) => "#" + x).join(" → ")} → DC</b>, worth <b>${yen(dec.plan_profit_per_h)}</b> per hour. It commits only to <b>#${dec.choice}</b>, then re-plans.`
     : `Greedy: it takes the single store with the best profit per hour of getting there, <b>#${dec.choice}</b>, and doesn't look further ahead.`;
-  box.innerHTML = `<p class="why-lede">${lede}</p>` + candTable(dec, key) +
-    `<p class="muted" style="font-size:12px;margin-top:6px">Both work from the truck's nose and memory, the same as the fly: they don't see true shelf levels beyond ${D.meta.scent_range_km * 1000} m.</p>`;
+  box.innerHTML = `<p class="why-lede">${lede}</p>` + candTable(dec, key) + `<p class="muted" style="font-size:12px;margin-top:6px">${knowNote}</p>`;
 }
 
-// ---------- shelves heat strip ----------
+// ---------- shelves and lost sales ----------
 function drawShelves() {
   const { ctx, w, h } = fitCanvas($("#shelves"));
-  const sc = scen(), b = brainData(state.sel), padL = 4, padB = 16;
-  const cols = NG, rows = sc.stores.length, cw = (w - padL) / cols, rh = (h - padB) / rows;
+  const sc = scen(), b = detail(state.sel), padL = 4, padB = 16;
   ctx.clearRect(0, 0, w, h);
+  $("#shelfBrain").textContent = BRAIN_META[state.sel].label;
+  if (!b) return;
+  const cols = NG, rows = sc.stores.length, cw = (w - padL) / cols, rh = (h - padB) / rows;
   sc.order.forEach((si, r) => {
     const row = b.stock[si];
     for (let c = 0; c < cols; c++) { ctx.fillStyle = stockColor(row[c]); ctx.fillRect(padL + c * cw, r * rh, Math.ceil(cw), Math.ceil(rh)); }
@@ -727,87 +1026,88 @@ function drawShelves() {
   for (let d = 1; d < DAYS; d++) { const x = padL + (w - padL) * d * 24 / HOURS; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h - padB); ctx.stroke(); }
   const x = padL + (w - padL) * state.t / HOURS;
   ctx.strokeStyle = T.accent; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h - padB); ctx.stroke();
-  $("#shelfBrain").textContent = BRAINS.find((x2) => x2.key === state.sel).label;
 }
 function drawLost() {
   const svg = $("#lost"), W = 600, H = 170, padL = 52, padR = 10, padT = 8, padB = 22;
-  const sc = scen();
-  const maxV = Math.max(1, ...sc.brains.map((b) => b.lost_curve[NG - 1]));
-  const nice = [1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6, 2e6, 5e6, 1e7, 2e7, 5e7].find((v) => v >= maxV) || maxV;
+  const keys = brainsAt(state.info).filter((k) => detail(k));
+  if (!keys.length) { svg.innerHTML = ""; return; }
+  const maxV = Math.max(1, ...keys.map((k) => detail(k).lost_curve[NG - 1]));
+  const nice = [1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6, 2e6, 5e6, 1e7, 2e7, 5e7, 1e8].find((v) => v >= maxV) || maxV;
   const X = (hr) => padL + (W - padL - padR) * hr / HOURS, Y = (v) => padT + (H - padT - padB) * (1 - v / nice);
   let s = "";
   for (let k = 0; k <= 4; k++) { const v = nice * k / 4; s += `<line x1="${padL}" x2="${W - padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${padL - 6}" y="${Y(v) + 3}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">${yen(v)}</text>`; }
   for (let d = 0; d < DAYS; d++) s += `<text x="${X(d * 24 + 12)}" y="${H - 6}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">${DAYN[d % 7]}</text>`;
-  const ends = BRAINS.map((bm) => ({ bm, v: brainData(bm.key).lost_curve[NG - 1] })).sort((a, b) => b.v - a.v);
+  const ends = keys.map((k) => ({ k, v: detail(k).lost_curve[NG - 1] })).sort((a, b) => b.v - a.v);
   let lastY = -Infinity;
-  const labelY = new Map(ends.map((e) => { let y = Y(e.v) - 3; if (y - lastY < 11) y = lastY + 11; lastY = y; return [e.bm.key, y]; }));
-  for (const bm of BRAINS) {
-    const b = brainData(bm.key);
+  const labelY = new Map(ends.map((e) => { let y = Y(e.v) - 3; if (y - lastY < 11) y = lastY + 11; lastY = y; return [e.k, y]; }));
+  for (const k of keys) {
+    const b = detail(k);
     const d = b.lost_curve.map((v, i) => `${i ? "L" : "M"}${X(i * STEP).toFixed(1)},${Y(v).toFixed(1)}`).join("");
-    s += `<path d="${d}" fill="none" stroke="var(${bm.color})" stroke-width="${bm.key === state.sel ? 2.4 : 1.4}" stroke-opacity="${bm.key === state.sel ? 1 : 0.7}"/>`;
-    s += `<text x="${W - padR}" y="${labelY.get(bm.key)}" text-anchor="end" font-size="10" fill="var(--ink-2)">${bm.short}</text>`;
+    s += `<path d="${d}" fill="none" stroke="var(${BRAIN_META[k].color})" stroke-width="${k === state.sel ? 2.4 : 1.4}" stroke-opacity="${k === state.sel ? 1 : 0.7}"/>`;
+    s += `<text x="${W - padR}" y="${labelY.get(k)}" text-anchor="end" font-size="10" fill="var(--ink-2)">${BRAIN_META[k].short}</text>`;
   }
   s += `<line x1="${X(state.t)}" x2="${X(state.t)}" y1="${padT}" y2="${H - padB}" stroke="var(--accent)" stroke-width="1.5"/>`;
   svg.innerHTML = s;
 }
 
-// ---------- two-goal lab ----------
-const lab = { goals: [{ dir: 40 * Math.PI / 180, s: 1 }, { dir: -40 * Math.PI / 180, s: 0.8 }], drag: -1 };
+// ---------- memory vs smell lab ----------
+const lab = { goals: [{ dir: 50 * Math.PI / 180, s: 1 }, { dir: -40 * Math.PI / 180, s: 1 }], drag: -1 };
 const PRESETS = [
-  { name: "Close together", g: [[20, 1], [-20, 1]] }, { name: "Wide apart", g: [[65, 1], [-65, 1]] },
-  { name: "Opposite", g: [[90, 1], [-90, 1]] }, { name: "One much stronger", g: [[45, 1], [-45, 0.45]] },
+  { name: "Smell agrees with memory", g: [[30, 1], [10, 1]] }, { name: "Smell 90° off", g: [[45, 1], [-45, 1]] },
+  { name: "Smell from behind", g: [[90, 1], [-90, 1]] }, { name: "Faint smell", g: [[45, 1], [-45, 0.4]] }, { name: "Strong smell", g: [[45, 0.5], [-45, 1]] },
 ];
-function buildPresets() {
-  const box = $("#presets");
+function buildLabControls() {
+  const box = $("#presets"); box.innerHTML = "";
   for (const p of PRESETS) { const b = el("button", { type: "button", class: "btn" }, p.name); b.addEventListener("click", () => { lab.goals = p.g.map(([d, s]) => ({ dir: d * Math.PI / 180, s })); renderLab(); }); box.appendChild(b); }
+  const k = $("#bKind"); k.innerHTML = "";
+  for (const [v, name] of [[true, "B is a whiff (upwind goal via hΔC)"], [false, "B is a second remembered store"]]) {
+    const b = el("button", { type: "button", class: "btn", "aria-pressed": String(state.bOdor === v) }, name);
+    b.addEventListener("click", () => { state.bOdor = v; buildLabControls(); renderLab(); });
+    k.appendChild(b);
+  }
+}
+function labInputs() {
+  const [A, B] = lab.goals;
+  return state.bOdor ? { goals: [A], odor: B } : { goals: [A, B], odor: null };
 }
 function renderLab() {
-  const RMAX = 128, st = stableHeadings(lab.goals);
+  const RMAX = 128, { goals, odor } = labInputs(), st = stableHeadings(goals, odor);
   const P = (r, a) => [r * Math.cos(a), -r * Math.sin(a)];
   let s = `<circle r="${RMAX}" fill="var(--panel)" stroke="var(--rule)"/><circle r="${RMAX / 2}" fill="none" stroke="var(--rule)" stroke-dasharray="2 4"/>`;
   for (let k = 0; k < 12; k++) { const [x1, y1] = P(RMAX - 5, k * Math.PI / 6), [x2, y2] = P(RMAX, k * Math.PI / 6); s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--muted)"/>`; }
   s += `<text y="${-RMAX - 8}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">90°</text><text x="${RMAX + 6}" y="4" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">0°</text>`;
-  // goal cell activity ring
-  const fc2 = fc2Act(lab.goals), fMax = Math.max(1e-9, ...fc2);
+  const fc2 = fc2Act(goals, odor), fMax = Math.max(1e-9, ...fc2);
   FC2.forEach((a, i) => { const [x, y] = P(RMAX * 0.78, a); const v = fc2[i] / fMax; s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1 + 3 * v).toFixed(2)}" fill="var(--b-flywire)" fill-opacity="${(0.15 + 0.85 * v).toFixed(2)}"/>`; });
   for (const h of st.out) { const [x, y] = P(RMAX * 0.95, h); s += `<line x1="0" y1="0" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--b-flywire)" stroke-width="3.5" stroke-linecap="round"/>`; }
   lab.goals.forEach((g, i) => {
     const [x, y] = P(RMAX * (0.25 + 0.75 * g.s), g.dir);
-    s += `<line x1="0" y1="0" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--ink-2)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
-    s += `<g class="handle" data-i="${i}" tabindex="0" role="slider" aria-label="Smell ${i ? "B" : "A"}: direction ${Math.round(deg(g.dir))} degrees, strength ${Math.round(g.s * 100)} percent" aria-valuenow="${Math.round(deg(g.dir))}"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" fill="var(--ink)"/><text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--panel)">${i ? "B" : "A"}</text></g>`;
+    const isOdor = i === 1 && state.bOdor;
+    s += `<line x1="0" y1="0" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--ink-2)" stroke-width="1.5" ${isOdor ? "" : 'stroke-dasharray="4 3"'}/>`;
+    s += `<g class="handle" data-i="${i}" tabindex="0" role="slider" aria-label="${i ? (isOdor ? "Smell" : "Second memory") : "Memory"} B: direction ${Math.round(deg(g.dir))} degrees, strength ${Math.round(g.s * 100)} percent" aria-valuenow="${Math.round(deg(g.dir))}"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" fill="${isOdor ? "var(--b-flywire)" : "var(--ink)"}"/><text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--panel)">${i ? "B" : "A"}</text></g>`;
   });
   s += `<circle r="4" fill="var(--ink)"/>`;
   $("#compass").innerHTML = s;
-  // verdict
-  const aDeg = deg(lab.goals[0].dir), bDeg = deg(lab.goals[1].dir);
   const near = (h, g) => Math.abs(deg(wrap(h - g.dir))) < 15;
+  const bName = state.bOdor ? "the smell (upwind)" : "memory B";
   let v, sub;
   if (st.out.length >= 2) {
     v = "Commits to one side";
     sub = `Two stable headings, ${st.out.map((h) => Math.round(deg(h)) + "°").join(" and ")}. Which one the fly takes depends on where it's already pointing: the wiring breaks the tie by momentum, not by value.`;
   } else if (st.out.length === 1) {
     const h = st.out[0];
-    if (near(h, lab.goals[0]) || near(h, lab.goals[1])) {
-      const which = near(h, lab.goals[0]) ? "A" : "B";
-      v = `Goes for ${which}`;
-      sub = `Settles at ${Math.round(deg(h))}°, on smell ${which}. The stronger or closer-aligned goal dominates the normalized goal cells.`;
-    } else {
-      v = "Blends: heads between them";
-      sub = `Settles at ${Math.round(deg(h))}°, between the two smells (A at ${Math.round(aDeg)}°, B at ${Math.round(bDeg)}°). Normalization in the goal cells averages goals instead of picking a winner, so on the road the truck can aim at the gap between two stores.`;
-    }
+    if (near(h, lab.goals[0])) { v = "Follows memory"; sub = `Settles at ${Math.round(deg(h))}°, on the remembered store. ${state.bOdor ? "The upwind drive from hΔC is outweighed in the normalized goal cells." : ""}`; }
+    else if (near(h, lab.goals[1])) { v = state.bOdor ? "Follows its nose" : "Goes for B"; sub = `Settles at ${Math.round(deg(h))}°, on ${bName}.`; }
+    else { v = "Blends: heads between them"; sub = `Settles at ${Math.round(deg(h))}°, between memory A (${Math.round(deg(lab.goals[0].dir))}°) and ${bName} (${Math.round(deg(lab.goals[1].dir))}°). The goal cells normalize, so they average goals instead of picking a winner.`; }
   } else { v = "No stable heading"; sub = "The goals cancel out; the fly keeps turning."; }
   $("#verdict").textContent = v; $("#verdictSub").textContent = sub;
-  // curve
   const W = 640, H = 220, padL = 44, padR = 12, padT = 12, padB = 30;
   const tmax = Math.max(1e-9, ...st.Ts.map(Math.abs));
   const X = (a) => padL + (W - padL - padR) * (deg(a) + 180) / 360, Y = (v2) => padT + (H - padT - padB) * (0.5 - 0.5 * v2 / tmax);
   let c = `<line x1="${padL}" x2="${W - padR}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--rule)"/>`;
   for (let d = -180; d <= 180; d += 90) { const x = padL + (W - padL - padR) * (d + 180) / 360; c += `<line x1="${x}" x2="${x}" y1="${padT}" y2="${H - padB}" stroke="var(--rule)" stroke-dasharray="2 4"/><text x="${x}" y="${H - 10}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">${d}°</text>`; }
   c += `<text x="${padL - 6}" y="${Y(tmax) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">right</text><text x="${padL - 6}" y="${Y(-tmax) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">left</text>`;
-  const d = st.hs.map((h, i) => `${i ? "L" : "M"}${X(h).toFixed(1)},${Y(st.Ts[i]).toFixed(1)}`).join("");
-  c += `<path d="${d}" fill="none" stroke="var(--b-flywire)" stroke-width="2"/>`;
-  for (const g of lab.goals) { const x = X(g.dir); c += `<line x1="${x}" x2="${x}" y1="${padT}" y2="${H - padB}" stroke="var(--ink-2)" stroke-dasharray="4 3"/>`; }
-  lab.goals.forEach((g, i) => { c += `<text x="${X(g.dir) + 4}" y="${padT + 10}" font-size="11" font-weight="700" fill="var(--ink-2)">${i ? "B" : "A"}</text>`; });
+  c += `<path d="${st.hs.map((h, i) => `${i ? "L" : "M"}${X(h).toFixed(1)},${Y(st.Ts[i]).toFixed(1)}`).join("")}" fill="none" stroke="var(--b-flywire)" stroke-width="2"/>`;
+  lab.goals.forEach((g, i) => { const x = X(g.dir); c += `<line x1="${x}" x2="${x}" y1="${padT}" y2="${H - padB}" stroke="var(--ink-2)" stroke-dasharray="4 3"/><text x="${x + 4}" y="${padT + 10}" font-size="11" font-weight="700" fill="var(--ink-2)">${i ? "B" : "A"}</text>`; });
   for (const h of st.out) c += `<circle cx="${X(h)}" cy="${Y(0)}" r="5" fill="var(--b-flywire)" stroke="var(--panel)" stroke-width="2"/>`;
   c += `<text x="${W - padR}" y="${H - padB - 6}" text-anchor="end" font-size="10" fill="var(--muted)">heading →   dots: where it settles (turning stops and pushes back)</text>`;
   $("#curve").innerHTML = c;
@@ -834,78 +1134,133 @@ function bindLab() {
   });
 }
 
-// ---------- findings ----------
+// ---------- across densities ----------
+const SWEEP = (D.sweep && D.sweep.sweep_levels) || [];
+const SENS = (D.sweep && D.sweep.sweep_sensitivity) || [];
 const METRICS = [
-  { key: "fill", name: "Shelves stocked", lo: "fill_lo", hi: "fill_hi", fmt: (v) => Math.round(v * 100) + "%", y: [0.3, 1.0], ref: [{ v: 0.95, label: "95%" }] },
-  { key: "vs", name: "Profit vs. live OR-Tools", lo: "vs_lo", hi: "vs_hi", fmt: (v) => Math.round(v * 100) + "%", y: [0.9, 1.1], ref: [{ v: 1, label: "live OR-Tools" }] },
-  { key: "deliv", name: "Drops per store per day", fmt: (v) => v.toFixed(1), y: [0, 4], ref: [{ v: 3, label: "Japan fresh: 3/day" }, { v: 1, label: "US fresh: 1/day" }] },
+  { key: "profit_day", name: "Profit per day", get: (r) => r.profit / r.days, fmt: (v) => yen(v) },
+  { key: "fill", name: "Demand served", get: (r) => r.fill, fmt: (v) => Math.round(v * 100) + "%", y: [0, 1], ref: [{ v: 0.95, label: "95%" }] },
+  { key: "deliv", name: "Drops per store per day", get: (r) => r.deliv, fmt: (v) => v.toFixed(1), ref: [{ v: 3, label: "Japan fresh: 3/day" }, { v: 1, label: "US fresh: 1/day" }] },
+  { key: "km", name: "Km per day", get: (r) => r.km / r.days, fmt: (v) => Math.round(v) + "" },
 ];
 function buildMetricTabs() {
   const box = $("#metricTabs"); box.innerHTML = "";
   for (const m of METRICS) { const b = el("button", { type: "button", class: "btn", "aria-pressed": String(state.metric === m.key) }, m.name); b.addEventListener("click", () => { state.metric = m.key; buildMetricTabs(); renderCharts(); }); box.appendChild(b); }
-  $("#chartLegend").innerHTML = BRAINS.map((b) => `<span><span class="sw" style="background:var(${b.color})"></span>${b.label}</span>`).join("");
+  $("#chartLegend").innerHTML = BRAIN_KEYS.map((k) => `<span><span class="sw" style="background:var(${BRAIN_META[k].color})"></span>${BRAIN_META[k].label}</span>`).join("");
+}
+function sweepChart(rows, title, m, xKey, xfmt, xlog) {
+  const W = 420, H = 270, padL = 50, padR = 12, padT = 30, padB = 36;
+  const xs = [...new Set(rows.map((r) => r[xKey]))].sort((a, b) => a - b);
+  if (!xs.length) return null;
+  const tx = (v) => (xlog ? Math.log10(v) : v);
+  const lx0 = tx(xs[0]) - (xlog ? 0.08 : 0.02), lx1 = tx(xs[xs.length - 1]) + (xlog ? 0.08 : 0.02);
+  const X = (v) => padL + (W - padL - padR) * (tx(v) - lx0) / Math.max(1e-9, lx1 - lx0);
+  const vals = rows.map(m.get);
+  const [y0, y1] = m.y || [Math.min(0, ...vals), Math.max(...vals) * 1.08];
+  const Y = (v) => padT + (H - padT - padB) * (1 - (Math.min(y1, Math.max(y0, v)) - y0) / (y1 - y0));
+  let s = `<text x="${padL}" y="18" font-size="13" font-weight="700" fill="var(--ink)" font-family="var(--font-display)">${title}</text>`;
+  for (let k = 0; k <= 4; k++) { const v = y0 + (y1 - y0) * k / 4; s += `<line x1="${padL}" x2="${W - padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${padL - 6}" y="${Y(v) + 3}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">${m.fmt(v)}</text>`; }
+  for (const v of xs) s += `<text x="${X(v)}" y="${H - 18}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">${xfmt(v)}</text>`;
+  for (const r of m.ref || []) if (r.v >= y0 && r.v <= y1) s += `<line x1="${padL}" x2="${W - padR}" y1="${Y(r.v)}" y2="${Y(r.v)}" stroke="var(--ink-2)" stroke-dasharray="4 3"/><text x="${W - padR}" y="${Y(r.v) - 4}" text-anchor="end" font-size="10" fill="var(--ink-2)">${r.label}</text>`;
+  return { s, X, Y, W, H };
 }
 function renderCharts() {
   const m = METRICS.find((x) => x.key === state.metric), box = $("#charts"); box.innerHTML = "";
-  for (const regime of ["clustered", "dispersed"]) {
-    const rows = D.sweep.filter((r) => r.regime === regime);
-    const W = 420, H = 280, padL = 44, padR = 12, padT = 30, padB = 36;
-    const nn = [...new Set(rows.map((r) => r.nn_km))].sort((a, b) => a - b);
-    const lx0 = Math.log10(nn[0]) - 0.08, lx1 = Math.log10(nn[nn.length - 1]) + 0.08;
-    const X = (v) => padL + (W - padL - padR) * (Math.log10(v) - lx0) / (lx1 - lx0);
-    const [y0, y1] = m.y, Y = (v) => padT + (H - padT - padB) * (1 - (Math.min(y1, Math.max(y0, v)) - y0) / (y1 - y0));
-    let s = `<text x="${padL}" y="18" font-size="13" font-weight="700" fill="var(--ink)" font-family="var(--font-display)">${regime === "clustered" ? "Clustered stores" : "Evenly spread stores"}</text>`;
-    const ticksY = m.key === "deliv" ? [0, 1, 2, 3, 4] : m.key === "vs" ? [0.9, 0.95, 1, 1.05, 1.1] : [0.4, 0.6, 0.8, 1.0];
-    for (const v of ticksY) s += `<line x1="${padL}" x2="${W - padR}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rule)"/><text x="${padL - 6}" y="${Y(v) + 3}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">${m.fmt(v)}</text>`;
-    for (const v of [0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10]) { if (Math.log10(v) < lx0 || Math.log10(v) > lx1) continue; s += `<text x="${X(v)}" y="${H - 18}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">${v < 1 ? v * 1000 + " m" : v + " km"}</text><line x1="${X(v)}" x2="${X(v)}" y1="${H - padB}" y2="${H - padB + 4}" stroke="var(--muted)"/>`; }
-    s += `<text x="${(padL + W - padR) / 2}" y="${H - 4}" text-anchor="middle" font-size="10" fill="var(--muted)">distance to nearest neighbouring store (log scale)</text>`;
-    for (const r of m.ref) s += `<line x1="${padL}" x2="${W - padR}" y1="${Y(r.v)}" y2="${Y(r.v)}" stroke="var(--ink-2)" stroke-dasharray="4 3"/><text x="${W - padR}" y="${Y(r.v) - 4}" text-anchor="end" font-size="10" fill="var(--ink-2)">${r.label}</text>`;
-    for (const bm of BRAINS) {
-      if (m.key === "vs" && bm.key === "ortools") continue;
-      const pts = rows.filter((r) => r.policy === bm.key).sort((a, b) => a.nn_km - b.nn_km);
+  if (!SWEEP.length) { box.innerHTML = `<p class="muted">Density sweep not run yet.</p>`; return; }
+  const seeds = Math.max(...SWEEP.map((r) => r.seeds)), days = SWEEP[0].days;
+  $("#sweepNote").textContent = `The same week at six store spacings, from packed to scattered (55 stores spread evenly, ${days}-day runs, ${seeds} seeds each). One chart per level of knowledge; lines are brains. Lines are means${m.key === "profit_day" ? "; bands span the seeds" : ""}.`;
+  for (const info of LEVELS) {
+    const rows = SWEEP.filter((r) => r.info === info && r.regime === "dispersed");
+    const c = sweepChart(rows, levelLabel(info), m, "nn_km", distText, true);
+    if (!c) continue;
+    let s = c.s;
+    for (const k of brainsAt(info)) {
+      const pts = rows.filter((r) => r.brain === k).sort((a, b) => a.nn_km - b.nn_km);
       if (!pts.length) continue;
-      if (m.lo) {
-        const top = pts.map((p) => `${X(p.nn_km).toFixed(1)},${Y(p[m.hi]).toFixed(1)}`), bot = pts.slice().reverse().map((p) => `${X(p.nn_km).toFixed(1)},${Y(p[m.lo]).toFixed(1)}`);
-        s += `<polygon points="${top.concat(bot).join(" ")}" fill="var(${bm.color})" fill-opacity="0.12"/>`;
+      if (m.key === "profit_day") {
+        const top = pts.map((p) => `${c.X(p.nn_km).toFixed(1)},${c.Y(p.profit_hi / p.days).toFixed(1)}`), bot = pts.slice().reverse().map((p) => `${c.X(p.nn_km).toFixed(1)},${c.Y(p.profit_lo / p.days).toFixed(1)}`);
+        s += `<polygon points="${top.concat(bot).join(" ")}" fill="var(${BRAIN_META[k].color})" fill-opacity="0.12"/>`;
       }
-      s += `<path d="${pts.map((p, i) => `${i ? "L" : "M"}${X(p.nn_km).toFixed(1)},${Y(p[m.key]).toFixed(1)}`).join("")}" fill="none" stroke="var(${bm.color})" stroke-width="2"/>`;
-      for (const p of pts) s += `<circle cx="${X(p.nn_km).toFixed(1)}" cy="${Y(p[m.key]).toFixed(1)}" r="3.2" fill="var(${bm.color})" stroke="var(--panel)" stroke-width="1"><title>${bm.label} · stores ${p.nn_km < 1 ? Math.round(p.nn_km * 1000) + " m" : p.nn_km.toFixed(1) + " km"} apart · ${m.name}: ${m.key === "deliv" ? p[m.key].toFixed(2) : pct(p[m.key])}</title></circle>`;
+      s += `<path d="${pts.map((p, i) => `${i ? "L" : "M"}${c.X(p.nn_km).toFixed(1)},${c.Y(m.get(p)).toFixed(1)}`).join("")}" fill="none" stroke="var(${BRAIN_META[k].color})" stroke-width="2"/>`;
+      for (const p of pts) s += `<circle cx="${c.X(p.nn_km).toFixed(1)}" cy="${c.Y(m.get(p)).toFixed(1)}" r="3" fill="var(${BRAIN_META[k].color})"><title>${BRAIN_META[k].label} · ${levelLabel(info)} · stores ${distText(p.nn_km)} apart · ${m.name}: ${m.fmt(m.get(p))}</title></circle>`;
     }
-    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `${m.name}, ${regime}` }); svg.innerHTML = s; box.appendChild(svg);
+    box.appendChild(svgEl(c.W, c.H, `${m.name}, ${levelLabel(info)}`, s));
+  }
+  renderSensitivity();
+}
+function renderSensitivity() {
+  const box = $("#sensWrap");
+  if (!SENS.length) { box.innerHTML = ""; return; }
+  const m = METRICS[0];
+  box.innerHTML = `<h3 style="margin-bottom:4px">How sensitive is this?</h3><p class="ink2" style="font-size:13px;max-width:70ch">At the cliff layout: position drift (how fast the truck's sense of where it is goes wrong) and plume length (how far downwind a store can be smelled). Line color is the brain (legend above); solid: perfect-memory fly, dashed: learning fly, dotted: dumb fly. Profit per day.</p><div class="charts" id="sensCharts"></div>`;
+  const out = $("#sensCharts");
+  const base = { drift: 0.05, plume_km: 1.5 };
+  for (const [xKey, other, title, xfmt] of [["drift", "plume_km", "Position drift (km of error after 1 km)", (v) => v.toFixed(2)], ["plume_km", "drift", "Plume length (km)", (v) => v.toFixed(2)]]) {
+    const rows = SENS.filter((r) => Math.abs(r[other] - base[other]) < 1e-9 && r.info !== "company");
+    const c = sweepChart(rows, title, m, xKey, xfmt, false);
+    if (!c) continue;
+    let s = c.s;
+    for (const info of ["perfect", "learning", "dumb"]) for (const k of FLY_BRAINS) {
+      const pts = rows.filter((r) => r.brain === k && r.info === info).sort((a, b) => a[xKey] - b[xKey]);
+      if (pts.length < 2) continue;
+      s += `<path d="${pts.map((p, i) => `${i ? "L" : "M"}${c.X(p[xKey]).toFixed(1)},${c.Y(m.get(p)).toFixed(1)}`).join("")}" fill="none" stroke="var(${BRAIN_META[k].color})" stroke-width="1.8" ${info === "learning" ? 'stroke-dasharray="5 4"' : info === "dumb" ? 'stroke-dasharray="1 3"' : ""}><title>${BRAIN_META[k].label} · ${levelLabel(info)}</title></path>`;
+    }
+    out.appendChild(svgEl(c.W, c.H, title, s));
   }
 }
-function crossing(rows, key, thr) {
+function crossing(rows, get, thr) {
   const p = rows.slice().sort((a, b) => a.nn_km - b.nn_km);
-  for (let i = 1; i < p.length; i++) if (p[i][key] < thr && p[i - 1][key] >= thr) {
-    const x0 = Math.log10(p[i - 1].nn_km), x1 = Math.log10(p[i].nn_km), f = (p[i - 1][key] - thr) / (p[i - 1][key] - p[i][key]);
+  for (let i = 1; i < p.length; i++) if (get(p[i]) < thr && get(p[i - 1]) >= thr) {
+    const x0 = Math.log10(p[i - 1].nn_km), x1 = Math.log10(p[i].nn_km), f = (get(p[i - 1]) - thr) / (get(p[i - 1]) - get(p[i]));
     return Math.pow(10, x0 + f * (x1 - x0));
   }
   return null;
 }
-function distText(v) { return v < 1 ? Math.round(v * 1000) + " m" : v.toFixed(1) + " km"; }
 function buildFindings() {
-  const S = D.sweep, pols = BRAINS.map((b) => b.key);
-  const cliffs = {};
-  for (const regime of ["clustered", "dispersed"]) { const vals = pols.map((p) => crossing(S.filter((r) => r.regime === regime && r.policy === p), "fill", 0.95)).filter((v) => v); cliffs[regime] = [Math.min(...vals), Math.max(...vals)]; }
-  const dense = S.filter((r) => r.nn_km === Math.min(...S.map((x) => x.nn_km)));
-  const sparse = S.filter((r) => r.nn_km === Math.max(...S.map((x) => x.nn_km)));
-  const avg = (rows, k) => rows.reduce((a, r) => a + r[k], 0) / rows.length;
-  const fw = S.filter((r) => r.policy === "flywire");
-  const fwWorst = fw.reduce((a, r) => (r.vs < a.vs ? r : a));
-  const fwOk = fw.filter((r) => r.nn_km < fwWorst.nn_km);
-  const fwOkLo = Math.min(...fwOk.map((r) => r.vs)), fwOkHi = Math.max(...fwOk.map((r) => r.vs));
-  const kmSave = ["clustered", "dispersed"].map((reg) => { const rows = S.filter((r) => r.regime === reg); const minNn = Math.min(...rows.map((r) => r.nn_km)); const f = rows.find((r) => r.nn_km === minNn && r.policy === "flywire"), o = rows.find((r) => r.nn_km === minNn && r.policy === "ortools"); return 1 - f.km / o.km; });
-  const dp = S.filter((r) => r.policy === "ortools-dayplan"), rule = S.filter((r) => r.policy === "fly-rule");
-  const rng = (rows) => `${Math.round(Math.min(...rows.map((r) => r.vs)) * 1000) / 10}–${Math.round(Math.max(...rows.map((r) => r.vs)) * 1000) / 10}%`;
-  const sp = D.scenarios.find((s) => s.key === "sparse"), spL = brainData("ortools", sp).summary, spP = brainData("ortools-dayplan", sp).summary;
-  const items = [
-    ["Density decides, not the brain.", `All four brains start running shelves empty at the same store spacing: <span class="num">${distText(cliffs.clustered[0])}–${distText(cliffs.clustered[1])}</span> apart when clustered, <span class="num">${distText(cliffs.dispersed[0])}–${distText(cliffs.dispersed[1])}</span> when spread evenly. One truck simply can't reach 55 stores often enough once they're farther apart.`],
-    ["Delivery frequency falls out of density.", `About <span class="num">${avg(dense, "deliv").toFixed(1)}</span> drops per store per day at the tightest spacing, about <span class="num">${avg(sparse, "deliv").toFixed(1)}</span> at the widest. That's the case's Japan three-a-day versus US once-a-day, and nothing in the model was set to produce it.`],
-    ["The fly's brain keeps up with the solver.", `The FlyWire circuit earns <span class="num">${Math.round(fwOkLo * 1000) / 10}–${Math.round(fwOkHi * 1000) / 10}%</span> of live OR-Tools' profit until stores are about <span class="num">${distText(fwWorst.nn_km)}</span> apart, where it dips to <span class="num">${pct(fwWorst.vs)}</span>. Blending goals costs it most when stores are far apart and a wrong blend means kilometres, not metres.`],
-    ["It drives less when it can smell more.", `At the tightest spacing it covers <span class="num">${Math.round(kmSave[0] * 100)}–${Math.round(kmSave[1] * 100)}%</span> fewer km than OR-Tools for the same sales, stopping at stores it smells on the way instead of making dedicated trips.`],
-    ["Planning the day ahead doesn't win on average.", `On the same senses, the planned day earns <span class="num">${rng(dp)}</span> of live OR-Tools' profit. It bundles well when stores are far apart (the spread-out day above: <span class="num">${yen(spP.profit_yen - spL.profit_yen)}</span> more, <span class="num">${Math.round((1 - spP.km / spL.km) * 100)}%</span> fewer km), but a fixed plan can't react when a store sells out early.`.replace("the spread-out day above", "the spread-out week above")],
-    ["Simple beats exact on the same information.", `The greedy fly rule earns <span class="num">${rng(rule)}</span> of live OR-Tools. Solving routes perfectly buys little when the scores themselves are short-sighted; what SEJ's system buys is better information and denser stores.`],
-  ];
+  const items = [];
+  if (SWEEP.length) {
+    const rowsOf = (b, i) => SWEEP.filter((r) => r.brain === b && r.info === i && r.regime === "dispersed").sort((a, c) => a.nn_km - c.nn_km);
+    const cl = FLY_BRAINS.map((b) => crossing(rowsOf(b, "company"), (r) => r.fill, 0.95)).filter((v) => v);
+    if (cl.length) items.push(["Density decides when a truck keeps up.", `With company data, every brain starts running shelves empty once stores are about <span class="num">${distText(Math.min(...cl))}–${distText(Math.max(...cl))}</span> apart. One truck can't reach 55 stores often enough beyond that, whatever decides the route.`]);
+    const co = rowsOf("ortools", "company");
+    if (co.length) items.push(["Delivery frequency falls out of density.", `About <span class="num">${co[0].deliv.toFixed(1)}</span> drops per store per day at the tightest spacing, <span class="num">${co[co.length - 1].deliv.toFixed(1)}</span> at the widest (OR-Tools, company data): the case's Japan three-a-day against US once-a-day, and nothing was set to produce it.`]);
+    const ratio = (b1, i1, b2, i2) => { const a = rowsOf(b1, i1), c = rowsOf(b2, i2); const v = a.map((r, k) => (c[k] ? r.profit / c[k].profit : null)).filter((x) => x !== null && isFinite(x)); return v.length ? [Math.min(...v), Math.max(...v)] : null; };
+    const inf = ratio("ortools", "perfect", "ortools", "company");
+    if (inf) items.push(["The map is worth more than live data.", `OR-Tools on a fly's senses with a perfect memory (shelf levels only by smell, drifting position) earns <span class="num">${pct(inf[0], 0)}–${pct(inf[1], 0)}</span> of what it earns with live point-of-sale data and GPS. Knowing where stores are and how they usually sell does most of the work.`]);
+    const co2 = rowsOf("ortools", "company"), cr2 = rowsOf("fly-rule", "company");
+    const lead = co2.map((r, k) => ({ nn: r.nn_km, v: cr2[k] ? r.profit / cr2[k].profit - 1 : 0 }));
+    const k1 = lead.findIndex((x) => x.v > 0.01);
+    if (k1 > 0) items.push(["Exact routing pays once stores are far apart.", `With company data OR-Tools and the greedy fly rule are within 1% up to <span class="num">${distText(lead[k1 - 1].nn)}</span> between stores; from <span class="num">${distText(lead[k1].nn)}</span> the solver leads, by up to <span class="num">${pct(Math.max(...lead.map((x) => x.v)), 0)}</span>, bundling stops a one-at-a-time rule can't see.`]);
+    const fl = rowsOf("flywire", "learning"), ol = rowsOf("ortools", "learning"), fd = rowsOf("flywire", "dumb"), od = rowsOf("ortools", "dumb");
+    if (fl.length && ol.length) items.push(["The fly's circuit wins where knowledge is thin and stores are close.", `As a learning fly it earns <span class="num">${sgnPct(fl[0].profit / ol[0].profit - 1, 0)}</span> against OR-Tools at the tightest spacing${fd.length && od.length ? ` (dumb fly <span class="num">${sgnPct(fd[0].profit / od[0].profit - 1, 0)}</span>)` : ""}, but <span class="num">${sgnPct(fl[fl.length - 1].profit / ol[ol.length - 1].profit - 1, 0)}</span> at the widest: blending smell and memory serves nearby stores on the way, while far apart it wanders.`]);
+    const lrn = ratio("ortools", "learning", "ortools", "perfect");
+    const lk = rowsOf("ortools", "learning");
+    if (lrn && lk.length) items.push(["Learning the map takes longer the sparser the stores.", `A learning fly's week earns <span class="num">${pct(lrn[1], 0)}</span> of a perfect-memory fly's at the tightest spacing and <span class="num">${pct(lrn[0], 0)}</span> at the widest, where it has found only <span class="num">${Math.round(lk[lk.length - 1].known)}</span> of 55 stores by Sunday.`]);
+  }
+  if (SENS.length) {
+    const at = (b, i, key, v, okey, ov) => SENS.find((r) => r.brain === b && r.info === i && Math.abs(r[key] - v) < 1e-9 && Math.abs(r[okey] - ov) < 1e-9);
+    const ds = [...new Set(SENS.filter((r) => Math.abs(r.plume_km - 1.5) < 1e-9).map((r) => r.drift))].sort((a, b) => a - b);
+    if (ds.length > 1) {
+      const d0 = ds[0], d1 = ds[ds.length - 1];
+      const loss = (b, i) => { const a = at(b, i, "drift", d0, "plume_km", 1.5), c = at(b, i, "drift", d1, "plume_km", 1.5); return a && c ? c.profit / a.profit - 1 : null; };
+      const pl = FLY_BRAINS.map((b) => loss(b, "perfect")).filter((v) => v !== null);
+      const ll = FLY_BRAINS.map((b) => [b, loss(b, "learning")]).filter(([, v]) => v !== null).sort((a, b) => b[1] - a[1]);
+      if (pl.length && ll.length) items.push(["Noisy navigation poisons a learned map.", `At the cliff layout, raising position drift from ${d0} to ${d1} km per km costs a perfect-memory fly at most <span class="num">${pct(-Math.min(...pl), 0)}</span>: it re-zeros at every store it knows. A learning fly records its map in that drifting frame and loses ${ll.map(([b, v]) => `${BRAIN_META[b].label} <span class="num">${pct(-v, 0)}</span>`).join(", ")}. The ${BRAIN_META[ll[0][0]].label} holds up best.`]);
+    }
+    const ps = [...new Set(SENS.filter((r) => Math.abs(r.drift - 0.05) < 1e-9).map((r) => r.plume_km))].sort((a, b) => a - b);
+    if (ps.length > 2) {
+      const p0 = ps[0], p1 = ps[ps.length - 1];
+      const prof = (b, i, p) => { const r = at(b, i, "plume_km", p, "drift", 0.05); return r ? r.profit : null; };
+      const series = (b, i) => ps.map((p) => prof(b, i, p)).filter((v) => v !== null);
+      const spread = (i) => Math.max(...FLY_BRAINS.map((b) => { const v = series(b, i); return v.length ? Math.max(...v) / Math.min(...v) - 1 : 0; }));
+      const longLoss = (i) => Math.max(...FLY_BRAINS.map((b) => { const v = series(b, i), last = prof(b, i, p1); return v.length && last !== null ? 1 - last / Math.max(...v) : 0; }));
+      const searchAt = (i, p) => FLY_BRAINS.reduce((s, b) => { const r = at(b, i, "plume_km", p, "drift", 0.05); return s + (r ? r.search_km : 0); }, 0);
+      const growth = searchAt("dumb", p0) > 0 ? searchAt("dumb", p1) / searchAt("dumb", p0) : null;
+      const hurts = longLoss("learning") > 0.05 || longLoss("dumb") > 0.05;
+      items.push([hurts ? "A longer nose isn't better." : "Plume length matters little.",
+        `From ${p0} km to ${p1} km plumes, a perfect-memory fly's week moves <span class="num">${pct(spread("perfect"), 0)}</span> at most: it barely needs its nose. Flies that rely on smell do: with ${p1} km plumes a learning fly loses up to <span class="num">${pct(longLoss("learning"), 0)}</span> and a dumb fly up to <span class="num">${pct(longLoss("dumb"), 0)}</span> against their best plume length${growth ? `, and the dumb fly's searching and casting grows <span class="num">${growth.toFixed(1)}×</span>` : ""}. ${hurts ? "Faint whiffs from far-off stores send it chasing." : ""}`]);
+    }
+  }
   $("#findingsList").innerHTML = items.map(([h, p]) => `<div class="finding"><h3>${h}</h3><p>${p}</p></div>`).join("");
 }
 
@@ -918,18 +1273,22 @@ function buildBasis() {
     ["Steering cells (PFL3): heading vs goal offset", "Bridge heading vs fan-shaped-body column", "Published ±67.5°, opposite per side", `${v.pfl3_right_offset_deg > 0 ? "+" : ""}${v.pfl3_right_offset_deg}° / ${v.pfl3_left_offset_deg}°`],
     ["Turning booster (PFL2) offset", "Same construction", "Published 180°", `${v.pfl2_offset_deg}°`],
     ["Which way each of " + n.pfl3 + " PFL3 turns", "Side of the brain its output reaches", "Right LAL drives right turns", "12 / 12 split"],
+    [`Odor cells (${n.hdc} hΔC): where they listen vs where they talk`, `Wind-PFN inputs (${n.hdc_with_wind_angle} cells) vs FC2 targets`, "'Half-delta' anatomy: about 180°", `${v.hdc_shift_deg}° (consistency ${v.hdc_shift_consistency})`],
+    ["Odor + wind steer the fly upwind", `FB5AB → hΔC (${n.fb5ab_to_hdc_synapses} synapses) → FC2 (${n.hdc_to_fc2_synapses}) → PFL3`, "Matheson et al. 2022: upwind", `${v.upwind_within_45}/${v.upwind_n} wind directions within 45°, median ${v.upwind_median_err_deg}°`],
   ];
   $("#vtable").innerHTML = `<thead><tr><th>What</th><th>Derived from</th><th>Checked against</th><th>Result</th></tr></thead><tbody>` +
     rows.map((r) => `<tr><td>${r[0]}</td><td class="ink2">${r[1]}</td><td class="ink2">${r[2]}</td><td class="num">${r[3]}</td></tr>`).join("") + `</tbody>`;
-  const m = D.meta;
+  const m = D.meta, pl = m.plume;
   const items = [
-    `Store economics from the case: <span class="mono">${yen(m.daily_sales_yen)}</span> sales per store per day, <span class="mono">${pct(m.fresh_share)}</span> of it fresh food. Assumed: ${pct(m.gross_margin, 0)} margin, shelf holds ${pct(m.shelf_capacity_days, 0)} of a day's fresh sales, ${yen(m.cost_per_km)} per km.`,
-    `One truck per 55 stores at ${m.truck_speed_kmh} km/h, ${m.service_min}-minute stops, trips up to ${m.max_trip_h} h. The density cliff moves with these.`,
-    `Every brain has the same nose (true shelf levels within ${m.scent_range_km * 1000} m) and memory beyond it, and the same drifting sense of position (${m.pi_error_at_1km * 1000} m of error per km, growing like the square root of distance).`,
-    `Urgency is money: the margin on sales a visit would save over the next ${m.lookahead_h} hours. Every brain scores stores this way.`,
-    `The fly holds one goal from memory, the best store it can't smell, by the same score. Which store it nominates is a foraging rule, not the connectome; how it steers and blends that goal with nearby smells is the wiring.`,
-    `Four circuit settings (bump width, response steepness, goal strength, normalization) were tuned on single-goal steering only; the two-smell behavior and the delivery results were never used to pick them.`,
-    `The heading ring receives heading directly; the shared body handles drift for every brain. Close-range homing on a smelled store is a body reflex every brain gets.`,
+    `Store economics from the case: <span class="mono">${yen(m.daily_sales_yen)}</span> sales per store per day, <span class="mono">${pct(m.fresh_share)}</span> of it fresh food. Assumed: ${pct(m.gross_margin, 0)} margin, shelf holds ${pct(m.shelf_capacity_days, 0)} of a day's fresh sales, ${yen(m.cost_per_km)} per km. One truck per 55 stores at ${m.truck_speed_kmh} km/h, ${m.service_min}-minute stops, trips up to ${m.max_trip_h} h.`,
+    `Urgency is money: the margin on sales a visit would save over the next ${m.lookahead_h} hours. Every brain scores stores this way, from what it knows. OR-Tools maximizes the same profit per hour as the fly, over the whole rest of the trip.`,
+    `Company information means live shelf levels at every store and GPS, like SEJ's point-of-sale network. No brain gets it at the fly levels.`,
+    `Smell: each store gives off odor in proportion to how much a visit would save, carried downwind in a patchy plume (whiff chance fades over ${pl.length_km} km downwind and widens with distance; smelled in any direction within ${pl.near_km * 1000} m). A stylized plume, scaled from fly size to truck size; the length is varied in the sensitivity check.`,
+    `Wind: a random direction each day that wanders slowly. Every brain on a layout faces the same wind.`,
+    `Position: path integration drifts ${m.pi_error_at_1km * 1000} m per km (random walk). It re-zeros at the DC and, for flies with a memory, at every store found (flies re-zero at food, Behbahani et al. 2021).`,
+    `Navigation reflexes every brain shares: memory first; once memory runs out, surge upwind on a whiff, cast crosswind when the plume is lost, then spiral search. Close range (${pl.see_km * 1000} m, or ${pl.near_km * 1000} m for a smelled store) it homes straight in. The FlyWire brain steers with its circuit instead of the memory-and-surge steps.`,
+    `Learning fly: remembers a store where its drifting estimate put it, and learns how fast each store sells from two shelf readings in a row (a prediction-error update). Learning and dumb flies explore by holding a course, only ${m.active_hours[0]}:00–${m.active_hours[1]}:00.`,
+    `FlyWire circuit: four settings (bump width, response steepness, goal strength, normalization) were tuned on single-goal steering only. Two constants are set by behavior, not wiring: which way round the heading ring runs, and aligning the wind code so odor points the fly upwind (what Matheson et al. observed). Which store the fly commits to is a foraging rule, not the connectome.`,
   ];
   $("#assume").innerHTML = items.map((x) => `<li>${x}</li>`).join("");
   $("#gen").textContent = `Data generated ${m.generated}.`;
@@ -938,16 +1297,22 @@ function buildBasis() {
 // ---------- orchestration ----------
 function syncSelection() {
   for (const [key, { card }] of Object.entries(mapCanvases)) card.setAttribute("aria-pressed", String(key === state.sel));
-  [...$("#whyTabs").children].forEach((b, i) => b.setAttribute("aria-pressed", String(BRAINS[i].key === state.sel)));
+  [...$("#whyTabs").children].forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.key === state.sel)));
+  $("#bxi").querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.b === state.sel && b.dataset.i === state.info)));
 }
 function drawAll() {
-  for (const b of BRAINS) drawMap(b.key);
+  for (const k of Object.keys(mapCanvases)) drawMap(k);
   drawTimeline(); drawShelves(); drawLost(); renderWhy();
   $("#clock").textContent = clockW(state.t);
   $("#scrub").value = state.t;
 }
 function setTime(t) { state.t = Math.max(0, Math.min(HOURS, t)); drawAll(); }
-function onScenario() { buildEod(); drawAll(); }
+function onChange() {
+  $("#replayTitle").textContent = `One week, replayed · ${levelLabel(state.info)}`;
+  $("#replayNote").textContent = `${D.levels.find((l) => l.key === state.info).note} Store dots show shelf level (red = empty, sales lost). The line is where the truck went today; a hollow ring shows where it believes it is. Dashed lines show what each brain intends next. Click a map to inspect that brain below.`;
+  buildGrid(); buildModes(); buildMaps(); buildWhyTabs(); buildEod(); drawLearn(); drawAll();
+  ensureRuns().then(() => drawAll()).catch((e) => { $("#maps").innerHTML = `<div class="loading">Couldn't load the replay (${e.message}).</div>`; });
+}
 function buildSpeeds() {
   const box = $("#speeds");
   for (const sp of [1, 4, 12]) { const b = el("button", { type: "button", class: "btn", "aria-pressed": String(sp === state.speed) }, sp + "×"); b.addEventListener("click", () => { state.speed = sp; [...box.children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); }); box.appendChild(b); }
@@ -972,8 +1337,8 @@ $("#timeline").addEventListener("pointermove", (e) => { if (e.buttons) timelineS
 
 readTokens();
 $("#scrub").max = HOURS;
-buildScenarios(); buildMaps(); buildSpeeds(); buildWhyTabs(); buildPresets(); bindLab();
-buildMetricTabs(); renderCharts(); buildFindings(); buildBasis(); onScenario(); renderLab();
+buildPickers(); buildSpeeds(); buildLearnTabs(); buildLabControls(); bindLab();
+buildMetricTabs(); renderCharts(); buildFindings(); buildBasis(); onChange(); renderLab();
 $("#ramp").style.background = `linear-gradient(90deg, ${stockColor(1)}, ${stockColor(0.05)})`;
 const retheme = () => { readTokens(); $("#ramp").style.background = `linear-gradient(90deg, ${stockColor(1)}, ${stockColor(0.05)})`; drawAll(); };
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", retheme);
