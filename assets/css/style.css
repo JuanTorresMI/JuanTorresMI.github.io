@@ -16,6 +16,8 @@ h1, h2, h3 {
 
 .navbar {
   display: flex;
+  flex-wrap: wrap;
+  row-gap: 0.6rem;
   justify-content: center;
   align-items: center;
   background: #007aff;
@@ -213,6 +215,9 @@ iframe {
   }
   .navbar {
     font-size: 0.9rem;
-    padding: 0.9rem 0;
+    padding: 0.9rem 0.5rem;
+  }
+  .navbar a {
+    margin: 0 0.8rem;
   }
 }

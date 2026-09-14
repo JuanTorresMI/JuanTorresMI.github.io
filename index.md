@@ -24,6 +24,18 @@ title: Juan Torres
 
 <hr>
 
+<section id="projects">
+  <h2>Projects</h2>
+  <ul>
+    <li>
+      <a class="highlight-title" href="/fruit-fly-dispatcher/">Fruit Fly Dispatcher</a>
+      <span class="highlight-desc">A fruit fly's navigation circuit, wired neuron by neuron from the FlyWire connectome, runs a week of fresh-food deliveries against Google OR-Tools. Built around the 7-Eleven Japan case: how store density decides delivery frequency.</span>
+    </li>
+  </ul>
+</section>
+
+<hr>
+
 <section id="highlights">
   <h2>Highlights</h2>
   <ul>
