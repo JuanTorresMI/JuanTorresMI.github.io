@@ -69,7 +69,7 @@ description: Projects by Juan Torres, and a live log of what he's building, pull
   }
   function render({ repos, commits }) {
     document.getElementById("repos").innerHTML = repos.map((r) => `<a class="repo" href="${esc(r.url)}">
-      <span class="name">${esc(r.name === SITE_REPO ? "juantorres.xyz (this site)" : r.name)}</span>
+      <span class="name">${esc(r.name === SITE_REPO ? "juantorresmi.github.io (this site)" : r.name)}</span>
       ${r.desc ? `<span class="desc">${esc(r.desc)}</span>` : ""}
       <span class="when">${r.lang ? esc(r.lang) + " · " : ""}pushed ${ago(r.pushed)}</span></a>`).join("");
     const days = new Map();

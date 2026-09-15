@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Juan Torres
+narrow: true
 ---
 <section class="hero">
   <div class="card-stage" id="stage">
@@ -41,8 +42,8 @@ title: Juan Torres
   <div class="rows">
     {% for p in site.data.projects %}
     <a class="row" href="{{ p.url }}">
-      <span class="idx">{{ forloop.index | prepend: "0" | slice: -2, 2 }} · {{ p.kind }}</span>
-      <span><span class="t">{{ p.title }}</span><span class="d">{{ p.short }}</span></span>
+      <span class="idx">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
+      <span><span class="kind">{{ p.kind }}</span><span class="t">{{ p.title }}</span><span class="d">{{ p.short }}</span></span>
       <span class="arrow" aria-hidden="true">→</span>
     </a>
     {% endfor %}

@@ -33,7 +33,7 @@ description: Juan Torres writes about finance, school and work on Substack.
       const d = new Date(p.date);
       const when = isNaN(d) ? "" : d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
       const ext = p.source === "Substack";
-      return `<a class="row" href="${esc(p.url)}"${ext ? ' rel="noopener"' : ""}>
+      return `<a class="row dated" href="${esc(p.url)}"${ext ? ' rel="noopener"' : ""}>
         <span class="idx">${esc(when)}</span>
         <span><span class="t">${esc(p.title)}</span>${p.excerpt ? `<span class="d">${esc(clip(p.excerpt, 170))}</span>` : ""}</span>
         <span class="tag">${esc(p.source)}${ext ? " ↗" : ""}</span></a>`;
