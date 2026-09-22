@@ -3,8 +3,11 @@ layout: default
 title: What we're watching
 permalink: /watching/
 description: What's playing on the house TV right now, what we've been watching lately, and what's in the library.
+# Public, but not something to turn up in a search for his name.
+noindex: true
+sitemap: false
 ---
-<p class="eyebrow">{{ site.data.watching.label | default: "The house TV" }}</p>
+<p class="eyebrow">{{ site.tv_label | default: "The house TV" }}</p>
 <h1>What are we watching</h1>
 <p class="lede">Whatever's on the TV downstairs. Stremio keeps its own notes on what the house plays; this page reads them back and nothing else.</p>
 
@@ -30,7 +33,7 @@ description: What's playing on the house TV right now, what we've been watching 
 
 <script>
 (() => {
-  const CFG = {{ site.data.watching | jsonify }};
+  const CFG = { endpoint: {{ site.worker_url | default: "" | jsonify }} };
   const POLL = 40000;
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const $ = (id) => document.getElementById(id);
@@ -38,7 +41,7 @@ description: What's playing on the house TV right now, what we've been watching 
   if (!CFG.endpoint) {
     $("np").innerHTML = `<div class="setup"><h3>One thing to fill in</h3><ol>
       <li>Deploy the Worker in <span class="mono">worker/</span>, following <span class="mono">worker/README.md</span>.</li>
-      <li>Put the URL it prints into <span class="mono">_data/watching.yml</span> as <span class="mono">endpoint</span>.</li>
+      <li>Put the URL it prints into <span class="mono">_config.yml</span> as <span class="mono">worker_url</span>.</li>
       </ol><p class="sub">The Stremio key stays in the Worker. Nothing secret ends up in this page, which is the point of the arrangement.</p></div>`;
     $("now-when").textContent = "not set up";
     $("feed").innerHTML = "";

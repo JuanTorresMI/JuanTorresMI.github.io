@@ -22,9 +22,11 @@ description: Juan Torres writes about finance, school and work on Substack.
 <script>
 (() => {
   const LOCAL = [{% for post in site.posts %}{ "title": {{ post.title | jsonify }}, "url": {{ post.url | jsonify }}, "date": {{ post.date | date_to_xmlschema | jsonify }}, "excerpt": {{ post.excerpt | strip_html | strip_newlines | truncate: 180 | jsonify }}, "source": "On this site" }{% unless forloop.last %},{% endunless %}{% endfor %}];
-  const FEED = "https://juantorresis.substack.com/feed";
+  // Substack's RSS has no CORS headers, so this goes through the site's own Worker rather
+  // than a third-party XML-to-JSON service. See worker/src/index.js.
+  const WORKER = {{ site.worker_url | default: "" | jsonify }};
+  const FEED = WORKER ? WORKER.replace(/\/+$/, "") + "/substack" : null;
   const esc = (s) => String(s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const text = (html) => { const d = document.createElement("div"); d.innerHTML = html || ""; return (d.textContent || "").replace(/\s+/g, " ").trim(); };
   const clip = (s, n) => (s.length > n ? s.slice(0, n).replace(/\s+\S*$/, "") + "…" : s);
   function render(items) {
     items.sort((a, b) => (a.date < b.date ? 1 : -1));
@@ -40,14 +42,21 @@ description: Juan Torres writes about finance, school and work on Substack.
     }).join("");
   }
   render(LOCAL.slice());
-  fetch("https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(FEED))
+
+  const note = () => { document.getElementById("feedNote").innerHTML = `Couldn't load the Substack feed just now; everything is at <a class="link" href="https://juantorresis.substack.com">juantorresis.substack.com</a>.`; };
+
+  if (!FEED) { note(); return; }
+  fetch(FEED)
     .then((r) => r.json())
     .then((data) => {
-      if (data.status !== "ok") throw new Error("feed unavailable");
-      const subs = (data.items || []).map((it) => ({ title: it.title, url: it.link, date: String(it.pubDate || "").replace(" ", "T"),
-        excerpt: text(it.description), source: "Substack" }));
+      if (data.error || !Array.isArray(data.items)) throw new Error(data.error || "feed unavailable");
+      // Anything published on Substack and mirrored here would otherwise show up twice.
+      const local = new Set(LOCAL.map((p) => p.title.trim().toLowerCase()));
+      const subs = data.items
+        .filter((it) => !local.has(String(it.title).trim().toLowerCase()))
+        .map((it) => ({ title: it.title, url: it.url, date: it.date, excerpt: it.excerpt, source: "Substack" }));
       render(LOCAL.concat(subs));
     })
-    .catch(() => { document.getElementById("feedNote").innerHTML = `Couldn't load the Substack feed just now; everything is at <a class="link" href="https://juantorresis.substack.com">juantorresis.substack.com</a>.`; });
+    .catch(note);
 })();
 </script>

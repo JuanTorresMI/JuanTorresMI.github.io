@@ -10,7 +10,9 @@
   --panel-2: #e2e6df;
   --ink: #14181b;
   --ink-2: #465057;
-  --muted: #737d83;
+  /* #737d83 read at 3.6:1 on the ground, under the 4.5:1 AA floor, and nearly every small
+     label on the site uses this token. Same hue and saturation, dark enough to pass. */
+  --muted: #626b70;
   --rule: #d0d5ce;
   --accent: #5b45c9;
   --accent-soft: rgba(91, 69, 201, 0.12);
@@ -46,6 +48,11 @@ a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 ::selection { background: var(--accent); color: var(--on-accent); }
 
+/* Keyboard users land here first and can jump the nav. Invisible until focused. */
+/* Fixed, not absolute: tabbing after a scroll should still bring it into view. */
+.skip { position: fixed; left: -9999px; top: 0; z-index: 100; background: var(--ink); color: var(--ground); padding: 10px 16px; border-radius: 0 0 var(--radius) 0; font-weight: 700; font-size: 14px; text-decoration: none; }
+.skip:focus { left: 0; }
+
 /* ---------- navigation ---------- */
 .site-nav { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--ground) 86%, transparent); -webkit-backdrop-filter: saturate(1.2) blur(10px); backdrop-filter: saturate(1.2) blur(10px); border-bottom: 1px solid var(--rule); }
 .site-nav .in { max-width: var(--width); margin: 0 auto; padding: 0 24px; height: 58px; display: flex; align-items: center; gap: 24px; }
@@ -55,10 +62,30 @@ a { color: inherit; }
 .site-nav .links a { text-decoration: none; font-size: 14px; color: var(--ink-2); padding: 5px 0; border-bottom: 1.5px solid transparent; transition: color 0.15s, border-color 0.15s; }
 .site-nav .links a:hover { color: var(--ink); }
 .site-nav .links a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+/* theme switch: the palette already had [data-theme] hooks, this is the control for them */
+.theme-btn { flex: none; width: 30px; height: 30px; display: grid; place-items: center; padding: 0; background: transparent; border: 1px solid var(--rule); border-radius: 999px; color: var(--ink-2); cursor: pointer; transition: color 0.15s, border-color 0.15s; }
+.theme-btn:hover { color: var(--ink); border-color: var(--ink); }
+.theme-btn svg { width: 15px; height: 15px; display: block; }
+.theme-btn .sun { display: none; }
+:root[data-theme="dark"] .theme-btn .sun { display: block; }
+:root[data-theme="dark"] .theme-btn .moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-btn .sun { display: block; }
+  :root:not([data-theme="light"]) .theme-btn .moon { display: none; }
+}
+
 @media (max-width: 520px) {
   .site-nav .in { gap: 14px; padding: 0 16px; }
   .site-nav .links { gap: 16px; }
   .wordmark .name { display: none; }
+}
+/* Four links plus the theme switch run out of room on a small phone; tighten rather
+   than let the bar overflow or push the switch off the edge. */
+@media (max-width: 400px) {
+  .site-nav .in { gap: 9px; padding: 0 12px; }
+  .site-nav .links { gap: 11px; }
+  .site-nav .links a { font-size: 13px; }
+  .theme-btn { width: 27px; height: 27px; }
 }
 
 /* ---------- footer ---------- */
@@ -204,7 +231,12 @@ a { color: inherit; }
 /* ---------- resume ---------- */
 .page .doc { margin-top: 30px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); overflow: hidden; box-shadow: 0 30px 60px -40px var(--card-shadow); }
 .page .doc iframe { display: block; width: 100%; height: 1040px; border: 0; }
-@media (max-width: 700px) { .page .doc iframe { height: 72vh; } }
+.page .doc-fallback { display: none; margin-top: 14px; }
+/* Phones mostly refuse to render a PDF in an iframe; show the link rather than a blank slab. */
+@media (max-width: 820px) {
+  .page .doc { display: none; }
+  .page .doc-fallback { display: block; }
+}
 
 /* ---------- what we're watching ---------- */
 .page .art { display: block; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 4px; background: var(--panel-2); }

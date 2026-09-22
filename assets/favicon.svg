@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="JT">
+  <style>
+    /* Matches the wordmark: ink on the warm stone ground, inverted for dark UI. */
+    .bg { fill: #eceee9; }
+    .fg { fill: #14181b; }
+    .rule { fill: #5b45c9; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0e1215; }
+      .fg { fill: #e8ebe8; }
+      .rule { fill: #9a8cf0; }
+    }
+  </style>
+  <rect class="bg" width="64" height="64" rx="12"/>
+  <text class="fg" x="32" y="41" text-anchor="middle"
+        font-family="'Bricolage Grotesque','Segoe UI',system-ui,sans-serif"
+        font-size="30" font-weight="700" letter-spacing="-1.5">JT</text>
+  <rect class="rule" x="20" y="47" width="24" height="3" rx="1.5"/>
+</svg>

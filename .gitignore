@@ -1,0 +1,17 @@
+# Jekyll build output
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# Worker tooling: wrangler keeps local state and caches here, and npm would drop a
+# node_modules the size of the rest of the repo put together
+worker/node_modules/
+worker/.wrangler/
+node_modules/
+.wrangler/
+.dev.vars
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+*.swp

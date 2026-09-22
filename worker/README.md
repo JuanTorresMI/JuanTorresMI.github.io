@@ -58,7 +58,8 @@ npx.cmd wrangler deploy
 to this repo — `wrangler.toml` holds no secrets, which is why it is safe to commit.
 
 Deploy prints a URL like `https://house-tv.<your-subdomain>.workers.dev`. Open it: you
-should see JSON. Put that URL in `_data/watching.yml` as `endpoint`.
+should see JSON. Put that URL in `_config.yml` as `worker_url`; the site reads it from there
+for both the TV board and the blog's Substack feed.
 
 ### 3. Check it
 

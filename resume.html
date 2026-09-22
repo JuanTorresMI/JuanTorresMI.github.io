@@ -12,6 +12,11 @@ description: Resume of Juan Torres, Business Administration and Logistics Manage
   <a class="btn" href="/assets/Juan%20Torres%20Resume.pdf" target="_blank" rel="noopener">Open in a new tab ↗</a>
   <a class="btn" href="mailto:Torre10j@cmich.edu">Email me</a>
 </div>
+{% comment %}
+  Most mobile browsers refuse to render a PDF in an iframe and show nothing at all, so the
+  embed is desktop-only and phones get the buttons above plus this line instead of a void.
+{% endcomment %}
 <div class="doc">
-  <iframe src="/assets/Juan%20Torres%20Resume.pdf#view=FitH" title="Juan Torres resume (PDF)" loading="lazy"></iframe>
+  <iframe src="/assets/Juan%20Torres%20Resume.pdf#view=FitH" title="Juan Torres resume (PDF)"></iframe>
 </div>
+<p class="muted small doc-fallback">Your browser can't display the PDF inline. <a class="link" href="/assets/Juan%20Torres%20Resume.pdf">Open the resume</a> instead.</p>

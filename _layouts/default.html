@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ site.lang | default: 'en' }}">
 <head>
 {% include head.html %}
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
   {% include navbar.html %}
-  <main class="page{% if page.narrow or page.layout == 'post' %} narrow{% endif %}">
+  <main id="main" class="page{% if page.narrow or page.layout == 'post' %} narrow{% endif %}">
     {{ content }}
   </main>
   {% include footer.html %}

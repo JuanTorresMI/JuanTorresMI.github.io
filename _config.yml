@@ -2,6 +2,32 @@ title: Juan Torres
 description: Business Administration and Logistics Management at Central Michigan University. Operations experience, and projects in routing, simulation and supply chain.
 baseurl: ""
 url: "https://juantorresmi.github.io"
+lang: en
+author: Juan Torres
+email: Torre10j@cmich.edu
+timezone: America/Detroit
+
 theme: null
 markdown: kramdown
 permalink: pretty
+
+# The site's edge helper (worker/). It serves two things the browser cannot fetch itself:
+# the house TV board at "/" and the Substack feed at "/substack". Read-only and public;
+# the keys it needs are Cloudflare secrets, never here. Blank it and both features fall
+# back to a polite notice rather than breaking.
+worker_url: "https://house-tv.5342543fsd.workers.dev"
+tv_label: The living room TV
+
+# Anything not listed here is published. Without this the Worker source, its README and
+# (the moment anyone runs npm install) a whole node_modules tree would be served as part
+# of the website. The .docx is the resume's source file: it belongs in the repo, not on
+# the web, where the PDF is what people should get.
+exclude:
+  - worker/
+  - node_modules/
+  - vendor/
+  - "*.docx"
+  - Gemfile
+  - Gemfile.lock
+  - .gitignore
+  - README.md

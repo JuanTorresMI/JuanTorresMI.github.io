@@ -1,0 +1,31 @@
+---
+permalink: /sitemap.xml
+layout: null
+sitemap: false
+---
+{%- comment -%}
+  Written out by hand rather than with jekyll-sitemap, so it works whatever plugin set the
+  build happens to have. A page opts out with `sitemap: false` in its front matter.
+{%- endcomment -%}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- assign pages = site.html_pages | where_exp: "p", "p.sitemap != false" -%}
+{%- for p in pages -%}
+{%- unless p.url contains "404" -%}
+  <url>
+    <loc>{{ p.url | absolute_url | xml_escape }}</loc>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+    <changefreq>{% if p.url == "/" %}weekly{% else %}monthly{% endif %}</changefreq>
+    <priority>{% if p.url == "/" %}1.0{% elsif p.url contains "projects" %}0.8{% else %}0.6{% endif %}</priority>
+  </url>
+{%- endunless -%}
+{%- endfor -%}
+{%- for post in site.posts %}
+  <url>
+    <loc>{{ post.url | absolute_url | xml_escape }}</loc>
+    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+{%- endfor %}
+</urlset>

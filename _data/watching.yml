@@ -1,9 +1,0 @@
-# The board at /watching/.
-#
-# endpoint  The house-tv Worker's URL, from `npx wrangler deploy` (see worker/README.md).
-#           It returns read-only JSON. Nothing secret goes in this file or in the page:
-#           the Stremio key lives in the Worker, which is the whole reason the Worker exists.
-# label     What to call the TV.
-
-endpoint: "https://house-tv.5342543fsd.workers.dev"
-label: The living room TV

@@ -1,0 +1,12 @@
+---
+permalink: /robots.txt
+layout: null
+sitemap: false
+---
+User-agent: *
+Allow: /
+
+# The house TV board is public but not meant to be searchable.
+Disallow: /watching/
+
+Sitemap: {{ "/sitemap.xml" | absolute_url }}
