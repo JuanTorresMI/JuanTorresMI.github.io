@@ -1,0 +1,72 @@
+# The résumé as the site shows it. The home page reads each job's `summary`; /resume/ reads
+# everything else. The PDF in assets/ is a separate document, so change both together.
+
+profile: >-
+  I’m a Logistics Management student at Central Michigan University. I’ve worked since 2021, first
+  on a factory line and now in a Meijer meat department, and I build small projects on the side to
+  try out what I’m learning.
+
+experience:
+  - org: Meijer
+    span: 2024 – Present
+    place: Mount Pleasant & Cadillac, MI
+    headline: Meat Cutter
+    summary: Cutting, inventory and food safety in a busy meat department. I also help train new team members.
+    roles:
+      - { title: Certified Meat Cutter, place: "Mount Pleasant, MI", dates: "Aug 2025 – Present" }
+      - { title: Certified Meat Cutter, place: "Cadillac, MI", dates: "May 2024 – Aug 2025" }
+      - { title: Meat Cutting Apprentice, place: "Cadillac, MI", dates: "Apr 2024 – Aug 2024" }
+    points:
+      - Keep the department’s inventory up to date in Meijer’s system so we don’t run short or over-order, and waste stays low.
+      - Ran daily cutting and stock rotation in Cadillac, which helped keep waste down.
+      - Follow food-safety and sanitation rules closely; our routine inspections came back clean.
+      - Run and maintain the meat saws safely and cut to spec.
+      - Help new team members learn safety, sanitation and product handling.
+      - Take special orders for customers.
+
+  - org: Reselling
+    span: 2024 – Present
+    place: Michigan
+    headline: On the side
+    summary: I find, price and resell electronics and appliances on Facebook Marketplace.
+    roles:
+      - { title: Independent reseller, place: "Michigan", dates: "Jan 2024 – Present" }
+    points:
+      - Find, price and resell electronics and appliances on Facebook Marketplace.
+      - Keep track of what I have and handle the back-and-forth with buyers.
+
+  - org: FIAMM Technologies
+    span: 2021 – 2023
+    place: Cadillac, MI
+    headline: Factory Operator
+    summary: Ran production equipment and kept materials moving on a manufacturing line.
+    roles:
+      - { title: Factory Operator, place: "Cadillac, MI", dates: "Feb 2021 – Apr 2023" }
+    points:
+      - Ran production equipment and kept materials moving on the line, safely and on pace.
+      - My first real look at how operations work day to day, and a big part of why I study logistics now.
+
+education:
+  - school: Central Michigan University
+    degree: Bachelor of Science in Business Administration, Logistics Management
+    place: Mount Pleasant, MI
+    dates: Expected April 2027
+  - school: Baker College
+    degree: Associate of Applied Science, General Studies
+    place: Cadillac, MI
+    dates: July 2025
+    note: GPA 3.5 · Dean’s List, 2023–2024
+
+activities:
+  - org: CMU League of Legends Esports
+    role: Varsity Starter, Jungler
+    dates: Sep 2025 – Present
+    note: I play jungle on the varsity team, which is mostly communication, timing and staying calm when things go sideways.
+
+skills:
+  - area: Operations
+    items: [Inventory management systems, Stock rotation (FIFO), Food safety and sanitation]
+  - area: Analysis
+    items: [Microsoft Excel, Google Sheets, Python, Google OR-Tools]
+  - area: Tools
+    items: [Microsoft Office, Google Workspace, JavaScript, GitHub Pages]

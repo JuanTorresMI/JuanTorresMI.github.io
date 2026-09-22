@@ -2,21 +2,24 @@
 layout: default
 title: Writing
 permalink: /blog/
-narrow: true
 description: Juan Torres writes about finance, school and work on Substack.
 ---
-<p class="eyebrow">Writing</p>
-<h1>Notes on finance, school and work</h1>
-<p class="lede">I write on Substack about finance, school, work and whatever I'm learning. Everything I've published is listed here, newest first.</p>
-<div class="actions">
-  <a class="btn primary" href="https://juantorresis.substack.com/subscribe">Subscribe</a>
-  <a class="btn" href="https://juantorresis.substack.com">Open Substack ↗</a>
-</div>
+<header class="phead row">
+  <p class="key label">Writing</p>
+  <div class="body">
+    <h1>Notes on finance, school and work</h1>
+    <p class="lede">Published on Substack and collected here, newest first.</p>
+    <div class="actions">
+      <a class="btn primary" href="https://juantorresis.substack.com/subscribe">Subscribe</a>
+      <a class="btn" href="https://juantorresis.substack.com">Substack ↗</a>
+    </div>
+  </div>
+</header>
 
-<section class="section">
-  <div class="section-head"><h2>All writing</h2><span class="count" id="count"></span></div>
-  <div class="rows" id="posts" aria-live="polite"></div>
-  <p class="muted small" id="feedNote" style="margin-top:14px"></p>
+<section class="sec">
+  <header class="sec-head"><h2>All writing</h2><span class="label" id="count"></span></header>
+  <div class="entries" id="posts" aria-live="polite"></div>
+  <p class="log-note" id="feedNote"></p>
 </section>
 
 <script>
@@ -35,10 +38,10 @@ description: Juan Torres writes about finance, school and work on Substack.
       const d = new Date(p.date);
       const when = isNaN(d) ? "" : d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
       const ext = p.source === "Substack";
-      return `<a class="row dated" href="${esc(p.url)}"${ext ? ' rel="noopener"' : ""}>
-        <span class="idx">${esc(when)}</span>
-        <span><span class="t">${esc(p.title)}</span>${p.excerpt ? `<span class="d">${esc(clip(p.excerpt, 170))}</span>` : ""}</span>
-        <span class="tag">${esc(p.source)}${ext ? " ↗" : ""}</span></a>`;
+      return `<a class="entry row" href="${esc(p.url)}"${ext ? ' rel="noopener"' : ""}>
+        <span class="key data">${esc(when)}</span>
+        <span class="body"><span class="entry-head"><span class="entry-title">${esc(p.title)}</span><span class="go label">${esc(p.source)}${ext ? " ↗" : ""}</span></span>
+        ${p.excerpt ? `<span class="entry-text" style="display:block">${esc(clip(p.excerpt, 170))}</span>` : ""}</span></a>`;
     }).join("");
   }
   render(LOCAL.slice());

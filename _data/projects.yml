@@ -4,14 +4,14 @@
 - slug: fruit-fly-dispatcher
   title: Fruit Fly Dispatcher
   url: /fruit-fly-dispatcher/
-  kind: Research simulation
+  kind: Simulation
   status: Live
-  short: A fruit fly's wired navigation circuit runs a week of fresh-food deliveries against Google OR-Tools.
+  short: I put a fruit fly’s brain in charge of a delivery truck and raced it against Google’s routing software for a week.
   summary: >-
-    A fruit fly's navigation circuit, wired neuron by neuron from the FlyWire connectome, runs a week of
-    fresh-food deliveries against Google OR-Tools. Every brain is tested at four levels of knowledge, from a
-    fly that finds stores only by smell to live company data, to see what matters more for logistics:
-    the decision-maker or the information.
+    I took a fruit fly’s navigation circuit, wired neuron by neuron from the FlyWire connectome, and let it
+    run a week of fresh-food deliveries against Google’s OR-Tools. Each brain gets four levels of
+    information, from a fly that finds stores by smell alone up to live company data. I wanted to see what
+    matters more for getting food where it needs to go: who makes the decisions, or what they know.
   metric: 55 stores · 7 days · 4 brains × 4 levels of knowledge · 300+ simulated weeks
   stack: [Python, OR-Tools CP-SAT, FlyWire connectome, Simulation, JavaScript]
   keywords: [fly, dispatcher, flywire, flyroute]
@@ -19,13 +19,14 @@
 - slug: craft-ledger
   title: Craft Ledger
   url: /craft-ledger.html
-  kind: Trading tool
+  kind: Tool
   status: Live
-  short: A market ledger for a Minecraft economy that ranks what's worth crafting from the prices you trade at.
+  short: A price ledger for a Minecraft server economy that works out which crafts actually make money.
   summary: >-
-    A trading ledger for a Minecraft server economy. Enter the order prices you trade at; it pulls every
-    recipe from the game and ranks what pays to craft, costing each component at what you could have sold
-    it for. Imports live prices from a scanner and shows how deep and how fresh each price is.
+    A price ledger for the Minecraft server economy I trade in. You enter the prices you buy and sell at,
+    and it goes through every recipe in the game to find which crafts actually make money, counting each
+    ingredient at what you could have sold it for instead. It can also pull in live prices from a market
+    scanner.
   metric: 2,770 craftable items · market-basis costing · scanner import
   stack: [JavaScript, Single-file web app, Opportunity cost, Local-first]
   keywords: [craft, ledger]

@@ -7,27 +7,31 @@ description: What's playing on the house TV right now, what we've been watching 
 noindex: true
 sitemap: false
 ---
-<p class="eyebrow">{{ site.tv_label | default: "The house TV" }}</p>
-<h1>What are we watching</h1>
-<p class="lede">Whatever's on the TV downstairs. Stremio keeps its own notes on what the house plays; this page reads them back and nothing else.</p>
+<header class="phead row">
+  <p class="key label">{{ site.tv_label | default: "The house TV" }}</p>
+  <div class="body">
+    <h1>What we’re watching</h1>
+    <p class="lede">Whatever’s on the TV downstairs. Stremio keeps its own notes on what the house plays; this page reads them back and nothing else.</p>
+  </div>
+</header>
 
-<section class="section">
-  <div class="section-head"><h2>On now</h2><span class="count" id="now-when">checking…</span></div>
+<section class="sec">
+  <header class="sec-head"><h2>On now</h2><span class="label" id="now-when">checking…</span></header>
   <div class="np" id="np"><p class="log-note">Asking the TV…</p></div>
 </section>
 
-<section class="section" id="stats-sec" hidden>
-  <div class="section-head"><h2>The tally</h2><span class="count">all time</span></div>
+<section class="sec" id="stats-sec" hidden>
+  <header class="sec-head"><h2>The tally</h2><span class="label">All time</span></header>
   <div class="tally" id="tally"></div>
 </section>
 
-<section class="section">
-  <div class="section-head"><h2>Lately</h2><span class="count" id="lately-count"></span></div>
+<section class="sec">
+  <header class="sec-head"><h2>Lately</h2><span class="label" id="lately-count"></span></header>
   <div class="log" id="feed"><p class="log-note">Loading…</p></div>
 </section>
 
-<section class="section" id="deck-sec" hidden>
-  <div class="section-head"><h2>In the library</h2><span class="count">most recently added</span></div>
+<section class="sec" id="deck-sec" hidden>
+  <header class="sec-head"><h2>In the library</h2><span class="label">Most recently added</span></header>
   <div class="deck" id="deck"></div>
 </section>
 
@@ -79,10 +83,10 @@ sitemap: false
     ].filter(Boolean).join(" · ");
     $("np").innerHTML = wrap(it.link, "np-card", `${art(it.poster, it.title, "np-art")}
       <div class="np-body">
-        <p class="np-who"><span class="live${isLive ? "" : " off"}" aria-hidden="true"></span>${isLive ? "Playing now" : "Last on"}</p>
+        <p class="np-who label"><span class="live${isLive ? "" : " off"}" aria-hidden="true"></span>${isLive ? "Playing now" : "Last on"}</p>
         <h3 class="np-title">${esc(it.title)}</h3>
         ${it.sub ? `<p class="np-sub">${esc(it.sub)}</p>` : ""}
-        ${bar}<p class="np-meta">${esc(meta)}</p>
+        ${bar}<p class="np-meta data">${esc(meta)}</p>
       </div>`);
     $("now-when").textContent = isLive ? "live" : "paused";
   }
@@ -98,10 +102,10 @@ sitemap: false
       if (!days.has(day)) days.set(day, []);
       days.get(day).push(i);
     }
-    box.innerHTML = [...days].map(([day, items]) => `<div class="log-day"><span class="log-date">${esc(day)}</span><div class="log-items">${
-      items.map((i) => wrap(i.link, "log-item", `<span class="tag${i.type === "series" ? "" : " accent"}">${i.type === "series" ? "TV" : "Film"}</span>
+    box.innerHTML = [...days].map(([day, items]) => `<div class="log-day row"><span class="key data">${esc(day)}</span><div class="body log-items">${
+      items.map((i) => wrap(i.link, "log-item", `<span class="label">${i.type === "series" ? "TV" : "Film"}</span>
         <span class="msg">${esc(i.title)}</span>
-        <span class="sha">${esc([i.sub, ago(i.watchedAt)].filter(Boolean).join(" · "))}</span>`)).join("")
+        <span class="data">${esc([i.sub, ago(i.watchedAt)].filter(Boolean).join(" · "))}</span>`)).join("")
     }</div></div>`).join("");
   }
 
@@ -116,7 +120,7 @@ sitemap: false
     if (!tiles.length) return;
     $("stats-sec").hidden = false;
     $("tally").innerHTML = tiles.map(([v, label, isTime]) =>
-      `<div class="tile"><span class="n">${esc(isTime ? runtime(v) : v.toLocaleString())}</span><span class="l">${esc(label)}</span></div>`).join("");
+      `<div class="tile"><span class="n">${esc(isTime ? runtime(v) : v.toLocaleString())}</span><span class="l label">${esc(label)}</span></div>`).join("");
   }
 
   function renderDeck(deck) {

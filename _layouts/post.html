@@ -2,10 +2,16 @@
 layout: default
 ---
 <article class="post">
-  <a class="back" href="/blog/">← All writing</a>
-  <h1>{{ page.title }}</h1>
-  <p class="eyebrow">{{ page.date | date: "%B %-d, %Y" }}{% if page.tags and page.tags.size > 0 %} · {{ page.tags | join: " · " }}{% endif %}</p>
-  <div class="prose">
-    {{ content }}
+  <header class="phead row">
+    <p class="key"><a class="label back" href="/blog/">← Writing</a></p>
+    <div class="body">
+      <h1>{{ page.title }}</h1>
+      <p class="data" style="margin-top:24px">{{ page.date | date: "%B %-d, %Y" }}{% if page.tags and page.tags.size > 0 %} · {{ page.tags | join: " · " }}{% endif %}</p>
+    </div>
+  </header>
+  <div class="row">
+    <div class="body prose">
+      {{ content }}
+    </div>
   </div>
 </article>

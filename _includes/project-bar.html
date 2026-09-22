@@ -14,7 +14,7 @@
     <a class="pbar-all" href="/projects/">Projects</a>
     <span class="pbar-sep" aria-hidden="true">/</span>
     <span class="pbar-cur">{{ cur.title }}</span>
-    <span class="pbar-count">{{ idx | plus: 1 }} of {{ n }}</span>
+    <span class="pbar-count">{{ idx | plus: 1 }} / {{ n }}</span>
     <nav class="pbar-nav" aria-label="Other projects">
       {% if n > 2 %}<a href="{{ prev.url }}">← {{ prev.title }}</a>{% endif %}
       {% if n > 1 %}<a href="{{ next.url }}">{{ next.title }} →</a>{% endif %}
@@ -22,14 +22,18 @@
   </div>
 </div>
 <style>
-.pbar { --pb-bg: var(--panel, #f7f8f5); --pb-ink: var(--ink, #14181b); --pb-ink2: var(--ink-2, #465057); --pb-rule: var(--rule, #d0d5ce); --pb-accent: var(--accent, #5b45c9);
-  background: var(--pb-bg); border-bottom: 1px solid var(--pb-rule); font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif; font-size: 13px; line-height: 1.4; color: var(--pb-ink2); }
-.pbar-dark { --pb-bg: #0f1116; --pb-ink: #e4e7ee; --pb-ink2: #8b93a5; --pb-rule: #2c313e; --pb-accent: #d9a441; }
-.pbar-in { max-width: 1088px; margin: 0 auto; padding: 9px 24px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.pbar a { color: var(--pb-ink2); text-decoration: none; }
-.pbar a:hover { color: var(--pb-ink); text-decoration: underline; text-decoration-color: var(--pb-accent); text-underline-offset: 3px; }
-.pbar-cur { color: var(--pb-ink); font-weight: 700; }
-.pbar-count { font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace; font-size: 11.5px; border: 1px solid var(--pb-rule); border-radius: 999px; padding: 1px 8px; }
-.pbar-nav { margin-left: auto; display: flex; gap: 18px; }
+.pbar { --pb-bg: var(--ground, #eeebe3); --pb-ink: var(--ink, #0f0f0e); --pb-ink2: var(--muted, #66625a); --pb-rule: var(--rule, #d6d1c5);
+  background: var(--pb-bg); border-bottom: 1px solid var(--pb-rule); font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 11px; font-weight: 500; line-height: 1.5; letter-spacing: 0.16em; text-transform: uppercase; color: var(--pb-ink2); }
+.pbar-dark { --pb-bg: #0f1116; --pb-ink: #e4e7ee; --pb-ink2: #8b93a5; --pb-rule: #2c313e; }
+.pbar-in { max-width: calc(1152px + 96px); margin: 0 auto; padding: 14px 48px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.pbar a { color: var(--pb-ink2); text-decoration: none; transition: color 0.15s; }
+.pbar a:hover { color: var(--pb-ink); }
+.pbar-cur { color: var(--pb-ink); }
+.pbar-count { font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace; font-size: 11px; letter-spacing: 0.02em; margin-left: 8px; }
+.pbar-nav { margin-left: auto; display: flex; gap: 32px; padding: 0; border: 0; background: none; } /* Craft Ledger styles every <nav> */
+.pbar-dark .pbar-in { max-width: none; padding: 12px 20px; } /* that app runs edge to edge */
+@media (max-width: 860px) { .pbar-in { padding: 12px 24px; } }
+@media (max-width: 520px) { .pbar-in { padding: 12px 20px; } .pbar-nav { margin-left: 0; width: 100%; gap: 24px; } }
 @media (display-mode: standalone) { .pbar-dark { display: none; } }
 </style>

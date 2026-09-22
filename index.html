@@ -1,87 +1,96 @@
 ---
 layout: default
 title: Juan Torres
-narrow: true
 ---
-<section class="hero">
-  <div class="card-stage" id="stage">
-    <article class="bcard" id="bcard" aria-label="Business card">
-      <div class="bc-top">
-        <span class="eyebrow">Logistics · Supply chain · Operations</span>
-        <span class="emboss" aria-hidden="true">JT</span>
-      </div>
-      <div class="bc-mid">
-        <h1 class="bc-name">Juan Torres</h1>
-        <span class="bc-rule" aria-hidden="true"></span>
-        <p class="bc-role">Business Administration, Logistics Management<br><span>Central Michigan University</span></p>
-      </div>
-      <div class="bc-bot">
-        <a href="mailto:Torre10j@cmich.edu">Torre10j@cmich.edu</a>
-        <a href="https://www.linkedin.com/in/juan-torres-0ab3471bb">in/juan-torres</a>
-        <a href="https://juantorresmi.github.io/">juantorresmi.github.io/</a>
-      </div>
-    </article>
-  </div>
-  <div class="actions center">
-    <button class="btn primary" type="button" id="vcard">Save contact</button>
-    <a class="btn" href="/resume/">Resume</a>
-    <a class="btn" href="/projects/">Projects</a>
+<section class="hero" aria-label="Business card">
+  <article class="card">
+    <span class="card-mark" aria-hidden="true">JT</span>
+    <div class="card-top">
+      <span class="label">Central Michigan University</span>
+      <span class="label">Class of 2027</span>
+    </div>
+    <div class="card-mid">
+      <h1 class="card-name">Juan Torres</h1>
+      <span class="card-rule" aria-hidden="true"></span>
+      <p class="card-title">Logistics Management</p>
+    </div>
+    <div class="card-bot">
+      <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+      <a href="/">juantorresmi.github.io</a>
+    </div>
+  </article>
+  <div class="hero-links">
+    <button type="button" id="vcard">Save contact</button>
+    <a href="/resume/">Résumé</a>
+    <a href="/projects/">Projects</a>
   </div>
 </section>
 
-<section class="section">
-  <div class="section-head"><h2>About</h2></div>
-  <div class="prose">
-    <p>I'm a Senior at Central Michigan University studying Business Administration with a concentration in Logistics Management. I work as a meat cutter at Meijer, where I've built strong habits in food safety, inventory management and training new team members.</p>
-    <p>I'm interested in supply chain operations, operational analytics and process improvement, and I like testing ideas by building them: the projects below simulate, price and route real problems end to end.</p>
+<section class="sec" id="about">
+  <header class="sec-head"><h2>About</h2></header>
+  <div class="row">
+    <div class="body">
+      <p class="statement">I study logistics at Central Michigan, work at Meijer, and build things on the side.</p>
+      <div class="prose">
+        <p>I’m a senior at Central Michigan University studying Business Administration with a concentration in Logistics Management, and I graduate in April 2027.</p>
+        <p>Most of my work has been hands-on. I ran equipment on a factory line at FIAMM, and for the last couple of years I’ve been a meat cutter at Meijer, where a lot of the job is keeping inventory right, rotating stock and helping train new people.</p>
+        <p>When something from class sticks with me, I like to build it and see what happens. That’s how I ended up racing a fruit fly’s brain against Google’s routing software, and writing a price ledger for a Minecraft economy I trade in. Both run on this site. Outside of that, I play jungle for CMU’s varsity League of Legends team.</p>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="section-head"><h2>Selected projects</h2><a class="link small" href="/projects/">All projects and the project log →</a></div>
-  <div class="rows">
+<section class="sec" id="projects">
+  <header class="sec-head"><h2>Projects</h2><a class="label" href="/projects/">All projects →</a></header>
+  <div class="entries">
     {% for p in site.data.projects %}
-    <a class="row" href="{{ p.url }}">
-      <span class="idx">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
-      <span><span class="kind">{{ p.kind }}</span><span class="t">{{ p.title }}</span><span class="d">{{ p.short }}</span></span>
-      <span class="arrow" aria-hidden="true">→</span>
+    <a class="entry row" href="{{ p.url }}">
+      <span class="key label">{{ p.kind }}</span>
+      <span class="body">
+        <span class="entry-head"><span class="entry-title">{{ p.title }}</span><span class="go" aria-hidden="true">→</span></span>
+        <span class="entry-text" style="display:block">{{ p.short }}</span>
+      </span>
     </a>
     {% endfor %}
   </div>
 </section>
 
-<section class="section">
-  <div class="section-head"><h2>Experience</h2><span class="count">Meijer · Central Michigan University</span></div>
-  <ol class="hl">
-    {% for item in site.data.highlights %}
-    <li><span class="idx">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span><div><h3>{{ item.title }}</h3><p>{{ item.description }}</p></div></li>
+<section class="sec" id="experience">
+  <header class="sec-head"><h2>Work</h2><a class="label" href="/resume/">Full résumé →</a></header>
+  <div class="entries">
+    {% for job in site.data.resume.experience %}
+    <div class="entry row">
+      <span class="key data">{{ job.span }}</span>
+      <div class="body">
+        <div class="entry-head"><h3 class="entry-title">{{ job.org }}</h3><span class="label">{{ job.place }}</span></div>
+        <p class="entry-sub">{{ job.headline }}</p>
+        <p class="entry-text">{{ job.summary }}</p>
+      </div>
+    </div>
     {% endfor %}
-  </ol>
+  </div>
 </section>
 
-<section class="section">
-  <div class="section-head"><h2>Contact</h2></div>
-  <div class="prose"><p>The fastest way to reach me is email, <a href="mailto:Torre10j@cmich.edu">Torre10j@cmich.edu</a>. I'm also on <a href="https://www.linkedin.com/in/juan-torres-0ab3471bb">LinkedIn</a>, and I write on <a href="https://juantorresis.substack.com">Substack</a>.</p></div>
+<section class="sec" id="contact">
+  <header class="sec-head"><h2>Contact</h2></header>
+  <div class="row contact">
+    <div class="body">
+      <a class="big-link" href="mailto:{{ site.email }}">{{ site.email }}</a>
+      <p class="entry-text">Email is the best way to reach me. I’m always happy to talk about logistics, internships or anything on this site.</p>
+      <div class="inline-links small">
+        <a href="https://www.linkedin.com/in/juan-torres-0ab3471bb">LinkedIn</a>
+        <a href="https://github.com/JuanTorresMI">GitHub</a>
+        <a href="https://juantorresis.substack.com">Substack</a>
+      </div>
+    </div>
+  </div>
 </section>
 
 <script>
 (() => {
-  const card = document.getElementById("bcard"), stage = document.getElementById("stage");
-  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!still && window.matchMedia("(hover: hover)").matches) {
-    stage.addEventListener("pointermove", (e) => {
-      const r = card.getBoundingClientRect();
-      const x = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), y = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
-      card.style.transform = `rotateX(${((0.5 - y) * 5).toFixed(2)}deg) rotateY(${((x - 0.5) * 7).toFixed(2)}deg)`;
-      card.style.setProperty("--mx", (x * 100).toFixed(1) + "%");
-      card.style.setProperty("--my", (y * 100).toFixed(1) + "%");
-      card.classList.add("lit");
-    });
-    stage.addEventListener("pointerleave", () => { card.style.transform = ""; card.classList.remove("lit"); });
-  }
   document.getElementById("vcard").addEventListener("click", () => {
     const v = ["BEGIN:VCARD", "VERSION:3.0", "N:Torres;Juan;;;", "FN:Juan Torres", "ORG:Central Michigan University",
-      "TITLE:Business Administration, Logistics Management", "EMAIL;TYPE=INTERNET:Torre10j@cmich.edu",
+      "TITLE:Logistics Management student", "EMAIL;TYPE=INTERNET:{{ site.email }}",
       "URL:https://juantorresmi.github.io/", "URL:https://www.linkedin.com/in/juan-torres-0ab3471bb", "END:VCARD"].join("\r\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([v], { type: "text/vcard" }));

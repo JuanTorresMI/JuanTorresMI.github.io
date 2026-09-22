@@ -1,22 +1,82 @@
 ---
 layout: default
-title: Resume
+title: Résumé
 permalink: /resume/
-description: Resume of Juan Torres, Business Administration and Logistics Management at Central Michigan University.
+description: Résumé of Juan Torres, Logistics Management student at Central Michigan University.
 ---
-<p class="eyebrow">Resume</p>
-<h1>Juan Torres</h1>
-<p class="lede">Business Administration student at Central Michigan University, concentrating in Logistics Management, with hands-on operations experience at Meijer.</p>
-<div class="actions">
-  <a class="btn primary" href="/assets/Juan%20Torres%20Resume.pdf" download>Download PDF</a>
-  <a class="btn" href="/assets/Juan%20Torres%20Resume.pdf" target="_blank" rel="noopener">Open in a new tab ↗</a>
-  <a class="btn" href="mailto:Torre10j@cmich.edu">Email me</a>
-</div>
-{% comment %}
-  Most mobile browsers refuse to render a PDF in an iframe and show nothing at all, so the
-  embed is desktop-only and phones get the buttons above plus this line instead of a void.
-{% endcomment %}
-<div class="doc">
-  <iframe src="/assets/Juan%20Torres%20Resume.pdf#view=FitH" title="Juan Torres resume (PDF)"></iframe>
-</div>
-<p class="muted small doc-fallback">Your browser can't display the PDF inline. <a class="link" href="/assets/Juan%20Torres%20Resume.pdf">Open the resume</a> instead.</p>
+{% assign r = site.data.resume %}
+<header class="phead row">
+  <p class="key label">Résumé</p>
+  <div class="body">
+    <h1>Juan Torres</h1>
+    <p class="lede">{{ r.profile }}</p>
+    <div class="actions">
+      <a class="btn primary" href="/assets/Juan%20Torres%20Resume.pdf" download>Download PDF</a>
+      <a class="btn" href="mailto:{{ site.email }}">Email</a>
+    </div>
+  </div>
+</header>
+
+<section class="sec">
+  <header class="sec-head"><h2>Experience</h2></header>
+  <div class="entries">
+    {% for job in r.experience %}
+    <div class="entry row">
+      <span class="key data">{{ job.span }}</span>
+      <div class="body">
+        <div class="entry-head"><h3 class="entry-title">{{ job.org }}</h3><span class="label">{{ job.place }}</span></div>
+        <ul class="roles">
+          {% for role in job.roles %}<li><span class="t">{{ role.title }}<span class="p">, {{ role.place }}</span></span><span class="data">{{ role.dates }}</span></li>{% endfor %}
+        </ul>
+        <ul class="points">
+          {% for pt in job.points %}<li>{{ pt }}</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="sec">
+  <header class="sec-head"><h2>Education</h2></header>
+  <div class="entries">
+    {% for ed in r.education %}
+    <div class="entry row">
+      <span class="key data">{{ ed.dates }}</span>
+      <div class="body">
+        <div class="entry-head"><h3 class="entry-title">{{ ed.school }}</h3><span class="label">{{ ed.place }}</span></div>
+        <p class="entry-sub">{{ ed.degree }}</p>
+        {% if ed.note %}<p class="entry-text">{{ ed.note }}</p>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="sec">
+  <header class="sec-head"><h2>Campus</h2></header>
+  <div class="entries">
+    {% for a in r.activities %}
+    <div class="entry row">
+      <span class="key data">{{ a.dates }}</span>
+      <div class="body">
+        <h3 class="entry-title">{{ a.org }}</h3>
+        <p class="entry-sub">{{ a.role }}</p>
+        <p class="entry-text">{{ a.note }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="sec">
+  <header class="sec-head"><h2>Skills</h2></header>
+  <div class="entries">
+    {% for s in r.skills %}
+    <div class="entry entry-tight row">
+      <span class="key label">{{ s.area }}</span>
+      <p class="body skill-list">{% for i in s.items %}<span>{{ i }}</span>{% endfor %}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
