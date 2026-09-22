@@ -205,3 +205,39 @@ a { color: inherit; }
 .page .doc { margin-top: 30px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); overflow: hidden; box-shadow: 0 30px 60px -40px var(--card-shadow); }
 .page .doc iframe { display: block; width: 100%; height: 1040px; border: 0; }
 @media (max-width: 700px) { .page .doc iframe { height: 72vh; } }
+
+/* ---------- what we're watching ---------- */
+.page .art { display: block; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 4px; background: var(--panel-2); }
+.page .art.fallback { display: grid; place-items: center; border: 1px solid var(--rule); font-family: var(--font-display); font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: var(--muted); }
+.page .np-card { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 26px; align-items: center; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius); padding: 22px; text-decoration: none; transition: border-color 0.2s, box-shadow 0.2s; }
+.page .np-card:hover { border-color: var(--ink); box-shadow: 0 18px 36px -28px var(--card-shadow); }
+.page .np-who { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.page .live { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #1f9d55; margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 0 0 rgba(31, 157, 85, 0.55); animation: jt-pulse 2.4s infinite; }
+@keyframes jt-pulse { 70% { box-shadow: 0 0 0 8px rgba(31, 157, 85, 0); } 100% { box-shadow: 0 0 0 0 rgba(31, 157, 85, 0); } }
+.page .live.off { background: var(--muted); box-shadow: none; animation: none; }   /* stopped, not playing */
+.page .np-title { font-size: clamp(22px, 3.4vw, 30px); margin: 7px 0 3px; }
+.page .np-card:hover .np-title { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+.page .np-sub { color: var(--ink-2); font-size: 15px; }
+.page .bar { height: 5px; border-radius: 999px; background: var(--panel-2); overflow: hidden; margin: 18px 0 10px; }
+.page .bar span { display: block; height: 100%; border-radius: 999px; background: var(--accent); transition: width 0.6s linear; }
+.page .np-meta { font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; color: var(--muted); }
+.page .np-empty { border: 1px dashed var(--rule); border-radius: var(--radius); padding: 44px 22px; text-align: center; }
+.page .np-empty .big { font-family: var(--font-display); font-weight: 700; font-size: 26px; letter-spacing: -0.02em; }
+.page .np-empty .sub { color: var(--muted); font-size: 15px; margin-top: 4px; }
+.page .setup { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: 24px 26px; }
+.page .setup ol { margin: 12px 0 0; padding-left: 20px; color: var(--ink-2); font-size: 15px; }
+.page .setup li { margin-bottom: 7px; }
+.page .setup .sub { color: var(--muted); font-size: 14px; margin-top: 12px; }
+
+/* the tally, and what is queued up next */
+.page .tally { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.page .tile { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: 16px 18px; display: grid; gap: 3px; }
+.page .tile .n { font-family: var(--font-mono); font-size: 23px; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.page .tile .l { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.page .deck { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
+.page .deck-item { display: grid; gap: 8px; align-content: start; text-decoration: none; }
+.page .deck-item .deck-t { font-size: 13px; line-height: 1.3; color: var(--ink-2); }
+.page .deck-item:hover .deck-t { color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+@media (max-width: 760px) { .page .tally { grid-template-columns: repeat(2, minmax(0, 1fr)); } .page .deck { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .page .np-card { grid-template-columns: 96px minmax(0, 1fr); gap: 18px; padding: 16px; } .page .deck { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { .page .live { animation: none; } .page .bar span { transition: none; } }

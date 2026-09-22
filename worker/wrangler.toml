@@ -1,0 +1,15 @@
+name = "house-tv"
+main = "src/index.js"
+compatibility_date = "2026-09-22"
+
+# Served from house-tv.5342543fsd.workers.dev. Preview URLs are off: every deploy would
+# otherwise get its own public versioned URL, and one address for this is enough.
+workers_dev = true
+preview_urls = false
+
+# The auth key is a secret, not a var: it is set with `wrangler secret put` and never
+# lives in this file. See README.md.
+[vars]
+LIVE_WINDOW_MIN = "5"
+# Lock the page down to one site if you ever want to; "*" is fine for read-only data.
+# ALLOW_ORIGIN = "https://juantorresmi.github.io"

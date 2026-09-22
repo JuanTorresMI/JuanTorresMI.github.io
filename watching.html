@@ -1,0 +1,152 @@
+---
+layout: default
+title: What we're watching
+permalink: /watching/
+description: What's playing on the house TV right now, what we've been watching lately, and what's in the library.
+---
+<p class="eyebrow">{{ site.data.watching.label | default: "The house TV" }}</p>
+<h1>What are we watching</h1>
+<p class="lede">Whatever's on the TV downstairs. Stremio keeps its own notes on what the house plays; this page reads them back and nothing else.</p>
+
+<section class="section">
+  <div class="section-head"><h2>On now</h2><span class="count" id="now-when">checking…</span></div>
+  <div class="np" id="np"><p class="log-note">Asking the TV…</p></div>
+</section>
+
+<section class="section" id="stats-sec" hidden>
+  <div class="section-head"><h2>The tally</h2><span class="count">all time</span></div>
+  <div class="tally" id="tally"></div>
+</section>
+
+<section class="section">
+  <div class="section-head"><h2>Lately</h2><span class="count" id="lately-count"></span></div>
+  <div class="log" id="feed"><p class="log-note">Loading…</p></div>
+</section>
+
+<section class="section" id="deck-sec" hidden>
+  <div class="section-head"><h2>In the library</h2><span class="count">most recently added</span></div>
+  <div class="deck" id="deck"></div>
+</section>
+
+<script>
+(() => {
+  const CFG = {{ site.data.watching | jsonify }};
+  const POLL = 40000;
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const $ = (id) => document.getElementById(id);
+
+  if (!CFG.endpoint) {
+    $("np").innerHTML = `<div class="setup"><h3>One thing to fill in</h3><ol>
+      <li>Deploy the Worker in <span class="mono">worker/</span>, following <span class="mono">worker/README.md</span>.</li>
+      <li>Put the URL it prints into <span class="mono">_data/watching.yml</span> as <span class="mono">endpoint</span>.</li>
+      </ol><p class="sub">The Stremio key stays in the Worker. Nothing secret ends up in this page, which is the point of the arrangement.</p></div>`;
+    $("now-when").textContent = "not set up";
+    $("feed").innerHTML = "";
+    return;
+  }
+
+  function ago(iso) {
+    const s = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (s < 90) return "just now";
+    if (s < 3600) return Math.round(s / 60) + " min ago";
+    if (s < 86400) return Math.round(s / 3600) + " h ago";
+    const d = Math.round(s / 86400);
+    return d < 30 ? d + (d === 1 ? " day ago" : " days ago") : new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  }
+  const runtime = (min) => (min >= 1440 ? (min / 1440).toFixed(1) + " days" : Math.round(min / 60) + " h");
+  const art = (src, title, cls) => (src
+    ? `<img class="art ${cls}" src="${esc(src)}" alt="" loading="lazy">`
+    : `<span class="art ${cls} fallback" aria-hidden="true">${esc(String(title || "?").trim().slice(0, 2).toUpperCase())}</span>`);
+  const wrap = (link, cls, inner) => (link ? `<a class="${cls}" href="${esc(link)}">${inner}</a>` : `<div class="${cls}">${inner}</div>`);
+
+  /* ---------- on now, or the last thing that was ---------- */
+  function renderNow(d) {
+    const it = d.now || d.last;
+    if (!it) {
+      $("np").innerHTML = `<div class="np-empty"><p class="big">Nothing's on.</p><p class="sub">The TV is free.</p></div>`;
+      $("now-when").textContent = "idle";
+      return;
+    }
+    const isLive = !!d.now;
+    const bar = it.pct == null ? "" : `<div class="bar"><span style="width:${it.pct.toFixed(1)}%"></span></div>`;
+    const meta = [
+      it.pct == null ? null : Math.round(it.pct) + "% through",
+      it.leftMin == null ? null : it.leftMin + " min left",
+      it.watchedAt ? (isLive ? "synced " : "stopped ") + ago(it.watchedAt) : null,
+    ].filter(Boolean).join(" · ");
+    $("np").innerHTML = wrap(it.link, "np-card", `${art(it.poster, it.title, "np-art")}
+      <div class="np-body">
+        <p class="np-who"><span class="live${isLive ? "" : " off"}" aria-hidden="true"></span>${isLive ? "Playing now" : "Last on"}</p>
+        <h3 class="np-title">${esc(it.title)}</h3>
+        ${it.sub ? `<p class="np-sub">${esc(it.sub)}</p>` : ""}
+        ${bar}<p class="np-meta">${esc(meta)}</p>
+      </div>`);
+    $("now-when").textContent = isLive ? "live" : "paused";
+  }
+
+  function renderFeed(lately) {
+    const box = $("feed");
+    if (!lately.length) { box.innerHTML = `<p class="log-note">Nothing watched yet. Play something in Stremio and it turns up here.</p>`; return; }
+    const week = lately.filter((i) => Date.now() - new Date(i.watchedAt).getTime() < 7 * 86400000).length;
+    $("lately-count").textContent = week + (week === 1 ? " title this week" : " titles this week");
+    const days = new Map();
+    for (const i of lately) {
+      const day = new Date(i.watchedAt).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+      if (!days.has(day)) days.set(day, []);
+      days.get(day).push(i);
+    }
+    box.innerHTML = [...days].map(([day, items]) => `<div class="log-day"><span class="log-date">${esc(day)}</span><div class="log-items">${
+      items.map((i) => wrap(i.link, "log-item", `<span class="tag${i.type === "series" ? "" : " accent"}">${i.type === "series" ? "TV" : "Film"}</span>
+        <span class="msg">${esc(i.title)}</span>
+        <span class="sha">${esc([i.sub, ago(i.watchedAt)].filter(Boolean).join(" · "))}</span>`)).join("")
+    }</div></div>`).join("");
+  }
+
+  function renderStats(t) {
+    if (!t) return;
+    const tiles = [
+      [t.shows, "shows"],
+      [t.films, "films"],
+      [t.titles, "in the library"],
+      [t.minutes, "of runtime", true],
+    ].filter(([v]) => v);
+    if (!tiles.length) return;
+    $("stats-sec").hidden = false;
+    $("tally").innerHTML = tiles.map(([v, label, isTime]) =>
+      `<div class="tile"><span class="n">${esc(isTime ? runtime(v) : v.toLocaleString())}</span><span class="l">${esc(label)}</span></div>`).join("");
+  }
+
+  function renderDeck(deck) {
+    if (!deck.length) return;
+    $("deck-sec").hidden = false;
+    $("deck").innerHTML = deck.map((d) => {
+      const link = typeof d.id === "string" && d.id.startsWith("tt") ? `https://www.imdb.com/title/${d.id.split(":")[0]}/` : null;
+      return wrap(link, "deck-item", `${art(d.poster, d.title, "deck-art")}<span class="deck-t">${esc(d.title)}</span>`);
+    }).join("");
+  }
+
+  let loaded = false;                 // once something has rendered, a blip leaves it standing
+
+  async function tick() {
+    let d;
+    try {
+      const r = await fetch(CFG.endpoint, { cache: "no-store" });
+      d = await r.json();
+      if (d.error) throw new Error(d.error);
+    } catch (e) {
+      $("np").innerHTML = `<p class="log-note">Couldn't reach the TV (${esc(e.message)}).</p>`;
+      $("now-when").textContent = "offline";
+      if (!loaded) $("feed").innerHTML = `<p class="log-note">Nothing to show until the TV answers.</p>`;
+      return;
+    }
+    loaded = true;
+    renderNow(d);
+    renderFeed(d.lately || []);
+    renderStats(d.tally);
+    renderDeck(d.deck || []);
+  }
+
+  tick();
+  setInterval(tick, POLL);
+})();
+</script>
