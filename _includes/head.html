@@ -4,6 +4,8 @@
 {% assign desc = page.description | default: site.description %}
 <meta name="description" content="{{ desc | escape }}">
 <meta name="author" content="{{ site.author }}">
+{% if site.google_site_verification %}<meta name="google-site-verification" content="{{ site.google_site_verification }}">{% endif %}
+{% if site.bing_site_verification %}<meta name="msvalidate.01" content="{{ site.bing_site_verification }}">{% endif %}
 <link rel="canonical" href="{{ page.url | absolute_url }}">
 {% if page.noindex %}<meta name="robots" content="noindex, follow">{% endif %}
 <meta property="og:title" content="{{ page.title | default: site.title | escape }}">

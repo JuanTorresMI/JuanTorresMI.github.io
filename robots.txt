@@ -6,7 +6,8 @@ sitemap: false
 User-agent: *
 Allow: /
 
-# The house TV board is public but not meant to be searchable.
-Disallow: /watching/
+# /watching/ is kept out of search by its noindex meta tag, not by a Disallow here:
+# a blocked page can't be crawled, so Google never sees the noindex and may list the
+# bare URL anyway.
 
 Sitemap: {{ "/sitemap.xml" | absolute_url }}
