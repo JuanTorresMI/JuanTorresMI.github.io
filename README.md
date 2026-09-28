@@ -5,7 +5,11 @@ and two projects that run in the browser (the Fruit Fly Dispatcher simulation an
 
 Built with Jekyll and published by GitHub Pages from `main`
 (`.github/workflows/jekyll-gh-pages.yml`). There is no build step to run locally for ordinary
-edits: change a file, push, and the site updates.
+edits: change a file, push, and the site updates. Every pull request is built the same way
+and checked by `.github/workflows/check.yml`.
+
+`CLAUDE.md` is the guide for anyone (or any AI) changing the site: the layout of the repo,
+the design rules, how to add a post or project, and what to run before pushing.
 
 ## Where things live
 
@@ -21,12 +25,21 @@ edits: change a file, push, and the site updates.
 | `fruit-fly-dispatcher/` | The simulation page and its data (`runs/` are loaded on demand) |
 | `craft-ledger.html` | The ledger, a single self-contained file |
 | `worker/` | The Cloudflare Worker behind `/watching/` and the Substack feed; see its README |
+| `scripts/` | `check.py` verifies a build, `screenshots.js` photographs every page, `og-images.js` draws the share pictures |
 
-## Previewing locally
+## Previewing and checking locally
 
 ```sh
 gem install jekyll
-jekyll serve
+jekyll serve                  # http://localhost:4000
+jekyll build -d /tmp/_site && python3 scripts/check.py /tmp/_site
+```
+
+`check.py` needs only Python's standard library. For a visual pass across every page at
+desktop and phone widths in both themes:
+
+```sh
+NODE_PATH=$(npm root -g) node scripts/screenshots.js /tmp/_site /tmp/shots
 ```
 
 ## Link-preview pictures and icons
