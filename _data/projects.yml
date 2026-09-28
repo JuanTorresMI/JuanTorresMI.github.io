@@ -21,12 +21,13 @@
   url: /craft-ledger.html
   kind: Tool
   status: Live
-  short: A price ledger for a Minecraft server economy that works out which crafts actually make money.
+  short: A crafting profit calculator for Minecraft SMP economies like DonutSMP. It works out which crafts actually make money at your server's prices.
   summary: >-
-    A price ledger for the Minecraft server economy I trade in. You enter the prices you buy and sell at,
-    and it goes through every recipe in the game to find which crafts actually make money, counting each
-    ingredient at what you could have sold it for instead. It can also pull in live prices from a market
-    scanner.
+    A crafting profit calculator for Minecraft SMP servers, built on DonutSMP and usable on any server with an
+    auction house or player shops. You enter the prices you buy and sell at, and it goes through every vanilla
+    recipe to find which crafts actually make money, counting each ingredient at what you could have sold it
+    for instead. It can also pull in live prices from a market scanner.
+  guide: /minecraft-crafting-profit-calculator/
   metric: 2,770 craftable items · market-basis costing · scanner import
   stack: [JavaScript, Single-file web app, Opportunity cost, Local-first]
-  keywords: [craft, ledger]
+  keywords: [craft, ledger, minecraft, donut]

@@ -181,6 +181,9 @@ a.entry:hover .go { color: var(--accent); }
 .page .entry-lg .key { padding-top: 16px; }
 .page .entry .entry-stack { display: block; margin-top: 8px; font-size: 13px; color: var(--muted); }
 .page .entry .go.label { font-size: 11px; }
+.page .entry:has(+ .entry-guide) { border-bottom: 0; } /* the guide line closes the entry instead */
+.page .entry-guide { margin-top: -24px; padding-bottom: 40px; border-bottom: 1px solid var(--rule); }
+.page .entry-guide:last-child { border-bottom: 0; }
 .page .entry-tight { padding: 20px 0; align-items: baseline; }
 .page .entry-tight .key { padding-top: 0; }
 .page .entry-tight .key .data { margin-top: 0; }
@@ -295,6 +298,10 @@ a.entry:hover .go { color: var(--accent); }
 .page .prose li + li { margin-top: 0.3em; }
 .page .prose blockquote { margin: 1.4em 0; padding: 4px 0 4px 20px; border-left: 1px solid var(--ink); color: var(--text-2); max-width: 38em; }
 .page .prose img { max-width: 100%; height: auto; display: block; margin: 1.6em 0; }
+.page .prose figure { margin: 2em 0; max-width: 100%; }
+.page .prose figure img { margin: 0; border: 1px solid var(--rule); }
+.page .prose figcaption { margin-top: 10px; }
+.page .prose ol li strong, .page .prose ul li strong { color: var(--ink); font-weight: 500; }
 .page .prose pre { max-width: 100%; overflow: auto; padding: 16px 20px; margin: 0 0 1.4em; background: var(--silian); font-family: var(--mono); font-size: 13px; line-height: 1.6; }
 .page .prose code { font-family: var(--mono); font-size: 0.92em; }
 .page .prose :not(pre) > code { background: var(--silian); padding: 1px 5px; }
