@@ -1,39 +1,30 @@
-# The résumé as the site shows it. The home page reads each job's `summary`; /resume/ reads
-# everything else. The PDF in assets/ is a separate document, so change both together.
+# The résumé as the site shows it, in the site's own voice (plain first person, not résumé
+# phrasing). The facts come from the PDF in assets/, which is the document recruiters download,
+# so change both together. The home page reads each job's `summary`; /resume/ reads everything.
+# Last brought in line with the résumé: September 2026.
 
 profile: >-
-  I’m a Logistics Management student at Central Michigan University. I’ve worked since 2021, first
-  on a factory line and now in a Meijer meat department, and I build small projects on the side to
-  try out what I’m learning.
+  I’m a Logistics Management student at Central Michigan University with a 3.70 GPA (4.00 in
+  the major). I’ve worked since 2021, first on a factory line and now as a certified meat cutter
+  at Meijer, and I build small projects on the side to try out what I’m learning.
 
 experience:
   - org: Meijer
     span: 2024 – Present
     place: Mount Pleasant & Cadillac, MI
-    headline: Meat Cutter
-    summary: Cutting, inventory and food safety in a busy meat department. I also help train new team members.
+    headline: Certified Meat Cutter
+    summary: Cutting, inventory and food safety in a busy meat department. I manage the department’s stock in Meijer’s inventory system and take customers’ special orders.
     roles:
       - { title: Certified Meat Cutter, place: "Mount Pleasant, MI", dates: "Aug 2025 – Present" }
       - { title: Certified Meat Cutter, place: "Cadillac, MI", dates: "May 2024 – Aug 2025" }
-      - { title: Meat Cutting Apprentice, place: "Cadillac, MI", dates: "Apr 2024 – Aug 2024" }
+      - { title: Meat Cutting Apprentice, place: "Cadillac, MI", dates: "Apr 2024 – May 2024" }
     points:
-      - Keep the department’s inventory up to date in Meijer’s system so we don’t run short or over-order, and waste stays low.
-      - Ran daily cutting and stock rotation in Cadillac, which helped keep waste down.
-      - Follow food-safety and sanitation rules closely; our routine inspections came back clean.
-      - Run and maintain the meat saws safely and cut to spec.
-      - Help new team members learn safety, sanitation and product handling.
-      - Take special orders for customers.
-
-  - org: Reselling
-    span: 2024 – Present
-    place: Michigan
-    headline: On the side
-    summary: I find, price and resell electronics and appliances on Facebook Marketplace.
-    roles:
-      - { title: Independent reseller, place: "Michigan", dates: "Jan 2024 – Present" }
-    points:
-      - Find, price and resell electronics and appliances on Facebook Marketplace.
-      - Keep track of what I have and handle the back-and-forth with buyers.
+      - Manage the department’s inventory in Meijer’s IMS so we don’t run short or over-order, which feeds the sales forecast and keeps waste down.
+      - Run the meat saws to spec under strict safety protocols; precision cutting with no accidents and no lost time.
+      - Ran daily cutting and stock rotation in Cadillac, where tight rotation kept waste low and the department ahead on corporate performance metrics.
+      - Follow food-safety and sanitation rules closely; routine inspections came back with zero violations.
+      - Take special orders for customers, which is a big part of why they come back.
+      - Learned cut specifications, blade safety, case setup, rotation and labeling (FIFO) as an apprentice under a journeyman cutter.
 
   - org: FIAMM Technologies
     span: 2021 – 2023
@@ -51,22 +42,36 @@ education:
     degree: Bachelor of Science in Business Administration, Logistics Management
     place: Mount Pleasant, MI
     dates: Expected April 2027
+    note: GPA 3.70 · Major GPA 4.00 · President’s List, Spring 2026
+    courses: Logistics and Physical Distribution · Operations and Supply Chain Management · Logistics Strategy
   - school: Baker College
     degree: Associate of Applied Science, General Studies
     place: Cadillac, MI
     dates: July 2025
-    note: GPA 3.5 · Dean’s List, 2023–2024
+    note: GPA 3.50 · Dean’s List, 2023–2024
 
 activities:
-  - org: CMU League of Legends Esports
-    role: Varsity Starter, Jungler
+  - org: CMU Supply Chain Management Association
+    role: Member
+    dates: 2026 – Present
+    note: The student chapter for supply chain and logistics majors at Central Michigan.
+  - org: CMU Esports, League of Legends
+    role: Varsity Starter, ADC (2026–27) · Jungler (2025–26)
     dates: Sep 2025 – Present
-    note: I play jungle on the varsity team, which is mostly communication, timing and staying calm when things go sideways.
+    note: A starting spot for a second straight season, switching from jungle to ADC for fall 2026. Mostly communication, timing and staying calm when things go sideways.
+
+certifications:
+  - name: Microsoft Excel, Essential Skills and Applied Intermediate Skills
+    issuer: McGraw Hill
+    dates: Nov 2025
+  - name: Microsoft Access, Essential Skills and Applied Intermediate Skills
+    issuer: McGraw Hill
+    dates: Sep – Oct 2025
 
 skills:
   - area: Operations
-    items: [Inventory management systems, Stock rotation (FIFO), Food safety and sanitation]
+    items: [Inventory control, Stock rotation (FIFO), Waste reduction, Food safety compliance, Customer service]
   - area: Analysis
-    items: [Microsoft Excel, Google Sheets, Python, Google OR-Tools]
+    items: [Microsoft Excel, Microsoft Access, Google Sheets, Python, Google OR-Tools]
   - area: Tools
-    items: [Microsoft Office, Google Workspace, JavaScript, GitHub Pages]
+    items: [Inventory Management Systems (IMS), Microsoft Office, Google Workspace, JavaScript, GitHub Pages]
