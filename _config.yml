@@ -37,6 +37,11 @@ tv_label: The living room TV
 # (the moment anyone runs npm install) a whole node_modules tree would be served as part
 # of the website. The .docx is the resume's source file: it belongs in the repo, not on
 # the web, where the PDF is what people should get.
+#
+# GitHub Pages renders every Markdown file as a page even without front matter (its build
+# loads jekyll-optional-front-matter; a plain local build does not), so any .md file that is
+# documentation rather than content must be listed here or it turns up at /<name>/ and in
+# the sitemap. CLAUDE.md did exactly that once.
 exclude:
   - worker/
   - scripts/
@@ -47,3 +52,5 @@ exclude:
   - Gemfile.lock
   - .gitignore
   - README.md
+  - CLAUDE.md
+  - LICENSE
