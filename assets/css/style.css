@@ -7,6 +7,16 @@
    pages, which bring their own classes. Spacing steps are multiples of 8. The Fruit Fly Dispatcher page carries its own copy of the
    neutrals and type tokens, so keep the two in step. */
 
+/* ---------- fonts, served from here rather than Google ----------
+   Latin subsets only (the same files Google would send a browser in the US), so one origin,
+   no render-blocking third-party stylesheet, and the two above-the-fold faces are preloaded
+   from head.html. The unicode-range matches Google's "latin" slice: anything outside it,
+   arrows included, falls back exactly as it did before. */
+@font-face { font-family: "Cormorant Garamond"; font-style: normal; font-weight: 500 600; font-display: swap; src: url("/assets/fonts/cormorant-garamond.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("/assets/fonts/inter.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("/assets/fonts/ibm-plex-mono-400.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("/assets/fonts/ibm-plex-mono-500.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
 :root {
   color-scheme: light;
   --ground: #eeebe3;   /* bone: the page */
@@ -82,15 +92,16 @@ a { color: inherit; }
 .wordmark { margin-right: auto; text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
 .wordmark .short { display: none; font-family: var(--serif); font-size: 22px; font-weight: 500; letter-spacing: 0.08em; }
 .site-nav .links { display: flex; gap: 32px; }
-.site-nav .links a { text-decoration: none; font-size: 13px; color: var(--text-2); padding: 6px 0; transition: color 0.15s; }
+.site-nav .links a { text-decoration: none; font-size: 13px; color: var(--text-2); padding: 24px 0; transition: color 0.15s; } /* the whole bar height is tappable */
 .site-nav .links a:hover { color: var(--ink); }
 .site-nav .links a[aria-current="page"] { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 8px; text-decoration-color: var(--accent); }
-.theme-btn { flex: none; width: 24px; height: 24px; display: grid; place-items: center; padding: 0; margin-right: -4px; background: none; border: 0; color: var(--text-2); cursor: pointer; transition: color 0.15s; }
+.theme-btn { flex: none; width: 40px; height: 40px; display: grid; place-items: center; padding: 0; margin-right: -12px; background: none; border: 0; color: var(--text-2); cursor: pointer; transition: color 0.15s; }
 .theme-btn:hover { color: var(--ink); }
 .theme-btn svg { width: 14px; height: 14px; display: block; }
 @media (max-width: 600px) {
-  .site-nav .frame { height: 64px; gap: 22px; }
+  .site-nav .frame { height: 64px; gap: 16px; }
   .site-nav .links { gap: 20px; }
+  .site-nav .links a { padding: 20px 0; }
   .wordmark .full { display: none; }
   .wordmark .short { display: inline; }
 }
@@ -100,7 +111,7 @@ a { color: inherit; }
 .site-foot .row { padding: 32px 0 48px; align-items: baseline; row-gap: 16px; }
 .site-foot .key { color: var(--muted); font-size: 13px; }
 .site-foot nav { grid-column: 4 / 10; display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 13px; }
-.site-foot nav a { text-decoration: none; color: var(--text-2); transition: color 0.15s; }
+.site-foot nav a { text-decoration: none; color: var(--text-2); padding: 8px 0; margin: -8px 0; transition: color 0.15s; }
 .site-foot nav a:hover { color: var(--ink); }
 .site-foot .stamp { grid-column: 10 / 13; text-align: right; font-family: var(--mono); font-size: 12px; color: var(--text-2); font-variant-numeric: tabular-nums; }
 @media (max-width: 860px) {
@@ -148,7 +159,9 @@ a { color: inherit; }
 .page .entry-head { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; }
 .page .entry-title { font-family: var(--serif); font-weight: 500; font-size: 34px; line-height: 1.1; color: var(--ink); letter-spacing: -0.005em; font-variant-numeric: lining-nums; transition: color 0.15s; }
 .page .entry-sub { margin-top: 6px !important; font-size: 15px; font-weight: 500; color: var(--ink); }
-.page .entry-text { margin-top: 12px !important; max-width: 38em; font-size: 16px; color: var(--text-2); }
+.page .entry-text { display: block; margin-top: 12px !important; max-width: 38em; font-size: 16px; color: var(--text-2); }
+.page .entry .key .label, .page .entry .key .data { display: block; }
+.page .entry .key .data { margin-top: 8px; }
 .page .entry-data { display: block; margin-top: 16px; }
 .page .entry .go { font-size: 15px; color: var(--muted); transition: color 0.15s; }
 a.entry:hover .entry-title { color: var(--accent); }
@@ -159,6 +172,7 @@ a.entry:hover .go { color: var(--accent); }
 .page .entry .go.label { font-size: 11px; }
 .page .entry-tight { padding: 20px 0; align-items: baseline; }
 .page .entry-tight .key { padding-top: 0; }
+.page .entry-tight .key .data { margin-top: 0; }
 @media (max-width: 860px) {
   .page .entry { padding: 32px 0; }
   .page .entry .key { padding-top: 0; }
@@ -193,7 +207,7 @@ a.entry:hover .go { color: var(--accent); }
 .page .card-rule { display: block; width: 28px; height: 1px; background: var(--accent); margin: 20px auto 16px; }
 .page .card-title { font-size: 10.5px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-2); }
 .page .card-bot { align-items: end; }
-.page .card-bot a { text-decoration: none; font-family: var(--mono); font-size: 11px; color: var(--text-2); transition: color 0.15s; }
+.page .card-bot a, .page .card-bot span { text-decoration: none; font-family: var(--mono); font-size: 11px; color: var(--text-2); transition: color 0.15s; }
 .page .card-bot a:hover { color: var(--accent); }
 .page .card-bot .label { text-align: center; }
 
@@ -261,7 +275,25 @@ a.entry:hover .go { color: var(--accent); }
 /* ---------- writing and posts ---------- */
 .page .post .back { text-decoration: none; }
 .page .post .back:hover { color: var(--ink); }
+.page .post .meta { margin-top: 24px !important; display: flex; flex-wrap: wrap; gap: 4px 12px; }
 .page .post .prose { margin-top: 56px; }
+.page .prose h2, .page .prose h3 { font-family: var(--serif); color: var(--ink); margin: 1.6em 0 0.5em; line-height: 1.15; }
+.page .prose h2 { font-size: 30px; }
+.page .prose h3 { font-size: 24px; }
+.page .prose ul, .page .prose ol { max-width: 38em; padding-left: 1.4em; margin: 0 0 1.1em; font-size: 17px; line-height: 1.7; }
+.page .prose li + li { margin-top: 0.3em; }
+.page .prose blockquote { margin: 1.4em 0; padding: 4px 0 4px 20px; border-left: 1px solid var(--ink); color: var(--text-2); max-width: 38em; }
+.page .prose img { max-width: 100%; height: auto; display: block; margin: 1.6em 0; }
+.page .prose pre { max-width: 100%; overflow: auto; padding: 16px 20px; margin: 0 0 1.4em; background: var(--silian); font-family: var(--mono); font-size: 13px; line-height: 1.6; }
+.page .prose code { font-family: var(--mono); font-size: 0.92em; }
+.page .prose :not(pre) > code { background: var(--silian); padding: 1px 5px; }
+.page .prose hr { border: 0; border-top: 1px solid var(--rule); margin: 2em 0; }
+.page .post-nav { margin-top: 96px; border-top: 1px solid var(--ink); padding-top: 24px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.page .post-nav a { display: grid; gap: 6px; text-decoration: none; color: var(--ink); }
+.page .post-nav a:hover .entry-title { color: var(--accent); }
+.page .post-nav .entry-title { font-size: 24px; line-height: 1.2; }
+.page .post-nav .next { text-align: right; grid-column: 2; }
+@media (max-width: 520px) { .page .post-nav { grid-template-columns: minmax(0, 1fr); } .page .post-nav .next { text-align: left; grid-column: auto; } }
 
 /* ---------- what we're watching ---------- */
 .page .art { display: block; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; background: var(--silian); }
@@ -292,4 +324,38 @@ a.entry:hover .go { color: var(--accent); }
 @media (max-width: 860px) { .page .tally { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 32px; } .page .deck { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .page .np-card { grid-template-columns: 96px minmax(0, 1fr); gap: 20px; } .page .deck { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
+
+/* ---------- print: the résumé page is the reason, but every page prints cleanly ---------- */
+@media print {
+  :root { --ground: #fff; --stock: #fff; --silian: #f2f2f2; --ink: #000; --text: #111; --text-2: #333; --muted: #555; --rule: #bbb; --accent: #000; --shadow: transparent; }
+  html { scroll-behavior: auto; }
+  body { font-size: 11pt; line-height: 1.5; min-height: 0; display: block; }
+  .site-nav, .site-foot, .skip, .theme-btn, .pbar, .page .actions, .page .hero-links, .page .sec-head a, .page .entry .go, .page .repo-list, .page .log, .page #log { display: none !important; }
+  .frame { max-width: none; padding: 0; }
+  .page .phead { padding-top: 0; }
+  .page .phead h1 { font-size: 30pt; }
+  .page .lede { margin-top: 12pt !important; font-size: 12pt; }
+  .page .row { grid-template-columns: 9em minmax(0, 1fr); column-gap: 24pt; }
+  .page .row > .key { grid-column: 1; }
+  .page .row > .body { grid-column: 2; }
+  .page .sec { margin-top: 28pt; break-inside: avoid; }
+  .page .sec-head { padding-top: 6pt; margin-bottom: 0; }
+  .page .entry { padding: 12pt 0; break-inside: avoid; }
+  .page .entry .key { padding-top: 4pt; }
+  .page .entry-title { font-size: 17pt; }
+  .page .entry-lg .entry-title { font-size: 20pt; }
+  .page .entry-text, .page .points li, .page .roles li, .page .skill-list { font-size: 10.5pt; }
+  .page .points li { margin-bottom: 4pt; }
+  .page .roles { margin-top: 8pt; }
+  .page .roles li { padding: 4pt 0; }
+  .page .card { box-shadow: none; border: 1px solid #000; }
+  .page .card-mark { display: none; }
+  .page .hero { padding: 0 0 24pt; }
+  .page .statement { font-size: 20pt; margin: 12pt 0 16pt !important; }
+  .page .big-link { font-size: 20pt; border: 0; }
+  .page .big-link::after, .page .inline-links a::after, .page .prose a::after { content: " (" attr(href) ")"; font-family: var(--mono); font-size: 9pt; color: #555; }
+  .page .inline-links a[href^="mailto"]::after, .page .big-link[href^="mailto"]::after { content: none; }
+  .page .inline-links a, .page .prose a { border: 0; text-decoration: none; }
+}

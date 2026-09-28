@@ -2,7 +2,9 @@
 layout: default
 title: Résumé
 permalink: /resume/
-description: Résumé of Juan Torres, Logistics Management student at Central Michigan University.
+description: Résumé of Juan Torres, Logistics Management student at Central Michigan University, class of 2027. Meat cutter at Meijer, formerly a factory operator at FIAMM.
+image: /assets/og/resume.png
+image_alt: "Résumé of Juan Torres. Logistics Management, Central Michigan University, class of 2027."
 ---
 {% assign r = site.data.resume %}
 <header class="phead row">
@@ -11,7 +13,8 @@ description: Résumé of Juan Torres, Logistics Management student at Central Mi
     <h1>Juan Torres</h1>
     <p class="lede">{{ r.profile }}</p>
     <div class="actions">
-      <a class="btn primary" href="/assets/Juan%20Torres%20Resume.pdf" download>Download PDF</a>
+      <a class="btn primary" href="/assets/Juan%20Torres%20Resume.pdf" download="Juan-Torres-Resume.pdf" type="application/pdf">Download PDF</a>
+      <button class="btn" type="button" onclick="window.print()">Print</button>
       <a class="btn" href="mailto:{{ site.email }}">Email</a>
     </div>
   </div>

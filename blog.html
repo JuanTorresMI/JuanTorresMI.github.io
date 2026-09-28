@@ -2,7 +2,9 @@
 layout: default
 title: Writing
 permalink: /blog/
-description: Juan Torres writes about finance, school and work on Substack.
+description: Juan Torres writes about finance, school and work on Substack; every piece is collected here, newest first.
+image: /assets/og/writing.png
+image_alt: "Notes on finance, school and work, by Juan Torres."
 ---
 <header class="phead row">
   <p class="key label">Writing</p>
@@ -10,25 +12,37 @@ description: Juan Torres writes about finance, school and work on Substack.
     <h1>Notes on finance, school and work</h1>
     <p class="lede">Published on Substack and collected here, newest first.</p>
     <div class="actions">
-      <a class="btn primary" href="https://juantorresis.substack.com/subscribe">Subscribe</a>
-      <a class="btn" href="https://juantorresis.substack.com">Substack ↗</a>
+      <a class="btn primary" href="{{ site.social.substack }}/subscribe">Subscribe</a>
+      <a class="btn" href="{{ site.social.substack }}">Substack ↗</a>
+      <a class="btn" href="/feed.xml">RSS</a>
     </div>
   </div>
 </header>
 
 <section class="sec">
-  <header class="sec-head"><h2>All writing</h2><span class="label" id="count"></span></header>
-  <div class="entries" id="posts" aria-live="polite"></div>
+  <header class="sec-head"><h2>All writing</h2><span class="label" id="count">{{ site.posts.size }} {% if site.posts.size == 1 %}piece{% else %}pieces{% endif %}</span></header>
+  {%- comment %} The posts that live here are written into the page, so they are there without
+  JavaScript and for every crawler. The script below adds what is on Substack. {% endcomment %}
+  <div class="entries" id="posts" aria-live="polite">
+    {%- for post in site.posts %}
+    <a class="entry row" href="{{ post.url }}" data-date="{{ post.date | date_to_xmlschema }}">
+      <span class="key data"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time></span>
+      <span class="body"><span class="entry-head"><span class="entry-title">{{ post.title }}</span><span class="go label">On this site</span></span>
+      <span class="entry-text">{{ post.description | default: post.excerpt | strip_html | normalize_whitespace | truncate: 170 }}</span></span>
+    </a>
+    {%- endfor %}
+  </div>
   <p class="log-note" id="feedNote"></p>
 </section>
 
 <script>
 (() => {
-  const LOCAL = [{% for post in site.posts %}{ "title": {{ post.title | jsonify }}, "url": {{ post.url | jsonify }}, "date": {{ post.date | date_to_xmlschema | jsonify }}, "excerpt": {{ post.excerpt | strip_html | strip_newlines | truncate: 180 | jsonify }}, "source": "On this site" }{% unless forloop.last %},{% endunless %}{% endfor %}];
+  const LOCAL = [{% for post in site.posts %}{ "title": {{ post.title | jsonify }}, "url": {{ post.url | jsonify }}, "date": {{ post.date | date_to_xmlschema | jsonify }}, "excerpt": {{ post.description | default: post.excerpt | strip_html | normalize_whitespace | truncate: 180 | jsonify }}, "source": "On this site" }{% unless forloop.last %},{% endunless %}{% endfor %}];
   // Substack's RSS has no CORS headers, so this goes through the site's own Worker rather
   // than a third-party XML-to-JSON service. See worker/src/index.js.
   const WORKER = {{ site.worker_url | default: "" | jsonify }};
   const FEED = WORKER ? WORKER.replace(/\/+$/, "") + "/substack" : null;
+  const SUBSTACK = {{ site.social.substack | jsonify }};
   const esc = (s) => String(s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const clip = (s, n) => (s.length > n ? s.slice(0, n).replace(/\s+\S*$/, "") + "…" : s);
   function render(items) {
@@ -39,14 +53,13 @@ description: Juan Torres writes about finance, school and work on Substack.
       const when = isNaN(d) ? "" : d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
       const ext = p.source === "Substack";
       return `<a class="entry row" href="${esc(p.url)}"${ext ? ' rel="noopener"' : ""}>
-        <span class="key data">${esc(when)}</span>
+        <span class="key data"><time datetime="${esc(p.date)}">${esc(when)}</time></span>
         <span class="body"><span class="entry-head"><span class="entry-title">${esc(p.title)}</span><span class="go label">${esc(p.source)}${ext ? " ↗" : ""}</span></span>
-        ${p.excerpt ? `<span class="entry-text" style="display:block">${esc(clip(p.excerpt, 170))}</span>` : ""}</span></a>`;
+        ${p.excerpt ? `<span class="entry-text">${esc(clip(p.excerpt, 170))}</span>` : ""}</span></a>`;
     }).join("");
   }
-  render(LOCAL.slice());
 
-  const note = () => { document.getElementById("feedNote").innerHTML = `Couldn't load the Substack feed just now; everything is at <a class="link" href="https://juantorresis.substack.com">juantorresis.substack.com</a>.`; };
+  const note = () => { document.getElementById("feedNote").innerHTML = `Couldn't load the Substack feed just now; everything is at <a class="link" href="${esc(SUBSTACK)}">${esc(SUBSTACK.replace(/^https?:\/\//, ""))}</a>.`; };
 
   if (!FEED) { note(); return; }
   fetch(FEED)
@@ -58,7 +71,7 @@ description: Juan Torres writes about finance, school and work on Substack.
       const subs = data.items
         .filter((it) => !local.has(String(it.title).trim().toLowerCase()))
         .map((it) => ({ title: it.title, url: it.url, date: it.date, excerpt: it.excerpt, source: "Substack" }));
-      render(LOCAL.concat(subs));
+      if (subs.length) render(LOCAL.concat(subs));
     })
     .catch(note);
 })();

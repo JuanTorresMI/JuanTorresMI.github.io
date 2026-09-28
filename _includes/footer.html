@@ -4,13 +4,13 @@
       <span class="key">© {{ site.time | date: "%Y" }} {{ site.author }}</span>
       <nav aria-label="Elsewhere">
         <a href="mailto:{{ site.email }}">Email</a>
-        <a href="https://www.linkedin.com/in/juan-torres-0ab3471bb" rel="me">LinkedIn</a>
-        <a href="https://github.com/JuanTorresMI" rel="me">GitHub</a>
-        <a href="https://juantorresis.substack.com" rel="me">Substack</a>
+        <a href="{{ site.social.linkedin }}" rel="me">LinkedIn</a>
+        <a href="{{ site.social.github }}" rel="me">GitHub</a>
+        <a href="{{ site.social.substack }}" rel="me">Substack</a>
         <a href="/watching/">House TV</a>
         <a href="/feed.xml">RSS</a>
       </nav>
-      <span class="stamp data">Updated {{ site.time | date: "%b %-d, %Y" }}</span>
+      <span class="stamp data"><time datetime="{{ site.time | date_to_xmlschema }}">Updated {{ site.time | date: "%b %-d, %Y" }}</time></span>
     </div>
   </div>
 </footer>

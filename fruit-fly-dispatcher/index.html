@@ -3,6 +3,8 @@ layout: app
 project: fruit-fly-dispatcher
 title: Fruit Fly Dispatcher
 description: "Does a fruit fly's brain route fresh-food deliveries as well as OR-Tools, and which matters more: the brain or what it knows? A week-long simulation at four levels of knowledge."
+image: /assets/og/fruit-fly-dispatcher.png
+image_alt: "Fruit Fly Dispatcher: a fly’s brain against Google OR-Tools, 55 stores, one week. A simulation by Juan Torres."
 ---
 {% raw %}
 <style>
@@ -721,17 +723,26 @@ function prepRun(b) {
   for (const e of b.events) { if (e.kind === "depart") dep = e.t; if (e.kind === "home" && dep !== null) { b.trips.push({ a: dep, b: e.t, drift: e.drift_km }); dep = null; } }
 }
 const loading = {};
+// A week's replay is a 2–3 MB script. Nothing above the "Watch a week" section needs it, so it
+// is fetched only once the reader is within a couple of screens of that section (or has clicked
+// a cell in Finding 1, which scrolls there). Every map shows "Loading this week…" until then.
+const watchWanted = new Promise((resolve) => {
+  const sec = $("#watch");
+  if (!sec || !("IntersectionObserver" in window)) return resolve();
+  const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) { io.disconnect(); resolve(); } }, { rootMargin: "1500px 0px" });
+  io.observe(sec);
+});
 function ensureRuns(sc = scen(), info = state.info) {
   const key = runKey(sc, info);
   const R = window.SHOWCASE_RUNS || {};
   if (R[key] && R[key].__ready) return Promise.resolve(R[key]);
-  if (!loading[key]) loading[key] = new Promise((resolve, reject) => {
+  if (!loading[key]) loading[key] = watchWanted.then(() => new Promise((resolve, reject) => {
     const s = document.createElement("script");
     s.src = `runs/${key}.js`;
     s.onload = () => { const r = window.SHOWCASE_RUNS[key]; for (const b of Object.values(r)) prepRun(b); r.__ready = true; resolve(r); };
     s.onerror = () => { delete loading[key]; reject(new Error("could not load " + key)); };
     document.head.appendChild(s);
-  });
+  }));
   return loading[key];
 }
 function positionAt(b, t) {

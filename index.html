@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Juan Torres
+image: /assets/og/home.png
 ---
 <section class="hero" aria-label="Business card">
   <article class="card">
@@ -16,7 +17,7 @@ title: Juan Torres
     </div>
     <div class="card-bot">
       <a href="mailto:{{ site.email }}">{{ site.email }}</a>
-      <a href="/">juantorresmi.github.io</a>
+      <span>juantorresmi.github.io</span>
     </div>
   </article>
   <div class="hero-links">
@@ -48,7 +49,7 @@ title: Juan Torres
       <span class="key label">{{ p.kind }}</span>
       <span class="body">
         <span class="entry-head"><span class="entry-title">{{ p.title }}</span><span class="go" aria-hidden="true">→</span></span>
-        <span class="entry-text" style="display:block">{{ p.short }}</span>
+        <span class="entry-text">{{ p.short }}</span>
       </span>
     </a>
     {% endfor %}
@@ -78,9 +79,9 @@ title: Juan Torres
       <a class="big-link" href="mailto:{{ site.email }}">{{ site.email }}</a>
       <p class="entry-text">Email is the best way to reach me. I’m always happy to talk about logistics, internships or anything on this site.</p>
       <div class="inline-links small">
-        <a href="https://www.linkedin.com/in/juan-torres-0ab3471bb">LinkedIn</a>
-        <a href="https://github.com/JuanTorresMI">GitHub</a>
-        <a href="https://juantorresis.substack.com">Substack</a>
+        <a href="{{ site.social.linkedin }}" rel="me">LinkedIn</a>
+        <a href="{{ site.social.github }}" rel="me">GitHub</a>
+        <a href="{{ site.social.substack }}" rel="me">Substack</a>
       </div>
     </div>
   </div>
@@ -91,7 +92,7 @@ title: Juan Torres
   document.getElementById("vcard").addEventListener("click", () => {
     const v = ["BEGIN:VCARD", "VERSION:3.0", "N:Torres;Juan;;;", "FN:Juan Torres", "ORG:Central Michigan University",
       "TITLE:Logistics Management student", "EMAIL;TYPE=INTERNET:{{ site.email }}",
-      "URL:https://juantorresmi.github.io/", "URL:https://www.linkedin.com/in/juan-torres-0ab3471bb", "END:VCARD"].join("\r\n");
+      "URL:{{ site.url }}/", "URL:{{ site.social.linkedin }}", "END:VCARD"].join("\r\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([v], { type: "text/vcard" }));
     a.download = "Juan-Torres.vcf";
