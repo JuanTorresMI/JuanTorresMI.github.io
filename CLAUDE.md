@@ -20,6 +20,7 @@ Read this before changing anything; README.md covers the same ground for people.
 | `assets/og/` | 1200×630 share pictures, drawn by `scripts/og-images.js` |
 | `fruit-fly-dispatcher/` | The simulation: `index.html` (layout `app`), `showcase-data.js`, `runs/*.js` (loaded on demand) |
 | `craft-ledger.html` | The ledger: one file (styles, markup, recipe JSON, script) inside layout `app`, styles scoped under `.cl` |
+| `minecraft-crafting-profit-calculator.html` | The ledger's guide page: what search engines and SMP players land on. A project's `guide` in `projects.yml` links to it |
 | `worker/` | Cloudflare Worker for `/watching/` and the Substack feed. Not part of the Jekyll build; own README |
 | `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` (share pictures) |
 

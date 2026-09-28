@@ -27,6 +27,9 @@ image_alt: "Things I’ve built: a fruit-fly delivery simulation and a Minecraft
         <span class="entry-stack skill-list">{% for s in p.stack %}<span>{{ s }}</span>{% endfor %}</span>
       </span>
     </a>
+    {%- if p.guide %}
+    <p class="entry-guide row"><span class="key"></span><a class="body link small" href="{{ p.guide }}">Read the guide to {{ p.title }} →</a></p>
+    {%- endif %}
     {% endfor %}
   </div>
 </section>
