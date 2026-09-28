@@ -1,7 +1,7 @@
 {% comment %}
   Moves between projects. Order comes from _data/projects.yml; the page says which one it is
-  with `project: <slug>` in its front matter. tone="dark" for pages without the site stylesheet
-  (Craft Ledger), which is also hidden when that app runs from a phone's home screen.
+  with `project: <slug>` in its front matter. Hidden when the page runs from a phone's home
+  screen (see `standalone` in head.html), where it would only take up room.
 {% endcomment %}
 {% assign list = site.data.projects %}
 {% assign n = list.size %}
@@ -9,7 +9,7 @@
 {% assign prev_i = idx | minus: 1 %}{% if prev_i < 0 %}{% assign prev_i = n | minus: 1 %}{% endif %}
 {% assign next_i = idx | plus: 1 %}{% if next_i >= n %}{% assign next_i = 0 %}{% endif %}
 {% assign prev = list[prev_i] %}{% assign next = list[next_i] %}
-<div class="pbar{% if include.tone == 'dark' %} pbar-dark{% endif %}">
+<div class="pbar">
   <div class="pbar-in">
     <a class="pbar-all" href="/projects/">Projects</a>
     <span class="pbar-sep" aria-hidden="true">/</span>
@@ -21,19 +21,3 @@
     </nav>
   </div>
 </div>
-<style>
-.pbar { --pb-bg: var(--ground, #eeebe3); --pb-ink: var(--ink, #0f0f0e); --pb-ink2: var(--muted, #66625a); --pb-rule: var(--rule, #d6d1c5);
-  background: var(--pb-bg); border-bottom: 1px solid var(--pb-rule); font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 11px; font-weight: 500; line-height: 1.5; letter-spacing: 0.16em; text-transform: uppercase; color: var(--pb-ink2); }
-.pbar-dark { --pb-bg: #0f1116; --pb-ink: #e4e7ee; --pb-ink2: #8b93a5; --pb-rule: #2c313e; }
-.pbar-in { max-width: calc(1152px + 96px); margin: 0 auto; padding: 14px 48px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-.pbar a { color: var(--pb-ink2); text-decoration: none; transition: color 0.15s; }
-.pbar a:hover { color: var(--pb-ink); }
-.pbar-cur { color: var(--pb-ink); }
-.pbar-count { font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace; font-size: 11px; letter-spacing: 0.02em; margin-left: 8px; }
-.pbar-nav { margin-left: auto; display: flex; gap: 32px; padding: 0; border: 0; background: none; } /* Craft Ledger styles every <nav> */
-.pbar-dark .pbar-in { max-width: none; padding: 12px 20px; } /* that app runs edge to edge */
-@media (max-width: 860px) { .pbar-in { padding: 12px 24px; } }
-@media (max-width: 520px) { .pbar-in { padding: 12px 20px; } .pbar-nav { margin-left: 0; width: 100%; gap: 24px; } }
-@media (display-mode: standalone) { .pbar-dark { display: none; } }
-</style>

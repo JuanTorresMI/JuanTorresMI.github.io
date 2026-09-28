@@ -1,0 +1,26 @@
+# Builds the site exactly as GitHub Pages does and checks the result, on every pull request
+# and every push to a branch other than main. Deployment itself is jekyll-gh-pages.yml.
+name: Check the site
+
+on:
+  pull_request:
+  push:
+    branches-ignore: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build with Jekyll (the GitHub Pages build)
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - name: Check the build
+        run: python3 scripts/check.py _site

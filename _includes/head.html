@@ -49,6 +49,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
+{% if page.standalone %}<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="{{ page.standalone_title | default: page.title | escape }}">{% endif %}
 <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}">
 {% comment %}
   Theme is applied before the first paint. Inline and blocking on purpose: in a <link>
@@ -126,7 +130,7 @@
   "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
   "dateModified": {{ page.last_modified_at | default: page.date | date_to_xmlschema | jsonify }},
   "inLanguage": "en-US",
-  "keywords": {{ page.tags | default: empty | join: ", " | jsonify }},
+  "keywords": {% if page.tags %}{{ page.tags | join: ", " | jsonify }}{% else %}""{% endif %},
   "wordCount": {{ content | strip_html | number_of_words }},
   "author": { "@type": "Person", "@id": {{ person_id | jsonify }}, "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" },
   "publisher": { "@type": "Person", "@id": {{ person_id | jsonify }}, "name": {{ site.author | jsonify }} },

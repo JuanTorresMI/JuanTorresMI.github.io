@@ -106,6 +106,17 @@ a { color: inherit; }
   .wordmark .short { display: inline; }
 }
 
+/* ---------- project bar: sits under the nav on project pages (see _includes/project-bar.html) ---------- */
+.pbar { border-bottom: 1px solid var(--rule); font-family: var(--sans); font-size: 11px; font-weight: 500; line-height: 1.5; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.pbar-in { max-width: calc(var(--measure) + 2 * var(--side)); margin: 0 auto; padding: 14px var(--side); display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.pbar a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+.pbar a:hover { color: var(--ink); }
+.pbar-cur { color: var(--ink); }
+.pbar-count { font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em; margin-left: 8px; }
+.pbar-nav { margin-left: auto; display: flex; gap: 32px; }
+@media (max-width: 520px) { .pbar-nav { margin-left: 0; width: 100%; gap: 24px; } }
+@media (display-mode: standalone) { .pbar { display: none; } }
+
 /* ---------- footer ---------- */
 .site-foot { border-top: 1px solid var(--rule); margin-top: 160px; }
 .site-foot .row { padding: 32px 0 48px; align-items: baseline; row-gap: 16px; }
