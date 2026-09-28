@@ -82,7 +82,9 @@ dates and figures. Spacing steps are multiples of 8.
   file) are excluded from the build in `_config.yml`. That last part matters: GitHub Pages
   renders every Markdown file as a page even without front matter, which a plain local build
   does not, so a new `.md` at the root must be added to `exclude` or it appears at `/<name>/`.
-- The PDF résumé is a separate document from `_data/resume.yml`; update both together.
+- The PDF résumé (`assets/Juan Torres Resume.pdf`, with its `.docx` source beside it) is a separate
+  document from `_data/resume.yml`; update both together. The data file is written in the site's
+  plain first-person voice, not the PDF's résumé phrasing, and leaves out the phone number.
 
 ## Secrets
 

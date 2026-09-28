@@ -33,9 +33,9 @@ image: /assets/og/home.png
     <div class="body">
       <p class="statement">I study logistics at Central Michigan, work at Meijer, and build things on the side.</p>
       <div class="prose">
-        <p>I’m a senior at Central Michigan University studying Business Administration with a concentration in Logistics Management, and I graduate in April 2027.</p>
-        <p>Most of my work has been hands-on. I ran equipment on a factory line at FIAMM, and for the last couple of years I’ve been a meat cutter at Meijer, where a lot of the job is keeping inventory right, rotating stock and helping train new people.</p>
-        <p>When something from class sticks with me, I like to build it and see what happens. That’s how I ended up racing a fruit fly’s brain against Google’s routing software, and writing a price ledger for a Minecraft economy I trade in. Both run on this site. Outside of that, I play jungle for CMU’s varsity League of Legends team.</p>
+        <p>I’m a senior at Central Michigan University studying Business Administration with a concentration in Logistics Management. I carry a 3.70 GPA, a 4.00 in the major, and I graduate in April 2027.</p>
+        <p>Most of my work has been hands-on. I ran equipment on a factory line at FIAMM, and for the last couple of years I’ve been a certified meat cutter at Meijer, where a lot of the job is keeping inventory right, rotating stock and keeping the department clean enough that inspections come back with nothing on them.</p>
+        <p>When something from class sticks with me, I like to build it and see what happens. That’s how I ended up racing a fruit fly’s brain against Google’s routing software, and writing a price ledger for a Minecraft economy I trade in. Both run on this site. Outside of that, I’m in the Supply Chain Management Association and I start for CMU’s varsity League of Legends team.</p>
       </div>
     </div>
   </div>
@@ -91,7 +91,7 @@ image: /assets/og/home.png
 (() => {
   document.getElementById("vcard").addEventListener("click", () => {
     const v = ["BEGIN:VCARD", "VERSION:3.0", "N:Torres;Juan;;;", "FN:Juan Torres", "ORG:Central Michigan University",
-      "TITLE:Logistics Management student", "EMAIL;TYPE=INTERNET:{{ site.email }}",
+      "TITLE:Logistics Management student, Central Michigan University", "EMAIL;TYPE=INTERNET:{{ site.email }}",
       "URL:{{ site.url }}/", "URL:{{ site.social.linkedin }}", "END:VCARD"].join("\r\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([v], { type: "text/vcard" }));

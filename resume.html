@@ -2,7 +2,7 @@
 layout: default
 title: Résumé
 permalink: /resume/
-description: Résumé of Juan Torres, Logistics Management student at Central Michigan University, class of 2027. Meat cutter at Meijer, formerly a factory operator at FIAMM.
+description: Résumé of Juan Torres, Logistics Management student at Central Michigan University, 3.70 GPA, class of 2027. Certified meat cutter at Meijer.
 image: /assets/og/resume.png
 image_alt: "Résumé of Juan Torres. Logistics Management, Central Michigan University, class of 2027."
 ---
@@ -50,6 +50,7 @@ image_alt: "Résumé of Juan Torres. Logistics Management, Central Michigan Univ
         <div class="entry-head"><h3 class="entry-title">{{ ed.school }}</h3><span class="label">{{ ed.place }}</span></div>
         <p class="entry-sub">{{ ed.degree }}</p>
         {% if ed.note %}<p class="entry-text">{{ ed.note }}</p>{% endif %}
+        {% if ed.courses %}<p class="entry-text"><span class="label">Coursework</span><br>{{ ed.courses }}</p>{% endif %}
       </div>
     </div>
     {% endfor %}
@@ -71,6 +72,20 @@ image_alt: "Résumé of Juan Torres. Logistics Management, Central Michigan Univ
     {% endfor %}
   </div>
 </section>
+
+{% if r.certifications %}
+<section class="sec">
+  <header class="sec-head"><h2>Certifications</h2></header>
+  <div class="entries">
+    {% for c in r.certifications %}
+    <div class="entry entry-tight row">
+      <span class="key data">{{ c.dates }}</span>
+      <div class="body"><p class="entry-sub" style="margin-top:0 !important">{{ c.name }}</p><p class="entry-text" style="margin-top:4px !important">{{ c.issuer }}</p></div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
 
 <section class="sec">
   <header class="sec-head"><h2>Skills</h2></header>
