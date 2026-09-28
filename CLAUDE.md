@@ -78,7 +78,10 @@ dates and figures. Spacing steps are multiples of 8.
 - The writing index renders local posts in HTML and merges Substack items by script, so the
   list works without JavaScript and for crawlers.
 - The sitemap and feed are written by hand (no plugins) so they build anywhere.
-- The `.docx` résumé source and `worker/` are excluded from the build in `_config.yml`.
+- The `.docx` résumé source, `worker/`, `scripts/` and the documentation files (README, this
+  file) are excluded from the build in `_config.yml`. That last part matters: GitHub Pages
+  renders every Markdown file as a page even without front matter, which a plain local build
+  does not, so a new `.md` at the root must be added to `exclude` or it appears at `/<name>/`.
 - The PDF résumé is a separate document from `_data/resume.yml`; update both together.
 
 ## Secrets

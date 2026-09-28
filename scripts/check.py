@@ -52,6 +52,10 @@ for f in sorted(pages):
     rel = "/" + os.path.relpath(f, site)
     s = open(f, encoding="utf-8").read()
     if rel.startswith("/google"): continue                       # search-console verification file
+    # GitHub Pages turns any Markdown file into a page, even without front matter; a local build
+    # does not. Catch the documentation files before the sitemap advertises them.
+    if re.match(r"/(claude|readme|license|contributing)/index\.html$", rel, re.I):
+        err(rel, "a documentation file is being published as a page; add it to `exclude` in _config.yml")
     for m in re.finditer(r"\{\{[^}]*\}\}|\{%[^%]*%\}", s):
         err(rel, f"unrendered Liquid: {m.group(0)[:60]}")
     for m in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', s, re.S):
