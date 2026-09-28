@@ -1,12 +1,18 @@
 ---
 layout: default
 ---
+{%- assign words = content | strip_html | number_of_words -%}
+{%- assign minutes = words | divided_by: 200 | at_least: 1 -%}
 <article class="post">
   <header class="phead row">
     <p class="key"><a class="label back" href="/blog/">← Writing</a></p>
     <div class="body">
       <h1>{{ page.title }}</h1>
-      <p class="data" style="margin-top:24px">{{ page.date | date: "%B %-d, %Y" }}{% if page.tags and page.tags.size > 0 %} · {{ page.tags | join: " · " }}{% endif %}</p>
+      <p class="meta data">
+        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+        <span aria-hidden="true">·</span><span>{{ minutes }} min read</span>
+        {%- if page.tags and page.tags.size > 0 %}<span aria-hidden="true">·</span><span>{{ page.tags | join: " · " }}</span>{% endif %}
+      </p>
     </div>
   </header>
   <div class="row">
@@ -14,4 +20,16 @@ layout: default
       {{ content }}
     </div>
   </div>
+  {%- if page.previous or page.next %}
+  <nav class="row" aria-label="More writing">
+    <div class="body post-nav">
+      {%- if page.previous %}
+      <a class="prev" href="{{ page.previous.url }}" rel="prev"><span class="label">← Earlier</span><span class="entry-title">{{ page.previous.title }}</span></a>
+      {%- endif %}
+      {%- if page.next %}
+      <a class="next" href="{{ page.next.url }}" rel="next"><span class="label">Later →</span><span class="entry-title">{{ page.next.title }}</span></a>
+      {%- endif %}
+    </div>
+  </nav>
+  {%- endif %}
 </article>

@@ -3,6 +3,8 @@ layout: default
 title: Projects
 permalink: /projects/
 description: Projects by Juan Torres, including a fruit-fly delivery simulation and a Minecraft price ledger, plus a live log of what he's working on.
+image: /assets/og/projects.png
+image_alt: "Things I’ve built: a fruit-fly delivery simulation and a Minecraft price ledger, by Juan Torres."
 ---
 <header class="phead row">
   <p class="key label">Projects</p>
@@ -17,10 +19,10 @@ description: Projects by Juan Torres, including a fruit-fly delivery simulation 
   <div class="entries">
     {% for p in site.data.projects %}
     <a class="entry entry-lg row" href="{{ p.url }}">
-      <span class="key"><span class="label" style="display:block">{{ p.kind }}</span><span class="data" style="display:block;margin-top:8px">No. {{ forloop.index | prepend: "0" | slice: -2, 2 }} · {{ p.status }}</span></span>
+      <span class="key"><span class="label">{{ p.kind }}</span><span class="data">No. {{ forloop.index | prepend: "0" | slice: -2, 2 }} · {{ p.status }}</span></span>
       <span class="body">
         <span class="entry-head"><span class="entry-title">{{ p.title }}</span><span class="go label">Open →</span></span>
-        <span class="entry-text" style="display:block">{{ p.summary }}</span>
+        <span class="entry-text">{{ p.summary }}</span>
         <span class="data entry-data">{{ p.metric }}</span>
         <span class="entry-stack skill-list">{% for s in p.stack %}<span>{{ s }}</span>{% endfor %}</span>
       </span>
@@ -30,7 +32,7 @@ description: Projects by Juan Torres, including a fruit-fly delivery simulation 
 </section>
 
 <section class="sec" id="log">
-  <header class="sec-head"><h2>Project log</h2><a class="label" href="https://github.com/JuanTorresMI">GitHub ↗</a></header>
+  <header class="sec-head"><h2>Project log</h2><a class="label" href="{{ site.social.github }}">GitHub ↗</a></header>
   <div class="row"><div class="body"><p class="entry-text">What I’ve been working on lately, pulled straight from GitHub, newest first.</p></div></div>
   <div class="repo-list" id="repos"></div>
   <div class="log" id="plog" aria-live="polite"><p class="log-note">Loading recent work from GitHub…</p></div>

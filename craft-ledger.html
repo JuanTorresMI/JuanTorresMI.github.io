@@ -17,10 +17,47 @@ project: craft-ledger
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
-<meta name="description" content="A trading ledger for a Minecraft server economy. Enter the order prices you trade at and it ranks what pays to craft, costing each component at what you could have sold it for.">
+{%- assign desc = "A trading ledger for a Minecraft server economy. Enter the order prices you trade at and it ranks what pays to craft, costing each component at what you could have sold it for." -%}
+{%- assign image = "/assets/og/craft-ledger.png" | absolute_url -%}
+{%- assign image_alt = "Craft Ledger: which Minecraft crafts actually make money. A tool by Juan Torres." -%}
+<meta name="description" content="{{ desc }}">
+<meta name="author" content="{{ site.author }}">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#14161c">
 <meta property="og:title" content="Craft Ledger">
+<meta property="og:description" content="{{ desc }}">
 <meta property="og:type" content="website">
-<meta property="og:url" content="{{ page.url | absolute_url }}">{% raw %}
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="{{ image }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ image_alt }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Craft Ledger">
+<meta name="twitter:description" content="{{ desc }}">
+<meta name="twitter:image" content="{{ image }}">
+<meta name="twitter:image:alt" content="{{ image_alt }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "BreadcrumbList", "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
+      { "@type": "ListItem", "position": 2, "name": "Projects", "item": {{ "/projects/" | absolute_url | jsonify }} },
+      { "@type": "ListItem", "position": 3, "name": "Craft Ledger", "item": {{ page.url | absolute_url | jsonify }} } ] },
+    { "@type": "WebApplication", "@id": "{{ page.url | absolute_url }}#page", "url": {{ page.url | absolute_url | jsonify }},
+      "name": "Craft Ledger", "description": {{ desc | jsonify }}, "inLanguage": "en-US",
+      "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true, "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "keywords": "Minecraft, economy, crafting, opportunity cost, price ledger",
+      "author": { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" },
+      "isPartOf": { "@type": "WebSite", "@id": "{{ site.url }}/#website" },
+      "primaryImageOfPage": { "@type": "ImageObject", "url": {{ image | jsonify }}, "width": 1200, "height": 630 } }
+  ]
+}
+</script>{% raw %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600&display=swap" rel="stylesheet">
