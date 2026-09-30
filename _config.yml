@@ -37,7 +37,7 @@ defaults:
 # Cloudflare Web Analytics: cookieless page counts, no consent banner needed. Paste the token
 # from the dashboard's JS snippet (Web Analytics > the site > Manage site). It is public by
 # design (it sits in every page's source), so it is fine here. Blank turns analytics off.
-cloudflare_analytics_token:
+cloudflare_analytics_token: 4cfd147b97f442a989f4267e1349c474
 
 # The site's edge helper (worker/). It serves two things the browser cannot fetch itself:
 # the house TV board at "/" and the Substack feed at "/substack". Read-only and public;
