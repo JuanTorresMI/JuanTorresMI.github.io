@@ -8,7 +8,7 @@ image: /assets/og/fruit-fly-dispatcher.png
 image_alt: "Fruit Fly Dispatcher: a fly’s brain against Google OR-Tools, 55 stores, one week. A simulation by Juan Torres."
 ---
 
-I'd been seeing people get a simulated fruit fly brain to "play" Doom. Around the same time I was sitting in a 400-level logistics class working through a case on 7-Eleven's fresh-food deliveries, and the two ideas ran into each other: what if a fly had to solve a logistics problem? Nature has been solving "find food with almost no information" for a very long time. How would a fly's choices compare to ours, and how would it hold up against the kind of optimizer a real company uses?
+I'd been seeing people [get a simulated fruit fly brain to "play" Doom](https://www.ibm.com/think/news/fruit-fly-connectome-brain-map-minecraft-doom). Around the same time I was sitting in a 400-level logistics class working through a case on 7-Eleven's fresh-food deliveries, and the two ideas ran into each other: what if a fly had to solve a logistics problem? Nature has been solving "find food with almost no information" for a very long time. How would a fly's choices compare to ours, and how would it hold up against the kind of optimizer a real company uses?
 
 So I built it. The [Fruit Fly Dispatcher](/fruit-fly-dispatcher/) puts a fruit fly's navigation circuit in charge of a delivery truck and races it against Google's [OR-Tools](https://developers.google.com/optimization) for a week of deliveries. You can watch any of the runs on that page. This post is how it works and what came out of it.
 
