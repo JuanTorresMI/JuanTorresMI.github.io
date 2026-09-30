@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{%- comment %}
+  A moved page's old address. GitHub Pages can't send a real 301, so this is the next best
+  thing: an instant refresh plus a canonical pointing at the new address, which Google
+  treats as a permanent move. Front matter: `permalink` (the old address), `to` (the new
+  one), `title`, and `sitemap: false`. Stubs live in redirects/.
+{% endcomment -%}
+{%- assign to = page.to | absolute_url -%}
+<html lang="{{ site.lang | default: 'en' }}">
+<head>
+<meta charset="utf-8">
+<title>{{ page.title }} · {{ site.title }}</title>
+<meta name="description" content="This page has moved to {{ to }}">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ to }}">
+<meta http-equiv="refresh" content="0; url={{ to }}">
+<meta property="og:title" content="{{ page.title | escape }}">
+<meta property="og:description" content="This page has moved to {{ to }}">
+<meta property="og:url" content="{{ to }}">
+<meta property="og:image" content="{{ site.image | absolute_url }}">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<p>This page has moved to <a href="{{ page.to }}">{{ to }}</a>.</p>
+</body>
+</html>
