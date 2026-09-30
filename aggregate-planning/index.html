@@ -12,6 +12,7 @@ image_alt: "Aggregate Planner: the cheapest production plan, month by month. A t
     model.js           builds the optimization model and reads the answer (no DOM; runs in Node too)
     solver.js          talks to solver-worker.js, which runs HiGHS (lib/highs.js + lib/highs.wasm)
     app.js             inputs, charts, tables, CSV, share links
+    xlsx.js            writes the downloadable workbook (the textbook's Solver layout, with live formulas)
     sw.js              keeps the page usable offline once it has loaded
   The inputs are drawn by app.js from its field list, so every field is described once.
 {% endcomment %}
@@ -21,7 +22,7 @@ image_alt: "Aggregate Planner: the cheapest production plan, month by month. A t
   <header class="ap-head">
     <p class="ap-label">Tool</p>
     <h1>Aggregate Planner</h1>
-    <p class="ap-lede">An aggregate production planning optimizer. Enter a year of demand and what your labor, inventory and backlog cost. It finds the cheapest production plan: when to hire, when to lay off, how much overtime to run and how much stock to build ahead. The optimizer runs in your browser, and nothing you type leaves it.</p>
+    <p class="ap-lede">An aggregate production planning optimizer, laid out the way textbook cases pose the problem. Enter a year of demand, the workforce, and what labor, inventory and stockouts cost. It solves the level, band and chase plans side by side and answers the usual questions: what each plan costs, how much to make every month, how high inventory gets, and how much flexibility saves. The optimizer runs in your browser, and nothing you type leaves it.</p>
   </header>
 
   <noscript><p class="ap-msg is-error">The planner needs JavaScript to run the optimizer. The explanation below still reads fine without it.</p></noscript>
@@ -32,6 +33,9 @@ image_alt: "Aggregate Planner: the cheapest production plan, month by month. A t
         <h2 class="ap-label" id="g-demand">Demand</h2>
         <div class="ap-fields">
           <label class="ap-field"><span class="ap-name">Months</span><input id="f-months" type="number" min="1" max="24" step="1" inputmode="numeric"></label>
+          <label class="ap-field"><span class="ap-name">Quantities in
+            <span class="ap-tip" tabindex="0" role="note" aria-label="How demand, inventory and production are written. Cases often give demand in thousands; rates and per-unit costs stay per single unit either way.">?<span class="ap-tip-text" aria-hidden="true">How demand, inventory and production are written. Cases often give demand in thousands; rates and per-unit costs stay per single unit either way.</span></span></span>
+            <select id="f-scale"><option value="1">units</option><option value="1000">thousands</option><option value="1000000">millions</option></select></label>
           <label class="ap-field"><span class="ap-name">Unit label</span><input id="f-unit" type="text" maxlength="16" autocomplete="off"></label>
           <label class="ap-field"><span class="ap-name">Currency label</span><input id="f-currency" type="text" maxlength="6" autocomplete="off"></label>
         </div>
@@ -45,30 +49,25 @@ image_alt: "Aggregate Planner: the cheapest production plan, month by month. A t
       </section>
 
       <section class="ap-group" aria-labelledby="g-policy">
-        <h2 class="ap-label" id="g-policy">Workforce policy</h2>
-        <div class="ap-seg" role="radiogroup" aria-labelledby="g-policy">
-          <label><input type="radio" name="policy" value="level"><span>Level</span></label>
-          <label><input type="radio" name="policy" value="band"><span>Band</span></label>
-          <label><input type="radio" name="policy" value="chase"><span>Chase</span></label>
-        </div>
-        <p class="ap-hint" id="policy-hint"></p>
+        <h2 class="ap-label" id="g-policy">The three policies</h2>
+        <p class="ap-hint ap-hint-top"><strong>Level</strong> keeps the starting teams all year. <strong>Band</strong> lets the workforce move between the limits below. <strong>Chase</strong> hires and lays off freely. All three are solved every time.</p>
         <div class="ap-fields" id="band-fields"></div>
         <label class="ap-check"><input type="checkbox" id="f-whole"><span>Whole teams only</span></label>
-        <p class="ap-hint">Hire, lay off and staff in whole teams. Off, the plan may use fractions of a team: a looser, slightly cheaper answer.</p>
+        <p class="ap-hint">Hire, lay off and staff in whole teams. Off, the plan may use fractions of a team, which is what a spreadsheet Solver run without integer constraints gives: a looser, slightly cheaper answer.</p>
       </section>
 
       <section class="ap-group" aria-labelledby="g-labor"><h2 class="ap-label" id="g-labor">Labor</h2><div class="ap-fields" id="fields-labor"></div></section>
-      <section class="ap-group" aria-labelledby="g-inv"><h2 class="ap-label" id="g-inv">Inventory &amp; backlog</h2><div class="ap-fields" id="fields-inv"></div></section>
+      <section class="ap-group" aria-labelledby="g-inv"><h2 class="ap-label" id="g-inv">Inventory &amp; stockouts</h2><div class="ap-fields" id="fields-inv"></div></section>
       <section class="ap-group" aria-labelledby="g-mat"><h2 class="ap-label" id="g-mat">Material &amp; subcontracting</h2><div class="ap-fields" id="fields-mat"></div></section>
       <section class="ap-group" aria-labelledby="g-ends">
         <h2 class="ap-label" id="g-ends">Start &amp; end conditions</h2>
         <div class="ap-fields" id="fields-ends"></div>
-        <label class="ap-check"><input type="checkbox" id="f-noEndBacklog"><span>No backlog left at the end</span></label>
+        <label class="ap-check"><input type="checkbox" id="f-noEndBacklog"><span>No stockouts in the last month</span></label>
+        <p class="ap-hint">Every late order is filled by the end, so the next year starts clean. <button class="ap-link" type="button" id="b-same-end">End where it starts</button> sets the ending teams and inventory to the starting ones, as many cases ask.</p>
       </section>
 
       <div class="ap-actions">
         <button class="ap-btn primary" type="submit" id="b-solve">Optimize</button>
-        <button class="ap-btn" type="button" id="b-compare">Compare all three policies</button>
         <button class="ap-btn" type="button" id="b-reset">Reset to sample</button>
       </div>
     </form>
@@ -77,34 +76,42 @@ image_alt: "Aggregate Planner: the cheapest production plan, month by month. A t
       <p class="ap-status" id="status" role="status" aria-live="polite">Loading the solver…</p>
       <div class="ap-msg is-error" id="error" role="alert" hidden></div>
 
-      <div id="plan-out">
-        <div class="ap-cards" id="cards"></div>
-
-        <section class="ap-block" aria-labelledby="h-chart">
-          <header class="ap-block-head"><h2 class="ap-label" id="h-chart">Plan by month</h2><span class="ap-note" id="unit-note"></span></header>
-          <div class="ap-chart ap-chart-main"><canvas id="c-units" role="img" aria-label="Demand, production and inventory by month. The monthly plan table has the same numbers."></canvas></div>
-          <p class="ap-label ap-subhead">Teams employed</p>
-          <div class="ap-chart ap-chart-teams"><canvas id="c-teams" role="img" aria-label="Teams employed by month. The monthly plan table has the same numbers."></canvas></div>
+      <div id="out">
+        <section class="ap-block ap-block-first" id="answers" aria-labelledby="h-answers">
+          <header class="ap-block-head"><h2 class="ap-label" id="h-answers">Answers · three policies, same inputs</h2>
+            <span class="ap-links"><button class="ap-link" type="button" id="b-xlsx">Download spreadsheet</button><button class="ap-link" type="button" id="b-share">Copy share link</button></span></header>
+          <div class="ap-scroll" tabindex="0" role="region" aria-labelledby="h-answers"><table class="ap-table ap-answers" id="t-answers"></table></div>
+          <p class="ap-hint" id="answers-note"></p>
+          <p class="ap-label ap-subhead">Ending inventory by month</p>
+          <div class="ap-chart ap-chart-compare"><canvas id="c-compare" role="img" aria-label="Ending inventory by month under each policy. The plan tables have the same numbers."></canvas></div>
         </section>
 
-        <section class="ap-block" aria-labelledby="h-table">
-          <header class="ap-block-head"><h2 class="ap-label" id="h-table">Monthly plan</h2>
-            <span class="ap-links"><button class="ap-link" type="button" id="b-csv">Download CSV</button><button class="ap-link" type="button" id="b-share">Copy share link</button></span></header>
-          <div class="ap-scroll" tabindex="0" role="region" aria-labelledby="h-table"><table class="ap-table" id="t-plan"></table></div>
-        </section>
+        <section class="ap-block" id="detail" aria-labelledby="h-detail">
+          <header class="ap-block-head"><h2 class="ap-label" id="h-detail">The plan in detail</h2><span class="ap-note" id="unit-note"></span></header>
+          <div class="ap-seg" role="radiogroup" aria-label="Policy to show">
+            <label><input type="radio" name="policy" value="level"><span>Level</span></label>
+            <label><input type="radio" name="policy" value="band"><span>Band</span></label>
+            <label><input type="radio" name="policy" value="chase"><span>Chase</span></label>
+          </div>
+          <div class="ap-msg is-error" id="detail-error" hidden></div>
 
-        <section class="ap-block" aria-labelledby="h-costs">
-          <header class="ap-block-head"><h2 class="ap-label" id="h-costs">Cost breakdown</h2></header>
-          <div class="ap-scroll" tabindex="0" role="region" aria-labelledby="h-costs"><table class="ap-table ap-costs" id="t-costs"></table></div>
+          <div id="plan-out">
+            <div class="ap-cards" id="cards"></div>
+
+            <p class="ap-label ap-subhead">Demand, production and inventory</p>
+            <div class="ap-chart ap-chart-main"><canvas id="c-units" role="img" aria-label="Demand, production and inventory by month. The plan table has the same numbers."></canvas></div>
+            <p class="ap-label ap-subhead">Teams employed</p>
+            <div class="ap-chart ap-chart-teams"><canvas id="c-teams" role="img" aria-label="Teams employed by month. The plan table has the same numbers."></canvas></div>
+
+            <header class="ap-block-head ap-sub-block"><h3 class="ap-label" id="h-table">Decision variables</h3>
+              <span class="ap-links"><button class="ap-link" type="button" id="b-csv">Download CSV</button></span></header>
+            <div class="ap-scroll" tabindex="0" role="region" aria-labelledby="h-table"><table class="ap-table ap-plan" id="t-plan"></table></div>
+
+            <header class="ap-block-head ap-sub-block"><h3 class="ap-label" id="h-costs">Costs by month</h3><span class="ap-note" id="cost-note"></span></header>
+            <div class="ap-scroll" tabindex="0" role="region" aria-labelledby="h-costs"><table class="ap-table ap-costs" id="t-costs"></table></div>
+          </div>
         </section>
       </div>
-
-      <section class="ap-block" id="compare" aria-labelledby="h-compare" hidden>
-        <header class="ap-block-head"><h2 class="ap-label" id="h-compare">Three policies, same inputs</h2><button class="ap-link" type="button" id="b-compare-close">Hide</button></header>
-        <div class="ap-scroll" tabindex="0" role="region" aria-labelledby="h-compare"><table class="ap-table" id="t-compare"></table></div>
-        <p class="ap-label ap-subhead">Ending inventory by month</p>
-        <div class="ap-chart ap-chart-compare"><canvas id="c-compare" role="img" aria-label="Ending inventory by month under each policy."></canvas></div>
-      </section>
 
       <section class="ap-block" id="debug" hidden aria-labelledby="h-debug">
         <header class="ap-block-head"><h2 class="ap-label" id="h-debug">Constraint check</h2><span class="ap-note">Equalities should read 0; the limits, 0 or more</span></header>
@@ -121,8 +128,11 @@ image_alt: "Aggregate Planner: the cheapest production plan, month by month. A t
       <p>Aggregate planning sets production for the next several months in broad strokes: not which product runs on which line, but how many people to employ, how much to make each month, and where to put the gap between what the plant can make and what customers want. Demand rarely sits still, and every way of dealing with that costs something. Hiring and layoffs cost money, overtime pays a premium, stock built early has to be stored, and orders filled late cost goodwill.</p>
       <h3>Level, chase, and the band between</h3>
       <p>A <strong>level</strong> plan keeps the same workforce all year, builds inventory in the slow months and draws it down in the busy ones. A <strong>chase</strong> plan changes the workforce to follow demand, so inventory stays low but hiring and layoffs pile up. A <strong>band</strong> lets the workforce move only within limits you set, which is how most plants actually work. The cheapest plan usually mixes all of these: a bit of overtime here, some early stock there, one hire before the peak.</p>
+      <h3>Setting up a textbook case</h3>
+      <p>Most aggregate planning cases give the same handful of facts, and each one has a field here. <strong>Demand</strong> is a monthly forecast. If it's given in thousands, set “Quantities in” to thousands and type the table as printed. <strong>Capacity</strong> comes from teams: workers per team, what a team makes in an hour, and the days and hours in a working month. A team that makes 1,000 units in an 8-hour shift makes 125 an hour. <strong>Labor</strong> is paid per worker-hour, with an overtime rate and a cap on overtime hours per worker. Hiring and layoff costs are per worker, and the planner multiplies them by the team size. <strong>Inventory and stockouts</strong> cost a set amount per unit per month. A stockout is an order filled from next month’s production, and cases often forbid any in the last month. <strong>End conditions</strong> usually ask the year to finish with the same workforce and inventory it started with, which is what “End where it starts” sets.</p>
+      <p>The case questions line up with the answers table. The <strong>level</strong> column is the current plan with a fixed workforce, the <strong>band</strong> column allows a range of teams, and the <strong>chase</strong> column lets the plant hire and fire as it likes. Each column gives the annual cost, the savings over the level plan, the maximum inventory and the production for every month. “Download spreadsheet” writes the three plans into an Excel workbook in the usual Solver layout: decision variables H, L, W, O, I, S and P by period, with period 0 holding the starting position, constraint columns that should read zero, and a cost table built from formulas. You can check any number there, or run Solver on it again.</p>
       <h3>An exact optimizer, not a spreadsheet heuristic</h3>
-      <p>The planner writes the problem as a mixed-integer program: every month has a workforce balance, an inventory balance, an overtime limit and a capacity limit, and the objective adds up hiring, layoffs, regular time, overtime, holding, backlog and material. It hands that to <a href="https://highs.dev/">HiGHS</a>, an open-source solver compiled to WebAssembly, which searches until it can prove no cheaper plan exists. With “Whole teams only” off, the same model is a linear program and solves almost instantly.</p>
+      <p>The planner writes the problem as a mixed-integer program: every month has a workforce balance, an inventory balance, an overtime limit and a capacity limit, and the objective adds up hiring, layoffs, regular time, overtime, holding, stockouts and material. It hands that to <a href="https://highs.dev/">HiGHS</a>, an open-source solver compiled to WebAssembly, which searches until it can prove no cheaper plan exists. With “Whole teams only” off, the same model is a linear program and solves almost instantly.</p>
       <p>Everything runs on this page, and the numbers you enter stay in your browser. The share link carries them in the part of the address after the “#”, which browsers never send to a server. The source is <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/aggregate-planning">on GitHub</a>: <code>model.js</code> holds the whole model.</p>
     </div>
   </article>
@@ -130,5 +140,6 @@ image_alt: "Aggregate Planner: the cheapest production plan, month by month. A t
 
 <script src="/aggregate-planning/lib/chart.umd.min.js" defer></script>
 <script src="/aggregate-planning/model.js" defer></script>
+<script src="/aggregate-planning/xlsx.js" defer></script>
 <script src="/aggregate-planning/solver.js" defer></script>
 <script src="/aggregate-planning/app.js" defer></script>
