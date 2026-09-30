@@ -1,0 +1,42 @@
+# The music page (/music/). Juan releases as Yokonjuan, distributed through DistroKid.
+# To add a release, add it to `releases` (newest first). The Spotify id is the last part of the
+# track's share link (open.spotify.com/track/<id>); the cover is the 300px art Spotify serves for it.
+# To add a platform, add it to `platforms`: it becomes a button on the page and a sameAs link
+# in the structured data.
+artist: Yokonjuan
+spotify_id: 3agKv2bGKcWCN6cdT2z0Oc
+platforms:
+  - name: Spotify
+    url: https://open.spotify.com/artist/3agKv2bGKcWCN6cdT2z0Oc
+
+releases:
+  - title: Wintertime
+    date: 2021-11-26
+    duration: "2:12"
+    explicit: true
+    spotify_id: 1yeUXiGrCcBHJ3i1CmI7Jn
+    cover: https://i.scdn.co/image/ab67616d00001e02c3c7c80f8b5a5e034442147f
+  - title: In your place
+    date: 2021-10-28
+    duration: "1:46"
+    explicit: true
+    spotify_id: 5uFRqgwSB6KC2wFA0DaAYC
+    cover: https://i.scdn.co/image/ab67616d00001e028cde05e27ddb2f209a2618d8
+  - title: Wishy Washy
+    date: 2021-10-24
+    duration: "1:45"
+    explicit: true
+    spotify_id: 5cetA0eXRTxdmHnWzajzKt
+    cover: https://i.scdn.co/image/ab67616d00001e02d5cb6a04675c6b1d89402b0e
+  - title: All for you
+    date: 2021-02-04
+    duration: "3:03"
+    explicit: true
+    spotify_id: 2ryiIWKLofajIz5QYVXLZp
+    cover: https://i.scdn.co/image/ab67616d00001e029671f482aa1c6ca5b24af53b
+  - title: POPSTAR VISION
+    date: 2021-01-15
+    duration: "2:20"
+    explicit: true
+    spotify_id: 56jZCgCTKtzYBQtaiR9hZ3
+    cover: https://i.scdn.co/image/ab67616d00001e02610a4cbfa2508e7e19be0ab4

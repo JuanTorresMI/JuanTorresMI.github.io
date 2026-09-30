@@ -28,6 +28,8 @@ const CARDS = {
     sub: "A fly’s brain against Google OR-Tools · 55 stores · one week", bottom: ["juantorresmi.github.io/fruit-fly-dispatcher", "FlyWire · OR-Tools CP-SAT"] },
   "craft-ledger": { top: ["Juan Torres", "Tool"], name: "Craft Ledger",
     sub: "Which Minecraft crafts actually make money · 2,770 items", bottom: ["juantorresmi.github.io/craft-ledger.html", "Local-first web app"] },
+  music: { top: ["Juan Torres", "Music"], name: "Yokonjuan",
+    sub: "Music by Juan Torres · On Spotify and everywhere else", bottom: ["juantorresmi.github.io/music", "Released through DistroKid"] },
   "aggregate-planning": { top: ["Juan Torres", "Tool"], name: "Aggregate Planner",
     sub: "Level, band & chase plans · The math, step by step", bottom: ["juantorresmi.github.io/aggregate-planning", "HiGHS · in the browser"] },
 };

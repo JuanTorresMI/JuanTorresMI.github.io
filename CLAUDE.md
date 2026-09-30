@@ -10,6 +10,7 @@ Read this before changing anything; README.md covers the same ground for people.
 | `_config.yml` | Name, tagline, description, social links, share image, Worker URL, build excludes |
 | `_data/resume.yml` | The résumé. `/resume/` shows all of it; the home page shows each job's `summary` |
 | `_data/projects.yml` | Every project, in display order. Feeds the home page, `/projects/`, the project bar and the JSON-LD |
+| `_data/music.yml` | The music page (`/music/`): the artist name Yokonjuan, platform links, and every release (Spotify id, date, length, cover). Also feeds `alternateName` and `sameAs` on the Person in the JSON-LD. Adding a release or a platform is an edit here only |
 | `_includes/head.html` | Title, description, canonical, Open Graph / Twitter tags, structured data, fonts. Every page goes through it |
 | `_includes/navbar.html`, `footer.html`, `project-bar.html` | Site chrome |
 | `_layouts/default.html` | Ordinary pages: content inside `<main class="page frame">` |
