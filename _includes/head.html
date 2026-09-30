@@ -2,12 +2,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {%- comment %}
   Everything a search engine or a link preview reads. Titles: the home page carries the
-  tagline; every other page is "Page · Site". Descriptions: the page's own, or a post's first
+  tagline; every other page is "Page · Site", or its whole `seo_title` if it sets one (the short
+  title still names it in breadcrumbs and link previews). Descriptions: the page's own, or a post's first
   paragraph, or the site's. Pictures: page.image, or the site default (see scripts/og-images.js).
 {% endcomment -%}
 {%- assign is_home = false -%}{%- if page.url == "/" -%}{%- assign is_home = true -%}{%- endif -%}
 {%- assign is_post = false -%}{%- if page.layout == "post" -%}{%- assign is_post = true -%}{%- endif -%}
 {%- if is_home -%}{%- assign title = site.title | append: " · " | append: site.tagline -%}
+{%- elsif page.seo_title -%}{%- assign title = page.seo_title -%}
 {%- elsif page.title -%}{%- assign title = page.title | append: " · " | append: site.title -%}
 {%- else -%}{%- assign title = site.title -%}{%- endif -%}
 {%- assign desc = page.description -%}
@@ -160,7 +162,8 @@
       ]
     },
     {
-      "@type": {% if project and project.learning %}["WebApplication", "LearningResource"]{% elsif project %}"WebApplication"{% elsif page.url == "/projects/" or page.url == "/blog/" %}"CollectionPage"{% else %}"WebPage"{% endif %},
+      "@type": {% if project and project.learning %}["WebApplication", "LearningResource"]{% elsif project %}"WebApplication"{% elsif page.url == "/projects/" or page.url == "/blog/" %}"CollectionPage"{% elsif page.profile %}"ProfilePage"{% else %}"WebPage"{% endif %},{% if page.profile %}
+      "mainEntity": { "@id": {{ person_id | jsonify }} },{% endif %}
       "@id": "{{ page.url | absolute_url }}#page",
       "url": {{ page.url | absolute_url | jsonify }},
       "name": {{ crumb_title | jsonify }},
