@@ -24,6 +24,8 @@
 .ap-head h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(44px, 6.4vw, 80px); line-height: 1; letter-spacing: -0.012em; color: var(--ink); margin-top: 16px; font-variant-numeric: lining-nums; }
 .ap-h1-sub { display: block; font: 500 11px/1.5 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-2); margin-top: 16px; }
 .ap-lede { margin-top: 24px !important; font-size: 18px; line-height: 1.6; color: var(--text-2); max-width: 36em; }
+.ap-lede a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--rule); transition: color 0.15s, text-decoration-color 0.15s; }
+.ap-lede a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 @media (max-width: 860px) { .ap-head { padding: 56px 0 40px; } .ap-lede { font-size: 17px; } }
 
 /* ---------- two columns: inputs, results ---------- */
