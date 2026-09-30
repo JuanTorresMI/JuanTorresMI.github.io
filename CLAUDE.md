@@ -62,7 +62,10 @@ dates and figures. Spacing steps are multiples of 8.
 
 - **A post**: `_posts/YYYY-MM-DD-slug.md` with `layout: post`, `title`, `date`, `tags` and a
   `description` (this becomes the meta description and the excerpt on `/blog/`). Nothing else
-  to touch: the feed, sitemap, writing index and JSON-LD pick it up.
+  to touch: the feed, sitemap, writing index and JSON-LD pick it up. It is published at
+  `/blog/<slug>/` (a default in `_config.yml`), so choose the slug as the address you want.
+- **A moved page**: never just delete the old address. Add a stub in `redirects/` with
+  `layout: redirect`, the old address as `permalink`, the new one as `to`, and `sitemap: false`.
 - **A project**: add it to `_data/projects.yml` (slug, title, url, kind, status, short, summary,
   metric, stack, keywords; optionally a schema.org `category`, a `features` list,
   `search` terms and a `learning` block (type, level, audience, teaches) for the JSON-LD), then make the page with `layout: app`, `project: <slug>`, `title`,
@@ -88,7 +91,11 @@ dates and figures. Spacing steps are multiples of 8.
   repo: case documents are copyrighted, and the sample is neutral on purpose.
 - The writing index renders local posts in HTML and merges Substack items by script, so the
   list works without JavaScript and for crawlers.
-- The sitemap and feed are written by hand (no plugins) so they build anywhere.
+- The sitemap and feed are written by hand (no plugins) so they build anywhere. Redirects are
+  the same: `_layouts/redirect.html` rather than jekyll-redirect-from, whose bare pages
+  `check.py` would reject.
+- Analytics is Cloudflare Web Analytics (cookieless), switched on by `cloudflare_analytics_token`
+  in `_config.yml` and written in `footer.html`.
 - The `.docx` résumé source, `worker/`, `scripts/` and the documentation files (README, this
   file) are excluded from the build in `_config.yml`. That last part matters: GitHub Pages
   renders every Markdown file as a page even without front matter, which a plain local build
