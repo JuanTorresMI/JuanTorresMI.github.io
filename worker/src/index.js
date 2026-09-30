@@ -92,7 +92,9 @@ async function musicRoute(request, env, ctx, route, url, cors) {
     return json({ error: "Not found" }, 404, cors);
   } catch (e) {
     if (e instanceof Refused) return json({ error: e.message }, 422, cors);
-    return json({ error: e.message || String(e) }, 502, cors);
+    // Internal details (database errors and so on) go to the log, not to visitors.
+    console.error("music:", route, e && e.message ? e.message : e);
+    return json({ error: "something went wrong. try again in a bit" }, 502, cors);
   }
 }
 
