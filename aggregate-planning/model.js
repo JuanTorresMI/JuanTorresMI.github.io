@@ -5,7 +5,7 @@
  *   readPlan(inputs, built, result)        -> the monthly plan, the cost breakdown and the slacks
  *
  * Variables per month t (all >= 0): H hired teams, L laid-off teams, W teams employed,
- * O overtime team-hours, I ending inventory, S ending backlog, P production, C subcontracted
+ * O overtime team-hours, I ending inventory, S ending stockout (orders filled late), P production, C subcontracted
  * units (only when a subcontract cap is set). The model is written as CPLEX LP text, which
  * HiGHS reads directly.
  */
@@ -24,15 +24,22 @@
     holdCost: 12, backlogCost: 30, maxBacklog: null, materialCost: 60,
     subCost: 90, subCap: 0,
     Wmin: 10, Wmax: 14,
+    scale: 1,
   };
 
   const EPS = 1e-6;
 
+  /* Demand, stock and production can be counted in thousands (scale 1000) or millions, the way
+     textbook cases state them. Rates and per-unit costs stay per single unit, as a case gives them;
+     here they are turned into "per counted unit" so the model itself never sees the scale. */
   function derive(x) {
     const regHours = x.daysPerMonth * x.hoursPerDay;
+    const k = x.scale || 1;
     return {
-      regHours,
-      regCapPerTeam: x.rate * regHours,
+      regHours, scale: k,
+      capPerTeamHour: x.rate / k,
+      regCapPerTeam: (x.rate / k) * regHours,
+      hold: x.holdCost * k, backlog: x.backlogCost * k, material: x.materialCost * k, sub: (x.subCost || 0) * k,
       regCostPerTeam: x.wageReg * x.teamSize * regHours,
       otCostPerTeamHour: x.wageOT * x.teamSize,
       otMaxPerTeam: x.maxOTPerWorker,
@@ -70,12 +77,13 @@
     for (let t = 0; t < T; t++) if (!isNum(x.demand[t]) || x.demand[t] < 0) return `Demand for month ${t + 1} needs to be a number, zero or more.`;
     const need = { W0: "Starting teams", I0: "Starting inventory", S0: "Starting backlog", teamSize: "Workers per team", rate: "Units per team-hour",
       daysPerMonth: "Days per month", hoursPerDay: "Hours per day", maxOTPerWorker: "Overtime limit", wageReg: "Regular wage", wageOT: "Overtime wage",
-      hireCost: "Hiring cost", layoffCost: "Layoff cost", holdCost: "Holding cost", backlogCost: "Backlog cost", materialCost: "Material cost" };
+      hireCost: "Hiring cost", layoffCost: "Layoff cost", holdCost: "Holding cost", backlogCost: "Stockout cost", materialCost: "Material cost" };
     for (const k in need) if (!isNum(x[k]) || x[k] < 0) return `${need[k]} needs to be a number, zero or more.`;
     if (x.teamSize <= 0) return "A team needs at least one worker.";
+    if (!isNum(x.scale || 1) || (x.scale || 1) <= 0) return "Pick how demand is counted: in units, thousands or millions.";
     if (has(x.endTeams) && x.endTeams < 0) return "Ending teams can't be negative.";
     if (has(x.endInvMin) && x.endInvMin < 0) return "Minimum ending inventory can't be negative.";
-    if (has(x.maxBacklog) && x.maxBacklog < 0) return "The backlog cap can't be negative.";
+    if (has(x.maxBacklog) && x.maxBacklog < 0) return "The stockout cap can't be negative.";
     if (has(x.subCap) && x.subCap > 0 && (!isNum(x.subCost) || x.subCost < 0)) return "Subcontract cost needs to be a number, zero or more.";
     if (wholeTeams) {
       if (!Number.isInteger(x.W0)) return "With whole teams only, starting teams must be a whole number.";
@@ -104,8 +112,8 @@
     const obj = [];
     for (let t = 1; t <= T; t++) {
       obj.push([d.hirePerTeam, v("H", t)], [d.layoffPerTeam, v("L", t)], [d.regCostPerTeam, v("W", t)],
-        [d.otCostPerTeamHour, v("O", t)], [x.holdCost, v("I", t)], [x.backlogCost, v("S", t)], [x.materialCost, v("P", t)]);
-      if (useSub) obj.push([x.subCost, v("C", t)]);
+        [d.otCostPerTeamHour, v("O", t)], [d.hold, v("I", t)], [d.backlog, v("S", t)], [d.material, v("P", t)]);
+      if (useSub) obj.push([d.sub, v("C", t)]);
     }
 
     const rows = [];
@@ -124,7 +132,7 @@
       // O[t] <= otMax * W[t]
       rows.push(`ot_${t}: ${expr([[1, v("O", t)], [-d.otMaxPerTeam, v("W", t)]])} <= 0`);
       // P[t] <= regCap * W[t] + rate * O[t]
-      rows.push(`cap_${t}: ${expr([[1, v("P", t)], [-d.regCapPerTeam, v("W", t)], [-x.rate, v("O", t)]])} <= 0`);
+      rows.push(`cap_${t}: ${expr([[1, v("P", t)], [-d.regCapPerTeam, v("W", t)], [-d.capPerTeamHour, v("O", t)]])} <= 0`);
     }
 
     const bounds = [];
@@ -169,20 +177,17 @@
     const col = (n, t) => { const c = result.Columns[`${n}_${t}`]; return clean(c ? c.Primal : 0); };
     const months = [];
     for (let t = 1; t <= T; t++) {
-      months.push({ t, H: col("H", t), L: col("L", t), W: col("W", t), O: col("O", t), P: col("P", t),
-        C: built.useSub ? col("C", t) : 0, D: x.demand[t - 1], I: col("I", t), S: col("S", t) });
+      const m = { t, H: col("H", t), L: col("L", t), W: col("W", t), O: col("O", t), P: col("P", t),
+        C: built.useSub ? col("C", t) : 0, D: x.demand[t - 1], I: col("I", t), S: col("S", t) };
+      // The month's costs, in the order a textbook cost table lists them.
+      m.cost = [d.hirePerTeam * m.H, d.layoffPerTeam * m.L, d.regCostPerTeam * m.W, d.otCostPerTeamHour * m.O,
+        d.hold * m.I, d.backlog * m.S, d.material * m.P, ...(built.useSub ? [d.sub * m.C] : [])];
+      m.total = m.cost.reduce((a, c) => a + c, 0);
+      months.push(m);
     }
     const sum = (k) => months.reduce((a, m) => a + m[k], 0);
-    const costs = [
-      ["Hiring", cents(d.hirePerTeam * sum("H"))],
-      ["Layoffs", cents(d.layoffPerTeam * sum("L"))],
-      ["Regular time", cents(d.regCostPerTeam * sum("W"))],
-      ["Overtime", cents(d.otCostPerTeamHour * sum("O"))],
-      ["Holding", cents(x.holdCost * sum("I"))],
-      ["Backlog", cents(x.backlogCost * sum("S"))],
-      ["Material", cents(x.materialCost * sum("P"))],
-    ];
-    if (built.useSub) costs.push(["Subcontracting", cents(x.subCost * sum("C"))]);
+    const names = ["Hiring", "Layoffs", "Regular time", "Overtime", "Holding", "Stockout", "Material", ...(built.useSub ? ["Subcontracting"] : [])];
+    const costs = names.map((n, i) => [n, cents(months.reduce((a, m) => a + m.cost[i], 0))]);
     const total = cents(costs.reduce((a, c) => a + c[1], 0));
 
     // Every constraint's slack, for ?debug=1. Equalities should read 0; inequalities >= 0.
@@ -193,7 +198,7 @@
         workforce: m.W - (prev.W + m.H - m.L),
         balance: (prev.I - prev.S + m.P + m.C) - (m.D + m.I - m.S),
         overtime: d.otMaxPerTeam * m.W - m.O,
-        capacity: d.regCapPerTeam * m.W + x.rate * m.O - m.P,
+        capacity: d.regCapPerTeam * m.W + d.capPerTeamHour * m.O - m.P,
       };
     });
 
@@ -203,7 +208,7 @@
       if (m.W > peakW.v) peakW = { v: m.W, t: m.t };
     }
     return { months, costs, total, objective: result.ObjectiveValue, slacks, peakInv, peakW,
-      hires: sum("H"), layoffs: sum("L"), policy: built.policy };
+      hires: sum("H"), layoffs: sum("L"), production: sum("P"), policy: built.policy };
   }
 
   const api = { POLICIES, POLICY_NAMES, SAMPLE, derive, validate, buildModel, readPlan, clean };

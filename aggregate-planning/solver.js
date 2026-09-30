@@ -1,7 +1,8 @@
-/* The page's side of the solver: one Web Worker (solver-worker.js), requests answered in order.
- * solve() resolves with the worker's results; only the newest request matters to the page,
- * so the caller drops answers that arrive after a newer request went out. If the worker dies
- * or goes quiet, it is replaced and the request fails with a message instead of hanging.
+/* The page's side of the solver: one Web Worker (solver-worker.js), one request at a time.
+ * Only the newest request matters to the page, so a request that is still waiting its turn when
+ * a newer one arrives is dropped: its promise resolves with null and it never reaches the worker.
+ * If the worker dies or goes quiet, it is replaced and the request fails with a message instead
+ * of hanging.
  */
 (function (root) {
   "use strict";
@@ -21,18 +22,29 @@
   function restart(message) {
     if (worker) worker.terminate();
     worker = null;
-    for (const [, p] of pending) { clearTimeout(p.timer); p.reject(new Error(message)); }
+    const failed = [...pending.values()];
     pending.clear();
+    for (const p of failed) { clearTimeout(p.timer); p.reject(new Error(message)); }
+  }
+
+  let waiting = null; // the next request, held until the worker is free
+
+  function send(req) {
+    if (!worker) start();
+    const id = nextId++;
+    // The solver's own time limit is 20 s per run; this catches a worker that never answers.
+    const timer = setTimeout(() => restart("The solver stopped responding and was restarted. Try again."), 25000 * req.runs.length);
+    const done = (fn) => (v) => { fn(v); if (waiting && !pending.size) { const next = waiting; waiting = null; send(next); } };
+    pending.set(id, { resolve: done(req.resolve), reject: done(req.reject), timer });
+    worker.postMessage({ id, inputs: req.inputs, runs: req.runs, debug: req.debug });
   }
 
   function solve(inputs, runs, debug) {
-    if (!worker) start();
-    const id = nextId++;
     return new Promise((resolve, reject) => {
-      // The solver's own time limit is 20 s per run; this catches a worker that never answers.
-      const timer = setTimeout(() => restart("The solver stopped responding and was restarted. Try again."), 25000 * runs.length);
-      pending.set(id, { resolve, reject, timer });
-      worker.postMessage({ id, inputs, runs, debug: !!debug });
+      const req = { inputs, runs, debug: !!debug, resolve, reject };
+      if (!pending.size) return send(req);
+      if (waiting) waiting.resolve(null);
+      waiting = req;
     });
   }
 

@@ -175,7 +175,7 @@
       "browserRequirements": "Requires JavaScript",
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "keywords": {{ project.stack | join: ", " | jsonify }},
+      "keywords": {{ project.search | default: project.stack | join: ", " | jsonify }},
       "creator": { "@type": "Person", "@id": {{ person_id | jsonify }} }{% endif %}
     }
   ]

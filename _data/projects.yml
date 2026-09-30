@@ -41,16 +41,19 @@
   summary: >-
     An aggregate production planning optimizer. You enter monthly demand, the size and cost of the
     workforce, and what it costs to hold stock or keep customers waiting. It works out when to hire, when to
-    lay off, how much overtime to run and how much inventory to build ahead, and it puts level, band and
-    chase strategies side by side. The model is a mixed-integer program, solved exactly by HiGHS right in
-    the browser.
+    lay off, how much overtime to run and how much inventory to build ahead. Level, band and chase plans are
+    solved side by side, laid out the way textbook cases ask the questions, and the whole thing downloads as
+    an Excel workbook in the usual Solver layout. The model is a mixed-integer program, solved exactly by
+    HiGHS right in the browser.
   metric: 3 workforce policies · up to 24 months · exact MIP solved in the browser
   stack: [JavaScript, HiGHS (WebAssembly), Mixed-integer programming, Chart.js, Operations planning]
   category: BusinessApplication
+  search: [aggregate planning calculator, aggregate production planning, level strategy, chase strategy, workforce planning, production planning optimizer, Excel Solver, mixed-integer programming]
   features:
     - Aggregate production planning for up to 24 months
     - Level, chase and band workforce strategies, compared side by side
     - Hiring, layoff, overtime, inventory, backlog and subcontracting costs
     - Exact mixed-integer solution with HiGHS in the browser
+    - Excel workbook export with live formulas in the textbook Solver layout
     - CSV export and shareable links
   keywords: [aggregate, planner, planning, highs]

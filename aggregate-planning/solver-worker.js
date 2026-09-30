@@ -20,7 +20,7 @@ function friendly(status, policy) {
     const why = policy === "level" ? "a fixed workforce can't meet demand and the ending conditions"
       : policy === "band" ? "the workforce band is too tight for the demand and the ending conditions"
       : "the ending conditions can't be met";
-    return `No feasible plan: ${why}. Try allowing backlog, lowering the minimum ending inventory, or widening the limits.`;
+    return `No feasible plan: ${why}. Try allowing stockouts before the last month, lowering the ending inventory, or widening the limits.`;
   }
   if (/time limit/i.test(status)) return "The solver ran out of time before it could prove the best plan. Try continuous teams, or a shorter horizon.";
   if (/unbounded/i.test(status)) return "The model is unbounded, which means a cost is negative somewhere. Check the cost inputs.";
