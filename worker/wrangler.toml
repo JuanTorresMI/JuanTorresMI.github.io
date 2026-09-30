@@ -11,6 +11,8 @@ preview_urls = false
 # lives in this file. See README.md.
 [vars]
 LIVE_WINDOW_MIN = "5"
+# Most guestbook posts a day, across everyone.
+GUESTBOOK_DAILY_MAX = "25"
 # Only pages from these origins may sign the guestbook or bump the counter (reads are open).
 WRITE_ORIGINS = "https://juantorresmi.github.io,http://localhost:4000,http://127.0.0.1:4000"
 

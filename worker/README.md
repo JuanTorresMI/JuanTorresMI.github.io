@@ -112,10 +112,31 @@ It's what lets you delete guestbook posts, and it never goes in this repo.
 
 ### What a post has to get past
 
-In order: a hidden field only bots fill in, one post a minute and five a day per visitor, no
-links, a word list of slurs and direct attacks (`BLOCKED` in `src/music.js`, edit freely), and
-then a small model asked whether the message is mean. Anything that fails is refused and never
-stored. If the model can't be reached, the post is refused too, not let through.
+Posts go up the moment they pass, and anything that fails is refused and never stored. In order,
+cheapest first:
+
+1. A hidden field only bots fill in.
+2. No links, 280 characters at most.
+3. The site-wide cap: 25 posts a day in total (`GUESTBOOK_DAILY_MAX` in `wrangler.toml`).
+4. Per visitor: one post a minute, five a day.
+5. A word list of slurs and direct attacks (`BLOCKED` in `src/music.js`, edit freely).
+6. Posts that talk to the moderator ("ignore your instructions", "reply ALLOW") are refused
+   before any model sees them.
+7. A small model on Workers AI is asked whether the post is mean. It gets the post inside a
+   randomly named tag with angle brackets neutralised, and only an answer of exactly ALLOW
+   passes. If it can't be reached, the post is refused, not let through. It has its own cap of
+   300 checks a day.
+
+Posts are always shown as plain text, so nothing in one can run in a visitor's browser, and
+they reach the database only as bound parameters, never pasted into SQL.
+
+### What it costs
+
+Nothing. The Worker, D1 and Workers AI are all on Cloudflare's free plan, and on that plan going
+past a limit makes requests fail until the next day. It never bills, unless the account is
+upgraded to Workers Paid. The caps above keep the guestbook far inside the limits (Workers AI's
+free allowance is 10,000 neurons a day; D1's is 100,000 writes), so a flood of spam can't use
+them up or knock over the TV page, which runs on the same Worker.
 
 ### Deleting a post
 
