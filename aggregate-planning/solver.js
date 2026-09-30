@@ -1,14 +1,16 @@
 /* The page's side of the solver: one Web Worker (solver-worker.js), one request at a time.
- * Only the newest request matters to the page, so a request that is still waiting its turn when
- * a newer one arrives is dropped: its promise resolves with null and it never reaches the worker.
- * If the worker dies or goes quiet, it is replaced and the request fails with a message instead
- * of hanging.
+ * Two kinds of request: "solve" (the three plans) and "explain" (study mode's walk-through).
+ * Only the newest request of each kind matters to the page, so one still waiting its turn when
+ * a newer one of the same kind arrives is dropped: its promise resolves with null and it never
+ * reaches the worker. Solves go before explanations. If the worker dies or goes quiet, it is
+ * replaced and the request fails with a message instead of hanging.
  */
 (function (root) {
   "use strict";
   const base = document.currentScript.src;
   let worker = null, nextId = 1;
   const pending = new Map();
+  const waiting = { solve: null, explain: null }; // the next request of each kind, held until the worker is free
 
   function start() {
     worker = new Worker(new URL("solver-worker.js", base));
@@ -27,26 +29,34 @@
     for (const p of failed) { clearTimeout(p.timer); p.reject(new Error(message)); }
   }
 
-  let waiting = null; // the next request, held until the worker is free
-
+  function next() {
+    if (pending.size) return;
+    const kind = waiting.solve ? "solve" : waiting.explain ? "explain" : null;
+    if (!kind) return;
+    const req = waiting[kind]; waiting[kind] = null;
+    send(req);
+  }
   function send(req) {
     if (!worker) start();
     const id = nextId++;
     // The solver's own time limit is 20 s per run; this catches a worker that never answers.
-    const timer = setTimeout(() => restart("The solver stopped responding and was restarted. Try again."), 25000 * req.runs.length);
-    const done = (fn) => (v) => { fn(v); if (waiting && !pending.size) { const next = waiting; waiting = null; send(next); } };
+    const timer = setTimeout(() => restart("The solver stopped responding and was restarted. Try again."), 25000 * req.runs);
+    const done = (fn) => (v) => { fn(v); next(); };
     pending.set(id, { resolve: done(req.resolve), reject: done(req.reject), timer });
-    worker.postMessage({ id, inputs: req.inputs, runs: req.runs, debug: req.debug });
+    worker.postMessage({ id, ...req.message });
   }
-
-  function solve(inputs, runs, debug) {
+  function queue(kind, message, runs) {
     return new Promise((resolve, reject) => {
-      const req = { inputs, runs, debug: !!debug, resolve, reject };
-      if (!pending.size) return send(req);
-      if (waiting) waiting.resolve(null);
-      waiting = req;
+      if (waiting[kind]) waiting[kind].resolve(null);
+      waiting[kind] = { message: { kind, ...message }, runs, resolve, reject };
+      next();
     });
   }
 
-  root.APSolver = { solve, warm: () => { if (!worker) start(); } };
+  root.APSolver = {
+    solve: (inputs, runs, debug) => queue("solve", { inputs, runs, debug: !!debug }, runs.length),
+    // Several solves in one: the real one with its log, the relaxation, a branch, the shadow prices.
+    explain: (inputs, policy, wholeTeams) => queue("explain", { inputs, policy, wholeTeams }, 4),
+    warm: () => { if (!worker) start(); },
+  };
 })(window);

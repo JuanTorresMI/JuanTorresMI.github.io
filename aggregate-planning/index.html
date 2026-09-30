@@ -12,6 +12,7 @@ image_alt: "Aggregate Planner, an aggregate production planning calculator: the 
     model.js           builds the optimization model and reads the answer (no DOM; runs in Node too)
     solver.js          talks to solver-worker.js, which runs HiGHS (lib/highs.js + lib/highs.wasm)
     app.js             inputs, charts, tables, CSV, share links
+    study.js           study mode: the plan taken apart step by step (the worker's explain() does the solving)
     xlsx.js            writes the downloadable workbook (the textbook's Solver layout, with live formulas)
     sw.js              keeps the page usable offline once it has loaded
   The inputs are drawn by app.js from its field list, so every field is described once.
@@ -73,6 +74,10 @@ image_alt: "Aggregate Planner, an aggregate production planning calculator: the 
     </form>
 
     <div class="ap-results" id="results">
+      <div class="ap-mode" role="tablist" aria-label="View">
+        <button type="button" role="tab" id="tab-answers" aria-selected="true" aria-controls="out">Answers</button>
+        <button type="button" role="tab" id="tab-study" aria-selected="false" aria-controls="study">Study · how it’s solved</button>
+      </div>
       <p class="ap-status" id="status" role="status" aria-live="polite">Loading the solver…</p>
       <div class="ap-msg is-error" id="error" role="alert" hidden></div>
 
@@ -112,6 +117,19 @@ image_alt: "Aggregate Planner, an aggregate production planning calculator: the 
           </div>
         </section>
       </div>
+
+      <section class="ap-block ap-block-first" id="study" role="tabpanel" aria-labelledby="h-study" hidden>
+        <header class="ap-block-head"><h2 class="ap-label" id="h-study">Study · the plan, taken apart</h2><span class="ap-note" id="study-note"></span></header>
+        <p class="ap-hint ap-hint-top">The same plan the answers show, worked through step by step with your numbers: how the inputs become the model, what each constraint does, how the solver searched, and why the plan looks the way it does.</p>
+        <div class="ap-seg" role="radiogroup" aria-label="Policy to study">
+          <label><input type="radio" name="spolicy" value="level"><span>Level</span></label>
+          <label><input type="radio" name="spolicy" value="band"><span>Band</span></label>
+          <label><input type="radio" name="spolicy" value="chase"><span>Chase</span></label>
+        </div>
+        <p class="ap-status" id="study-status" aria-live="polite"></p>
+        <div class="ap-msg is-error" id="study-error" hidden></div>
+        <div id="steps"></div>
+      </section>
 
       <section class="ap-block" id="debug" hidden aria-labelledby="h-debug">
         <header class="ap-block-head"><h2 class="ap-label" id="h-debug">Constraint check</h2><span class="ap-note">Equalities should read 0; the limits, 0 or more</span></header>
@@ -157,7 +175,7 @@ image_alt: "Aggregate Planner, an aggregate production planning calculator: the 
         <dt>End of the year</dt><dd>S<sub>T</sub> = 0, W<sub>T</sub> and I<sub>T</sub> as required</dd>
       </dl>
       <h3>An exact optimizer, not a spreadsheet heuristic</h3>
-      <p>The planner writes the problem as a mixed-integer program: every month has a workforce balance, an inventory balance, an overtime limit and a capacity limit, and the objective adds up hiring, layoffs, regular time, overtime, holding, stockouts and material. It hands that to <a href="https://highs.dev/">HiGHS</a>, an open-source solver compiled to WebAssembly, which searches until it can prove no cheaper plan exists. With “Whole teams only” off, the same model is a linear program and solves almost instantly.</p>
+      <p>The planner writes the problem as a mixed-integer program: every month has a workforce balance, an inventory balance, an overtime limit and a capacity limit, and the objective adds up hiring, layoffs, regular time, overtime, holding, stockouts and material. It hands that to <a href="https://highs.dev/">HiGHS</a>, an open-source solver compiled to WebAssembly, which searches until it can prove no cheaper plan exists. With “Whole teams only” off, the same model is a linear program and solves almost instantly. To watch all of this happen with your own numbers, switch the results to <strong>Study</strong>: it walks through the model, the relaxation, the first branch, the solver’s search log and the shadow prices, step by step.</p>
       <p>Everything runs on this page, and the numbers you enter stay in your browser. The share link carries them in the part of the address after the “#”, which browsers never send to a server. The source is <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/aggregate-planning">on GitHub</a>: <code>model.js</code> holds the whole model.</p>
     </div>
   </article>
@@ -167,4 +185,5 @@ image_alt: "Aggregate Planner, an aggregate production planning calculator: the 
 <script src="/aggregate-planning/model.js" defer></script>
 <script src="/aggregate-planning/xlsx.js" defer></script>
 <script src="/aggregate-planning/solver.js" defer></script>
+<script src="/aggregate-planning/study.js" defer></script>
 <script src="/aggregate-planning/app.js" defer></script>

@@ -100,7 +100,7 @@
     if (!Number.isFinite(x.subCost) && !x.subCap) x.subCost = 0;
     x.noEndBacklog = $("f-noEndBacklog").checked;
     x.scale = Number($("f-scale").value) || 1;
-    return { x, policy: policyNow(), whole: $("f-whole").checked, cur: $("f-currency").value.trim() || "$", unit: $("f-unit").value.trim() || "units" };
+    return { x, policy: policyNow(), whole: $("f-whole").checked, cur: $("f-currency").value.trim() || "$", unit: $("f-unit").value.trim() || "units", mode };
   }
   function write(s) {
     $("f-months").value = s.x.demand.length;
@@ -109,10 +109,11 @@
     $("f-noEndBacklog").checked = !!s.x.noEndBacklog;
     $("f-whole").checked = !!s.whole;
     $("f-scale").value = String(SCALES[s.x.scale] !== undefined ? s.x.scale : 1);
-    for (const r of document.querySelectorAll('input[name="policy"]')) r.checked = r.value === s.policy;
+    for (const r of document.querySelectorAll('input[name="policy"], input[name="spolicy"]')) r.checked = r.value === s.policy;
     $("f-currency").value = s.cur; $("f-unit").value = s.unit;
+    setMode(s.mode, true);
   }
-  const sample = () => ({ x: JSON.parse(JSON.stringify(M.SAMPLE)), policy: "chase", whole: true, cur: "$", unit: "units" });
+  const sample = () => ({ x: JSON.parse(JSON.stringify(M.SAMPLE)), policy: "chase", whole: true, cur: "$", unit: "units", mode: "answers" });
 
   function toHash(s) {
     const p = new URLSearchParams();
@@ -121,6 +122,7 @@
     if (s.x.scale !== 1) p.set("sc", String(s.x.scale));
     for (const f of ALL) { const v = s.x[f.k]; p.set(f.k, v === null || v === undefined || Number.isNaN(v) ? "" : String(v)); }
     p.set("cur", s.cur); p.set("unit", s.unit);
+    if (s.mode === "study") p.set("v", "study");
     return "#" + p.toString().replace(/%2C/g, ","); // commas read better in a shared link
   }
   function fromHash(h) {
@@ -138,6 +140,7 @@
       for (const f of ALL) if (p.has(f.k)) { const n = numOrNull(p.get(f.k)); s.x[f.k] = n === null ? (f.optional ? null : NaN) : n; }
       if (p.get("cur")) s.cur = p.get("cur").slice(0, 6);
       if (p.get("unit")) s.unit = p.get("unit").slice(0, 16);
+      s.mode = p.get("v") === "study" ? "study" : "answers";
       return s;
     } catch (e) { return null; }
   }
@@ -153,7 +156,7 @@
   function saveHash(s) { try { history.replaceState(null, "", location.pathname + location.search + toHash(s)); } catch (e) {} }
 
   /* ---------- solving: all three policies, every time ---------- */
-  let seq = 0, timer = 0, last = null;
+  let seq = 0, timer = 0, last = null, mode = "answers";
   function schedule(delay = 300) { clearTimeout(timer); timer = setTimeout(run, delay); }
 
   function run() {
@@ -163,7 +166,7 @@
     markInvalid(s);
     saveHash(s);
     const id = ++seq;
-    $("out").classList.add("is-stale");
+    $("out").classList.add("is-stale"); $("study").classList.add("is-stale");
     $("status").textContent = "Solving the three plans…";
     APSolver.solve(s.x, M.POLICIES.map((p) => ({ policy: p, wholeTeams: s.whole })), DEBUG).then((results) => {
       if (id !== seq || !results) return; // a newer request is on its way
@@ -177,6 +180,7 @@
   function showError(message) {
     $("error").hidden = false; $("error").textContent = message;
     $("out").hidden = true; $("out").classList.remove("is-stale");
+    $("study").hidden = true; $("study").classList.remove("is-stale");
     $("status").textContent = "";
     if (DEBUG) $("debug").hidden = true;
   }
@@ -187,13 +191,58 @@
     const ok = results.filter((r) => r.ok);
     // The same message for every policy means the inputs themselves are the problem.
     if (!ok.length && results.every((r) => r.message === results[0].message)) return showError(results[0].message);
-    $("error").hidden = true; $("out").hidden = false; $("out").classList.remove("is-stale");
+    $("error").hidden = true; $("out").hidden = mode === "study"; $("out").classList.remove("is-stale");
+    $("study").hidden = mode !== "study";
     const ms = ok.reduce((a, r) => a + r.plan.ms, 0);
     pickMoneyScale(ok.map((r) => r.plan.total));
     $("status").textContent = `${ok.length} of 3 plans optimal · ${s.whole ? "whole teams" : "fractional teams allowed"} · solved in ${f0.format(Math.max(1, ms))} ms`;
     renderAnswers(s, by);
     drawCompare(by);
     renderDetail();
+    if (mode === "study") study();
+  }
+
+  /* ---------- modes: the answers, or the same plan taken apart ---------- */
+  function setMode(m, quiet) {
+    mode = m === "study" ? "study" : "answers";
+    $("tab-answers").setAttribute("aria-selected", String(mode === "answers"));
+    $("tab-study").setAttribute("aria-selected", String(mode === "study"));
+    if (quiet) return;
+    if (last && $("error").hidden) { $("out").hidden = mode === "study"; $("study").hidden = mode !== "study"; }
+    if (mode === "study") study(); else redraw();
+    if (last) saveHash(read());
+  }
+
+  // Study mode asks the worker for a few extra solves, so answers are kept per scenario and policy.
+  const explained = new Map();
+  let studySeq = 0;
+  function study() {
+    if (!last || !window.APStudy) return;
+    const pol = policyNow(), r = last.by[pol], s = { ...last.s, policy: pol }, key = toHash(s);
+    for (const el of document.querySelectorAll('input[name="spolicy"]')) el.checked = el.value === pol;
+    $("study-note").textContent = `${NAMES[pol]} plan · ${counted()} · ${cur}`;
+    if (!r || !r.ok) {
+      $("study-error").hidden = false; $("study-error").textContent = r ? r.message : "";
+      $("steps").innerHTML = ""; $("study-status").textContent = ""; $("study").classList.remove("is-stale");
+      return;
+    }
+    $("study-error").hidden = true;
+    const draw = (ex) => {
+      $("study").classList.remove("is-stale");
+      if (!ex.ok) { $("study-error").hidden = false; $("study-error").textContent = ex.message; $("study-status").textContent = ""; return; }
+      $("study-status").textContent = "";
+      const full = (v) => { const t = f2.format(Math.abs(v) < 0.005 ? 0 : v); const neg = t.startsWith("-"); const a = neg ? t.slice(1) : t; return (neg ? "−" : "") + (cur.length > 1 ? cur + " " + a : cur + a); };
+      APStudy.render($("steps"), ex, { x: s.x, cur, counted, money: full, q, name: NAMES[pol] });
+    };
+    if (explained.has(key)) return draw(explained.get(key));
+    const id = ++studySeq;
+    $("study-status").textContent = "Taking the plan apart…";
+    APSolver.explain(s.x, pol, s.whole).then((ex) => {
+      if (!ex || id !== studySeq) return;
+      if (explained.size > 20) explained.clear();
+      explained.set(key, ex);
+      if (mode === "study" && policyNow() === pol && toHash({ ...last.s, policy: pol }) === key) draw(ex);
+    }, (err) => { if (id === studySeq) draw({ ok: false, message: err.message }); });
   }
 
   const levelOf = (by) => (by.level && by.level.ok ? by.level.plan : null);
@@ -557,6 +606,20 @@
       if (e.target.name !== "policy") return;
       renderDetail();
       if (last) saveHash(read());
+    });
+    $("study").addEventListener("change", (e) => {
+      if (e.target.name !== "spolicy") return;
+      for (const r of document.querySelectorAll('input[name="policy"]')) r.checked = r.value === e.target.value;
+      renderDetail(); study();
+      if (last) saveHash(read());
+    });
+    $("tab-answers").addEventListener("click", () => setMode("answers"));
+    $("tab-study").addEventListener("click", () => setMode("study"));
+    // Arrow keys move between the two tabs, as a tab list should.
+    $("tab-answers").parentElement.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      const to = mode === "study" ? "answers" : "study";
+      setMode(to); $(to === "study" ? "tab-study" : "tab-answers").focus();
     });
     $("b-same-end").addEventListener("click", () => { $("f-endTeams").value = $("f-W0").value; $("f-endInvMin").value = $("f-I0").value; run(); });
     $("b-reset").addEventListener("click", () => { write(sample()); run(); });
