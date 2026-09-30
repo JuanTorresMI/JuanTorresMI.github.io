@@ -23,7 +23,7 @@ image_alt: "Aggregate Planner, an aggregate production planning calculator: the 
   <header class="ap-head">
     <p class="ap-label">Tool</p>
     <h1>Aggregate Planner <span class="ap-h1-sub">An aggregate planning calculator and study tool</span></h1>
-    <p class="ap-lede">Set up the way textbook cases are. Enter a year of demand, your workforce, and what labor, inventory and stockouts cost. The planner solves the level, band and chase plans side by side and answers the usual questions: what each plan costs, how much to make each month, how high inventory gets, and how much you save by being flexible. Switch to Study to see how it got there. Everything runs in your browser, and nothing you type leaves it.</p>
+    <p class="ap-lede">Set up the way textbook cases are. Enter a year of demand, your workforce, and what labor, inventory and stockouts cost. The planner solves the level, band and chase plans side by side with <a href="https://highs.dev/">HiGHS</a>, a free, open-source optimization solver, and answers the usual questions: what each plan costs, how much to make each month, how high inventory gets, and how much you save by being flexible. Switch to Study to see how it got there. HiGHS runs right in your browser, so nothing you type leaves it.</p>
   </header>
 
   <noscript><p class="ap-msg is-error">The planner needs JavaScript to run the optimizer. The explanation below still reads fine without it.</p></noscript>
@@ -175,7 +175,7 @@ image_alt: "Aggregate Planner, an aggregate production planning calculator: the 
         <dt>End of the year</dt><dd>S<sub>T</sub> = 0, W<sub>T</sub> and I<sub>T</sub> as required</dd>
       </dl>
       <h3>How the solver finds the cheapest plan</h3>
-      <p>If teams could be fractions, the model above would be a <strong>linear program</strong>. Every possible plan is a point inside a many-sided shape, and the cheapest one is always at a corner. The <strong>simplex method</strong> starts at a corner and keeps moving to a neighboring corner that costs less until none does. That’s the same engine as Excel Solver’s “Simplex LP” option.</p>
+      <p>The planner hands the model to <a href="https://highs.dev/">HiGHS</a>, an open-source solver first developed at the University of Edinburgh. If teams could be fractions, the model above would be a <strong>linear program</strong>. Every possible plan is a point inside a many-sided shape, and the cheapest one is always at a corner. The <strong>simplex method</strong> starts at a corner and keeps moving to a neighboring corner that costs less until none does. That’s the same engine as Excel Solver’s “Simplex LP” option.</p>
       <p>Whole teams make it a <strong>mixed-integer program</strong>, which is harder, and the solver works on it in three steps. Here they are for the sample’s chase plan:</p>
       <ol class="ap-list">
         <li><strong>Solve the relaxation.</strong> First it ignores the whole-number rule. The fractional plan costs $4,867,016.41. No real plan can cost less, because a real plan has fewer options, so this is a floor. But it calls for things like 11.51 teams in month 8, which can’t be hired.</li>

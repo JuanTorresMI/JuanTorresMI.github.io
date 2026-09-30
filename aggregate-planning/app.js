@@ -195,7 +195,7 @@
     $("study").hidden = mode !== "study";
     const ms = ok.reduce((a, r) => a + r.plan.ms, 0);
     pickMoneyScale(ok.map((r) => r.plan.total));
-    $("status").textContent = `${ok.length} of 3 plans optimal · ${s.whole ? "whole teams" : "fractional teams allowed"} · solved in ${f0.format(Math.max(1, ms))} ms`;
+    $("status").textContent = `${ok.length} of 3 plans optimal · ${s.whole ? "whole teams" : "fractional teams allowed"} · solved by HiGHS in ${f0.format(Math.max(1, ms))} ms`;
     renderAnswers(s, by);
     drawCompare(by);
     renderDetail();
