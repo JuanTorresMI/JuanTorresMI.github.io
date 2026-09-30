@@ -80,3 +80,50 @@ shy. Change it and run `npx.cmd wrangler deploy` again.
 ## Rotating the key
 
 Sign out of Stremio everywhere, then redo step 1 and `npx.cmd wrangler secret put STREMIO_AUTH_KEY`.
+
+## The music page: catalog, counter, guestbook
+
+The same Worker also serves Yokonjuan's page (`/music/` on the site); the code is
+`src/music.js`. The catalog needs nothing set up: it reads SoundCloud's public RSS and
+Spotify's public player data, so new releases show up within the hour. The visitor counter
+and the guestbook need a small database (D1) and Workers AI, which checks guestbook posts
+before they're stored. Both are free at this size.
+
+### Setting it up (once)
+
+From `worker/`, in PowerShell:
+
+```powershell
+npx.cmd wrangler login
+npx.cmd wrangler d1 create yokonjuan
+```
+
+`d1 create` prints a `database_id`. Paste it into `wrangler.toml` in place of
+`PASTE-FROM-wrangler-d1-create`, then:
+
+```powershell
+npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
+npx.cmd wrangler secret put GUESTBOOK_ADMIN_KEY
+npx.cmd wrangler deploy
+```
+
+`secret put` asks for a key: make up a long random one and keep it in your password manager.
+It's what lets you delete guestbook posts, and it never goes in this repo.
+
+### What a post has to get past
+
+In order: a hidden field only bots fill in, one post a minute and five a day per visitor, no
+links, a word list of slurs and direct attacks (`BLOCKED` in `src/music.js`, edit freely), and
+then a small model asked whether the message is mean. Anything that fails is refused and never
+stored. If the model can't be reached, the post is refused too, not let through.
+
+### Deleting a post
+
+Each post has a number (`id` in `GET /music/guestbook`). To remove number 12:
+
+```powershell
+$key = Read-Host "Guestbook admin key" -AsSecureString
+$k = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($key))
+Invoke-RestMethod -Method Delete -Uri "https://house-tv.5342543fsd.workers.dev/music/guestbook/12" -Headers @{ Authorization = "Bearer $k" }
+$k = $null
+```

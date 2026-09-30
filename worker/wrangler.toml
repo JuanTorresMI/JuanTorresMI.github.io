@@ -11,5 +11,20 @@ preview_urls = false
 # lives in this file. See README.md.
 [vars]
 LIVE_WINDOW_MIN = "5"
+# Only pages from these origins may sign the guestbook or bump the counter (reads are open).
+WRITE_ORIGINS = "https://juantorresmi.github.io,http://localhost:4000,http://127.0.0.1:4000"
+
+# The music page's counter and guestbook. Create it once with
+#   npx.cmd wrangler d1 create yokonjuan
+# and paste the database_id it prints below. Schema: schema.sql.
+[[d1_databases]]
+binding = "DB"
+database_name = "yokonjuan"
+database_id = "PASTE-FROM-wrangler-d1-create"
+
+# Workers AI, for checking guestbook posts before they're stored. Free up to 10,000
+# "neurons" a day; one check is a few.
+[ai]
+binding = "AI"
 # Lock the page down to one site if you ever want to; "*" is fine for read-only data.
 # ALLOW_ORIGIN = "https://juantorresmi.github.io"

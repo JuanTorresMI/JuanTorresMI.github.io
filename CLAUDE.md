@@ -10,7 +10,7 @@ Read this before changing anything; README.md covers the same ground for people.
 | `_config.yml` | Name, tagline, description, social links, share image, Worker URL, build excludes |
 | `_data/resume.yml` | The résumé. `/resume/` shows all of it; the home page shows each job's `summary` |
 | `_data/projects.yml` | Every project, in display order. Feeds the home page, `/projects/`, the project bar and the JSON-LD |
-| `_data/music.yml` | The music page (`/music/`): the artist name Yokonjuan, platform links, and every release (Spotify id, date, length, cover). Also feeds `alternateName` and `sameAs` on the Person in the JSON-LD. Adding a release or a platform is an edit here only |
+| `music/`, `_layouts/artist.html`, `_data/music.yml` | Yokonjuan's page (`/music/`), Juan's music. **Deliberately separate from the portfolio:** its own layout, stylesheet (`music/music.css`), script (`music/music.js`), icon and share picture (`scripts/music-og.js`). Nothing on it may name or link Juan Torres, and the portfolio's JSON-LD doesn't connect the two names: the portfolio links in (nav, home About), the music page never links back. Any words in Juan's voice (`about` in the data file) are his; don't write them. The page reads the live catalog, visitor counter and guestbook from the Worker; the data file is the fallback and what crawlers see |
 | `_includes/head.html` | Title, description, canonical, Open Graph / Twitter tags, structured data, fonts. Every page goes through it |
 | `_includes/navbar.html`, `footer.html`, `project-bar.html` | Site chrome |
 | `_layouts/default.html` | Ordinary pages: content inside `<main class="page frame">` |
@@ -23,7 +23,7 @@ Read this before changing anything; README.md covers the same ground for people.
 | `craft-ledger.html` | The ledger: one file (styles, markup, recipe JSON, script) inside layout `app`, styles scoped under `.cl` |
 | `minecraft-crafting-profit-calculator.html` | The ledger's guide page: what search engines and SMP players land on. A project's `guide` in `projects.yml` links to it |
 | `aggregate-planning/` | The planner: `index.html` (layout `app`), `planner.css` (scoped under `.ap`), `model.js` (the LP/MIP; no DOM, runs in Node), `solver.js` + `solver-worker.js` (HiGHS in a Web Worker), `app.js`, `study.js` (study mode: the plan taken apart step by step; the worker's `explain()` does the extra solves), `xlsx.js` (the downloadable workbook, no library), `sw.js` (offline). `lib/` holds HiGHS and Chart.js, vendored unchanged |
-| `worker/` | Cloudflare Worker for `/watching/` and the Substack feed. Not part of the Jekyll build; own README |
+| `worker/` | Cloudflare Worker for `/watching/`, the Substack feed, and the music page's catalog, counter and guestbook (`src/music.js`, D1 + Workers AI). Not part of the Jekyll build; own README |
 | `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` (share pictures) |
 
 ## Before you push

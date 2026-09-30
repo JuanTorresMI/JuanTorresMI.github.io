@@ -84,7 +84,6 @@
       "name": {{ site.author | jsonify }},
       "givenName": "Juan",
       "familyName": "Torres",
-      "alternateName": {{ site.data.music.artist | jsonify }},
       "url": "{{ site.url }}/",
       "image": {{ "/assets/og/home.png" | absolute_url | jsonify }},
       "email": "mailto:{{ site.email }}",
@@ -100,7 +99,7 @@
         { "@type": "EducationalOccupationalCredential", "name": "Microsoft Excel: Essential Skills and Applied Intermediate Skills", "recognizedBy": { "@type": "Organization", "name": "McGraw Hill" } },
         { "@type": "EducationalOccupationalCredential", "name": "Microsoft Access: Essential Skills and Applied Intermediate Skills", "recognizedBy": { "@type": "Organization", "name": "McGraw Hill" } }
       ],
-      "sameAs": [{{ site.social.linkedin | jsonify }}, {{ site.social.github | jsonify }}, {{ site.social.substack | jsonify }}{% for p in site.data.music.platforms %}, {{ p.url | jsonify }}{% endfor %}]
+      "sameAs": [{{ site.social.linkedin | jsonify }}, {{ site.social.github | jsonify }}, {{ site.social.substack | jsonify }}]
     },
     {
       "@type": "WebSite",
