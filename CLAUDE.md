@@ -64,8 +64,8 @@ dates and figures. Spacing steps are multiples of 8.
   `description` (this becomes the meta description and the excerpt on `/blog/`). Nothing else
   to touch: the feed, sitemap, writing index and JSON-LD pick it up.
 - **A project**: add it to `_data/projects.yml` (slug, title, url, kind, status, short, summary,
-  metric, stack, keywords; optionally a schema.org `category`, a `features` list and
-  `search` terms for the JSON-LD), then make the page with `layout: app`, `project: <slug>`, `title`,
+  metric, stack, keywords; optionally a schema.org `category`, a `features` list,
+  `search` terms and a `learning` block (type, level, audience, teaches) for the JSON-LD), then make the page with `layout: app`, `project: <slug>`, `title`,
   `description`, `image` and `image_alt`. Give it a share picture in `scripts/og-images.js` and
   re-run that script. The project bar, home page and `/projects/` update on their own.
 - **A page**: `layout: default`, a `permalink`, `title`, `description`. Add `image` if a share

@@ -1,8 +1,8 @@
 ---
 layout: app
 project: aggregate-planning
-title: "Aggregate Planning Calculator: Level, Chase & Band Plans"
-description: "Free aggregate planning calculator. Enter monthly demand and costs to compare level, chase and band plans, find the cheapest one, and export it to Excel."
+title: "Aggregate Planning Calculator, with the Math Step by Step"
+description: "Free aggregate planning calculator and study tool. Compare level, chase and band plans, see the linear program and solver worked step by step, export to Excel."
 image: /assets/og/aggregate-planning.png
 image_alt: "Aggregate Planner, an aggregate production planning calculator: the cheapest level, band or chase plan, month by month. A tool by Juan Torres."
 ---
@@ -22,7 +22,7 @@ image_alt: "Aggregate Planner, an aggregate production planning calculator: the 
 <div class="ap frame">
   <header class="ap-head">
     <p class="ap-label">Tool</p>
-    <h1>Aggregate Planner <span class="ap-h1-sub">An aggregate production planning calculator</span></h1>
+    <h1>Aggregate Planner <span class="ap-h1-sub">An aggregate planning calculator and study tool</span></h1>
     <p class="ap-lede">Set up the way textbook cases are. Enter a year of demand, your workforce, and what labor, inventory and stockouts cost. The planner solves the level, band and chase plans side by side and answers the usual questions: what each plan costs, how much to make each month, how high inventory gets, and how much you save by being flexible. Switch to Study to see how it got there. Everything runs in your browser, and nothing you type leaves it.</p>
   </header>
 
@@ -174,8 +174,21 @@ image_alt: "Aggregate Planner, an aggregate production planning calculator: the 
         <dt>Policy</dt><dd>level: W<sub>t</sub> = W<sub>0</sub> · band: fewest ≤ W<sub>t</sub> ≤ most · chase: no limit</dd>
         <dt>End of the year</dt><dd>S<sub>T</sub> = 0, W<sub>T</sub> and I<sub>T</sub> as required</dd>
       </dl>
-      <h3>An exact optimizer, not a spreadsheet heuristic</h3>
-      <p>The planner writes the problem as a mixed-integer program: every month has a workforce balance, an inventory balance, an overtime limit and a capacity limit, and the objective adds up hiring, layoffs, regular time, overtime, holding, stockouts and material. It hands that to <a href="https://highs.dev/">HiGHS</a>, an open-source solver compiled to WebAssembly, which searches until it can prove no cheaper plan exists. With “Whole teams only” off, the same model is a linear program and solves almost instantly. To watch all of this happen with your own numbers, switch the results to <strong>Study</strong>: it walks through the model, the relaxation, the first branch, the solver’s search log and the shadow prices, step by step.</p>
+      <h3>How the solver finds the cheapest plan</h3>
+      <p>If teams could be fractions, the model above would be a <strong>linear program</strong>. Every possible plan is a point inside a many-sided shape, and the cheapest one is always at a corner. The <strong>simplex method</strong> starts at a corner and keeps moving to a neighboring corner that costs less until none does. That’s the same engine as Excel Solver’s “Simplex LP” option.</p>
+      <p>Whole teams make it a <strong>mixed-integer program</strong>, which is harder, and the solver works on it in three steps. Here they are for the sample’s chase plan:</p>
+      <ol class="ap-list">
+        <li><strong>Solve the relaxation.</strong> First it ignores the whole-number rule. The fractional plan costs $4,867,016.41. No real plan can cost less, because a real plan has fewer options, so this is a floor. But it calls for things like 11.51 teams in month 8, which can’t be hired.</li>
+        <li><strong>Branch and bound.</strong> Every real plan has either 11 or fewer teams in month 8, or 12 or more. So the solver splits the problem into those two cases and solves each one. The cases cost at least $4,869,224.41 and $4,868,504.41, and both still have fractions, so it keeps splitting. Any branch whose floor is already above the best real plan found so far gets dropped without being explored. That’s the “bound”, and it’s why the search never has to try every combination.</li>
+        <li><strong>Close the gap.</strong> The solver keeps two numbers: the floor, the lowest cost still possible, and the best whole-team plan found so far. After a little over a dozen branches the two meet at $4,875,900. A gap of 0% is the proof that no cheaper plan exists.</li>
+      </ol>
+      <p>The price of hiring whole teams is the difference between the floor and the final plan: $8,883.59 here, about 0.2%. That’s why a Solver run without integer constraints comes out slightly cheaper than this planner with “Whole teams only” on.</p>
+      <h3>Shadow prices: what one more unit of demand costs</h3>
+      <p>Once the plan is set, a useful question is how much the cheapest cost would go up if a customer ordered one more unit in a given month. That number is the month’s <strong>shadow price</strong>, and it shows what the plan is doing at the margin.</p>
+      <p>In the sample’s level plan, one more unit costs just $60, its material, in months 1 to 3, because there’s spare capacity. From month 4 on the price climbs by exactly $12 a month, the holding cost, because the extra unit has to be built in month 3 and stored until it’s needed. In the chase plan, prices run from $131 to $185, and $185 is exactly what a unit costs on overtime: $60 of material plus $187.50 ÷ 1.5 units per team-hour. Shadow prices are how a planner reads which months are bottlenecks and what extra capacity would be worth.</p>
+      <p>To see all of this for your own numbers, switch the results to <strong>Study</strong>. It walks through the inputs, the model, each month’s constraints, the solver’s search and the shadow prices, step by step.</p>
+      <h3>Solved exactly, in your browser</h3>
+      <p>The planner writes the model out and hands it to <a href="https://highs.dev/">HiGHS</a>, an open-source optimization solver compiled to WebAssembly. It searches until it can prove no cheaper plan exists, so the answer is the true optimum, not a spreadsheet heuristic or a close guess.</p>
       <p>Everything runs on this page, and the numbers you enter stay in your browser. The share link carries them in the part of the address after the “#”, which browsers never send to a server. The source is <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/aggregate-planning">on GitHub</a>: <code>model.js</code> holds the whole model.</p>
     </div>
   </article>
