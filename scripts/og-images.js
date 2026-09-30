@@ -19,7 +19,7 @@ const CARDS = {
   home: { top: ["Central Michigan University", "Class of 2027"], name: "Juan Torres", caps: true,
     sub: "Logistics Management", bottom: ["Torre10j@cmich.edu", "juantorresmi.github.io"] },
   projects: { top: ["Juan Torres", "Projects"], name: "Things I’ve built",
-    sub: "A fruit-fly delivery simulation · A Minecraft price ledger", bottom: ["juantorresmi.github.io/projects", "Central Michigan University"] },
+    sub: "A fruit-fly delivery simulation · A Minecraft price ledger · A production planner", bottom: ["juantorresmi.github.io/projects", "Central Michigan University"] },
   resume: { top: ["Juan Torres", "Résumé"], name: "Résumé",
     sub: "Logistics Management · Central Michigan University · Class of 2027", bottom: ["juantorresmi.github.io/resume", "Torre10j@cmich.edu"] },
   writing: { top: ["Juan Torres", "Writing"], name: "Notes on finance, school and work",
