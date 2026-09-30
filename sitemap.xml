@@ -6,6 +6,9 @@ sitemap: false
 {%- comment -%}
   Written out by hand rather than with jekyll-sitemap, so it works whatever plugin set the
   build happens to have. A page opts out with `sitemap: false` in its front matter.
+  <lastmod> is only written when it is true: a page's `last_modified_at` if it sets one, a
+  post's date otherwise. Stamping every page with the build time would tell Google that
+  everything changed on every push, and it stops trusting a sitemap's dates once they lie.
 {%- endcomment -%}
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -14,7 +17,9 @@ sitemap: false
 {%- unless p.url contains "404" -%}
   <url>
     <loc>{{ p.url | absolute_url | xml_escape }}</loc>
-    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+    {%- if p.last_modified_at %}
+    <lastmod>{{ p.last_modified_at | date_to_xmlschema }}</lastmod>
+    {%- endif %}
     <changefreq>{% if p.url == "/" %}weekly{% else %}monthly{% endif %}</changefreq>
     <priority>{% if p.url == "/" %}1.0{% elsif p.url contains "projects" %}0.8{% else %}0.6{% endif %}</priority>
   </url>
@@ -23,7 +28,7 @@ sitemap: false
 {%- for post in site.posts %}
   <url>
     <loc>{{ post.url | absolute_url | xml_escape }}</loc>
-    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+    <lastmod>{{ post.last_modified_at | default: post.date | date_to_xmlschema }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
