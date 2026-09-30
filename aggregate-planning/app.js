@@ -231,7 +231,8 @@
       $("study").classList.remove("is-stale");
       if (!ex.ok) { $("study-error").hidden = false; $("study-error").textContent = ex.message; $("study-status").textContent = ""; return; }
       $("study-status").textContent = "";
-      const full = (v) => { const t = f2.format(Math.abs(v) < 0.005 ? 0 : v); const neg = t.startsWith("-"); const a = neg ? t.slice(1) : t; return (neg ? "−" : "") + (cur.length > 1 ? cur + " " + a : cur + a); };
+      const cents = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const full = (v) => { const r = Math.abs(v) < 0.005 ? 0 : v; const t = Math.abs(r - Math.round(r)) < 0.005 ? f0.format(r) : cents.format(r); const neg = t.startsWith("-"); const a = neg ? t.slice(1) : t; return (neg ? "−" : "") + (cur.length > 1 ? cur + " " + a : cur + a); };
       APStudy.render($("steps"), ex, { x: s.x, cur, counted, money: full, q, name: NAMES[pol] });
     };
     if (explained.has(key)) return draw(explained.get(key));

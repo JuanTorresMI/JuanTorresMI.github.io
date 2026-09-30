@@ -4,7 +4,9 @@
  *   APStudy.render(el, ex, ctx)   ex: the explanation; ctx: { x, cur, counted, money, q, name }
  *
  * Nothing here solves anything: every number shown is either an input, arithmetic on the
- * inputs, or something HiGHS reported for these inputs.
+ * inputs, or something HiGHS reported for these inputs. The writing is for a student who knows
+ * what aggregate planning is but not what goes on inside a solver: plain words first, the
+ * technical term after, in parentheses.
  */
 (function (root) {
   "use strict";
@@ -15,16 +17,17 @@
   const EPS = 1e-6;
   let month = null; // the month shown in step 4, kept while the reader edits inputs
 
-  // What each letter in HiGHS's progress log means.
+  // What each letter in HiGHS's progress log means, in plain words.
   const SRC = {
-    "": "Search", B: "Branching", C: "Central rounding", F: "Feasibility pump", H: "Heuristic", I: "Shifting",
-    J: "Feasibility jump", L: "Sub-MIP", P: "Empty MIP", R: "Randomized rounding", S: "Solve LP", T: "Evaluate node",
-    U: "Unbounded", X: "User solution", Y: "HiGHS solution", Z: "ZI round", l: "Trivial lower", p: "Trivial point", u: "Trivial upper", z: "Trivial zero",
+    "": "Search update", B: "Split a branch", C: "Rounded toward the middle", F: "Feasibility pump", H: "Quick guess", I: "Shifted a guess",
+    J: "Quick first guess", L: "Solved a smaller version", P: "Empty problem", R: "Rounded the fractions", S: "Solved a relaxation", T: "Checked a branch",
+    U: "Unbounded", X: "Given plan", Y: "Earlier plan", Z: "Rounded the fractions", l: "Simple guess", p: "Simple guess", u: "Simple guess", z: "Tried all zeros",
   };
 
   function render(el, ex, ctx) {
-    const { x, money, q, cur } = ctx;
+    const { x, money, q } = ctx;
     const u = ctx.counted(), p = ex.plan, d = ex.derived, T = p.months.length, k = x.scale || 1;
+    const one = u.replace(/s$/, "");
     const $ = (v) => money(v);
     if (month === null || month > T) month = p.months.reduce((a, m) => (m.D > a.D ? m : a), p.months[0]).t;
 
@@ -33,56 +36,58 @@
     const steps = [];
 
     /* 1. inputs -> coefficients */
-    const per = k > 1 ? ` per ${esc(u.replace(/s$/, ""))}` : " per unit";
-    steps.push(step(1, "From the case to the model’s numbers", `
-      <p>The solver never sees wages, shifts or workers. It sees one cost for each decision and one number for each limit. Every one of them comes from the inputs:</p>
+    const per = k > 1 ? ` per ${esc(one)} (the per-unit cost × ${n0.format(k)})` : " per unit";
+    steps.push(step(1, "Turning the case into numbers", `
+      <p>The solver doesn’t know what a worker or a shift is. All it sees is a cost for each decision and a limit for each rule. Here’s how your inputs become those numbers:</p>
       ${eq([
-        ["Regular hours", `${n2.format(x.daysPerMonth)} days × ${n2.format(x.hoursPerDay)} h = <b>${n2.format(d.regHours)} h</b> per team per month`],
-        ["Output per team", `${n4.format(x.rate)} units/h × ${n2.format(d.regHours)} h${k > 1 ? ` ÷ ${n0.format(k)}` : ""} = <b>${n4.format(d.regCapPerTeam)}</b> ${esc(u)} per team per month`],
-        ["Regular pay", `${$(x.wageReg)}/h × ${n2.format(x.teamSize)} workers × ${n2.format(d.regHours)} h = <b>${$(d.regCostPerTeam)}</b> per team per month`],
-        ["Overtime pay", `${$(x.wageOT)}/h × ${n2.format(x.teamSize)} workers = <b>${$(d.otCostPerTeamHour)}</b> per team-hour`],
-        ["Overtime limit", `<b>${n2.format(d.otMaxPerTeam)}</b> team-hours per team per month (everyone on a team works the same overtime)`],
-        ["Hire · lay off", `${$(x.hireCost)} × ${n2.format(x.teamSize)} = <b>${$(d.hirePerTeam)}</b> · ${$(x.layoffCost)} × ${n2.format(x.teamSize)} = <b>${$(d.layoffPerTeam)}</b> per team`],
-        ["Hold · stockout · material", `<b>${$(d.hold)}</b> · <b>${$(d.backlog)}</b> · <b>${$(d.material)}</b>${per}${k > 1 ? ` (the per-unit cost × ${n0.format(k)})` : ""}`],
+        ["Hours per team", `${n2.format(x.daysPerMonth)} days × ${n2.format(x.hoursPerDay)} h = <b>${n2.format(d.regHours)} hours</b> per team each month`],
+        ["Output per team", `${n4.format(x.rate)} units an hour × ${n2.format(d.regHours)} h${k > 1 ? ` ÷ ${n0.format(k)}` : ""} = <b>${n4.format(d.regCapPerTeam)}</b> ${esc(u)} per team each month`],
+        ["Regular pay", `${$(x.wageReg)} an hour × ${n2.format(x.teamSize)} workers × ${n2.format(d.regHours)} h = <b>${$(d.regCostPerTeam)}</b> per team each month`],
+        ["Overtime pay", `${$(x.wageOT)} an hour × ${n2.format(x.teamSize)} workers = <b>${$(d.otCostPerTeamHour)}</b> for each hour a team works overtime`],
+        ["Overtime cap", `<b>${n2.format(d.otMaxPerTeam)} hours</b> per team each month (the whole team works overtime together)`],
+        ["Hiring and layoffs", `hiring a team costs ${$(x.hireCost)} × ${n2.format(x.teamSize)} = <b>${$(d.hirePerTeam)}</b>; laying one off costs ${$(x.layoffCost)} × ${n2.format(x.teamSize)} = <b>${$(d.layoffPerTeam)}</b>`],
+        ["Holding, stockout, material", `<b>${$(d.hold)}</b> to store for a month, <b>${$(d.backlog)}</b> for each month an order is late, <b>${$(d.material)}</b> in material,${per}`],
       ])}
-      <p class="ap-aside">Regular pay is charged for every team on the payroll, busy or not. That is why keeping idle teams is never free, and why the plan trades teams against inventory.</p>`));
+      <p class="ap-aside">One thing to notice: every team on the payroll gets paid for the full month, busy or not. An idle team isn’t free. That’s the core tradeoff in aggregate planning: pay for extra people, or pay to store extra stock.</p>`));
 
     /* 2. variables */
     const nv = T * (ex.plan.months.some((m) => m.C > 0) ? 8 : 7);
-    steps.push(step(2, "The decisions", `
-      <p>For each of the ${T} months the solver chooses seven numbers, ${nv} in all. ${ex.wholeTeams ? `The three about teams must be whole numbers, which makes this a <b>mixed-integer program</b>.` : `All of them may be fractional, which makes this a <b>linear program</b>.`}</p>
+    steps.push(step(2, "What the solver gets to decide", `
+      <p>Each month, the solver picks seven numbers, so ${n0.format(nv)} in all for a ${T}-month plan. ${ex.wholeTeams
+        ? `Team counts have to be whole numbers, since you can’t hire half a team. That makes this a <b>mixed-integer program</b> (MIP).`
+        : `Here team counts are allowed to be fractions, which makes this a <b>linear program</b> (LP).`}</p>
       <div class="ap-scroll" tabindex="0" role="region" aria-label="Decision variables"><table class="ap-table ap-mini ap-defs">
-        <thead><tr><th scope="col">Symbol</th><th scope="col">Meaning</th><th scope="col">Unit</th></tr></thead><tbody>
-        ${[["H", "teams hired at the start of the month", "teams"], ["L", "teams laid off", "teams"], ["W", "teams employed", "teams"], ["O", "overtime worked", "team-hours"],
-          ["P", "production", u], ["I", "inventory at the end of the month", u], ["S", "stockout: demand not yet filled at month end", u]]
+        <thead><tr><th scope="col">Symbol</th><th scope="col">What it is</th><th scope="col">Measured in</th></tr></thead><tbody>
+        ${[["H", "Teams hired this month", "teams"], ["L", "Teams laid off this month", "teams"], ["W", "Teams on the payroll", "teams"], ["O", "Overtime worked", "team-hours"],
+          ["P", "Units made", u], ["I", "Units left in stock at the end of the month", u], ["S", "Orders still unfilled at the end of the month (stockout)", u]]
           .map(([s, m, un]) => `<tr><td class="sym">${sub(s, "t")}</td><td>${m}</td><td>${esc(un)}</td></tr>`).join("")}
       </tbody></table></div>`));
 
     /* 3. objective */
-    const coefs = [[d.hirePerTeam, "H", "Hiring"], [d.layoffPerTeam, "L", "Layoffs"], [d.regCostPerTeam, "W", "Regular time"], [d.otCostPerTeamHour, "O", "Overtime"],
-      [d.hold, "I", "Holding"], [d.backlog, "S", "Stockout"], [d.material, "P", "Material"]];
+    const coefs = [[d.hirePerTeam, "H", "Hiring"], [d.layoffPerTeam, "L", "Layoffs"], [d.regCostPerTeam, "W", "Regular pay"], [d.otCostPerTeamHour, "O", "Overtime"],
+      [d.hold, "I", "Holding"], [d.backlog, "S", "Stockouts"], [d.material, "P", "Material"]];
     const tot = (v) => p.months.reduce((a, m) => a + m[v], 0);
-    steps.push(step(3, "The objective: what “cheapest” means", `
-      <p>Every decision has a price. The objective adds them up over the year, and the solver makes it as small as it can:</p>
+    steps.push(step(3, "What “cheapest” means", `
+      <p>Every decision has a price. The solver’s goal, called the <b>objective</b>, is the total of all those prices over the year, and it looks for the plan that makes that total as small as possible:</p>
       <p class="ap-formula">minimize&nbsp; Σ<sub>t</sub> ( ${coefs.map(([c, v]) => `${n2.format(c)} ${sub(v, "t")}`).join(" + ")} )</p>
-      <p>For the ${esc(ctx.name)} plan, each price times how much of it the plan uses:</p>
+      <p>Here’s that total for the ${esc(ctx.name.toLowerCase())} plan, piece by piece:</p>
       <div class="ap-scroll" tabindex="0" role="region" aria-label="Objective, term by term"><table class="ap-table ap-mini">
-        <thead><tr><th scope="col">Term</th><th scope="col">Price</th><th scope="col">× total used</th><th scope="col">= cost</th></tr></thead><tbody>
+        <thead><tr><th scope="col">Cost</th><th scope="col">Price</th><th scope="col">Amount used</th><th scope="col">Total</th></tr></thead><tbody>
         ${coefs.map(([c, v, name]) => `<tr><td>${name} <span class="sym">Σ${sub(v, "t")}</span></td><td>${$(c)}</td><td>${q(tot(v))}</td><td>${$(c * tot(v))}</td></tr>`).join("")}
         </tbody><tfoot><tr><td>Total</td><td></td><td></td><td>${$(p.total)}</td></tr></tfoot></table></div>`));
 
     /* 4. constraints, one month at a time */
     const m = p.months[month - 1], prev = month > 1 ? p.months[month - 2] : { W: x.W0, I: x.I0, S: x.S0 };
-    const check = (lhs, rhs, kind) => {
+    const ok = `<span class="ok">checks out</span>`;
+    const check = (lhs, rhs) => {
       const gap = rhs - lhs, tol = EPS * Math.max(1, Math.abs(rhs));
-      if (kind === "=") return `<span class="ok">holds</span>`;
-      return Math.abs(gap) <= tol ? `<span class="bind">binding</span> — every bit of it is used` : `<span class="slack">slack</span> — ${q(gap)} to spare`;
+      return Math.abs(gap) <= tol ? `<span class="bind">binding</span> fully used` : `<span class="slack">slack</span> ${q(gap)} left over`;
     };
     const capR = d.regCapPerTeam * m.W + d.capPerTeamHour * m.O, otR = d.otMaxPerTeam * m.W;
     const pol = ex.policy;
-    const policyRow = pol === "level" ? [`${sub("W", "t")} = ${n2.format(x.W0)}`, `${q(m.W)} = ${n2.format(x.W0)}`, "no hiring or layoffs, all year"]
-      : pol === "band" ? [`${n2.format(x.Wmin)} ≤ ${sub("W", "t")} ≤ ${n2.format(x.Wmax)}`, `${n2.format(x.Wmin)} ≤ ${q(m.W)} ≤ ${n2.format(x.Wmax)}`, "the band"]
-      : [`${sub("W", "t")} ≥ 0`, `${q(m.W)} ≥ 0`, "hire and lay off freely"];
+    const policyRow = pol === "level" ? [`${sub("W", "t")} = ${n2.format(x.W0)}`, `${q(m.W)} = ${n2.format(x.W0)}`, "The team count never changes."]
+      : pol === "band" ? [`${n2.format(x.Wmin)} ≤ ${sub("W", "t")} ≤ ${n2.format(x.Wmax)}`, `${n2.format(x.Wmin)} ≤ ${q(m.W)} ≤ ${n2.format(x.Wmax)}`, "The team count stays inside the band."]
+      : [`${sub("W", "t")} ≥ 0`, `${q(m.W)} ≥ 0`, "Hire and lay off as needed."];
     const card = (name, words, sym, nums, status) => `<div class="ap-con"><p class="ap-label">${name}</p><p class="w">${words}</p><p class="ap-formula">${sym}</p><p class="ap-formula nums">${nums}</p><p class="st">${status}</p></div>`;
     const ends = [];
     if (month === T) {
@@ -90,71 +95,87 @@
       if (x.endTeams !== null && x.endTeams !== undefined) ends.push(`${sub("W", "T")} = ${n2.format(x.endTeams)} → ${q(m.W)}`);
       if (x.endInvMin) ends.push(`${sub("I", "T")} ≥ ${n2.format(x.endInvMin)} → ${q(m.I)}`);
     }
-    steps.push(step(4, "The constraints, month by month", `
-      <p>Four rules tie each month to the last. Pick a month to see each rule with the plan’s numbers plugged in. A limit that is used to the full is <b>binding</b>: it is what stops the plan from being cheaper.</p>
+    steps.push(step(4, "The rules each month has to follow", `
+      <p>Every month follows the same four rules, and each one links it to the month before. Pick a month to see the rules with its numbers filled in.</p>
+      <p>When a limit is used all the way up, it’s called <b>binding</b>. Binding limits are the ones holding the plan back: loosen one and the cost would drop. A limit with room left over is <b>slack</b>.</p>
       <label class="ap-field ap-month"><span class="ap-name">Month</span><select id="study-month">${p.months.map((mm) => `<option value="${mm.t}"${mm.t === month ? " selected" : ""}>Month ${mm.t}</option>`).join("")}</select></label>
       <div class="ap-cons">
-        ${card("Workforce balance", "Teams this month are last month’s, plus hires, minus layoffs.", `${sub("W", "t")} = ${sub("W", "t−1")} + ${sub("H", "t")} − ${sub("L", "t")}`,
-          `${q(m.W)} = ${q(prev.W)} + ${q(m.H)} − ${q(m.L)}`, check(0, 0, "="))}
-        ${card("Inventory balance", "Stock carried in, minus orders already late, plus production, covers demand; what is left is stock, what is short is stockout.",
+        ${card("Workforce", "This month’s teams are last month’s teams, plus hires, minus layoffs.", `${sub("W", "t")} = ${sub("W", "t−1")} + ${sub("H", "t")} − ${sub("L", "t")}`,
+          `${q(m.W)} = ${q(prev.W)} + ${q(m.H)} − ${q(m.L)}`, ok)}
+        ${card("Inventory", "Last month’s stock, minus last month’s late orders, plus what you make, has to cover this month’s demand. Anything extra becomes stock; any shortfall becomes a stockout.",
           `${sub("I", "t−1")} − ${sub("S", "t−1")} + ${sub("P", "t")} = ${sub("D", "t")} + ${sub("I", "t")} − ${sub("S", "t")}`,
-          `${q(prev.I)} − ${q(prev.S)} + ${q(m.P)} = ${q(m.D)} + ${q(m.I)} − ${q(m.S)} &nbsp;→&nbsp; ${q(prev.I - prev.S + m.P)} = ${q(m.D + m.I - m.S)}`, check(0, 0, "="))}
-        ${card("Capacity", "Production can’t exceed what the teams make in regular time plus overtime.", `${sub("P", "t")} ≤ ${n4.format(d.regCapPerTeam)} ${sub("W", "t")} + ${n4.format(d.capPerTeamHour)} ${sub("O", "t")}`,
-          `${q(m.P)} ≤ ${n4.format(d.regCapPerTeam)} × ${q(m.W)} + ${n4.format(d.capPerTeamHour)} × ${q(m.O)} = ${q(capR)}`, check(m.P, capR, "≤"))}
-        ${card("Overtime limit", "Overtime can’t exceed the limit for every team employed.", `${sub("O", "t")} ≤ ${n2.format(d.otMaxPerTeam)} ${sub("W", "t")}`,
-          `${q(m.O)} ≤ ${n2.format(d.otMaxPerTeam)} × ${q(m.W)} = ${q(otR)}`, check(m.O, otR, "≤"))}
-        ${card(`Policy: ${esc(ctx.name)}`, policyRow[2][0].toUpperCase() + policyRow[2].slice(1) + ".", policyRow[0], policyRow[1], `<span class="ok">holds</span>`)}
-        ${ends.length ? card("End of the year", "Conditions on the last month only.", ends.map((e) => e.split(" → ")[0]).join(" · "), ends.map((e) => e.split(" → ")[1]).join(" · "), `<span class="ok">holds</span>`) : ""}
+          `${q(prev.I)} − ${q(prev.S)} + ${q(m.P)} = ${q(m.D)} + ${q(m.I)} − ${q(m.S)} &nbsp;→&nbsp; ${q(prev.I - prev.S + m.P)} = ${q(m.D + m.I - m.S)}`, ok)}
+        ${card("Capacity", "You can’t make more than the teams produce in regular hours plus overtime.", `${sub("P", "t")} ≤ ${n4.format(d.regCapPerTeam)} ${sub("W", "t")} + ${n4.format(d.capPerTeamHour)} ${sub("O", "t")}`,
+          `${q(m.P)} ≤ ${n4.format(d.regCapPerTeam)} × ${q(m.W)} + ${n4.format(d.capPerTeamHour)} × ${q(m.O)} = ${q(capR)}`, check(m.P, capR))}
+        ${card("Overtime", "Overtime can’t go past the cap for the teams you have.", `${sub("O", "t")} ≤ ${n2.format(d.otMaxPerTeam)} ${sub("W", "t")}`,
+          `${q(m.O)} ≤ ${n2.format(d.otMaxPerTeam)} × ${q(m.W)} = ${q(otR)}`, check(m.O, otR))}
+        ${card(`${esc(ctx.name)} policy`, policyRow[2], policyRow[0], policyRow[1], ok)}
+        ${ends.length ? card("End of the year", "Extra rules for the last month only.", ends.map((e) => e.split(" → ")[0]).join(" · "), ends.map((e) => e.split(" → ")[1]).join(" · "), ok) : ""}
       </div>`));
 
     /* 5. how HiGHS found it */
     const L = ex.log, R = ex.relaxed, B = ex.branch;
-    const sizeLine = L.size ? `The model has <b>${n0.format(L.size.rows)}</b> constraints and <b>${n0.format(L.size.cols)}</b> variables${L.size.ints ? `, ${n0.format(L.size.ints)} of them whole numbers` : ""}.` : "";
-    const pre = L.presolve ? ` Before solving, HiGHS’s <b>presolve</b> simplified it to ${n0.format(L.presolve.rows)} constraints and ${n0.format(L.presolve.cols)} variables, by fixing variables that can only take one value and dropping limits that can never bind${pol === "level" ? ". Under a level plan every W is fixed, so a lot goes" : ""}.` : "";
+    const sizeLine = L.size ? `Written out in full, the model has <b>${n0.format(L.size.rows)}</b> rules (constraints) and <b>${n0.format(L.size.cols)}</b> unknowns (variables)${L.size.ints ? `, and ${n0.format(L.size.ints)} of the unknowns have to be whole numbers` : ""}.` : "";
+    const pre = L.presolve ? ` Before it starts, HiGHS tidies the model up (a step called presolve). It locks in anything that can only have one value and drops rules that can never matter, which left ${n0.format(L.presolve.rows)} rules and ${n0.format(L.presolve.cols)} unknowns.${pol === "level" ? " In a level plan the team count is already fixed every month, so a lot gets removed." : ""}` : "";
     const wRow = R ? `<div class="ap-scroll" tabindex="0" role="region" aria-label="Teams, fractional and whole"><table class="ap-table ap-mini ap-wide">
         <thead><tr><th scope="col">Month</th>${p.months.map((mm) => `<th scope="col">${mm.t}</th>`).join("")}</tr></thead><tbody>
-        <tr><td>${ex.wholeTeams ? "Teams, relaxed" : "Teams"}</td>${R.W.map((w) => `<td${Math.abs(w - Math.round(w)) > EPS ? ' class="frac"' : ""}>${n2.format(w)}</td>`).join("")}</tr>
+        <tr><td>${ex.wholeTeams ? "Teams, relaxed" : "Teams"}</td>${R.W.map((w) => `<td${ex.wholeTeams && Math.abs(w - Math.round(w)) > EPS ? ' class="frac"' : ""}>${n2.format(w)}</td>`).join("")}</tr>
         ${ex.wholeTeams ? `<tr><td>Teams, final</td>${p.months.map((mm) => `<td>${q(mm.W)}</td>`).join("")}</tr>` : ""}</tbody></table></div>` : "";
+    const simplex = `Picture every possible plan as a point inside a many-sided shape. The cheapest plan is always at one of its corners, so the <b>simplex method</b> starts at a corner and keeps moving to a neighboring corner that costs less. When no neighbor is cheaper, it’s done.`;
     let relaxText = "";
-    if (R && !ex.wholeTeams) relaxText = `<p>With fractional teams allowed, the model is a linear program, and HiGHS solves it with the <b>simplex method</b>. Every possible plan is a point inside a many-sided shape, and the cheapest one is always at a corner. Simplex starts at one corner and keeps stepping to a cheaper neighbor; when no neighbor is cheaper, that corner is the answer. It took <b>${n0.format(R.iters || 0)}</b> steps here, and the answer is the plan: <b>${$(R.cost)}</b>.</p>${wRow}`;
-    else if (R) relaxText = `<p><b>First, the relaxation.</b> HiGHS drops the whole-teams rule and solves the easier linear program with the simplex method (${n0.format(R.iters || 0)} corner-to-corner steps). That plan costs <b>${$(R.cost)}</b>. It is a floor: the whole-team plan has fewer options, so it can’t cost less. ${R.fractional.length ? `But ${n0.format(R.fractional.length)} of its team numbers are fractions, which can’t be hired:` : `Here every team number came out whole, so the relaxation <em>is</em> the answer and there is nothing left to search.`}</p>${wRow}`;
+    if (R && !ex.wholeTeams) relaxText = `<p>Because fractional teams are allowed, this is a linear program, and HiGHS can solve it directly. ${simplex} Here that took <b>${n0.format(R.iters || 0)}</b> moves and landed on <b>${$(R.cost)}</b>, which is the plan.</p>${wRow}`;
+    else if (R) relaxText = `<p><b>First, ignore the whole-number rule.</b> HiGHS starts with an easier version where teams can be fractions (called the relaxation). ${simplex} That took ${n0.format(R.iters || 0)} moves and gives a cost of <b>${$(R.cost)}</b>. No real plan can beat that, since a real plan has fewer options, so it works as a floor. ${R.fractional.length
+      ? `The catch is that ${n0.format(R.fractional.length)} of its numbers are fractions, and you can’t hire ${n2.format(B ? B.value : (R.fractional.find((f) => f.name[0] === "W") || R.fractional[0]).value)} teams:`
+      : `Here every team number already came out whole, so the relaxation is the answer and there’s nothing left to search.`}</p>${wRow}`;
     let branchText = "";
     if (B) {
-      const side = (s) => s.feasible ? `<span>floor <b>${$(s.cost)}</b></span><span>${s.fractionalLeft ? `${n0.format(s.fractionalLeft)} fractions left` : `<b>all whole</b>: a real plan`}</span>` : "<span>no possible plan</span>";
+      const side = (s) => s.feasible ? `<span>costs at least <b>${$(s.cost)}</b></span><span>${s.fractionalLeft ? `${n0.format(s.fractionalLeft)} still fractional` : `<b>all whole</b>: a real plan`}</span>` : "<span>no possible plan</span>";
       const lab = (t) => t.replace(/^([A-Z])_(\d+)/, (_, v, i) => sub(v, i));
-      branchText = `<p><b>Then, branch and bound.</b> The relaxation wants ${sub(B.name[0], B.name.slice(2))} = ${n2.format(B.value)}. Every whole-team plan has either ${lab(esc(B.down.label))} or ${lab(esc(B.up.label))}, so the search splits into those two smaller problems and solves each relaxation:</p>
-        <div class="ap-tree"><div class="root"><span class="ap-label">Relaxation</span><b>${$(R.cost)}</b><span>${sub(B.name[0], B.name.slice(2))} = ${n2.format(B.value)}</span></div>
+      const nm = sub(B.name[0], B.name.slice(2));
+      branchText = `<p><b>Next, split the problem (branch and bound).</b> Take one of the fractions, ${nm} = ${n2.format(B.value)}. Any real plan has either ${lab(esc(B.down.label))} or ${lab(esc(B.up.label))}, so HiGHS splits into those two cases and solves each one:</p>
+        <div class="ap-tree"><div class="root"><span class="ap-label">Relaxed version</span><b>${$(R.cost)}</b><span>${nm} = ${n2.format(B.value)}</span></div>
           <div class="kids"><div><span class="lab">${lab(esc(B.down.label))}</span>${side(B.down)}</div><div><span class="lab">${lab(esc(B.up.label))}</span>${side(B.up)}</div></div></div>
-        <p>Each split can only raise the floor. A branch whose floor is already above the best whole-team plan found so far is thrown away unexplored: that is the “bound”. HiGHS repeats this, and adds shortcuts of its own (cutting planes that trim fractional corners, and heuristics that look for good whole plans early).</p>`;
+        <p>Splitting can only push the floor up, never down. If a branch’s floor is already higher than the best real plan found so far, HiGHS drops it without looking any further. That’s the “bound” part, and it’s what saves the search from trying every combination. HiGHS also has a few shortcuts: extra rules that cut off fractional answers (cutting planes), and quick guesses that find good whole-number plans early.</p>`;
     }
     const prog = L.progress || [];
-    const searchText = ex.wholeTeams && prog.length ? `<p><b>The search, in HiGHS’s own log.</b> The <em>floor</em> is the best cost still possible; the <em>best plan</em> is the cheapest whole-team plan found so far. The gap between them is what is left to prove.</p>
+    const noSplit = (L.nodes || 1) <= 1;
+    const searchText = ex.wholeTeams && prog.length && R && R.fractional.length ? `<p><b>Then, close the gap.</b> This table comes straight from HiGHS’s log. The <b>floor</b> is the lowest cost still possible, and the <b>best plan</b> is the cheapest real plan found so far. The search is finished when the two meet.</p>
       <div class="ap-scroll" tabindex="0" role="region" aria-label="Search progress"><table class="ap-table ap-mini">
-        <thead><tr><th scope="col">Step</th><th scope="col">Nodes</th><th scope="col">Floor</th><th scope="col">Best plan</th><th scope="col">Gap</th><th scope="col">Time</th></tr></thead><tbody>
+        <thead><tr><th scope="col">What happened</th><th scope="col">Branches</th><th scope="col">Floor</th><th scope="col">Best plan</th><th scope="col">Gap</th><th scope="col">Time</th></tr></thead><tbody>
         ${prog.map((r) => `<tr><td>${esc(SRC[r.src] || r.src)}</td><td>${n0.format(r.nodes)}</td><td>${r.bound === null ? "—" : $(r.bound)}</td><td>${r.best === null ? "—" : $(r.best)}</td><td>${esc(r.gap === "Large" ? "large" : r.gap)}</td><td>${n2.format(r.time)} s</td></tr>`).join("")}
         </tbody></table></div>
-      <p>It explored <b>${n0.format(L.nodes || 1)}</b> node${L.nodes === 1 ? "" : "s"} with ${n0.format(L.lpIters || 0)} simplex steps in all. The floor and the best plan met at <b>${$(p.total)}</b>, a gap of 0%: that is the proof no cheaper plan exists, not just a good guess.</p>` : "";
-    steps.push(step(5, "How the solver found it", `<p>${sizeLine}${pre}</p>${relaxText}${branchText}${searchText}
-      <details class="ap-paste"><summary>The solver’s full log</summary><pre class="ap-lp">${esc(L.lines.join("\n"))}</pre></details>
-      <details class="ap-paste"><summary>The model exactly as HiGHS read it</summary><pre class="ap-lp">${esc(ex.lp)}</pre></details>`));
+      <p>${noSplit
+        ? `For this plan, HiGHS never actually had to split. Its cutting planes and quick guesses closed the gap before any branching, so the split shown above is the one it would have made next.`
+        : `In all, it checked <b>${n0.format(L.nodes)}</b> branches and made ${n0.format(L.lpIters || 0)} simplex moves.`} The floor and the best plan met at <b>${$(p.total)}</b>, a gap of 0%. That’s the proof: no cheaper plan exists, so this isn’t just a good answer, it’s the best one.</p>` : "";
+    steps.push(step(5, "How the solver found the answer", `<p>${sizeLine}${pre}</p>${relaxText}${branchText}${searchText}
+      <details class="ap-paste"><summary>Show HiGHS’s full log</summary><pre class="ap-lp">${esc(L.lines.join("\n"))}</pre></details>
+      <details class="ap-paste"><summary>Show the model as HiGHS received it</summary><pre class="ap-lp">${esc(ex.lp)}</pre></details>`));
 
     /* 6. shadow prices */
     const P = ex.prices;
     if (P) {
       const top = Math.max(...P.map((r) => r.demand), d.material);
-      const holdRun = P.slice(1).filter((r, i) => Math.abs(r.demand - P[i].demand - d.hold) < 1e-6).length;
+      const idle = P.some((r) => Math.abs(r.demand - d.material) < 1e-6);
+      const holdRun = P.slice(1).some((r, i) => Math.abs(r.demand - P[i].demand - d.hold) < 1e-6);
+      const bottleneck = P.some((r) => r.capacity > EPS);
       const otUnit = d.material + d.otCostPerTeamHour / Math.max(d.capPerTeamHour, EPS);
-      steps.push(step(6, "Why this plan: what each month’s demand really costs", `
-        <p>Hold the teams where the plan puts them and ask what one more ${esc(u.replace(/s$/, ""))} of demand in a given month would add to the cheapest cost. That is the month’s <b>shadow price</b>, and it shows how the plan is filling demand at the margin.</p>
+      const read = [
+        idle ? `In months where it’s just ${$(d.material)}, there’s spare capacity, so the extra unit only costs its material.` : "",
+        holdRun ? `When the price goes up by exactly ${$(d.hold)} from one month to the next, the extra unit is being made a month earlier and stored, and each extra month in storage adds another ${$(d.hold)}.` : "",
+        `Making a unit on overtime costs ${$(d.material)} + ${$(d.otCostPerTeamHour)} ÷ ${n4.format(d.capPerTeamHour)} = ${$(otUnit)}, so while there’s overtime left to use, no month’s price goes above that.`,
+        bottleneck ? `The capacity row works the other way: it shows how much one more unit of capacity would save. The months with a value there are the months where the teams are the bottleneck.` : "",
+      ].filter(Boolean).join(" ");
+      steps.push(step(6, "Why the plan looks the way it does", `
+        <p>Here’s a useful question: if a customer ordered one more ${esc(one)} in a given month, how much would the cheapest plan go up? Keeping the team schedule as it is, that number is the month’s <b>shadow price</b>. It shows what the plan is doing to meet demand at that point in the year.</p>
         <div class="ap-bars" role="img" aria-label="Shadow price of demand by month; the table below has the numbers.">
           ${P.map((r) => `<div class="bar"><span class="fill" style="height:${Math.max(2, (r.demand / top) * 100)}%"><span class="mat" style="height:${Math.min(100, (d.material / Math.max(r.demand, EPS)) * 100)}%"></span></span><span class="t">${r.t}</span></div>`).join("")}
         </div>
-        <p class="ap-legend"><span class="k mat"></span>material, ${$(d.material)} <span class="k rest"></span>everything else it takes to fill one more</p>
+        <p class="ap-legend"><span class="k mat"></span>material (${$(d.material)}) <span class="k rest"></span>the rest: overtime, storage, or filling it late</p>
         <div class="ap-scroll" tabindex="0" role="region" aria-label="Shadow prices"><table class="ap-table ap-mini ap-wide">
           <thead><tr><th scope="col">Month</th>${P.map((r) => `<th scope="col">${r.t}</th>`).join("")}</tr></thead><tbody>
-          <tr><td>One more unit of demand</td>${P.map((r) => `<td>${$(r.demand)}</td>`).join("")}</tr>
-          <tr><td>One more unit of capacity saves</td>${P.map((r) => `<td${Math.abs(r.capacity) < EPS ? ' class="z"' : ""}>${$(r.capacity)}</td>`).join("")}</tr></tbody></table></div>
-        <p>How to read it: a price of just ${$(d.material)} means the month has idle capacity, so an extra unit costs only its material. ${holdRun ? `Where the price climbs by exactly ${$(d.hold)} a month, the extra unit is being built a month earlier and carried in stock, so each month adds one more month of holding.` : ""} Making a unit on overtime costs ${$(d.material)} + ${$(d.otCostPerTeamHour)} ÷ ${n4.format(d.capPerTeamHour)} = ${$(otUnit)}, so no month’s price goes above that while overtime is still free to use. Where capacity has a price, one more unit of it would save that much: those are the months where the teams are the bottleneck.</p>`));
+          <tr><td>Cost of one more unit of demand</td>${P.map((r) => `<td>${$(r.demand)}</td>`).join("")}</tr>
+          <tr><td>Savings from one more unit of capacity</td>${P.map((r) => `<td${Math.abs(r.capacity) < EPS ? ' class="z"' : ""}>${$(r.capacity)}</td>`).join("")}</tr></tbody></table></div>
+        <p><b>How to read it.</b> ${read}</p>`));
     }
 
     el.innerHTML = `<ol class="ap-steps">${steps.join("")}</ol>`;
