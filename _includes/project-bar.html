@@ -15,6 +15,10 @@
     <span class="pbar-sep" aria-hidden="true">/</span>
     <span class="pbar-cur">{{ cur.title }}</span>
     <span class="pbar-count">{{ idx | plus: 1 }} / {{ n }}</span>
+    {%- if cur.writeup %}
+    <span class="pbar-sep" aria-hidden="true">/</span>
+    <a href="{{ cur.writeup }}">The write-up</a>
+    {%- endif %}
     <nav class="pbar-nav" aria-label="Other projects">
       {% if n > 2 %}<a href="{{ prev.url }}">← {{ prev.title }}</a>{% endif %}
       {% if n > 1 %}<a href="{{ next.url }}">{{ next.title }} →</a>{% endif %}

@@ -64,6 +64,20 @@ dates and figures. Spacing steps are multiples of 8.
   `description` (this becomes the meta description and the excerpt on `/blog/`). Nothing else
   to touch: the feed, sitemap, writing index and JSON-LD pick it up. It is published at
   `/blog/<slug>/` (a default in `_config.yml`), so choose the slug as the address you want.
+- **When to write a post**: only when a new project ships or an existing one changes in a deep
+  way. The post is the write-up of that work and goes in the same pull request. No standalone
+  SEO articles and no posting schedule: the site should never read like a content farm.
+  - Ask Juan first why he built it and what surprised him, and use his answers. Never invent his
+    experiences, motives or feelings.
+  - Every number comes from the project's real output (the page, its data, the code). If a result
+    only holds in some conditions, say where it breaks; that is usually the interesting part.
+  - Shape: the hook (the question), the setup, how it works in plain words, results with real
+    numbers (a small Markdown table where it helps), what went wrong or surprised, what it means,
+    and a link to try it.
+  - Voice: the site's plain first person. No hype, no filler openers, search phrases only where
+    they read naturally (title, first paragraph). Juan reviews every post before it merges.
+  - Link both ways: set the project's `writeup` in `projects.yml` (shows on `/projects/` and in
+    the project bar), and link the project from the post.
 - **A moved page**: never just delete the old address. Add a stub in `redirects/` with
   `layout: redirect`, the old address as `permalink`, the new one as `to`, and `sitemap: false`.
 - **A project**: add it to `_data/projects.yml` (slug, title, url, kind, status, short, summary,
