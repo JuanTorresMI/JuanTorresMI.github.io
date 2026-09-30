@@ -21,6 +21,7 @@ Read this before changing anything; README.md covers the same ground for people.
 | `fruit-fly-dispatcher/` | The simulation: `index.html` (layout `app`), `showcase-data.js`, `runs/*.js` (loaded on demand) |
 | `craft-ledger.html` | The ledger: one file (styles, markup, recipe JSON, script) inside layout `app`, styles scoped under `.cl` |
 | `minecraft-crafting-profit-calculator.html` | The ledger's guide page: what search engines and SMP players land on. A project's `guide` in `projects.yml` links to it |
+| `aggregate-planning/` | The planner: `index.html` (layout `app`), `planner.css` (scoped under `.ap`), `model.js` (the LP/MIP; no DOM, runs in Node), `solver.js` + `solver-worker.js` (HiGHS in a Web Worker), `app.js`, `sw.js` (offline). `lib/` holds HiGHS and Chart.js, vendored unchanged |
 | `worker/` | Cloudflare Worker for `/watching/` and the Substack feed. Not part of the Jekyll build; own README |
 | `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` (share pictures) |
 
@@ -75,6 +76,9 @@ dates and figures. Spacing steps are multiples of 8.
 - Fonts are self-hosted and preloaded; do not add Google Fonts links to Jekyll pages.
 - `/watching/` is `noindex` and out of the sitemap: public, but not for searches of his name.
 - The Fruit Fly Dispatcher loads a 2–3 MB run file only when the reader nears "Watch a week".
+- The Aggregate Planner serves its solver (`lib/highs.wasm`, 3.5 MB) from the repo, not a CDN, and keeps
+  its inputs in the URL hash, never the query string. Its expected sample costs (Level 5,261,040, Band
+  5,062,160, Chase 4,875,900 with whole teams) are a quick regression check after touching `model.js`.
 - The writing index renders local posts in HTML and merges Substack items by script, so the
   list works without JavaScript and for crawlers.
 - The sitemap and feed are written by hand (no plugins) so they build anywhere.
