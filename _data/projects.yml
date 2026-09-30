@@ -12,6 +12,7 @@
     run a week of fresh-food deliveries against Google’s OR-Tools. Each brain gets four levels of
     information, from a fly that finds stores by smell alone up to live company data. I wanted to see what
     matters more for getting food where it needs to go: who makes the decisions, or what they know.
+  writeup: /blog/fruit-fly-vs-or-tools/
   metric: 55 stores · 7 days · 4 brains × 4 levels of knowledge · 300+ simulated weeks
   stack: [Python, OR-Tools CP-SAT, FlyWire connectome, Simulation, JavaScript]
   keywords: [fly, dispatcher, flywire, flyroute]

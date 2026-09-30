@@ -29,6 +29,8 @@ image_alt: "Things I’ve built: a fruit-fly delivery simulation, a Minecraft pr
     </a>
     {%- if p.guide %}
     <p class="entry-guide row"><span class="key"></span><a class="body link small" href="{{ p.guide }}">Read the guide to {{ p.title }} →</a></p>
+    {%- elsif p.writeup %}
+    <p class="entry-guide row"><span class="key"></span><a class="body link small" href="{{ p.writeup }}">Read how I built it and what happened →</a></p>
     {%- endif %}
     {% endfor %}
   </div>
