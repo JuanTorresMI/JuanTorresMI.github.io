@@ -169,7 +169,8 @@
       "isPartOf": { "@type": "WebSite", "@id": {{ site_id | jsonify }} },
       "author": { "@type": "Person", "@id": {{ person_id | jsonify }}, "name": {{ site.author | jsonify }} },
       "primaryImageOfPage": { "@type": "ImageObject", "url": {{ image | absolute_url | jsonify }}, "width": 1200, "height": 630 }{% if project %},
-      "applicationCategory": "EducationalApplication",
+      "applicationCategory": {{ project.category | default: "EducationalApplication" | jsonify }},{% if project.features %}
+      "featureList": {{ project.features | jsonify }},{% endif %}
       "operatingSystem": "Any",
       "browserRequirements": "Requires JavaScript",
       "isAccessibleForFree": true,

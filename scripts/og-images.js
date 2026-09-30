@@ -19,7 +19,7 @@ const CARDS = {
   home: { top: ["Central Michigan University", "Class of 2027"], name: "Juan Torres", caps: true,
     sub: "Logistics Management", bottom: ["Torre10j@cmich.edu", "juantorresmi.github.io"] },
   projects: { top: ["Juan Torres", "Projects"], name: "Things I’ve built",
-    sub: "A fruit-fly delivery simulation · A Minecraft price ledger", bottom: ["juantorresmi.github.io/projects", "Central Michigan University"] },
+    sub: "A fruit-fly delivery simulation · A Minecraft price ledger · A production planner", bottom: ["juantorresmi.github.io/projects", "Central Michigan University"] },
   resume: { top: ["Juan Torres", "Résumé"], name: "Résumé",
     sub: "Logistics Management · Central Michigan University · Class of 2027", bottom: ["juantorresmi.github.io/resume", "Torre10j@cmich.edu"] },
   writing: { top: ["Juan Torres", "Writing"], name: "Notes on finance, school and work",
@@ -28,6 +28,8 @@ const CARDS = {
     sub: "A fly’s brain against Google OR-Tools · 55 stores · one week", bottom: ["juantorresmi.github.io/fruit-fly-dispatcher", "FlyWire · OR-Tools CP-SAT"] },
   "craft-ledger": { top: ["Juan Torres", "Tool"], name: "Craft Ledger",
     sub: "Which Minecraft crafts actually make money · 2,770 items", bottom: ["juantorresmi.github.io/craft-ledger.html", "Local-first web app"] },
+  "aggregate-planning": { top: ["Juan Torres", "Tool"], name: "Aggregate Planner",
+    sub: "The cheapest production plan · Level, band or chase · Solved exactly", bottom: ["juantorresmi.github.io/aggregate-planning", "HiGHS · in the browser"] },
 };
 
 const css = `

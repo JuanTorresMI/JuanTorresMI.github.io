@@ -1,0 +1,171 @@
+/* Aggregate Planner. Everything here is scoped under .ap so none of it reaches the site chrome.
+   Neutrals and type come from the site's tokens (assets/css/style.css). The chart's own hues are
+   the only new colors: a validated categorical order (blue, orange, aqua), stepped separately
+   for dark, plus a neutral for demand. Keep the two dark blocks identical, as the site does. */
+.ap {
+  --ap-s1: #2a78d6; --ap-s2: #eb6834; --ap-s3: #1baf7a; --ap-demand: #b3ad9f;
+  --ap-bad: #b3362e;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ap { --ap-s1: #3987e5; --ap-s2: #d95926; --ap-s3: #199e70; --ap-demand: #55524b; --ap-bad: #e66767; }
+}
+:root[data-theme="dark"] .ap { --ap-s1: #3987e5; --ap-s2: #d95926; --ap-s3: #199e70; --ap-demand: #55524b; --ap-bad: #e66767; }
+
+.ap { color: var(--text); padding-bottom: 8px; }
+.ap *, .ap *::before, .ap *::after { box-sizing: border-box; }
+.ap h1, .ap h2, .ap h3, .ap p { margin: 0; font-weight: 500; }
+.ap p { font-weight: 400; }
+.ap [hidden] { display: none !important; }
+.ap .ap-label { font: 500 11px/1.5 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.ap .ap-note { font: 12px/1.5 var(--mono); color: var(--text-2); }
+
+/* ---------- head ---------- */
+.ap-head { padding: 80px 0 56px; max-width: 48em; }
+.ap-head h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(44px, 6.4vw, 80px); line-height: 1; letter-spacing: -0.012em; color: var(--ink); margin-top: 16px; font-variant-numeric: lining-nums; }
+.ap-lede { margin-top: 24px !important; font-size: 18px; line-height: 1.6; color: var(--text-2); max-width: 36em; }
+@media (max-width: 860px) { .ap-head { padding: 56px 0 40px; } .ap-lede { font-size: 17px; } }
+
+/* ---------- two columns: inputs, results ---------- */
+.ap-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); column-gap: 48px; align-items: start; border-top: 1px solid var(--ink); }
+@media (max-width: 1000px) { .ap-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- inputs ---------- */
+.ap-inputs { padding-top: 8px; }
+.ap-group { padding: 24px 0; border-bottom: 1px solid var(--rule); }
+.ap-group > .ap-label { color: var(--ink); margin-bottom: 16px; }
+.ap-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.ap-fields:empty { display: none; }
+.ap-field { position: relative; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ap-field.ap-wide { grid-column: 1 / -1; }
+.ap-fields .ap-field > input { margin-top: auto; } /* inputs line up across a row even when a name wraps */
+.ap-name { font-size: 13px; line-height: 1.35; color: var(--text-2); display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; }
+.ap-unit { font: 11px/1.35 var(--mono); color: var(--muted); margin-left: auto; white-space: nowrap; }
+.ap input[type="number"], .ap input[type="text"], .ap textarea {
+  width: 100%; min-width: 0; border: 1px solid var(--rule); border-radius: 0; background: var(--stock); color: var(--ink);
+  padding: 8px 10px; font: 14px/1.4 var(--mono); font-variant-numeric: tabular-nums; transition: border-color 0.15s;
+}
+.ap input[type="number"] { -moz-appearance: textfield; appearance: textfield; text-align: right; }
+.ap input[type="number"]::-webkit-outer-spin-button, .ap input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.ap input:hover, .ap textarea:hover { border-color: var(--text-2); }
+.ap input:focus-visible, .ap textarea:focus-visible { outline: 1px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+.ap input[aria-invalid="true"] { border-color: var(--ap-bad); }
+.ap input::placeholder, .ap textarea::placeholder { color: var(--muted); opacity: 1; }
+.ap textarea { resize: vertical; text-align: left; }
+
+/* help: a small "?" that shows its text on hover or focus, over the field and never wider than it;
+   the same text is the input's description for screen readers */
+.ap-tip { display: inline-grid; place-items: center; width: 16px; height: 16px; flex: none; border: 1px solid var(--rule); color: var(--muted); font: 500 10px/1 var(--sans); cursor: help; }
+.ap-tip:hover, .ap-tip:focus-visible { color: var(--ink); border-color: var(--ink); outline: none; }
+.ap-tip-text { position: absolute; z-index: 5; left: 0; right: 0; bottom: calc(100% + 4px); min-width: 0;
+  background: var(--ink); color: var(--on-ink); padding: 8px 10px; font: 12px/1.45 var(--sans); letter-spacing: 0; text-transform: none; visibility: hidden; opacity: 0; transition: opacity 0.12s; pointer-events: none; }
+.ap-tip:hover .ap-tip-text, .ap-tip:focus .ap-tip-text { visibility: visible; opacity: 1; }
+
+.ap-demand { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+.ap-demand label { display: flex; flex-direction: column; gap: 2px; }
+.ap-demand span { font: 11px/1.4 var(--mono); color: var(--muted); }
+.ap-demand input { padding: 6px 8px !important; font-size: 13px !important; }
+@media (max-width: 420px) { .ap-demand { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.ap-paste { margin-top: 16px; }
+.ap-paste summary { cursor: pointer; font-size: 13px; color: var(--text-2); width: max-content; max-width: 100%; }
+.ap-paste summary:hover { color: var(--ink); }
+.ap-paste[open] > .ap-field { margin: 12px 0; }
+
+.ap-hint { font-size: 13px; line-height: 1.5; color: var(--muted); margin-top: 8px !important; }
+.ap-hint:empty { display: none; }
+#band-fields { margin-top: 16px; }
+
+.ap-seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--ink); }
+.ap-seg label { position: relative; }
+.ap-seg label + label { border-left: 1px solid var(--ink); }
+.ap-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.ap-seg span { display: block; text-align: center; padding: 10px 8px; font: 500 11px/1.4 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-2); cursor: pointer; transition: background 0.15s, color 0.15s; }
+.ap-seg input:hover + span { color: var(--ink); }
+.ap-seg input:checked + span { background: var(--ink); color: var(--on-ink); }
+.ap-seg input:focus-visible + span { outline: 1px solid var(--accent); outline-offset: 3px; }
+
+.ap-check { display: flex; align-items: center; gap: 10px; margin-top: 16px; font-size: 14px; color: var(--text); cursor: pointer; }
+.ap-check input { width: 16px; height: 16px; margin: 0; accent-color: var(--ink); cursor: pointer; }
+
+.ap-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 24px 0 0; }
+.ap-btn { display: inline-flex; align-items: center; padding: 14px 20px; border: 1px solid var(--ink); border-radius: 0; background: transparent; color: var(--ink);
+  font: 500 11px/1 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+.ap-btn:hover { background: var(--ink); color: var(--on-ink); }
+.ap-btn.primary { background: var(--ink); color: var(--on-ink); }
+.ap-btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+.ap-btn:focus-visible, .ap-link:focus-visible, .ap-scroll:focus-visible, .ap-paste summary:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
+.ap-paste .ap-btn { padding: 10px 16px; }
+
+/* ---------- results ---------- */
+.ap-results { padding-top: 24px; min-width: 0; }
+@media (max-width: 1000px) { .ap-results { border-top: 1px solid var(--ink); margin-top: 40px; } }
+.ap-status { font: 12px/1.5 var(--mono); color: var(--text-2); min-height: 18px; }
+.ap-msg { margin-top: 16px; padding: 16px; border: 1px solid var(--ap-bad); color: var(--ink); font-size: 15px; line-height: 1.55; }
+.ap-msg::before { content: "No plan"; display: block; font: 500 11px/1.5 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ap-bad); margin-bottom: 4px; }
+#plan-out.is-stale { opacity: 0.45; transition: opacity 0.2s; }
+
+.ap-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 16px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.ap-card { padding: 16px 16px 16px 0; min-width: 0; }
+.ap-card + .ap-card { padding-left: 16px; border-left: 1px solid var(--rule); }
+.ap-card .v { display: block; font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.1; color: var(--ink); margin-top: 8px; overflow-wrap: anywhere; font-variant-numeric: lining-nums; }
+.ap-card .s { display: block; font: 12px/1.5 var(--mono); color: var(--text-2); margin-top: 4px; }
+@media (max-width: 640px) {
+  .ap-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ap-card:nth-child(3) { padding-left: 0; border-left: 0; }
+  .ap-card:nth-child(n+3) { border-top: 1px solid var(--rule); }
+}
+
+.ap-block { margin-top: 48px; }
+.ap-block-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--ink); padding-top: 16px; margin-bottom: 16px; }
+.ap-block-head > .ap-label { color: var(--ink); }
+.ap-links { display: flex; gap: 24px; }
+.ap-link { background: none; border: 0; padding: 0; font: 500 11px/1.5 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-2); cursor: pointer; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 4px; }
+.ap-link:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.ap-subhead { margin-top: 24px !important; }
+
+.ap-chart { position: relative; width: 100%; }
+.ap-chart-main { height: 320px; }
+.ap-chart-teams { height: 140px; margin-top: 8px; }
+.ap-chart-compare { height: 220px; margin-top: 8px; }
+@media (max-width: 640px) { .ap-chart-main { height: 260px; } }
+
+.ap-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.ap-table { width: 100%; border-collapse: collapse; font: 13px/1.4 var(--mono); font-variant-numeric: tabular-nums; color: var(--text); }
+.ap-table th { font: 500 10px/1.4 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--ink); white-space: nowrap; vertical-align: bottom; }
+.ap-table td { text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.ap-table th:first-child, .ap-table td:first-child { text-align: left; padding-left: 0; }
+.ap-table th:last-child, .ap-table td:last-child { padding-right: 0; }
+.ap-table tfoot td { border-top: 1px solid var(--ink); border-bottom: 0; color: var(--ink); font-weight: 500; }
+.ap-table td.z { color: var(--muted); }
+.ap-table td.bad { color: var(--ap-bad); }
+.ap-table tr.cur td { color: var(--ink); }
+.ap-table tr.cur td:first-child::after { content: " · current"; color: var(--muted); }
+.ap-table .sw { display: inline-block; width: 10px; height: 2px; vertical-align: middle; margin-right: 8px; }
+.ap-costs td:nth-child(3) { color: var(--text-2); }
+.ap-lp { max-height: 320px; overflow: auto; font: 11px/1.5 var(--mono); color: var(--text-2); background: var(--stock); border: 1px solid var(--rule); padding: 12px; margin-top: 12px; white-space: pre; }
+
+/* ---------- explainer ---------- */
+.ap-explain { margin-top: 128px; }
+.ap-prose { max-width: 40em; }
+.ap-prose h3 { font-family: var(--serif); font-weight: 500; font-size: 28px; line-height: 1.2; color: var(--ink); margin: 40px 0 12px; }
+.ap-prose h3:first-child { margin-top: 8px; }
+.ap-prose p { font-size: 17px; line-height: 1.7; margin-bottom: 1.1em; }
+.ap-prose strong { font-weight: 600; color: var(--ink); }
+.ap-prose a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--rule); transition: color 0.15s, text-decoration-color 0.15s; }
+.ap-prose a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.ap-prose code { font: 0.88em var(--mono); }
+@media (max-width: 860px) { .ap-explain { margin-top: 96px; } }
+
+/* ---------- print: one plan, no controls ---------- */
+@media print {
+  .ap { --ap-demand: #bbb; }
+  .ap-head { padding: 0 0 16pt; }
+  .ap-head h1 { font-size: 28pt; }
+  .ap-lede, .ap-inputs, .ap-links, .ap-explain, #compare .ap-link, #debug, .ap-status { display: none !important; }
+  .ap-grid { display: block; border-top: 0; }
+  .ap-results { border-top: 0; margin-top: 0; padding-top: 0; }
+  .ap-block { margin-top: 20pt; break-inside: avoid; }
+  .ap-chart-main { height: 220px; }
+  .ap-scroll { overflow: visible; }
+  .ap-table { font-size: 9pt; }
+}

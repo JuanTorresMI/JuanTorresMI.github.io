@@ -1,7 +1,8 @@
 # juantorresmi.github.io
 
 Personal site of Juan Torres: a home page, a résumé, a writing index that mirrors Substack,
-and two projects that run in the browser (the Fruit Fly Dispatcher simulation and Craft Ledger).
+and three projects that run in the browser (the Fruit Fly Dispatcher simulation, Craft Ledger
+and the Aggregate Planner).
 
 Built with Jekyll and published by GitHub Pages from `main`
 (`.github/workflows/jekyll-gh-pages.yml`). There is no build step to run locally for ordinary
@@ -24,6 +25,7 @@ the design rules, how to add a post or project, and what to run before pushing.
 | `assets/og/` | Link-preview pictures, drawn by `scripts/og-images.js` |
 | `fruit-fly-dispatcher/` | The simulation page and its data (`runs/` are loaded on demand) |
 | `craft-ledger.html` | The ledger, a single self-contained file |
+| `aggregate-planning/` | The production-planning optimizer: the page, its scripts, and HiGHS and Chart.js in `lib/` |
 | `worker/` | The Cloudflare Worker behind `/watching/` and the Substack feed; see its README |
 | `scripts/` | `check.py` verifies a build, `screenshots.js` photographs every page, `og-images.js` draws the share pictures |
 
