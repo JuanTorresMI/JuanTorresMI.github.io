@@ -70,6 +70,9 @@ dates and figures. Spacing steps are multiples of 8.
   re-run that script. The project bar, home page and `/projects/` update on their own.
 - **A page**: `layout: default`, a `permalink`, `title`, `description`. Add `image` if a share
   picture exists, `noindex: true` and `sitemap: false` to keep it out of search.
+- **A real change to a page's content**: set `last_modified_at: YYYY-MM-DD` in its front matter.
+  It becomes the page's `<lastmod>` in the sitemap (a post's `dateModified` too); pages without
+  it list no date rather than a false one.
 - **Anything changing the head**: it is one include for every page. Test with `check.py`.
 
 ## Things that are the way they are on purpose
