@@ -254,6 +254,8 @@
 .ap-prose a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--rule); transition: color 0.15s, text-decoration-color 0.15s; }
 .ap-prose a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 .ap-prose code { font: 0.88em var(--mono); }
+.ap-prose .ap-list { margin: 0 0 1.1em; padding-left: 24px; }
+.ap-prose .ap-list li { font-size: 17px; line-height: 1.7; margin-bottom: 0.6em; padding-left: 4px; }
 .ap-prose .ap-scroll { margin: 8px 0 24px; }
 .ap-example th[scope="row"] { font: 400 13px/1.4 var(--sans); letter-spacing: 0; text-transform: none; color: var(--text); text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--rule); }
 .ap-example thead th { white-space: normal; }

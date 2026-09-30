@@ -29,7 +29,7 @@ const CARDS = {
   "craft-ledger": { top: ["Juan Torres", "Tool"], name: "Craft Ledger",
     sub: "Which Minecraft crafts actually make money · 2,770 items", bottom: ["juantorresmi.github.io/craft-ledger.html", "Local-first web app"] },
   "aggregate-planning": { top: ["Juan Torres", "Tool"], name: "Aggregate Planner",
-    sub: "The cheapest production plan · Level, band or chase · Solved exactly", bottom: ["juantorresmi.github.io/aggregate-planning", "HiGHS · in the browser"] },
+    sub: "Level, band & chase plans · The math, step by step", bottom: ["juantorresmi.github.io/aggregate-planning", "HiGHS · in the browser"] },
 };
 
 const css = `

@@ -160,7 +160,7 @@
       ]
     },
     {
-      "@type": {% if project %}"WebApplication"{% elsif page.url == "/projects/" or page.url == "/blog/" %}"CollectionPage"{% else %}"WebPage"{% endif %},
+      "@type": {% if project and project.learning %}["WebApplication", "LearningResource"]{% elsif project %}"WebApplication"{% elsif page.url == "/projects/" or page.url == "/blog/" %}"CollectionPage"{% else %}"WebPage"{% endif %},
       "@id": "{{ page.url | absolute_url }}#page",
       "url": {{ page.url | absolute_url | jsonify }},
       "name": {{ crumb_title | jsonify }},
@@ -175,7 +175,11 @@
       "browserRequirements": "Requires JavaScript",
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "keywords": {{ project.search | default: project.stack | join: ", " | jsonify }},
+      "keywords": {{ project.search | default: project.stack | join: ", " | jsonify }},{% if project.learning %}
+      "learningResourceType": {{ project.learning.type | jsonify }},
+      "educationalLevel": {{ project.learning.level | jsonify }},
+      "audience": { "@type": "EducationalAudience", "educationalRole": "student", "audienceType": {{ project.learning.audience | jsonify }} },
+      "teaches": {{ project.learning.teaches | jsonify }},{% endif %}
       "creator": { "@type": "Person", "@id": {{ person_id | jsonify }} }{% endif %}
     }
   ]

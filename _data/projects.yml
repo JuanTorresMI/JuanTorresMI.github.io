@@ -44,16 +44,22 @@
     lay off, how much overtime to run and how much inventory to build ahead. Level, band and chase plans are
     solved side by side, laid out the way textbook cases ask the questions, and the whole thing downloads as
     an Excel workbook in the usual Solver layout. The model is a mixed-integer program, solved exactly by
-    HiGHS right in the browser.
+    HiGHS right in the browser, and a Study mode works through the math step by step with your own numbers.
   metric: 3 workforce policies · up to 24 months · exact MIP solved in the browser
   stack: [JavaScript, HiGHS (WebAssembly), Mixed-integer programming, Chart.js, Operations planning]
   category: BusinessApplication
-  search: [aggregate planning calculator, aggregate production planning, level strategy, chase strategy, workforce planning, production planning optimizer, Excel Solver, mixed-integer programming]
+  search: [aggregate planning calculator, aggregate planning example, aggregate production planning, level vs chase strategy, linear programming, mixed-integer programming, branch and bound, shadow prices, Excel Solver]
+  learning:
+    type: Interactive tool
+    level: Undergraduate
+    audience: Students of operations and supply chain management
+    teaches: ["Aggregate production planning", "Level, chase and band workforce strategies", "Formulating a linear program", "Branch and bound", "Shadow prices"]
   features:
     - Aggregate production planning for up to 24 months
     - Level, chase and band workforce strategies, compared side by side
     - Hiring, layoff, overtime, inventory, backlog and subcontracting costs
     - Exact mixed-integer solution with HiGHS in the browser
+    - Study mode that works through the model, branch and bound and shadow prices step by step
     - Excel workbook export with live formulas in the textbook Solver layout
     - CSV export and shareable links
   keywords: [aggregate, planner, planning, highs]
