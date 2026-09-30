@@ -10,7 +10,7 @@ image_alt: "Fruit Fly Dispatcher: a fly’s brain against Google OR-Tools, 55 st
 
 I'd been seeing people get a simulated fruit fly brain to "play" Doom. Around the same time I was sitting in a 400-level logistics class working through a case on 7-Eleven's fresh-food deliveries, and the two ideas ran into each other: what if a fly had to solve a logistics problem? Nature has been solving "find food with almost no information" for a very long time. How would a fly's choices compare to ours, and how would it hold up against the kind of optimizer a real company uses?
 
-So I built it. The [Fruit Fly Dispatcher](/fruit-fly-dispatcher/) puts a fruit fly's navigation circuit in charge of a delivery truck and races it against Google's OR-Tools for a week of deliveries. You can watch any of the runs on that page. This post is how it works and what came out of it.
+So I built it. The [Fruit Fly Dispatcher](/fruit-fly-dispatcher/) puts a fruit fly's navigation circuit in charge of a delivery truck and races it against Google's [OR-Tools](https://developers.google.com/optimization) for a week of deliveries. You can watch any of the runs on that page. This post is how it works and what came out of it.
 
 ## The setup
 
@@ -18,7 +18,7 @@ One truck, one distribution center, 55 convenience stores, Monday to Sunday. Fre
 
 Four "brains" take turns driving:
 
-- **OR-Tools, live.** Google's exact solver (CP-SAT), re-planning the rest of the trip at every stop.
+- **OR-Tools, live.** Google's exact solver ([CP-SAT](https://developers.google.com/optimization/cp/cp_solver)), re-planning the rest of the trip at every stop.
 - **OR-Tools, planned day.** Plans every trip at dawn from that morning's shelf data.
 - **Fly rule.** A greedy rule: go wherever earns the most per hour, one stop at a time.
 - **FlyWire brain.** The fly's own navigation circuit, built from the connectome.
@@ -34,7 +34,7 @@ That split is the whole point. I wanted to separate *who makes the decisions* fr
 
 ## Putting a fly in the driver's seat
 
-[FlyWire](https://flywire.ai/) is a map of every neuron and synapse in an adult fruit fly's brain. The part I used is the navigation circuit. One ring of cells keeps track of which way the fly is facing, another set holds a goal direction, and steering cells compare the two to decide which way to turn. When the fly smells something, wind-sensing cells write an "upwind" goal into those same goal cells through their real FlyWire connections. So memory ("the store was over there") and smell ("something good is upwind") compete inside the actual wiring.
+[FlyWire](https://flywire.ai/) is a map of every neuron and synapse in an adult fruit fly's brain, [published in Nature in 2024](https://www.nature.com/articles/s41586-024-07558-y). The part I used is the navigation circuit. One ring of cells keeps track of which way the fly is facing, another set holds a goal direction, and steering cells compare the two to decide which way to turn. When the fly smells something, wind-sensing cells write an "upwind" goal into those same goal cells through their real FlyWire connections. So memory ("the store was over there") and smell ("something good is upwind") compete inside the actual wiring.
 
 I tried to keep myself honest here. Every direction the circuit uses was derived from the wiring alone and then checked against something independent. I didn't feed any published results in. A few things aren't the connectome: four settings were tuned on simple single-goal steering, two constants come from behavior studies, and the choice of *which* store to go for is a foraging rule I wrote. The circuit handles the steering, not the whole business.
 
