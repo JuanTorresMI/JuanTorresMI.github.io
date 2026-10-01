@@ -4,7 +4,9 @@
  *
  *   GET /          the house TV: { now, last, lately, deck, tally, updated }
  *   GET /substack  the newsletter: { items: [{ title, url, date, excerpt }] }
+ *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
  */
+import { catalog, CATALOG_MAX_AGE, visits, guestbook, sign, unsign, Refused } from "./music.js";
 
 const STREMIO = "https://api.strem.io/api/datastoreGet";
 const SUBSTACK = "https://juantorresis.substack.com/feed";
@@ -17,13 +19,16 @@ export default {
   async fetch(request, env, ctx) {
     const cors = {
       "Access-Control-Allow-Origin": env.ALLOW_ORIGIN || "*",
-      "Access-Control-Allow-Methods": "GET,OPTIONS",
+      "Access-Control-Allow-Methods": "GET,POST,DELETE,OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type,Authorization",
     };
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
-    if (request.method !== "GET") return json({ error: "GET only" }, 405, cors);
 
     const url = new URL(request.url);
     const route = url.pathname.replace(/\/+$/, "") || "/";
+    if (route.startsWith("/music")) return musicRoute(request, env, ctx, route, url, cors);
+    if (request.method !== "GET") return json({ error: "GET only" }, 405, cors);
+
     const feed = route === "/substack";
     const maxAge = feed ? FEED_CACHE_S : TV_CACHE_S;
     const headers = { ...cors, "Cache-Control": `public, max-age=${maxAge}` };
@@ -55,6 +60,43 @@ export default {
 
 const json = (body, status, headers) =>
   new Response(JSON.stringify(body), { status, headers: { ...headers, "Content-Type": "application/json" } });
+
+/* ------------------------------------------------------------ the music page ---- */
+
+/* Yokonjuan's catalog, counter and guestbook; see music.js. Writes are only accepted from the
+   site's own pages (WRITE_ORIGINS), so another site can't sign the guestbook through a visitor. */
+async function musicRoute(request, env, ctx, route, url, cors) {
+  const m = request.method;
+  const origins = String(env.WRITE_ORIGINS || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const fromSite = origins.includes(request.headers.get("Origin") || "");
+  try {
+    if (route === "/music" && m === "GET") {
+      const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/music");
+      const hit = await cache.match(cacheKey);
+      if (hit) { const fresh = new Response(hit.body, hit); for (const [k, v] of Object.entries(cors)) fresh.headers.set(k, v); return fresh; }
+      const res = json(await catalog(), 200, { ...cors, "Cache-Control": `public, max-age=${CATALOG_MAX_AGE}` });
+      ctx.waitUntil(cache.put(cacheKey, res.clone()));
+      return res;
+    }
+    if (route === "/music/visits" && (m === "GET" || m === "POST")) {
+      if (m === "POST" && !fromSite) return json({ error: "Not from the site" }, 403, cors);
+      return json(await visits(env, m === "POST"), 200, { ...cors, "Cache-Control": "no-store" });
+    }
+    if (route === "/music/guestbook" && m === "GET") return json(await guestbook(env), 200, { ...cors, "Cache-Control": "no-store" });
+    if (route === "/music/guestbook" && m === "POST") {
+      if (!fromSite) return json({ error: "Not from the site" }, 403, cors);
+      return json({ entry: await sign(env, request) }, 201, cors);
+    }
+    const del = /^\/music\/guestbook\/(\d+)$/.exec(route);
+    if (del && m === "DELETE") return (await unsign(env, request, del[1])) ? json({ deleted: Number(del[1]) }, 200, cors) : json({ error: "Wrong key" }, 401, cors);
+    return json({ error: "Not found" }, 404, cors);
+  } catch (e) {
+    if (e instanceof Refused) return json({ error: e.message }, 422, cors);
+    // Internal details (database errors and so on) go to the log, not to visitors.
+    console.error("music:", route, e && e.message ? e.message : e);
+    return json({ error: "something went wrong. try again in a bit" }, 502, cors);
+  }
+}
 
 const at = (v) => {
   const t = new Date(v || 0).getTime();

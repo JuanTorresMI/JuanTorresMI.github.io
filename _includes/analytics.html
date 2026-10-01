@@ -1,0 +1,4 @@
+{%- if site.cloudflare_analytics_token %}
+{%- comment %} Cloudflare Web Analytics: cookieless, no consent banner. Token in _config.yml. {% endcomment %}
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ site.cloudflare_analytics_token }}"}'></script>
+{%- endif %}

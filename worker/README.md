@@ -80,3 +80,71 @@ shy. Change it and run `npx.cmd wrangler deploy` again.
 ## Rotating the key
 
 Sign out of Stremio everywhere, then redo step 1 and `npx.cmd wrangler secret put STREMIO_AUTH_KEY`.
+
+## The music page: catalog, counter, guestbook
+
+The same Worker also serves Yokonjuan's page (`/music/` on the site); the code is
+`src/music.js`. The catalog needs nothing set up: it reads SoundCloud's public RSS and
+Spotify's public player data, so new releases show up within the hour. The visitor counter
+and the guestbook need a small database (D1) and Workers AI, which checks guestbook posts
+before they're stored. Both are free at this size.
+
+### Setting it up (once)
+
+From `worker/`, in PowerShell:
+
+```powershell
+npx.cmd wrangler login
+npx.cmd wrangler d1 create yokonjuan
+```
+
+`d1 create` prints a `database_id`. Paste it into `wrangler.toml` in place of
+`PASTE-FROM-wrangler-d1-create`, then:
+
+```powershell
+npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
+npx.cmd wrangler secret put GUESTBOOK_ADMIN_KEY
+npx.cmd wrangler deploy
+```
+
+`secret put` asks for a key: make up a long random one and keep it in your password manager.
+It's what lets you delete guestbook posts, and it never goes in this repo.
+
+### What a post has to get past
+
+Posts go up the moment they pass, and anything that fails is refused and never stored. In order,
+cheapest first:
+
+1. A hidden field only bots fill in.
+2. No links, 280 characters at most.
+3. The site-wide cap: 25 posts a day in total (`GUESTBOOK_DAILY_MAX` in `wrangler.toml`).
+4. Per visitor: one post a minute, five a day.
+5. A word list of slurs and direct attacks (`BLOCKED` in `src/music.js`, edit freely).
+6. Posts that talk to the moderator ("ignore your instructions", "reply ALLOW") are refused
+   before any model sees them.
+7. A small model on Workers AI is asked whether the post is mean. It gets the post inside a
+   randomly named tag with angle brackets neutralised, and only an answer of exactly ALLOW
+   passes. If it can't be reached, the post is refused, not let through. It has its own cap of
+   300 checks a day.
+
+Posts are always shown as plain text, so nothing in one can run in a visitor's browser, and
+they reach the database only as bound parameters, never pasted into SQL.
+
+### What it costs
+
+Nothing. The Worker, D1 and Workers AI are all on Cloudflare's free plan, and on that plan going
+past a limit makes requests fail until the next day. It never bills, unless the account is
+upgraded to Workers Paid. The caps above keep the guestbook far inside the limits (Workers AI's
+free allowance is 10,000 neurons a day; D1's is 100,000 writes), so a flood of spam can't use
+them up or knock over the TV page, which runs on the same Worker.
+
+### Deleting a post
+
+Each post has a number (`id` in `GET /music/guestbook`). To remove number 12:
+
+```powershell
+$key = Read-Host "Guestbook admin key" -AsSecureString
+$k = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($key))
+Invoke-RestMethod -Method Delete -Uri "https://house-tv.5342543fsd.workers.dev/music/guestbook/12" -Headers @{ Authorization = "Bearer $k" }
+$k = $null
+```

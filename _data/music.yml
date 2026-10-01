@@ -1,0 +1,92 @@
+# Yokonjuan's page (/music/). It is deliberately separate from the rest of the site: its own
+# layout (_layouts/artist.html), its own look (music/music.css) and nothing that names or links
+# Juan Torres. The portfolio links to it; it never links back.
+#
+# New releases show up on their own: the page asks the Worker (worker/src/music.js), which reads
+# SoundCloud and Spotify live. This file is only the fallback, and what search engines and
+# no-JavaScript visitors see, so it's worth updating now and then but nothing breaks if it lags.
+#
+# `about` is the about-me box, in Juan's own words; leave it empty and the box doesn't show.
+#
+# To add a release here, add it to the top of `releases`. Links are optional per platform: a
+# SoundCloud-only track just leaves `spotify` out. `cover` is the art the platform serves
+# (Spotify: i.scdn.co …00001e02… is 300px; SoundCloud: …-t500x500.jpg). `versions` are
+# alternate cuts (sped up, slowed) shown as small links under the track.
+# To add a platform, add it to `platforms`: it becomes a link on the page and a sameAs in the
+# structured data.
+artist: Yokonjuan
+tags: [detroit, trap, hyperpop, alt]
+spotify_id: 3agKv2bGKcWCN6cdT2z0Oc
+soundcloud_user_id: 1330261887
+about: ""
+
+platforms:
+  - name: Spotify
+    url: https://open.spotify.com/artist/3agKv2bGKcWCN6cdT2z0Oc
+  - name: SoundCloud
+    url: https://soundcloud.com/yokonjuan
+
+releases:
+  - title: hard 2 love
+    date: 2024-07-17
+    soundcloud: https://soundcloud.com/yokonjuan/hard-2-love
+    soundcloud_id: 1873607559
+    cover: https://i1.sndcdn.com/artworks-g4vxN2nVR0NPtguJ-GcRbBw-t500x500.jpg
+    versions:
+      - name: sped up
+        url: https://soundcloud.com/yokonjuan/hard-2-love-sped-up
+      - name: slowed
+        url: https://soundcloud.com/yokonjuan/hard-2-love-slowed
+  - title: Shutters
+    date: 2024-06-01
+    soundcloud: https://soundcloud.com/yokonjuan/shutters
+    cover: https://i1.sndcdn.com/artworks-bYyja4hwiRzDjLzL-EdOLAA-t500x500.jpg
+    versions:
+      - name: sped up
+        url: https://soundcloud.com/yokonjuan/shutters-sped-up
+  - title: Consistent
+    credit: prod. ki0
+    date: 2024-05-06
+    soundcloud: https://soundcloud.com/yokonjuan/consistent
+    cover: https://i1.sndcdn.com/artworks-sylXmlPEiGMXQzrs-4x967Q-t500x500.jpg
+  - title: Distance
+    credit: prod. xviroxas
+    date: 2024-05-02
+    soundcloud: https://soundcloud.com/yokonjuan/distance
+    cover: https://i1.sndcdn.com/artworks-35yRMiWWKFzUQgcE-bZdxJw-t500x500.jpg
+    versions:
+      - name: sped up
+        url: https://soundcloud.com/yokonjuan/distance-sped-up
+      - name: slowed
+        url: https://soundcloud.com/yokonjuan/distance-slowed
+  - title: your body's mine
+    credit: prod. iroha
+    cut: sped up
+    date: 2024-04-20
+    soundcloud: https://soundcloud.com/yokonjuan/your-bodys-mine-prod
+    cover: https://i1.sndcdn.com/artworks-lybergwyyKXFX5ex-vt83dQ-t500x500.jpg
+  - title: Wintertime
+    date: 2021-11-26
+    explicit: true
+    spotify: https://open.spotify.com/track/1yeUXiGrCcBHJ3i1CmI7Jn
+    cover: https://i.scdn.co/image/ab67616d00001e02c3c7c80f8b5a5e034442147f
+  - title: In your place
+    date: 2021-10-28
+    explicit: true
+    spotify: https://open.spotify.com/track/5uFRqgwSB6KC2wFA0DaAYC
+    cover: https://i.scdn.co/image/ab67616d00001e028cde05e27ddb2f209a2618d8
+  - title: Wishy Washy
+    date: 2021-10-24
+    explicit: true
+    spotify: https://open.spotify.com/track/5cetA0eXRTxdmHnWzajzKt
+    cover: https://i.scdn.co/image/ab67616d00001e02d5cb6a04675c6b1d89402b0e
+  - title: All for you
+    date: 2021-02-04
+    explicit: true
+    spotify: https://open.spotify.com/track/2ryiIWKLofajIz5QYVXLZp
+    cover: https://i.scdn.co/image/ab67616d00001e029671f482aa1c6ca5b24af53b
+  - title: POPSTAR VISION
+    date: 2021-01-15
+    explicit: true
+    spotify: https://open.spotify.com/track/56jZCgCTKtzYBQtaiR9hZ3
+    cover: https://i.scdn.co/image/ab67616d00001e02610a4cbfa2508e7e19be0ab4

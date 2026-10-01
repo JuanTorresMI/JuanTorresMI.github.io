@@ -1,0 +1,142 @@
+/* Yokonjuan. A profile page in the MySpace mould: the artist's card down the left, boxes with
+   header strips down the right, a visitor counter and a guestbook. Nothing is shared with the
+   portfolio's style.css. Near-black, a cold glow, film grain, chrome on the name; square edges
+   and a plain grid keep it tidy enough to show anyone. The fonts are the site's self-hosted
+   files, used differently. */
+@font-face { font-family: "Inter"; font-weight: 100 900; font-display: swap; src: url("/assets/fonts/inter.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-display: swap; src: url("/assets/fonts/ibm-plex-mono-400.woff2") format("woff2"); }
+
+:root {
+  --bg: #060608; --panel: rgba(14, 15, 20, 0.78); --strip: rgba(185, 215, 255, 0.07);
+  --line: rgba(233, 234, 238, 0.10); --line-2: rgba(233, 234, 238, 0.26);
+  --text: #e9eaee; --text-2: #b4b8c0; --muted: #80858f; --ice: #b9d7ff;
+  --chrome: linear-gradient(178deg, #ffffff 8%, #d9e2ee 36%, #7f8b9b 52%, #c6d4e6 64%, #f4f7fb 92%);
+  --sans: "Inter", "Helvetica Neue", Arial, sans-serif; --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --side: 32px; --measure: 1180px;
+  color-scheme: dark;
+}
+@media (max-width: 720px) { :root { --side: 16px; } }
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; background: var(--bg); }
+body { margin: 0; min-height: 100vh; overflow-x: hidden; background: var(--bg); color: var(--text); font: 400 15px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 1px solid var(--ice); outline-offset: 3px; }
+h1, h2, p, figure, dl, dd, ol, ul { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* The glow and the grain are fixed layers, so they sit still behind a scrolling page and
+   never tile into a visible seam. */
+.glow { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(60vw 50vw at 10% -10%, rgba(120, 160, 230, 0.16), transparent 70%),
+              radial-gradient(50vw 40vw at 100% 45%, rgba(150, 110, 210, 0.08), transparent 70%); }
+.grain { position: fixed; inset: 0; z-index: 10; pointer-events: none; opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+.top, .profile, .foot { max-width: calc(var(--measure) + 2 * var(--side)); margin: 0 auto; padding-left: var(--side); padding-right: var(--side); }
+
+/* ---------- top bar ---------- */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 24px; height: 64px; font: 400 12px/1 var(--mono); letter-spacing: 0.08em; }
+.top .mark { text-decoration: none; letter-spacing: 0.3em; }
+.top nav, .foot nav { display: flex; gap: 24px; }
+.top nav a, .foot a { text-decoration: none; color: var(--muted); padding: 12px 0; transition: color 0.2s; }
+.top nav a:hover, .foot a:hover { color: var(--ice); }
+
+/* ---------- the profile: card on the left, boxes on the right ---------- */
+.profile { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 24px; align-items: start; padding-top: 24px; }
+.side, .main { display: grid; gap: 24px; }
+.side { position: sticky; top: 24px; }
+
+.box { background: var(--panel); border: 1px solid var(--line); backdrop-filter: blur(6px); }
+.box > h2 { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 16px; background: var(--strip); border-bottom: 1px solid var(--line);
+  font: 400 12px/1.4 var(--mono); letter-spacing: 0.14em; color: var(--text); }
+.box > h2 .count { color: var(--muted); letter-spacing: 0.06em; }
+.box > :not(h2) { margin: 16px; }
+
+/* the card */
+.id { padding-bottom: 4px; }
+.id .name { margin: 20px 16px 0; font-weight: 600; font-size: 44px; line-height: 1; letter-spacing: -0.05em; padding-bottom: 0.12em; /* room for the y and j */
+  background: var(--chrome); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 24px rgba(185, 215, 255, 0.14)); }
+.avatar { margin-top: 12px; }
+.avatar img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--line); background: #0d0e12; }
+.avatar figcaption { margin-top: 8px; font: 400 12px/1.5 var(--mono); color: var(--muted); }
+.avatar figcaption span { color: var(--text-2); }
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font: 400 12px/1.5 var(--mono); }
+.facts dt { color: var(--muted); }
+.facts dd { color: var(--text-2); }
+
+/* the counter: an odometer */
+.odometer { display: flex; gap: 4px; }
+.odometer span { flex: 1; max-width: 40px; padding: 8px 0; text-align: center; font: 400 22px/1 var(--mono); color: var(--text);
+  background: linear-gradient(#15161c, #0a0b0e 50%, #15161c); border: 1px solid var(--line); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04); }
+
+.links li + li { border-top: 1px solid var(--line); }
+.links a { display: flex; justify-content: space-between; padding: 10px 0; text-decoration: none; font: 400 13px/1.4 var(--mono); color: var(--text-2); transition: color 0.2s; }
+.links a:hover { color: var(--ice); }
+
+/* about me: whatever Juan writes, as he writes it */
+.about-text { font-size: 16px; line-height: 1.7; color: var(--text-2); white-space: pre-line; }
+.about-text p + p { margin-top: 0.9em; }
+
+/* latest */
+.latest-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.latest-title { font-weight: 500; font-size: 28px; line-height: 1.1; letter-spacing: -0.02em; }
+.latest-meta { font: 400 12px/1.5 var(--mono); color: var(--muted); }
+.player { display: block; width: calc(100% - 32px); height: 360px; border: 0; background: #0d0e12; }
+.latest .player { margin-top: 0; }
+
+/* the music grid */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 28px 16px; }
+.rel { display: block; text-decoration: none; }
+.rel img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; background: #0d0e12; border: 1px solid var(--line); filter: saturate(0.85) brightness(0.92); transition: filter 0.3s, border-color 0.3s; }
+.rel:hover img { filter: none; border-color: var(--line-2); }
+.rel-title { display: block; margin-top: 10px; font-weight: 500; font-size: 14px; line-height: 1.35; transition: color 0.2s; }
+.rel:hover .rel-title { color: var(--ice); }
+.rel-meta, .rel-versions { display: block; margin-top: 3px; font: 400 11px/1.55 var(--mono); color: var(--muted); }
+.rel-versions a { color: var(--text-2); text-decoration: none; border-bottom: 1px solid var(--line-2); transition: color 0.2s, border-color 0.2s; }
+.rel-versions a:hover { color: var(--ice); border-color: var(--ice); }
+.e { display: inline-block; padding: 0 4px; border: 1px solid var(--muted); font: 400 9px/1.5 var(--mono); color: var(--muted); vertical-align: 2px; }
+
+/* the guestbook */
+.sign { display: grid; gap: 8px; }
+.sign input, .sign textarea { width: 100%; padding: 10px 12px; background: rgba(0, 0, 0, 0.35); border: 1px solid var(--line); color: var(--text); font: 400 14px/1.5 var(--sans); border-radius: 0; resize: vertical; }
+.sign input::placeholder, .sign textarea::placeholder { color: var(--muted); }
+.sign input:focus, .sign textarea:focus { border-color: var(--line-2); outline: none; }
+.sign .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.sign-row { display: flex; align-items: center; gap: 12px; }
+.sign-row .left { font: 400 11px/1 var(--mono); color: var(--muted); }
+.sign-row .status { flex: 1; font: 400 12px/1.4 var(--mono); color: var(--ice); }
+.sign-row .status.bad { color: #ffb4c4; }
+.sign button { padding: 10px 20px; background: var(--text); color: var(--bg); border: 0; font: 400 12px/1 var(--mono); letter-spacing: 0.12em; cursor: pointer; transition: background 0.2s; }
+.sign button:hover { background: var(--ice); }
+.sign button:disabled { opacity: 0.5; cursor: default; }
+.entries li { padding: 14px 0; border-top: 1px solid var(--line); }
+.entries .who { display: flex; justify-content: space-between; gap: 12px; font: 400 12px/1.4 var(--mono); }
+.entries .who b { font-weight: 400; color: var(--ice); }
+.entries .who time { color: var(--muted); }
+.entries p { margin-top: 6px; color: var(--text-2); overflow-wrap: anywhere; }
+.entries .empty { color: var(--muted); font: 400 12px/1.5 var(--mono); border-top: 0; }
+
+/* spotify: its player has 12px corners; the frame matches them or its edges show */
+.sp-player { display: block; width: calc(100% - 32px); height: 352px; border: 0; border-radius: 12px; }
+
+/* ---------- footer: the rule is drawn inside the padding, so it lines up with the content ---------- */
+.foot { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; flex-wrap: wrap; margin-top: 96px; padding-top: 24px; padding-bottom: 48px;
+  background: linear-gradient(var(--line), var(--line)) var(--side) 0 / calc(100% - 2 * var(--side)) 1px no-repeat;
+  font: 400 12px/1 var(--mono); letter-spacing: 0.12em; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .profile { grid-template-columns: 1fr; }
+  .side { position: static; }
+  .id { display: grid; grid-template-columns: 132px 1fr; gap: 0 16px; padding: 16px; }
+  .id .name { grid-column: 1 / -1; margin: 0 0 12px; font-size: 40px; }
+  .id .avatar, .id .facts { margin: 0; }
+  .id .facts { align-content: start; }
+  .player { height: 300px; }
+}
+@media (max-width: 520px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
+  .id { grid-template-columns: 112px 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

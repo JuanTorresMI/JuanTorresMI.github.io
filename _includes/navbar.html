@@ -4,6 +4,7 @@
     <nav class="links" aria-label="Site">
       <a href="/projects/"{% if page.url contains '/projects' or page.project %} aria-current="page"{% endif %}>Projects</a>
       <a href="/blog/"{% if page.url contains '/blog' or page.layout == 'post' %} aria-current="page"{% endif %}>Writing</a>
+      <a href="/music/"{% if page.url contains '/music' %} aria-current="page"{% endif %}>Music</a>
       <a href="/resume/"{% if page.url contains '/resume' %} aria-current="page"{% endif %}>Résumé</a>
     </nav>
     <button class="theme-btn" type="button" id="themeBtn" aria-label="Switch to dark theme" title="Light / dark">
