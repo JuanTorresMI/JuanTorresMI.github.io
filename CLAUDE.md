@@ -20,8 +20,7 @@ Read this before changing anything; README.md covers the same ground for people.
 | `assets/fonts/` | Cormorant Garamond, Inter, IBM Plex Mono (latin woff2, self-hosted) |
 | `assets/og/` | 1200×630 share pictures, drawn by `scripts/og-images.js` |
 | `fruit-fly-dispatcher/` | The simulation: `index.html` (layout `app`), `showcase-data.js`, `runs/*.js` (loaded on demand) |
-| `craft-ledger.html` | The ledger: one file (styles, markup, recipe JSON, script) inside layout `app`, styles scoped under `.cl` |
-| `minecraft-crafting-profit-calculator.html` | The ledger's guide page: what search engines and SMP players land on. A project's `guide` in `projects.yml` links to it |
+| `craft-ledger.html` | The ledger: one file (styles, markup, recipe JSON, script) inside layout `app`, styles scoped under `.cl`. Below the app sits its guide (`#guide`, ordinary `.page` markup): what search engines and SMP players read. The old guide address redirects there |
 | `aggregate-planning/` | The planner: `index.html` (layout `app`), `planner.css` (scoped under `.ap`), `model.js` (the LP/MIP; no DOM, runs in Node), `solver.js` + `solver-worker.js` (HiGHS in a Web Worker), `app.js`, `study.js` (study mode: the plan taken apart step by step; the worker's `explain()` does the extra solves), `xlsx.js` (the downloadable workbook, no library), `sw.js` (offline). `lib/` holds HiGHS and Chart.js, vendored unchanged |
 | `worker/` | Cloudflare Worker for `/watching/`, the Substack feed, and the music page's catalog, counter and guestbook (`src/music.js`, D1 + Workers AI). Not part of the Jekyll build; own README |
 | `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` (share pictures) |
