@@ -1358,6 +1358,9 @@ if(!FUELS[S.fuelItem] && S.fuelItem!=='none') S.fuelItem='coal';
 document.getElementById('fee').value=S.fee; fuelSel.value=S.fuelItem;
 solve(); renderFuelNote(); renderOps(); renderPrices();
 if(!had){ showTab('about'); toast('Loaded your 13 prices from the spreadsheet'); }
+// The browser jumps to a link's #section before the tables above it are drawn, so the guide
+// moves down after the jump. Jump again now that the page has its real height.
+if(location.hash){ const t=document.getElementById(location.hash.slice(1)); if(t) t.scrollIntoView(); }
 </script>
 </div>
 {% endraw %}
