@@ -424,10 +424,10 @@ last_modified_at: 2026-10-07
       <p><b>Fee</b> is the cut taken off every sale, entered as a percent.</p>
       <p><b>Fuel</b> is a dropdown, not a price. Pick what you actually burn and the cost per item is worked out
       from that fuel's burn time and whatever you priced it at, so you never divide anything by hand. Price coal at
-      30 and pick Coal, and a furnace smelt costs 3.75 while a blast furnace smelt costs 1.88.</p>
-      <p>That gap is real. A furnace spends 200 ticks on an item and a blast furnace or smoker only 100, so one
-      coal does 8 items in a furnace but 16 in either fast one. A campfire burns no fuel at all, so campfire
-      recipes are never charged for it.</p>
+      30 and pick Coal, and every smelt costs 3.75.</p>
+      <p>That is the same in a furnace, a blast furnace or a smoker. The fast ones cook in half the time but
+      burn fuel twice as quickly, so one coal does 8 items in any of them. A campfire burns no fuel at all, so
+      campfire recipes are never charged for it.</p>
       <p>If the fuel you picked has no price yet the box says so, and smelting is costed without it. Set it to
       <b>None</b> if fuel is genuinely free to you.</p>
 
@@ -536,7 +536,9 @@ const COOK = {smelt:1,blast:1,smoke:1,campfire:1};
    A campfire burns nothing at all. */
 const FUELS = {coal:1600, charcoal:1600, coal_block:16000, blaze_rod:2400, lava_bucket:20000,
   dried_kelp_block:4000, oak_planks:300, bamboo:50, stick:100};
-const COOKTICKS = {smelt:200, blast:100, smoke:100, campfire:0};
+/* Fuel spent per item, in furnace ticks. A blast furnace or smoker cooks in 100 ticks but burns fuel
+   twice as fast, so one coal does 8 items in any of the three. A campfire burns nothing. */
+const COOKTICKS = {smelt:200, blast:200, smoke:200, campfire:0};
 const KLABEL = {craft:'craft',smelt:'smelt',blast:'blast',smoke:'smoke',campfire:'campfire',cut:'stonecut',smith:'smith'};
 document.getElementById('vtag').textContent = `Vanilla ${D.v} · ${R.length.toLocaleString()} recipes`;
 
@@ -1273,7 +1275,7 @@ function renderFuelNote(){
   const c=comp[IDX.get(f)];
   if(!isFinite(c)){ el.textContent=`no price for ${nm(IDX.get(f))}`; el.classList.add('warn'); return; }
   el.classList.remove('warn');
-  el.textContent=`${fmt(c*200/FUELS[f])}/smelt · ${fmt(c*100/FUELS[f])}/blast`;
+  el.textContent=`${fmt(c*200/FUELS[f])}/item smelted`;
 }
 document.getElementById('dclose').onclick=closeDetail;
 document.getElementById('scrim').onclick=closeDetail;
@@ -1357,7 +1359,7 @@ const had=load();
 if(!FUELS[S.fuelItem] && S.fuelItem!=='none') S.fuelItem='coal';
 document.getElementById('fee').value=S.fee; fuelSel.value=S.fuelItem;
 solve(); renderFuelNote(); renderOps(); renderPrices();
-if(!had){ showTab('about'); toast('Loaded your 13 prices from the spreadsheet'); }
+if(!had){ showTab('about'); toast('Loaded 13 example prices. Replace them with your server's'); }
 // The browser jumps to a link's #section before the tables above it are drawn, so the guide
 // moves down after the jump. Jump again now that the page has its real height.
 if(location.hash){ const t=document.getElementById(location.hash.slice(1)); if(t) t.scrollIntoView(); }
@@ -1393,7 +1395,7 @@ if(location.hash){ const t=document.getElementById(location.hash.slice(1)); if(t
         <ol>
           <li><strong>Open the ledger and go to My prices.</strong> Type an item name and enter the price it trades at on the auction house or order board. Buy and sell are one number, because you fill on orders. Start with the raw materials you handle most: logs, ingots, leather, paper, sugar cane.</li>
           <li><strong>Set the fee.</strong> If the server takes a cut of every sale, enter it as a percent in the Fee box at the top. It comes off every profit figure.</li>
-          <li><strong>Pick your fuel.</strong> Fuel is a dropdown, not a price. Choose what you burn and every smelt is charged from that fuel's burn time and the price you gave it. A blast furnace or smoker gets sixteen items from one coal, a plain furnace eight, so the ledger charges them differently.</li>
+          <li><strong>Pick your fuel.</strong> Fuel is a dropdown, not a price. Choose what you burn and every smelt is charged from that fuel's burn time and the price you gave it. One coal smelts eight items in a furnace, a blast furnace or a smoker alike (the fast ones burn fuel twice as quickly), and a campfire burns none.</li>
           <li><strong>Read Opportunities.</strong> Set Volume to the number of units you mean to move. An item whose best order wants nine units at a silly price looks like the best trade on the board at a volume of one and vanishes at a volume of a thousand. Sort by total profit at your real volume and the thing worth doing is on top.</li>
           <li><strong>Check Coverage.</strong> It lists the items you have not priced, ranked by how many craftable items each one would unlock. Price the top of that list and the biggest part of the tree comes alive at once.</li>
         </ol>
