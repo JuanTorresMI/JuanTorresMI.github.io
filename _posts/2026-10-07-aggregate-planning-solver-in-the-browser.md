@@ -1,9 +1,10 @@
 ---
 layout: post
 title: "I built an aggregate planning solver that runs in the browser"
+seo_title: "How I Built an Aggregate Planning Solver · Juan Torres"
 date: 2026-10-07
 tags: [operations, optimization, highs, aggregate-planning]
-description: "Why I built a web-based aggregate planning calculator instead of using Excel Solver, how the solver finds the cheapest level, band and chase plans, and what the sample case shows."
+description: "Why I built a web-based aggregate planning calculator instead of using Excel Solver, how it finds the cheapest level, band and chase plans, and what it shows."
 image: /assets/og/aggregate-planning.png
 image_alt: "Aggregate Planner, an aggregate production planning calculator: the cheapest level, band or chase plan, month by month. A tool by Juan Torres."
 ---
