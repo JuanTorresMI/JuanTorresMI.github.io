@@ -9,7 +9,7 @@ image: /assets/og/craft-ledger.png
 image_alt: "Craft Ledger: which Minecraft crafts actually make money. A tool by Juan Torres."
 ---
 
-On DonutSMP, everything has a price on the auction house and the order board, and every craft is a small trade: is this worth making, or should I just sell the materials? I was tracking those prices in an Excel spreadsheet, and I got tired of it. So I built [Craft Ledger](/craft-ledger.html), a Minecraft crafting profit calculator that does the tracking and the math for me. I used it on DonutSMP, and it flooded my ender chests.
+On DonutSMP, everything has a price on the auction house and the order board, and every craft is a small trade: is this worth making, or should I just sell the materials? I was tracking those prices in an Excel spreadsheet, and I got tired of it. So I built [Craft Ledger](/craft-ledger.html), a Minecraft crafting profit calculator that does the tracking and the math for me. On DonutSMP it pointed me at ender chests, which had a high margin, and I crafted a ton of them.
 
 This is how it works and what it turned up.
 
@@ -43,7 +43,7 @@ It also charges fuel for smelting from the burn time of whatever you pick, takes
 
 ## What it turned up
 
-The ledger still opens with the 13 prices from my old spreadsheet. With just those, at a volume of 1,000, it ranks:
+The ledger opens with 13 example prices. They're made up, not DonutSMP's, so they show how it reads rather than what to craft today. With just those, at a volume of 1,000, it ranks:
 
 | Craft | Cost | Sells for | Profit per unit | Margin |
 | --- | --- | --- | --- | --- |
@@ -54,7 +54,9 @@ The ledger still opens with the 13 prices from my old spreadsheet. With just tho
 | Gold ingot (from a block) | 3.89 | 4 | 0.11 | 2.8% |
 | Block of gold | 36 | 35 | −1 | −2.9% |
 
-Bookshelves earn the most per unit, but the golden carrot has the best margin on the board. It's the kind of craft you'd never think to sell. That was the real surprise: once every recipe is priced, opportunities show up in a lot of items you would never consider. The flip side shows up too. Packing gold ingots into blocks loses money at these prices, even though it feels like it should be free.
+Even this small example shows the pattern. Bookshelves earn the most per unit, but the golden carrot has the best margin on the board, and packing gold ingots into blocks loses money even though it feels like it should be free.
+
+That was the real surprise once I put in actual server prices: there are opportunities in a lot of items you would never consider. Ender chests were mine: a high margin, and I crafted a ton of them.
 
 Pricing more items makes the list grow quickly, and the **Coverage** tab ranks the items you haven't priced by how many crafts each one would unlock, so you know what to look up next.
 
