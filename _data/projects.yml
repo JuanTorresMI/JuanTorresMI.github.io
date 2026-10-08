@@ -46,6 +46,7 @@
     solved side by side, laid out the way textbook cases ask the questions, and the whole thing downloads as
     an Excel workbook in the usual Solver layout. The model is a mixed-integer program, solved exactly by
     HiGHS right in the browser, and a Study mode works through the math step by step with your own numbers.
+  writeup: /blog/aggregate-planning-solver-in-the-browser/
   metric: 3 workforce policies · up to 24 months · exact MIP solved in the browser
   stack: [JavaScript, HiGHS (WebAssembly), Mixed-integer programming, Chart.js, Operations planning]
   category: BusinessApplication
