@@ -1,0 +1,939 @@
+{
+ "total": 164,
+ "passed": 164,
+ "failed": 0,
+ "skipped": 0,
+ "seconds": 40.9,
+ "runslow": true,
+ "files": [
+  {
+   "file": "tests/test_cli.py",
+   "passed": 7,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_find_item",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_scenario_flags_build_a_config",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_defaults_are_unchanged",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_bad_threat_is_rejected",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_build_command_runs",
+     "status": "passed",
+     "seconds": 0.098
+    },
+    {
+     "name": "test_optimize_json_with_fixed_runes",
+     "status": "passed",
+     "seconds": 0.45
+    },
+    {
+     "name": "test_optimize_start_exclude_boots",
+     "status": "passed",
+     "seconds": 0.288
+    }
+   ]
+  },
+  {
+   "file": "tests/test_corpus.py",
+   "passed": 20,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_corpus[0]",
+     "status": "passed",
+     "seconds": 0.01
+    },
+    {
+     "name": "test_corpus[50]",
+     "status": "passed",
+     "seconds": 0.011
+    },
+    {
+     "name": "test_corpus[100]",
+     "status": "passed",
+     "seconds": 0.01
+    },
+    {
+     "name": "test_corpus[150]",
+     "status": "passed",
+     "seconds": 0.017
+    },
+    {
+     "name": "test_corpus[200]",
+     "status": "passed",
+     "seconds": 0.013
+    },
+    {
+     "name": "test_corpus[250]",
+     "status": "passed",
+     "seconds": 0.01
+    },
+    {
+     "name": "test_corpus[300]",
+     "status": "passed",
+     "seconds": 0.009
+    },
+    {
+     "name": "test_corpus[350]",
+     "status": "passed",
+     "seconds": 0.009
+    },
+    {
+     "name": "test_corpus[400]",
+     "status": "passed",
+     "seconds": 0.009
+    },
+    {
+     "name": "test_corpus[450]",
+     "status": "passed",
+     "seconds": 0.009
+    },
+    {
+     "name": "test_corpus[500]",
+     "status": "passed",
+     "seconds": 0.01
+    },
+    {
+     "name": "test_corpus[550]",
+     "status": "passed",
+     "seconds": 0.01
+    },
+    {
+     "name": "test_corpus[600]",
+     "status": "passed",
+     "seconds": 0.01
+    },
+    {
+     "name": "test_corpus[650]",
+     "status": "passed",
+     "seconds": 0.011
+    },
+    {
+     "name": "test_corpus[700]",
+     "status": "passed",
+     "seconds": 0.01
+    },
+    {
+     "name": "test_corpus[750]",
+     "status": "passed",
+     "seconds": 0.011
+    },
+    {
+     "name": "test_corpus[800]",
+     "status": "passed",
+     "seconds": 0.009
+    },
+    {
+     "name": "test_corpus[850]",
+     "status": "passed",
+     "seconds": 0.009
+    },
+    {
+     "name": "test_corpus[900]",
+     "status": "passed",
+     "seconds": 0.011
+    },
+    {
+     "name": "test_corpus[950]",
+     "status": "passed",
+     "seconds": 0.009
+    }
+   ]
+  },
+  {
+   "file": "tests/test_damage.py",
+   "passed": 5,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_resist_multiplier",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_reduction_then_percent_pen_then_flat_pen",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_flat_pen_floors_at_zero",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_pen_does_not_apply_to_negative_resist",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_rend_scaling",
+     "status": "passed",
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "file": "tests/test_data.py",
+   "passed": 63,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_wiki_entry_is_traceable[items:3031]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3036]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3033]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:6694]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:6676]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3142]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3135]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3137]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:4645]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:4646]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3146]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3111]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3091]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:4633]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3089]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3032]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:6653]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:2523]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3071]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:8010]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3302]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3072]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:6333]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3156]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:6673]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3047]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3026]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3153]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3124]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3115]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3100]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:2510]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:6672]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3087]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3095]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3094]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:6675]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[items:3085]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[runes:Press the Attack]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[runes:Lethal Tempo]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[runes:Conqueror]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[runes:Fleet Footwork]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[runes:Alacrity]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[runes:Bloodline]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[runes:Coup de Grace]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[runes:Cut Down]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[runes:Last Stand]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[mechanics:crit]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[mechanics:attack_speed]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[mechanics:stat_growth]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[mechanics:energized]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[mechanics:grievous_wounds]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[champions:ad_growth]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[champions:Kalista]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[champions:Vayne]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[enemy_kits:Caitlyn]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[enemy_kits:Ezreal]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[enemy_kits:Lux]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_entry_is_traceable[enemy_kits:Nautilus]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_item_ids_exist_in_data_dragon",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_handoff_assumptions_are_settled_or_flagged",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_engine_reads_the_data",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_config_has_scoring_and_calibration",
+     "status": "passed",
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "file": "tests/test_datasync.py",
+   "passed": 3,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_parse_champion_module",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_item_changes",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_stat_mismatches",
+     "status": "passed",
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "file": "tests/test_enemy_kits.py",
+   "passed": 9,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_kit_dummy_uses_real_base_stats",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_kit_abilities_show_by_name",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_ranks_follow_skill_order",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_nautilus_stun_on_every_hook",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_caitlyn_headshot_every_sixth_auto",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_nautilus_passive_every_six_seconds",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_lux_illumination_after_ability",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_class_profiles_unchanged_by_kits",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_kits_uncalibrated_by_default_and_calibratable",
+     "status": "passed",
+     "seconds": 0.093
+    }
+   ]
+  },
+  {
+   "file": "tests/test_fight.py",
+   "passed": 9,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_kalista_fight_trace",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_duel_per_threat[bruiser]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_duel_per_threat[mage]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_duel_per_threat[marksman]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_duel_per_threat[tank]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_lane_trade_per_threat[mage]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_lane_trade_per_threat[marksman]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_lane_trade_per_threat[tank]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_trade_window_rips_rend_on_exit",
+     "status": "passed",
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "file": "tests/test_kits.py",
+   "passed": 6,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_skill_ranks",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_unknown_champion_auto_attacks_only",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_vayne_silver_bolts_every_third_hit",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_soul_mark_is_opt_in_and_once_per_ten_seconds",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_no_soul_mark_before_w",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_multi_target_is_reported_not_scored",
+     "status": "passed",
+     "seconds": 0.001
+    }
+   ]
+  },
+  {
+   "file": "tests/test_mechanics.py",
+   "passed": 4,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_level_value_curves",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_wiki_level_values",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_bloodletter_does_not_stack_from_on_hit",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_dusk_and_dawn_heals_on_empowered_hit",
+     "status": "passed",
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "file": "tests/test_page.py",
+   "passed": 4,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_placeholders_filled",
+     "status": "passed",
+     "seconds": 0.03
+    },
+    {
+     "name": "test_main_script_parses",
+     "status": "passed",
+     "seconds": 0.056
+    },
+    {
+     "name": "test_embedded_engine_runs_standalone",
+     "status": "passed",
+     "seconds": 0.182
+    },
+    {
+     "name": "test_editor_warnings",
+     "status": "passed",
+     "seconds": 0.01
+    }
+   ]
+  },
+  {
+   "file": "tests/test_snapshots.py",
+   "passed": 11,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_outputs_match_summary_snapshot",
+     "status": "passed",
+     "seconds": 0.01
+    },
+    {
+     "name": "test_duel_calibration_reproduces",
+     "status": "passed",
+     "seconds": 0.269
+    },
+    {
+     "name": "test_lane_calibration_reproduces",
+     "status": "passed",
+     "seconds": 0.068
+    },
+    {
+     "name": "test_goal_build_spikes_reproduce[kill]",
+     "status": "passed",
+     "seconds": 0.025
+    },
+    {
+     "name": "test_goal_build_spikes_reproduce[duel]",
+     "status": "passed",
+     "seconds": 0.03
+    },
+    {
+     "name": "test_goal_build_spikes_reproduce[practical]",
+     "status": "passed",
+     "seconds": 0.032
+    },
+    {
+     "name": "test_goal_build_spikes_reproduce[safe]",
+     "status": "passed",
+     "seconds": 0.032
+    },
+    {
+     "name": "test_goal_build_spikes_reproduce[carry]",
+     "status": "passed",
+     "seconds": 0.027
+    },
+    {
+     "name": "test_lane_path_reproduces",
+     "status": "passed",
+     "seconds": 0.031
+    },
+    {
+     "name": "test_full_pipeline_reproduces",
+     "status": "passed",
+     "seconds": 31.142
+    },
+    {
+     "name": "test_serial_matches_parallel",
+     "status": "passed",
+     "seconds": 7.584
+    }
+   ]
+  },
+  {
+   "file": "tests/test_stats.py",
+   "passed": 8,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_growth_curve_endpoints",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_lvl_scale_follows_growth_curve",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_kalista_base_stats_match_wiki[1]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_kalista_base_stats_match_wiki[18]",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_ad_growth_override_is_needed",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_attack_speed_cap",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_item_stats_and_description_extras",
+     "status": "passed",
+     "seconds": 0.0
+    },
+    {
+     "name": "test_statline_reference_build",
+     "status": "passed",
+     "seconds": 0.0
+    }
+   ]
+  },
+  {
+   "file": "tests/test_teamfight.py",
+   "passed": 15,
+   "failed": 0,
+   "skipped": 0,
+   "tests": [
+    {
+     "name": "test_mirror_is_even[9-1-2v2]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_mirror_is_even[9-1-3v3]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_mirror_is_even[9-1-5v5]",
+     "status": "passed",
+     "seconds": 0.002
+    },
+    {
+     "name": "test_mirror_is_even[13-3-2v2]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_mirror_is_even[13-3-3v3]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_mirror_is_even[13-3-5v5]",
+     "status": "passed",
+     "seconds": 0.002
+    },
+    {
+     "name": "test_mirror_is_even[17-5-2v2]",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_mirror_is_even[17-5-3v3]",
+     "status": "passed",
+     "seconds": 0.002
+    },
+    {
+     "name": "test_mirror_is_even[17-5-5v5]",
+     "status": "passed",
+     "seconds": 0.002
+    },
+    {
+     "name": "test_a_real_build_beats_doran_only",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_target_switch_resets_per_target_state",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_runaans_hits_other_enemies",
+     "status": "passed",
+     "seconds": 0.002
+    },
+    {
+     "name": "test_summary_is_consistent",
+     "status": "passed",
+     "seconds": 0.001
+    },
+    {
+     "name": "test_carry_goal_uses_team_metrics",
+     "status": "passed",
+     "seconds": 0.008
+    },
+    {
+     "name": "test_teamfight_command",
+     "status": "passed",
+     "seconds": 0.082
+    }
+   ]
+  }
+ ],
+ "commit": "73a8c80",
+ "commit_date": "2026-10-11",
+ "ran": "2026-10-11",
+ "python": "3.13.16",
+ "patch": "16.20.1"
+}
