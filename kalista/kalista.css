@@ -1,0 +1,125 @@
+/* Kalista Spike Ranker. The markup and script come from LeagueBattleSim (tools/export_site.py);
+   these styles are the site's own, scoped under .ks so nothing leaks into the chrome around it.
+   Neutrals and type come from the site's tokens; the page adds its own data hues: win and loss
+   for the duel heat maps, and one color per build goal for the charts. */
+.ks,#tests{
+  --panel:var(--stock); --line:var(--rule);
+  --grid:color-mix(in srgb, var(--rule) 70%, transparent);
+  --spirit:var(--accent); --spirit-soft:color-mix(in srgb, var(--accent) 12%, transparent);
+  --gold:#8a6a1f;
+  --win:#2f7d4f; --win-soft:color-mix(in srgb, #2f7d4f 13%, transparent);
+  --loss:#b3362e; --loss-soft:color-mix(in srgb, #b3362e 12%, transparent);
+  --s1:#2a6fbf; --s2:#c8582a; --s3:#1d8a64; --s4:#a87400; --s5:#8a4fc4;
+}
+:root[data-theme="dark"] .ks,:root[data-theme="dark"] #tests{
+  --gold:#d9a441; --win:#7fb069; --win-soft:color-mix(in srgb, #7fb069 16%, transparent);
+  --loss:#e66767; --loss-soft:color-mix(in srgb, #e66767 16%, transparent);
+  --s1:#5b9be6; --s2:#e07a4a; --s3:#3fbf8f; --s4:#d9a441; --s5:#b48ae8;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .ks,:root:not([data-theme="light"]) #tests{
+  --gold:#d9a441; --win:#7fb069; --win-soft:color-mix(in srgb, #7fb069 16%, transparent);
+  --loss:#e66767; --loss-soft:color-mix(in srgb, #e66767 16%, transparent);
+  --s1:#5b9be6; --s2:#e07a4a; --s3:#3fbf8f; --s4:#d9a441; --s5:#b48ae8;
+}}
+
+.ks{color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.55}
+.ks *{box-sizing:border-box}
+.ks .wrap{max-width:976px;margin:0 auto;padding:64px var(--side) 0;display:flex;flex-direction:column;gap:40px}
+.ks h1,.ks h2,.ks h3{font-family:var(--serif);font-weight:500;color:var(--ink);letter-spacing:-.005em;text-wrap:balance;margin:0;font-variant-numeric:lining-nums}
+.ks h1{font-size:clamp(44px,6.5vw,72px);line-height:1}
+.ks h2{font-size:32px;line-height:1.15}
+.ks h3{font-size:24px;line-height:1.2}
+.ks p{margin:0;max-width:68ch}
+.ks .eyebrow{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.ks .lede,.ks .note{color:var(--text-2)}
+.ks .note{font-size:13px}
+.ks .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.ks section,.ks header{display:flex;flex-direction:column;gap:16px}
+.ks [hidden]{display:none!important}
+.ks :focus-visible{outline:1px solid var(--accent);outline-offset:3px}
+
+/* goal switcher */
+.ks .goals{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+@media (max-width:720px){.ks .goals{grid-template-columns:1fr 1fr}}
+.ks .goal{all:unset;box-sizing:border-box;cursor:pointer;background:var(--panel);border:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.ks .goal:focus-visible{outline:1px solid var(--accent);outline-offset:3px}
+.ks .goal[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 2px 0 var(--ink)}
+.ks .goal .gname{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:8px;line-height:1.2}
+.ks .goal .gsum{font-size:12px;color:var(--muted)}
+.ks .swatch{width:10px;height:10px;flex:none}
+
+/* path strip */
+.ks .path{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+@media (max-width:720px){.ks .path{grid-template-columns:1fr 1fr}.ks .path .step:last-child{grid-column:span 2}}
+.ks .step{background:var(--panel);border:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ks .step .lvl{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.ks .step .name{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--ink);line-height:1.1}
+.ks .step .nums{font-family:var(--mono);font-size:11px;color:var(--text-2);display:flex;flex-wrap:wrap;gap:2px 10px}
+.ks .pills{display:flex;gap:4px;flex-wrap:wrap}
+.ks .pill{font-family:var(--mono);font-size:11px;padding:0 6px;border:1px solid}
+.ks .pill.w{color:var(--win);border-color:var(--win);background:var(--win-soft)}
+.ks .pill.l{color:var(--loss);border-color:var(--loss);background:var(--loss-soft)}
+.ks .meta{display:flex;flex-wrap:wrap;gap:8px}
+.ks .chip{font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:var(--panel);padding:2px 8px}
+.ks .chip b{color:var(--ink);font-weight:500}
+
+/* tables */
+.ks .tablebox{overflow-x:auto;background:var(--panel);border:1px solid var(--line)}
+.ks table{border-collapse:collapse;width:100%;font-size:13px}
+.ks th,.ks td{padding:8px 12px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--line)}
+.ks tbody tr:last-child td{border-bottom:0}
+.ks th{font-family:var(--sans);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.ks td.n,.ks th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.ks th[data-k]{cursor:pointer}
+.ks tr.pick td{background:var(--spirit-soft)}
+.ks tr.pick td:first-child{box-shadow:inset 2px 0 0 var(--spirit)}
+.ks td.rift{color:var(--gold);font-weight:600}
+.ks td.cw{color:var(--win)} .ks td.cl{color:var(--loss)}
+.ks td.hm{text-align:center;font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:500}
+.ks td.hm.w{background:var(--win-soft);color:var(--win)} .ks td.hm.l{background:var(--loss-soft);color:var(--loss)}
+
+/* tabs */
+.ks .tabs{display:flex;flex-wrap:wrap;gap:4px 24px;border-bottom:1px solid var(--line)}
+.ks .tabs button{font:500 11px/1.5 var(--sans);letter-spacing:.16em;text-transform:uppercase;background:none;color:var(--muted);border:0;border-bottom:1px solid transparent;margin-bottom:-1px;padding:10px 0;cursor:pointer}
+.ks .tabs button:hover{color:var(--ink)}
+.ks .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+
+/* charts */
+.ks .chart{background:var(--panel);border:1px solid var(--line);padding:12px;position:relative;overflow-x:auto}
+.ks .chart svg{display:block;width:100%;height:auto}
+.ks .chart text{fill:var(--muted);font:11px var(--mono)}
+.ks .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--text-2)}
+.ks .legend span{display:inline-flex;align-items:center;gap:6px}
+.ks .tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--on-ink);font:12px/1.45 var(--sans);padding:8px;max-width:240px;z-index:2}
+.ks .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.ks .grid2>div{min-width:0;display:flex;flex-direction:column;gap:8px}
+.ks .callout{background:var(--panel);border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:8px}
+.ks ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:6px;max-width:72ch;color:var(--text-2);font-size:14px}
+
+/* build editor */
+.ks #editor{scroll-margin-top:24px}
+.ks #edform{display:flex;flex-direction:column;gap:16px}
+.ks .btn{font:500 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;background:var(--ink);color:var(--on-ink);border:1px solid var(--ink);padding:14px 20px;cursor:pointer;align-self:flex-start}
+.ks .btn.ghost{background:transparent;color:var(--ink)}
+.ks .btn:disabled{opacity:.6;cursor:progress}
+.ks .edgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.ks .edgrid label,.ks .eitems label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ks .edgrid select,.ks .edgrid input,.ks .eitems select{font:inherit;font-size:14px;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:0;padding:6px 8px;min-width:0;width:100%}
+.ks .edgrid label.wide{grid-column:span 2}
+.ks .edgrid input[type=range]{padding:0;accent-color:var(--accent)}
+.ks .eitems{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:560px){.ks .eitems{grid-template-columns:repeat(2,minmax(0,1fr))}.ks .edgrid label.wide{grid-column:1/-1}}
+.ks .warn{color:var(--loss);font-size:13px}
+@media (prefers-reduced-motion:no-preference){.ks .goal,.ks .tabs button{transition:border-color .15s,color .15s}}
+
+/* the test run, below the app in ordinary .page markup */
+#tests .ks-totals{display:flex;flex-wrap:wrap;gap:8px 32px;margin-top:16px}
+#tests .ks-totals b{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1;color:var(--ink);display:block}
+#tests details{margin-top:12px}
+#tests summary{cursor:pointer;color:var(--text-2);font-size:14px}
+#tests summary:hover{color:var(--ink)}
+#tests ul{list-style:none;margin:8px 0 0;padding:0;columns:2 280px;column-gap:24px}
+#tests li{font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--text-2);break-inside:avoid;overflow-wrap:anywhere}
+#tests li .st{display:inline-block;width:3.5em;text-transform:uppercase;font-size:11px;letter-spacing:.06em}
+#tests li.passed .st{color:var(--muted)}
+#tests li.failed .st,#tests .bad{color:var(--loss)}

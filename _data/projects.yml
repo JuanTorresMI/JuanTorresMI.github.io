@@ -65,3 +65,29 @@
     - Excel workbook export with live formulas in the textbook Solver layout
     - CSV export and shareable links
   keywords: [aggregate, planner, planning, highs]
+
+- slug: kalista-spike-ranker
+  title: Kalista Spike Ranker
+  url: /kalista/
+  kind: Simulation
+  status: Live
+  short: A League of Legends combat simulator that ranks every item for Kalista at each point in a game, then lets you test your own build in the browser.
+  summary: >-
+    A combat simulator for League of Legends, built around one champion, Kalista. It plays fights out attack
+    by attack from Riot’s game data: kill times, two-way duels against four kinds of enemy, short lane
+    trades, and 2v2 to 5v5 teamfights. At each completed-item spike it tries every candidate item and
+    keeps the best paths, so each goal, from the fastest kill to a solo queue carry, gets its own build.
+    The build editor runs the same Python simulator in your browser, and the page shows the latest run of
+    its test suite.
+  metric: 37 items × 5 spikes · 5 build goals · duels, lane trades and 5v5 teamfights · 164 tests
+  stack: [Python, Simulation, Beam search, Pyodide, JavaScript, pytest]
+  category: GameApplication
+  search: [League of Legends simulator, Kalista build, LoL damage calculator, item spike, teamfight simulator]
+  features:
+    - Every candidate item ranked at each of five item spikes
+    - Duels against a marksman, a bruiser, a tank and a mage
+    - Lane trades and kill pressure by game stage
+    - 2v2, 3v3 and 5v5 teamfight simulation
+    - Build editor that runs the Python simulator in the browser
+    - Test results from the simulator's pytest suite
+  keywords: [kalista, league, leaguebattlesim, lolsim]

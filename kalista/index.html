@@ -1,0 +1,82 @@
+---
+layout: app
+project: kalista-spike-ranker
+title: "Kalista Spike Ranker: League of Legends build simulator"
+description: "A League of Legends combat simulator for Kalista: every item ranked at each spike, lane trades, duels and teamfights, and a build editor that runs in your browser."
+image: /assets/og/kalista-spike-ranker.png
+image_alt: "Kalista Spike Ranker: every item ranked at each spike, simulated. A project by Juan Torres."
+last_modified_at: 2026-10-11
+---
+{% comment %}
+  Kalista Spike Ranker. The simulator lives in its own repository (LeagueBattleSim); its
+  tools/export_site.py writes what this page loads:
+    _body.html     the results page's markup (included below)
+    app.js         its script
+    results.js     the pipeline's results (spikes.json + lane.json)
+    engine.json    the Python simulator, fetched only when the reader opens the build editor,
+                   which runs it with Pyodide from cdn.jsdelivr.net
+    _data/kalista_tests.json   the test run shown under "Tests"
+  Only kalista.css (the page's styles, scoped under .ks) and this file are written by hand.
+  Re-run the export after a change to the simulator; don't edit the generated files here.
+{% endcomment %}
+<link rel="stylesheet" href="/kalista/kalista.css">
+
+<div class="ks">
+{% include_relative _body.html %}
+</div>
+<noscript><div class="page frame"><p class="lede">The results and the build editor are drawn by JavaScript. The notes and the test run below read fine without it.</p></div></noscript>
+<script src="/kalista/results.js" defer></script>
+<script src="/kalista/app.js" defer></script>
+
+{% assign t = site.data.kalista_tests %}
+<div class="page frame" id="about">
+  <section class="sec">
+    <header class="sec-head"><h2>What this is</h2></header>
+    <div class="row">
+      <div class="body prose">
+        <p>A combat simulator for one League of Legends champion, Kalista, on patch {{ t.patch }}. It builds her stats and her enemies’ from Riot’s Data Dragon files and the League Wiki, then plays fights out attack by attack: kill times against target dummies, two-way duels against a marksman, a bruiser, a tank and a mage, short lane trades, and 2v2, 3v3 and 5v5 teamfights.</p>
+        <p>At each completed-item spike it tries every candidate item, keeps the best paths with a beam search, and compares rune pages. Each build goal (fastest kill, best duel, hardest to kill, a solo queue carry) gets its own best build. The results above are the output of one full run.</p>
+        <p>The build editor runs the same Python simulator in your browser with <a href="https://pyodide.org/">Pyodide</a>. Pick items, level and runes and it plays the fights for that build. Scores are relative between builds, not real win rates: positioning, skillshots, teammates and summoner spells aren’t modeled.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="tests">
+    <header class="sec-head"><h2>Tests</h2><span class="data">{{ t.ran }}</span></header>
+    <div class="row">
+      <div class="key"><span class="label">pytest</span></div>
+      <div class="body">
+        <div class="prose"><p>The simulator’s test suite, last run on commit <a class="link" href="https://github.com/JuanTorresMI/LeagueBattleSim/commit/{{ t.commit }}"><span class="data">{{ t.commit }}</span></a> with Python {{ t.python }}.{% if t.runslow %} That includes the slow test, which reruns the whole pipeline and checks it reproduces the published results exactly.{% endif %}</p></div>
+        <div class="ks-totals">
+          <span class="label"><b>{{ t.passed }}</b>passed</span>
+          <span class="label{% if t.failed > 0 %} bad{% endif %}"><b>{{ t.failed }}</b>failed</span>
+          <span class="label"><b>{{ t.skipped }}</b>skipped</span>
+          <span class="label"><b>{{ t.seconds | round }}</b>seconds</span>
+        </div>
+      </div>
+    </div>
+    <div class="entries">
+      {% for f in t.files %}
+      <div class="row entry entry-tight">
+        <div class="key"><span class="data">{{ f.file | remove: "tests/" }}</span></div>
+        <div class="body">
+          <span class="data">{{ f.passed }} passed{% if f.failed > 0 %} · <span class="bad">{{ f.failed }} failed</span>{% endif %}{% if f.skipped > 0 %} · {{ f.skipped }} skipped{% endif %}</span>
+          <details>
+            <summary>Show the {{ f.tests.size }} test{% if f.tests.size != 1 %}s{% endif %}</summary>
+            <ul>{% for c in f.tests %}<li class="{{ c.status }}"><span class="st">{% if c.status == "passed" %}ok{% else %}{{ c.status }}{% endif %}</span>{{ c.name }}</li>{% endfor %}</ul>
+          </details>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="sec" id="run">
+    <header class="sec-head"><h2>Run it yourself</h2></header>
+    <div class="row">
+      <div class="body prose">
+        <p>The source is on <a href="https://github.com/JuanTorresMI/LeagueBattleSim">GitHub</a>. It is plain Python 3 with no packages; pytest is the only thing the tests need. <code>./run_all.sh</code> runs the whole pipeline and writes the results page, <code>./kalista build yuntal ie ldr zerks --level 13</code> checks one build, <code>./kalista optimize --goal carry</code> searches for the best one, and <code>pytest --runslow</code> runs the tests shown above.</p>
+      </div>
+    </div>
+  </section>
+</div>

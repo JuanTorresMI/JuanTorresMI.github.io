@@ -1,8 +1,8 @@
 # juantorresmi.github.io
 
 Personal site of Juan Torres: a home page, a résumé, a writing index that mirrors Substack,
-and three projects that run in the browser (the Fruit Fly Dispatcher simulation, Craft Ledger
-and the Aggregate Planner).
+and four projects that run in the browser (the Fruit Fly Dispatcher simulation, Craft Ledger,
+the Aggregate Planner and the Kalista Spike Ranker).
 
 Built with Jekyll and published by GitHub Pages from `main`
 (`.github/workflows/jekyll-gh-pages.yml`). There is no build step to run locally for ordinary
