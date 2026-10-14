@@ -23,7 +23,8 @@ Read this before changing anything; README.md covers the same ground for people.
 | `craft-ledger.html` | The ledger: one file (styles, markup, recipe JSON, script) inside layout `app`, styles scoped under `.cl`. Below the app sits its guide (`#guide`, ordinary `.page` markup): what search engines and SMP players read. The old guide address redirects there |
 | `aggregate-planning/` | The planner: `index.html` (layout `app`), `planner.css` (scoped under `.ap`), `model.js` (the LP/MIP; no DOM, runs in Node), `solver.js` + `solver-worker.js` (HiGHS in a Web Worker), `app.js`, `study.js` (study mode: the plan taken apart step by step; the worker's `explain()` does the extra solves), `xlsx.js` (the downloadable workbook, no library), `sw.js` (offline). `lib/` holds HiGHS and Chart.js, vendored unchanged |
 | `worker/` | Cloudflare Worker for `/watching/`, the Substack feed, and the music page's catalog, counter and guestbook (`src/music.js`, D1 + Workers AI). Not part of the Jekyll build; own README |
-| `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` (share pictures) |
+| `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` (share pictures), `snapshot.py` (Worker data → `_data/live/`), `lastmod.py` (git dates for the sitemap) |
+| `_data/live/` | Daily copies of the Worker's answers, already formatted, written by `snapshot.py` from the `Snapshot live pages` workflow, which commits them and starts a deploy. Pages that fill themselves in by script (`/youtube/`, `/watching/`) render this copy in their HTML and the script replaces it; don't edit these files by hand |
 
 ## Before you push
 
@@ -88,8 +89,15 @@ dates and figures. Spacing steps are multiples of 8.
 - **A page**: `layout: default`, a `permalink`, `title`, `description`. Add `image` if a share
   picture exists, `noindex: true` and `sitemap: false` to keep it out of search.
 - **A real change to a page's content**: set `last_modified_at: YYYY-MM-DD` in its front matter.
-  It becomes the page's `<lastmod>` in the sitemap (a post's `dateModified` too); pages without
-  it list no date rather than a false one.
+  It becomes the page's `<lastmod>` in the sitemap (a post's `dateModified` too). Pages without
+  it get the date `scripts/lastmod.py` finds in git at deploy: the newest commit to the page or to
+  any data file it reads (through includes too), so the home page moves with `projects.yml` and
+  `/youtube/` with its daily snapshot. Layouts and chrome don't count. `_data/lastmod.json` is
+  written at build time and never committed.
+- **A new Worker-backed page**: give `snapshot.py` a function that shapes the Worker's answer
+  for display, render `site.data.live.<name>` in the page as the fallback, and have the script
+  replace it (and leave it standing if the fetch fails). Add the page's placeholder to the
+  snapshot check in `check.py`.
 - **Anything changing the head**: it is one include for every page. Test with `check.py`.
 
 ## Things that are the way they are on purpose

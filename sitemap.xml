@@ -6,9 +6,12 @@ sitemap: false
 {%- comment -%}
   Written out by hand rather than with jekyll-sitemap, so it works whatever plugin set the
   build happens to have. A page opts out with `sitemap: false` in its front matter.
-  <lastmod> is only written when it is true: a page's `last_modified_at` if it sets one, a
-  post's date otherwise. Stamping every page with the build time would tell Google that
-  everything changed on every push, and it stops trusting a sitemap's dates once they lie.
+  <lastmod> is only written when it is true: a page's `last_modified_at` if it sets one,
+  otherwise the date scripts/lastmod.py found in git (the newest commit to the page or to a
+  data file it reads, so /youtube/ moves with its daily snapshot); a post's date for posts.
+  Stamping every page with the build time would tell Google that everything changed on every
+  push, and it stops trusting a sitemap's dates once they lie. A local build has no git
+  dates unless you run lastmod.py first; those pages then simply list no date.
 {%- endcomment -%}
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -17,8 +20,9 @@ sitemap: false
 {%- unless p.url contains "404" -%}
   <url>
     <loc>{{ p.url | absolute_url | xml_escape }}</loc>
-    {%- if p.last_modified_at %}
-    <lastmod>{{ p.last_modified_at | date_to_xmlschema }}</lastmod>
+    {%- assign mod = p.last_modified_at | default: site.data.lastmod[p.path] -%}
+    {%- if mod %}
+    <lastmod>{{ mod | date_to_xmlschema }}</lastmod>
     {%- endif %}
     <changefreq>{% if p.url == "/" %}weekly{% else %}monthly{% endif %}</changefreq>
     <priority>{% if p.url == "/" %}1.0{% elsif p.url contains "projects" %}0.8{% else %}0.6{% endif %}</priority>

@@ -6,6 +6,12 @@ description: Live numbers from Juan Torres's YouTube channel, refreshed every ho
 image: /assets/og/youtube.png
 image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every hour by a Cloudflare Worker."
 ---
+{%- comment -%}
+  site.data.live.youtube is a daily copy of the Worker's answer (scripts/snapshot.py), already
+  formatted. It is what crawlers and readers without JavaScript see; the script below swaps in
+  the live numbers. Each block falls back to the old placeholder if the copy is missing.
+{%- endcomment -%}
+{%- assign yt = site.data.live.youtube -%}
 <header class="phead row">
   <p class="key label">YouTube</p>
   <div class="body">
@@ -15,23 +21,38 @@ image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every hour by a C
 </header>
 
 <section class="sec">
-  <header class="sec-head"><h2>The channel</h2><a class="label" id="yt-link" href="https://www.youtube.com/" hidden>Open on YouTube ↗</a></header>
-  <div class="tally" id="yt-tally"><p class="log-note">Asking YouTube…</p></div>
-  <noscript><p class="log-note">The numbers are filled in by a script. With JavaScript off, the channel is one click away on YouTube.</p></noscript>
+  <header class="sec-head"><h2>The channel</h2><a class="label" id="yt-link" href="{{ yt.channel_url | default: 'https://www.youtube.com/' }}"{% unless yt.channel_url %} hidden{% endunless %}>Open on YouTube ↗</a></header>
+  <div class="tally" id="yt-tally">
+  {%- if yt -%}
+    {%- for t in yt.tiles %}<div class="tile"><span class="n">{{ t.n | escape }}</span><span class="l label">{{ t.l | escape }}</span></div>{% endfor -%}
+  {%- else %}<p class="log-note">Asking YouTube…</p>{% endif -%}
+  </div>
+  <noscript><p class="log-note">{% if yt %}With JavaScript off, these are the numbers as of {{ yt.checked }}, copied into the page once a day.{% else %}The numbers are filled in by a script. With JavaScript off, the channel is one click away on YouTube.{% endif %}</p></noscript>
 </section>
 
 <section class="sec">
-  <header class="sec-head"><h2>Latest uploads</h2><span class="label" id="yt-recent-count"></span></header>
-  <div class="log" id="yt-recent"><p class="log-note">Loading…</p></div>
+  <header class="sec-head"><h2>Latest uploads</h2><span class="label" id="yt-recent-count">{{ yt.recent_count }}</span></header>
+  <div class="log" id="yt-recent">
+  {%- if yt -%}
+    {%- for v in yt.recent %}
+    <div class="log-day row"><span class="key data">{{ v.date | escape }}</span>
+      <div class="body log-items"><a class="log-item" href="{{ v.url | escape }}"><span class="label">{{ v.kind }}</span><span class="msg">{{ v.title | escape }}</span><span class="data">{{ v.meta | escape }}</span></a></div></div>
+    {%- else %}<p class="log-note">Nothing uploaded yet.</p>{% endfor -%}
+  {%- else %}<p class="log-note">Loading…</p>{% endif -%}
+  </div>
 </section>
 
-<section class="sec" id="yt-days-sec" hidden>
+<section class="sec" id="yt-days-sec"{% if yt.days == empty or yt == nil %} hidden{% endif %}>
   <header class="sec-head"><h2>Day by day</h2><span class="label">Change from the day before</span></header>
-  <div class="log" id="yt-days"></div>
+  <div class="log" id="yt-days">
+  {%- for d in yt.days %}
+    <div class="log-day row"><span class="key data">{{ d.day }}</span><div class="body"><p class="yt-day">{{ d.text | escape }}</p></div></div>
+  {%- endfor -%}
+  </div>
 </section>
 
 <section class="sec" id="how-it-works">
-  <header class="sec-head"><h2>How it works</h2><span class="label" id="yt-updated"></span></header>
+  <header class="sec-head"><h2>How it works</h2><span class="label" id="yt-updated">{% if yt %}Copied {{ yt.checked }}{% endif %}</span></header>
   <div class="row">
     <div class="body prose">
       <p>A web page can’t ask YouTube for numbers on its own without putting an API key in its source, where anyone can copy it. So the asking happens somewhere else: a small Cloudflare Worker, the same one that already runs this site’s <a href="/watching/">house TV</a> board and the Substack feed on the <a href="/blog/">writing</a> page.</p>
@@ -40,6 +61,7 @@ image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every hour by a C
         <li><strong>It asks YouTube three questions.</strong> One call for the channel’s subscribers, total views and video count, one for the list of its latest uploads, and one for each upload’s views, likes and length. Each call costs one unit of YouTube’s free daily quota of 10,000, so the whole day costs 72.</li>
         <li><strong>It writes the answer down.</strong> The latest snapshot goes into a small SQLite database on Cloudflare (D1), along with one row per day, which is where the day-by-day changes above come from. If YouTube doesn’t answer, nothing is overwritten and the last good snapshot stays.</li>
         <li><strong>This page reads the snapshot, not YouTube.</strong> Your visit costs YouTube’s quota nothing, and a busy day on the site can’t use it up. Cloudflare also keeps a copy at the edge for five minutes, so most visits don’t even reach the database.</li>
+        <li><strong>Once a day, a copy goes into the page itself.</strong> A GitHub Action asks the Worker for the snapshot and writes it into this page’s HTML. That copy is what search engines, link previews and browsers with JavaScript off see; with JavaScript on, the script swaps in the live numbers a moment after the page loads.</li>
       </ol>
       <p>The key the Worker uses is a plain YouTube Data API key, stored as an encrypted secret on Cloudflare and never in this site’s code. It can only read public data: it can’t sign in, upload, or change anything on the channel. The uploads themselves come from a separate program on my own computer that has its own sign-in and its own quota, so this page can never get in their way.</p>
       <p>All of it runs on free plans. Cloudflare’s free tier covers the hourly job, the database and the requests with a lot of room to spare, and on that plan going over a limit makes requests fail until the next day instead of sending a bill.</p>
@@ -52,6 +74,7 @@ image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every hour by a C
 <script>
 (() => {
   const ENDPOINT = {{ site.worker_url | default: "" | jsonify }};
+  const PRERENDERED = {{ yt.checked | default: "" | jsonify }};
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const $ = (id) => document.getElementById(id);
   const fmt = (n) => Number(n).toLocaleString("en-US");
@@ -136,6 +159,8 @@ image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every hour by a C
       renderDays(d.history || []);
     })
     .catch((e) => {
+      // The day's copy is already on the page: leave it standing and say how old it is.
+      if (PRERENDERED) { $("yt-updated").textContent = "Live numbers unavailable; showing the copy from " + PRERENDERED; return; }
       $("yt-tally").innerHTML = `<p class="log-note">Couldn’t reach YouTube’s numbers right now (${esc(e.message)}).</p>`;
       $("yt-recent").innerHTML = "";
     });

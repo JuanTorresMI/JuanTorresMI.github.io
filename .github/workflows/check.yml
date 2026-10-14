@@ -17,6 +17,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0            # the whole history, for lastmod.py's dates
+      - name: Date each page from git (for the sitemap)
+        run: python3 scripts/lastmod.py
       - name: Build with Jekyll (the GitHub Pages build)
         uses: actions/jekyll-build-pages@v1
         with:

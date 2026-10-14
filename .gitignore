@@ -15,3 +15,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.swp
+
+# Written by scripts/lastmod.py at build time, never committed
+_data/lastmod.json

@@ -7,6 +7,12 @@ description: What's playing on the house TV right now, what we've been watching 
 noindex: true
 sitemap: false
 ---
+{%- comment -%}
+  site.data.live.watching is a daily copy of the Worker's answer (scripts/snapshot.py), for
+  readers with JavaScript off; the script below replaces it with the live board. A day-old
+  copy never claims anything is playing now, so its card always says "Last on".
+{%- endcomment -%}
+{%- assign tv = site.data.live.watching -%}
 <header class="phead row">
   <p class="key label">{{ site.tv_label | default: "The house TV" }}</p>
   <div class="body">
@@ -16,23 +22,58 @@ sitemap: false
 </header>
 
 <section class="sec">
-  <header class="sec-head"><h2>On now</h2><span class="label" id="now-when">checking…</span></header>
-  <div class="np" id="np"><p class="log-note">Asking the TV…</p></div>
+  <header class="sec-head"><h2>On now</h2><span class="label" id="now-when">{% if tv %}as of {{ tv.checked }}{% else %}checking…{% endif %}</span></header>
+  <div class="np" id="np">
+  {%- if tv.last -%}
+    {%- capture card -%}
+      {%- if tv.last.poster %}<img class="art np-art" src="{{ tv.last.poster | escape }}" alt="" loading="lazy">{% else %}<span class="art np-art fallback" aria-hidden="true">{{ tv.last.initials | escape }}</span>{% endif %}
+      <div class="np-body">
+        <p class="np-who label"><span class="live off" aria-hidden="true"></span>Last on</p>
+        <h3 class="np-title">{{ tv.last.title | escape }}</h3>
+        {% if tv.last.sub != "" %}<p class="np-sub">{{ tv.last.sub | escape }}</p>{% endif %}
+        <p class="np-meta data">{{ tv.last.meta | escape }}</p>
+      </div>
+    {%- endcapture -%}
+    {%- if tv.last.link %}<a class="np-card" href="{{ tv.last.link | escape }}">{{ card }}</a>{% else %}<div class="np-card">{{ card }}</div>{% endif -%}
+  {%- elsif tv %}<div class="np-empty"><p class="big">Nothing's on.</p><p class="sub">The TV is free.</p></div>
+  {%- else %}<p class="log-note">Asking the TV…</p>{% endif -%}
+  </div>
 </section>
 
-<section class="sec" id="stats-sec" hidden>
+<section class="sec" id="stats-sec"{% unless tv.tiles.size > 0 %} hidden{% endunless %}>
   <header class="sec-head"><h2>The tally</h2><span class="label">All time</span></header>
-  <div class="tally" id="tally"></div>
+  <div class="tally" id="tally">
+  {%- for t in tv.tiles %}<div class="tile"><span class="n">{{ t.n | escape }}</span><span class="l label">{{ t.l | escape }}</span></div>{% endfor -%}
+  </div>
 </section>
 
 <section class="sec">
-  <header class="sec-head"><h2>Lately</h2><span class="label" id="lately-count"></span></header>
-  <div class="log" id="feed"><p class="log-note">Loading…</p></div>
+  <header class="sec-head"><h2>Lately</h2><span class="label" id="lately-count">{{ tv.count }}</span></header>
+  <div class="log" id="feed">
+  {%- if tv -%}
+    {%- for d in tv.days %}
+    <div class="log-day row"><span class="key data">{{ d.day | escape }}</span><div class="body log-items">
+      {%- for i in d.items -%}
+        {%- capture inner %}<span class="label">{{ i.kind }}</span><span class="msg">{{ i.title | escape }}</span><span class="data">{{ i.meta | escape }}</span>{% endcapture -%}
+        {%- if i.link %}<a class="log-item" href="{{ i.link | escape }}">{{ inner }}</a>{% else %}<div class="log-item">{{ inner }}</div>{% endif -%}
+      {%- endfor -%}
+    </div></div>
+    {%- else %}<p class="log-note">Nothing watched yet. Play something in Stremio and it turns up here.</p>{% endfor -%}
+  {%- else %}<p class="log-note">Loading…</p>{% endif -%}
+  </div>
 </section>
 
-<section class="sec" id="deck-sec" hidden>
+<section class="sec" id="deck-sec"{% unless tv.deck.size > 0 %} hidden{% endunless %}>
   <header class="sec-head"><h2>In the library</h2><span class="label">Most recently added</span></header>
-  <div class="deck" id="deck"></div>
+  <div class="deck" id="deck">
+  {%- for x in tv.deck -%}
+    {%- capture inner -%}
+      {%- if x.poster %}<img class="art deck-art" src="{{ x.poster | escape }}" alt="" loading="lazy">{% else %}<span class="art deck-art fallback" aria-hidden="true">{{ x.initials | escape }}</span>{% endif -%}
+      <span class="deck-t">{{ x.title | escape }}</span>
+    {%- endcapture -%}
+    {%- if x.link %}<a class="deck-item" href="{{ x.link | escape }}">{{ inner }}</a>{% else %}<div class="deck-item">{{ inner }}</div>{% endif -%}
+  {%- endfor -%}
+  </div>
 </section>
 
 <script>
@@ -132,7 +173,8 @@ sitemap: false
     }).join("");
   }
 
-  let loaded = false;                 // once something has rendered, a blip leaves it standing
+  // Once something has rendered (the day's copy counts), a blip leaves it standing.
+  let loaded = {% if tv %}true{% else %}false{% endif %};
 
   async function tick() {
     let d;
@@ -141,9 +183,10 @@ sitemap: false
       d = await r.json();
       if (d.error) throw new Error(d.error);
     } catch (e) {
-      $("np").innerHTML = `<p class="log-note">Couldn't reach the TV (${esc(e.message)}).</p>`;
       $("now-when").textContent = "offline";
-      if (!loaded) $("feed").innerHTML = `<p class="log-note">Nothing to show until the TV answers.</p>`;
+      if (loaded) return;
+      $("np").innerHTML = `<p class="log-note">Couldn't reach the TV (${esc(e.message)}).</p>`;
+      $("feed").innerHTML = `<p class="log-note">Nothing to show until the TV answers.</p>`;
       return;
     }
     loaded = true;

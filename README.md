@@ -27,7 +27,7 @@ the design rules, how to add a post or project, and what to run before pushing.
 | `craft-ledger.html` | The ledger, a single self-contained file |
 | `aggregate-planning/` | The production-planning optimizer: the page, its scripts, and HiGHS and Chart.js in `lib/` |
 | `worker/` | The Cloudflare Worker behind `/watching/` and the Substack feed; see its README |
-| `scripts/` | `check.py` verifies a build, `screenshots.js` photographs every page, `og-images.js` draws the share pictures |
+| `scripts/` | `check.py` verifies a build, `screenshots.js` photographs every page, `og-images.js` draws the share pictures, `snapshot.py` copies the Worker's live data into `_data/live/` (daily, by the `Snapshot live pages` workflow), `lastmod.py` dates each page from git for the sitemap (run by the deploy) |
 
 ## Previewing and checking locally
 
