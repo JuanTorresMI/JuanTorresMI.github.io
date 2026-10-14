@@ -30,8 +30,6 @@ const CARDS = {
     sub: "Which Minecraft crafts actually make money · 2,770 items", bottom: ["juantorresmi.github.io/craft-ledger.html", "Local-first web app"] },
   "aggregate-planning": { top: ["Juan Torres", "Tool"], name: "Aggregate Planner",
     sub: "Level, band & chase plans · The math, step by step", bottom: ["juantorresmi.github.io/aggregate-planning", "HiGHS · in the browser"] },
-  "kalista-spike-ranker": { top: ["Juan Torres", "Simulation"], name: "Kalista Spike Ranker",
-    sub: "Every item ranked at each spike · Duels, lanes & teamfights", bottom: ["juantorresmi.github.io/kalista", "Python · in the browser"] },
 };
 
 const css = `
