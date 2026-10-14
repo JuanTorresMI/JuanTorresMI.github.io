@@ -12,14 +12,16 @@ const { chromium } = require("playwright");
 const fs = require("fs"), path = require("path");
 
 const root = path.resolve(__dirname, "..");
-const fontDir = "file://" + path.join(root, "assets", "fonts");
+// Inlined as data URLs: a page made with setContent is about:blank, which may not load file://
+// fonts (Chromium on Windows refuses), and the cards silently come out in Times.
+const font = (file) => "data:font/woff2;base64," + fs.readFileSync(path.join(root, "assets", "fonts", file)).toString("base64");
 const outDir = path.join(root, "assets", "og");
 
 const CARDS = {
   home: { top: ["Central Michigan University", "Class of 2027"], name: "Juan Torres", caps: true,
     sub: "Logistics Management", bottom: ["Torre10j@cmich.edu", "juantorresmi.github.io"] },
   projects: { top: ["Juan Torres", "Projects"], name: "Things I’ve built",
-    sub: "A fruit-fly delivery simulation · A Minecraft price ledger · A production planner", bottom: ["juantorresmi.github.io/projects", "Central Michigan University"] },
+    sub: "A fly-brained delivery truck · A Minecraft price ledger · A production planner · Live YouTube stats", bottom: ["juantorresmi.github.io/projects", "Central Michigan University"] },
   resume: { top: ["Juan Torres", "Résumé"], name: "Résumé",
     sub: "Logistics Management · Central Michigan University · Class of 2027", bottom: ["juantorresmi.github.io/resume", "Torre10j@cmich.edu"] },
   writing: { top: ["Juan Torres", "Writing"], name: "Notes on finance, school and work",
@@ -30,12 +32,14 @@ const CARDS = {
     sub: "Which Minecraft crafts actually make money · 2,770 items", bottom: ["juantorresmi.github.io/craft-ledger.html", "Local-first web app"] },
   "aggregate-planning": { top: ["Juan Torres", "Tool"], name: "Aggregate Planner",
     sub: "Level, band & chase plans · The math, step by step", bottom: ["juantorresmi.github.io/aggregate-planning", "HiGHS · in the browser"] },
+  youtube: { top: ["Juan Torres", "YouTube"], name: "On YouTube",
+    sub: "The channel’s numbers, refreshed every hour", bottom: ["juantorresmi.github.io/youtube", "Cloudflare Worker · YouTube Data API"] },
 };
 
 const css = `
-@font-face { font-family: "Cormorant Garamond"; font-weight: 500 600; src: url("${fontDir}/cormorant-garamond.woff2") format("woff2"); }
-@font-face { font-family: "Inter"; font-weight: 400 600; src: url("${fontDir}/inter.woff2") format("woff2"); }
-@font-face { font-family: "IBM Plex Mono"; font-weight: 400; src: url("${fontDir}/ibm-plex-mono-400.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 500 600; src: url("${font("cormorant-garamond.woff2")}") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 400 600; src: url("${font("inter.woff2")}") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 400; src: url("${font("ibm-plex-mono-400.woff2")}") format("woff2"); }
 * { box-sizing: border-box; margin: 0; }
 html, body { width: 1200px; height: 630px; overflow: hidden; }
 body { background: #eeebe3; font-family: "Inter", Helvetica, Arial, sans-serif; color: #0f0f0e; -webkit-font-smoothing: antialiased; }
@@ -63,7 +67,7 @@ const iconHtml = (size) => {
   const svg = fs.readFileSync(path.join(root, "assets", "favicon.svg"), "utf8")
     .replace("<svg ", `<svg width="${size}" height="${size}" `);
   return `<!doctype html><html><head><meta charset="utf-8"><style>
-@font-face { font-family: "Cormorant Garamond"; font-weight: 500 600; src: url("${fontDir}/cormorant-garamond.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-weight: 500 600; src: url("${font("cormorant-garamond.woff2")}") format("woff2"); }
 html, body { margin: 0; width: ${size}px; height: ${size}px; overflow: hidden; background: #eeebe3; } svg { display: block; }
 </style></head><body>${svg}</body></html>`;
 };
