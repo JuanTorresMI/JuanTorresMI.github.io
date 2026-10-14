@@ -105,6 +105,12 @@ a { color: inherit; }
   .wordmark .full { display: none; }
   .wordmark .short { display: inline; }
 }
+/* Five links don't fit beside the wordmark on a phone: they drop to a row of their own. */
+@media (max-width: 480px) {
+  .site-nav .frame { height: auto; flex-wrap: wrap; row-gap: 0; padding-top: 12px; }
+  .site-nav .links { order: 3; width: 100%; justify-content: space-between; gap: 12px; border-top: 1px solid var(--rule); }
+  .site-nav .links a { padding: 14px 0; }
+}
 
 /* ---------- project bar: sits under the nav on project pages (see _includes/project-bar.html) ---------- */
 .pbar { border-bottom: 1px solid var(--rule); font-family: var(--sans); font-size: 11px; font-weight: 500; line-height: 1.5; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
@@ -355,6 +361,7 @@ a.entry:hover .go { color: var(--accent); }
 .page .deck-item { display: grid; gap: 10px; align-content: start; text-decoration: none; }
 .page .deck-item .deck-t { font-size: 13px; line-height: 1.35; color: var(--text-2); }
 .page .deck-item:hover .deck-t { color: var(--ink); }
+.page .yt-day { font-size: 15px; color: var(--text); }   /* /youtube/: one day's change */
 @media (max-width: 860px) { .page .tally { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 32px; } .page .deck { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .page .np-card { grid-template-columns: 96px minmax(0, 1fr); gap: 20px; } .page .deck { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 

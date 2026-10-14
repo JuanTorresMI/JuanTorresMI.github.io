@@ -1,0 +1,143 @@
+---
+layout: default
+title: YouTube
+permalink: /youtube/
+description: Live numbers from Juan Torres's YouTube channel, refreshed every hour, and how a free Cloudflare Worker keeps them up to date.
+image: /assets/og/youtube.png
+image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every hour by a Cloudflare Worker."
+---
+<header class="phead row">
+  <p class="key label">YouTube</p>
+  <div class="body">
+    <h1>On YouTube</h1>
+    <p class="lede">The channel’s numbers, straight from YouTube and refreshed every hour. <a class="link" href="#how-it-works">How this page gets them</a> is further down.</p>
+  </div>
+</header>
+
+<section class="sec">
+  <header class="sec-head"><h2>The channel</h2><a class="label" id="yt-link" href="https://www.youtube.com/" hidden>Open on YouTube ↗</a></header>
+  <div class="tally" id="yt-tally"><p class="log-note">Asking YouTube…</p></div>
+  <noscript><p class="log-note">The numbers are filled in by a script. With JavaScript off, the channel is one click away on YouTube.</p></noscript>
+</section>
+
+<section class="sec">
+  <header class="sec-head"><h2>Latest uploads</h2><span class="label" id="yt-recent-count"></span></header>
+  <div class="log" id="yt-recent"><p class="log-note">Loading…</p></div>
+</section>
+
+<section class="sec" id="yt-days-sec" hidden>
+  <header class="sec-head"><h2>Day by day</h2><span class="label">Change from the day before</span></header>
+  <div class="log" id="yt-days"></div>
+</section>
+
+<section class="sec" id="how-it-works">
+  <header class="sec-head"><h2>How it works</h2><span class="label" id="yt-updated"></span></header>
+  <div class="row">
+    <div class="body prose">
+      <p>A web page can’t ask YouTube for numbers on its own without putting an API key in its source, where anyone can copy it. So the asking happens somewhere else: a small Cloudflare Worker, the same one that already runs this site’s <a href="/watching/">house TV</a> board and the Substack feed on the <a href="/blog/">writing</a> page.</p>
+      <ol>
+        <li><strong>Once an hour, the Worker wakes itself up.</strong> A cron trigger runs it at 17 minutes past every hour. No one has to visit the page, and my computer doesn’t have to be on.</li>
+        <li><strong>It asks YouTube three questions.</strong> One call for the channel’s subscribers, total views and video count, one for the list of its latest uploads, and one for each upload’s views, likes and length. Each call costs one unit of YouTube’s free daily quota of 10,000, so the whole day costs 72.</li>
+        <li><strong>It writes the answer down.</strong> The latest snapshot goes into a small SQLite database on Cloudflare (D1), along with one row per day, which is where the day-by-day changes above come from. If YouTube doesn’t answer, nothing is overwritten and the last good snapshot stays.</li>
+        <li><strong>This page reads the snapshot, not YouTube.</strong> Your visit costs YouTube’s quota nothing, and a busy day on the site can’t use it up. Cloudflare also keeps a copy at the edge for five minutes, so most visits don’t even reach the database.</li>
+      </ol>
+      <p>The key the Worker uses is a plain YouTube Data API key, stored as an encrypted secret on Cloudflare and never in this site’s code. It can only read public data: it can’t sign in, upload, or change anything on the channel. The uploads themselves come from a separate program on my own computer that has its own sign-in and its own quota, so this page can never get in their way.</p>
+      <p>All of it runs on free plans. Cloudflare’s free tier covers the hourly job, the database and the requests with a lot of room to spare, and on that plan going over a limit makes requests fail until the next day instead of sending a bill.</p>
+      <p>Two things on this page are YouTube’s rules, not mine. The public subscriber count is rounded to three significant figures, so 12,345 shows as 12,300. And “Short” here means an upload three minutes long or less, which is YouTube’s own limit for one.</p>
+      <p>The code is in the <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">worker folder</a> of this site’s repository on GitHub, along with the setup steps.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+(() => {
+  const ENDPOINT = {{ site.worker_url | default: "" | jsonify }};
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const signed = (n) => (n > 0 ? "+" : n < 0 ? "−" : "") + fmt(Math.abs(n));
+  const plural = (n, one, many) => fmt(n) + " " + (n === 1 ? one : many);
+  const delta = (n, one, many) => signed(n) + " " + (Math.abs(n) === 1 ? one : many);
+
+  function ago(iso) {
+    const s = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (s < 90) return "just now";
+    if (s < 3600) return Math.round(s / 60) + " min ago";
+    if (s < 86400) return Math.round(s / 3600) + " h ago";
+    const d = Math.round(s / 86400);
+    return d < 30 ? d + (d === 1 ? " day ago" : " days ago") : new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  }
+  const length = (s) => (s == null ? "" : s >= 3600
+    ? Math.floor(s / 3600) + ":" + String(Math.floor(s / 60) % 60).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0")
+    : Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"));
+  const dayName = (day) => new Date(day + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" });
+
+  /* The change in one field across the last n days of history, or null if there aren't n days
+     of it yet (a "this week" built from two days of data would mislead). */
+  function change(history, field, n) {
+    const rows = history.filter((h) => h[field] != null);
+    if (rows.length < n + 1) return null;
+    return rows[rows.length - 1][field] - rows[rows.length - 1 - n][field];
+  }
+
+  function renderTally(d) {
+    const s = d.stats || {}, h = d.history || [];
+    const week = change(h, "views", 7);
+    const tiles = [
+      [s.subscribers == null ? "Hidden" : fmt(s.subscribers), "subscribers"],
+      [s.views == null ? "—" : fmt(s.views), "views, all time"],
+      [s.videos == null ? "—" : fmt(s.videos), "videos"],
+      week == null ? null : [signed(week), "views, last 7 days"],
+    ].filter(Boolean);
+    $("yt-tally").innerHTML = tiles.map(([n, l]) => `<div class="tile"><span class="n">${esc(n)}</span><span class="l label">${esc(l)}</span></div>`).join("");
+    if (d.channel && d.channel.url) { $("yt-link").href = d.channel.url; $("yt-link").hidden = false; }
+    $("yt-updated").textContent = "Last checked " + ago(d.updated);
+  }
+
+  function renderRecent(recent) {
+    const box = $("yt-recent");
+    if (!recent.length) { box.innerHTML = `<p class="log-note">Nothing uploaded yet.</p>`; return; }
+    const week = recent.filter((v) => Date.now() - new Date(v.published).getTime() < 7 * 86400000).length;
+    $("yt-recent-count").textContent = plural(week, "upload", "uploads") + " this week";
+    box.innerHTML = recent.map((v) => {
+      const meta = [v.views == null ? null : plural(v.views, "view", "views"), length(v.seconds)].filter(Boolean).join(" · ");
+      return `<div class="log-day row"><span class="key data">${esc(new Date(v.published).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "numeric" }))}</span>
+        <div class="body log-items"><a class="log-item" href="${esc(v.url)}"><span class="label">${v.short ? "Short" : "Video"}</span><span class="msg">${esc(v.title)}</span><span class="data">${esc(meta)}</span></a></div></div>`;
+    }).join("");
+  }
+
+  function renderDays(history) {
+    if (history.length < 2) return;
+    const rows = [];
+    const today = new Date().toISOString().slice(0, 10);
+    for (let i = history.length - 1; i > 0 && rows.length < 14; i--) {
+      const a = history[i], b = history[i - 1];
+      const parts = [];
+      if (a.views != null && b.views != null) parts.push(delta(a.views - b.views, "view", "views"));
+      if (a.subscribers != null && b.subscribers != null) parts.push(delta(a.subscribers - b.subscribers, "subscriber", "subscribers"));
+      if (a.videos != null && b.videos != null && a.videos !== b.videos) parts.push(delta(a.videos - b.videos, "video", "videos"));
+      rows.push(`<div class="log-day row"><span class="key data">${esc(a.day === today ? "Today, so far" : dayName(a.day))}</span><div class="body"><p class="yt-day">${esc(parts.join(" · ") || "No change")}</p></div></div>`);
+    }
+    $("yt-days").innerHTML = rows.join("");
+    $("yt-days-sec").hidden = false;
+  }
+
+  if (!ENDPOINT) {
+    $("yt-tally").innerHTML = `<p class="log-note">The Worker isn’t set up yet (see worker/README.md).</p>`;
+    $("yt-recent").innerHTML = "";
+    return;
+  }
+  fetch(ENDPOINT.replace(/\/+$/, "") + "/youtube")
+    .then((r) => r.json())
+    .then((d) => {
+      if (d.error) throw new Error(d.error);
+      renderTally(d);
+      renderRecent(d.recent || []);
+      renderDays(d.history || []);
+    })
+    .catch((e) => {
+      $("yt-tally").innerHTML = `<p class="log-note">Couldn’t reach YouTube’s numbers right now (${esc(e.message)}).</p>`;
+      $("yt-recent").innerHTML = "";
+    });
+})();
+</script>

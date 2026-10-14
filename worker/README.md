@@ -148,3 +148,67 @@ $k = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices
 Invoke-RestMethod -Method Delete -Uri "https://house-tv.5342543fsd.workers.dev/music/guestbook/12" -Headers @{ Authorization = "Bearer $k" }
 $k = $null
 ```
+
+## The YouTube page
+
+The same Worker feeds `/youtube/` on the site; the code is `src/youtube.js`. Once an hour a cron
+trigger (`crons` in `wrangler.toml`) asks YouTube for the channel's public numbers and its latest
+uploads, and stores the answer in D1. The page only ever reads that stored snapshot.
+
+### Setting it up (once)
+
+1. **Get an API key.** In the [Google Cloud console](https://console.cloud.google.com/), pick or
+   create a project, enable **YouTube Data API v3** (APIs & Services > Library), then create an
+   **API key** (APIs & Services > Credentials > Create credentials > API key). Edit the key and,
+   under *API restrictions*, restrict it to YouTube Data API v3. Don't set an application
+   restriction: the Worker calls from Cloudflare's servers, not from a website or an app.
+   An API key reads public data only. It can't sign in as you or change anything on the channel.
+2. **Name the channel.** Set `YOUTUBE_CHANNEL` in `wrangler.toml` to its handle (`"@name"`) or
+   its channel id (`"UC..."`, from YouTube Studio > Settings > Channel > Advanced settings).
+3. **Create the tables, store the key, deploy.** From `worker/`, in PowerShell:
+
+```powershell
+npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
+npx.cmd wrangler secret put YOUTUBE_API_KEY
+npx.cmd wrangler deploy
+```
+
+`schema.sql` is safe to run again: it only adds the two `youtube_` tables and leaves the music
+page's tables alone.
+
+If `d1 execute --file` fails with `Authentication error [code: 10000]` (the `--file` route goes
+through D1's import API, which can refuse the token `wrangler login` gives you), send the same SQL
+as a plain query instead:
+
+```powershell
+$sql = ((Get-Content schema.sql) -replace '--.*$', '') -join ' ' -replace '\s+', ' '
+npx.cmd wrangler d1 execute yokonjuan --remote --command $sql
+```
+
+### Check it
+
+```powershell
+Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/youtube" | ConvertTo-Json -Depth 4
+```
+
+The very first request polls YouTube on the spot (nothing is stored yet); after that, the cron
+does the polling. To see the cron's own runs, `npx.cmd wrangler tail` around 17 past the hour.
+
+- `YouTube said: API key not valid` — the key was pasted wrong; `secret put` it again.
+- `YouTube said: ... has not been used in project ... or it is disabled` — enable YouTube Data API v3 for the key's project.
+- `YouTube has no channel @name` — check the handle in `wrangler.toml`, then deploy again.
+
+### What it costs
+
+Nothing. One poll is three API calls (`channels.list`, `playlistItems.list`, `videos.list`), one
+quota unit each, so 72 units a day out of the free 10,000. Uploads from the clip farm draw on a
+separate bucket, so this can't block them. On Cloudflare's side it is one cron run and two D1
+writes an hour; the page's requests are served from the edge cache for five minutes at a time.
+
+### What the numbers mean
+
+- **Subscribers** is YouTube's public count, rounded to three significant figures (12,345 shows as
+  12,300). If the channel hides its count, the page shows none.
+- **History** is one row a day (`youtube_daily`), holding that day's last reading in UTC. The page
+  uses it for "last 7 days" and "last 30 days"; those appear once there are enough days stored.
+- **Short** means the upload is three minutes or less, YouTube's own limit for a Short.

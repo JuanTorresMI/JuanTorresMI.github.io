@@ -65,3 +65,21 @@
     - Excel workbook export with live formulas in the textbook Solver layout
     - CSV export and shareable links
   keywords: [aggregate, planner, planning, highs]
+
+- slug: youtube-stats
+  title: YouTube Stats
+  url: /youtube/
+  guide: /youtube/#how-it-works
+  kind: Service
+  status: Live
+  short: My YouTube channel’s numbers on this site, refreshed every hour by a Cloudflare Worker that polls YouTube on its own, for free.
+  summary: >-
+    The YouTube page on this site shows my channel’s subscribers, views and latest uploads. A Cloudflare
+    Worker wakes up once an hour on a cron trigger, asks the YouTube Data API three questions with a
+    read-only key, and stores the answer in a small D1 database, one row per day for the history. The page
+    only ever reads that stored snapshot, so visitors never touch YouTube’s quota and the key never
+    reaches the browser. It runs entirely on free tiers.
+  metric: Hourly · 72 of 10,000 daily API units · $0 to run
+  stack: [JavaScript, Cloudflare Workers, Cron Triggers, D1 (SQLite), YouTube Data API v3]
+  category: WebApplication
+  keywords: [youtube stats, youtube page, channel stats]

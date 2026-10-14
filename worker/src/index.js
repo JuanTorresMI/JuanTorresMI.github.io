@@ -1,12 +1,16 @@
-/* The site's edge helper. It exists because two things the site wants to show cannot be
- * fetched from a browser: Stremio needs an auth key that must never be public, and
- * Substack's feed is XML with no CORS headers. Both are read-only.
+/* The site's edge helper. It exists because the things the site wants to show cannot be
+ * fetched from a browser: Stremio and YouTube need keys that must never be public, and
+ * Substack's feed is XML with no CORS headers. All of it is read-only.
  *
  *   GET /          the house TV: { now, last, lately, deck, tally, updated }
  *   GET /substack  the newsletter: { items: [{ title, url, date, excerpt }] }
+ *   GET /youtube   the channel: { channel, stats, recent, history, updated } (see youtube.js)
  *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
+ *
+ * The cron trigger in wrangler.toml calls `scheduled` once an hour to poll YouTube.
  */
 import { catalog, CATALOG_MAX_AGE, visits, guestbook, sign, unsign, Refused } from "./music.js";
+import { poll, snapshot, YOUTUBE_MAX_AGE } from "./youtube.js";
 
 const STREMIO = "https://api.strem.io/api/datastoreGet";
 const SUBSTACK = "https://juantorresis.substack.com/feed";
@@ -28,6 +32,7 @@ export default {
     const route = url.pathname.replace(/\/+$/, "") || "/";
     if (route.startsWith("/music")) return musicRoute(request, env, ctx, route, url, cors);
     if (request.method !== "GET") return json({ error: "GET only" }, 405, cors);
+    if (route === "/youtube") return youtubeRoute(env, ctx, url, cors);
 
     const feed = route === "/substack";
     const maxAge = feed ? FEED_CACHE_S : TV_CACHE_S;
@@ -55,6 +60,11 @@ export default {
     const res = json(payload, 200, headers);
     ctx.waitUntil(cache.put(cacheKey, res.clone()));
     return res;
+  },
+
+  // Once an hour (crons in wrangler.toml). A failed poll is logged and the last snapshot stays.
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(poll(env).catch((e) => console.error("youtube poll:", e && e.message ? e.message : e)));
   },
 };
 
@@ -96,6 +106,26 @@ async function musicRoute(request, env, ctx, route, url, cors) {
     console.error("music:", route, e && e.message ? e.message : e);
     return json({ error: "something went wrong. try again in a bit" }, 502, cors);
   }
+}
+
+/* ---------------------------------------------------------------- the YouTube page ---- */
+
+/* Serves the snapshot the cron job stored in D1; YouTube itself is never asked from here,
+   except once on the very first request after deploying (see snapshot in youtube.js). */
+async function youtubeRoute(env, ctx, url, cors) {
+  const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/youtube");
+  const hit = await cache.match(cacheKey);
+  if (hit) { const fresh = new Response(hit.body, hit); for (const [k, v] of Object.entries(cors)) fresh.headers.set(k, v); return fresh; }
+  let payload;
+  try {
+    payload = await snapshot(env);
+  } catch (e) {
+    console.error("youtube:", e && e.message ? e.message : e);
+    return json({ error: e.message || String(e) }, 502, cors);
+  }
+  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${YOUTUBE_MAX_AGE}` });
+  ctx.waitUntil(cache.put(cacheKey, res.clone()));
+  return res;
 }
 
 const at = (v) => {
