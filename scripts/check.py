@@ -90,6 +90,12 @@ try:
         if not exists(icon["src"]): err("site.webmanifest", f"icon is not in the build: {icon['src']}")
 except Exception as e: err("site.webmanifest", f"does not parse: {e}")
 if not os.path.isfile(os.path.join(site, "robots.txt")): err("robots.txt", "missing")
+# The Worker-backed pages carry a daily copy of their data (scripts/snapshot.py). Without it,
+# a crawler or a browser with JavaScript off sees only the placeholder.
+for page, placeholder in (("youtube/index.html", "Asking YouTube…"), ("watching/index.html", "Asking the TV…")):
+    f = os.path.join(site, page)
+    if os.path.isfile(f) and placeholder in open(f, encoding="utf-8").read():
+        err("/" + page, "has no snapshot in its HTML; run scripts/snapshot.py")
 
 for w in warnings: print("warn ", w)
 for e in errors: print("ERROR", e)
