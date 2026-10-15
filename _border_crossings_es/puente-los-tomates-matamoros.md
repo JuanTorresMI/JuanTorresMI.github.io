@@ -1,7 +1,7 @@
 ---
 port: "535502"
 title: "Tiempo de espera para camiones: Puente Los Tomates"
-description: "Cuánto esperan los camiones de carga en Puente Los Tomates: la espera ahora mismo y la habitual a cada hora de la semana, con datos de CBP."
+description: "Cuánto esperan hoy los camiones de carga en el cruce Puente Los Tomates: la espera ahora y la habitual por hora, según CBP."
 translation: "/border-waits/brownsville-veterans-bridge/"
-seo_title: "Espera de camiones en Puente Los Tomates: ahora y por hora"
+seo_title: "Puente Los Tomates: tiempo de espera de camiones hoy"
 ---

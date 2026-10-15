@@ -16,12 +16,12 @@ layout: default
 <header class="rb-head">
   <div class="rb-title">
     <p class="rb-family"><a class="rb-lane-back" href="/border-waits/">{% if es %}Trabajo · Espera en la frontera{% else %}Work · Border waits{% endif %}</a></p>
-    <h1>{% if es %}{{ name }}: espera de camiones{% else %}{{ name }} truck wait times{% endif %}</h1>
+    <h1>{% if es %}{{ name }}: tiempo de espera para camiones{% else %}{{ name }} truck wait times{% endif %}</h1>
     {%- if p %}
     {%- if es %}
-    <p class="rb-lede">La espera de los camiones de carga que entran a Estados Unidos de {{ p.es.across }} a {{ p.es.city }}, según la publica la Oficina de Aduanas y Protección Fronteriza (CBP), y a qué hora suele ser más corta.{% if p.name %} En Estados Unidos se conoce como {{ p.name }}.{% endif %}</p>
+    <p class="rb-lede">Cuánto esperan los camiones de carga para cruzar de {{ p.es.across }}, a {{ p.es.city }}, según los tiempos que publica la Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP), y a qué hora suele haber menos demora.{% if p.name %} En Estados Unidos se le conoce como {{ p.name }}.{% endif %}</p>
     {%- else %}
-    <p class="rb-lede">The wait for commercial trucks entering the United States from {{ p.across }} into {{ p.city }}, as U.S. Customs and Border Protection posts it, and the hours it’s usually shortest.{% if p.es %} In Mexico it’s called {{ p.es.short }}.{% endif %}</p>
+    <p class="rb-lede">The wait for commercial trucks entering the United States from {{ p.across }}, into {{ p.city }}, as U.S. Customs and Border Protection posts it, and the hours it’s usually shortest.{% if p.es %} In Mexico it’s called {{ p.es.short }}.{% endif %}</p>
     {%- endif %}
     {%- else %}
     <p class="rb-lede">{% if es %}Este cruce no aparece en la copia más reciente de los datos. El <a href="/border-waits/">tablero</a> tiene todos los cruces.{% else %}This crossing isn’t in the latest copy of the data. The <a href="/border-waits/">board</a> has every crossing.{% endif %}</p>
@@ -29,40 +29,45 @@ layout: default
   </div>
   {%- if p %}
   <dl class="rb-stamp bw-now" data-port="{{ page.port }}">
-    <div><dt>{% if es %}Carriles normales{% else %}Standard lanes{% endif %}</dt><dd data-now="std">{% if es %}{{ p.std.es }}{% else %}{{ p.std.en }}{% endif %}</dd></div>
+    <div><dt>{% if es %}Carriles generales{% else %}Standard lanes{% endif %}</dt><dd data-now="std">{% if es %}{{ p.std.es }}{% else %}{{ p.std.en }}{% endif %}</dd></div>
     <div><dt>{% if es %}Carriles FAST{% else %}FAST lanes{% endif %}</dt><dd data-now="fast">{% if es %}{{ p.fast.es }}{% else %}{{ p.fast.en }}{% endif %}</dd></div>
-    <div><dt>{% if es %}Carriles abiertos, de {{ p.max }}{% else %}Lanes open, of {{ p.max }}{% endif %}</dt><dd data-now="lanes">{% if p.std.lanes %}{{ p.std.lanes }}{% if p.fast.lanes %} + {{ p.fast.lanes }} FAST{% endif %}{% else %}—{% endif %}</dd></div>
-    <div><dt>{% if es %}Publicado por CBP{% else %}Posted by CBP{% endif %}</dt><dd data-now="posted">{% if es %}{{ p.posted_es | default: p.posted | default: "—" }}{% else %}{{ p.posted_en | default: p.posted | default: "—" }}{% endif %}{% if p.stale %} <span class="bw-stale">{% if es %}lectura vieja{% else %}old reading{% endif %}</span>{% endif %}</dd></div>
+    <div><dt>{% if es %}Carriles abiertos (de {{ p.max }}){% else %}Lanes open (of {{ p.max }}){% endif %}</dt><dd data-now="lanes">{% if p.std.lanes %}{{ p.std.lanes }}{% if p.fast.lanes %} + {{ p.fast.lanes }} FAST{% endif %}{% else %}—{% endif %}</dd></div>
+    <div><dt>{% if es %}Publicado por CBP{% else %}Posted by CBP{% endif %}</dt><dd data-now="posted">{% if es %}{{ p.posted_es | default: p.posted | default: "—" }}{% else %}{{ p.posted_en | default: p.posted | default: "—" }}{% endif %}{% if p.stale %} <span class="bw-stale">{% if es %}lectura atrasada{% else %}old reading{% endif %}</span>{% endif %}</dd></div>
   </dl>
   {%- endif %}
 </header>
 
 {% if p %}
-<p class="rb-note bw-copy" id="bw-copy">{% if es %}Copia del {{ b.as_of_es }}. Con JavaScript, la espera de arriba se actualiza desde CBP al abrir la página.{% else %}Copied {{ b.as_of_en }}. With JavaScript on, the wait above refreshes from CBP when the page opens.{% endif %}</p>
+<p class="rb-note bw-copy" id="bw-copy">{% if es %}Copia del {{ b.as_of_es }}. Con JavaScript activado, la espera de arriba se actualiza desde CBP al abrir la página.{% else %}Copied {{ b.as_of_en }}. With JavaScript on, the wait above refreshes from CBP when the page opens.{% endif %}</p>
 <p class="rb-note">
   {%- if es -%}
-  {% if p.hours contains "24" %}Los carriles comerciales abren las 24 horas.{% elsif p.hours_es != "" %}Los carriles comerciales abren de {{ p.hours_es }}, hora local.{% endif %} Hasta {{ p.max }} carriles comerciales{% if p.fast.en != "—" %}, incluido FAST{% endif %}. Puerto de CBP número {{ p.port }}.
+  {% if p.hours contains "24" %}Los carriles comerciales operan las 24 horas.{% elsif p.hours_es != "" %}Horas de operación de los carriles comerciales: de {{ p.hours_es }}, hora local.{% endif %} Tiene hasta {{ p.max }} carriles comerciales{% if p.fast.en != "—" %}, incluido el carril FAST{% endif %}. Número de cruce de CBP: {{ p.port }}.
   {%- else -%}
   {% if p.hours contains "24" %}Commercial lanes are open 24 hours.{% elsif p.hours != "" %}Commercial lanes are open {{ p.hours | replace: "-", " to " }}, local time.{% endif %} Up to {{ p.max }} commercial lanes{% if p.fast.en != "—" %}, including FAST{% endif %}. CBP port number {{ p.port }}.
   {%- endif -%}
 </p>
 {%- if p.notice != "" %}<p class="rb-note">{% if es %}Aviso de CBP (en inglés){% else %}CBP’s notice{% endif %}: {{ p.notice }}</p>{% endif %}
 
+{%- comment %} Our own 30 days when there are enough readings; until then, CBP's averages for this month last year. {% endcomment -%}
+{%- assign ly = p.last_year -%}
+{%- assign src = nil -%}{%- if p.best -%}{%- assign src = p -%}{%- elsif ly.best -%}{%- assign src = ly -%}{%- endif %}
 <div class="rb-judge">
-  <p class="rb-tag">{% if es %}La mejor y la peor hora para cruzar{% else %}Best and worst times to cross{% endif %}</p>
-  {%- if p.best %}
+  <p class="rb-tag">{% if es %}La mejor y la peor hora para cruzar{% else %}Best and worst times to cross{% endif %}{% if src == ly and ly %} · {% if es %}{{ ly.month_es }} del año pasado, según CBP{% else %}{{ ly.month_en }} last year, from CBP{% endif %}{% endif %}</p>
+  {%- if src %}
   {%- if es %}
-  <p class="rb-say">Lo más rápido suele ser el {{ t.days[p.best.dow] }} a las {{ t.hours[p.best.hour] }} ({% if p.best.v == 0 %}sin espera{% else %}{{ p.best.v }} min en promedio{% endif %}); lo más lento, el {{ t.days[p.worst.dow] }} a las {{ t.hours[p.worst.hour] }} ({{ p.worst.v }} min en promedio).</p>
+  <p class="rb-say">Lo más rápido suele ser los {{ t.days_plural[src.best.dow] }} a las {{ t.hours[src.best.hour] }} ({% if src.best.v == 0 %}sin demora{% else %}{{ src.best.v }} min en promedio{% endif %}); lo más lento, los {{ t.days_plural[src.worst.dow] }} a las {{ t.hours[src.worst.hour] }} ({{ src.worst.v }} min en promedio).</p>
   {%- else %}
-  <p class="rb-say">Usually quickest on {{ t.days[p.best.dow] }} at {{ t.hours[p.best.hour] }} ({% if p.best.v == 0 %}no wait{% else %}{{ p.best.v }} min on average{% endif %}); usually slowest on {{ t.days[p.worst.dow] }} at {{ t.hours[p.worst.hour] }} ({{ p.worst.v }} min on average).</p>
+  <p class="rb-say">Usually quickest on {{ t.days[src.best.dow] }} at {{ t.hours[src.best.hour] }} ({% if src.best.v == 0 %}no wait{% else %}{{ src.best.v }} min on average{% endif %}); usually slowest on {{ t.days[src.worst.dow] }} at {{ t.hours[src.worst.hour] }} ({{ src.worst.v }} min on average).</p>
   {%- endif %}
+  {%- elsif p.flat or ly.flat %}
+  <p class="rb-say">{% if es %}Normalmente no hay demora a ninguna hora.{% else %}Usually no wait at any hour.{% endif %}</p>
   {%- else %}
   <p class="rb-say">{% if es %}Todavía no hay suficientes lecturas para decirlo.{% else %}Not enough readings yet to say.{% endif %}</p>
   {%- endif %}
 </div>
 <p class="rb-note">
   {%- if es -%}
-  Basado en {{ p.readings }} lectura{% if p.readings != 1 %}s{% endif %} de los carriles comerciales en los últimos 30 días (el registro empezó el {{ p.first_es }}), en hora local del cruce.{% if p.avg != nil %} La espera promedio en los últimos 30 días fue de {{ p.avg }} min en carriles normales{% if p.fast_avg != nil %} y {{ p.fast_avg }} min en FAST{% endif %}.{% endif %}{% if p.readings < 300 %} Los promedios se vuelven más confiables conforme se juntan semanas de datos.{% endif %}
+  Basado en {{ p.readings }} lectura{% if p.readings != 1 %}s{% endif %} de los carriles comerciales en los últimos 30 días (el registro empezó el {{ p.first_es }}), en la hora local del cruce.{% if p.avg != nil %} La espera promedio en los últimos 30 días fue de {{ p.avg }} min en carriles generales{% if p.fast_avg != nil %} y {{ p.fast_avg }} min en FAST{% endif %}.{% endif %}{% if p.readings < 300 %} Los promedios serán más confiables conforme se acumulen semanas de datos.{% endif %}
   {%- else -%}
   From {{ p.readings }} reading{% if p.readings != 1 %}s{% endif %} of the commercial lanes in the last 30 days (the record here started {{ p.first_en }}), in the crossing’s local time.{% if p.avg != nil %} Over the last 30 days the average wait was {{ p.avg }} min in the standard lanes{% if p.fast_avg != nil %} and {{ p.fast_avg }} min in FAST{% endif %}.{% endif %}{% if p.readings < 300 %} The averages firm up as more weeks are collected.{% endif %}
   {%- endif -%}
@@ -70,15 +75,15 @@ layout: default
 
 {%- if p.nearby.size > 0 %}
 <section class="rb-block">
-  <h2>{% if es %}Cruces cercanos ahora mismo{% else %}Nearby crossings right now{% endif %} <span>{% if es %}Si este está lleno{% else %}If this one is backed up{% endif %}</span></h2>
+  <h2>{% if es %}Cruces cercanos ahora mismo{% else %}Nearby crossings right now{% endif %} <span>{% if es %}Si este está saturado{% else %}If this one is backed up{% endif %}</span></h2>
   <div class="rb-scroll">
     <table class="rb-table bw-near">
-      <thead><tr><th scope="col">{% if es %}Cruce{% else %}Crossing{% endif %}</th><th scope="col">{% if es %}Normales{% else %}Standard{% endif %}</th><th scope="col">FAST</th><th scope="col">{% if es %}Publicado{% else %}Posted{% endif %}</th></tr></thead>
+      <thead><tr><th scope="col">{% if es %}Cruce{% else %}Crossing{% endif %}</th><th scope="col">{% if es %}Generales{% else %}Standard{% endif %}</th><th scope="col">FAST</th><th scope="col">{% if es %}Publicado{% else %}Posted{% endif %}</th></tr></thead>
       <tbody>
       {%- for k in p.nearby %}{% assign n = b.ports[k] %}
         {%- if es %}{% assign nname = n.es.short | default: n.name %}{% assign nurl = n.es.slug | prepend: "/es/tiempos-de-espera/" | append: "/" %}{% unless n.es %}{% assign nurl = nil %}{% if n.slug %}{% assign nurl = n.slug | prepend: "/border-waits/" | append: "/" %}{% endif %}{% endunless %}
         {%- else %}{% assign nname = n.name %}{% assign nurl = nil %}{% if n.slug %}{% assign nurl = n.slug | prepend: "/border-waits/" | append: "/" %}{% endif %}{% endif %}
-        <tr data-port="{{ k }}"><th scope="row">{% if nurl %}<a href="{{ nurl }}">{{ nname }}</a>{% else %}{{ nname }}{% endif %}</th><td data-now="std">{% if es %}{{ n.std.es }}{% else %}{{ n.std.en }}{% endif %}</td><td data-now="fast">{% if es %}{{ n.fast.es }}{% else %}{{ n.fast.en }}{% endif %}</td><td data-now="posted">{% if es %}{{ n.posted_es | default: "—" }}{% else %}{{ n.posted_en | default: "—" }}{% endif %}{% if n.stale %} <span class="bw-stale">{% if es %}vieja{% else %}old{% endif %}</span>{% endif %}</td></tr>
+        <tr data-port="{{ k }}"><th scope="row">{% if nurl %}<a href="{{ nurl }}">{{ nname }}</a>{% else %}{{ nname }}{% endif %}</th><td data-now="std">{% if es %}{{ n.std.es }}{% else %}{{ n.std.en }}{% endif %}</td><td data-now="fast">{% if es %}{{ n.fast.es }}{% else %}{{ n.fast.en }}{% endif %}</td><td data-now="posted">{% if es %}{{ n.posted_es | default: "—" }}{% else %}{{ n.posted_en | default: "—" }}{% endif %}{% if n.stale %} <span class="bw-stale">{% if es %}atrasada{% else %}old{% endif %}</span>{% endif %}</td></tr>
       {%- endfor %}
       </tbody>
     </table>
@@ -88,32 +93,29 @@ layout: default
 
 {%- if p.grid.size > 0 %}
 <section class="rb-block">
-  <h2>{% if es %}Espera habitual por día y hora{% else %}Usual wait by day and hour{% endif %} <span>{% if es %}Carriles normales, promedio de 30 días, minutos{% else %}Standard lanes, 30-day average, minutes{% endif %}</span></h2>
-  <div class="rb-scroll">
-    <table class="bw-heat">
-      <thead><tr><th scope="col" class="bw-corner">{% if es %}Hora{% else %}Hour{% endif %}</th>{% for d in t.short %}<th scope="col"><abbr title="{{ t.days[forloop.index0] }}">{{ d }}</abbr></th>{% endfor %}</tr></thead>
-      <tbody>
-      {%- for row in p.grid %}
-        <tr><th scope="row">{{ t.hours[row.h] }}</th>{% for c in row.cells %}{% if c.v == nil %}<td class="bw-none"><span aria-label="{% if es %}sin datos{% else %}no data{% endif %}">·</span></td>{% else %}<td class="bw-l{{ c.lvl }}">{{ c.v }}</td>{% endif %}{% endfor %}</tr>
-      {%- endfor %}
-      </tbody>
-    </table>
-  </div>
-  <ul class="bw-key" aria-label="{% if es %}Clave{% else %}Key{% endif %}">
-    {%- for l in t.levels %}<li><span class="bw-l{{ forloop.index0 }}" aria-hidden="true"></span>{{ l }}</li>{% endfor %}
-  </ul>
+  <h2>{% if es %}Espera habitual por día y hora{% else %}Usual wait by day and hour{% endif %} <span>{% if es %}Carriles generales, últimos 30 días, minutos{% else %}Standard lanes, last 30 days, minutes{% endif %}</span></h2>
+  {% include border-heat.html grid=p.grid t=t es=es %}
   <p class="rb-note">{% if es %}Un punto es una hora sin lecturas: el cruce estaba cerrado o CBP no publicó una espera. Un carril cerrado cuenta como dato desconocido, no como cero, así que no hace ver más rápido un cruce.{% else %}A dot is an hour with no readings: the crossing was closed or CBP posted no wait. A closed lane counts as unknown, not as zero, so it never makes a crossing look faster than it is.{% endif %}</p>
 </section>
 {%- endif %}
 
+{%- if ly.grid.size > 0 %}
+<section class="rb-block">
+  <h2>{% if es %}{{ ly.month_es | capitalize }} del año pasado, por día y hora{% else %}{{ ly.month_en }} last year, by day and hour{% endif %} <span>{% if es %}Promedios de CBP, carriles generales, minutos{% else %}CBP’s averages, standard lanes, minutes{% endif %}</span></h2>
+  {% include border-heat.html grid=ly.grid t=t es=es %}
+  <p class="rb-note">{% if es %}Son los promedios que la propia CBP publica para {{ ly.month_es }}, con datos del año anterior.{% if ly.fast_avg != nil %} Ese mes la espera promedio fue de {{ ly.avg }} min en carriles generales y {{ ly.fast_avg }} min en FAST.{% elsif ly.avg != nil %} Ese mes la espera promedio fue de {{ ly.avg }} min.{% endif %} Un punto es una hora en que el cruce estaba cerrado.{% unless p.grid.size > 0 %} Los promedios de este sitio, con sus propias lecturas, aparecerán arriba cuando haya unos días de datos.{% endunless %}{% else %}These are CBP’s own averages for {{ ly.month_en }}, based on the year before.{% if ly.fast_avg != nil %} That month the average wait was {{ ly.avg }} min in the standard lanes and {{ ly.fast_avg }} min in FAST.{% elsif ly.avg != nil %} That month the average wait was {{ ly.avg }} min.{% endif %} A dot is an hour the crossing was closed.{% unless p.grid.size > 0 %} This site’s own averages, from its readings, appear above once a few days are collected.{% endunless %}{% endif %}</p>
+</section>
+{%- endif %}
+
 <div class="rb-cols">
-  {%- if p.by_hour.size > 0 %}
+  {%- if p.by_hour.size > 0 %}{% assign bh = p.by_hour %}{% else %}{% assign bh = ly.by_hour %}{% endif %}
+  {%- if bh.size > 0 %}
   <section class="rb-block bw-hours">
-    <h2>{% if es %}Por hora del día{% else %}By hour of day{% endif %} <span>{% if es %}Todos los días, minutos{% else %}All days, minutes{% endif %}</span></h2>
+    <h2>{% if es %}Por hora del día{% else %}By hour of day{% endif %} <span>{% if p.by_hour.size > 0 %}{% if es %}Todos los días, últimos 30 días{% else %}All days, last 30 days{% endif %}{% else %}{% if es %}{{ ly.month_es | capitalize }} del año pasado, CBP{% else %}{{ ly.month_en }} last year, CBP{% endif %}{% endif %}</span></h2>
     <table class="rb-table">
       <thead><tr><th scope="col">{% if es %}Hora{% else %}Hour{% endif %}</th><th scope="col">{% if es %}Promedio{% else %}Average{% endif %}</th><th scope="col" class="rb-barcol"><span class="bw-sr">{% if es %}Gráfica{% else %}Bar{% endif %}</span></th></tr></thead>
       <tbody>
-      {%- for h in p.by_hour %}
+      {%- for h in bh %}
         <tr><th scope="row">{{ t.hours[h.h] }}</th><td>{{ h.v }} min</td><td class="rb-barcol"><span class="rb-bar" aria-hidden="true"><span style="width: {{ h.w }}%"></span></span></td></tr>
       {%- endfor %}
       </tbody>
@@ -123,9 +125,9 @@ layout: default
 
   {%- if p.chart %}
   <section class="rb-block bw-week">
-    <h2>{% if es %}Los últimos 7 días{% else %}The last 7 days{% endif %} <span>{% if es %}{{ p.chart.start_es }} a {{ p.chart.end_es }}{% else %}{{ p.chart.start_en }} to {{ p.chart.end_en }}{% endif %}</span></h2>
+    <h2>{% if es %}Los últimos 7 días{% else %}The last 7 days{% endif %} <span>{% if es %}Del {{ p.chart.start_es }} al {{ p.chart.end_es }}{% else %}{{ p.chart.start_en }} to {{ p.chart.end_en }}{% endif %}</span></h2>
     <figure class="rb-chart">
-      <svg viewBox="0 0 {{ p.chart.w }} {{ p.chart.h }}" preserveAspectRatio="none" role="img" aria-label="{% if es %}Espera en carriles normales cada vez que CBP publicó una lectura en los últimos 7 días, de 0 a {{ p.chart.top }} minutos.{% else %}Standard-lane wait at every reading CBP posted in the last 7 days, on a scale of 0 to {{ p.chart.top }} minutes.{% endif %}">
+      <svg viewBox="0 0 {{ p.chart.w }} {{ p.chart.h }}" preserveAspectRatio="none" role="img" aria-label="{% if es %}Espera en carriles generales cada vez que CBP publicó una lectura en los últimos 7 días, de 0 a {{ p.chart.top }} minutos.{% else %}Standard-lane wait at every reading CBP posted in the last 7 days, on a scale of 0 to {{ p.chart.top }} minutes.{% endif %}">
         <path class="line" d="{{ p.chart.line }}"/>
       </svg>
       <figcaption><span>{{ p.chart.top }} min</span><span>0</span></figcaption>
@@ -141,8 +143,8 @@ layout: default
 {%- assign lanes = site.reefer_lanes | where_exp: "d", "d.lane contains prefix" | sort: "title" %}
 {%- if lanes.size > 0 %}
 <section class="rb-block">
-  <h2>{% if es %}Carga de frutas y verduras que cruza aquí{% else %}Produce loads that cross here{% endif %} <span>{% if es %}Tarifas de camión refrigerado, USDA{% else %}Reefer truck rates, USDA{% endif %}</span></h2>
-  <p class="rb-note">{% if es %}USDA reporta cada semana lo que cuesta un camión refrigerado desde “{{ p.reefer.short }}” (los cruces de México por esta zona) hasta diez ciudades de Estados Unidos (páginas en inglés):{% else %}USDA reports what a refrigerated truckload costs each week from “{{ p.reefer.short }}”, the Mexico crossings through this area, to ten U.S. cities:{% endif %}</p>
+  <h2>{% if es %}Carga de frutas y verduras que cruza por aquí{% else %}Produce loads that cross here{% endif %} <span>{% if es %}Tarifas de camión refrigerado, USDA{% else %}Reefer truck rates, USDA{% endif %}</span></h2>
+  <p class="rb-note">{% if es %}Cada semana, el USDA reporta cuánto cuesta un flete en caja refrigerada desde “{{ p.reefer.short }}” (los cruces desde México en esta zona) hasta diez ciudades de Estados Unidos (páginas en inglés):{% else %}USDA reports what a refrigerated truckload costs each week from “{{ p.reefer.short }}”, the Mexico crossings through this area, to ten U.S. cities:{% endif %}</p>
   <ul class="rb-index">
     {%- for d in lanes %}<li><a href="{{ d.url }}"{% if es %} hreflang="en"{% endif %}>{{ d.title | remove: " reefer rates" }}</a></li>{% endfor %}
   </ul>
@@ -154,33 +156,33 @@ layout: default
   <h2>{% if es %}Preguntas frecuentes{% else %}Common questions{% endif %} <span>{{ name }}</span></h2>
   {%- if es %}
   <h3>¿Cuánto tardan los camiones en cruzar ahora?</h3>
-  <p>{% if p.std.v != nil %}En la última lectura de CBP ({{ p.posted_es }}), los carriles comerciales normales estaban en {{ p.std.es | downcase }}{% if p.fast.v != nil %} y los FAST en {{ p.fast.es | downcase }}{% endif %}.{% else %}CBP no publicó una espera en la última lectura ({{ p.std.es | downcase }}).{% endif %} El recuadro de arriba se actualiza desde CBP al abrir la página.</p>
+  <p>{% if p.std.v != nil %}En la última lectura de CBP ({{ p.posted_es }}), los carriles generales {% if p.std.v == 0 %}estaban sin demora{% else %}tenían {{ p.std.v }} min de espera{% endif %}{% if p.fast.v != nil %} y el carril FAST {% if p.fast.v == 0 %}estaba sin demora{% else %}tenía {{ p.fast.v }} min{% endif %}{% endif %}.{% else %}CBP no publicó una espera en su última lectura ({{ p.std.es | downcase }}).{% endif %} El recuadro de arriba se actualiza desde CBP al abrir la página.</p>
   <h3>¿Cuál es la mejor hora para cruzar?</h3>
-  <p>{% if p.best %}En los últimos 30 días, la espera más corta suele ser el {{ t.days[p.best.dow] }} a las {{ t.hours[p.best.hour] }} y la más larga el {{ t.days[p.worst.dow] }} a las {{ t.hours[p.worst.hour] }}. La tabla de arriba muestra cada hora.{% else %}Todavía no hay suficientes lecturas para decirlo; la tabla por día y hora se llena en unos días.{% endif %}</p>
+  <p>{% if src %}{% if src == p %}En los últimos 30 días{% else %}Según los promedios de CBP para {{ ly.month_es }} del año pasado{% endif %}, la espera más corta suele ser los {{ t.days_plural[src.best.dow] }} a las {{ t.hours[src.best.hour] }} y la más larga, los {{ t.days_plural[src.worst.dow] }} a las {{ t.hours[src.worst.hour] }}. La tabla de arriba muestra cada hora.{% elsif p.flat or ly.flat %}Normalmente no hay demora a ninguna hora.{% else %}Todavía no hay suficientes lecturas para decirlo; la tabla por día y hora se llena en unos días.{% endif %}</p>
   {%- if p.hours != "" %}
-  <h3>¿A qué hora abren los carriles comerciales?</h3>
-  <p>{% if p.hours contains "24" %}Las 24 horas.{% else %}De {{ p.hours_es }}, hora local.{% endif %} Hasta {{ p.max }} carriles comerciales.</p>
+  <h3>¿Cuál es el horario de los carriles comerciales?</h3>
+  <p>{% if p.hours contains "24" %}Operan las 24 horas{% else %}De {{ p.hours_es }}, hora local{% endif %}, con hasta {{ p.max }} carriles comerciales.</p>
   {%- endif %}
   {%- if p.fast.en != "—" %}
   <h3>¿Qué es el carril FAST?</h3>
-  <p>FAST (Free and Secure Trade) es el programa de CBP para transportistas, choferes e importadores con revisión previa; tienen carriles propios.{% if p.avg != nil and p.fast_avg != nil %} Aquí, en los últimos 30 días, FAST promedió {{ p.fast_avg }} min contra {{ p.avg }} min en los carriles normales.{% endif %}</p>
+  <p>FAST (Free and Secure Trade, comercio libre y seguro) es el programa de CBP para transportistas, choferes e importadores precertificados, que cruzan por carriles exclusivos.{% if p.avg != nil and p.fast_avg != nil %} Aquí, en los últimos 30 días, FAST promedió {{ p.fast_avg }} min, frente a {{ p.avg }} min en los carriles generales.{% elsif ly.avg != nil and ly.fast_avg != nil %} Aquí, en {{ ly.month_es }} del año pasado, FAST promedió {{ ly.fast_avg }} min, frente a {{ ly.avg }} min en los carriles generales, según CBP.{% endif %}</p>
   {%- endif %}
   {%- else %}
   <h3>How long is the truck wait at the {{ name }} right now?</h3>
-  <p>{% if p.std.v != nil %}At CBP’s last reading ({{ p.posted_en }}), the standard commercial lanes were at {{ p.std.en | downcase }}{% if p.fast.v != nil %} and FAST at {{ p.fast.en | downcase }}{% endif %}.{% else %}CBP posted no wait at its last reading ({{ p.std.en | downcase }}).{% endif %} The box at the top refreshes from CBP when you open this page.</p>
+  <p>{% if p.std.v != nil %}At CBP’s last reading ({{ p.posted_en }}), the standard commercial lanes {% if p.std.v == 0 %}had no wait{% else %}were at {{ p.std.v }} min{% endif %}{% if p.fast.v != nil %} and FAST {% if p.fast.v == 0 %}had none{% else %}was at {{ p.fast.v }} min{% endif %}{% endif %}.{% else %}CBP posted no wait at its last reading ({{ p.std.en | downcase }}).{% endif %} The box at the top refreshes from CBP when you open this page.</p>
   <h3>What’s the best time to cross?</h3>
-  <p>{% if p.best %}Over the last 30 days the wait has usually been shortest on {{ t.days[p.best.dow] }} at {{ t.hours[p.best.hour] }} and longest on {{ t.days[p.worst.dow] }} at {{ t.hours[p.worst.hour] }}. The heat map above shows every hour.{% else %}Not enough readings yet to say; the heat map by day and hour fills in over the next few days.{% endif %}</p>
+  <p>{% if src %}{% if src == p %}Over the last 30 days{% else %}By CBP’s averages for {{ ly.month_en }} last year{% endif %}, the wait has usually been shortest on {{ t.days[src.best.dow] }} at {{ t.hours[src.best.hour] }} and longest on {{ t.days[src.worst.dow] }} at {{ t.hours[src.worst.hour] }}. The heat map above shows every hour.{% elsif p.flat or ly.flat %}Usually there’s no wait at any hour.{% else %}Not enough readings yet to say; the heat map by day and hour fills in over the next few days.{% endif %}</p>
   {%- if p.hours != "" %}
   <h3>When are the commercial lanes open?</h3>
   <p>{% if p.hours contains "24" %}24 hours a day.{% else %}{{ p.hours | replace: "-", " to " }}, local time.{% endif %} Up to {{ p.max }} commercial lanes.</p>
   {%- endif %}
   {%- if p.fast.en != "—" %}
   <h3>What is the FAST lane?</h3>
-  <p>FAST (Free and Secure Trade) is CBP’s program for pre-approved carriers, drivers and importers, with lanes of its own.{% if p.avg != nil and p.fast_avg != nil %} Here, over the last 30 days, FAST averaged {{ p.fast_avg }} min against {{ p.avg }} min in the standard lanes.{% endif %}</p>
+  <p>FAST (Free and Secure Trade) is CBP’s program for pre-approved carriers, drivers and importers, with lanes of its own.{% if p.avg != nil and p.fast_avg != nil %} Here, over the last 30 days, FAST averaged {{ p.fast_avg }} min against {{ p.avg }} min in the standard lanes.{% elsif ly.avg != nil and ly.fast_avg != nil %} Here, in {{ ly.month_en }} last year, FAST averaged {{ ly.fast_avg }} min against {{ ly.avg }} min in the standard lanes, by CBP’s averages.{% endif %}</p>
   {%- endif %}
   {%- endif %}
   {%- if p.bcis %}
-  <p class="rb-note">{% if es %}Otra fuente: el <a href="https://bcis.tti.tamu.edu/">Border Crossing Information System</a> del Texas A&amp;M Transportation Institute mide el tiempo de cruce de los camiones con lectores en el camino, en algunos puertos de Texas, Nuevo México y Arizona. Mide algo distinto a la espera que publica CBP y vale la pena compararlos.{% else %}A second source: Texas A&amp;M Transportation Institute’s <a href="https://bcis.tti.tamu.edu/">Border Crossing Information System</a> measures truck crossing times with roadside readers at some ports in Texas, New Mexico and Arizona. It measures something different from the wait CBP posts, so the two are worth comparing.{% endif %}</p>
+  <p class="rb-note">{% if es %}Otra fuente: el <a href="https://bcis.tti.tamu.edu/">Border Crossing Information System</a> del Texas A&amp;M Transportation Institute mide el tiempo de cruce de los camiones con lectores instalados en la carretera, en algunos cruces de Texas, Nuevo México y Arizona. Mide algo distinto de la espera que publica CBP, así que conviene comparar ambas fuentes.{% else %}A second source: Texas A&amp;M Transportation Institute’s <a href="https://bcis.tti.tamu.edu/">Border Crossing Information System</a> measures truck crossing times with roadside readers at some ports in Texas, New Mexico and Arizona. It measures something different from the wait CBP posts, so the two are worth comparing.{% endif %}</p>
   {%- endif %}
 </section>
 {% endif %}
@@ -191,11 +193,11 @@ layout: default
   <div class="row">
     <div class="body prose">
       {%- if es %}
-      <p>Los oficiales de cada puerto de entrada publican la espera de los carriles comerciales más o menos cada hora en el sistema <a href="https://bwt.cbp.gov/">Border Wait Times</a> de CBP. Un pequeño servicio en Cloudflare lo consulta cada media hora y guarda cada lectura una sola vez; de ahí salen los promedios por día y hora, que CBP no publica. FAST es el carril para transportistas inscritos en ese programa de CBP.</p>
-      <p>Las horas son la hora local del cruce. Un carril cerrado o una lectura pendiente no se cuentan como cero, sino como dato desconocido. El <a href="/border-waits/">tablero</a> (en inglés) muestra todos los cruces ahora mismo y cómo funciona todo, y los promedios se pueden <a href="/border-waits/border-truck-wait-times.csv">descargar en CSV</a>.{% if page.translation %} <a href="{{ page.translation }}" hreflang="en" lang="en">This page in English</a>.{% endif %}</p>
-      <p>Fuente: U.S. Customs and Border Protection. Los datos son públicos; cualquier error al presentarlos es mío.</p>
+      <p>Los agentes de cada cruce fronterizo publican la espera de los carriles comerciales aproximadamente cada hora en el sistema <a href="https://bwt.cbp.gov/">Border Wait Times</a> de CBP. Un pequeño servicio en Cloudflare lo consulta cada media hora y guarda cada lectura una sola vez; de ese registro salen los promedios de los últimos 30 días. Los promedios del año anterior son los que publica la propia CBP. FAST es el carril para transportistas inscritos en ese programa de CBP.</p>
+      <p>Las horas son la hora local del cruce. Un carril cerrado o una actualización pendiente no se cuentan como cero, sino como dato desconocido. El <a href="/border-waits/">tablero</a> (en inglés) muestra todos los cruces ahora mismo y cómo funciona todo, y los promedios se pueden <a href="/border-waits/border-truck-wait-times.csv">descargar en CSV</a>.{% if page.translation %} <a href="{{ page.translation }}" hreflang="en" lang="en">This page in English</a>.{% endif %}</p>
+      <p>Fuente: Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP). Los datos son públicos; cualquier error al presentarlos es mío.</p>
       {%- else %}
-      <p>Officers at each port of entry post the commercial lanes’ wait about once an hour to CBP’s <a href="https://bwt.cbp.gov/">Border Wait Times</a> system. A small Cloudflare Worker reads it every half hour and keeps each reading once; the averages by day and hour, which CBP doesn’t publish, come from that record. FAST lanes are for carriers enrolled in CBP’s FAST program.</p>
+      <p>Officers at each port of entry post the commercial lanes’ wait about once an hour to CBP’s <a href="https://bwt.cbp.gov/">Border Wait Times</a> system. A small Cloudflare Worker reads it every half hour and keeps each reading once; the last-30-days averages come from that record. The averages from the year before are CBP’s own. FAST lanes are for carriers enrolled in CBP’s FAST program.</p>
       <p>Times are the crossing’s local time. A closed lane or a pending reading counts as unknown, never as zero. The <a href="/border-waits/">board</a> has every crossing right now and how it all works, and the averages are a <a href="/border-waits/border-truck-wait-times.csv">CSV download</a>.{% if page.translation and page.translations_live %} <a href="{{ page.translation }}" hreflang="es" lang="es">Esta página en español</a>.{% endif %}</p>
       <p>Source: U.S. Customs and Border Protection. The numbers are public; any mistakes in presenting them are mine.</p>
       {%- endif %}

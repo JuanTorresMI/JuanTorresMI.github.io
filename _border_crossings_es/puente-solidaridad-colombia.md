@@ -1,7 +1,7 @@
 ---
 port: "230403"
 title: "Tiempo de espera para camiones: Puente Solidaridad Colombia"
-description: "Cuánto esperan los camiones de carga en Puente Solidaridad Colombia: la espera ahora mismo y la habitual a cada hora de la semana, con datos de CBP."
+description: "Cuánto esperan hoy los camiones de carga en el cruce Puente Solidaridad Colombia: la espera ahora y la habitual por hora, según CBP."
 translation: "/border-waits/laredo-colombia-solidarity-bridge/"
-seo_title: "Espera de camiones: Puente Solidaridad Colombia"
+seo_title: "Puente Solidaridad Colombia: espera de camiones hoy"
 ---

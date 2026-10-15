@@ -220,7 +220,7 @@ def wait(lane):
     """{'v': minutes or None, 'en': ..., 'es': ..., 'lanes': open}. Unknown is never shown as zero."""
     v, st = lane.get("delay"), (lane.get("status") or "").lower()
     if v is not None:
-        return {"v": v, "en": "No wait" if v == 0 else f"{v} min", "es": "Sin espera" if v == 0 else f"{v} min", "lanes": lane.get("lanes")}
+        return {"v": v, "en": "No wait" if v == 0 else f"{v} min", "es": "Sin demora" if v == 0 else f"{v} min", "lanes": lane.get("lanes")}
     en, es = {"lanes closed": ("Closed", "Cerrado"), "update pending": ("Pending", "Pendiente")}.get(st, ("—", "—"))
     return {"v": None, "en": en, "es": es, "lanes": lane.get("lanes")}
 
@@ -255,9 +255,9 @@ def weighted(cells, v, n):
     return round(sum(c[v] * c[n] for c in cells if c[v] is not None) / total) if total else None
 
 
-def port_detail(base, port):
-    d = get(f"{base}/border/port?id={port}")
-    profile = d.get("profile") or []                       # [dow, hour, std_avg, std_n, fast_avg, fast_n]
+def summarize(profile):
+    """A [dow, hour, std_avg, std_n, fast_avg, fast_n] profile -> the heat map, the averages by hour,
+    the best and worst hour, and the overall averages (each hour weighted by its readings)."""
     cells = {(r[0], r[1]): r for r in profile}
     hours = sorted({h for _, h in cells})
     grid = []
@@ -275,18 +275,61 @@ def port_detail(base, port):
     by_hour = [b for b in by_hour if b["v"] is not None]
     top = max([b["v"] for b in by_hour] + [1])
     for b in by_hour: b["w"] = round(b["v"] / top * 100, 1)
+    # A port where every hour averages the same (usually 0: a quiet crossing) has no best or worst hour.
+    flat = bool(sure) and round(min(c[2] for c in sure)) == round(max(c[2] for c in sure))
+    return {"grid": grid, "by_hour": by_hour, "avg": weighted(profile, 2, 3), "fast_avg": weighted(profile, 4, 5), "flat": flat,
+            "best": pick(min(sure, key=lambda c: (c[2], c[0], c[1]))) if sure and not flat else None,
+            "worst": pick(max(sure, key=lambda c: (c[2], -c[0], -c[1]))) if sure and not flat else None}
+
+
+def port_detail(base, port):
+    d = get(f"{base}/border/port?id={port}")
+    profile = d.get("profile") or []                       # [dow, hour, std_avg, std_n, fast_avg, fast_n]
     first = local_time(d["first"]) if d.get("first") else None
-    if (d.get("readings") or 0) < ENOUGH:             # one reading is not a "usual" anything
-        known = sure = []
-        profile_avg = fast_avg = None
-    else:
-        profile_avg, fast_avg = weighted(profile, 2, 3), weighted(profile, 4, 5)
-    return {"readings": d.get("readings") or 0, "first": d.get("first") or "",
+    out = summarize(profile)
+    if (d.get("readings") or 0) < ENOUGH:                  # a few readings are not a "usual" anything
+        out.update(grid=[], by_hour=[], avg=None, fast_avg=None, best=None, worst=None, flat=False)
+    return {**out, "readings": d.get("readings") or 0, "first": d.get("first") or "",
             "first_en": full_date(first) if first else "", "first_es": fecha(first) if first else "",
-            "avg": profile_avg, "fast_avg": fast_avg, "grid": grid, "by_hour": by_hour,
-            "best": pick(min(sure, key=lambda c: (c[2], c[0], c[1]))) if sure else None,
-            "worst": pick(max(sure, key=lambda c: (c[2], -c[0], -c[1]))) if sure else None,
             "chart": wait_chart(d.get("recent") or []), "profile": profile}
+
+
+# CBP's own history: its Border Wait Times site publishes, for every port, the average wait in each
+# hour of each weekday of a given month, "based on data from previous year". The live board can't
+# say what October is usually like until it has watched an October; this can, from day one.
+# Fetched straight from CBP here (no key, one request per port), never through the Worker.
+CBP_BWT = "https://bwt.cbp.gov/api"
+MONTHS_ES_FULL = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+
+
+def cbp_get(path):
+    req = urllib.request.Request(f"{CBP_BWT}/{path}", headers={"User-Agent": "site-snapshot (github.com/JuanTorresMI)", "Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        d = json.loads(r.read().decode("utf-8"))
+    return json.loads(d) if isinstance(d, str) else d          # the crossing list comes JSON-in-a-string
+
+
+def cbp_ids():
+    """Our six-digit port numbers -> CBP's eight-digit Border Wait Times ids ("230404" -> "07230404")."""
+    d = cbp_get("bwtmodern/crossingslist")
+    items = d if isinstance(d, list) else next(v for v in d.values() if isinstance(v, list))
+    return {i["bwtId"][-6:]: i["bwtId"] for i in items if i.get("bwtId")}
+
+
+def cbp_year(bwt_id, month, has_fast):
+    """CBP's averages for one port and month, last year, as a summary like ours. 0 is CBP's average
+    for an hour the port was open with no wait; hours it was closed aren't listed at all."""
+    rows = cbp_get(f"historicalwaittimes/{bwt_id}/COV/GENERAL/{month}/7").get("wait_times") or []
+    n = lambda v: int(v) if str(v).strip().isdigit() else None
+    profile = [[int(r["bwt_day"]), int(r["time_slot"]), n(r.get("cv_time_avg")), 1,
+                n(r.get("xcv_time_avg")) if has_fast else None, 1 if has_fast else 0] for r in rows
+               if str(r.get("bwt_day", "")).isdigit() and str(r.get("time_slot", "")).isdigit() and 0 <= int(r["bwt_day"]) <= 6]
+    if has_fast and not any(r[4] for r in profile):          # FAST lanes listed but never used
+        for r in profile: r[4], r[5] = None, 0
+    if not profile: return None
+    out = summarize(profile)
+    out.update(month=month, month_en=MONTHS[month - 1], month_es=MONTHS_ES_FULL[month - 1])
+    return out
 
 
 def border(base):
@@ -324,11 +367,32 @@ def border(base):
     for k, v in out.items():
         near = sorted((o for o in out.values() if o["port"] != k and o["port"][:2] == k[:2]), key=lambda o: (o["port"][:4] != k[:4], o["name"]))
         v["nearby"] = [o["port"] for o in near][:8]
+    month = when(now["updated"]).month
+    try:
+        before = json.load(open(os.path.join(OUT, "border.json"), encoding="utf-8")).get("ports", {})
+    except Exception:
+        before = {}
+    try:
+        ids = cbp_ids()
+    except Exception as e:
+        print(f"border: CBP's crossing list didn't answer ({e})", file=sys.stderr); ids = {}
+    for k, v in out.items():
+        year = None
+        if k in ids:
+            try: year = cbp_year(ids[k], month, v["fast"]["en"] != "—")
+            except Exception as e: print(f"border: no CBP history for {k} ({e})", file=sys.stderr)
+        old = (before.get(k) or {}).get("last_year")
+        v["last_year"] = year or (old if old and old.get("month") == month else None)
     for port in named:
         if port not in out: print(f"border: {port} is in border_crossings.json but not in CBP's feed", file=sys.stderr)
 
     order = lambda b: [v["port"] for v in sorted((v for v in out.values() if v["border"] == b), key=lambda v: v["name"])]
-    busiest = sorted((v for v in out.values() if v["avg"] is not None), key=lambda v: (-v["avg"], v["name"]))[:8]
+    ours = sum(1 for v in out.values() if v["avg"] is not None) * 2 >= len(out)
+    usual = lambda v: v["avg"] if ours else (v["last_year"] or {}).get("avg")
+    for v in out.values():
+        src = v if ours else (v["last_year"] or {})
+        v["usual"] = {"avg": usual(v), "best": src.get("best"), "worst": src.get("worst")}
+    busiest = sorted((v for v in out.values() if usual(v) is not None), key=lambda v: (-usual(v), v["name"]))[:8]
     firsts = [v["first"] for v in out.values() if v["first"]]
     since = local_time(min(firsts)) if firsts else None
 
@@ -355,11 +419,12 @@ def border(base):
             e = c["es"]
             pages.append((BORDER_ES_DIR, e["slug"], {"port": c["port"],
                           "title": f"Tiempo de espera para camiones: {e['short']}",
-                          "description": f"Cuánto esperan los camiones de carga en {e['short']}: la espera ahora mismo y la habitual a cada hora de la semana, con datos de CBP.",
+                          "description": fit(f"Cuánto esperan hoy los camiones de carga en el cruce {e['short']}, de {e['across']} a {e['city']}: la espera ahora y la habitual por hora, según CBP.",
+                                             f"Cuánto esperan hoy los camiones de carga en el cruce {e['short']}: la espera ahora y la habitual por hora, según CBP.", limit=160),
                           "translation": f"/border-waits/{c['slug']}/"}))
         pages[0][2]["seo_title"] = fit(f"{c['name']} Truck Wait Times Now & by Hour", f"{c['name']} Truck Wait Times")
         if c.get("es"):
-            pages[1][2]["seo_title"] = fit(f"Espera de camiones en {c['es']['short']}: ahora y por hora", f"Espera de camiones: {c['es']['short']}")
+            pages[1][2]["seo_title"] = fit(f"{c['es']['short']}: tiempo de espera de camiones hoy", f"{c['es']['short']}: espera de camiones hoy")
         for folder, slug, fm in pages:
             os.makedirs(folder, exist_ok=True)
             f = os.path.join(folder, slug + ".md")
@@ -377,6 +442,7 @@ def border(base):
             "as_of_es": f"{fecha(t)}, {t.hour}:{t.minute:02d} (hora de Michigan)",
             "since_en": full_date(since) if since else "", "since_es": fecha(since) if since else "", "since_iso": since.date().isoformat() if since else stamp,
             "ports": out, "mexico": order("mexico"), "canada": order("canada"), "busiest": [v["port"] for v in busiest],
+            "busiest_source": "ours" if ours else "cbp", "month_en": MONTHS[month - 1], "month_es": MONTHS_ES_FULL[month - 1],
             "reporting": len(reporting), "total": len(out),
             "longest": longest["port"] if longest and longest["std"]["v"] else None}
 

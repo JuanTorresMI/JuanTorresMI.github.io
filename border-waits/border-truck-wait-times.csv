@@ -10,12 +10,15 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 250301,mexico,Calexico – East,standard,Thursday,10,5,1,30,2026-10-15
 250301,mexico,Calexico – East,FAST,Thursday,10,5,1,30,2026-10-15
 240601,mexico,Columbus,standard,Thursday,10,5,1,30,2026-10-15
+240601,mexico,Columbus,standard,Thursday,11,5,1,30,2026-10-15
 230201,mexico,Del Rio,standard,Wednesday,12,0,1,30,2026-10-15
 230201,mexico,Del Rio,standard,Thursday,12,0,1,30,2026-10-15
 260101,mexico,Douglas (Raul Hector Castro),standard,Thursday,9,1,1,30,2026-10-15
 260101,mexico,Douglas (Raul Hector Castro),standard,Thursday,10,1,1,30,2026-10-15
 240203,mexico,El Paso – Ysleta,standard,Thursday,10,30,1,30,2026-10-15
 240203,mexico,El Paso – Ysleta,FAST,Thursday,10,15,1,30,2026-10-15
+240203,mexico,El Paso – Ysleta,standard,Thursday,11,30,1,30,2026-10-15
+240203,mexico,El Paso – Ysleta,FAST,Thursday,11,15,1,30,2026-10-15
 230403,mexico,Laredo – Colombia Solidarity,standard,Thursday,10,30,1,30,2026-10-15
 230403,mexico,Laredo – Colombia Solidarity,FAST,Thursday,10,5,1,30,2026-10-15
 230403,mexico,Laredo – Colombia Solidarity,standard,Thursday,11,15,1,30,2026-10-15
@@ -25,10 +28,13 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 230404,mexico,Laredo – World Trade Bridge,standard,Thursday,11,45,1,30,2026-10-15
 230404,mexico,Laredo – World Trade Bridge,FAST,Thursday,11,20,1,30,2026-10-15
 240401,mexico,Marcelino Serna – Tornillo,standard,Thursday,10,5,1,30,2026-10-15
+240401,mexico,Marcelino Serna – Tornillo,standard,Thursday,11,5,1,30,2026-10-15
 260301,mexico,Naco,standard,Thursday,9,1,1,30,2026-10-15
 260301,mexico,Naco,standard,Thursday,10,1,1,30,2026-10-15
 260402,mexico,Nogales – Mariposa,standard,Thursday,9,0,1,30,2026-10-15
 260402,mexico,Nogales – Mariposa,FAST,Thursday,9,0,1,30,2026-10-15
+260402,mexico,Nogales – Mariposa,standard,Thursday,10,15,1,30,2026-10-15
+260402,mexico,Nogales – Mariposa,FAST,Thursday,10,0,1,30,2026-10-15
 250602,mexico,Otay Mesa – Commercial,standard,Thursday,8,25,1,30,2026-10-15
 250602,mexico,Otay Mesa – Commercial,FAST,Thursday,8,15,1,30,2026-10-15
 250602,mexico,Otay Mesa – Commercial,standard,Thursday,9,30,1,30,2026-10-15
@@ -47,9 +53,12 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 240801,mexico,Santa Teresa,FAST,Thursday,9,30,1,30,2026-10-15
 240801,mexico,Santa Teresa,standard,Thursday,10,20,1,30,2026-10-15
 240801,mexico,Santa Teresa,FAST,Thursday,10,15,1,30,2026-10-15
+240801,mexico,Santa Teresa,standard,Thursday,11,40,1,30,2026-10-15
+240801,mexico,Santa Teresa,FAST,Thursday,11,35,1,30,2026-10-15
 250501,mexico,Tecate,standard,Thursday,10,5,1,30,2026-10-15
 070801,canada,Alexandria Bay – Thousand Islands Bridge,standard,Thursday,12,0,1,30,2026-10-15
 300401,canada,Blaine – Pacific Highway,standard,Thursday,9,5,1,30,2026-10-15
+300401,canada,Blaine – Pacific Highway,standard,Thursday,10,15,1,30,2026-10-15
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Thursday,12,5,2,30,2026-10-15
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Thursday,13,2,1,30,2026-10-15
 011503,canada,Calais – International Avenue,standard,Thursday,12,0,1,30,2026-10-15
@@ -60,7 +69,10 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 020901,canada,Derby Line,standard,Thursday,12,5,1,30,2026-10-15
 380001,canada,Detroit – Ambassador Bridge,standard,Thursday,12,5,1,30,2026-10-15
 380001,canada,Detroit – Ambassador Bridge,FAST,Thursday,12,5,1,30,2026-10-15
+380001,canada,Detroit – Ambassador Bridge,standard,Thursday,13,5,1,30,2026-10-15
+380001,canada,Detroit – Ambassador Bridge,FAST,Thursday,13,5,1,30,2026-10-15
 380002,canada,Detroit – Windsor Tunnel,standard,Thursday,12,5,1,30,2026-10-15
+380002,canada,Detroit – Windsor Tunnel,standard,Thursday,13,5,1,30,2026-10-15
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Thursday,12,5,1,30,2026-10-15
 380102,canada,Detroit – Gordie Howe International Bridge,FAST,Thursday,12,5,1,30,2026-10-15
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Thursday,13,5,1,30,2026-10-15
@@ -71,8 +83,9 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 360401,canada,International Falls,standard,Wednesday,12,0,1,30,2026-10-15
 360401,canada,International Falls,standard,Thursday,12,0,1,30,2026-10-15
 010401,canada,Jackman,standard,Wednesday,13,0,1,30,2026-10-15
+010401,canada,Jackman,standard,Thursday,13,0,1,30,2026-10-15
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Thursday,12,2,2,30,2026-10-15
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Thursday,13,1,1,30,2026-10-15
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Thursday,13,0.5,2,30,2026-10-15
 L01901,canada,Madawaska,standard,Thursday,12,2,1,30,2026-10-15
 L01901,canada,Madawaska,standard,Thursday,13,2,1,30,2026-10-15
 070401,canada,Massena,standard,Wednesday,13,0,1,30,2026-10-15
