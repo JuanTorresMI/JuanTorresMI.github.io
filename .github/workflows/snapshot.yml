@@ -32,7 +32,12 @@ jobs:
       - name: Commit if changed
         id: commit
         run: |
-          git add _data/live _reefer_lanes reefer-rates/usda-reefer-truck-rates.csv
+          git add _data/live
+          # These only exist once there is reefer data (lane pages need 4 weeks of it), and a
+          # git add of a path with nothing in it fails the job.
+          for p in reefer-rates/usda-reefer-truck-rates.csv _reefer_lanes/*.md; do
+            if [ -e "$p" ]; then git add "$p"; fi
+          done
           if git diff --cached --quiet; then
             echo "Nothing changed."
             echo "changed=false" >> "$GITHUB_OUTPUT"
