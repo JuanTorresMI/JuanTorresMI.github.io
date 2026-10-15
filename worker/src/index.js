@@ -5,12 +5,15 @@
  *   GET /          the house TV: { now, last, lately, deck, tally, updated }
  *   GET /substack  the newsletter: { items: [{ title, url, date, excerpt }] }
  *   GET /youtube   the channel: { channel, stats, recent, history, updated } (see youtube.js)
+ *   GET /reefer, /reefer/history?year=Y   USDA reefer truck rates (see reefer.js)
  *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
  *
- * The cron trigger in wrangler.toml calls `scheduled` once an hour to poll YouTube.
+ * Two cron triggers in wrangler.toml call `scheduled`: at :17 to poll YouTube, at :47 for the
+ * reefer rates (a new report every sixth hour, one week of backfill the others).
  */
 import { catalog, CATALOG_MAX_AGE, visits, guestbook, sign, unsign, Refused } from "./music.js";
 import { poll, snapshot, YOUTUBE_MAX_AGE } from "./youtube.js";
+import { reeferTick, reeferData, reeferHistory, REEFER_MAX_AGE } from "./reefer.js";
 
 const STREMIO = "https://api.strem.io/api/datastoreGet";
 const SUBSTACK = "https://juantorresis.substack.com/feed";
@@ -33,6 +36,7 @@ export default {
     if (route.startsWith("/music")) return musicRoute(request, env, ctx, route, url, cors);
     if (request.method !== "GET") return json({ error: "GET only" }, 405, cors);
     if (route === "/youtube") return youtubeRoute(env, ctx, url, cors);
+    if (route === "/reefer" || route === "/reefer/history") return reeferRoute(env, ctx, route, url, cors);
 
     const feed = route === "/substack";
     const maxAge = feed ? FEED_CACHE_S : TV_CACHE_S;
@@ -62,9 +66,11 @@ export default {
     return res;
   },
 
-  // Once an hour (crons in wrangler.toml). A failed poll is logged and the last snapshot stays.
+  // Crons in wrangler.toml. A failed poll is logged and the last stored data stays.
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(poll(env).catch((e) => console.error("youtube poll:", e && e.message ? e.message : e)));
+    const log = (what) => (e) => console.error(what + ":", e && e.message ? e.message : e);
+    if (event.cron === REEFER_CRON) ctx.waitUntil(reeferTick(env, new Date(event.scheduledTime)).catch(log("reefer")));
+    else ctx.waitUntil(poll(env).catch(log("youtube poll")));
   },
 };
 
@@ -124,6 +130,32 @@ async function youtubeRoute(env, ctx, url, cors) {
     return json({ error: e.message || String(e) }, 502, cors);
   }
   const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${YOUTUBE_MAX_AGE}` });
+  ctx.waitUntil(cache.put(cacheKey, res.clone()));
+  return res;
+}
+
+/* ---------------------------------------------------------- the reefer rate board ---- */
+
+const REEFER_CRON = "47 * * * *";   // must match the second entry in wrangler.toml
+
+async function reeferRoute(env, ctx, route, url, cors) {
+  const year = route === "/reefer/history" ? Number(url.searchParams.get("year")) : null;
+  if (year !== null && !(year >= 2000 && year <= 2100)) return json({ error: "Give a year, like ?year=2025" }, 400, cors);
+  const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/v2" + route + (year ? "/" + year : ""));
+  const hit = await cache.match(cacheKey);
+  if (hit) { const fresh = new Response(hit.body, hit); for (const [k, v] of Object.entries(cors)) fresh.headers.set(k, v); return fresh; }
+  let payload;
+  try {
+    payload = year ? await reeferHistory(env, year) : await reeferData(env);
+  } catch (e) {
+    console.error("reefer:", e && e.message ? e.message : e);
+    return json({ error: e.message || String(e) }, 502, cors);
+  }
+  // Nothing stored yet (the hour after a first deploy): answer, but don't keep that empty
+  // answer at the edge for an hour after the data arrives.
+  const empty = year ? payload.lanes.length === 0 : !payload.latest;
+  if (empty) return json(payload, 200, { ...cors, "Cache-Control": "no-store" });
+  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${REEFER_MAX_AGE}` });
   ctx.waitUntil(cache.put(cacheKey, res.clone()));
   return res;
 }

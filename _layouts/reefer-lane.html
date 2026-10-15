@@ -1,0 +1,96 @@
+---
+layout: default
+---
+{%- comment -%}
+  One reefer lane: /reefer-rates/<origin>-to-<city>/, in the board's rate-sheet style (.rb in
+  style.css). The page file in _reefer_lanes/ is only front matter (lane, title, description),
+  written by scripts/snapshot.py; everything shown comes from site.data.live.reefer.lanes[page.lane].
+{%- endcomment -%}
+{%- assign r = site.data.live.reefer -%}
+{%- assign l = r.lanes[page.lane] -%}
+<div class="rb">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family"><a class="rb-lane-back" href="/reefer-rates/">Work · Reefer rates</a></p>
+    <h1>{{ l.short | default: page.title }} to {{ l.dest }}</h1>
+    {%- if l %}
+    <p class="rb-lede">What a refrigerated truckload of produce costs from {{ l.origin }} to {{ l.dest }}, week by week, from USDA’s National Truck Rate Report. {% if l.current %}The latest rate, for the week of {{ l.last_week }}, is <strong>{{ l.range }}</strong> a load{% if l.mostly != "" %}, mostly {{ l.mostly }}{% endif %}.{% else %}The lane is out of season right now; it was last quoted the week of {{ l.last_week }}, at {{ l.range }} a load.{% endif %}</p>
+    {%- else %}
+    <p class="rb-lede">This lane’s numbers aren’t in the latest copy of the data. The <a class="link" href="/reefer-rates/">rate sheet</a> has this week’s rates.</p>
+    {%- endif %}
+  </div>
+  {%- if l %}
+  <dl class="rb-stamp">
+    <div><dt>{% if l.current %}This week{% else %}Last quoted{% endif %}</dt><dd>{{ l.last_week }}</dd></div>
+    <div><dt>Range</dt><dd>{{ l.range }}</dd></div>
+    {%- if l.mostly != "" %}<div><dt>Mostly</dt><dd>{{ l.mostly }}</dd></div>{% endif %}
+    {%- if l.change != "" %}<div><dt>Change</dt><dd>{{ l.change }}</dd></div>{% endif %}
+    {%- if l.availability != "" %}<div><dt>Trucks</dt><dd>{{ l.availability }}</dd></div>{% endif %}
+  </dl>
+  {%- endif %}
+</header>
+
+{% if l %}
+<p class="rb-note">
+  {%- if l.year_ago %}A year earlier (week of {{ l.year_ago.week }}) the middle of the range was {{ l.year_ago.mid }}; this week’s is {{ l.year_ago.diff }} against that. {% endif -%}
+  {%- if l.weeks_year > 0 %}Over the last 52 weeks the lane was quoted {{ l.weeks_year }} times, averaging {{ l.avg }} at the middle, from a low of {{ l.low }} to a high of {{ l.high }}. {% endif -%}
+  Months it has been quoted in: {{ l.season }}.
+</p>
+
+{%- if l.chart %}
+<section class="rb-block">
+  <h2>Every week on record <span>{{ l.chart.start }} to {{ l.chart.end }}</span></h2>
+  <figure class="rb-chart">
+    <svg viewBox="0 0 {{ l.chart.w }} {{ l.chart.h }}" preserveAspectRatio="none" role="img" aria-label="Weekly rate from {{ l.short }} to {{ l.dest }}, {{ l.chart.start }} to {{ l.chart.end }}: the shaded band runs from the low to the high quote, the line is the middle. Lowest {{ l.chart.bottom }}, highest {{ l.chart.top }}.">
+      <path class="band" d="{{ l.chart.band }}"/>
+      <path class="line" d="{{ l.chart.line }}"/>
+    </svg>
+    <figcaption><span>{{ l.chart.top }}</span><span>{{ l.chart.bottom }}</span></figcaption>
+  </figure>
+  <p class="rb-note">The shaded band runs from the lowest to the highest rate USDA reported each week; the line is the middle of the “mostly” range, or of the full range when USDA gives no “mostly”. Gaps are weeks the lane wasn’t quoted.</p>
+</section>
+{%- endif %}
+
+<div class="rb-cols">
+  <section class="rb-block">
+    <h2>Week by week <span>The last {{ l.rows.size }} quotes</span></h2>
+    <div class="rb-scroll">
+      <table class="rb-table">
+        <thead><tr><th scope="col">Week of</th><th scope="col">Range</th><th scope="col">Mostly</th><th scope="col">Change</th><th scope="col">Trucks</th></tr></thead>
+        <tbody>
+        {%- for w in l.rows %}
+          <tr><th scope="row">{{ w.week }}</th><td>{{ w.range | default: "—" }}</td><td>{{ w.mostly | default: "—" }}</td><td>{{ w.change | default: "—" }}</td><td>{{ w.availability | default: "—" }}</td></tr>
+        {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {%- if l.compare.size > 1 %}
+  <section class="rb-block">
+    <h2>Into {{ l.dest }} this week <span>Cheapest first</span></h2>
+    <div class="rb-scroll">
+      <table class="rb-table">
+        <thead><tr><th scope="col">From</th><th scope="col">Range</th></tr></thead>
+        <tbody>
+        {%- for c in l.compare %}
+          <tr{% if c.here %} class="rb-here"{% endif %}><th scope="row">{% if c.lane and c.here == false %}<a href="/reefer-rates/{{ c.lane }}/">{{ c.short }}</a>{% else %}{{ c.short }}{% endif %}</th><td>{{ c.range }}</td></tr>
+        {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {%- endif %}
+</div>
+{% endif %}
+</div>
+
+<section class="sec">
+  <header class="sec-head"><h2>About these numbers</h2></header>
+  <div class="row">
+    <div class="body prose">
+      <p>Rates are USDA’s, for a full load in a 48 to 53 foot refrigerated trailer, broker fees included, as reported in the <a href="https://mymarketnews.ams.usda.gov/viewReport/2375">Specialty Crops National Truck Rate Report</a>. The range is the lowest to highest rate reported that week; “mostly” is where most loads moved. USDA names this shipping area “{{ l.usda | default: page.title }}”.</p>
+      <p>The <a href="/reefer-rates/">rate sheet</a> has every lane for this week, how the data is collected, and the whole history as a <a href="/reefer-rates/usda-reefer-truck-rates.csv">CSV download</a>. Source: USDA Agricultural Marketing Service, Specialty Crops Market News.</p>
+    </div>
+  </div>
+</section>

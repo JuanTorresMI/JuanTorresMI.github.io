@@ -1,5 +1,7 @@
 # Once a day, copies the Worker's live data into the site (scripts/snapshot.py), so /youtube/
-# and /watching/ have real numbers in their HTML for crawlers and readers without JavaScript.
+# and /watching/ have real numbers in their HTML for crawlers and readers without JavaScript,
+# and /reefer-rates/ (which is built from the copy alone) gets the week's report, new lane
+# pages and a fresh CSV.
 # Commits only when something changed, then starts a deploy: a push made with the workflow's
 # own token doesn't trigger other workflows, but an explicit dispatch does.
 name: Snapshot live pages
@@ -31,6 +33,11 @@ jobs:
         id: commit
         run: |
           git add _data/live
+          # These only exist once there is reefer data (lane pages need 4 weeks of it), and a
+          # git add of a path with nothing in it fails the job.
+          for p in reefer-rates/usda-reefer-truck-rates.csv _reefer_lanes/*.md; do
+            if [ -e "$p" ]; then git add "$p"; fi
+          done
           if git diff --cached --quiet; then
             echo "Nothing changed."
             echo "changed=false" >> "$GITHUB_OUTPUT"

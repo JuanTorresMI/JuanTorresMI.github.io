@@ -33,6 +33,15 @@ permalink: pretty
 defaults:
   - scope: { path: "", type: posts }
     values: { permalink: "/blog/:title/" }
+  - scope: { path: "", type: reefer_lanes }
+    values: { layout: reefer-lane, image: /assets/og/reefer-rates.png, image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rates, lane by lane." }
+
+# One page per reefer lane (/reefer-rates/<origin>-to-<city>/). The files in _reefer_lanes/ are
+# front matter only, written by scripts/snapshot.py; the data is _data/live/reefer.json.
+collections:
+  reefer_lanes:
+    output: true
+    permalink: /reefer-rates/:name/
 
 # Cloudflare Web Analytics: cookieless page counts, no consent banner needed. Paste the token
 # from the dashboard's JS snippet (Web Analytics > the site > Manage site). It is public by

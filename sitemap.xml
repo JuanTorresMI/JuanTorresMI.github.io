@@ -8,7 +8,8 @@ sitemap: false
   build happens to have. A page opts out with `sitemap: false` in its front matter.
   <lastmod> is only written when it is true: a page's `last_modified_at` if it sets one,
   otherwise the date scripts/lastmod.py found in git (the newest commit to the page or to a
-  data file it reads, so /youtube/ moves with its daily snapshot); a post's date for posts.
+  data file it reads, so /youtube/ moves with its daily snapshot); a post's date for posts;
+  for a reefer lane, the week it was last quoted.
   Stamping every page with the build time would tell Google that everything changed on every
   push, and it stops trusting a sitemap's dates once they lie. A local build has no git
   dates unless you run lastmod.py first; those pages then simply list no date.
@@ -28,6 +29,17 @@ sitemap: false
     <priority>{% if p.url == "/" %}1.0{% elsif p.url contains "projects" %}0.8{% else %}0.6{% endif %}</priority>
   </url>
 {%- endunless -%}
+{%- endfor -%}
+{%- for lane in site.reefer_lanes %}
+  {%- assign l = site.data.live.reefer.lanes[lane.lane] %}
+  <url>
+    <loc>{{ lane.url | absolute_url | xml_escape }}</loc>
+    {%- if l %}
+    <lastmod>{{ l.last_iso | date_to_xmlschema }}</lastmod>
+    {%- endif %}
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
 {%- endfor -%}
 {%- for post in site.posts %}
   <url>

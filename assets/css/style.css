@@ -413,6 +413,95 @@ html { scroll-behavior: smooth; }
   .page .inline-links a, .page .prose a { border: 0; text-decoration: none; }
 }
 
+/* ---------- the reefer rate board (/reefer-rates/ and its lane pages) ----------
+   A "work" page: a printed rate sheet. Dense, ruled, figures in mono, one 2px ink rule under the
+   heading, the steel accent only for what is selected. Everything is scoped under .rb. */
+.rb { padding-top: 48px; }
+.rb-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px; border-bottom: 2px solid var(--ink); padding-bottom: 24px; }
+.rb-title { flex: 1 1 520px; min-width: 0; }
+.rb-family { margin: 0 0 12px !important; font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+.rb h1 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.01em; color: var(--ink); }
+.rb-sub { margin: 16px 0 0 !important; max-width: 46em; font-size: 15px; line-height: 1.6; color: var(--text-2); }
+/* the hairlines between boxes are the ink showing through a 1px gap, so they stay right when the boxes wrap */
+.rb-stamp { display: flex; flex-wrap: wrap; gap: 1px; margin: 0; border: 1px solid var(--ink); background: var(--ink); }
+.rb-stamp > div { flex: 1 1 auto; padding: 12px 20px; background: var(--ground); }
+.rb-stamp dt, .rb-facts dt { font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.rb-stamp dd { margin: 4px 0 0; font-family: var(--mono); font-size: 15px; color: var(--ink); white-space: nowrap; }
+.rb-stamp dd span { color: var(--text-2); }
+
+.rb-bar { position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 32px; padding: 12px 16px; background: var(--stock); border: 1px solid var(--rule); }
+.rb-find { flex: 1 1 260px; display: flex; align-items: center; gap: 12px; min-width: 0; }
+.rb-find span, .rb-views button, .rb-csv, .rb-go { font: 500 11px/1 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; }
+.rb-find span { color: var(--muted); white-space: nowrap; }
+.rb-find input { flex: 1; min-width: 0; height: 44px; padding: 0 12px; border: 1px solid var(--rule); border-radius: 0; background: var(--ground); color: var(--ink); font: 400 15px var(--sans); }
+.rb-find input:focus { outline: 1px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+.rb-views { display: flex; border: 1px solid var(--ink); }
+.rb-views button { height: 44px; padding: 0 16px; border: 0; border-left: 1px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; }
+.rb-views button:first-child { border-left: 0; }
+.rb-views button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
+.rb-csv { height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none; transition: background 0.15s, color 0.15s; }
+.rb-csv:hover { background: var(--ink); color: var(--on-ink); }
+
+.rb-main { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 32px; margin-top: 32px; }
+.rb-sheet-wrap { flex: 999 1 640px; min-width: 0; }
+.rb-scroll { overflow-x: auto; border: 1px solid var(--ink); background: var(--stock); }
+.rb-sheet { width: 100%; min-width: 720px; border-collapse: collapse; font-family: var(--mono); font-size: 11.5px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--text); }
+.rb-cap { caption-side: top; text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); font: 400 12px var(--sans); color: var(--text-2); }
+.rb-sheet thead th { padding: 10px 6px; background: var(--silian); border-bottom: 1px solid var(--ink); border-left: 1px solid var(--rule); text-align: right; font: 500 10px var(--sans); letter-spacing: 0.12em; color: var(--ink); }
+.rb-sheet thead th abbr { text-decoration: none; cursor: help; }
+.rb-sheet thead .rb-corner { text-align: left; border-left: 0; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.rb-sheet tbody th { padding: 9px 10px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--rule); font: 400 13px var(--sans); color: var(--ink); }
+.rb-sheet td { padding: 0; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+.rb-sheet td > a, .rb-sheet td > span { display: block; padding: 9px 6px; color: inherit; text-decoration: none; }
+.rb-sheet td > a:hover { color: var(--accent); }
+.rb-sheet td > a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.rb-sheet tbody tr:last-child > * { border-bottom: 0; }
+.rb-sheet .rb-big { background: var(--silian); color: var(--ink); font-weight: 500; }
+.rb-sheet .rb-none { color: var(--rule); }
+.rb-sheet .rb-picked { outline: 2px solid var(--accent); outline-offset: -2px; }
+.rb-note { margin: 12px 0 0 !important; font-size: 13px; color: var(--text-2); }
+.rb-also { margin: 16px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); font-size: 13px; color: var(--text-2); }
+.rb-also li { padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.rb-also li span { font-family: var(--mono); font-size: 12px; color: var(--ink); }
+
+.rb-panel { flex: 1 1 248px; min-width: 0; display: flex; flex-direction: column; gap: 16px; padding: 20px; border: 1px solid var(--ink); background: var(--stock); position: sticky; top: 88px; }
+.rb-panel-k { margin: 0 !important; font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+.rb-panel h2 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: 30px; line-height: 1.05; color: var(--ink); }
+.rb-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--rule); }
+.rb-facts > div { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.rb-facts dd { margin: 2px 0 0; font-family: var(--mono); font-size: 15px; color: var(--ink); }
+.rb-spark { width: 100%; height: 96px; display: block; border-bottom: 1px solid var(--ink); }
+.rb-spark polyline { fill: none; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.rb-panel-note { margin: -8px 0 0 !important; font-size: 12px; color: var(--muted); }
+.rb-go { height: 44px; display: flex; align-items: center; justify-content: center; background: var(--ink); color: var(--on-ink); text-decoration: none; transition: background 0.15s; }
+.rb-go:hover { background: var(--accent); }
+.rb-go[hidden] { display: none; }
+.rb-empty { margin-top: 32px !important; color: var(--muted); }
+@media (max-width: 860px) { .rb { padding-top: 32px; } .rb-bar, .rb-panel { position: static; } .rb-stamp { width: 100%; } }
+
+/* lane pages: the same sheet, one lane at a time */
+.rb-lane-back { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+.rb-lane-back:hover { color: var(--ink); }
+.rb-block { margin-top: 48px; }
+.rb-block > h2 { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; margin: 0 0 12px; padding-top: 12px; border-top: 1px solid var(--ink); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); }
+.rb-block > h2 span { font-weight: 400; color: var(--muted); }
+.rb-lede { margin: 16px 0 0 !important; max-width: 46em; font-size: 16px; line-height: 1.6; color: var(--text-2); }
+.rb-lede strong { color: var(--ink); font-weight: 500; }
+.rb-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; color: var(--text); background: var(--stock); }
+.rb-table th, .rb-table td { padding: 9px 12px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--rule); }
+.rb-table thead th { background: var(--silian); border-bottom-color: var(--ink); font: 500 10px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.rb-table tbody th { font: 400 13px var(--sans); color: var(--ink); }
+.rb-table a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--rule); }
+.rb-table a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.rb-table .rb-here > * { color: var(--accent); font-weight: 500; }
+.rb-chart { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 16px; border: 1px solid var(--ink); background: var(--stock); }
+.rb-chart svg { width: 100%; height: 240px; display: block; border-bottom: 1px solid var(--ink); }
+.rb-chart .band { fill: var(--silian); }
+.rb-chart .line { fill: none; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.rb-chart figcaption { display: flex; flex-direction: column; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--text-2); }
+.rb-cols { display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
+.rb-cols > * { flex: 1 1 360px; min-width: 0; }
+@media (max-width: 600px) { .rb-chart svg { height: 180px; } }
 /* ---------- YouTube (/youtube/) ----------
    A "gamer" page on night stock: HUD frames (2px), uppercase mono labels, square thumbnails.
    Scoped under .yt. */
