@@ -43,7 +43,7 @@ defaults:
   - scope: { path: "", type: border_crossings }
     values: { layout: border-crossing, lang: en, translations_live: true, parent: { title: Border truck wait times, url: /border-waits/ }, image: /assets/og/border-waits.png, image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits, now and by hour." }
   - scope: { path: "", type: border_crossings_es }
-    values: { layout: border-crossing, lang: es, translations_live: true, parent: { title: Tiempos de espera en la frontera, url: /border-waits/ }, image: /assets/og/border-waits.png, image_alt: "Tiempos de espera para camiones en la frontera, por Juan Torres." }
+    values: { layout: border-crossing, lang: es, translations_live: true, parent: { title: Tiempos de espera en la frontera, url: /es/tiempos-de-espera/ }, image: /assets/og/border-waits.png, image_alt: "Tiempos de espera para camiones en la frontera, por Juan Torres." }
 
 # One page per reefer lane (/reefer-rates/<origin>-to-<city>/). The files in _reefer_lanes/ are
 # front matter only, written by scripts/snapshot.py; the data is _data/live/reefer.json.

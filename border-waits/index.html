@@ -6,6 +6,8 @@ permalink: /border-waits/
 description: Commercial truck wait times at every U.S. land port on the Mexican and Canadian borders, right now and by hour of the week, from CBP's readings.
 image: /assets/og/border-waits.png
 image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits, now and by hour."
+translation: /es/tiempos-de-espera/
+translations_live: true
 ---
 {%- comment -%}
   A "work" page (see the families in CLAUDE.md), in the reefer board's rate-sheet style (.rb in
@@ -21,6 +23,7 @@ image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits
     <p class="rb-family">Work · Border freight</p>
     <h1>Truck wait times at the border</h1>
     <p class="rb-sub">How long commercial trucks are waiting to enter the United States at every land port on the Mexican and Canadian borders, as U.S. Customs and Border Protection posts it, and how long they usually wait at each hour of the week. CBP only shows the wait right now; the history here is collected every half hour.</p>
+    <p class="bw-lang"><a href="/es/tiempos-de-espera/" hreflang="es" lang="es">En español: los cruces con México →</a></p>
   </div>
   {%- if b %}
   <dl class="rb-stamp">
@@ -91,6 +94,12 @@ image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits
   <ul class="rb-index">
     {%- assign pages = site.border_crossings | sort: "title" %}
     {%- for d in pages %}{% assign p = b.ports[d.port] %}<li><a href="{{ d.url }}">{{ p.name | default: d.title }}</a></li>{% endfor %}
+  </ul>
+  <h3 lang="es">En español</h3>
+  <ul class="rb-index" lang="es">
+    <li><a href="/es/tiempos-de-espera/" hreflang="es">Todos los cruces con México</a></li>
+    {%- assign es_pages = site.border_crossings_es | sort: "title" %}
+    {%- for d in es_pages %}{% assign p = b.ports[d.port] %}<li><a href="{{ d.url }}" hreflang="es">{{ p.es.short | default: d.title }}</a></li>{% endfor %}
   </ul>
   <p><a class="rb-btn" href="/border-waits/border-truck-wait-times.csv" download>Download the 30-day averages (CSV)</a></p>
 </section>

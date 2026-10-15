@@ -15,13 +15,16 @@ layout: default
 <div class="rb bw">
 <header class="rb-head">
   <div class="rb-title">
-    <p class="rb-family"><a class="rb-lane-back" href="/border-waits/">{% if es %}Trabajo · Espera en la frontera{% else %}Work · Border waits{% endif %}</a></p>
+    <p class="rb-family"><a class="rb-lane-back" href="{% if es %}/es/tiempos-de-espera/{% else %}/border-waits/{% endif %}">{% if es %}Trabajo · Espera en la frontera{% else %}Work · Border waits{% endif %}</a></p>
     <h1>{% if es %}{{ name }}: tiempo de espera para camiones{% else %}{{ name }} truck wait times{% endif %}</h1>
     {%- if p %}
     {%- if es %}
     <p class="rb-lede">Cuánto esperan los camiones de carga para cruzar de {{ p.es.across }}, a {{ p.es.city }}, según los tiempos que publica la Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP), y a qué hora suele haber menos demora.{% if p.name %} En Estados Unidos se le conoce como {{ p.name }}.{% endif %}</p>
     {%- else %}
     <p class="rb-lede">The wait for commercial trucks entering the United States from {{ p.across }}, into {{ p.city }}, as U.S. Customs and Border Protection posts it, and the hours it’s usually shortest.{% if p.es %} In Mexico it’s called {{ p.es.short }}.{% endif %}</p>
+    {%- endif %}
+    {%- if page.translation and page.translations_live %}
+    <p class="bw-lang">{% if es %}<a href="{{ page.translation }}" hreflang="en" lang="en">In English →</a>{% else %}<a href="{{ page.translation }}" hreflang="es" lang="es">En español →</a>{% endif %}</p>
     {%- endif %}
     {%- else %}
     <p class="rb-lede">{% if es %}Este cruce no aparece en la copia más reciente de los datos. El <a href="/border-waits/">tablero</a> tiene todos los cruces.{% else %}This crossing isn’t in the latest copy of the data. The <a href="/border-waits/">board</a> has every crossing.{% endif %}</p>
@@ -194,7 +197,7 @@ layout: default
     <div class="body prose">
       {%- if es %}
       <p>Los agentes de cada cruce fronterizo publican la espera de los carriles comerciales aproximadamente cada hora en el sistema <a href="https://bwt.cbp.gov/">Border Wait Times</a> de CBP. Un pequeño servicio en Cloudflare lo consulta cada media hora y guarda cada lectura una sola vez; de ese registro salen los promedios de los últimos 30 días. Los promedios del año anterior son los que publica la propia CBP. FAST es el carril para transportistas inscritos en ese programa de CBP.</p>
-      <p>Las horas son la hora local del cruce. Un carril cerrado o una actualización pendiente no se cuentan como cero, sino como dato desconocido. El <a href="/border-waits/">tablero</a> (en inglés) muestra todos los cruces ahora mismo y cómo funciona todo, y los promedios se pueden <a href="/border-waits/border-truck-wait-times.csv">descargar en CSV</a>.{% if page.translation %} <a href="{{ page.translation }}" hreflang="en" lang="en">This page in English</a>.{% endif %}</p>
+      <p>Las horas son la hora local del cruce. Un carril cerrado o una actualización pendiente no se cuentan como cero, sino como dato desconocido. La <a href="/es/tiempos-de-espera/">lista de cruces con México</a> muestra todos ahora mismo; el <a href="/border-waits/" hreflang="en">tablero en inglés</a> explica cómo funciona todo, y los promedios se pueden <a href="/border-waits/border-truck-wait-times.csv">descargar en CSV</a>.{% if page.translation %} <a href="{{ page.translation }}" hreflang="en" lang="en">This page in English</a>.{% endif %}</p>
       <p>Fuente: Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP). Los datos son públicos; cualquier error al presentarlos es mío.</p>
       {%- else %}
       <p>Officers at each port of entry post the commercial lanes’ wait about once an hour to CBP’s <a href="https://bwt.cbp.gov/">Border Wait Times</a> system. A small Cloudflare Worker reads it every half hour and keeps each reading once; the last-30-days averages come from that record. The averages from the year before are CBP’s own. FAST lanes are for carriers enrolled in CBP’s FAST program.</p>
