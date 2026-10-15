@@ -1,0 +1,169 @@
+---
+layout: default
+title: Border truck wait times
+seo_title: "Border Truck Wait Times Now and by Hour · Mexico and Canada Crossings (CBP)"
+permalink: /border-waits/
+description: Commercial truck wait times at every U.S. land port on the Mexican and Canadian borders, right now and by hour of the week, from CBP's readings.
+image: /assets/og/border-waits.png
+image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits, now and by hour."
+---
+{%- comment -%}
+  A "work" page (see the families in CLAUDE.md), in the reefer board's rate-sheet style (.rb in
+  style.css). Drawn from site.data.live.border, the copy scripts/snapshot.py makes of the Worker's
+  /border and /border/port data (CBP's Border Wait Times feed). The script at the bottom refreshes
+  the "right now" columns from the Worker; everything else is the copy. Crossing pages:
+  _layouts/border-crossing.html.
+{%- endcomment -%}
+{%- assign b = site.data.live.border -%}
+<div class="rb bw">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family">Work · Border freight</p>
+    <h1>Truck wait times at the border</h1>
+    <p class="rb-sub">How long commercial trucks are waiting to enter the United States at every land port on the Mexican and Canadian borders, as U.S. Customs and Border Protection posts it, and how long they usually wait at each hour of the week. CBP only shows the wait right now; the history here is collected every half hour.</p>
+  </div>
+  {%- if b %}
+  <dl class="rb-stamp">
+    <div><dt>As of</dt><dd id="bw-asof">{{ b.as_of_en }}</dd></div>
+    <div><dt>Crossings reporting</dt><dd id="bw-reporting">{{ b.reporting }} of {{ b.total }}</dd></div>
+    {%- if b.longest %}{% assign l = b.ports[b.longest] %}<div><dt>Longest wait</dt><dd id="bw-longest">{{ l.std.en }} <span>{{ l.name }}</span></dd></div>{% endif %}
+  </dl>
+  {%- endif %}
+</header>
+
+{% if b %}
+<nav class="rb-jump" aria-label="Sections on this page">
+  <a href="#mexico">Mexican border</a>
+  <a href="#canada">Canadian border</a>
+  <a href="#busiest">Longest usual waits</a>
+  <a href="#crossings">Crossing pages</a>
+  <a href="#how-it-works">How it works</a>
+</nav>
+
+{%- assign groups = "mexico,canada" | split: "," %}
+{%- for g in groups %}
+<section class="rb-sec" id="{{ g }}" aria-labelledby="{{ g }}-h">
+  <h2 id="{{ g }}-h">{% if g == "mexico" %}Mexican border{% else %}Canadian border{% endif %}: commercial lanes right now</h2>
+  <p>{% if g == "mexico" %}Trucks entering the U.S. from Mexico.{% else %}Trucks entering the U.S. from Canada.{% endif %} “Closed” and “Pending” mean CBP posted no wait for those lanes; the 30-day average leaves those hours out rather than counting them as zero.</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack bw-board">
+      <thead><tr><th scope="col">Crossing</th><th scope="col">Standard</th><th scope="col">FAST</th><th scope="col">Lanes open</th><th scope="col">30-day average</th><th scope="col">Posted</th></tr></thead>
+      <tbody>
+      {%- for k in b[g] %}{% assign p = b.ports[k] %}
+        <tr data-port="{{ k }}"{% if p.std.v != nil %}{% if p.std.v >= 40 %} class="rb-hot"{% endif %}{% endif %}>
+          <th scope="row">{% if p.slug %}<a href="/border-waits/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}</th>
+          <td data-label="Standard" data-now="std">{{ p.std.en }}</td>
+          <td data-label="FAST" data-now="fast">{{ p.fast.en }}</td>
+          <td data-label="Lanes open" data-now="lanes">{% if p.std.lanes %}{{ p.std.lanes }}{% if p.fast.lanes %} + {{ p.fast.lanes }}{% endif %}{% else %}—{% endif %} / {{ p.max }}</td>
+          <td data-label="30-day average">{% if p.avg != nil %}{{ p.avg }} min{% else %}—{% endif %}</td>
+          <td data-label="Posted" data-now="posted">{{ p.posted | default: "—" }}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{%- endfor %}
+
+<section class="rb-sec" id="busiest" aria-labelledby="busiest-h">
+  <h2 id="busiest-h">Where trucks usually wait longest</h2>
+  {%- if b.busiest.size > 0 %}
+  <p>The crossings with the longest average wait in the standard commercial lanes over the last 30 days, and the hour of the week that’s usually worst at each.</p>
+  {%- assign t = site.data.border_text.en %}
+  <table class="rb-t rb-stack">
+    <thead><tr><th scope="col">Crossing</th><th scope="col">Average</th><th scope="col">Usually worst</th><th scope="col">Usually best</th></tr></thead>
+    <tbody>
+    {%- for k in b.busiest %}{% assign p = b.ports[k] %}
+      <tr><th scope="row">{% if p.slug %}<a href="/border-waits/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}</th><td data-label="Average">{{ p.avg }} min</td><td data-label="Usually worst">{% if p.worst %}{{ t.short[p.worst.dow] }} {{ t.hours[p.worst.hour] }}, {{ p.worst.v }} min{% else %}—{% endif %}</td><td data-label="Usually best">{% if p.best %}{{ t.short[p.best.dow] }} {{ t.hours[p.best.hour] }}, {{ p.best.v }} min{% else %}—{% endif %}</td></tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <p>Not enough readings collected yet. This fills in once each crossing has a few days on record; the record started {{ b.since_en }}.</p>
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="crossings" aria-labelledby="crossings-h">
+  <h2 id="crossings-h">Crossing pages</h2>
+  <p>The busiest commercial crossings each have a page: the wait right now, a heat map of the usual wait by day and hour, and the last week of readings.</p>
+  <ul class="rb-index">
+    {%- assign pages = site.border_crossings | sort: "title" %}
+    {%- for d in pages %}{% assign p = b.ports[d.port] %}<li><a href="{{ d.url }}">{{ p.name | default: d.title }}</a></li>{% endfor %}
+  </ul>
+  <p><a class="rb-btn" href="/border-waits/border-truck-wait-times.csv" download>Download the 30-day averages (CSV)</a></p>
+</section>
+{% else %}
+<p class="rb-empty">The first readings haven’t been collected yet. They show up here the day after the Worker starts reading CBP.</p>
+{% endif %}
+</div>
+
+<section class="sec" id="how-it-works">
+  <header class="sec-head"><h2>How it works</h2>{% if b %}<span class="label">Copied {{ b.as_of_en }}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+      <p>At every land port, CBP officers post how long the commercial lanes are backed up, about once an hour, to the agency’s <a href="https://bwt.cbp.gov/">Border Wait Times</a> site. It’s the best public number there is, but it’s only ever the number right now. Nobody shows what a crossing is usually like on a Tuesday at 2 PM, which is what you need to plan a load.</p>
+      <ol>
+        <li><strong>A Cloudflare Worker reads CBP every half hour.</strong> The same small Worker behind this site’s <a href="/reefer-rates/">reefer rate board</a> asks CBP’s public feed (no key needed) for every port, and keeps the ones with commercial lanes.</li>
+        <li><strong>Each reading is kept once.</strong> A reading is stored with the time the port posted it, in a SQLite database on Cloudflare (D1), so asking twice in the same hour never counts it twice. Times are the port’s own clock.</li>
+        <li><strong>Unknown is not zero.</strong> When lanes are closed or the update is pending, CBP posts no wait. Those are stored as blanks, not as zero minutes, and averages skip them. Counting them as zero would make a crossing that’s often closed look fast.</li>
+        <li><strong>The averages are the last 30 days.</strong> For each crossing, each day of the week and each hour, the page shows the average posted wait. With only a few weeks on record an hour may rest on two or three readings, so the pages say how many readings they’re based on{% if b %}; the record started {{ b.since_en }}{% endif %}.</li>
+        <li><strong>The pages are rebuilt twice a day.</strong> A GitHub Action copies the Worker’s data into the site, so every number is in the HTML. The “right now” columns also refresh from the Worker when the page opens, cached for five minutes.</li>
+      </ol>
+      <p>How to read it: <strong>Standard</strong> is the regular commercial lanes; <strong>FAST</strong> is the lane for carriers and drivers enrolled in CBP’s Free and Secure Trade program. <strong>Lanes open</strong> is standard plus FAST, out of the most the port has. The wait is CBP’s, rounded the way CBP rounds it; “no wait” is CBP’s “no delay”.</p>
+      <p>Source: U.S. Customs and Border Protection, Border Wait Times. The numbers are public; any mistakes in presenting them are mine. The Worker’s code is in the <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">worker folder</a> of this site’s repository.</p>
+    </div>
+  </div>
+</section>
+
+{% if b %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Commercial truck wait times at U.S. land border crossings, by day and hour",
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "keywords": ["border wait times", "truck wait times", "commercial border crossing", "CBP border wait times", "FAST lane", "Laredo", "Otay Mesa", "Ambassador Bridge"],
+  "temporalCoverage": "{{ b.since_iso }}/{{ b.as_of_iso }}",
+  "spatialCoverage": { "@type": "Place", "name": "U.S. land ports of entry on the Mexican and Canadian borders" },
+  "variableMeasured": ["Average commercial lane wait (minutes), standard and FAST, by weekday and local hour", "Number of readings"],
+  "isBasedOn": "https://bwt.cbp.gov/",
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "creator": [
+    { "@type": "Organization", "name": "U.S. Customs and Border Protection", "url": "https://www.cbp.gov/" },
+    { "@type": "Person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
+  ],
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ "/border-waits/border-truck-wait-times.csv" | absolute_url | jsonify }} }],
+  "dateModified": {{ b.as_of_iso | jsonify }}
+}
+</script>
+
+<script>
+/* Refreshes the "right now" columns from the Worker (cached five minutes at Cloudflare's edge).
+   Without it the page still shows the copy it was built with. */
+(() => {
+  const endpoint = {{ site.worker_url | default: "" | jsonify }};
+  if (!endpoint) return;
+  const say = (l) => (l.delay != null ? (l.delay === 0 ? "No wait" : l.delay + " min")
+    : /closed/i.test(l.status || "") ? "Closed" : /pending/i.test(l.status || "") ? "Pending" : "—");
+  fetch(endpoint + "/border").then((r) => r.json()).then((d) => {
+    if (!d.ports) return;
+    let reporting = 0;
+    for (const p of d.ports) {
+      if (p.std.delay != null || p.fast.delay != null) reporting++;
+      const row = document.querySelector(`tr[data-port="${p.port}"]`);
+      if (!row) continue;
+      const set = (k, v) => { const el = row.querySelector(`[data-now="${k}"]`); if (el) el.textContent = v; };
+      set("std", say(p.std)); set("fast", say(p.fast));
+      set("lanes", (p.std.lanes != null ? p.std.lanes + (p.fast.lanes ? " + " + p.fast.lanes : "") : "—") + " / " + p.max);
+      set("posted", String(p.std.update || p.fast.update || "—").replace(/^At\s+/, ""));
+      row.classList.toggle("rb-hot", (p.std.delay || 0) >= 40);
+    }
+    document.getElementById("bw-reporting").textContent = reporting + " of " + d.ports.length;
+    const t = new Date(d.updated);
+    if (!isNaN(t)) document.getElementById("bw-asof").textContent = t.toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" });
+  }).catch(() => {});
+})();
+</script>
+{% endif %}

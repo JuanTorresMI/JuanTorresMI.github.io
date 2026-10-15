@@ -34,6 +34,8 @@ const CARDS = {
     sub: "Level, band & chase plans · The math, step by step", bottom: ["juantorresmi.github.io/aggregate-planning", "HiGHS · in the browser"] },
   "reefer-rates": { top: ["Juan Torres", "Data"], name: "Reefer truck rates",
     sub: "USDA’s weekly produce truck rates, lane by lane, with the history", bottom: ["juantorresmi.github.io/reefer-rates", "USDA AMS · Cloudflare Worker"] },
+  "border-waits": { top: ["Juan Torres", "Data"], name: "Border truck waits",
+    sub: "CBP’s commercial lane waits, right now and by hour of the week", bottom: ["juantorresmi.github.io/border-waits", "CBP · Cloudflare Worker"] },
   youtube: { top: ["Juan Torres", "YouTube"], name: "On YouTube",
     sub: "The channel’s numbers, refreshed every hour", bottom: ["juantorresmi.github.io/youtube", "Cloudflare Worker · YouTube Data API"] },
 };

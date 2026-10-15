@@ -1,4 +1,4 @@
--- The music page's counter and guestbook, the YouTube page's snapshots and the reefer rate board (D1). Apply with:
+-- The music page's counter and guestbook, the YouTube page's snapshots, the reefer rate board and the border wait board (D1). Apply with:
 --   npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
 -- Safe to run again: nothing is dropped.
 
@@ -58,4 +58,24 @@ CREATE TABLE IF NOT EXISTS diesel_weekly (
 CREATE TABLE IF NOT EXISTS reefer_meta (           -- the backfill's place in history
   key   TEXT PRIMARY KEY,
   value TEXT
+);
+
+-- The border wait board (src/border.js). One row per commercial port per posted reading. Times are
+-- the port's own wall clock. A closed or pending lane is NULL, never 0: unknown is not "no wait".
+CREATE TABLE IF NOT EXISTS border_waits (
+  port       TEXT NOT NULL,                        -- CBP's port number, "230404"
+  at         TEXT NOT NULL,                        -- local "YYYY-MM-DD HH:MM" CBP posted the reading
+  dow        INTEGER NOT NULL,                     -- 0 = Monday … 6 = Sunday, local
+  hour       INTEGER NOT NULL,                     -- 0-23, local
+  std_delay  INTEGER,                              -- minutes, standard commercial lanes
+  std_lanes  INTEGER,                              -- standard lanes open
+  fast_delay INTEGER,                              -- minutes, FAST lanes
+  fast_lanes INTEGER,
+  PRIMARY KEY (port, at)
+) WITHOUT ROWID;
+
+CREATE TABLE IF NOT EXISTS border_latest (
+  id         INTEGER PRIMARY KEY CHECK (id = 1),   -- one row: the board as the last poll saw it
+  body       TEXT NOT NULL,                        -- the JSON GET /border serves
+  updated_at TEXT NOT NULL
 );

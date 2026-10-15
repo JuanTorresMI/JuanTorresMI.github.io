@@ -35,6 +35,13 @@ defaults:
     values: { permalink: "/blog/:title/" }
   - scope: { path: "", type: reefer_lanes }
     values: { layout: reefer-lane, image: /assets/og/reefer-rates.png, image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rates, lane by lane." }
+  # Border crossings. The Spanish pages are a draft until a fluent speaker has read them: until
+  # then they stay out of search and the sitemap, and neither language points at the other with
+  # hreflang. Once reviewed, set translations_live: true in both and drop noindex and sitemap here.
+  - scope: { path: "", type: border_crossings }
+    values: { layout: border-crossing, lang: en, translations_live: false, image: /assets/og/border-waits.png, image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits, now and by hour." }
+  - scope: { path: "", type: border_crossings_es }
+    values: { layout: border-crossing, lang: es, translations_live: false, noindex: true, sitemap: false, image: /assets/og/border-waits.png, image_alt: "Tiempos de espera para camiones en la frontera, por Juan Torres." }
 
 # One page per reefer lane (/reefer-rates/<origin>-to-<city>/). The files in _reefer_lanes/ are
 # front matter only, written by scripts/snapshot.py; the data is _data/live/reefer.json.
@@ -42,6 +49,15 @@ collections:
   reefer_lanes:
     output: true
     permalink: /reefer-rates/:name/
+  # One page per major commercial border crossing (/border-waits/<slug>/), and a Spanish page for
+  # each Mexico crossing. Front matter only, written by scripts/snapshot.py from
+  # _data/border_crossings.json; the data is _data/live/border.json.
+  border_crossings:
+    output: true
+    permalink: /border-waits/:name/
+  border_crossings_es:
+    output: true
+    permalink: /es/tiempos-de-espera/:name/
 
 # Cloudflare Web Analytics: cookieless page counts, no consent banner needed. Paste the token
 # from the dashboard's JS snippet (Web Analytics > the site > Manage site). It is public by

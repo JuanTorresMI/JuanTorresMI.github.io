@@ -1,0 +1,157 @@
+---
+layout: default
+---
+{%- comment -%}
+  One border crossing: /border-waits/<slug>/ in English, /es/tiempos-de-espera/<slug>/ in Spanish
+  (Mexico crossings only), in the reefer board's rate-sheet style (.rb, plus .bw for the heat map).
+  The page files in _border_crossings*/ are only front matter (port, title, description,
+  translation), written by scripts/snapshot.py; everything shown comes from
+  site.data.live.border.ports[page.port]. The script at the bottom refreshes "right now" only.
+{%- endcomment -%}
+{%- assign b = site.data.live.border -%}
+{%- assign p = b.ports[page.port] -%}
+{%- assign t = site.data.border_text[page.lang] -%}
+{%- if page.lang == "es" -%}{%- assign es = true -%}{%- assign name = p.es.short | default: page.title -%}{%- else -%}{%- assign es = false -%}{%- assign name = p.name | default: page.title -%}{%- endif -%}
+<div class="rb bw" data-port="{{ page.port }}">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family"><a class="rb-lane-back" href="/border-waits/">{% if es %}Trabajo · Espera en la frontera{% else %}Work · Border waits{% endif %}</a></p>
+    <h1>{% if es %}{{ name }}: espera de camiones{% else %}{{ name }} truck wait times{% endif %}</h1>
+    {%- if p %}
+    {%- if es %}
+    <p class="rb-lede">Cuánto esperan los camiones de carga para cruzar de {{ p.es.across }} a {{ p.es.city }} por {{ p.es.name }}, y a qué hora la espera suele ser más corta. Son tiempos para entrar a Estados Unidos, publicados por la Oficina de Aduanas y Protección Fronteriza (CBP).{% if p.std.v != nil %} En la última lectura, los carriles comerciales normales estaban en <strong>{{ p.std.es }}</strong>{% if p.std.lanes %} con {{ p.std.lanes }} de {{ p.max }} carriles abiertos{% endif %}.{% endif %}</p>
+    {%- else %}
+    <p class="rb-lede">How long commercial trucks are waiting to cross from {{ p.across }} into {{ p.city }} at the {{ p.name }}, and when the wait is usually shortest. These are waits to enter the United States, as U.S. Customs and Border Protection posts them.{% if p.std.v != nil %} At the last reading the standard commercial lanes were at <strong>{{ p.std.en | downcase }}</strong>{% if p.std.lanes %}, with {{ p.std.lanes }} of {{ p.max }} lanes open{% endif %}.{% endif %}</p>
+    {%- endif %}
+    {%- else %}
+    <p class="rb-lede">{% if es %}Este cruce no aparece en la copia más reciente de los datos. El <a href="/border-waits/">tablero</a> tiene todos los cruces.{% else %}This crossing isn’t in the latest copy of the data. The <a href="/border-waits/">board</a> has every crossing.{% endif %}</p>
+    {%- endif %}
+  </div>
+  {%- if p %}
+  <dl class="rb-stamp bw-now">
+    <div><dt>{% if es %}Carriles normales{% else %}Standard lanes{% endif %}</dt><dd data-now="std">{% if es %}{{ p.std.es }}{% else %}{{ p.std.en }}{% endif %}</dd></div>
+    <div><dt>{% if es %}Carriles FAST{% else %}FAST lanes{% endif %}</dt><dd data-now="fast">{% if es %}{{ p.fast.es }}{% else %}{{ p.fast.en }}{% endif %}</dd></div>
+    <div><dt>{% if es %}Carriles abiertos{% else %}Lanes open{% endif %}</dt><dd data-now="lanes">{% if p.std.lanes %}{{ p.std.lanes }}{% if p.fast.lanes %} + {{ p.fast.lanes }}{% endif %} / {{ p.max }}{% else %}— / {{ p.max }}{% endif %}</dd></div>
+    <div><dt>{% if es %}Publicado{% else %}Posted{% endif %}</dt><dd data-now="posted">{{ p.posted | default: "—" }}</dd></div>
+  </dl>
+  {%- endif %}
+</header>
+
+{% if p %}
+{%- if p.notice != "" %}<p class="rb-note">{% if es %}Aviso de CBP (en inglés){% else %}CBP’s notice{% endif %}: {{ p.notice }}</p>{% endif %}
+
+<div class="rb-judge">
+  <p class="rb-tag">{% if es %}La mejor y la peor hora para cruzar{% else %}Best and worst times to cross{% endif %}</p>
+  {%- if p.best %}
+  {%- if es %}
+  <p class="rb-say">Lo más rápido suele ser el {{ t.days[p.best.dow] }} a las {{ t.hours[p.best.hour] }} ({% if p.best.v == 0 %}sin espera{% else %}{{ p.best.v }} min en promedio{% endif %}); lo más lento, el {{ t.days[p.worst.dow] }} a las {{ t.hours[p.worst.hour] }} ({{ p.worst.v }} min en promedio).</p>
+  {%- else %}
+  <p class="rb-say">Usually quickest on {{ t.days[p.best.dow] }} at {{ t.hours[p.best.hour] }} ({% if p.best.v == 0 %}no wait{% else %}{{ p.best.v }} min on average{% endif %}); usually slowest on {{ t.days[p.worst.dow] }} at {{ t.hours[p.worst.hour] }} ({{ p.worst.v }} min on average).</p>
+  {%- endif %}
+  {%- else %}
+  <p class="rb-say">{% if es %}Todavía no hay suficientes lecturas para decirlo.{% else %}Not enough readings yet to say.{% endif %}</p>
+  {%- endif %}
+</div>
+<p class="rb-note">
+  {%- if es -%}
+  Basado en {{ p.readings }} lectura{% if p.readings != 1 %}s{% endif %} de los carriles comerciales desde el {{ p.first_es }}, hora local del cruce.{% if p.avg != nil %} La espera promedio en los últimos 30 días fue de {{ p.avg }} min en carriles normales{% if p.fast_avg != nil %} y {{ p.fast_avg }} min en FAST{% endif %}.{% endif %}{% if p.readings < 300 %} Los promedios se vuelven más confiables conforme se juntan semanas de datos.{% endif %}
+  {%- else -%}
+  From {{ p.readings }} reading{% if p.readings != 1 %}s{% endif %} of the commercial lanes since {{ p.first_en }}, in the crossing’s local time.{% if p.avg != nil %} Over the last 30 days the average wait was {{ p.avg }} min in the standard lanes{% if p.fast_avg != nil %} and {{ p.fast_avg }} min in FAST{% endif %}.{% endif %}{% if p.readings < 300 %} The averages firm up as more weeks are collected.{% endif %}
+  {%- endif -%}
+</p>
+
+{%- if p.grid.size > 0 %}
+<section class="rb-block">
+  <h2>{% if es %}Espera habitual por día y hora{% else %}Usual wait by day and hour{% endif %} <span>{% if es %}Carriles normales, promedio de 30 días, minutos{% else %}Standard lanes, 30-day average, minutes{% endif %}</span></h2>
+  <div class="rb-scroll">
+    <table class="bw-heat">
+      <thead><tr><th scope="col" class="bw-corner">{% if es %}Hora{% else %}Hour{% endif %}</th>{% for d in t.short %}<th scope="col"><abbr title="{{ t.days[forloop.index0] }}">{{ d }}</abbr></th>{% endfor %}</tr></thead>
+      <tbody>
+      {%- for row in p.grid %}
+        <tr><th scope="row">{{ t.hours[row.h] }}</th>{% for c in row.cells %}{% if c.v == nil %}<td class="bw-none"><span aria-label="{% if es %}sin datos{% else %}no data{% endif %}">·</span></td>{% else %}<td class="bw-l{{ c.lvl }}">{{ c.v }}</td>{% endif %}{% endfor %}</tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <ul class="bw-key" aria-label="{% if es %}Clave{% else %}Key{% endif %}">
+    {%- for l in t.levels %}<li><span class="bw-l{{ forloop.index0 }}" aria-hidden="true"></span>{{ l }}</li>{% endfor %}
+  </ul>
+  <p class="rb-note">{% if es %}Un punto es una hora sin lecturas: el cruce estaba cerrado o CBP no publicó una espera. Un carril cerrado cuenta como dato desconocido, no como cero, así que no hace ver más rápido un cruce.{% else %}A dot is an hour with no readings: the crossing was closed or CBP posted no wait. A closed lane counts as unknown, not as zero, so it never makes a crossing look faster than it is.{% endif %}</p>
+</section>
+{%- endif %}
+
+<div class="rb-cols">
+  {%- if p.by_hour.size > 0 %}
+  <section class="rb-block bw-hours">
+    <h2>{% if es %}Por hora del día{% else %}By hour of day{% endif %} <span>{% if es %}Todos los días, minutos{% else %}All days, minutes{% endif %}</span></h2>
+    <table class="rb-table">
+      <thead><tr><th scope="col">{% if es %}Hora{% else %}Hour{% endif %}</th><th scope="col">{% if es %}Promedio{% else %}Average{% endif %}</th><th scope="col" class="rb-barcol"><span class="bw-sr">{% if es %}Gráfica{% else %}Bar{% endif %}</span></th></tr></thead>
+      <tbody>
+      {%- for h in p.by_hour %}
+        <tr><th scope="row">{{ t.hours[h.h] }}</th><td>{{ h.v }} min</td><td class="rb-barcol"><span class="rb-bar" aria-hidden="true"><span style="width: {{ h.w }}%"></span></span></td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </section>
+  {%- endif %}
+
+  {%- if p.chart %}
+  <section class="rb-block bw-week">
+    <h2>{% if es %}Los últimos 7 días{% else %}The last 7 days{% endif %} <span>{% if es %}{{ p.chart.start_es }} a {{ p.chart.end_es }}{% else %}{{ p.chart.start_en }} to {{ p.chart.end_en }}{% endif %}</span></h2>
+    <figure class="rb-chart">
+      <svg viewBox="0 0 {{ p.chart.w }} {{ p.chart.h }}" preserveAspectRatio="none" role="img" aria-label="{% if es %}Espera en carriles normales cada vez que CBP publicó una lectura en los últimos 7 días, de 0 a {{ p.chart.top }} minutos.{% else %}Standard-lane wait at every reading CBP posted in the last 7 days, on a scale of 0 to {{ p.chart.top }} minutes.{% endif %}">
+        <path class="line" d="{{ p.chart.line }}"/>
+      </svg>
+      <figcaption><span>{{ p.chart.top }} min</span><span>0</span></figcaption>
+    </figure>
+    <p class="rb-note">{% if es %}Los huecos son horas en que el cruce estaba cerrado o no hubo lectura.{% else %}Gaps are hours the crossing was closed or posted nothing.{% endif %}</p>
+  </section>
+  {%- endif %}
+</div>
+{% endif %}
+</div>
+
+<section class="sec">
+  <header class="sec-head"><h2>{% if es %}Sobre estos números{% else %}About these numbers{% endif %}</h2>{% if b %}<span class="label">{% if es %}Copiado el {{ b.as_of_es }}{% else %}Copied {{ b.as_of_en }}{% endif %}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+      {%- if es %}
+      <p>Los oficiales de cada puerto de entrada publican la espera de los carriles comerciales más o menos cada hora en el sistema <a href="https://bwt.cbp.gov/">Border Wait Times</a> de CBP. Un pequeño servicio en Cloudflare lo consulta cada media hora y guarda cada lectura una sola vez; de ahí salen los promedios por día y hora, que CBP no publica. FAST es el carril para transportistas inscritos en ese programa de CBP.</p>
+      <p>Las horas son la hora local del cruce. Un carril cerrado o una lectura pendiente no se cuentan como cero, sino como dato desconocido. El <a href="/border-waits/">tablero</a> (en inglés) muestra todos los cruces ahora mismo y cómo funciona todo, y los promedios se pueden <a href="/border-waits/border-truck-wait-times.csv">descargar en CSV</a>.{% if page.translation %} <a href="{{ page.translation }}" hreflang="en" lang="en">This page in English</a>.{% endif %}</p>
+      <p>Fuente: U.S. Customs and Border Protection. Los datos son públicos; cualquier error al presentarlos es mío.</p>
+      {%- else %}
+      <p>Officers at each port of entry post the commercial lanes’ wait about once an hour to CBP’s <a href="https://bwt.cbp.gov/">Border Wait Times</a> system. A small Cloudflare Worker reads it every half hour and keeps each reading once; the averages by day and hour, which CBP doesn’t publish, come from that record. FAST lanes are for carriers enrolled in CBP’s FAST program.</p>
+      <p>Times are the crossing’s local time. A closed lane or a pending reading counts as unknown, never as zero. The <a href="/border-waits/">board</a> has every crossing right now and how it all works, and the averages are a <a href="/border-waits/border-truck-wait-times.csv">CSV download</a>.{% if page.translation and page.translations_live %} <a href="{{ page.translation }}" hreflang="es" lang="es">Esta página en español</a>.{% endif %}</p>
+      <p>Source: U.S. Customs and Border Protection. The numbers are public; any mistakes in presenting them are mine.</p>
+      {%- endif %}
+      {%- if es %}{% assign others = site.border_crossings_es | sort: "title" %}{% else %}{% assign others = site.border_crossings | sort: "title" %}{% endif %}
+      <h3>{% if es %}Otros cruces{% else %}Other crossings{% endif %}</h3>
+      <ul class="rb-index">
+        {%- for o in others %}{% if o.port != page.port %}<li><a href="{{ o.url }}">{% assign op = b.ports[o.port] %}{% if es %}{{ op.es.short | default: o.title }}{% else %}{{ op.name | default: o.title }}{% endif %}</a></li>{% endif %}{% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% if p %}
+<script>
+/* Refreshes "right now" from the Worker (cached five minutes at Cloudflare's edge). Everything
+   else on the page is the daily copy and stays as it is. */
+(() => {
+  const endpoint = {{ site.worker_url | default: "" | jsonify }};
+  if (!endpoint) return;
+  const T = {{ t | jsonify }}, lang = {{ page.lang | jsonify }};
+  const box = document.querySelector(".bw-now");
+  const say = (l) => (l.delay != null ? (l.delay === 0 ? T.no_wait : l.delay + " min")
+    : /closed/i.test(l.status || "") ? T.closed : /pending/i.test(l.status || "") ? T.pending : "—");
+  fetch(endpoint + "/border").then((r) => r.json()).then((d) => {
+    const p = (d.ports || []).find((x) => x.port === {{ page.port | jsonify }});
+    if (!p) return;
+    const set = (k, v) => { const el = box.querySelector(`[data-now="${k}"]`); if (el) el.textContent = v; };
+    set("std", say(p.std)); set("fast", say(p.fast));
+    set("lanes", (p.std.lanes != null ? p.std.lanes + (p.fast.lanes ? " + " + p.fast.lanes : "") : "—") + " / " + p.max);
+    set("posted", String(p.std.update || p.fast.update || "—").replace(/^At\s+/, ""));
+  }).catch(() => {});
+})();
+</script>
+{% endif %}
