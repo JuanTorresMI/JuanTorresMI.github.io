@@ -31,6 +31,17 @@ layout: default
 </header>
 
 {% if l %}
+<div class="rb-judge">
+  <p class="rb-tag">{% if l.current %}Is this week’s rate high or low?{% else %}How the last quote compared{% endif %}{% if l.verdict.tag != "" %} · {{ l.verdict.tag }}{% endif %}</p>
+  <p class="rb-say">{{ l.verdict.text }}</p>
+  {%- if l.verdict.pos %}
+  <div class="rb-meter" role="img" aria-label="{{ l.verdict.text }}"><span style="left: {{ l.verdict.pos }}%"></span></div>
+  <p class="rb-meter-k"><span>Lowest on record</span><span>Highest on record</span></p>
+  {%- endif %}
+</div>
+{%- if l.crops != "" %}
+<p class="rb-note">Shipping from {{ l.short }} this week: {{ l.crops }}.</p>
+{%- endif %}
 <p class="rb-note">
   {%- if l.year_ago %}A year earlier (week of {{ l.year_ago.week }}) the middle of the range was {{ l.year_ago.mid }}; this week’s is {{ l.year_ago.diff }} against that. {% endif -%}
   {%- if l.weeks_year > 0 %}Over the last 52 weeks the lane was quoted {{ l.weeks_year }} times, averaging {{ l.avg }} at the middle, from a low of {{ l.low }} to a high of {{ l.high }}. {% endif -%}

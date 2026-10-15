@@ -1,111 +1,226 @@
 ---
 layout: default
 title: Reefer truck rates
-seo_title: "Reefer Truck Rates This Week · USDA Produce Lanes, Weekly"
+seo_title: "Reefer Truck Rates This Week · Produce Freight Rates by Lane (USDA)"
 permalink: /reefer-rates/
-description: This week's spot rates for refrigerated trucks from U.S. produce shipping districts and Mexico crossings to ten cities, from USDA's National Truck Rate Report, with history.
+description: This week's reefer truck rates from U.S. produce shipping areas and Mexico crossings to ten cities, from USDA. Look up a lane, see where trucks are short, and what ships when.
 image: /assets/og/reefer-rates.png
 image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rates, lane by lane."
+last_modified_at: 2026-10-15
 ---
 {%- comment -%}
-  A "work" page (see the families in CLAUDE.md): a printed rate sheet. Drawn entirely from
-  site.data.live.reefer, the daily copy scripts/snapshot.py makes of the Worker's /reefer data
-  (USDA report 2375), so the sheet is complete HTML without JavaScript. The small script at the
-  bottom only adds the lane search, the Range / Change / Trucks switch and the side panel.
-  Styles are scoped under .rb in style.css. Lane pages come from _layouts/reefer-lane.html.
+  A "work" page (see the families in CLAUDE.md), built for use first: plain sections, big type,
+  every number in the HTML so search engines and anyone without JavaScript get all of it. Drawn
+  entirely from site.data.live.reefer, the daily copy scripts/snapshot.py makes of the Worker's
+  /reefer data (USDA report 2375): visitors never call the Worker, so traffic costs nothing on
+  Cloudflare. The script at the bottom only adds the lane lookup, the city menu and the sheet's
+  Rates / Change / Trucks switch. Styles: .rb in style.css. Lane pages: _layouts/reefer-lane.html.
 {%- endcomment -%}
 {%- assign r = site.data.live.reefer -%}
 <div class="rb">
 <header class="rb-head">
   <div class="rb-title">
-    <p class="rb-family">Work · Rate sheet</p>
-    <h1>Reefer truck rates</h1>
-    <p class="rb-sub">What a refrigerated truckload of produce costs this week, from the main U.S. shipping districts and Mexico border crossings to ten big cities. Spot rates per load, 48–53 ft trailer, broker fees included. Source: USDA AMS National Truck Rate Report.</p>
+    <p class="rb-family">Work · Produce freight</p>
+    <h1>Reefer truck rates this week</h1>
+    <p class="rb-sub">What it costs to ship a truckload of produce in a refrigerated trailer, from the main U.S. growing areas and Mexico border crossings to ten big cities. Spot rates per load, 48–53 ft trailer, broker fees included, from the USDA National Truck Rate Report, updated every week.</p>
   </div>
   {%- if r %}
   <dl class="rb-stamp">
-    <div><dt>Effective</dt><dd>Week of {{ r.week }}</dd></div>
-    {%- if r.diesel %}<div><dt>Diesel, U.S. avg</dt><dd>{{ r.diesel.price }}{% if r.diesel.delta != "" %} <span>{{ r.diesel.delta }}</span>{% endif %}</dd></div>{% endif %}
-    <div><dt>Lanes</dt><dd>{{ r.quoted }} quoted</dd></div>
+    <div><dt>Rates for</dt><dd>Week of {{ r.week }}</dd></div>
+    {%- if r.diesel %}<div><dt>Diesel, U.S. average</dt><dd>{{ r.diesel.price }}{% if r.diesel.delta != "" %} <span>{{ r.diesel.delta }}</span>{% endif %}</dd></div>{% endif %}
+    <div><dt>Lanes quoted</dt><dd>{{ r.quoted }}</dd></div>
   </dl>
   {%- endif %}
 </header>
 
 {% if r %}
-<form class="rb-bar" role="search" onsubmit="return false">
-  <label class="rb-find"><span>Find a lane</span><input type="search" id="rb-q" placeholder="South Texas to Chicago" autocomplete="off"></label>
-  <div class="rb-views" role="group" aria-label="Show in the sheet">
-    <button type="button" data-view="k" aria-pressed="true">Range</button>
-    <button type="button" data-view="change" aria-pressed="false">Change</button>
-    <button type="button" data-view="trucks" aria-pressed="false">Trucks</button>
-  </div>
-  <a class="rb-csv" href="/reefer-rates/usda-reefer-truck-rates.csv" download>CSV ↓</a>
-</form>
+<nav class="rb-jump" aria-label="Sections on this page">
+  <a href="#week">This week</a>
+  <a href="#lookup">Look up a lane</a>
+  <a href="#capacity">Truck capacity</a>
+  <a href="#cities">Rates by city</a>
+  <a href="#seasons">Seasons and crops</a>
+  <a href="#diesel">Diesel</a>
+  <a href="#board">Full rate sheet</a>
+  <a href="#lanes">Every lane</a>
+</nav>
 
-<div class="rb-main">
-  <section class="rb-sheet-wrap" aria-label="This week's rates">
-    <div class="rb-scroll">
-      <table class="rb-sheet" id="rb-sheet">
-        <caption class="rb-cap">Week of {{ r.week }}: low–high rate per load, in thousands of dollars</caption>
-        <thead>
-          <tr>
-            <th scope="col" class="rb-corner">From ↓ / To →</th>
-            {%- for c in r.cities %}
-            <th scope="col" data-city="{{ c.name | escape }}"><abbr title="{{ c.name | escape }}">{{ c.code }}</abbr></th>
-            {%- endfor %}
-          </tr>
-        </thead>
+<section class="rb-sec" id="week" aria-labelledby="week-h">
+  <h2 id="week-h">Produce truck rates this week</h2>
+  <p class="rb-big">{{ r.summary }}</p>
+  <div class="rb-two">
+    <div>
+      <h3>Biggest increases</h3>
+      <table class="rb-t">
+        <thead><tr><th scope="col">Lane</th><th scope="col">Rate per load</th><th scope="col">Change</th></tr></thead>
         <tbody>
-          {%- for row in r.sheet %}
-          <tr data-origin="{{ row.short | escape }} {{ row.name | escape }}">
-            <th scope="row" title="{{ row.name | escape }}">{{ row.short }}</th>
-            {%- for c in row.cells %}
-            {%- if c %}
-            <td{% if c.big %} class="rb-big"{% endif %} data-city="{{ c.to | escape }}" data-k="{{ c.k }}" data-change="{{ c.change | default: '—' }}" data-trucks="{{ c.trucks | default: '—' }}">
-              {%- capture attrs %} data-from="{{ c.from | escape }}" data-to="{{ c.to | escape }}" data-range="{{ c.range }}" data-mostly="{{ c.mostly }}" data-chg="{{ c.change }}" data-tr="{{ c.trucks }}" data-spark="{{ c.spark }}"{% endcapture -%}
-              {%- if c.lane %}<a href="/reefer-rates/{{ c.lane }}/" data-lane="/reefer-rates/{{ c.lane }}/"{{ attrs }} aria-label="{{ c.from | escape }} to {{ c.to | escape }}: {{ c.range }}">{{ c.k }}</a>{% else %}<span{{ attrs }}>{{ c.k }}</span>{% endif -%}
-            </td>
-            {%- else %}
-            <td class="rb-none" data-city="{{ r.cities[forloop.index0].name | escape }}"><span aria-label="not quoted">·</span></td>
-            {%- endif %}
-            {%- endfor %}
-          </tr>
-          {%- endfor %}
+        {%- for m in r.ups %}
+          <tr><th scope="row">{% if m.lane %}<a href="/reefer-rates/{{ m.lane }}/">{{ m.from }} to {{ m.to }}</a>{% else %}{{ m.from }} to {{ m.to }}{% endif %}</th><td>{{ m.range }}</td><td><strong>{{ m.change }}</strong></td></tr>
+        {%- else %}<tr><td colspan="3">No lane rose this week.</td></tr>{% endfor %}
         </tbody>
       </table>
     </div>
-    <p class="rb-note" id="rb-nomatch" hidden>Nothing quoted this week matches. A shipping area missing from the sheet is usually out of season; its lane pages keep the history: see <a class="link" href="#lanes">every lane</a> below.</p>
-    <p class="rb-note">A shaded cell moved 5% or more since last week. Each cell opens its lane: every week on record and every origin into the same city.</p>
-    {%- if r.also.size > 0 %}
-    <ol class="rb-also" aria-label="Separate rates quoted for some crops">
-      {%- for a in r.also %}
-      <li><span>{{ a.from }} → {{ a.to }}</span> also quoted {{ a.range }} for {{ a.for }}.</li>
-      {%- endfor %}
-    </ol>
-    {%- endif %}
-  </section>
+    <div>
+      <h3>Biggest drops</h3>
+      <table class="rb-t">
+        <thead><tr><th scope="col">Lane</th><th scope="col">Rate per load</th><th scope="col">Change</th></tr></thead>
+        <tbody>
+        {%- for m in r.downs %}
+          <tr><th scope="row">{% if m.lane %}<a href="/reefer-rates/{{ m.lane }}/">{{ m.from }} to {{ m.to }}</a>{% else %}{{ m.from }} to {{ m.to }}{% endif %}</th><td>{{ m.range }}</td><td><strong>{{ m.change }}</strong></td></tr>
+        {%- else %}<tr><td colspan="3">No lane fell this week.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
-  {%- assign f = r.featured %}
-  {%- if f %}
-  <aside class="rb-panel" id="rb-panel" aria-live="polite">
-    <p class="rb-panel-k" id="rb-p-label">Biggest move this week</p>
-    <h2 id="rb-p-title">{{ f.from }} to {{ f.to }}</h2>
-    <dl class="rb-facts">
-      <div><dt>Range</dt><dd id="rb-p-range">{{ f.range | default: "—" }}</dd></div>
-      <div><dt>Mostly</dt><dd id="rb-p-mostly">{{ f.mostly | default: "—" }}</dd></div>
-      <div><dt>Change</dt><dd id="rb-p-chg">{{ f.change | default: "—" }}</dd></div>
-      <div><dt>Trucks</dt><dd id="rb-p-tr">{{ f.trucks | default: "—" }}</dd></div>
-    </dl>
-    <svg class="rb-spark" id="rb-p-spark" viewBox="0 0 96 24" preserveAspectRatio="none" role="img" aria-label="The lane's middle rate over the last 26 weeks"{% if f.spark == "" %} hidden{% endif %}><polyline points="{{ f.spark }}"/></svg>
-    <p class="rb-panel-note">Last 26 weeks, middle of the range</p>
-    <a class="rb-go" id="rb-p-go" href="{% if f.lane %}/reefer-rates/{{ f.lane }}/{% else %}#board{% endif %}">Open the lane page →</a>
-  </aside>
+<section class="rb-sec" id="lookup" aria-labelledby="lookup-h">
+  <h2 id="lookup-h">Look up a reefer rate by lane</h2>
+  <p>Pick where the load starts and where it’s going. You’ll get this week’s rate and how it compares with that lane’s own history, so you can tell whether a quote is high or low.</p>
+  <form class="rb-look" id="rb-look" onsubmit="return false">
+    <label>From
+      <select id="rb-from">
+        {%- for o in r.sheet %}<option>{{ o.short }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>To
+      <select id="rb-to">
+        {%- for c in r.cities %}<option{% if c.name == "Chicago" %} selected{% endif %}>{{ c.name }}</option>{% endfor %}
+      </select>
+    </label>
+  </form>
+  <div class="rb-answer" id="rb-answer" aria-live="polite">
+    <noscript><p>The lookup needs JavaScript. Every lane is in the <a href="#board">full rate sheet</a> and the <a href="#lanes">list of lanes</a> below.</p></noscript>
+  </div>
+  <script type="application/json" id="rb-lookup-data">{{ r.lookup | jsonify }}</script>
+</section>
+
+<section class="rb-sec" id="capacity" aria-labelledby="capacity-h">
+  <h2 id="capacity-h">Reefer capacity: where trucks are short</h2>
+  <p>USDA’s read of truck supply in each shipping area this week. A shortage means more loads than trucks, and rates usually climb; a surplus means the opposite.</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-wrap rb-stack">
+      <thead><tr><th scope="col">Shipping area</th><th scope="col">Trucks</th><th scope="col">Lanes</th><th scope="col">Average change</th><th scope="col">Shipping this week</th></tr></thead>
+      <tbody>
+      {%- for a in r.capacity %}
+        <tr{% if a.short_trucks %} class="rb-hot"{% endif %}><th scope="row">{{ a.short }}</th><td data-label="Trucks">{{ a.trucks }}</td><td data-label="Lanes">{{ a.lanes }}</td><td data-label="Average change">{{ a.change }}</td><td data-label="Shipping">{{ a.crops }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="rb-sec" id="cities" aria-labelledby="cities-h">
+  <h2 id="cities-h">Reefer rates into each city, cheapest first</h2>
+  <p>Every shipping area quoted into a city this week, from the cheapest load to the most expensive.</p>
+  <form class="rb-look" onsubmit="return false" id="rb-city-form" hidden>
+    <label>City
+      <select id="rb-city">
+        {%- for t in r.city_tables %}<option value="{{ t.slug }}"{% if t.name == "Chicago" %} selected{% endif %}>{{ t.name }}</option>{% endfor %}
+      </select>
+    </label>
+  </form>
+  {%- for t in r.city_tables %}
+  <div class="rb-city" id="city-{{ t.slug }}" data-city="{{ t.slug }}">
+    <h3>Into {{ t.name }}</h3>
+    <div class="rb-scroll">
+      <table class="rb-t rb-wrap rb-stack">
+        <thead><tr><th scope="col">From</th><th scope="col">Rate per load</th><th scope="col" class="rb-barcol">Compared</th><th scope="col">Change</th><th scope="col">Trucks</th></tr></thead>
+        <tbody>
+        {%- for row in t.rows %}
+          <tr><th scope="row">{% if row.lane %}<a href="/reefer-rates/{{ row.lane }}/">{{ row.from }}</a>{% else %}{{ row.from }}{% endif %}</th><td data-label="Rate per load">{{ row.range }}</td><td class="rb-barcol"><span class="rb-bar" aria-hidden="true"><span style="width: {{ row.bar }}%"></span></span></td><td data-label="Change">{{ row.change | default: "—" }}</td><td data-label="Trucks">{{ row.trucks | default: "—" }}</td></tr>
+        {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {%- endfor %}
+</section>
+
+<section class="rb-sec" id="seasons" aria-labelledby="seasons-h">
+  <h2 id="seasons-h">Produce shipping seasons and crops by area</h2>
+  <p>The months each shipping area has been quoted in, and what it’s shipping now. This fills in as more weeks are collected; so far the record covers {{ r.record_months }} month{% if r.record_months != 1 %}s{% endif %}, back to {{ r.first }}.</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-wrap rb-seasons">
+      <thead><tr><th scope="col">Shipping area</th>{% assign mnames = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" | split: "," %}{% for m in mnames %}<th scope="col" class="rb-m">{{ m }}</th>{% endfor %}<th scope="col">Shipping now</th></tr></thead>
+      <tbody>
+      {%- for s in r.seasons %}
+        <tr><th scope="row">{{ s.short }}</th>{% for on in s.months %}<td class="rb-m">{% if on %}<span class="rb-dot" title="Quoted in this month">●</span>{% else %}<span class="rb-nodot" aria-label="not on record">·</span>{% endif %}</td>{% endfor %}<td>{{ s.crops }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{%- if r.diesel %}
+<section class="rb-sec" id="diesel" aria-labelledby="diesel-h">
+  <h2 id="diesel-h">Diesel prices this week</h2>
+  <p class="rb-big">{{ r.diesel.price }} a gallon, the U.S. average for the week of {{ r.diesel.week }}{% if r.diesel.change != "" %}, {{ r.diesel.change }}{% endif %}. The high in the last two years was {{ r.diesel.peak }} (week of {{ r.diesel.peak_week }}); the week of {{ r.diesel.oldest_week }} it was {{ r.diesel.oldest }}.</p>
+  <table class="rb-t rb-narrow">
+    <thead><tr><th scope="col">Week of</th><th scope="col">Price per gallon</th><th scope="col">Change</th></tr></thead>
+    <tbody>
+    {%- for d in r.diesel.rows %}
+      <tr><th scope="row">{{ d.week }}</th><td>{{ d.price }}</td><td>{{ d.change | default: "—" }}</td></tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  <p>U.S. retail No. 2 diesel from the <a href="https://www.eia.gov/petroleum/gasdiesel/">Energy Information Administration</a>. Most fuel surcharge tables are built on this number.</p>
+</section>
+{%- endif %}
+
+<section class="rb-sec" id="board" aria-labelledby="board-h">
+  <h2 id="board-h">The full reefer rate sheet</h2>
+  <p>Every shipping area (down the side) by every city (across the top) for the week of {{ r.week }}. Rates are in thousands of dollars, so 3.8–4.4 means $3,800 to $4,400 a load. A shaded cell moved 5% or more since last week. Click any rate for that lane’s page.</p>
+  <div class="rb-views" role="group" aria-label="Show in the sheet">
+    <button type="button" data-view="k" aria-pressed="true">Rates</button>
+    <button type="button" data-view="change" aria-pressed="false">Change from last week</button>
+    <button type="button" data-view="trucks" aria-pressed="false">Trucks</button>
+  </div>
+  <p class="rb-scroll-hint">On a small screen, swipe the sheet sideways to see every city; the area names stay put.</p>
+  <div class="rb-scroll">
+    <table class="rb-sheet" id="rb-sheet">
+      <thead>
+        <tr>
+          <th scope="col" class="rb-corner">From / To</th>
+          {%- for c in r.cities %}
+          <th scope="col"><abbr title="{{ c.name | escape }}">{{ c.code }}</abbr></th>
+          {%- endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {%- for row in r.sheet %}
+        <tr>
+          <th scope="row" title="{{ row.name | escape }}">{{ row.short }}</th>
+          {%- for c in row.cells %}
+          {%- if c %}
+          <td{% if c.big %} class="rb-big-move"{% endif %} data-k="{{ c.k }}" data-change="{{ c.change | default: '—' }}" data-trucks="{{ c.trucks | default: '—' }}">
+            {%- if c.lane %}<a href="/reefer-rates/{{ c.lane }}/" aria-label="{{ c.from | escape }} to {{ c.to | escape }}: {{ c.range }}">{{ c.k }}</a>{% else %}<span>{{ c.k }}</span>{% endif -%}
+          </td>
+          {%- else %}
+          <td class="rb-none"><span aria-label="not quoted">·</span></td>
+          {%- endif %}
+          {%- endfor %}
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  {%- if r.also.size > 0 %}
+  <h3>Separate rates for some crops</h3>
+  <ul class="rb-also">
+    {%- for a in r.also %}
+    <li>{{ a.from }} to {{ a.to }}: also quoted {{ a.range }} for {{ a.for }}.</li>
+    {%- endfor %}
+  </ul>
   {%- endif %}
-</div>
+  <p><a class="rb-btn" href="/reefer-rates/usda-reefer-truck-rates.csv" download>Download every week as a spreadsheet (CSV)</a></p>
+</section>
+
 {%- assign lanes = site.reefer_lanes | sort: "title" %}
 {%- if lanes.size > 0 %}
-<section class="rb-block" id="lanes">
-  <h2>Every lane <span>{{ lanes.size }} pages, in season or not</span></h2>
+<section class="rb-sec" id="lanes" aria-labelledby="lanes-h">
+  <h2 id="lanes-h">Every lane, in season or not</h2>
+  <p>{{ lanes.size }} lane pages, each with its rate history. Areas out of season this week are still here.</p>
   <ul class="rb-index">
     {%- for d in lanes %}
     <li><a href="{{ d.url }}">{{ d.title | remove: " reefer rates" }}</a></li>
@@ -125,14 +240,13 @@ image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rate
       <p>Every week the U.S. Department of Agriculture’s market news reporters ask shippers, receivers and truck brokers what it’s costing to move produce, and publish the answer as the <a href="https://mymarketnews.ams.usda.gov/viewReport/2375">Specialty Crops National Truck Rate Report</a>. It’s the most consistent public record of reefer spot rates there is, but it comes as a PDF or as raw rows through an API, one row per commodity.</p>
       <ol>
         <li><strong>A Cloudflare Worker reads the report.</strong> The same small Worker behind this site’s <a href="/youtube/">YouTube</a> page asks USDA’s MyMarketNews API for the newest report every six hours, and stores it in a SQLite database on Cloudflare (D1) once it’s new. The key it uses is free, read-only, and kept as an encrypted secret, never in this site’s code.</li>
-        <li><strong>It boils the rows down to lanes.</strong> USDA repeats each rate once per commodity it covers, so the same number shows up dozens of times. The Worker keeps each distinct rate a shipping area quotes to a city once. Usually there’s one; sometimes an area quotes a second rate for a group of crops, citrus most often, and that shows on the board as “also quoted”.</li>
-        <li><strong>It fills in the past by itself.</strong> In the hours between new reports it asks for one older week at a time, walking back until USDA has nothing older. That’s where the history on each lane page comes from{% if r %}: right now it goes back to the week of {{ r.first }}{% endif %}.</li>
-        <li><strong>Once a day, this page is rebuilt from it.</strong> A GitHub Action copies the Worker’s data into the site and rebuilds it, including a page for every lane and the CSV download. So the sheet is plain HTML: it loads instantly and reads the same with or without JavaScript, which only adds the search and the switches.</li>
+        <li><strong>It boils the rows down to lanes.</strong> USDA repeats each rate once per commodity it covers, so the same number shows up dozens of times. The Worker keeps each distinct rate a shipping area quotes to a city once. Usually there’s one; sometimes an area quotes a second rate for a group of crops, citrus most often, and that’s listed under the sheet.</li>
+        <li><strong>It fills in the past by itself.</strong> In the hours between new reports it asks for one older week at a time, walking back until USDA has nothing older. That’s where the history on each lane page comes from{% if r %}: right now it goes back to {{ r.first }}{% endif %}.</li>
+        <li><strong>Once a day, this page is rebuilt from it.</strong> A GitHub Action copies the Worker’s data into the site and rebuilds every section, a page for every lane and the CSV. Weeks already collected are kept in that CSV, so nothing is lost. Because the page is plain HTML, reading it never touches the Worker at all, however many people visit.</li>
       </ol>
-      <p>How to read the sheet: each cell is the <strong>range</strong> in thousands of dollars, so 3.8–4.4 means $3,800 to $4,400. The range is the lowest to highest rate reported for a full load in a 48 to 53 foot refrigerated trailer, broker fees included. <strong>Mostly</strong> is where most loads actually moved, when USDA reports it. <strong>Change</strong> is USDA’s own figure for the move from the week before. The truck label is USDA’s read on supply in that area that week, from surplus (more trucks than loads) to shortage (more loads than trucks).</p>
-      <p>Shipping areas come and go with the growing seasons, so a lane missing from the board this week is usually just out of season. Its page stays up with its history, and lists the months it has been quoted in.</p>
-      <p>Diesel is the U.S. average retail price of No. 2 diesel from the <a href="https://www.eia.gov/petroleum/gasdiesel/">Energy Information Administration</a>, also weekly. It’s here for context: most fuel surcharge tables are built on it.</p>
-      <p>Source: USDA Agricultural Marketing Service, Specialty Crops Market News. The numbers are theirs and are public; any mistakes in presenting them are mine. The Worker’s code is in the <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">worker folder</a> of this site’s repository.</p>
+      <p>How to read the numbers: the <strong>range</strong> is the lowest to highest rate reported for a full load in a 48 to 53 foot refrigerated trailer, broker fees included. <strong>Mostly</strong> is where most loads actually moved, when USDA reports it. <strong>Change</strong> is USDA’s own figure for the move from the week before. The truck label is USDA’s read on supply in that area that week, from surplus (more trucks than loads) to shortage (more loads than trucks). “Compared with its history” ranks this week’s middle rate against every earlier week on record for the same lane.</p>
+      <p>Shipping areas come and go with the growing seasons, so a lane missing from this week’s sheet is usually just out of season. Its page stays up with its history.</p>
+      <p>Source: USDA Agricultural Marketing Service, Specialty Crops Market News; diesel from the U.S. Energy Information Administration. The numbers are theirs and are public; any mistakes in presenting them are mine. The Worker’s code is in the <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">worker folder</a> of this site’s repository.</p>
     </div>
   </div>
 </section>
@@ -145,6 +259,7 @@ image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rate
   "name": "Weekly reefer truck rates for U.S. produce lanes",
   "description": {{ page.description | jsonify }},
   "url": {{ page.url | absolute_url | jsonify }},
+  "keywords": ["reefer rates", "reefer truck rates", "produce truck rates", "refrigerated freight rates", "USDA truck rate report", "truck availability", "diesel prices"],
   "temporalCoverage": "{{ r.first_iso }}/{{ r.latest }}",
   "spatialCoverage": { "@type": "Place", "name": "United States and Mexico border crossings" },
   "variableMeasured": ["Spot rate per truckload, low and high (USD)", "Mostly rate, low and high (USD)", "Weekly change (%)", "Truck availability"],
@@ -159,66 +274,58 @@ image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rate
   "dateModified": {{ r.latest | jsonify }}
 }
 </script>
-{% endif %}
 
-{% if r %}
 <script>
-/* The sheet works without this. It adds: the lane search, the Range / Change / Trucks switch,
-   and filling the side panel when a cell is clicked (a second click opens the lane page). */
+/* Everything above works without this. It adds: the lane lookup's answer, the city menu (showing
+   one city at a time) and the sheet's Rates / Change / Trucks switch. */
 (() => {
-  const sheet = document.getElementById("rb-sheet");
-  if (!sheet) return;
   const $ = (id) => document.getElementById(id);
-  const cells = [...sheet.querySelectorAll("td[data-k]")];
-  const norm = (s) => s.toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  // Range / Change / Trucks: swap what every cell says.
+  // Lane lookup.
+  const data = JSON.parse($("rb-lookup-data").textContent);
+  const from = $("rb-from"), to = $("rb-to"), out = $("rb-answer");
+  function answer() {
+    const q = (data[from.value] || {})[to.value];
+    if (!q) {
+      const has = Object.keys(data[from.value] || {}).sort();
+      out.innerHTML = `<p class="rb-big">${esc(from.value)} has no rate to ${esc(to.value)} this week.</p>`
+        + (has.length ? `<p>It is quoted to: ${has.map((c) => `<button type="button" class="rb-chip" data-to="${esc(c)}">${esc(c)}</button>`).join(" ")}</p>` : "");
+      return;
+    }
+    const v = q.verdict || {};
+    out.innerHTML = `<h3>${esc(q.from)} to ${esc(q.to)}</h3>
+      <p class="rb-price">${esc(q.range)} <span>per load</span></p>
+      <dl class="rb-facts">
+        <div><dt>Most loads moved at</dt><dd>${esc(q.mostly || "Not reported")}</dd></div>
+        <div><dt>Change from last week</dt><dd>${esc(q.change || "Not reported")}</dd></div>
+        <div><dt>Trucks in the area</dt><dd>${esc(q.trucks || "Not reported")}</dd></div>
+        <div><dt>Compared with its history</dt><dd>${esc(v.tag ? v.tag + ". " : "")}${esc(v.text || "")}</dd></div>
+      </dl>
+      ${v.pos != null ? `<div class="rb-meter" role="img" aria-label="${esc(v.text)}"><span style="left: ${v.pos}%"></span></div><p class="rb-meter-k"><span>Lowest on record</span><span>Highest on record</span></p>` : ""}
+      ${q.lane ? `<p><a class="rb-btn" href="/reefer-rates/${esc(q.lane)}/">See every week for this lane →</a></p>` : ""}`;
+  }
+  out.addEventListener("click", (e) => { const b = e.target.closest("[data-to]"); if (b) { to.value = b.dataset.to; answer(); } });
+  from.addEventListener("change", answer);
+  to.addEventListener("change", answer);
+  if ("South Texas" in data) from.value = "South Texas";
+  answer();
+
+  // One city at a time.
+  const pick = $("rb-city"), tables = [...document.querySelectorAll(".rb-city")];
+  $("rb-city-form").hidden = false;
+  const show = () => tables.forEach((t) => { t.hidden = t.dataset.city !== pick.value; });
+  pick.addEventListener("change", show);
+  show();
+
+  // The sheet: Rates / Change / Trucks.
+  const sheet = $("rb-sheet"), cells = [...sheet.querySelectorAll("td[data-k]")];
   const views = [...document.querySelectorAll(".rb-views button")];
   views.forEach((b) => b.addEventListener("click", () => {
     views.forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-    const v = b.dataset.view;
-    cells.forEach((td) => { const el = td.firstElementChild; if (el) el.textContent = td.dataset[v]; });
+    sheet.classList.toggle("rb-words", b.dataset.view === "trucks");
+    cells.forEach((td) => { const el = td.firstElementChild; if (el) el.textContent = td.dataset[b.dataset.view]; });
   }));
-
-  // Search: "south texas to chicago", "nogales", or just "miami".
-  const cols = [...sheet.querySelectorAll("thead th[data-city]")].map((th) => norm(th.dataset.city));
-  const rows = [...sheet.tBodies[0].rows];
-  $("rb-q").addEventListener("input", (e) => {
-    const q = norm(e.target.value);
-    let [from, to] = q.includes(" to ") ? q.split(" to ") : [q, q];
-    const anyCity = cols.some((c) => to && c.includes(to));
-    const anyRow = rows.some((tr) => from && norm(tr.dataset.origin).includes(from));
-    if (!q.includes(" to ")) { if (anyCity && !anyRow) from = ""; else to = ""; }
-    const showCol = cols.map((c) => !to || c.includes(to));
-    sheet.querySelectorAll("tr").forEach((tr) => [...tr.children].slice(1).forEach((cell, i) => { cell.hidden = !showCol[i]; }));
-    rows.forEach((tr) => { tr.hidden = !!from && !norm(tr.dataset.origin).includes(from); });
-    $("rb-nomatch").hidden = !q || rows.some((tr) => !tr.hidden) && showCol.some(Boolean);
-  });
-
-  // The panel: the first click on a cell shows it there, the next one follows the link.
-  let picked = null;
-  sheet.addEventListener("click", (e) => {
-    const el = e.target.closest("[data-from]");
-    if (!el || !$("rb-panel")) return;
-    if (picked === el && el.dataset.lane) return;
-    e.preventDefault();
-    if (picked) picked.closest("td").classList.remove("rb-picked");
-    picked = el;
-    el.closest("td").classList.add("rb-picked");
-    $("rb-p-label").textContent = "Selected lane";
-    $("rb-p-title").textContent = el.dataset.from + " to " + el.dataset.to;
-    $("rb-p-range").textContent = el.dataset.range || "—";
-    $("rb-p-mostly").textContent = el.dataset.mostly || "—";
-    $("rb-p-chg").textContent = el.dataset.chg || "—";
-    $("rb-p-tr").textContent = el.dataset.tr || "—";
-    const sp = $("rb-p-spark");
-    sp.hidden = !el.dataset.spark;
-    sp.querySelector("polyline").setAttribute("points", el.dataset.spark || "");
-    const go = $("rb-p-go");
-    go.hidden = !el.dataset.lane;
-    if (el.dataset.lane) go.href = el.dataset.lane;
-    if (window.matchMedia("(max-width: 860px)").matches) $("rb-panel").scrollIntoView({ behavior: "smooth", block: "nearest" });
-  });
 })();
 </script>
 {% endif %}
