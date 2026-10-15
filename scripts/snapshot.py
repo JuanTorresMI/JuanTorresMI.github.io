@@ -11,7 +11,7 @@ templates only loop. A source that fails or answers with an error is skipped and
 good file stays. The `Snapshot live pages` workflow runs this once a day and commits the result.
 Needs only the standard library.
 """
-import json, os, re, sys, urllib.request
+import csv, json, os, re, sys, urllib.request
 from urllib.parse import quote
 from datetime import datetime, timedelta, timezone
 from itertools import groupby
@@ -235,6 +235,45 @@ def spark(weeks, n=26, w=96, h=24):
     return " ".join(f"{round(1 + i * step, 1)},{round(h - 2 - (v - lo) / (hi - lo) * (h - 4), 1)}" for i, v in enumerate(vals))
 
 
+CSV_PATH = os.path.join(ROOT, "reefer-rates", "usda-reefer-truck-rates.csv")
+
+
+def archive():
+    """The committed CSV read back, as {(district, dest): {week: row}}. It is the long-term record:
+    whatever the Worker returns is merged over it, so a week once collected is never lost."""
+    out = {}
+    if not os.path.exists(CSV_PATH): return out
+    with open(CSV_PATH, encoding="utf-8", newline="") as fh:
+        for r in csv.DictReader(fh):
+            n = lambda k: None if r[k] == "" else int(r[k])
+            out.setdefault((r["origin_district"], r["destination"]), {})[r["week_of"]] = [
+                r["week_of"], n("low_usd"), n("high_usd"), n("mostly_low_usd"), n("mostly_high_usd"), n("change_pct"), r["truck_availability"] or None]
+    return out
+
+
+def verdict(weeks):
+    """How the latest week compares with the lane's own history, in words."""
+    m = mid(weeks[-1])
+    prior = [mid(x) for x in weeks[:-1] if mid(x) is not None]
+    if m is None or len(prior) < 3:
+        return {"text": "Too few weeks on record yet to say how this rate compares.", "tag": "", "pos": None}
+    n, lower, higher = len(prior), sum(1 for p in prior if p < m), sum(1 for p in prior if p > m)
+    if lower == n: text = f"The highest of the {n + 1} weeks on record."
+    elif higher == n: text = f"The lowest of the {n + 1} weeks on record."
+    else: text = f"Higher than {lower} of the {n} earlier weeks on record."
+    tag = "On the high side" if lower / n > 2 / 3 else "On the low side" if lower / n < 1 / 3 else "About average"
+    return {"text": text, "tag": tag, "pos": round(lower / n * 100)}
+
+
+cents = lambda c: "±0¢" if c == 0 else f"{'+' if c > 0 else '−'}{abs(c):.1f}¢"
+
+
+def crop_list(items, show=6):
+    items = sorted(items)
+    if len(items) <= show: return ", ".join(items)
+    return ", ".join(items[:show]) + f" and {len(items) - show} more"
+
+
 def reefer(base):
     cur = get(base + "/reefer")
     if not cur.get("latest"): raise RuntimeError("the Worker has no reefer data yet")
@@ -246,13 +285,20 @@ def reefer(base):
         return names[d]
     lane_slug = lambda district, dest: f"{place(district)['slug']}-to-{slugify(dest)}"
 
-    lanes = {}
+    # History: the archive (the committed CSV), with the Worker's weeks laid over it.
+    merged = archive()
     for y in cur.get("years") or []:
         for l in get(f"{base}/reefer/history?year={y}")["lanes"]:
-            lanes.setdefault((l["district"], l["dest"]), []).extend(l["weeks"])
-    for weeks in lanes.values(): weeks.sort(key=lambda x: x[0])
+            got = merged.setdefault((l["district"], l["dest"]), {})
+            for w in l["weeks"]: got[w[0]] = w
+    lanes = {k: [v[w] for w in sorted(v)] for k, v in merged.items() if v}
     latest = cur["latest"]
     year_start = (datetime.fromisoformat(latest) - timedelta(days=364)).date().isoformat()
+
+    # What each shipping area is shipping this week (every quote, not just the main one).
+    crops = {}
+    for q in cur["quotes"]:
+        crops.setdefault(q["district"], set()).update(q.get("commodities") or [])
 
     # The lane pages.
     pages = {}
@@ -266,6 +312,8 @@ def reefer(base):
             "origin": o["name"], "short": o["short"], "usda": district, "dest": dest,
             "current": last[0] == latest, "last_week": week_of(last[0]), "last_iso": last[0],
             "range": span(last[1], last[2]), "mostly": span(last[3], last[4]), "change": pct(last[5]), "availability": last[6] or "",
+            "verdict": verdict(weeks),
+            "crops": crop_list(crops.get(district, []), 8) if last[0] == latest else "",
             "year_ago": None if not ago or mid(ago) is None or mid(last) is None else
                 {"week": week_of(ago[0]), "mid": money(round(mid(ago))), "diff": pct(round((mid(last) - mid(ago)) / mid(ago) * 100))},
             "avg": money(round(sum(mids) / len(mids))) if mids else "",
@@ -276,8 +324,7 @@ def reefer(base):
                      for x in reversed(weeks[-52:])],
         }
 
-    # This week's board as a rate sheet: one row per origin, one column per city, each cell the
-    # main quote in thousands ("3.8–4.4"). Rows with the most cities come first.
+    # This week's main quote for every lane quoted.
     k = lambda n: f"{n / 1000:.1f}"
     cities = sorted({q["dest"] for q in cur["quotes"]})
     cells, also = {}, []
@@ -285,46 +332,97 @@ def reefer(base):
         o = place(q["district"])
         if q["quote"] == 0:
             slug = lane_slug(q["district"], q["dest"])
+            w = [latest, q["low"], q["high"], q["mostly_low"], q["mostly_high"], q["change_pct"], q["availability"]]
             cells[(q["district"], q["dest"])] = {
                 "k": "" if q["low"] is None or q["high"] is None else (k(q["low"]) if q["low"] == q["high"] else f"{k(q['low'])}–{k(q['high'])}"),
                 "range": span(q["low"], q["high"]), "mostly": span(q["mostly_low"], q["mostly_high"]),
                 "change": pct(q["change_pct"]), "n": q["change_pct"] or 0, "trucks": q["availability"] or "",
-                "lane": slug if slug in pages else None, "from": o["short"], "to": q["dest"],
-                "spark": spark(lanes.get((q["district"], q["dest"]), [])) or "",
+                "lane": slug if slug in pages else None, "from": o["short"], "to": q["dest"], "m": mid(w),
+                "verdict": pages[slug]["verdict"] if slug in pages else verdict([w]),
                 "big": abs(q["change_pct"] or 0) >= 5}
         else:
             also.append({"from": o["short"], "to": q["dest"], "range": span(q["low"], q["high"]), "for": ", ".join(q["commodities"])})
-    origins = sorted({d for d, _ in cells}, key=lambda d: (-sum(1 for (x, _) in cells if x == d), place(d)["short"]))
-    sheet = [{"short": place(d)["short"], "name": place(d)["name"],
-              "cells": [cells.get((d, c)) for c in cities]} for d in origins]
-    movers = sorted(cells.values(), key=lambda c: -abs(c["n"]))
-    featured = movers[0] if movers else None
     also.sort(key=lambda a: (a["from"], a["to"]))
+    origins = sorted({d for d, _ in cells}, key=lambda d: (-sum(1 for (x, _) in cells if x == d), place(d)["short"]))
+    sheet = [{"short": place(d)["short"], "name": place(d)["name"], "cells": [cells.get((d, c)) for c in cities]} for d in origins]
+    public = lambda c: {key: c[key] for key in ("range", "mostly", "change", "trucks", "lane", "from", "to", "verdict")}
 
-    # Every lane into each city this week, cheapest first, for the lane pages' comparison.
-    into = {}
-    for (district, dest), weeks in lanes.items():
-        w = weeks[-1]
-        if w[0] != latest or mid(w) is None: continue
-        slug = lane_slug(district, dest)
-        into.setdefault(dest, []).append({"short": place(district)["short"], "lane": slug if slug in pages else None, "range": span(w[1], w[2]), "m": mid(w)})
-    for v in into.values(): v.sort(key=lambda x: x["m"])
-    for slug, p in pages.items():
-        p["compare"] = [{"short": c["short"], "lane": c["lane"], "range": c["range"], "here": c["lane"] == slug} for c in into.get(p["dest"], [])]
+    # 1. The market this week, in a sentence and two short lists.
+    by_city = {c: [x["n"] for (d, cc), x in cells.items() if cc == c and x["n"] is not None] for c in cities}
+    avg = {c: sum(v) / len(v) for c, v in by_city.items() if v}
+    rose = sorted([c for c in avg if avg[c] >= 1], key=lambda c: -avg[c])[:4]
+    fell = sorted([c for c in avg if avg[c] <= -1], key=lambda c: avg[c])[:3]
+    trucks = {}
+    for (d, _), x in cells.items():
+        if x["trucks"]: trucks.setdefault(d, set()).add(x["trucks"])
+    short = sorted(place(d)["short"] for d, t in trucks.items() if t & {"Shortage"})
+    long_ = sorted(place(d)["short"] for d, t in trucks.items() if t & {"Surplus"})
+    sign = lambda v: f"{'+' if v > 0 else '−'}{abs(v):.1f}%"
+    listing = lambda xs: xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
+    parts = []
+    if rose: parts.append("Rates rose most into " + listing([f"{c} ({sign(avg[c])} on average)" if i == 0 else f"{c} ({sign(avg[c])})" for i, c in enumerate(rose)]) + ".")
+    if fell: parts.append("They fell into " + listing([f"{c} ({sign(avg[c])})" for c in fell]) + ".")
+    if not rose and not fell: parts.append("Rates held about steady this week.")
+    if short: parts.append("Trucks were short in " + listing(short) + ".")
+    if long_: parts.append("Trucks were plentiful in " + listing(long_) + ".")
+    ups = sorted([x for x in cells.values() if x["n"] > 0], key=lambda x: -x["n"])[:5]
+    downs = sorted([x for x in cells.values() if x["n"] < 0], key=lambda x: x["n"])[:5]
 
+    # 3. Capacity: each shipping area quoted this week.
+    capacity = []
+    for d in origins:
+        mine = [x for (dd, _), x in cells.items() if dd == d]
+        t = sorted({x["trucks"] for x in mine if x["trucks"]})
+        ch = [x["n"] for x in mine if x["n"] is not None]
+        capacity.append({"short": place(d)["short"], "name": place(d)["name"], "trucks": " / ".join(t) or "—",
+                         "short_trucks": "Shortage" in t, "lanes": len(mine),
+                         "change": sign(sum(ch) / len(ch)) if ch and abs(sum(ch) / len(ch)) >= 0.05 else "0%",
+                         "crops": crop_list(crops.get(d, []))})
+    capacity.sort(key=lambda a: (not a["short_trucks"], a["short"]))
+
+    # 4. Every origin into each city, cheapest first.
+    city_tables = []
+    for c in cities:
+        rows = sorted([x for (d, cc), x in cells.items() if cc == c and x["m"] is not None], key=lambda x: x["m"])
+        top = max((x["m"] for x in rows), default=1)
+        city_tables.append({"name": c, "slug": slugify(c), "rows": [{**public(x), "bar": round(x["m"] / top * 100)} for x in rows]})
+
+    # 5. Seasons: the months each shipping area has been quoted in, and what it ships now.
+    months = {}
+    for (d, _), weeks in lanes.items():
+        months.setdefault(d, set()).update(int(x[0][5:7]) for x in weeks)
+    shipping_now = {d for d, _ in cells}
+    seasons = [{"short": place(d)["short"], "now": d in shipping_now, "months": [m in ms for m in range(1, 13)],
+                "crops": crop_list(crops.get(d, [])) if d in shipping_now else "Not quoted this week"}
+               for d, ms in months.items()]
+    seasons.sort(key=lambda s: (not s["now"], s["short"]))
+    record = sorted({x[0][:7] for weeks in lanes.values() for x in weeks})
+
+    # 6. Diesel.
     fuel = cur.get("diesel") or []
     diesel = None
     if fuel:
         a, b = fuel[-1], (fuel[-2] if len(fuel) > 1 else None)
         d = None if not b else round((a["price"] - b["price"]) * 100, 1)
+        peak = max(fuel, key=lambda x: x["price"])
         diesel = {"price": f"${a['price']:.3f}", "week": week_of(a["week"]),
                   "delta": "" if d is None else ("±0¢" if d == 0 else f"{'+' if d > 0 else '−'}{abs(d):.1f}¢"),
-                  "change": "" if d is None else ("no change from the week before" if d == 0 else f"{'+' if d > 0 else '−'}{abs(d):.1f}¢ from the week before")}
+                  "change": "" if d is None else ("no change from the week before" if d == 0 else f"{'+' if d > 0 else '−'}{abs(d):.1f}¢ from the week before"),
+                  "peak": f"${peak['price']:.3f}", "peak_week": week_of(peak["week"]),
+                  "oldest": f"${fuel[0]['price']:.3f}", "oldest_week": week_of(fuel[0]["week"]),
+                  "rows": [{"week": week_of(fuel[i]["week"]), "price": f"${fuel[i]['price']:.3f}",
+                            "change": "" if i == 0 else cents(round((fuel[i]["price"] - fuel[i - 1]["price"]) * 100, 1))}
+                           for i in range(len(fuel) - 1, max(len(fuel) - 9, -1), -1)]}
 
-    # The download: every lane's main quote for every week, oldest first. A static file, so it
-    # costs the Worker nothing and the link is on this site.
-    os.makedirs(os.path.join(ROOT, "reefer-rates"), exist_ok=True)
-    with open(os.path.join(ROOT, "reefer-rates", "usda-reefer-truck-rates.csv"), "w", encoding="utf-8", newline="\n") as fh:
+    # The lane lookup: origin -> city -> this week's quote, as JSON for the page's two menus.
+    lookup = {}
+    for (d, c), x in cells.items():
+        lookup.setdefault(place(d)["short"], {})[c] = public(x)
+
+    # The download: every lane's main quote for every week on record, oldest first. A static file,
+    # so it costs the Worker nothing; it is also the archive the next run reads back.
+    os.makedirs(os.path.dirname(CSV_PATH), exist_ok=True)
+    with open(CSV_PATH, "w", encoding="utf-8", newline="\n") as fh:
         fh.write("week_of,origin_district,destination,low_usd,high_usd,mostly_low_usd,mostly_high_usd,change_pct,truck_availability\n")
         cell = lambda v: "" if v is None else (f'"{v}"' if "," in str(v) else str(v))
         for w, district, dest, *rest in sorted(((x[0], d, c, *x[1:]) for (d, c), weeks in lanes.items() for x in weeks), key=lambda r: r[:3]):
@@ -340,10 +438,13 @@ def reefer(base):
         with open(f, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(f"---\nlane: {slug}\ntitle: {json.dumps(title, ensure_ascii=False)}\ndescription: {json.dumps(desc, ensure_ascii=False)}\n---\n")
 
-    return {"generated": cur["updated"], "latest": latest, "week": week_of(latest), "first": week_of(cur["first"]), "first_iso": cur["first"],
+    return {"generated": cur["updated"], "latest": latest, "week": week_of(latest), "first": week_of(record[0] + "-01") if record else week_of(cur["first"]),
+            "first_iso": min(x[0] for weeks in lanes.values() for x in weeks), "record_months": len(record),
             "backfill_done": bool(cur.get("backfill_done")), "diesel": diesel, "lanes": pages,
+            "summary": " ".join(parts), "ups": [public(x) for x in ups], "downs": [public(x) for x in downs],
+            "capacity": capacity, "city_tables": city_tables, "seasons": seasons, "lookup": lookup,
             "cities": [{"name": c, "code": CITY_CODES.get(c, c[:3].upper())} for c in cities], "sheet": sheet, "also": also,
-            "featured": featured, "quoted": len(cells), "origin_count": len(sheet), "lane_count": len(pages),
+            "quoted": len(cells), "origin_count": len(sheet), "lane_count": len(pages),
             "row_count": sum(len(w) for w in lanes.values())}
 
 
