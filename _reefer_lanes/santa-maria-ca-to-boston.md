@@ -1,5 +1,5 @@
 ---
 lane: santa-maria-ca-to-boston
 title: "Santa Maria, CA to Boston reefer rates"
-description: "Weekly spot rates for a refrigerated truck from Santa Maria, California to Boston, from USDA's National Truck Rate Report: the latest rate, every week on record, and how the lane compares."
+description: "USDA's weekly spot rates for a reefer truck from Santa Maria, CA to Boston: the latest rate, every week on record, and every origin into Boston."
 ---

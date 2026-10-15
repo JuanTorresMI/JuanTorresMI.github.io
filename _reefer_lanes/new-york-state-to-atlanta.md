@@ -1,5 +1,5 @@
 ---
 lane: new-york-state-to-atlanta
 title: "New York State to Atlanta reefer rates"
-description: "Weekly spot rates for a refrigerated truck from New York State to Atlanta, from USDA's National Truck Rate Report: the latest rate, every week on record, and how the lane compares."
+description: "USDA's weekly spot rates for a reefer truck from New York State to Atlanta: the latest rate, every week on record, and every origin into Atlanta."
 ---
