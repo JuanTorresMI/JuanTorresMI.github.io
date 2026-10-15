@@ -193,7 +193,19 @@ const pad = (n) => String(n).padStart(2, "0");
 
 /* ---------------------------------------------------------------- the house TV ---- */
 
+/* The edge cache is per Cloudflare location and often misses, so the Worker also keeps the last
+   answer in memory for TV_CACHE_S: requests that land on the same running copy share one call to
+   Stremio instead of each making their own. */
+let tvMemo = { at: 0, body: null };
+
 async function houseTv(env) {
+  if (tvMemo.body && Date.now() - tvMemo.at < TV_CACHE_S * 1000) return tvMemo.body;
+  const body = await houseTvFresh(env);
+  tvMemo = { at: Date.now(), body };
+  return body;
+}
+
+async function houseTvFresh(env) {
   if (!env.STREMIO_AUTH_KEY) throw new Error("This Worker has no STREMIO_AUTH_KEY set. See worker/README.md.");
   let body;
   try {

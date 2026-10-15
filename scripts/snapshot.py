@@ -170,6 +170,33 @@ fecha = lambda d: f"{d.day} {MONTHS_ES[d.month - 1]} {d.year}"
 local_time = lambda s: datetime.strptime(s, "%Y-%m-%d %H:%M")
 
 
+STALE_MIN = 180                              # a reading this old when copied gets marked as old
+
+
+def posted_label(at, cbp):
+    """'2026-10-15 22:00' + 'At 10:00 pm CDT' -> ('Oct 15, 10:00 PM CDT', '15 oct, 22:00 CDT')."""
+    if not at: return "", ""
+    t = local_time(at)
+    zone = (re.findall(r"[A-Z]{3}$", (cbp or "").strip()) or [""])[-1]
+    en = f"{t:%b} {t.day}, {t.hour % 12 or 12}:{t.minute:02d} {'AM' if t.hour < 12 else 'PM'}" + (f" {zone}" if zone else "")
+    es = f"{t.day} {MONTHS_ES[t.month - 1]}, {t.hour}:{t.minute:02d}" + (f" {zone}" if zone else "")
+    return en, es
+
+
+def hours_es(h):
+    """CBP's '7 am-Midnight' / '24 hrs/day' in Spanish."""
+    if not h: return ""
+    if "24" in h and "day" in h: return "24 horas"
+    def one(x):
+        x = x.strip().lower()
+        if x == "midnight": return "medianoche"
+        if x == "noon": return "mediodía"
+        m = re.match(r"(\d{1,2})(?::(\d{2}))?\s*([ap])m", x)
+        if not m: return x
+        return f"{int(m[1]) % 12 + (12 if m[3] == 'p' else 0)}:{m[2] or '00'}"
+    return " a ".join(one(x) for x in h.split("-"))
+
+
 def crossings():
     d = json.load(open(os.path.join(ROOT, "_data", "border_crossings.json"), encoding="utf-8"))
     return {c["port"]: c for c in d["crossings"]}, d.get("names", {})
@@ -263,7 +290,9 @@ def border(base):
              "slug": c.get("slug"), "city": c.get("city", ""), "across": c.get("across", ""), "es": c.get("es"),
              "hours": p.get("hours", ""), "open": p.get("status") == "Open", "max": p.get("max"),
              "std": wait(std), "fast": wait(fast),
-             "posted": re.sub(r"^At\s+", "", std.get("update") or fast.get("update") or ""), "notice": p.get("notice") or ""}
+             "posted": re.sub(r"^At\s+", "", std.get("update") or fast.get("update") or ""), "notice": p.get("notice") or "",
+             "hours_es": hours_es(p.get("hours", "")), "stale": p.get("age") is not None and p["age"] >= STALE_MIN}
+        x["posted_en"], x["posted_es"] = posted_label(p.get("posted_at"), std.get("update") or fast.get("update"))
         try:
             x.update(port_detail(base, p["port"]))
         except Exception as e:
@@ -271,6 +300,12 @@ def border(base):
             x.update({"readings": 0, "first": "", "first_en": "", "first_es": "", "avg": None, "fast_avg": None,
                       "grid": [], "by_hour": [], "best": None, "worst": None, "chart": None, "profile": []})
         out[p["port"]] = x
+    # Nearby: the other commercial ports in the same CBP district (the first two digits of the
+    # port number: 23 is the Laredo/Rio Grande Valley stretch, 38 Detroit and Port Huron, and so on),
+    # the same city first (the first four digits: 2304 is Laredo).
+    for k, v in out.items():
+        near = sorted((o for o in out.values() if o["port"] != k and o["port"][:2] == k[:2]), key=lambda o: (o["port"][:4] != k[:4], o["name"]))
+        v["nearby"] = [o["port"] for o in near][:8]
     for port in named:
         if port not in out: print(f"border: {port} is in border_crossings.json but not in CBP's feed", file=sys.stderr)
 
@@ -438,10 +473,20 @@ def verdict(weeks):
 cents = lambda c: "±0¢" if c == 0 else f"{'+' if c > 0 else '−'}{abs(c):.1f}¢"
 
 
+def crop_name(c):
+    """USDA's 'Lettuce, Boston' -> 'Boston lettuce', so a list of crops reads as one."""
+    if ", " not in c: return c
+    kind, variety = c.split(", ", 1)
+    return f"{variety} {kind.lower()}"
+
+
 def crop_list(items, show=6):
-    items = sorted(items)
+    items = sorted({crop_name(c) for c in items})
     if len(items) <= show: return ", ".join(items)
     return ", ".join(items[:show]) + f" and {len(items) - show} more"
+
+
+place_key = lambda x: x["usda"]
 
 
 def reefer(base):
@@ -479,7 +524,7 @@ def reefer(base):
         mids = [mid(x) for x in year if mid(x) is not None]
         ago = next((x for x in reversed(weeks) if abs((datetime.fromisoformat(last[0]) - datetime.fromisoformat(x[0])).days - 364) <= 3), None)
         pages[slug] = {
-            "origin": o["name"], "short": o["short"], "usda": district, "dest": dest,
+            "origin": o["name"], "short": o["short"], "usda": district, "dest": dest, "border": o.get("border", []),
             "current": last[0] == latest, "last_week": week_of(last[0]), "last_iso": last[0],
             "range": span(last[1], last[2]), "mostly": span(last[3], last[4]), "change": pct(last[5]), "availability": last[6] or "",
             "verdict": verdict(weeks),
@@ -507,7 +552,7 @@ def reefer(base):
                 "k": "" if q["low"] is None or q["high"] is None else (k(q["low"]) if q["low"] == q["high"] else f"{k(q['low'])}–{k(q['high'])}"),
                 "range": span(q["low"], q["high"]), "mostly": span(q["mostly_low"], q["mostly_high"]),
                 "change": pct(q["change_pct"]), "n": q["change_pct"] or 0, "trucks": q["availability"] or "",
-                "lane": slug if slug in pages else None, "from": o["short"], "to": q["dest"], "m": mid(w),
+                "lane": slug if slug in pages else None, "from": o["short"], "usda": q["district"], "to": q["dest"], "m": mid(w),
                 "verdict": pages[slug]["verdict"] if slug in pages else verdict([w]),
                 "big": abs(q["change_pct"] or 0) >= 5}
         else:
@@ -516,6 +561,15 @@ def reefer(base):
     origins = sorted({d for d, _ in cells}, key=lambda d: (-sum(1 for (x, _) in cells if x == d), place(d)["short"]))
     sheet = [{"short": place(d)["short"], "name": place(d)["name"], "cells": [cells.get((d, c)) for c in cities]} for d in origins]
     public = lambda c: {key: c[key] for key in ("range", "mostly", "change", "trucks", "lane", "from", "to", "verdict")}
+
+    # Lane pages: what else goes into the same city this week (cheapest first), and where else the
+    # same shipping area is sending trucks. Both link to their own lane pages.
+    for slug, pg in pages.items():
+        here = (pg["usda"], pg["dest"])
+        into = sorted((x for (d, c), x in cells.items() if c == pg["dest"] and x["m"] is not None), key=lambda x: x["m"])
+        pg["compare"] = [{"short": x["from"], "range": x["range"], "lane": x["lane"], "here": (place_key(x), pg["dest"]) == here} for x in into]
+        out = sorted((x for (d, c), x in cells.items() if d == pg["usda"] and x["m"] is not None), key=lambda x: x["m"])
+        pg["outbound"] = [{"to": x["to"], "range": x["range"], "change": x["change"], "lane": x["lane"], "here": x["to"] == pg["dest"]} for x in out]
 
     # 1. The market this week, in a sentence and two short lists.
     by_city = {c: [x["n"] for (d, cc), x in cells.items() if cc == c and x["n"] is not None] for c in cities}
@@ -567,6 +621,24 @@ def reefer(base):
                for d, ms in months.items()]
     seasons.sort(key=lambda s: (not s["now"], s["short"]))
     record = sorted({x[0][:7] for weeks in lanes.values() for x in weeks})
+    have = sorted({x[0] for weeks in lanes.values() for x in weeks})
+    run = latest
+    while (datetime.fromisoformat(run) - timedelta(days=7)).date().isoformat() in have:
+        run = (datetime.fromisoformat(run) - timedelta(days=7)).date().isoformat()
+    older = [w for w in have if w < run]
+    if cur.get("backfill_done") or not older:
+        history = f"Every week back to {week_of(have[0])}." if cur.get("backfill_done") else \
+            f"Every week back to {week_of(run)} so far; the rest of USDA’s history is still being collected, one week an hour."
+    else:
+        history = (f"Every week back to {week_of(run)} so far, plus {len(older)} week{'s' if len(older) != 1 else ''} from "
+                   f"{week_of(older[0])} to {week_of(older[-1])}. The gap between is still being collected, one week an hour.")
+
+    # When USDA published this week's report, and when the next one is due (Wednesdays, for the
+    # week that started the Monday before).
+    pub = None
+    try: pub = datetime.strptime((cur.get("published") or "").split(" ")[0], "%m/%d/%Y")
+    except ValueError: pass
+    due = datetime.fromisoformat(latest) + timedelta(days=9)
 
     # 6. Diesel.
     fuel = cur.get("diesel") or []
@@ -610,7 +682,8 @@ def reefer(base):
 
     return {"generated": cur["updated"], "latest": latest, "week": week_of(latest), "first": week_of(record[0] + "-01") if record else week_of(cur["first"]),
             "first_iso": min(x[0] for weeks in lanes.values() for x in weeks), "record_months": len(record),
-            "backfill_done": bool(cur.get("backfill_done")), "diesel": diesel, "lanes": pages,
+            "backfill_done": bool(cur.get("backfill_done")), "diesel": diesel, "lanes": pages, "history": history,
+            "published": full_date(pub) if pub else "", "next_due": f"{due:%a}, {full_date(due)}",
             "summary": " ".join(parts), "ups": [public(x) for x in ups], "downs": [public(x) for x in downs],
             "capacity": capacity, "city_tables": city_tables, "seasons": seasons, "lookup": lookup,
             "cities": [{"name": c, "code": CITY_CODES.get(c, c[:3].upper())} for c in cities], "sheet": sheet, "also": also,

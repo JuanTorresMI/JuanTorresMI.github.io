@@ -200,7 +200,13 @@ stock: night
     renderDeck(d.deck || []);
   }
 
-  tick();
-  setInterval(tick, POLL);
+  // Every poll is a Worker request and a call to Stremio, so a tab nobody is looking at stops
+  // asking (a tab left open in the background all day would otherwise make 2,000+ requests),
+  // and asks again the moment it's looked at.
+  let timer = null;
+  const start = () => { if (!timer) { tick(); timer = setInterval(tick, POLL); } };
+  const stop = () => { clearInterval(timer); timer = null; };
+  document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+  if (!document.hidden) start();
 })();
 </script>

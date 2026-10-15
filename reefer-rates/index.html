@@ -3,7 +3,7 @@ layout: default
 title: Reefer truck rates
 seo_title: "Reefer Truck Rates This Week · Produce Freight Rates by Lane (USDA)"
 permalink: /reefer-rates/
-description: This week's reefer truck rates from U.S. produce shipping areas and Mexico crossings to ten cities, from USDA. Look up a lane, see where trucks are short, and what ships when.
+description: This week's reefer truck rates from U.S. produce areas and Mexico crossings to ten cities, from USDA. Look up a lane and see where trucks are short.
 image: /assets/og/reefer-rates.png
 image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rates, lane by lane."
 last_modified_at: 2026-10-15
@@ -29,6 +29,7 @@ last_modified_at: 2026-10-15
     <div><dt>Rates for</dt><dd>Week of {{ r.week }}</dd></div>
     {%- if r.diesel %}<div><dt>Diesel, U.S. average</dt><dd>{{ r.diesel.price }}{% if r.diesel.delta != "" %} <span>{{ r.diesel.delta }}</span>{% endif %}</dd></div>{% endif %}
     <div><dt>Lanes quoted</dt><dd>{{ r.quoted }}</dd></div>
+    {%- if r.next_due %}<div><dt>Next report</dt><dd>{{ r.next_due }}</dd></div>{% endif %}
   </dl>
   {%- endif %}
 </header>
@@ -139,7 +140,7 @@ last_modified_at: 2026-10-15
 
 <section class="rb-sec" id="seasons" aria-labelledby="seasons-h">
   <h2 id="seasons-h">Produce shipping seasons and crops by area</h2>
-  <p>The months each shipping area has been quoted in, and what it’s shipping now. This fills in as more weeks are collected; so far the record covers {{ r.record_months }} month{% if r.record_months != 1 %}s{% endif %}, back to {{ r.first }}.</p>
+  <p>The months each shipping area has been quoted in, and what it’s shipping now. {% if r.history %}{{ r.history }}{% else %}So far the record covers {{ r.record_months }} month{% if r.record_months != 1 %}s{% endif %}, back to {{ r.first }}.{% endif %}{% unless r.backfill_done %} A month without a dot may just not be collected yet.{% endunless %}</p>
   <div class="rb-scroll">
     <table class="rb-t rb-wrap rb-seasons">
       <thead><tr><th scope="col">Shipping area</th>{% assign mnames = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" | split: "," %}{% for m in mnames %}<th scope="col" class="rb-m">{{ m }}</th>{% endfor %}<th scope="col">Shipping now</th></tr></thead>
@@ -241,11 +242,12 @@ last_modified_at: 2026-10-15
       <ol>
         <li><strong>A Cloudflare Worker reads the report.</strong> The same small Worker behind this site’s <a href="/youtube/">YouTube</a> page asks USDA’s MyMarketNews API for the newest report every six hours, and stores it in a SQLite database on Cloudflare (D1) once it’s new. The key it uses is free, read-only, and kept as an encrypted secret, never in this site’s code.</li>
         <li><strong>It boils the rows down to lanes.</strong> USDA repeats each rate once per commodity it covers, so the same number shows up dozens of times. The Worker keeps each distinct rate a shipping area quotes to a city once. Usually there’s one; sometimes an area quotes a second rate for a group of crops, citrus most often, and that’s listed under the sheet.</li>
-        <li><strong>It fills in the past by itself.</strong> In the hours between new reports it asks for one older week at a time, walking back until USDA has nothing older. That’s where the history on each lane page comes from{% if r %}: right now it goes back to {{ r.first }}{% endif %}.</li>
-        <li><strong>Once a day, this page is rebuilt from it.</strong> A GitHub Action copies the Worker’s data into the site and rebuilds every section, a page for every lane and the CSV. Weeks already collected are kept in that CSV, so nothing is lost. Because the page is plain HTML, reading it never touches the Worker at all, however many people visit.</li>
+        <li><strong>It fills in the past by itself.</strong> In the hours between new reports it asks for one older week at a time, walking back until USDA has nothing older. That’s where the history on each lane page comes from.{% if r.history %} {{ r.history }}{% endif %}</li>
+        <li><strong>Twice a day, this page is rebuilt from it.</strong> A GitHub Action copies the Worker’s data into the site and rebuilds every section, a page for every lane and the CSV. Weeks already collected are kept in that CSV, so nothing is lost. Because the page is plain HTML, reading it never touches the Worker at all, however many people visit.</li>
       </ol>
       <p>How to read the numbers: the <strong>range</strong> is the lowest to highest rate reported for a full load in a 48 to 53 foot refrigerated trailer, broker fees included. <strong>Mostly</strong> is where most loads actually moved, when USDA reports it. <strong>Change</strong> is USDA’s own figure for the move from the week before. The truck label is USDA’s read on supply in that area that week, from surplus (more trucks than loads) to shortage (more loads than trucks). “Compared with its history” ranks this week’s middle rate against every earlier week on record for the same lane.</p>
       <p>Shipping areas come and go with the growing seasons, so a lane missing from this week’s sheet is usually just out of season. Its page stays up with its history.</p>
+      <p>Loads from Mexico (South Texas, Nogales and the Calexico crossings) wait at the border before they roll. The lane pages for those areas show the live truck waits at their crossings, from this site’s <a href="/border-waits/">border wait board</a>.</p>
       <p>Source: USDA Agricultural Marketing Service, Specialty Crops Market News; diesel from the U.S. Energy Information Administration. The numbers are theirs and are public; any mistakes in presenting them are mine. The Worker’s code is in the <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">worker folder</a> of this site’s repository.</p>
     </div>
   </div>

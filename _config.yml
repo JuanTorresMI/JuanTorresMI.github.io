@@ -34,14 +34,14 @@ defaults:
   - scope: { path: "", type: posts }
     values: { permalink: "/blog/:title/" }
   - scope: { path: "", type: reefer_lanes }
-    values: { layout: reefer-lane, image: /assets/og/reefer-rates.png, image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rates, lane by lane." }
+    values: { layout: reefer-lane, parent: { title: Reefer truck rates, url: /reefer-rates/ }, image: /assets/og/reefer-rates.png, image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rates, lane by lane." }
   # Border crossings. The Spanish pages are a draft until a fluent speaker has read them: until
   # then they stay out of search and the sitemap, and neither language points at the other with
   # hreflang. Once reviewed, set translations_live: true in both and drop noindex and sitemap here.
   - scope: { path: "", type: border_crossings }
-    values: { layout: border-crossing, lang: en, translations_live: false, image: /assets/og/border-waits.png, image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits, now and by hour." }
+    values: { layout: border-crossing, lang: en, translations_live: false, parent: { title: Border truck wait times, url: /border-waits/ }, image: /assets/og/border-waits.png, image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits, now and by hour." }
   - scope: { path: "", type: border_crossings_es }
-    values: { layout: border-crossing, lang: es, translations_live: false, noindex: true, sitemap: false, image: /assets/og/border-waits.png, image_alt: "Tiempos de espera para camiones en la frontera, por Juan Torres." }
+    values: { layout: border-crossing, lang: es, translations_live: false, parent: { title: Border truck wait times, url: /border-waits/ }, noindex: true, sitemap: false, image: /assets/og/border-waits.png, image_alt: "Tiempos de espera para camiones en la frontera, por Juan Torres." }
 
 # One page per reefer lane (/reefer-rates/<origin>-to-<city>/). The files in _reefer_lanes/ are
 # front matter only, written by scripts/snapshot.py; the data is _data/live/reefer.json.

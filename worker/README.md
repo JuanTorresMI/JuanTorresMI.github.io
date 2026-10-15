@@ -321,3 +321,23 @@ The first request after a deploy reads CBP on the spot; after that the cron does
 
 Nothing. CBP is asked 48 times a day. About 50 ports post about once an hour, so that is roughly
 1,200 rows written a day, two D1 statements per run.
+
+## Staying inside the free plan
+
+The limits that matter: 100,000 requests a day, 10 ms of CPU per request or cron run, 50 outside
+fetches per run, and D1's 5 million rows read and 100,000 written a day. Measured on Oct 15, 2026
+(`npx.cmd wrangler d1 info yokonjuan`): about 15,000 rows read and 3,300 written in 24 hours.
+
+What keeps it there, so a later change doesn't undo it:
+
+- **Pages that poll stop when hidden.** `/watching/` asks every 40 s only while its tab is visible;
+  a background tab used to make 2,000+ requests a day. The border pages ask once per view.
+- **The house TV keeps Stremio's answer for 25 s**, in the edge cache and in the Worker's memory,
+  so a burst of viewers is one Stremio call.
+- **No query reads a whole table on a schedule.** "Is anything stored?" is `SELECT 1 … LIMIT 1`,
+  never `COUNT(*)`; `/border/port` counts only a port's last 30 days. A growing history must never
+  make a run read more rows.
+- **Many rows go in one statement** (`json_each`), never one statement per row: the free plan
+  allows 50 queries per run.
+- **Pages read the twice-daily copy, not the Worker**, wherever the data changes slowly (reefer,
+  the border averages). Visitors only reach the Worker for "right now".

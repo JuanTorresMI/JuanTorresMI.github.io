@@ -576,6 +576,14 @@ html { scroll-behavior: smooth; }
 .bw-key span { display: inline-block; width: 16px; height: 16px; }
 .bw-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .bw-hours .rb-table td:nth-child(2) { width: 6em; }
+.bw-stale { display: inline-block; margin-left: 4px; padding: 0 6px; border: 1px solid currentColor; font: 500 11px var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.bw-copy { margin-top: 12px !important; font-size: 14px; }
+.bw-quick { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 16px 0 0 !important; max-width: none !important; font-size: 15px; }
+.bw-quick span { font-weight: 600; color: var(--ink); }
+.bw-quick a { color: var(--text); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 4px; }
+.bw-quick a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.bw-near td { white-space: nowrap; }
+@media (max-width: 520px) { .bw-near th:nth-child(4), .bw-near td:nth-child(4) { display: none; } .bw-near th, .bw-near td { padding-left: 8px; padding-right: 8px; } }
 /* ---------- YouTube (/youtube/) ----------
    A "gamer" page on night stock: HUD frames (2px), uppercase mono labels, square thumbnails.
    Scoped under .yt. */

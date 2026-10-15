@@ -110,9 +110,10 @@ async function latest(env) {
 }
 
 async function diesel(env) {
-  const have = await env.DB.prepare("SELECT COUNT(*) AS n FROM diesel_weekly").first();
+  // "Is there anything stored?" reads one row; a COUNT(*) would read them all, every run.
+  const have = await env.DB.prepare("SELECT 1 AS n FROM diesel_weekly LIMIT 1").first();
   const q = new URLSearchParams({ frequency: "weekly", "data[0]": "value", "facets[series][]": DIESEL_SERIES,
-    "sort[0][column]": "period", "sort[0][direction]": "desc", length: have && have.n > 0 ? "8" : "520",
+    "sort[0][column]": "period", "sort[0][direction]": "desc", length: have ? "8" : "520",
     api_key: env.EIA_API_KEY || "DEMO_KEY" });
   const r = await fetch(`${EIA}?${q}`);
   if (!r.ok) throw new Error("EIA said: status " + r.status);
@@ -147,7 +148,8 @@ async function backfill(env) {
 }
 
 export async function reeferTick(env, when = new Date()) {
-  const fresh = (await env.DB.prepare("SELECT COUNT(*) AS n FROM reefer_quotes").first()).n === 0;
+  // One row read, not the whole table: this runs every hour and the history keeps growing.
+  const fresh = !(await env.DB.prepare("SELECT 1 AS n FROM reefer_quotes LIMIT 1").first());
   if (fresh || when.getUTCHours() % 6 === 0) {
     await latest(env);
     await diesel(env).catch((e) => console.error("diesel:", e.message || e));   // never blocks the rates
