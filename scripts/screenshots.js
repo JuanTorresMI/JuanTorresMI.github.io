@@ -10,7 +10,7 @@
 const { chromium } = require("playwright");
 const http = require("http"), fs = require("fs"), path = require("path");
 const [siteDir = "_site", outDir = "screenshots"] = process.argv.slice(2);
-const PAGES = ["/", "/projects/", "/resume/", "/blog/", "/fruit-fly-dispatcher/", "/craft-ledger.html", "/aggregate-planning/", "/watching/", "/border-waits/", "/border-waits/laredo-world-trade-bridge/", "/es/tiempos-de-espera/laredo-puente-comercio-mundial/", "/404.html"];
+const PAGES = ["/", "/projects/", "/resume/", "/blog/", "/fruit-fly-dispatcher/", "/craft-ledger.html", "/aggregate-planning/", "/watching/", "/border-waits/", "/border-waits/laredo-world-trade-bridge/", "/es/tiempos-de-espera/", "/es/tiempos-de-espera/laredo-puente-comercio-mundial/", "/404.html"];
 const TYPES = { html: "text/html", css: "text/css", js: "text/javascript", png: "image/png", svg: "image/svg+xml", woff2: "font/woff2", xml: "application/xml", txt: "text/plain", json: "application/json", webmanifest: "application/manifest+json", wasm: "application/wasm", pdf: "application/pdf" };
 
 const server = http.createServer((req, res) => {

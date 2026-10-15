@@ -1,0 +1,94 @@
+---
+layout: default
+lang: es
+title: Tiempos de espera para camiones en la frontera con México
+seo_title: "Tiempo de espera para camiones en la frontera con México, hoy"
+permalink: /es/tiempos-de-espera/
+description: Cuánto esperan hoy los camiones de carga en cada cruce fronterizo de México a Estados Unidos, y a qué hora suele haber menos demora, con datos de CBP.
+translation: /border-waits/
+translations_live: true
+image: /assets/og/border-waits.png
+image_alt: "Tiempos de espera para camiones en la frontera, por Juan Torres."
+---
+{%- comment -%}
+  The Spanish counterpart of /border-waits/, for the Mexican border only: every commercial crossing
+  right now, with links to the Spanish crossing pages (_border_crossings_es/). Same data
+  (site.data.live.border) and the same refresh script as the English board; paired with it by
+  hreflang through `translation`. Words follow CBP's own Spanish ("sin demora", "carriles generales").
+{%- endcomment -%}
+{%- assign b = site.data.live.border -%}
+{%- assign t = site.data.border_text.es -%}
+<div class="rb bw">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family">Trabajo · Espera en la frontera</p>
+    <h1>Tiempos de espera para camiones en la frontera con México</h1>
+    <p class="rb-sub">Cuánto esperan los camiones de carga para entrar a Estados Unidos en cada cruce fronterizo con México, según los tiempos que publica la Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP), y a qué hora suele haber menos demora. CBP solo muestra la espera del momento; este sitio guarda cada lectura cada media hora.</p>
+    <p class="bw-lang"><a href="/border-waits/" hreflang="en" lang="en">In English: every crossing, Mexico and Canada →</a></p>
+  </div>
+  {%- if b %}
+  <dl class="rb-stamp">
+    <div><dt>Actualizado</dt><dd id="bw-asof">{{ b.as_of_es }}</dd></div>
+    <div><dt>Cruces comerciales</dt><dd>{{ b.mexico.size }}</dd></div>
+  </dl>
+  {%- endif %}
+</header>
+
+{% if b %}
+<p class="rb-note bw-copy" id="bw-copy">Copia del {{ b.as_of_es }}. Con JavaScript activado, las esperas de abajo se actualizan desde CBP al abrir la página. “Publicado” es la hora local del cruce.</p>
+<p class="bw-quick"><span>Ir directo a:</span>{% assign quick = site.border_crossings_es | sort: "title" %}{% for d in quick %}{% assign p = b.ports[d.port] %} <a href="{{ d.url }}">{{ p.es.short | default: d.title }}</a>{% endfor %}</p>
+
+<section class="rb-sec" id="ahora" aria-labelledby="ahora-h">
+  <h2 id="ahora-h">Carriles comerciales ahora mismo</h2>
+  <p>Camiones que entran a Estados Unidos desde México. “Cerrado” y “Pendiente” quieren decir que CBP no publicó una espera para esos carriles; no se cuentan como cero. La espera habitual es el promedio de CBP para {{ b.month_es }} del año pasado.</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack bw-board">
+      <thead><tr><th scope="col">Cruce</th><th scope="col">Generales</th><th scope="col">FAST</th><th scope="col">Carriles abiertos</th><th scope="col">Habitual en {{ b.month_es }}</th><th scope="col">Publicado</th></tr></thead>
+      <tbody>
+      {%- for k in b.mexico %}{% assign p = b.ports[k] %}
+        <tr data-port="{{ k }}" data-hot{% if p.std.v != nil %}{% if p.std.v >= 40 %} class="rb-hot"{% endif %}{% endif %}>
+          <th scope="row">{% if p.es %}<a href="/es/tiempos-de-espera/{{ p.es.slug }}/">{{ p.es.short }}</a> <span class="bw-alias">{{ p.es.across | split: "," | first }}</span>{% else %}{{ p.name }}{% endif %}</th>
+          <td data-label="Generales" data-now="std">{{ p.std.es }}</td>
+          <td data-label="FAST" data-now="fast">{{ p.fast.es }}</td>
+          <td data-label="Carriles abiertos" data-now="lanes" data-max>{% if p.std.lanes %}{{ p.std.lanes }}{% if p.fast.lanes %} + {{ p.fast.lanes }} FAST{% endif %}{% else %}—{% endif %} / {{ p.max }}</td>
+          <td data-label="Habitual en {{ b.month_es }}">{% if p.last_year.avg != nil %}{{ p.last_year.avg }} min{% else %}—{% endif %}</td>
+          <td data-label="Publicado" data-now="posted">{{ p.posted_es | default: "—" }}{% if p.stale %} <span class="bw-stale">lectura atrasada</span>{% endif %}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="rb-sec" id="cruces" aria-labelledby="cruces-h">
+  <h2 id="cruces-h">Página de cada cruce</h2>
+  <p>Los cruces comerciales con más tráfico tienen su propia página: la espera del momento, una tabla de la espera habitual por día y hora, los cruces cercanos y preguntas frecuentes.</p>
+  <ul class="rb-index">
+    {%- for d in quick %}{% assign p = b.ports[d.port] %}<li><a href="{{ d.url }}">{{ p.es.short | default: d.title }}</a> <span class="bw-alias">{{ p.es.across }} – {{ p.es.city }}</span></li>{% endfor %}
+  </ul>
+</section>
+{% else %}
+<p class="rb-empty">Todavía no hay lecturas. Aparecen aquí al día siguiente de que el servicio empiece a consultar a CBP.</p>
+{% endif %}
+</div>
+
+<section class="sec" id="como-funciona">
+  <header class="sec-head"><h2>Cómo funciona</h2>{% if b %}<span class="label">Copiado el {{ b.as_of_es }}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+      <p>En cada cruce fronterizo, los agentes de CBP publican aproximadamente cada hora cuánto se tardan los carriles comerciales, en el sistema <a href="https://bwt.cbp.gov/">Border Wait Times</a>. Es el mejor dato público que hay, pero solo dice cómo está ahora.</p>
+      <ol>
+        <li><strong>Un pequeño servicio en Cloudflare consulta a CBP cada media hora</strong> y guarda cada lectura una sola vez, en la hora local del cruce.</li>
+        <li><strong>Lo desconocido no es cero.</strong> Si los carriles están cerrados o la actualización está pendiente, se guarda como dato desconocido; contarlo como cero haría ver más rápido un cruce que cierra seguido.</li>
+        <li><strong>Los promedios.</strong> Mientras el sitio junta sus propias lecturas, cada página muestra los promedios que publica la propia CBP para el mes en curso, con datos del año anterior. Con unos días de lecturas, aparecen también los promedios de los últimos 30 días.</li>
+      </ol>
+      <p>FAST (Free and Secure Trade, comercio libre y seguro) es el programa de CBP para transportistas, choferes e importadores precertificados, que cruzan por carriles exclusivos. Los carriles generales son los demás carriles comerciales.</p>
+      <p>Fuente: Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP). Los datos son públicos; cualquier error al presentarlos es mío. El <a href="/border-waits/" hreflang="en" lang="en">tablero completo, en inglés</a>, incluye la frontera con Canadá y los promedios en CSV.</p>
+    </div>
+  </div>
+</section>
+
+{% if b %}
+<script>window.BW = { endpoint: {{ site.worker_url | default: "" | jsonify }}, lang: "es", words: {{ t | jsonify }} };</script>
+<script src="/border-waits/live.js?v={{ site.time | date: '%s' }}" defer></script>
+{% endif %}
