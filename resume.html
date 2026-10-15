@@ -10,95 +10,95 @@ description: Résumé of Juan Torres, Logistics Management student at Central Mi
 image: /assets/og/resume.png
 image_alt: "Résumé of Juan Torres. Logistics Management, Central Michigan University, class of 2027."
 ---
-{% assign r = site.data.resume %}
-<header class="phead row">
-  <p class="key label">Résumé</p>
-  <div class="body">
-    <h1>Juan Torres</h1>
-    <p class="lede">{{ r.profile }}</p>
-    <div class="actions">
-      <a class="btn primary" href="/assets/Juan%20Torres%20Resume.pdf" download="Juan-Torres-Resume.pdf" type="application/pdf">Download PDF</a>
-      <button class="btn" type="button" onclick="window.print()">Print</button>
-      <a class="btn" href="mailto:{{ site.email }}">Email</a>
-    </div>
+{%- comment -%}
+  A "professional" page (see the families in CLAUDE.md): the résumé as one raised card on the
+  page, like the business card on the home page. Everything comes from _data/resume.yml.
+  Styles are scoped under .cv in style.css, print included.
+{%- endcomment -%}
+{%- assign r = site.data.resume -%}
+<div class="cv">
+<div class="cv-bar">
+  <p class="family">Professional · Résumé</p>
+  <div class="cv-actions">
+    <a class="btn primary" href="/assets/Juan%20Torres%20Resume.pdf" download="Juan-Torres-Resume.pdf" type="application/pdf">Download PDF</a>
+    <button class="btn" type="button" onclick="window.print()">Print</button>
+    <a class="btn" href="mailto:{{ site.email }}">Email</a>
   </div>
-</header>
+</div>
 
-<section class="sec">
-  <header class="sec-head"><h2>Experience</h2></header>
-  <div class="entries">
-    {% for job in r.experience %}
-    <div class="entry row">
-      <span class="key data">{{ job.span }}</span>
-      <div class="body">
-        <div class="entry-head"><h3 class="entry-title">{{ job.org }}</h3><span class="label">{{ job.place }}</span></div>
-        <ul class="roles">
-          {% for role in job.roles %}<li><span class="t">{{ role.title }}<span class="p">, {{ role.place }}</span></span><span class="data">{{ role.dates }}</span></li>{% endfor %}
-        </ul>
-        <ul class="points">
-          {% for pt in job.points %}<li>{{ pt }}</li>{% endfor %}
-        </ul>
-      </div>
+<article class="cv-card">
+  <header class="cv-head">
+    <div>
+      <h1>Juan Torres</h1>
+      <p class="cv-tag">{{ site.tagline }} · Class of 2027</p>
     </div>
-    {% endfor %}
-  </div>
-</section>
+    <p class="cv-contact"><a href="mailto:{{ site.email }}">{{ site.email }}</a><span>Mount Pleasant, MI</span><a href="{{ site.social.linkedin }}" rel="me">LinkedIn</a></p>
+  </header>
 
-<section class="sec">
-  <header class="sec-head"><h2>Education</h2></header>
-  <div class="entries">
-    {% for ed in r.education %}
-    <div class="entry row">
-      <span class="key data">{{ ed.dates }}</span>
-      <div class="body">
-        <div class="entry-head"><h3 class="entry-title">{{ ed.school }}</h3><span class="label">{{ ed.place }}</span></div>
-        <p class="entry-sub">{{ ed.degree }}</p>
-        {% if ed.note %}<p class="entry-text">{{ ed.note }}</p>{% endif %}
-        {% if ed.courses %}<p class="entry-text"><span class="label">Coursework</span><br>{{ ed.courses }}</p>{% endif %}
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
+  <p class="cv-profile">{{ r.profile }}</p>
 
-<section class="sec">
-  <header class="sec-head"><h2>Campus</h2></header>
-  <div class="entries">
-    {% for a in r.activities %}
-    <div class="entry row">
-      <span class="key data">{{ a.dates }}</span>
-      <div class="body">
-        <h3 class="entry-title">{{ a.org }}</h3>
-        <p class="entry-sub">{{ a.role }}</p>
-        <p class="entry-text">{{ a.note }}</p>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
+  <div class="cv-cols">
+    <div class="cv-main">
+      <section>
+        <h2>Experience</h2>
+        {%- for job in r.experience %}
+        <div class="cv-item">
+          <p class="cv-when">{{ job.span }}</p>
+          <div>
+            <h3>{{ job.org }}</h3>
+            <p class="cv-role">{{ job.headline }} <span>· {{ job.place }}</span></p>
+            <ul class="cv-roles">
+              {%- for role in job.roles %}<li><span>{{ role.title }}, {{ role.place }}</span><span>{{ role.dates }}</span></li>{% endfor %}
+            </ul>
+            <ul class="cv-points">
+              {%- for pt in job.points %}<li>{{ pt }}</li>{% endfor %}
+            </ul>
+          </div>
+        </div>
+        {%- endfor %}
+      </section>
 
-{% if r.certifications %}
-<section class="sec">
-  <header class="sec-head"><h2>Certifications</h2></header>
-  <div class="entries">
-    {% for c in r.certifications %}
-    <div class="entry entry-tight row">
-      <span class="key data">{{ c.dates }}</span>
-      <div class="body"><p class="entry-sub" style="margin-top:0 !important">{{ c.name }}</p><p class="entry-text" style="margin-top:4px !important">{{ c.issuer }}</p></div>
+      <section>
+        <h2>Education</h2>
+        {%- for ed in r.education %}
+        <div class="cv-item">
+          <p class="cv-when">{{ ed.dates }}</p>
+          <div>
+            <h3>{{ ed.school }}</h3>
+            <p class="cv-role">{{ ed.degree }} <span>· {{ ed.place }}</span></p>
+            {%- if ed.note %}<p class="cv-note">{{ ed.note }}</p>{% endif %}
+            {%- if ed.courses %}<p class="cv-courses">{{ ed.courses }}</p>{% endif %}
+          </div>
+        </div>
+        {%- endfor %}
+      </section>
     </div>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
 
-<section class="sec">
-  <header class="sec-head"><h2>Skills</h2></header>
-  <div class="entries">
-    {% for s in r.skills %}
-    <div class="entry entry-tight row">
-      <span class="key label">{{ s.area }}</span>
-      <p class="body skill-list">{% for i in s.items %}<span>{{ i }}</span>{% endfor %}</p>
-    </div>
-    {% endfor %}
+    <aside class="cv-side">
+      {%- for s in r.skills %}
+      <section>
+        <h2>{{ s.area }}</h2>
+        <p class="cv-list">{{ s.items | join: " · " }}</p>
+      </section>
+      {%- endfor %}
+      {%- if r.certifications %}
+      <section>
+        <h2>Certifications</h2>
+        {%- for c in r.certifications %}
+        <p class="cv-side-t">{{ c.name }}</p>
+        <p class="cv-side-d">{{ c.issuer }} · {{ c.dates }}</p>
+        {%- endfor %}
+      </section>
+      {%- endif %}
+      <section>
+        <h2>Campus</h2>
+        {%- for a in r.activities %}
+        <p class="cv-side-t">{{ a.org }}</p>
+        <p class="cv-side-d">{{ a.role }} · {{ a.dates }}</p>
+        <p class="cv-side-n">{{ a.note }}</p>
+        {%- endfor %}
+      </section>
+    </aside>
   </div>
-</section>
+</article>
+</div>

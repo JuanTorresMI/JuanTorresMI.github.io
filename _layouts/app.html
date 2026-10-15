@@ -3,7 +3,7 @@
 <head>
 {% include head.html %}
 </head>
-<body>
+<body{% if page.stock == "night" %} class="stock-night"{% endif %}>
   <a class="skip" href="#main">Skip to content</a>
   {% include navbar.html %}
   {% if page.project %}{% include project-bar.html %}{% endif %}

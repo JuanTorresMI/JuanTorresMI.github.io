@@ -10,6 +10,8 @@ image_alt: "Craft Ledger: which Minecraft crafts actually make money. A tool by 
 standalone: true
 standalone_title: Craft Ledger
 last_modified_at: 2026-10-07
+# A "gamer" page (see the families in CLAUDE.md): night stock whatever the reader's theme.
+stock: night
 ---
 {% comment %}
   Craft Ledger. One file: the styles, the markup, the recipe data (the JSON in #mcdata) and the
@@ -35,7 +37,7 @@ last_modified_at: 2026-10-07
   --mute:var(--text-2); --faint:var(--muted); --cond:var(--sans);
   --hover:color-mix(in srgb, var(--ink) 5%, transparent);
 }
-:root[data-theme="dark"] .cl{ --gold:#d9a441; --gold-dim:color-mix(in srgb, #d9a441 40%, transparent); --redstone:#e66767; --redstone-dim:color-mix(in srgb, #e66767 40%, transparent); --amber:#d98c41; --good:#7fb069; --good-dim:color-mix(in srgb, #7fb069 40%, transparent); }
+.stock-night .cl, :root[data-theme="dark"] .cl{ --gold:#d9a441; --gold-dim:color-mix(in srgb, #d9a441 40%, transparent); --redstone:#e66767; --redstone-dim:color-mix(in srgb, #e66767 40%, transparent); --amber:#d98c41; --good:#7fb069; --good-dim:color-mix(in srgb, #7fb069 40%, transparent); }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .cl{ --gold:#d9a441; --gold-dim:color-mix(in srgb, #d9a441 40%, transparent); --redstone:#e66767; --redstone-dim:color-mix(in srgb, #e66767 40%, transparent); --amber:#d98c41; --good:#7fb069; --good-dim:color-mix(in srgb, #7fb069 40%, transparent); } }
 .cl{color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;overflow-x:hidden}
 .cl *{box-sizing:border-box}
@@ -283,12 +285,29 @@ last_modified_at: 2026-10-07
 @media (max-width:520px){ .cl .vtag{display:none} }
 @media (display-mode:standalone){ .site-nav,.site-foot{display:none} }
 @media print{ .cl header,.cl .tools,.cl aside,.cl .scrim,.cl .toast{display:none} }
+
+/* ---------- the gamer layer ----------
+   The page is on night stock (stock: night in the front matter). On top of that: the tabs are a
+   numbered hotbar, panels and controls get 2px frames, labels go to uppercase mono. */
+.cl .clfam{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lapis)}
+.cl nav{counter-reset:slot;flex-wrap:wrap;gap:4px;padding:8px 20px;border-bottom:2px solid var(--line)}
+.cl nav button{counter-increment:slot;display:flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;margin:0;
+  border:2px solid var(--line);background:var(--panel);font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--mute)}
+.cl nav button::before{content:counter(slot);color:var(--faint)}
+.cl nav button:hover{border-color:var(--line2);color:var(--ink)}
+.cl nav button.on{border-color:var(--lapis);background:var(--panel2);color:var(--ink)}
+.cl nav button.on::before{color:var(--lapis)}
+.cl .wrap{border-width:2px}
+.cl .btn,.cl .search,.cl select.sel,.cl .setting input,.cl .setting select.fuelsel{border-width:2px}
+.cl .btn,.cl .setting label,.cl thead th{font-family:var(--mono)}
+.cl header{border-bottom-width:2px}
 </style>
 <div class="cl">
 <header>
   <div class="hbar">
     <div class="brand">
       <h1>Craft <span>Ledger</span></h1>
+      <span class="clfam">Gamer</span>
       <span class="vtag" id="vtag"></span>
     </div>
     <div class="setting"><label for="fee">Fee</label><input id="fee" type="number" step="0.1" value="0" inputmode="decimal"></div>

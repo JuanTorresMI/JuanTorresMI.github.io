@@ -1,55 +1,93 @@
 ---
 layout: default
 title: YouTube
+seo_title: "Kalista ADC Gameplay, Emerald · YouTube · Juan Torres"
 permalink: /youtube/
-description: Live numbers from Juan Torres's YouTube channel, refreshed every hour, and how a free Cloudflare Worker keeps them up to date.
+description: Kalista ADC gameplay from Emerald League of Legends games, full games and short clips, with the channel's live numbers refreshed every hour by a Cloudflare Worker.
 image: /assets/og/youtube.png
 image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every hour by a Cloudflare Worker."
+stock: night
 ---
 {%- comment -%}
+  A "gamer" page (see the families in CLAUDE.md): night stock, HUD frames, mono labels. Styles
+  are scoped under .yt in style.css.
   site.data.live.youtube is a daily copy of the Worker's answer (scripts/snapshot.py), already
   formatted. It is what crawlers and readers without JavaScript see; the script below swaps in
   the live numbers. Each block falls back to the old placeholder if the copy is missing.
 {%- endcomment -%}
 {%- assign yt = site.data.live.youtube -%}
-<header class="phead row">
-  <p class="key label">YouTube</p>
-  <div class="body">
-    <h1>On YouTube</h1>
-    <p class="lede">The channel’s numbers, straight from YouTube and refreshed every hour. <a class="link" href="#how-it-works">How this page gets them</a> is further down.</p>
+<div class="yt">
+<header class="yt-head">
+  <div class="yt-title">
+    <p class="family">Gamer · Juan Julio · @juanjulio001</p>
+    <h1>Kalista ADC gameplay, Emerald</h1>
+    <p class="yt-lede">Full League of Legends games and short clips from my Kalista ADC games in Emerald. The numbers below come straight from YouTube, refreshed every hour. <a class="link" href="#how-it-works">How this page gets them</a> is further down.</p>
   </div>
+  <a class="yt-sub" id="yt-link" href="{{ yt.channel_url | default: 'https://www.youtube.com/@juanjulio001' }}?sub_confirmation=1">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7-4.5z"/></svg>Subscribe on YouTube</a>
 </header>
 
-<section class="sec">
-  <header class="sec-head"><h2>The channel</h2><a class="label" id="yt-link" href="{{ yt.channel_url | default: 'https://www.youtube.com/' }}"{% unless yt.channel_url %} hidden{% endunless %}>Open on YouTube ↗</a></header>
-  <div class="tally" id="yt-tally">
-  {%- if yt -%}
-    {%- for t in yt.tiles %}<div class="tile"><span class="n">{{ t.n | escape }}</span><span class="l label">{{ t.l | escape }}</span></div>{% endfor -%}
-  {%- else %}<p class="log-note">Asking YouTube…</p>{% endif -%}
+<section class="yt-hud" id="yt-tally" aria-label="Channel numbers">
+  {%- if yt.hud -%}
+    {%- for t in yt.hud %}<div class="yt-stat{% if t.hot %} hot{% endif %}"><span class="l">{{ t.l | escape }}</span><span class="n">{{ t.n | escape }}</span></div>{% endfor -%}
+  {%- else %}<p class="yt-note">Asking YouTube…</p>{% endif -%}
+</section>
+<noscript><p class="yt-note">{% if yt %}With JavaScript off, these are the numbers as of {{ yt.checked }}, copied into the page once a day.{% else %}The numbers are filled in by a script. With JavaScript off, the channel is one click away on YouTube.{% endif %}</p></noscript>
+
+<div class="yt-pair">
+  <section class="yt-block yt-feature-wrap" aria-labelledby="yt-feature-h">
+    <h2 id="yt-feature-h">Latest full game</h2>
+    <div id="yt-feature">
+    {%- if yt.featured %}
+      <a class="yt-feature" href="{{ yt.featured.url | escape }}">
+        <span class="yt-thumb">{% if yt.featured.thumb %}<img src="{{ yt.featured.thumb | escape }}" alt="" loading="lazy" width="320" height="180">{% endif %}<span class="yt-len">{{ yt.featured.length }}</span></span>
+        <span class="yt-feature-t">{{ yt.featured.title | escape }}</span>
+        <span class="yt-meta">{{ yt.featured.date }} · Full game</span>
+      </a>
+    {%- else %}<p class="yt-note">Loading…</p>{% endif -%}
+    </div>
+  </section>
+
+  <section class="yt-block" aria-labelledby="yt-shorts-h">
+    <h2 id="yt-shorts-h">Latest Shorts</h2>
+    <div class="yt-shorts" id="yt-shorts">
+    {%- for v in yt.shorts %}
+      <a class="yt-short" href="{{ v.url | escape }}">
+        <span class="yt-thumb tall">{% if v.thumb %}<img src="{{ v.thumb | escape }}" alt="" loading="lazy">{% endif %}{% if v.views != "" %}<span class="yt-len">{{ v.views }}</span>{% endif %}</span>
+        <span class="yt-short-t">{{ v.title | escape }}</span>
+      </a>
+    {%- endfor -%}
+    </div>
+  </section>
+</div>
+
+<section class="yt-block" id="yt-match-sec" aria-labelledby="yt-match-h"{% if yt.matchups == empty or yt == nil %} hidden{% endif %}>
+  <h2 id="yt-match-h">Browse by matchup</h2>
+  <div class="yt-chips" id="yt-matchups">
+  {%- for m in yt.matchups %}<a class="yt-chip" href="{{ m.url | escape }}">{{ m.label | escape }}</a>{% endfor -%}
   </div>
-  <noscript><p class="log-note">{% if yt %}With JavaScript off, these are the numbers as of {{ yt.checked }}, copied into the page once a day.{% else %}The numbers are filled in by a script. With JavaScript off, the channel is one click away on YouTube.{% endif %}</p></noscript>
 </section>
 
-<section class="sec">
-  <header class="sec-head"><h2>Latest uploads</h2><span class="label" id="yt-recent-count">{{ yt.recent_count }}</span></header>
-  <div class="log" id="yt-recent">
+<section class="yt-block" aria-labelledby="yt-recent-h">
+  <h2 id="yt-recent-h">All recent uploads <span id="yt-recent-count">{{ yt.recent_count }}</span></h2>
+  <div class="yt-log" id="yt-recent">
   {%- if yt -%}
     {%- for v in yt.recent %}
-    <div class="log-day row"><span class="key data">{{ v.date | escape }}</span>
-      <div class="body log-items"><a class="log-item" href="{{ v.url | escape }}"><span class="label">{{ v.kind }}</span><span class="msg">{{ v.title | escape }}</span><span class="data">{{ v.meta | escape }}</span></a></div></div>
-    {%- else %}<p class="log-note">Nothing uploaded yet.</p>{% endfor -%}
-  {%- else %}<p class="log-note">Loading…</p>{% endif -%}
+    <a class="yt-row" href="{{ v.url | escape }}"><span class="d">{{ v.date | escape }}</span><span class="k">{{ v.kind }}</span><span class="t">{{ v.title | escape }}</span><span class="m">{{ v.meta | escape }}</span></a>
+    {%- else %}<p class="yt-note">Nothing uploaded yet.</p>{% endfor -%}
+  {%- else %}<p class="yt-note">Loading…</p>{% endif -%}
   </div>
 </section>
 
-<section class="sec" id="yt-days-sec"{% if yt.days == empty or yt == nil %} hidden{% endif %}>
-  <header class="sec-head"><h2>Day by day</h2><span class="label">Change from the day before</span></header>
-  <div class="log" id="yt-days">
+<section class="yt-block" id="yt-days-sec" aria-labelledby="yt-days-h"{% if yt.days == empty or yt == nil %} hidden{% endif %}>
+  <h2 id="yt-days-h">Day by day <span>Change from the day before</span></h2>
+  <div class="yt-log" id="yt-days">
   {%- for d in yt.days %}
-    <div class="log-day row"><span class="key data">{{ d.day }}</span><div class="body"><p class="yt-day">{{ d.text | escape }}</p></div></div>
+    <div class="yt-row"><span class="d">{{ d.day }}</span><span class="t">{{ d.text | escape }}</span></div>
   {%- endfor -%}
   </div>
 </section>
+</div>
 
 <section class="sec" id="how-it-works">
   <header class="sec-head"><h2>How it works</h2><span class="label" id="yt-updated">{% if yt %}Copied {{ yt.checked }}{% endif %}</span></header>
@@ -81,6 +119,7 @@ image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every hour by a C
   const signed = (n) => (n > 0 ? "+" : n < 0 ? "−" : "") + fmt(Math.abs(n));
   const plural = (n, one, many) => fmt(n) + " " + (n === 1 ? one : many);
   const delta = (n, one, many) => signed(n) + " " + (Math.abs(n) === 1 ? one : many);
+  const WEEK = 7 * 86400000;
 
   function ago(iso) {
     const s = (Date.now() - new Date(iso).getTime()) / 1000;
@@ -94,38 +133,51 @@ image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every hour by a C
     ? Math.floor(s / 3600) + ":" + String(Math.floor(s / 60) % 60).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0")
     : Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"));
   const dayName = (day) => new Date(day + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" });
+  const shortDate = (iso) => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const thumb = (src, cls, extra) => `<span class="yt-thumb${cls}">${src ? `<img src="${esc(src)}" alt="" loading="lazy">` : ""}${extra}</span>`;
 
-  /* The change in one field across the last n days of history, or null if there aren't n days
-     of it yet (a "this week" built from two days of data would mislead). */
-  function change(history, field, n) {
-    const rows = history.filter((h) => h[field] != null);
-    if (rows.length < n + 1) return null;
-    return rows[rows.length - 1][field] - rows[rows.length - 1 - n][field];
-  }
-
-  function renderTally(d) {
-    const s = d.stats || {}, h = d.history || [];
-    const week = change(h, "views", 7);
-    const tiles = [
-      [s.subscribers == null ? "Hidden" : fmt(s.subscribers), "subscribers"],
+  function renderHud(d) {
+    const s = d.stats || {};
+    const week = (d.recent || []).filter((v) => Date.now() - new Date(v.published).getTime() < WEEK).length;
+    const stats = [
       [s.views == null ? "—" : fmt(s.views), "views, all time"],
       [s.videos == null ? "—" : fmt(s.videos), "videos"],
-      week == null ? null : [signed(week), "views, last 7 days"],
-    ].filter(Boolean);
-    $("yt-tally").innerHTML = tiles.map(([n, l]) => `<div class="tile"><span class="n">${esc(n)}</span><span class="l label">${esc(l)}</span></div>`).join("");
-    if (d.channel && d.channel.url) { $("yt-link").href = d.channel.url; $("yt-link").hidden = false; }
+      [s.subscribers == null ? "Hidden" : fmt(s.subscribers), "subscribers"],
+      [fmt(week), "uploads this week", true],
+    ];
+    $("yt-tally").innerHTML = stats.map(([n, l, hot]) => `<div class="yt-stat${hot ? " hot" : ""}"><span class="l">${esc(l)}</span><span class="n">${esc(n)}</span></div>`).join("");
+    if (d.channel && d.channel.url) $("yt-link").href = d.channel.url + "?sub_confirmation=1";
     $("yt-updated").textContent = "Last checked " + ago(d.updated);
   }
 
-  function renderRecent(recent) {
+  function renderVideos(recent, channelUrl) {
+    const full = recent.find((v) => !v.short);
+    $("yt-feature").innerHTML = full
+      ? `<a class="yt-feature" href="${esc(full.url)}">${thumb(full.thumb, "", `<span class="yt-len">${esc(length(full.seconds))}</span>`)}<span class="yt-feature-t">${esc(full.title)}</span><span class="yt-meta">${esc(shortDate(full.published))} · Full game</span></a>`
+      : `<p class="yt-note">No full games yet.</p>`;
+    $("yt-shorts").innerHTML = recent.filter((v) => v.short).slice(0, 3).map((v) =>
+      `<a class="yt-short" href="${esc(v.url)}">${thumb(v.thumb, " tall", v.views == null ? "" : `<span class="yt-len">${esc(fmt(v.views))}</span>`)}<span class="yt-short-t">${esc(v.title)}</span></a>`).join("");
+
+    // Matchups named in titles ("Kalista vs Corki"), each a search of the channel.
+    const seen = new Set(), chips = [];
+    for (const v of recent) {
+      const m = /([A-Z][\w'’]*) vs ([^|:(…]+)/.exec(v.title || "");
+      if (!m || ["kill", "double", "triple", "quadra", "penta"].includes(m[1].toLowerCase()) || !channelUrl) continue;
+      const label = m[1] + " vs " + m[2].trim().replace(/,$/, "").replace(/\s+(ADC|Mid|Top|Jungle|Support|clip)\s*$/i, "");
+      if (seen.has(label)) continue;
+      seen.add(label);
+      chips.push(`<a class="yt-chip" href="${esc(channelUrl + "/search?query=" + encodeURIComponent(label))}">${esc(label)}</a>`);
+    }
+    if (chips.length) { $("yt-matchups").innerHTML = chips.slice(0, 8).join(""); $("yt-match-sec").hidden = false; }
+
     const box = $("yt-recent");
-    if (!recent.length) { box.innerHTML = `<p class="log-note">Nothing uploaded yet.</p>`; return; }
-    const week = recent.filter((v) => Date.now() - new Date(v.published).getTime() < 7 * 86400000).length;
+    if (!recent.length) { box.innerHTML = `<p class="yt-note">Nothing uploaded yet.</p>`; return; }
+    const week = recent.filter((v) => Date.now() - new Date(v.published).getTime() < WEEK).length;
     $("yt-recent-count").textContent = plural(week, "upload", "uploads") + " this week";
     box.innerHTML = recent.map((v) => {
       const meta = [v.views == null ? null : plural(v.views, "view", "views"), length(v.seconds)].filter(Boolean).join(" · ");
-      return `<div class="log-day row"><span class="key data">${esc(new Date(v.published).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "numeric" }))}</span>
-        <div class="body log-items"><a class="log-item" href="${esc(v.url)}"><span class="label">${v.short ? "Short" : "Video"}</span><span class="msg">${esc(v.title)}</span><span class="data">${esc(meta)}</span></a></div></div>`;
+      const when = new Date(v.published).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "numeric" });
+      return `<a class="yt-row" href="${esc(v.url)}"><span class="d">${esc(when)}</span><span class="k">${v.short ? "Short" : "Video"}</span><span class="t">${esc(v.title)}</span><span class="m">${esc(meta)}</span></a>`;
     }).join("");
   }
 
@@ -139,30 +191,28 @@ image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every hour by a C
       if (a.views != null && b.views != null) parts.push(delta(a.views - b.views, "view", "views"));
       if (a.subscribers != null && b.subscribers != null) parts.push(delta(a.subscribers - b.subscribers, "subscriber", "subscribers"));
       if (a.videos != null && b.videos != null && a.videos !== b.videos) parts.push(delta(a.videos - b.videos, "video", "videos"));
-      rows.push(`<div class="log-day row"><span class="key data">${esc(a.day === today ? "Today, so far" : dayName(a.day))}</span><div class="body"><p class="yt-day">${esc(parts.join(" · ") || "No change")}</p></div></div>`);
+      rows.push(`<div class="yt-row"><span class="d">${esc(a.day === today ? "Today, so far" : dayName(a.day))}</span><span class="t">${esc(parts.join(" · ") || "No change")}</span></div>`);
     }
     $("yt-days").innerHTML = rows.join("");
     $("yt-days-sec").hidden = false;
   }
 
   if (!ENDPOINT) {
-    $("yt-tally").innerHTML = `<p class="log-note">The Worker isn’t set up yet (see worker/README.md).</p>`;
-    $("yt-recent").innerHTML = "";
+    $("yt-tally").innerHTML = `<p class="yt-note">The Worker isn’t set up yet (see worker/README.md).</p>`;
     return;
   }
   fetch(ENDPOINT.replace(/\/+$/, "") + "/youtube")
     .then((r) => r.json())
     .then((d) => {
       if (d.error) throw new Error(d.error);
-      renderTally(d);
-      renderRecent(d.recent || []);
+      renderHud(d);
+      renderVideos(d.recent || [], d.channel && d.channel.url);
       renderDays(d.history || []);
     })
     .catch((e) => {
       // The day's copy is already on the page: leave it standing and say how old it is.
       if (PRERENDERED) { $("yt-updated").textContent = "Live numbers unavailable; showing the copy from " + PRERENDERED; return; }
-      $("yt-tally").innerHTML = `<p class="log-note">Couldn’t reach YouTube’s numbers right now (${esc(e.message)}).</p>`;
-      $("yt-recent").innerHTML = "";
+      $("yt-tally").innerHTML = `<p class="yt-note">Couldn’t reach YouTube’s numbers right now (${esc(e.message)}).</p>`;
     });
 })();
 </script>
