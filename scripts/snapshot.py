@@ -197,6 +197,20 @@ def hours_es(h):
     return " a ".join(one(x) for x in h.split("-"))
 
 
+def ensure_front(path, key, value):
+    """Adds `key: value` to an existing stub's front matter if the key is missing."""
+    lines = open(path, encoding="utf-8").read().replace("\r\n", "\n").split("\n")
+    if any(l.startswith(key + ":") for l in lines): return
+    end = lines.index("---", 1)
+    lines.insert(end, f"{key}: {json.dumps(value, ensure_ascii=False)}")
+    with open(path, "w", encoding="utf-8", newline="\n") as fh: fh.write("\n".join(lines))
+
+
+def fit(*titles, limit=60):
+    """The first title that fits in a search result, or the last one."""
+    return next((t for t in titles if len(t) <= limit), titles[-1])
+
+
 def crossings():
     d = json.load(open(os.path.join(ROOT, "_data", "border_crossings.json"), encoding="utf-8"))
     return {c["port"]: c for c in d["crossings"]}, d.get("names", {})
@@ -280,6 +294,9 @@ def border(base):
     ports = now.get("ports") or []
     if not ports: raise RuntimeError("the Worker has no border data yet")
     named, renamed = crossings()
+    reefer_area = {}
+    for d in districts().values():
+        for port in d.get("border", []): reefer_area.setdefault(port, {"slug": d["slug"], "short": d["short"]})
     out = {}
     for p in ports:
         c = named.get(p["port"], {})
@@ -291,7 +308,8 @@ def border(base):
              "hours": p.get("hours", ""), "open": p.get("status") == "Open", "max": p.get("max"),
              "std": wait(std), "fast": wait(fast),
              "posted": re.sub(r"^At\s+", "", std.get("update") or fast.get("update") or ""), "notice": p.get("notice") or "",
-             "hours_es": hours_es(p.get("hours", "")), "stale": p.get("age") is not None and p["age"] >= STALE_MIN}
+             "hours_es": hours_es(p.get("hours", "")), "stale": p.get("age") is not None and p["age"] >= STALE_MIN,
+             "reefer": reefer_area.get(p["port"]), "bcis": p["port"][:2] in ("23", "24", "26", "53")}
         x["posted_en"], x["posted_es"] = posted_label(p.get("posted_at"), std.get("update") or fast.get("update"))
         try:
             x.update(port_detail(base, p["port"]))
@@ -339,10 +357,15 @@ def border(base):
                           "title": f"Tiempo de espera para camiones: {e['short']}",
                           "description": f"Cuánto esperan los camiones de carga en {e['short']}: la espera ahora mismo y la habitual a cada hora de la semana, con datos de CBP.",
                           "translation": f"/border-waits/{c['slug']}/"}))
+        pages[0][2]["seo_title"] = fit(f"{c['name']} Truck Wait Times Now & by Hour", f"{c['name']} Truck Wait Times")
+        if c.get("es"):
+            pages[1][2]["seo_title"] = fit(f"Espera de camiones en {c['es']['short']}: ahora y por hora", f"Espera de camiones: {c['es']['short']}")
         for folder, slug, fm in pages:
             os.makedirs(folder, exist_ok=True)
             f = os.path.join(folder, slug + ".md")
-            if os.path.exists(f): continue
+            if os.path.exists(f):
+                ensure_front(f, "seo_title", fm["seo_title"])
+                continue
             with open(f, "w", encoding="utf-8", newline="\n") as fh:
                 fh.write("---\n" + "".join(f"{k}: {json.dumps(v, ensure_ascii=False)}\n" for k, v in fm.items()) + "---\n")
 
@@ -674,11 +697,16 @@ def reefer(base):
     os.makedirs(LANES_DIR, exist_ok=True)
     for slug, p in pages.items():
         f = os.path.join(LANES_DIR, slug + ".md")
-        if os.path.exists(f): continue
+        seo = fit(f"{p['short']} to {p['dest']} Reefer Rates This Week (USDA)", f"{p['short']} to {p['dest']} Reefer Rates This Week",
+                  f"{p['short']} to {p['dest']} Reefer Rates")
+        if os.path.exists(f):
+            ensure_front(f, "seo_title", seo)
+            continue
         title = f"{p['short']} to {p['dest']} reefer rates"
         desc = f"USDA's weekly spot rates for a reefer truck from {p['short']} to {p['dest']}: the latest rate, every week on record, and every origin into {p['dest']}."
         with open(f, "w", encoding="utf-8", newline="\n") as fh:
-            fh.write(f"---\nlane: {slug}\ntitle: {json.dumps(title, ensure_ascii=False)}\ndescription: {json.dumps(desc, ensure_ascii=False)}\n---\n")
+            fh.write(f"---\nlane: {slug}\ntitle: {json.dumps(title, ensure_ascii=False)}\nseo_title: {json.dumps(seo, ensure_ascii=False)}\n"
+                     f"description: {json.dumps(desc, ensure_ascii=False)}\n---\n")
 
     return {"generated": cur["updated"], "latest": latest, "week": week_of(latest), "first": week_of(record[0] + "-01") if record else week_of(cur["first"]),
             "first_iso": min(x[0] for weeks in lanes.values() for x in weeks), "record_months": len(record),

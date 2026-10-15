@@ -134,6 +134,55 @@ layout: default
   </section>
   {%- endif %}
 </div>
+
+{%- comment %} Produce loads that cross here: the reefer board's lanes from this crossing's shipping area. {% endcomment %}
+{%- if p.reefer %}
+{%- assign prefix = p.reefer.slug | append: "-to-" %}
+{%- assign lanes = site.reefer_lanes | where_exp: "d", "d.lane contains prefix" | sort: "title" %}
+{%- if lanes.size > 0 %}
+<section class="rb-block">
+  <h2>{% if es %}Carga de frutas y verduras que cruza aquí{% else %}Produce loads that cross here{% endif %} <span>{% if es %}Tarifas de camión refrigerado, USDA{% else %}Reefer truck rates, USDA{% endif %}</span></h2>
+  <p class="rb-note">{% if es %}USDA reporta cada semana lo que cuesta un camión refrigerado desde “{{ p.reefer.short }}” (los cruces de México por esta zona) hasta diez ciudades de Estados Unidos (páginas en inglés):{% else %}USDA reports what a refrigerated truckload costs each week from “{{ p.reefer.short }}”, the Mexico crossings through this area, to ten U.S. cities:{% endif %}</p>
+  <ul class="rb-index">
+    {%- for d in lanes %}<li><a href="{{ d.url }}"{% if es %} hreflang="en"{% endif %}>{{ d.title | remove: " reefer rates" }}</a></li>{% endfor %}
+  </ul>
+</section>
+{%- endif %}
+{%- endif %}
+
+<section class="rb-block bw-faq">
+  <h2>{% if es %}Preguntas frecuentes{% else %}Common questions{% endif %} <span>{{ name }}</span></h2>
+  {%- if es %}
+  <h3>¿Cuánto tardan los camiones en cruzar ahora?</h3>
+  <p>{% if p.std.v != nil %}En la última lectura de CBP ({{ p.posted_es }}), los carriles comerciales normales estaban en {{ p.std.es | downcase }}{% if p.fast.v != nil %} y los FAST en {{ p.fast.es | downcase }}{% endif %}.{% else %}CBP no publicó una espera en la última lectura ({{ p.std.es | downcase }}).{% endif %} El recuadro de arriba se actualiza desde CBP al abrir la página.</p>
+  <h3>¿Cuál es la mejor hora para cruzar?</h3>
+  <p>{% if p.best %}En los últimos 30 días, la espera más corta suele ser el {{ t.days[p.best.dow] }} a las {{ t.hours[p.best.hour] }} y la más larga el {{ t.days[p.worst.dow] }} a las {{ t.hours[p.worst.hour] }}. La tabla de arriba muestra cada hora.{% else %}Todavía no hay suficientes lecturas para decirlo; la tabla por día y hora se llena en unos días.{% endif %}</p>
+  {%- if p.hours != "" %}
+  <h3>¿A qué hora abren los carriles comerciales?</h3>
+  <p>{% if p.hours contains "24" %}Las 24 horas.{% else %}De {{ p.hours_es }}, hora local.{% endif %} Hasta {{ p.max }} carriles comerciales.</p>
+  {%- endif %}
+  {%- if p.fast.en != "—" %}
+  <h3>¿Qué es el carril FAST?</h3>
+  <p>FAST (Free and Secure Trade) es el programa de CBP para transportistas, choferes e importadores con revisión previa; tienen carriles propios.{% if p.avg != nil and p.fast_avg != nil %} Aquí, en los últimos 30 días, FAST promedió {{ p.fast_avg }} min contra {{ p.avg }} min en los carriles normales.{% endif %}</p>
+  {%- endif %}
+  {%- else %}
+  <h3>How long is the truck wait at the {{ name }} right now?</h3>
+  <p>{% if p.std.v != nil %}At CBP’s last reading ({{ p.posted_en }}), the standard commercial lanes were at {{ p.std.en | downcase }}{% if p.fast.v != nil %} and FAST at {{ p.fast.en | downcase }}{% endif %}.{% else %}CBP posted no wait at its last reading ({{ p.std.en | downcase }}).{% endif %} The box at the top refreshes from CBP when you open this page.</p>
+  <h3>What’s the best time to cross?</h3>
+  <p>{% if p.best %}Over the last 30 days the wait has usually been shortest on {{ t.days[p.best.dow] }} at {{ t.hours[p.best.hour] }} and longest on {{ t.days[p.worst.dow] }} at {{ t.hours[p.worst.hour] }}. The heat map above shows every hour.{% else %}Not enough readings yet to say; the heat map by day and hour fills in over the next few days.{% endif %}</p>
+  {%- if p.hours != "" %}
+  <h3>When are the commercial lanes open?</h3>
+  <p>{% if p.hours contains "24" %}24 hours a day.{% else %}{{ p.hours | replace: "-", " to " }}, local time.{% endif %} Up to {{ p.max }} commercial lanes.</p>
+  {%- endif %}
+  {%- if p.fast.en != "—" %}
+  <h3>What is the FAST lane?</h3>
+  <p>FAST (Free and Secure Trade) is CBP’s program for pre-approved carriers, drivers and importers, with lanes of its own.{% if p.avg != nil and p.fast_avg != nil %} Here, over the last 30 days, FAST averaged {{ p.fast_avg }} min against {{ p.avg }} min in the standard lanes.{% endif %}</p>
+  {%- endif %}
+  {%- endif %}
+  {%- if p.bcis %}
+  <p class="rb-note">{% if es %}Otra fuente: el <a href="https://bcis.tti.tamu.edu/">Border Crossing Information System</a> del Texas A&amp;M Transportation Institute mide el tiempo de cruce de los camiones con lectores en el camino, en algunos puertos de Texas, Nuevo México y Arizona. Mide algo distinto a la espera que publica CBP y vale la pena compararlos.{% else %}A second source: Texas A&amp;M Transportation Institute’s <a href="https://bcis.tti.tamu.edu/">Border Crossing Information System</a> measures truck crossing times with roadside readers at some ports in Texas, New Mexico and Arizona. It measures something different from the wait CBP posts, so the two are worth comparing.{% endif %}</p>
+  {%- endif %}
+</section>
 {% endif %}
 </div>
 

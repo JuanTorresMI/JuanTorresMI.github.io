@@ -2,4 +2,5 @@
 lane: south-texas-to-philadelphia
 title: "South Texas to Philadelphia reefer rates"
 description: "USDA's weekly spot rates for a reefer truck from South Texas to Philadelphia: the latest rate, every week on record, and every origin into Philadelphia."
+seo_title: "South Texas to Philadelphia Reefer Rates This Week (USDA)"
 ---

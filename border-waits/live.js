@@ -28,7 +28,8 @@
     return es ? `${h}:${mm}${zone}` : `${h % 12 || 12}:${mm} ${h < 12 ? "AM" : "PM"}${zone}`;
   };
   const ago = (min) => {
-    const s = min < 60 ? `${min} min` : min < 2880 ? `${Math.round(min / 60)} h` : `${Math.round(min / 1440)} d`;
+    const s = min < 60 ? `${min} min` : min < 600 ? `${Math.floor(min / 60)} h ${String(min % 60).padStart(2, "0")} min`
+      : min < 2880 ? `${Math.round(min / 60)} h` : `${Math.round(min / 1440)} d`;
     return es ? `hace ${s}` : `${s} ago`;
   };
 
