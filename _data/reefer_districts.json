@@ -1,8 +1,8 @@
 {
   "_about": "Plain names for USDA's shipping districts on the reefer rate board. Keys are USDA's spelling, exactly. `name` is what pages show, `slug` builds the lane addresses (/reefer-rates/<slug>-to-<city>/), so never change a slug once its pages are live. A district missing here still works: snapshot.py title-cases USDA's name and slugs that, and prints a reminder to add it.",
-  "MEXICO CROSSINGS THROUGH NOGALES ARIZONA": { "name": "Nogales, AZ (Mexico crossings)", "short": "Nogales, AZ", "slug": "nogales-az" },
-  "MEXICO CROSSINGS THROUGH SOUTH TEXAS": { "name": "South Texas (Mexico crossings)", "short": "South Texas", "slug": "south-texas" },
-  "IMPERIAL, COACHELLA VALLEYS CA, CENTRAL AND WESTERN AZ, MEXICO CROSSINGS THROUGH CALEXICO AND SAN LUIS": { "name": "Imperial & Coachella valleys, Arizona, and Calexico / San Luis crossings", "short": "Imperial Valley & Yuma", "slug": "imperial-valley-yuma" },
+  "MEXICO CROSSINGS THROUGH NOGALES ARIZONA": { "name": "Nogales, AZ (Mexico crossings)", "short": "Nogales, AZ", "slug": "nogales-az", "border": ["260402"] },
+  "MEXICO CROSSINGS THROUGH SOUTH TEXAS": { "name": "South Texas (Mexico crossings)", "short": "South Texas", "slug": "south-texas", "border": ["230404", "230403", "230502"] },
+  "IMPERIAL, COACHELLA VALLEYS CA, CENTRAL AND WESTERN AZ, MEXICO CROSSINGS THROUGH CALEXICO AND SAN LUIS": { "name": "Imperial & Coachella valleys, Arizona, and Calexico / San Luis crossings", "short": "Imperial Valley & Yuma", "slug": "imperial-valley-yuma", "border": ["250301"] },
   "SOUTH AND CENTRAL DISTRICT CALIFORNIA": { "name": "South and Central California", "short": "South & Central CA", "slug": "south-central-california" },
   "SANTA MARIA CALIFORNIA": { "name": "Santa Maria, California", "short": "Santa Maria, CA", "slug": "santa-maria-ca" },
   "SALINAS-WATSONVILLE CALIFORNIA": { "name": "Salinas–Watsonville, California", "short": "Salinas, CA", "slug": "salinas-ca" },

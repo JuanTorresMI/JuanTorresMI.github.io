@@ -58,7 +58,7 @@ layout: default
     </svg>
     <figcaption><span>{{ l.chart.top }}</span><span>{{ l.chart.bottom }}</span></figcaption>
   </figure>
-  <p class="rb-note">The shaded band runs from the lowest to the highest rate USDA reported each week; the line is the middle of the “mostly” range, or of the full range when USDA gives no “mostly”. Gaps are weeks the lane wasn’t quoted.</p>
+  <p class="rb-note">The shaded band runs from the lowest to the highest rate USDA reported each week; the line is the middle of the “mostly” range, or of the full range when USDA gives no “mostly”. Gaps are weeks the lane wasn’t quoted{% if r.backfill_done != true %} or that haven’t been collected yet. {{ r.history }}{% else %}.{% endif %}</p>
 </section>
 {%- endif %}
 
@@ -76,7 +76,9 @@ layout: default
       </table>
     </div>
   </section>
+</div>
 
+<div class="rb-cols">
   {%- if l.compare.size > 1 %}
   <section class="rb-block">
     <h2>Into {{ l.dest }} this week <span>Cheapest first</span></h2>
@@ -92,7 +94,43 @@ layout: default
     </div>
   </section>
   {%- endif %}
+
+  {%- if l.outbound.size > 1 %}
+  <section class="rb-block">
+    <h2>From {{ l.short }} this week <span>Cheapest first</span></h2>
+    <div class="rb-scroll">
+      <table class="rb-table">
+        <thead><tr><th scope="col">To</th><th scope="col">Range</th><th scope="col">Change</th></tr></thead>
+        <tbody>
+        {%- for c in l.outbound %}
+          <tr{% if c.here %} class="rb-here"{% endif %}><th scope="row">{% if c.lane and c.here == false %}<a href="/reefer-rates/{{ c.lane }}/">{{ c.to }}</a>{% else %}{{ c.to }}{% endif %}</th><td>{{ c.range }}</td><td>{{ c.change | default: "—" }}</td></tr>
+        {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {%- endif %}
 </div>
+
+{%- assign bw = site.data.live.border %}
+{%- if l.border.size > 0 and bw %}
+<section class="rb-block">
+  <h2>Trucks at the border right now <span>Northbound commercial lanes, from CBP</span></h2>
+  <p class="rb-note">Loads from {{ l.short }} cross from Mexico first. These are the truck waits at the crossings they use, refreshed when this page opens.</p>
+  <div class="rb-scroll">
+    <table class="rb-table bw-near">
+      <thead><tr><th scope="col">Crossing</th><th scope="col">Standard</th><th scope="col">FAST</th><th scope="col">Posted</th></tr></thead>
+      <tbody>
+      {%- for k in l.border %}{% assign n = bw.ports[k] %}{% if n %}
+        <tr data-port="{{ k }}"><th scope="row">{% if n.slug %}<a href="/border-waits/{{ n.slug }}/">{{ n.name }}</a>{% else %}{{ n.name }}{% endif %}</th><td data-now="std">{{ n.std.en }}</td><td data-now="fast">{{ n.fast.en }}</td><td data-now="posted">{{ n.posted_en | default: "—" }}{% if n.stale %} <span class="bw-stale">old reading</span>{% endif %}</td></tr>
+      {%- endif %}{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+<script>window.BW = { endpoint: {{ site.worker_url | default: "" | jsonify }}, lang: "en", words: {{ site.data.border_text.en | jsonify }} };</script>
+<script src="/border-waits/live.js?v={{ site.time | date: '%s' }}" defer></script>
+{%- endif %}
 {% endif %}
 </div>
 
@@ -100,7 +138,7 @@ layout: default
   <header class="sec-head"><h2>About these numbers</h2></header>
   <div class="row">
     <div class="body prose">
-      <p>Rates are USDA’s, for a full load in a 48 to 53 foot refrigerated trailer, broker fees included, as reported in the <a href="https://mymarketnews.ams.usda.gov/viewReport/2375">Specialty Crops National Truck Rate Report</a>. The range is the lowest to highest rate reported that week; “mostly” is where most loads moved. USDA names this shipping area “{{ l.usda | default: page.title }}”.</p>
+      <p>Rates are USDA’s, for a full load in a 48 to 53 foot refrigerated trailer, broker fees included, as reported in the <a href="https://mymarketnews.ams.usda.gov/viewReport/2375">Specialty Crops National Truck Rate Report</a>. The range is the lowest to highest rate reported that week; “mostly” is where most loads moved. USDA names this shipping area “{{ l.usda | default: page.title }}”.{% if r.published != "" %} The latest report was published {{ r.published }}; the next is due {{ r.next_due }}.{% endif %}</p>
       <p>The <a href="/reefer-rates/">rate sheet</a> has every lane for this week, how the data is collected, and the whole history as a <a href="/reefer-rates/usda-reefer-truck-rates.csv">CSV download</a>. Source: USDA Agricultural Marketing Service, Specialty Crops Market News.</p>
     </div>
   </div>

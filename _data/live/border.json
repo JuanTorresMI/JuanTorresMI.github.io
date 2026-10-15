@@ -1,8 +1,8 @@
 {
- "generated": "2026-10-15T16:19:07.468Z",
+ "generated": "2026-10-15T16:47:38.085Z",
  "as_of_iso": "2026-10-15",
- "as_of_en": "Oct 15, 2026, 12:19 PM Michigan time",
- "as_of_es": "15 oct 2026, 12:19 (hora de Michigan)",
+ "as_of_en": "Oct 15, 2026, 12:47 PM Michigan time",
+ "as_of_es": "15 oct 2026, 12:47 (hora de Michigan)",
  "since_en": "Oct 14, 2026",
  "since_es": "14 oct 2026",
  "since_iso": "2026-10-14",
@@ -33,6 +33,10 @@
    },
    "posted": "Noon EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:00 PM EDT",
+   "posted_es": "15 oct, 12:00 EDT",
    "readings": 1,
    "first": "2026-10-15 12:00",
    "first_en": "Oct 15, 2026",
@@ -83,7 +87,12 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "071201",
+    "070401",
+    "070101"
+   ]
   },
   "300401": {
    "port": "300401",
@@ -111,6 +120,10 @@
    },
    "posted": "9:00 am PDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 9:00 AM PDT",
+   "posted_es": "15 oct, 9:00 PDT",
    "readings": 1,
    "first": "2026-10-15 09:00",
    "first_en": "Oct 15, 2026",
@@ -161,7 +174,12 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "300403",
+    "302301",
+    "300901"
+   ]
   },
   "300403": {
    "port": "300403",
@@ -189,6 +207,10 @@
    },
    "posted": "",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -199,7 +221,12 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "300401",
+    "302301",
+    "300901"
+   ]
   },
   "090104": {
    "port": "090104",
@@ -225,8 +252,12 @@
     "es": "—",
     "lanes": null
    },
-   "posted": "12:07 pm EDT",
+   "posted": "12:37 pm EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:37 PM EDT",
+   "posted_es": "15 oct, 12:37 EDT",
    "readings": 1,
    "first": "2026-10-15 12:07",
    "first_en": "Oct 15, 2026",
@@ -277,7 +308,10 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "090101"
+   ]
   },
   "090101": {
    "port": "090101",
@@ -292,9 +326,9 @@
    "open": true,
    "max": 8,
    "std": {
-    "v": 4,
-    "en": "4 min",
-    "es": "4 min",
+    "v": 6,
+    "en": "6 min",
+    "es": "6 min",
     "lanes": 4
    },
    "fast": {
@@ -303,8 +337,12 @@
     "es": "—",
     "lanes": null
    },
-   "posted": "12:07 pm EDT",
+   "posted": "12:37 pm EDT",
    "notice": "A Ready Lane is available from 2-6pm Monday through Thursday.",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:37 PM EDT",
+   "posted_es": "15 oct, 12:37 EDT",
    "readings": 1,
    "first": "2026-10-15 12:07",
    "first_en": "Oct 15, 2026",
@@ -355,7 +393,10 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "090104"
+   ]
   },
   "011503": {
    "port": "011503",
@@ -383,6 +424,10 @@
    },
    "posted": "Noon EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:00 PM EDT",
+   "posted_es": "15 oct, 12:00 EDT",
    "readings": 1,
    "first": "2026-10-15 12:00",
    "first_en": "Oct 15, 2026",
@@ -433,7 +478,11 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "010601",
+    "010401"
+   ]
   },
   "071201": {
    "port": "071201",
@@ -461,6 +510,10 @@
    },
    "posted": "Noon EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:00 PM EDT",
+   "posted_es": "15 oct, 12:00 EDT",
    "readings": 1,
    "first": "2026-10-15 12:00",
    "first_en": "Oct 15, 2026",
@@ -511,7 +564,12 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "070801",
+    "070401",
+    "070101"
+   ]
   },
   "020901": {
    "port": "020901",
@@ -539,6 +597,10 @@
    },
    "posted": "Noon EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:00 PM EDT",
+   "posted_es": "15 oct, 12:00 EDT",
    "readings": 1,
    "first": "2026-10-15 12:00",
    "first_en": "Oct 15, 2026",
@@ -589,7 +651,11 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "021201",
+    "021101"
+   ]
   },
   "380001": {
    "port": "380001",
@@ -617,6 +683,10 @@
    },
    "posted": "Noon EDT",
    "notice": "A Ready Lane is available from 11am-2pm Monday through Friday.  More at: https://www.cbp.gov/travel",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:00 PM EDT",
+   "posted_es": "15 oct, 12:00 EDT",
    "readings": 1,
    "first": "2026-10-15 12:00",
    "first_en": "Oct 15, 2026",
@@ -667,7 +737,13 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "380002",
+    "380102",
+    "380201",
+    "380301"
+   ]
   },
   "380102": {
    "port": "380102",
@@ -695,6 +771,10 @@
    },
    "posted": "Noon EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:00 PM EDT",
+   "posted_es": "15 oct, 12:00 EDT",
    "readings": 1,
    "first": "2026-10-15 12:00",
    "first_en": "Oct 15, 2026",
@@ -745,7 +825,13 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "380001",
+    "380002",
+    "380201",
+    "380301"
+   ]
   },
   "380002": {
    "port": "380002",
@@ -773,6 +859,10 @@
    },
    "posted": "Noon EDT",
    "notice": "A Ready Lane is available from 11am-2pm Monday through Friday.  More at: https://www.cbp.gov/travel",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:00 PM EDT",
+   "posted_es": "15 oct, 12:00 EDT",
    "readings": 1,
    "first": "2026-10-15 12:00",
    "first_en": "Oct 15, 2026",
@@ -823,7 +913,13 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "380001",
+    "380102",
+    "380201",
+    "380301"
+   ]
   },
   "021201": {
    "port": "021201",
@@ -838,10 +934,10 @@
    "open": true,
    "max": 1,
    "std": {
-    "v": 0,
-    "en": "No wait",
-    "es": "Sin espera",
-    "lanes": 1
+    "v": null,
+    "en": "Closed",
+    "es": "Cerrado",
+    "lanes": null
    },
    "fast": {
     "v": null,
@@ -849,8 +945,12 @@
     "es": "—",
     "lanes": null
    },
-   "posted": "11:00 am EDT",
+   "posted": "",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 1,
    "first": "2026-10-15 11:00",
    "first_en": "Oct 15, 2026",
@@ -901,7 +1001,11 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "020901",
+    "021101"
+   ]
   },
   "010601": {
    "port": "010601",
@@ -929,6 +1033,10 @@
    },
    "posted": "Noon EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:00 PM EDT",
+   "posted_es": "15 oct, 12:00 EDT",
    "readings": 1,
    "first": "2026-10-15 12:00",
    "first_en": "Oct 15, 2026",
@@ -979,7 +1087,11 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "011503",
+    "010401"
+   ]
   },
   "360401": {
    "port": "360401",
@@ -1007,6 +1119,10 @@
    },
    "posted": "Noon CDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": true,
+   "posted_en": "Oct 14, 12:00 PM CDT",
+   "posted_es": "14 oct, 12:00 CDT",
    "readings": 1,
    "first": "2026-10-14 12:00",
    "first_en": "Oct 14, 2026",
@@ -1057,7 +1173,8 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": []
   },
   "010401": {
    "port": "010401",
@@ -1085,6 +1202,10 @@
    },
    "posted": "1:00 pm EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": true,
+   "posted_en": "Oct 14, 1:00 PM EDT",
+   "posted_es": "14 oct, 13:00 EDT",
    "readings": 1,
    "first": "2026-10-14 13:00",
    "first_en": "Oct 14, 2026",
@@ -1135,7 +1256,11 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "011503",
+    "010601"
+   ]
   },
   "302301": {
    "port": "302301",
@@ -1163,6 +1288,10 @@
    },
    "posted": "",
    "notice": "",
+   "hours_es": "8:00 a medianoche",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -1173,7 +1302,12 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "300401",
+    "300403",
+    "300901"
+   ]
   },
   "L01901": {
    "port": "L01901",
@@ -1201,6 +1335,10 @@
    },
    "posted": "Noon EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:00 PM EDT",
+   "posted_es": "15 oct, 12:00 EDT",
    "readings": 1,
    "first": "2026-10-15 12:00",
    "first_en": "Oct 15, 2026",
@@ -1251,7 +1389,8 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": []
   },
   "070401": {
    "port": "070401",
@@ -1279,6 +1418,10 @@
    },
    "posted": "1:00 pm EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": true,
+   "posted_en": "Oct 14, 1:00 PM EDT",
+   "posted_es": "14 oct, 13:00 EDT",
    "readings": 1,
    "first": "2026-10-14 13:00",
    "first_en": "Oct 14, 2026",
@@ -1329,7 +1472,12 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "070801",
+    "071201",
+    "070101"
+   ]
   },
   "021101": {
    "port": "021101",
@@ -1357,6 +1505,10 @@
    },
    "posted": "8:00 am EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": true,
+   "posted_en": "Oct 15, 8:00 AM EDT",
+   "posted_es": "15 oct, 8:00 EDT",
    "readings": 1,
    "first": "2026-10-15 08:00",
    "first_en": "Oct 15, 2026",
@@ -1407,7 +1559,11 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "020901",
+    "021201"
+   ]
   },
   "070101": {
    "port": "070101",
@@ -1435,6 +1591,10 @@
    },
    "posted": "11:00 pm EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": true,
+   "posted_en": "Oct 14, 11:00 PM EDT",
+   "posted_es": "14 oct, 23:00 EDT",
    "readings": 1,
    "first": "2026-10-14 23:00",
    "first_en": "Oct 14, 2026",
@@ -1485,7 +1645,12 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "070801",
+    "071201",
+    "070401"
+   ]
   },
   "340101": {
    "port": "340101",
@@ -1513,6 +1678,10 @@
    },
    "posted": "11:00 am CDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 11:00 AM CDT",
+   "posted_es": "15 oct, 11:00 CDT",
    "readings": 1,
    "first": "2026-10-15 11:00",
    "first_en": "Oct 15, 2026",
@@ -1563,7 +1732,8 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": []
   },
   "380201": {
    "port": "380201",
@@ -1591,6 +1761,10 @@
    },
    "posted": "11:00 am EST",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 11:00 AM EST",
+   "posted_es": "15 oct, 11:00 EST",
    "readings": 1,
    "first": "2026-10-15 11:00",
    "first_en": "Oct 15, 2026",
@@ -1641,7 +1815,13 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "380001",
+    "380002",
+    "380102",
+    "380301"
+   ]
   },
   "380301": {
    "port": "380301",
@@ -1669,6 +1849,10 @@
    },
    "posted": "Noon EDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 12:00 PM EDT",
+   "posted_es": "15 oct, 12:00 EDT",
    "readings": 1,
    "first": "2026-10-15 12:00",
    "first_en": "Oct 15, 2026",
@@ -1719,7 +1903,13 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "380001",
+    "380002",
+    "380102",
+    "380201"
+   ]
   },
   "300901": {
    "port": "300901",
@@ -1747,6 +1937,10 @@
    },
    "posted": "8:00 am PDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 8:00 AM PDT",
+   "posted_es": "15 oct, 8:00 PDT",
    "readings": 1,
    "first": "2026-10-15 08:00",
    "first_en": "Oct 15, 2026",
@@ -1797,7 +1991,12 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "300401",
+    "300403",
+    "302301"
+   ]
   },
   "331001": {
    "port": "331001",
@@ -1825,6 +2024,10 @@
    },
    "posted": "9:00 am MDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 9:00 AM MDT",
+   "posted_es": "15 oct, 9:00 MDT",
    "readings": 1,
    "first": "2026-10-15 09:00",
    "first_en": "Oct 15, 2026",
@@ -1875,7 +2078,8 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": []
   },
   "250201": {
    "port": "250201",
@@ -1903,6 +2107,10 @@
    },
    "posted": "",
    "notice": "",
+   "hours_es": "6:00 a 22:00",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -1913,7 +2121,12 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "250301",
+    "250602",
+    "250501"
+   ]
   },
   "240215": {
    "port": "240215",
@@ -1941,6 +2154,10 @@
    },
    "posted": "",
    "notice": "",
+   "hours_es": "6:00 a 14:00",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -1951,7 +2168,16 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "240203",
+    "240201",
+    "240221",
+    "240601",
+    "240401",
+    "240301",
+    "240801"
+   ]
   },
   "535503": {
    "port": "535503",
@@ -1979,6 +2205,10 @@
    },
    "posted": "11:00 am CDT",
    "notice": "",
+   "hours_es": "6:00 a 22:00",
+   "stale": false,
+   "posted_en": "Oct 15, 11:00 AM CDT",
+   "posted_es": "15 oct, 11:00 CDT",
    "readings": 1,
    "first": "2026-10-15 11:00",
    "first_en": "Oct 15, 2026",
@@ -2029,7 +2259,10 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "535502"
+   ]
   },
   "535502": {
    "port": "535502",
@@ -2063,6 +2296,10 @@
    },
    "posted": "11:00 am CDT",
    "notice": "",
+   "hours_es": "6:00 a medianoche",
+   "stale": false,
+   "posted_en": "Oct 15, 11:00 AM CDT",
+   "posted_es": "15 oct, 11:00 CDT",
    "readings": 1,
    "first": "2026-10-15 11:00",
    "first_en": "Oct 15, 2026",
@@ -2113,7 +2350,10 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "535503"
+   ]
   },
   "250301": {
    "port": "250301",
@@ -2147,6 +2387,10 @@
    },
    "posted": "9:00 am PDT",
    "notice": "",
+   "hours_es": "6:00 a 22:00",
+   "stale": false,
+   "posted_en": "Oct 15, 9:00 AM PDT",
+   "posted_es": "15 oct, 9:00 PDT",
    "readings": 1,
    "first": "2026-10-15 09:00",
    "first_en": "Oct 15, 2026",
@@ -2197,7 +2441,12 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "250201",
+    "250602",
+    "250501"
+   ]
   },
   "240601": {
    "port": "240601",
@@ -2225,6 +2474,10 @@
    },
    "posted": "10:00 am MDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 10:00 AM MDT",
+   "posted_es": "15 oct, 10:00 MDT",
    "readings": 1,
    "first": "2026-10-15 10:00",
    "first_en": "Oct 15, 2026",
@@ -2275,7 +2528,16 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "240203",
+    "240215",
+    "240201",
+    "240221",
+    "240401",
+    "240301",
+    "240801"
+   ]
   },
   "230201": {
    "port": "230201",
@@ -2303,6 +2565,10 @@
    },
    "posted": "Noon CDT",
    "notice": "Ready Lane is open from 6AM until MIDNIGHT seven days a week.  Ready Lane is on the far left as you approach.\r\n\r\nGo to www.GetYouHome.gov for more information.",
+   "hours_es": "24 horas",
+   "stale": true,
+   "posted_en": "Oct 14, 12:00 PM CDT",
+   "posted_es": "14 oct, 12:00 CDT",
    "readings": 1,
    "first": "2026-10-14 12:00",
    "first_en": "Oct 14, 2026",
@@ -2353,7 +2619,17 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "230302",
+    "230403",
+    "230404",
+    "230502",
+    "230901",
+    "230701",
+    "231001",
+    "231002"
+   ]
   },
   "260101": {
    "port": "260101",
@@ -2381,6 +2657,10 @@
    },
    "posted": "9:00 am PST",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 9:00 AM PST",
+   "posted_es": "15 oct, 9:00 PST",
    "readings": 1,
    "first": "2026-10-15 09:00",
    "first_en": "Oct 15, 2026",
@@ -2431,7 +2711,13 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "260201",
+    "260301",
+    "260402",
+    "260802"
+   ]
   },
   "230302": {
    "port": "230302",
@@ -2459,6 +2745,10 @@
    },
    "posted": "",
    "notice": "File FinCEN105 - Currency and Monetary Instrument Report (CMIR)online at https://fincen105.cbp.dhs.gov/ Provide confirmation number to CBP Officer upon making entry or departing the U.S.",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -2469,7 +2759,17 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "230201",
+    "230403",
+    "230404",
+    "230502",
+    "230901",
+    "230701",
+    "231001",
+    "231002"
+   ]
   },
   "240221": {
    "port": "240221",
@@ -2497,6 +2797,10 @@
    },
    "posted": "",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -2507,7 +2811,16 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "240203",
+    "240215",
+    "240201",
+    "240601",
+    "240401",
+    "240301",
+    "240801"
+   ]
   },
   "240201": {
    "port": "240201",
@@ -2535,6 +2848,10 @@
    },
    "posted": "",
    "notice": "BOTA Passenger/Ready Lanes is open west side of port; Passenger Hrs 24 hours/7days, BOTA CARGO Mon-FRI 6 am to 4 pm. SAT/SUN CLOSED. Tune into AM 1610 for info.",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -2545,7 +2862,16 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "240203",
+    "240215",
+    "240221",
+    "240601",
+    "240401",
+    "240301",
+    "240801"
+   ]
   },
   "240203": {
    "port": "240203",
@@ -2579,6 +2905,10 @@
    },
    "posted": "10:00 am MDT",
    "notice": "YSL Passenger/Ready Lanes is open west side of port; Passenger Hrs. 24 hours / 7 days, YSL CARGO Mon-FRI 6 am to Midnight. SAT 6 am to 2 pm. Tune into AM 1610 for info.",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 10:00 AM MDT",
+   "posted_es": "15 oct, 10:00 MDT",
    "readings": 1,
    "first": "2026-10-15 10:00",
    "first_en": "Oct 15, 2026",
@@ -2629,7 +2959,16 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "240215",
+    "240201",
+    "240221",
+    "240601",
+    "240401",
+    "240301",
+    "240801"
+   ]
   },
   "230502": {
    "port": "230502",
@@ -2650,19 +2989,23 @@
    "open": true,
    "max": 7,
    "std": {
-    "v": 40,
-    "en": "40 min",
-    "es": "40 min",
-    "lanes": 7
+    "v": 15,
+    "en": "15 min",
+    "es": "15 min",
+    "lanes": 6
    },
    "fast": {
-    "v": 35,
-    "en": "35 min",
-    "es": "35 min",
+    "v": 10,
+    "en": "10 min",
+    "es": "10 min",
     "lanes": 1
    },
-   "posted": "10:00 am CDT",
+   "posted": "11:00 am CDT",
    "notice": "",
+   "hours_es": "6:00 a medianoche",
+   "stale": false,
+   "posted_en": "Oct 15, 11:00 AM CDT",
+   "posted_es": "15 oct, 11:00 CDT",
    "readings": 1,
    "first": "2026-10-15 10:00",
    "first_en": "Oct 15, 2026",
@@ -2713,7 +3056,17 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "230201",
+    "230302",
+    "230403",
+    "230404",
+    "230901",
+    "230701",
+    "231001",
+    "231002"
+   ]
   },
   "230403": {
    "port": "230403",
@@ -2734,20 +3087,24 @@
    "open": true,
    "max": 8,
    "std": {
-    "v": 30,
-    "en": "30 min",
-    "es": "30 min",
+    "v": 15,
+    "en": "15 min",
+    "es": "15 min",
     "lanes": 2
    },
    "fast": {
-    "v": 5,
-    "en": "5 min",
-    "es": "5 min",
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
     "lanes": 2
    },
-   "posted": "10:00 am CDT",
+   "posted": "11:00 am CDT",
    "notice": "",
-   "readings": 1,
+   "hours_es": "8:00 a medianoche",
+   "stale": false,
+   "posted_en": "Oct 15, 11:00 AM CDT",
+   "posted_es": "15 oct, 11:00 CDT",
+   "readings": 2,
    "first": "2026-10-15 10:00",
    "first_en": "Oct 15, 2026",
    "first_es": "15 oct 2026",
@@ -2786,6 +3143,39 @@
        "lvl": null
       }
      ]
+    },
+    {
+     "h": 11,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 15,
+       "lvl": 1
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
     }
    ],
    "by_hour": [
@@ -2793,11 +3183,35 @@
      "h": 10,
      "v": 30,
      "w": 100.0
+    },
+    {
+     "h": 11,
+     "v": 15,
+     "w": 50.0
     }
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": {
+    "w": 640,
+    "h": 160,
+    "line": "M8.0,8.0L632.0,80.0",
+    "top": 30,
+    "start_en": "Thu, Oct 15",
+    "end_en": "Thu, Oct 15",
+    "start_es": "15 oct 2026",
+    "end_es": "15 oct 2026"
+   },
+   "nearby": [
+    "230404",
+    "230201",
+    "230302",
+    "230502",
+    "230901",
+    "230701",
+    "231001",
+    "231002"
+   ]
   },
   "230404": {
    "port": "230404",
@@ -2818,19 +3232,23 @@
    "open": true,
    "max": 19,
    "std": {
-    "v": 35,
-    "en": "35 min",
-    "es": "35 min",
-    "lanes": 15
+    "v": 45,
+    "en": "45 min",
+    "es": "45 min",
+    "lanes": 12
    },
    "fast": {
-    "v": 10,
-    "en": "10 min",
-    "es": "10 min",
+    "v": 20,
+    "en": "20 min",
+    "es": "20 min",
     "lanes": 4
    },
-   "posted": "10:00 am CDT",
+   "posted": "11:00 am CDT",
    "notice": "",
+   "hours_es": "7:00 a medianoche",
+   "stale": false,
+   "posted_en": "Oct 15, 11:00 AM CDT",
+   "posted_es": "15 oct, 11:00 CDT",
    "readings": 1,
    "first": "2026-10-15 10:00",
    "first_en": "Oct 15, 2026",
@@ -2881,7 +3299,17 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "230403",
+    "230201",
+    "230302",
+    "230502",
+    "230901",
+    "230701",
+    "231001",
+    "231002"
+   ]
   },
   "260201": {
    "port": "260201",
@@ -2909,6 +3337,10 @@
    },
    "posted": "",
    "notice": "",
+   "hours_es": "6:00 a 20:00",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -2919,7 +3351,13 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "260101",
+    "260301",
+    "260402",
+    "260802"
+   ]
   },
   "240401": {
    "port": "240401",
@@ -2947,6 +3385,10 @@
    },
    "posted": "10:00 am MDT",
    "notice": "CARGO Monday-Friday 8 am to 4 pm. Saturday/Sunday Closed.",
+   "hours_es": "6:00 a 22:00",
+   "stale": false,
+   "posted_en": "Oct 15, 10:00 AM MDT",
+   "posted_es": "15 oct, 10:00 MDT",
    "readings": 1,
    "first": "2026-10-15 10:00",
    "first_en": "Oct 15, 2026",
@@ -2997,7 +3439,16 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "240601",
+    "240203",
+    "240215",
+    "240201",
+    "240221",
+    "240301",
+    "240801"
+   ]
   },
   "260301": {
    "port": "260301",
@@ -3025,6 +3476,10 @@
    },
    "posted": "9:00 am PST",
    "notice": "",
+   "hours_es": "6:00 a 22:00",
+   "stale": false,
+   "posted_en": "Oct 15, 9:00 AM PST",
+   "posted_es": "15 oct, 9:00 PST",
    "readings": 1,
    "first": "2026-10-15 09:00",
    "first_en": "Oct 15, 2026",
@@ -3075,7 +3530,13 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "260101",
+    "260201",
+    "260402",
+    "260802"
+   ]
   },
   "260402": {
    "port": "260402",
@@ -3109,6 +3570,10 @@
    },
    "posted": "9:00 am MST",
    "notice": "",
+   "hours_es": "6:00 a 22:00",
+   "stale": false,
+   "posted_en": "Oct 15, 9:00 AM MST",
+   "posted_es": "15 oct, 9:00 MST",
    "readings": 1,
    "first": "2026-10-15 09:00",
    "first_en": "Oct 15, 2026",
@@ -3159,7 +3624,13 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "260101",
+    "260201",
+    "260301",
+    "260802"
+   ]
   },
   "250602": {
    "port": "250602",
@@ -3180,19 +3651,23 @@
    "open": true,
    "max": 10,
    "std": {
-    "v": 25,
-    "en": "25 min",
-    "es": "25 min",
-    "lanes": 6
+    "v": 30,
+    "en": "30 min",
+    "es": "30 min",
+    "lanes": 7
    },
    "fast": {
-    "v": 15,
-    "en": "15 min",
-    "es": "15 min",
-    "lanes": 4
+    "v": 20,
+    "en": "20 min",
+    "es": "20 min",
+    "lanes": 3
    },
-   "posted": "8:00 am PDT",
+   "posted": "9:00 am PDT",
    "notice": "",
+   "hours_es": "6:00 a 22:00",
+   "stale": false,
+   "posted_en": "Oct 15, 9:00 AM PDT",
+   "posted_es": "15 oct, 9:00 PDT",
    "readings": 1,
    "first": "2026-10-15 08:00",
    "first_en": "Oct 15, 2026",
@@ -3243,7 +3718,12 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "250201",
+    "250301",
+    "250501"
+   ]
   },
   "240301": {
    "port": "240301",
@@ -3271,6 +3751,10 @@
    },
    "posted": "11:00 am CDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 11:00 AM CDT",
+   "posted_es": "15 oct, 11:00 CDT",
    "readings": 1,
    "first": "2026-10-15 11:00",
    "first_en": "Oct 15, 2026",
@@ -3321,7 +3805,16 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "240601",
+    "240203",
+    "240215",
+    "240201",
+    "240221",
+    "240401",
+    "240801"
+   ]
   },
   "230901": {
    "port": "230901",
@@ -3349,6 +3842,10 @@
    },
    "posted": "",
    "notice": "The Pedestrian Ready lanes will be open daily from 12noon to 5pm.",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -3359,7 +3856,17 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "230201",
+    "230302",
+    "230403",
+    "230404",
+    "230502",
+    "230701",
+    "231001",
+    "231002"
+   ]
   },
   "230701": {
    "port": "230701",
@@ -3387,6 +3894,10 @@
    },
    "posted": "8:00 am CDT",
    "notice": "",
+   "hours_es": "7:00 a 23:00",
+   "stale": true,
+   "posted_en": "Oct 15, 8:00 AM CDT",
+   "posted_es": "15 oct, 8:00 CDT",
    "readings": 1,
    "first": "2026-10-15 08:00",
    "first_en": "Oct 15, 2026",
@@ -3437,7 +3948,17 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "230201",
+    "230302",
+    "230403",
+    "230404",
+    "230502",
+    "230901",
+    "231001",
+    "231002"
+   ]
   },
   "231001": {
    "port": "231001",
@@ -3465,6 +3986,10 @@
    },
    "posted": "10:00 am CDT",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "Oct 15, 10:00 AM CDT",
+   "posted_es": "15 oct, 10:00 CDT",
    "readings": 1,
    "first": "2026-10-15 10:00",
    "first_en": "Oct 15, 2026",
@@ -3515,7 +4040,17 @@
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "231002",
+    "230201",
+    "230302",
+    "230403",
+    "230404",
+    "230502",
+    "230901",
+    "230701"
+   ]
   },
   "231002": {
    "port": "231002",
@@ -3543,6 +4078,10 @@
    },
    "posted": "",
    "notice": "",
+   "hours_es": "24 horas",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -3553,7 +4092,17 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "231001",
+    "230201",
+    "230302",
+    "230403",
+    "230404",
+    "230502",
+    "230901",
+    "230701"
+   ]
   },
   "260802": {
    "port": "260802",
@@ -3581,6 +4130,10 @@
    },
    "posted": "",
    "notice": "",
+   "hours_es": "9:00 a 17:00",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -3591,7 +4144,13 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "260101",
+    "260201",
+    "260301",
+    "260402"
+   ]
   },
   "240801": {
    "port": "240801",
@@ -3612,20 +4171,24 @@
    "open": true,
    "max": 3,
    "std": {
-    "v": 35,
-    "en": "35 min",
-    "es": "35 min",
+    "v": 20,
+    "en": "20 min",
+    "es": "20 min",
     "lanes": 1
    },
    "fast": {
-    "v": 30,
-    "en": "30 min",
-    "es": "30 min",
+    "v": 15,
+    "en": "15 min",
+    "es": "15 min",
     "lanes": 1
    },
-   "posted": "9:00 am MDT",
+   "posted": "10:00 am MDT",
    "notice": "",
-   "readings": 1,
+   "hours_es": "6:00 a 22:00",
+   "stale": false,
+   "posted_en": "Oct 15, 10:00 AM MDT",
+   "posted_es": "15 oct, 10:00 MDT",
+   "readings": 2,
    "first": "2026-10-15 09:00",
    "first_en": "Oct 15, 2026",
    "first_es": "15 oct 2026",
@@ -3664,6 +4227,39 @@
        "lvl": null
       }
      ]
+    },
+    {
+     "h": 10,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 20,
+       "lvl": 2
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
     }
    ],
    "by_hour": [
@@ -3671,11 +4267,34 @@
      "h": 9,
      "v": 35,
      "w": 100.0
+    },
+    {
+     "h": 10,
+     "v": 20,
+     "w": 57.1
     }
    ],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": {
+    "w": 640,
+    "h": 160,
+    "line": "M8.0,8.0L632.0,69.7",
+    "top": 35,
+    "start_en": "Thu, Oct 15",
+    "end_en": "Thu, Oct 15",
+    "start_es": "15 oct 2026",
+    "end_es": "15 oct 2026"
+   },
+   "nearby": [
+    "240601",
+    "240203",
+    "240215",
+    "240201",
+    "240221",
+    "240401",
+    "240301"
+   ]
   },
   "250501": {
    "port": "250501",
@@ -3703,6 +4322,10 @@
    },
    "posted": "",
    "notice": "",
+   "hours_es": "6:00 a 22:00",
+   "stale": false,
+   "posted_en": "",
+   "posted_es": "",
    "readings": 0,
    "first": "",
    "first_en": "",
@@ -3713,7 +4336,12 @@
    "by_hour": [],
    "best": null,
    "worst": null,
-   "chart": null
+   "chart": null,
+   "nearby": [
+    "250201",
+    "250301",
+    "250602"
+   ]
   }
  },
  "mexico": [
@@ -3774,7 +4402,7 @@
   "331001"
  ],
  "busiest": [],
- "reporting": 41,
+ "reporting": 40,
  "total": 53,
  "longest": "340101"
 }

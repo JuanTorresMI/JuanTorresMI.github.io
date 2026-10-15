@@ -2,7 +2,7 @@
  * on the Mexican and Canadian borders, and, the part nobody else keeps, how long they usually wait
  * at each hour of each day of the week.
  *
- *   GET /border             { updated, ports: [{ port, border, name, crossing, hours, status, max, std, fast, notice }] }
+ *   GET /border             { updated, ports: [{ port, border, name, crossing, hours, status, max, std, fast, notice, posted_at, age }] }
  *   GET /border/port?id=P   { port, first, days, profile: [[dow, hour, std_avg, std_n, fast_avg, fast_n]], recent: [[at, std, std_lanes, fast, fast_lanes]] }
  *
  * The source is CBP's public Border Wait Times feed (bwt.cbp.gov/api/waittimes), no key needed.
@@ -48,6 +48,8 @@ function clock(s) {
   return h * 60 + Number(m[3]);
 }
 
+const minutesOf = (time) => { const t = /^(\d{1,2}):(\d{2})/.exec(String(time || "").trim()); return t ? Number(t[1]) * 60 + Number(t[2]) : null; };
+
 /* The port's local date ("MM/DD/YYYY") and time ("HH:MM:SS") of the feed, plus the posted clock
    time -> "YYYY-MM-DD HH:MM", the local moment the reading was posted. A posted time later than
    the feed's own clock was yesterday's (a port that last posted at 11 PM). */
@@ -85,6 +87,13 @@ export function toPorts(feed) {
       notice: String(x.construction_notice || "").trim() || null,
       reading: x.port_status === "Open" ? posted(x.date, x.time, clock(std.update || fast.update)) : null,
     });
+    // How old the reading was when the feed was read, in minutes, so a page can say "40 min ago"
+    // or warn that a port hasn't posted since last night. The feed's own clock is the port's,
+    // except in Arizona (CBP district 26), where it runs on daylight time the state doesn't keep.
+    const r = out[out.length - 1].reading, now = posted(x.date, x.time, minutesOf(x.time));
+    const skew = String(x.port_number).startsWith("26") ? 60 : 0;
+    out[out.length - 1].posted_at = r ? r.at : null;
+    out[out.length - 1].age = r && now ? Math.max(0, Math.round((Date.parse(now.at.replace(" ", "T") + "Z") - Date.parse(r.at.replace(" ", "T") + "Z")) / 60000 - skew)) : null;
   }
   return out;
 }
@@ -128,7 +137,10 @@ export async function borderPort(env, port, now = new Date()) {
       FROM border_waits WHERE port = ?1 AND at >= ?2 GROUP BY dow, hour ORDER BY dow, hour`).bind(port, since(PROFILE_DAYS)),
     env.DB.prepare("SELECT at, std_delay, std_lanes, fast_delay, fast_lanes FROM border_waits WHERE port = ?1 AND at >= ?2 ORDER BY at")
       .bind(port, since(RECENT_DAYS)),
-    env.DB.prepare("SELECT MIN(at) AS first, COUNT(*) AS n FROM border_waits WHERE port = ?1").bind(port),
+    // The count is the 30-day window's, so it reads at most a month of one port's rows however long
+    // the record gets; MIN(at) is answered from the primary key, one row.
+    env.DB.prepare("SELECT (SELECT MIN(at) FROM border_waits WHERE port = ?1) AS first, COUNT(*) AS n FROM border_waits WHERE port = ?1 AND at >= ?2")
+      .bind(port, since(PROFILE_DAYS)),
   ]);
   const f = first.results[0] || {};
   return {

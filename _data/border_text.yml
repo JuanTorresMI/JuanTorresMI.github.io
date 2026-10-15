@@ -10,6 +10,8 @@ en:
   no_wait: No wait
   closed: Closed
   pending: Pending
+  old: old reading
+  live: Live from CBP, checked
 es:
   days: [lunes, martes, miércoles, jueves, viernes, sábado, domingo]
   short: [lun, mar, mié, jue, vie, sáb, dom]
@@ -19,3 +21,5 @@ es:
   no_wait: Sin espera
   closed: Cerrado
   pending: Pendiente
+  old: lectura vieja
+  live: En vivo desde CBP, consultado el

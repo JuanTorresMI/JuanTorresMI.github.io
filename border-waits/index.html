@@ -39,6 +39,8 @@ image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits
   <a href="#crossings">Crossing pages</a>
   <a href="#how-it-works">How it works</a>
 </nav>
+<p class="rb-note bw-copy" id="bw-copy">Copied {{ b.as_of_en }}. With JavaScript on, the waits below refresh from CBP when the page opens. “Posted” is the port’s local time.</p>
+<p class="bw-quick"><span>Go straight to:</span>{% assign quick = site.border_crossings | sort: "title" %}{% for d in quick %}{% assign p = b.ports[d.port] %} <a href="{{ d.url }}">{{ p.name | default: d.title }}</a>{% endfor %}</p>
 
 {%- assign groups = "mexico,canada" | split: "," %}
 {%- for g in groups %}
@@ -50,13 +52,13 @@ image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits
       <thead><tr><th scope="col">Crossing</th><th scope="col">Standard</th><th scope="col">FAST</th><th scope="col">Lanes open</th><th scope="col">30-day average</th><th scope="col">Posted</th></tr></thead>
       <tbody>
       {%- for k in b[g] %}{% assign p = b.ports[k] %}
-        <tr data-port="{{ k }}"{% if p.std.v != nil %}{% if p.std.v >= 40 %} class="rb-hot"{% endif %}{% endif %}>
+        <tr data-port="{{ k }}" data-hot{% if p.std.v != nil %}{% if p.std.v >= 40 %} class="rb-hot"{% endif %}{% endif %}>
           <th scope="row">{% if p.slug %}<a href="/border-waits/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}</th>
           <td data-label="Standard" data-now="std">{{ p.std.en }}</td>
           <td data-label="FAST" data-now="fast">{{ p.fast.en }}</td>
-          <td data-label="Lanes open" data-now="lanes">{% if p.std.lanes %}{{ p.std.lanes }}{% if p.fast.lanes %} + {{ p.fast.lanes }}{% endif %}{% else %}—{% endif %} / {{ p.max }}</td>
+          <td data-label="Lanes open" data-now="lanes" data-max>{% if p.std.lanes %}{{ p.std.lanes }}{% if p.fast.lanes %} + {{ p.fast.lanes }} FAST{% endif %}{% else %}—{% endif %} / {{ p.max }}</td>
           <td data-label="30-day average">{% if p.avg != nil %}{{ p.avg }} min{% else %}—{% endif %}</td>
-          <td data-label="Posted" data-now="posted">{{ p.posted | default: "—" }}</td>
+          <td data-label="Posted" data-now="posted">{{ p.posted_en | default: p.posted | default: "—" }}{% if p.stale %} <span class="bw-stale">old reading</span>{% endif %}</td>
         </tr>
       {%- endfor %}
       </tbody>
@@ -139,31 +141,6 @@ image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits
 }
 </script>
 
-<script>
-/* Refreshes the "right now" columns from the Worker (cached five minutes at Cloudflare's edge).
-   Without it the page still shows the copy it was built with. */
-(() => {
-  const endpoint = {{ site.worker_url | default: "" | jsonify }};
-  if (!endpoint) return;
-  const say = (l) => (l.delay != null ? (l.delay === 0 ? "No wait" : l.delay + " min")
-    : /closed/i.test(l.status || "") ? "Closed" : /pending/i.test(l.status || "") ? "Pending" : "—");
-  fetch(endpoint + "/border").then((r) => r.json()).then((d) => {
-    if (!d.ports) return;
-    let reporting = 0;
-    for (const p of d.ports) {
-      if (p.std.delay != null || p.fast.delay != null) reporting++;
-      const row = document.querySelector(`tr[data-port="${p.port}"]`);
-      if (!row) continue;
-      const set = (k, v) => { const el = row.querySelector(`[data-now="${k}"]`); if (el) el.textContent = v; };
-      set("std", say(p.std)); set("fast", say(p.fast));
-      set("lanes", (p.std.lanes != null ? p.std.lanes + (p.fast.lanes ? " + " + p.fast.lanes : "") : "—") + " / " + p.max);
-      set("posted", String(p.std.update || p.fast.update || "—").replace(/^At\s+/, ""));
-      row.classList.toggle("rb-hot", (p.std.delay || 0) >= 40);
-    }
-    document.getElementById("bw-reporting").textContent = reporting + " of " + d.ports.length;
-    const t = new Date(d.updated);
-    if (!isNaN(t)) document.getElementById("bw-asof").textContent = t.toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" });
-  }).catch(() => {});
-})();
-</script>
+<script>window.BW = { endpoint: {{ site.worker_url | default: "" | jsonify }}, lang: "en", words: {{ site.data.border_text.en | jsonify }} };</script>
+<script src="/border-waits/live.js?v={{ site.time | date: '%s' }}" defer></script>
 {% endif %}
