@@ -141,16 +141,21 @@ const REEFER_CRON = "47 * * * *";   // must match the second entry in wrangler.t
 async function reeferRoute(env, ctx, route, url, cors) {
   const year = route === "/reefer/history" ? Number(url.searchParams.get("year")) : null;
   if (year !== null && !(year >= 2000 && year <= 2100)) return json({ error: "Give a year, like ?year=2025" }, 400, cors);
-  const cache = caches.default, cacheKey = new Request(url.origin + "/__cache" + route + (year ? "/" + year : ""));
+  const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/v2" + route + (year ? "/" + year : ""));
   const hit = await cache.match(cacheKey);
   if (hit) { const fresh = new Response(hit.body, hit); for (const [k, v] of Object.entries(cors)) fresh.headers.set(k, v); return fresh; }
-  let res;
+  let payload;
   try {
-    res = json(year ? await reeferHistory(env, year) : await reeferData(env), 200, { ...cors, "Cache-Control": `public, max-age=${REEFER_MAX_AGE}` });
+    payload = year ? await reeferHistory(env, year) : await reeferData(env);
   } catch (e) {
     console.error("reefer:", e && e.message ? e.message : e);
     return json({ error: e.message || String(e) }, 502, cors);
   }
+  // Nothing stored yet (the hour after a first deploy): answer, but don't keep that empty
+  // answer at the edge for an hour after the data arrives.
+  const empty = year ? payload.lanes.length === 0 : !payload.latest;
+  if (empty) return json(payload, 200, { ...cors, "Cache-Control": "no-store" });
+  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${REEFER_MAX_AGE}` });
   ctx.waitUntil(cache.put(cacheKey, res.clone()));
   return res;
 }
