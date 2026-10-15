@@ -10,7 +10,7 @@ image_alt: "Things I’ve built: a fruit-fly delivery simulation, a Minecraft pr
   A "professional" page (see the families in CLAUDE.md): a catalog. Each card wears its
   project's own stock: Work projects on day stock, Gamer projects on night stock (the same
   .stock-night tokens, scoped to the card), so the catalog previews where a click goes.
-  Card art is the project's share picture (assets/og/<slug>.png). Styles: .pj in style.css.
+  Card art is the project's share picture: `art` in projects.yml, else assets/og/<slug>.png. Styles: .pj in style.css.
 {%- endcomment -%}
 {%- assign families = site.data.projects | map: "family" | uniq -%}
 <div class="pj">
@@ -39,7 +39,8 @@ image_alt: "Things I’ve built: a fruit-fly delivery simulation, a Minecraft pr
           <span class="pj-short">{% if forloop.first %}{{ p.summary }}{% else %}{{ p.short }}{% endif %}</span>
           <span class="pj-metric">{{ p.metric }}</span>
         </span>
-        <img class="pj-art" src="/assets/og/{{ p.slug }}.png" alt="" loading="lazy" width="1200" height="630">
+        {%- if p.art %}{% assign art = p.art %}{% else %}{% assign art = "/assets/og/" | append: p.slug | append: ".png" %}{% endif %}
+        <img class="pj-art" src="{{ art }}" alt="" loading="lazy" width="1200" height="630">
       </span>
     </a>
     {%- if p.guide %}<a class="pj-more" href="{{ p.guide }}">Read the guide →</a>{% elsif p.writeup %}<a class="pj-more" href="{{ p.writeup }}">How I built it →</a>{% endif %}
