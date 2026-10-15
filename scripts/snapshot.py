@@ -11,7 +11,8 @@ templates only loop. A source that fails or answers with an error is skipped and
 good file stays. The `Snapshot live pages` workflow runs this once a day and commits the result.
 Needs only the standard library.
 """
-import json, os, sys, urllib.request
+import json, os, re, sys, urllib.request
+from urllib.parse import quote
 from datetime import datetime, timedelta, timezone
 from itertools import groupby
 
@@ -89,8 +90,31 @@ def youtube(d):
         if a.get("videos") is not None and b.get("videos") is not None and a["videos"] != b["videos"]: parts.append(delta(a["videos"] - b["videos"], "video", "videos"))
         days.append({"day": day_label(datetime.fromisoformat(a["day"])), "text": " · ".join(parts) or "No change"})
 
-    return {"generated": d["updated"], "checked": full_date(now), "channel_url": (d.get("channel") or {}).get("url"),
-            "tiles": tiles, "recent": recent, "recent_count": plural(this_week, "upload", "uploads") + " this week", "days": days}
+    # The gamer layout's pieces: the newest full game, the newest Shorts, and the matchups named
+    # in recent titles ("Kalista vs Corki"), each a search of the channel.
+    vids = d.get("recent") or []
+    channel_url = (d.get("channel") or {}).get("url")
+    full = next((v for v in vids if not v.get("short")), None)
+    featured = None if not full else {"title": full.get("title", ""), "url": full.get("url", ""), "thumb": full.get("thumb"),
+                                      "length": length(full.get("seconds")), "date": f"{when(full['published']):%b} {when(full['published']).day}"}
+    shorts = [{"title": v.get("title", ""), "url": v.get("url", ""), "thumb": v.get("thumb"),
+               "views": "" if v.get("views") is None else fmt(v["views"])} for v in vids if v.get("short")][:3]
+    matchups = []
+    for v in vids:
+        m = re.search(r"([A-Z][\w'’]*) vs ([^|:(…]+)", v.get("title", ""))
+        if not m or m.group(1).lower() in ("kill", "double", "triple", "quadra", "penta"): continue
+        rest = re.sub(r"\s+(ADC|Mid|Top|Jungle|Support|clip)\s*$", "", m.group(2).strip().rstrip(","), flags=re.I)
+        label = f"{m.group(1)} vs {rest}"
+        if label not in [x["label"] for x in matchups] and channel_url:
+            matchups.append({"label": label, "url": f"{channel_url}/search?query={quote(label)}"})
+    hud = [{"n": "—" if s.get("views") is None else fmt(s["views"]), "l": "views, all time"},
+           {"n": "—" if s.get("videos") is None else fmt(s["videos"]), "l": "videos"},
+           {"n": "Hidden" if s.get("subscribers") is None else fmt(s["subscribers"]), "l": "subscribers"},
+           {"n": fmt(this_week), "l": "uploads this week", "hot": True}]
+
+    return {"generated": d["updated"], "checked": full_date(now), "channel_url": channel_url,
+            "tiles": tiles, "hud": hud, "featured": featured, "shorts": shorts, "matchups": matchups[:8],
+            "recent": recent, "recent_count": plural(this_week, "upload", "uploads") + " this week", "days": days}
 
 
 def runtime(m):

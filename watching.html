@@ -6,23 +6,25 @@ description: What's playing on the house TV right now, what we've been watching 
 # Public, but not something to turn up in a search for his name.
 noindex: true
 sitemap: false
+stock: night
 ---
 {%- comment -%}
   site.data.live.watching is a daily copy of the Worker's answer (scripts/snapshot.py), for
   readers with JavaScript off; the script below replaces it with the live board. A day-old
   copy never claims anything is playing now, so its card always says "Last on".
+  A "chill" page (see the families in CLAUDE.md): night stock, italic serif, posters, lots of air.
+  The markup is the shared board components; .tv in style.css restyles them for this page.
 {%- endcomment -%}
 {%- assign tv = site.data.live.watching -%}
-<header class="phead row">
-  <p class="key label">{{ site.tv_label | default: "The house TV" }}</p>
-  <div class="body">
-    <h1>What we’re watching</h1>
-    <p class="lede">Whatever’s on the TV downstairs. Stremio keeps its own notes on what the house plays; this page reads them back and nothing else.</p>
-  </div>
+<div class="tv">
+<header class="tv-head">
+  <p class="family">Chill · {{ site.tv_label | default: "The house TV" }}</p>
+  <h1>What we’re watching</h1>
+  <p class="tv-lede">Whatever’s on the TV downstairs. Stremio keeps its own notes on what the house plays; this page reads them back and nothing else.</p>
 </header>
 
 <section class="sec">
-  <header class="sec-head"><h2>On now</h2><span class="label" id="now-when">{% if tv %}as of {{ tv.checked }}{% else %}checking…{% endif %}</span></header>
+  <header class="sec-head"><h2>on now</h2><span class="label" id="now-when">{% if tv %}as of {{ tv.checked }}{% else %}checking…{% endif %}</span></header>
   <div class="np" id="np">
   {%- if tv.last -%}
     {%- capture card -%}
@@ -41,14 +43,14 @@ sitemap: false
 </section>
 
 <section class="sec" id="stats-sec"{% unless tv.tiles.size > 0 %} hidden{% endunless %}>
-  <header class="sec-head"><h2>The tally</h2><span class="label">All time</span></header>
+  <header class="sec-head"><h2>the tally</h2><span class="label">All time</span></header>
   <div class="tally" id="tally">
   {%- for t in tv.tiles %}<div class="tile"><span class="n">{{ t.n | escape }}</span><span class="l label">{{ t.l | escape }}</span></div>{% endfor -%}
   </div>
 </section>
 
 <section class="sec">
-  <header class="sec-head"><h2>Lately</h2><span class="label" id="lately-count">{{ tv.count }}</span></header>
+  <header class="sec-head"><h2>what’s been on</h2><span class="label" id="lately-count">{{ tv.count }}</span></header>
   <div class="log" id="feed">
   {%- if tv -%}
     {%- for d in tv.days %}
@@ -64,7 +66,7 @@ sitemap: false
 </section>
 
 <section class="sec" id="deck-sec"{% unless tv.deck.size > 0 %} hidden{% endunless %}>
-  <header class="sec-head"><h2>In the library</h2><span class="label">Most recently added</span></header>
+  <header class="sec-head"><h2>on the shelf</h2><span class="label">Most recently added</span></header>
   <div class="deck" id="deck">
   {%- for x in tv.deck -%}
     {%- capture inner -%}
@@ -75,6 +77,8 @@ sitemap: false
   {%- endfor -%}
   </div>
 </section>
+
+</div>
 
 <script>
 (() => {

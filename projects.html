@@ -6,35 +6,64 @@ description: Projects by Juan Torres, including a fruit-fly delivery simulation,
 image: /assets/og/projects.png
 image_alt: "Things I’ve built: a fruit-fly delivery simulation, a Minecraft price ledger, a production planning optimizer and live YouTube stats, by Juan Torres."
 ---
-<header class="phead row">
-  <p class="key label">Projects</p>
-  <div class="body">
+{%- comment -%}
+  A "professional" page (see the families in CLAUDE.md): a catalog. Each card wears its
+  project's own stock: Work projects on day stock, Gamer projects on night stock (the same
+  .stock-night tokens, scoped to the card), so the catalog previews where a click goes.
+  Card art is the project's share picture: `art` in projects.yml, else assets/og/<slug>.png. Styles: .pj in style.css.
+{%- endcomment -%}
+{%- assign families = site.data.projects | map: "family" | uniq -%}
+<div class="pj">
+<header class="pj-head">
+  <div>
+    <p class="family">Professional · Portfolio</p>
     <h1>Things I’ve built</h1>
-    <p class="lede">Mostly ideas from class, or from games I play, that I wanted to try for real. Each one runs right here on the site.</p>
+    <p class="pj-lede">Mostly ideas from class, or from games I play, that I wanted to try for real. Each one runs right here on the site.</p>
+  </div>
+  <div class="pj-filter" role="group" aria-label="Show projects by family" hidden>
+    <button type="button" data-family="" aria-pressed="true">All · {{ site.data.projects.size }}</button>
+    {%- for f in families %}{% assign n = site.data.projects | where: "family", f | size %}
+    <button type="button" data-family="{{ f }}" aria-pressed="false">{{ f }} · {{ n }}</button>
+    {%- endfor %}
   </div>
 </header>
 
-<section class="sec">
-  <header class="sec-head"><h2>Projects</h2><span class="label">{{ site.data.projects.size }} so far</span></header>
-  <div class="entries">
-    {% for p in site.data.projects %}
-    <a class="entry entry-lg row" href="{{ p.url }}">
-      <span class="key"><span class="label">{{ p.kind }}</span><span class="data">No. {{ forloop.index | prepend: "0" | slice: -2, 2 }} · {{ p.status }}</span></span>
-      <span class="body">
-        <span class="entry-head"><span class="entry-title">{{ p.title }}</span><span class="go label">Open →</span></span>
-        <span class="entry-text">{{ p.summary }}</span>
-        <span class="data entry-data">{{ p.metric }}</span>
-        <span class="entry-stack skill-list">{% for s in p.stack %}<span>{{ s }}</span>{% endfor %}</span>
+<div class="pj-grid">
+  {%- for p in site.data.projects %}
+  <article class="pj-card{% if forloop.first %} pj-lead{% endif %}{% if p.family == "Gamer" %} stock-night{% endif %}" data-family="{{ p.family }}">
+    <a class="pj-link" href="{{ p.url }}">
+      <span class="pj-top"><span>No. {{ forloop.index | prepend: "0" | slice: -2, 2 }}{% if forloop.first %} · Featured{% endif %}</span><span class="pj-fam">{{ p.family }} · {{ p.kind }}</span></span>
+      <span class="pj-body">
+        <span class="pj-text">
+          <span class="pj-title">{{ p.title }}</span>
+          <span class="pj-short">{% if forloop.first %}{{ p.summary }}{% else %}{{ p.short }}{% endif %}</span>
+          <span class="pj-metric">{{ p.metric }}</span>
+        </span>
+        {%- if p.art %}{% assign art = p.art %}{% else %}{% assign art = "/assets/og/" | append: p.slug | append: ".png" %}{% endif %}
+        <img class="pj-art" src="{{ art }}" alt="" loading="lazy" width="1200" height="630">
       </span>
     </a>
-    {%- if p.guide %}
-    <p class="entry-guide row"><span class="key"></span><a class="body link small" href="{{ p.guide }}">Read the guide to {{ p.title }} →</a></p>
-    {%- elsif p.writeup %}
-    <p class="entry-guide row"><span class="key"></span><a class="body link small" href="{{ p.writeup }}">Read how I built it and what happened →</a></p>
-    {%- endif %}
-    {% endfor %}
-  </div>
-</section>
+    {%- if p.guide %}<a class="pj-more" href="{{ p.guide }}">Read the guide →</a>{% elsif p.writeup %}<a class="pj-more" href="{{ p.writeup }}">How I built it →</a>{% endif %}
+  </article>
+  {%- endfor %}
+</div>
+</div>
+
+<script>
+/* Family filter. Every card shows without JavaScript; this only hides the others. */
+(() => {
+  const bar = document.querySelector(".pj-filter");
+  if (!bar) return;
+  bar.hidden = false;
+  const cards = [...document.querySelectorAll(".pj-card")];
+  bar.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    bar.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    cards.forEach((c) => { c.hidden = !!b.dataset.family && c.dataset.family !== b.dataset.family; });
+  });
+})();
+</script>
 
 <section class="sec" id="log">
   <header class="sec-head"><h2>Project log</h2><a class="label" href="{{ site.social.github }}">GitHub ↗</a></header>

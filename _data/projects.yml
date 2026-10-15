@@ -1,7 +1,9 @@
 # Every project on the site, in the order the Projects page and the project bar show them.
+# family is the page family (Work, Gamer…; see CLAUDE.md): it labels the card and picks its stock.
 # keywords tag commits in the Project log (matched against the repository name and commit message).
 
 - slug: fruit-fly-dispatcher
+  family: Work
   title: Fruit Fly Dispatcher
   url: /fruit-fly-dispatcher/
   kind: Simulation
@@ -18,6 +20,7 @@
   keywords: [fly, dispatcher, flywire, flyroute]
 
 - slug: craft-ledger
+  family: Gamer
   title: Craft Ledger
   url: /craft-ledger.html
   kind: Tool
@@ -34,6 +37,7 @@
   keywords: [craft, ledger, minecraft, donut]
 
 - slug: aggregate-planning
+  family: Work
   title: Aggregate Planner
   url: /aggregate-planning/
   kind: Tool
@@ -67,6 +71,8 @@
   keywords: [aggregate, planner, planning, highs]
 
 - slug: youtube-stats
+  family: Gamer
+  art: /assets/og/youtube.png
   title: YouTube Stats
   url: /youtube/
   guide: /youtube/#how-it-works
