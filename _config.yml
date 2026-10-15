@@ -21,6 +21,9 @@ social:
 # Google Search Console / Bing Webmaster Tools, then push.
 google_site_verification: 2riTrji6HgHLDgupyEonnhXA3xcnkJt3BKIvxaf_NpY
 bing_site_verification:
+# IndexNow (Bing and others): scripts/indexnow.py pings changed pages after each deploy. The key is
+# public by design; the file named after it at the root proves the site is ours.
+indexnow_key: 9897a19c7af43333047aff51c359aaa3
 timezone: America/Detroit
 
 theme: null

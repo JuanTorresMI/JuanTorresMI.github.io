@@ -2,4 +2,5 @@
 lane: kern-ca-to-dallas
 title: "Kern, CA to Dallas reefer rates"
 description: "USDA's weekly spot rates for a reefer truck from Kern, CA to Dallas: the latest rate, every week on record, and every origin into Dallas."
+seo_title: "Kern, CA to Dallas Reefer Rates This Week (USDA)"
 ---
