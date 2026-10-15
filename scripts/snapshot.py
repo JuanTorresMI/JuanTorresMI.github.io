@@ -5,8 +5,8 @@ JavaScript off. The script on each page still fetches fresh numbers for everyone
 
     python3 scripts/snapshot.py
 
-Writes _data/live/youtube.json, watching.json and reefer.json (plus a stub page for each reefer
-lane in _reefer_lanes/), already formatted the way the pages show them (Liquid on GitHub Pages can't put commas in numbers or say "Oct 14"), so the
+Writes _data/live/youtube.json, watching.json, reefer.json and border.json (plus a stub page for each
+reefer lane in _reefer_lanes/ and each named border crossing), already formatted the way the pages show them (Liquid on GitHub Pages can't put commas in numbers or say "Oct 14"), so the
 templates only loop. A source that fails or answers with an error is skipped and its last
 good file stays. The `Snapshot live pages` workflow runs this once a day and commits the result.
 Needs only the standard library.
@@ -151,6 +151,176 @@ def watching(d):
     return {"generated": d.get("updated") or now.isoformat(), "checked": full_date(now), "last": last, "tiles": tiles,
             "count": f"{week} title{'' if week == 1 else 's'} this week", "days": days, "deck": deck}
 
+
+# ------------------------------------------------------------------ the border wait board ----
+# /border-waits/ and a page per major crossing (/border-waits/<slug>/), plus a Spanish page for
+# each Mexico crossing (/es/tiempos-de-espera/<slug>/). Built from the Worker's /border (now) and
+# /border/port (the last 30 days by weekday and hour). The pages' scripts only refresh "now".
+# Numbers stay numbers and the few strings come in pairs (en, es); the words are in the layouts.
+
+BORDER_DIR = os.path.join(ROOT, "_border_crossings")
+BORDER_ES_DIR = os.path.join(ROOT, "_border_crossings_es")
+BORDER_CSV = os.path.join(ROOT, "border-waits", "border-truck-wait-times.csv")
+DAYS_EN = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+MONTHS_ES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
+LEVELS = (10, 20, 40, 60)                    # minutes: the heat map's steps, the same for every crossing
+SURE = 2                                     # readings an hour needs before it can be called best or worst
+ENOUGH = 48                                  # readings (about two days) before a crossing gets averages or a best hour
+fecha = lambda d: f"{d.day} {MONTHS_ES[d.month - 1]} {d.year}"
+local_time = lambda s: datetime.strptime(s, "%Y-%m-%d %H:%M")
+
+
+def crossings():
+    d = json.load(open(os.path.join(ROOT, "_data", "border_crossings.json"), encoding="utf-8"))
+    return {c["port"]: c for c in d["crossings"]}, d.get("names", {})
+
+
+def wait(lane):
+    """{'v': minutes or None, 'en': ..., 'es': ..., 'lanes': open}. Unknown is never shown as zero."""
+    v, st = lane.get("delay"), (lane.get("status") or "").lower()
+    if v is not None:
+        return {"v": v, "en": "No wait" if v == 0 else f"{v} min", "es": "Sin espera" if v == 0 else f"{v} min", "lanes": lane.get("lanes")}
+    en, es = {"lanes closed": ("Closed", "Cerrado"), "update pending": ("Pending", "Pendiente")}.get(st, ("—", "—"))
+    return {"v": None, "en": en, "es": es, "lanes": lane.get("lanes")}
+
+
+def level(v):
+    return None if v is None else sum(1 for t in LEVELS if v >= t)
+
+
+def wait_chart(recent, w=640, h=160, pad=8):
+    """The last 7 days of standard-lane waits as an SVG line, broken where readings stop for more
+    than three hours (the port closed for the night, or nobody posted)."""
+    pts = [(local_time(r[0]), r[1]) for r in recent if r[1] is not None]
+    if len(pts) < 2: return None
+    t1 = pts[-1][0]
+    t0 = max(pts[0][0], t1 - timedelta(days=7))
+    pts = [p for p in pts if p[0] >= t0]
+    if len(pts) < 2: return None
+    top = max(30, max(v for _, v in pts))
+    secs = max((t1 - t0).total_seconds(), 1)
+    X = lambda t: round(pad + (t - t0).total_seconds() / secs * (w - 2 * pad), 1)
+    Y = lambda v: round(h - pad - v / top * (h - 2 * pad), 1)
+    line, prev = "", None
+    for t, v in pts:
+        line += ("L" if prev and (t - prev).total_seconds() <= 3 * 3600 else " M") + f"{X(t)},{Y(v)}"
+        prev = t
+    return {"w": w, "h": h, "line": line.strip(), "top": top, "start_en": day_label(t0), "end_en": day_label(t1),
+            "start_es": fecha(t0), "end_es": fecha(t1)}
+
+
+def weighted(cells, v, n):
+    total = sum(c[n] for c in cells if c[v] is not None)
+    return round(sum(c[v] * c[n] for c in cells if c[v] is not None) / total) if total else None
+
+
+def port_detail(base, port):
+    d = get(f"{base}/border/port?id={port}")
+    profile = d.get("profile") or []                       # [dow, hour, std_avg, std_n, fast_avg, fast_n]
+    cells = {(r[0], r[1]): r for r in profile}
+    hours = sorted({h for _, h in cells})
+    grid = []
+    for h in hours:
+        row = []
+        for dw in range(7):
+            c = cells.get((dw, h))
+            v = None if c is None or c[2] is None else round(c[2])
+            row.append({"v": v, "lvl": level(v)})
+        grid.append({"h": h, "cells": row})
+    known = [c for c in profile if c[2] is not None]
+    sure = [c for c in known if c[3] >= SURE] or known
+    pick = lambda c: {"dow": c[0], "hour": c[1], "v": round(c[2])}
+    by_hour = [{"h": h, "v": weighted([c for c in known if c[1] == h], 2, 3)} for h in hours]
+    by_hour = [b for b in by_hour if b["v"] is not None]
+    top = max([b["v"] for b in by_hour] + [1])
+    for b in by_hour: b["w"] = round(b["v"] / top * 100, 1)
+    first = local_time(d["first"]) if d.get("first") else None
+    if (d.get("readings") or 0) < ENOUGH:             # one reading is not a "usual" anything
+        known = sure = []
+        profile_avg = fast_avg = None
+    else:
+        profile_avg, fast_avg = weighted(profile, 2, 3), weighted(profile, 4, 5)
+    return {"readings": d.get("readings") or 0, "first": d.get("first") or "",
+            "first_en": full_date(first) if first else "", "first_es": fecha(first) if first else "",
+            "avg": profile_avg, "fast_avg": fast_avg, "grid": grid, "by_hour": by_hour,
+            "best": pick(min(sure, key=lambda c: (c[2], c[0], c[1]))) if sure else None,
+            "worst": pick(max(sure, key=lambda c: (c[2], -c[0], -c[1]))) if sure else None,
+            "chart": wait_chart(d.get("recent") or []), "profile": profile}
+
+
+def border(base):
+    now = get(base + "/border")
+    ports = now.get("ports") or []
+    if not ports: raise RuntimeError("the Worker has no border data yet")
+    named, renamed = crossings()
+    out = {}
+    for p in ports:
+        c = named.get(p["port"], {})
+        crossing = (p.get("crossing") or "").strip()
+        cbp_name = renamed.get(p["port"]) or p["name"] + (f" – {crossing}" if crossing and p["name"].lower() not in crossing.lower() else "")
+        std, fast = p.get("std") or {}, p.get("fast") or {}
+        x = {"port": p["port"], "border": p["border"], "name": c.get("name") or cbp_name, "cbp": cbp_name,
+             "slug": c.get("slug"), "city": c.get("city", ""), "across": c.get("across", ""), "es": c.get("es"),
+             "hours": p.get("hours", ""), "open": p.get("status") == "Open", "max": p.get("max"),
+             "std": wait(std), "fast": wait(fast),
+             "posted": re.sub(r"^At\s+", "", std.get("update") or fast.get("update") or ""), "notice": p.get("notice") or ""}
+        try:
+            x.update(port_detail(base, p["port"]))
+        except Exception as e:
+            print(f"border: no history for {p['port']} ({e})", file=sys.stderr)
+            x.update({"readings": 0, "first": "", "first_en": "", "first_es": "", "avg": None, "fast_avg": None,
+                      "grid": [], "by_hour": [], "best": None, "worst": None, "chart": None, "profile": []})
+        out[p["port"]] = x
+    for port in named:
+        if port not in out: print(f"border: {port} is in border_crossings.json but not in CBP's feed", file=sys.stderr)
+
+    order = lambda b: [v["port"] for v in sorted((v for v in out.values() if v["border"] == b), key=lambda v: v["name"])]
+    busiest = sorted((v for v in out.values() if v["avg"] is not None), key=lambda v: (-v["avg"], v["name"]))[:8]
+    firsts = [v["first"] for v in out.values() if v["first"]]
+    since = local_time(min(firsts)) if firsts else None
+
+    # The download: the 30-day averages, one row per crossing, lane, weekday and hour.
+    stamp = when(now["updated"]).date().isoformat()
+    os.makedirs(os.path.dirname(BORDER_CSV), exist_ok=True)
+    with open(BORDER_CSV, "w", encoding="utf-8", newline="") as fh:
+        wr = csv.writer(fh, lineterminator="\n")
+        wr.writerow(["port_number", "border", "crossing", "lane", "weekday", "hour_local", "average_wait_min", "readings", "window_days", "as_of"])
+        for k in order("mexico") + order("canada"):
+            v = out[k]
+            for dw, h, s, sn, f, fn in v["profile"]:
+                if s is not None: wr.writerow([k, v["border"], v["cbp"], "standard", DAYS_EN[dw], h, s, sn, 30, stamp])
+                if f is not None: wr.writerow([k, v["border"], v["cbp"], "FAST", DAYS_EN[dw], h, f, fn, 30, stamp])
+    for v in out.values(): v.pop("profile", None)
+
+    # Page stubs for the named crossings: new ones only, never deleted (as with the reefer lanes).
+    for c in named.values():
+        pages = [(BORDER_DIR, c["slug"], {"port": c["port"],
+                  "title": f"{c['name']} truck wait times",
+                  "description": f"Commercial truck wait times at the {c['name']}: the wait right now and the usual wait at each hour of the week, from CBP's readings.",
+                  **({"translation": f"/es/tiempos-de-espera/{c['es']['slug']}/"} if c.get("es") else {})})]
+        if c.get("es"):
+            e = c["es"]
+            pages.append((BORDER_ES_DIR, e["slug"], {"port": c["port"],
+                          "title": f"Tiempo de espera para camiones: {e['short']}",
+                          "description": f"Cuánto esperan los camiones de carga en {e['short']}: la espera ahora mismo y la habitual a cada hora de la semana, con datos de CBP.",
+                          "translation": f"/border-waits/{c['slug']}/"}))
+        for folder, slug, fm in pages:
+            os.makedirs(folder, exist_ok=True)
+            f = os.path.join(folder, slug + ".md")
+            if os.path.exists(f): continue
+            with open(f, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write("---\n" + "".join(f"{k}: {json.dumps(v, ensure_ascii=False)}\n" for k, v in fm.items()) + "---\n")
+
+    t = when(now["updated"])
+    reporting = [v for v in out.values() if v["std"]["v"] is not None or v["fast"]["v"] is not None]
+    longest = max(reporting, key=lambda v: v["std"]["v"] or 0, default=None)
+    return {"generated": now["updated"], "as_of_iso": stamp,
+            "as_of_en": f"{full_date(t)}, {t.hour % 12 or 12}:{t.minute:02d} {'AM' if t.hour < 12 else 'PM'} Michigan time",
+            "as_of_es": f"{fecha(t)}, {t.hour}:{t.minute:02d} (hora de Michigan)",
+            "since_en": full_date(since) if since else "", "since_es": fecha(since) if since else "", "since_iso": since.date().isoformat() if since else stamp,
+            "ports": out, "mexico": order("mexico"), "canada": order("canada"), "busiest": [v["port"] for v in busiest],
+            "reporting": len(reporting), "total": len(out),
+            "longest": longest["port"] if longest and longest["std"]["v"] else None}
 
 # ------------------------------------------------------------------ the reefer rate board ----
 # /reefer-rates/ and one page per lane (/reefer-rates/<origin>-to-<city>/). Unlike the other two,
@@ -454,7 +624,7 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     failed = 0
     jobs = (("youtube", lambda: youtube(get(base + "/youtube"))), ("watching", lambda: watching(get(base + "/"))),
-            ("reefer", lambda: reefer(base)))
+            ("reefer", lambda: reefer(base)), ("border", lambda: border(base)))
     for name, job in jobs:
         try:
             data = job()

@@ -17,6 +17,10 @@
 {%- assign desc = desc | default: site.description -%}
 {%- assign image = page.image | default: site.image -%}
 {%- assign image_alt = page.image_alt | default: site.image_alt -%}
+{%- comment %} Language: a page may set `lang: es`. A page with a reviewed translation names it in
+  `translation` and sets `translations_live`, and then both point at each other with hreflang. {% endcomment -%}
+{%- assign lang = page.lang | default: site.lang | default: "en" -%}
+{%- if lang == "es" -%}{%- assign locale = "es_MX" -%}{%- assign in_lang = "es-MX" -%}{%- else -%}{%- assign locale = "en_US" -%}{%- assign in_lang = "en-US" -%}{%- endif -%}
 <title>{{ title }}</title>
 <meta name="description" content="{{ desc | escape }}">
 <meta name="author" content="{{ site.author }}">
@@ -24,12 +28,15 @@
 {% if site.google_site_verification %}<meta name="google-site-verification" content="{{ site.google_site_verification }}">{% endif %}
 {% if site.bing_site_verification %}<meta name="msvalidate.01" content="{{ site.bing_site_verification }}">{% endif %}
 <link rel="canonical" href="{{ page.url | absolute_url }}">
-<meta property="og:title" content="{{ page.title | default: site.title | escape }}">
+{% if page.translation and page.translations_live %}{% if lang == "es" %}{% assign en_url = page.translation %}{% else %}{% assign en_url = page.url %}{% endif %}<link rel="alternate" hreflang="{{ lang }}" href="{{ page.url | absolute_url }}">
+<link rel="alternate" hreflang="{% if lang == "es" %}en{% else %}es{% endif %}" href="{{ page.translation | absolute_url }}">
+<link rel="alternate" hreflang="x-default" href="{{ en_url | absolute_url }}">
+{% endif %}<meta property="og:title" content="{{ page.title | default: site.title | escape }}">
 <meta property="og:description" content="{{ desc | escape }}">
 <meta property="og:type" content="{% if is_post %}article{% elsif is_home %}profile{% else %}website{% endif %}">
 <meta property="og:url" content="{{ page.url | absolute_url }}">
 <meta property="og:site_name" content="{{ site.title }}">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="{{ locale }}">
 <meta property="og:image" content="{{ image | absolute_url }}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -171,7 +178,7 @@
       "url": {{ page.url | absolute_url | jsonify }},
       "name": {{ crumb_title | jsonify }},
       "description": {{ desc | jsonify }},
-      "inLanguage": "en-US",
+      "inLanguage": {{ in_lang | jsonify }},
       "isPartOf": { "@type": "WebSite", "@id": {{ site_id | jsonify }} },
       "author": { "@type": "Person", "@id": {{ person_id | jsonify }}, "name": {{ site.author | jsonify }} },
       "primaryImageOfPage": { "@type": "ImageObject", "url": {{ image | absolute_url | jsonify }}, "width": 1200, "height": 630 }{% if project %},

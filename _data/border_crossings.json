@@ -1,0 +1,32 @@
+{
+ "_about": "The crossings with a page of their own on the border wait board: CBP port number, the page's slug (never change one once its page is live), how it's named, and the city across. Mexico crossings also get a Spanish page (es), drafted for review by a fluent speaker. scripts/snapshot.py writes the page stubs from this list.",
+ "_names": "How the board names ports whose CBP name reads badly (all caps, or the crossing repeating the port). Every other port is CBP's port name plus crossing name.",
+ "names": {"240215": "El Paso – BOTA Cargo Facility", "240221": "El Paso – Cargo", "240301": "Presidio", "231002": "Roma – Texas (second listing)", "230901": "Progreso International Bridge"},
+ "crossings": [
+  {"port": "230404", "slug": "laredo-world-trade-bridge", "name": "Laredo World Trade Bridge", "city": "Laredo, Texas", "across": "Nuevo Laredo, Tamaulipas",
+   "es": {"slug": "laredo-puente-comercio-mundial", "name": "Puente Comercio Mundial (Nuevo Laredo – Laredo)", "short": "Puente Comercio Mundial", "city": "Laredo, Texas", "across": "Nuevo Laredo, Tamaulipas"}},
+  {"port": "230403", "slug": "laredo-colombia-solidarity-bridge", "name": "Laredo Colombia Solidarity Bridge", "city": "Laredo, Texas", "across": "Colombia, Nuevo León",
+   "es": {"slug": "puente-solidaridad-colombia", "name": "Puente Solidaridad Colombia (Colombia, N.L. – Laredo)", "short": "Puente Solidaridad Colombia", "city": "Laredo, Texas", "across": "Colombia, Nuevo León"}},
+  {"port": "230502", "slug": "pharr-reynosa-bridge", "name": "Pharr–Reynosa International Bridge", "city": "Pharr, Texas", "across": "Reynosa, Tamaulipas",
+   "es": {"slug": "puente-reynosa-pharr", "name": "Puente Internacional Reynosa–Pharr", "short": "Puente Reynosa–Pharr", "city": "Pharr, Texas", "across": "Reynosa, Tamaulipas"}},
+  {"port": "535502", "slug": "brownsville-veterans-bridge", "name": "Brownsville Veterans International Bridge", "city": "Brownsville, Texas", "across": "Matamoros, Tamaulipas",
+   "es": {"slug": "puente-los-tomates-matamoros", "name": "Puente Internacional Los Tomates (Matamoros – Brownsville)", "short": "Puente Los Tomates", "city": "Brownsville, Texas", "across": "Matamoros, Tamaulipas"}},
+  {"port": "240203", "slug": "el-paso-ysleta-bridge", "name": "El Paso Ysleta–Zaragoza Bridge", "city": "El Paso, Texas", "across": "Ciudad Juárez, Chihuahua",
+   "es": {"slug": "puente-zaragoza-ysleta-juarez", "name": "Puente Zaragoza–Ysleta (Ciudad Juárez – El Paso)", "short": "Puente Zaragoza–Ysleta", "city": "El Paso, Texas", "across": "Ciudad Juárez, Chihuahua"}},
+  {"port": "240801", "slug": "santa-teresa", "name": "Santa Teresa Port of Entry", "city": "Santa Teresa, New Mexico", "across": "San Jerónimo, Chihuahua",
+   "es": {"slug": "san-jeronimo-santa-teresa", "name": "Cruce San Jerónimo – Santa Teresa", "short": "San Jerónimo – Santa Teresa", "city": "Santa Teresa, Nuevo México", "across": "San Jerónimo, Chihuahua"}},
+  {"port": "250602", "slug": "otay-mesa-commercial", "name": "Otay Mesa Commercial Crossing", "city": "San Diego, California", "across": "Tijuana, Baja California",
+   "es": {"slug": "garita-de-otay-tijuana", "name": "Garita de Otay, cruce comercial (Tijuana – Otay Mesa)", "short": "Garita de Otay", "city": "San Diego, California", "across": "Tijuana, Baja California"}},
+  {"port": "250301", "slug": "calexico-east", "name": "Calexico East", "city": "Calexico, California", "across": "Mexicali, Baja California",
+   "es": {"slug": "garita-mexicali-ii-calexico", "name": "Garita Mexicali II (Mexicali – Calexico Este)", "short": "Garita Mexicali II", "city": "Calexico, California", "across": "Mexicali, Baja California"}},
+  {"port": "260402", "slug": "nogales-mariposa", "name": "Nogales Mariposa Port of Entry", "city": "Nogales, Arizona", "across": "Nogales, Sonora",
+   "es": {"slug": "garita-mariposa-nogales", "name": "Garita Mariposa (Nogales, Sonora – Nogales, Arizona)", "short": "Garita Mariposa", "city": "Nogales, Arizona", "across": "Nogales, Sonora"}},
+  {"port": "380001", "slug": "detroit-ambassador-bridge", "name": "Detroit Ambassador Bridge", "city": "Detroit, Michigan", "across": "Windsor, Ontario"},
+  {"port": "380102", "slug": "detroit-gordie-howe-bridge", "name": "Gordie Howe International Bridge", "city": "Detroit, Michigan", "across": "Windsor, Ontario"},
+  {"port": "380201", "slug": "port-huron-blue-water-bridge", "name": "Port Huron Blue Water Bridge", "city": "Port Huron, Michigan", "across": "Sarnia, Ontario"},
+  {"port": "090101", "slug": "buffalo-peace-bridge", "name": "Buffalo Peace Bridge", "city": "Buffalo, New York", "across": "Fort Erie, Ontario"},
+  {"port": "090104", "slug": "lewiston-queenston-bridge", "name": "Lewiston–Queenston Bridge", "city": "Lewiston, New York", "across": "Queenston, Ontario"},
+  {"port": "071201", "slug": "champlain-lacolle", "name": "Champlain–Lacolle", "city": "Champlain, New York", "across": "Lacolle, Quebec"},
+  {"port": "300401", "slug": "blaine-pacific-highway", "name": "Blaine Pacific Highway", "city": "Blaine, Washington", "across": "Surrey, British Columbia"}
+ ]
+}

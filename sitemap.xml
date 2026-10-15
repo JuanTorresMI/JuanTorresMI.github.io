@@ -41,6 +41,19 @@ sitemap: false
     <priority>0.5</priority>
   </url>
 {%- endfor -%}
+{%- comment %} Border crossings: their data is copied twice a day, so that copy's date is their lastmod.
+  The Spanish pages carry sitemap: false until they're reviewed (see _config.yml). {% endcomment -%}
+{%- assign crossings = site.border_crossings | concat: site.border_crossings_es | where_exp: "c", "c.sitemap != false" -%}
+{%- for c in crossings %}
+  <url>
+    <loc>{{ c.url | absolute_url | xml_escape }}</loc>
+    {%- if site.data.live.border %}
+    <lastmod>{{ site.data.live.border.as_of_iso | date_to_xmlschema }}</lastmod>
+    {%- endif %}
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+{%- endfor -%}
 {%- for post in site.posts %}
   <url>
     <loc>{{ post.url | absolute_url | xml_escape }}</loc>

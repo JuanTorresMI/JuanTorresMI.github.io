@@ -556,6 +556,26 @@ html { scroll-behavior: smooth; }
 .rb-cols { display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
 .rb-cols > * { flex: 1 1 360px; min-width: 0; }
 @media (max-width: 600px) { .rb-chart svg { height: 180px; } }
+/* ---------- Border waits (/border-waits/ and its crossing pages) ----------
+   The reefer board's components (.rb) plus the heat map of the usual wait by day and hour. The
+   five steps are the accent at rising strength, so they follow the theme. Scoped under .bw. */
+.bw .rb-stamp dd span { font-family: var(--sans); font-size: 14px; }
+.bw-heat { width: 100%; min-width: 560px; border-collapse: separate; border-spacing: 2px; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.bw-heat th { padding: 4px 8px; font: 500 12px var(--sans); color: var(--muted); text-align: center; }
+.bw-heat tbody th { text-align: right; white-space: nowrap; }
+.bw-heat thead abbr { text-decoration: none; }
+.bw-heat td { height: 30px; text-align: center; color: var(--ink); }
+.bw-l0 { background: var(--silian); }
+.bw-l1 { background: color-mix(in srgb, var(--accent) 25%, var(--silian)); }
+.bw-l2 { background: color-mix(in srgb, var(--accent) 50%, var(--silian)); }
+.bw-l3 { background: color-mix(in srgb, var(--accent) 75%, var(--silian)); color: var(--on-ink) !important; }
+.bw-l4 { background: var(--accent); color: var(--on-ink) !important; }
+.bw-heat .bw-none { color: var(--rule); }
+.bw-key { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 12px 0 0; padding: 0; list-style: none; font-size: 13px; color: var(--text-2); }
+.bw-key li { display: flex; align-items: center; gap: 8px; }
+.bw-key span { display: inline-block; width: 16px; height: 16px; }
+.bw-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.bw-hours .rb-table td:nth-child(2) { width: 6em; }
 /* ---------- YouTube (/youtube/) ----------
    A "gamer" page on night stock: HUD frames (2px), uppercase mono labels, square thumbnails.
    Scoped under .yt. */

@@ -91,6 +91,27 @@
   search: [reefer rates, reefer truck rates, produce truck rates, USDA truck rate report, refrigerated freight rates, reefer spot rates]
   keywords: [reefer, truck rates, usda]
 
+- slug: border-waits
+  family: Work
+  title: Border Wait Board
+  url: /border-waits/
+  guide: /border-waits/#how-it-works
+  kind: Data
+  status: Live
+  short: How long trucks wait at every U.S. land port on the Mexican and Canadian borders right now, and how long they usually wait at each hour of the week.
+  summary: >-
+    CBP posts the commercial lanes’ wait at every land port about once an hour, but only ever the number
+    right now. A Cloudflare Worker reads CBP’s public feed every half hour and keeps each reading once,
+    in the port’s own local time, with closed lanes stored as unknown rather than zero so they can’t drag
+    an average down. The site rebuilds from it twice a day: a board of every commercial crossing, a page
+    per major crossing with a heat map of the usual wait by day and hour, Spanish pages for the Mexico
+    crossings, and the averages as a CSV.
+  metric: Every 30 minutes · 53 commercial ports · CSV download · $0 to run
+  stack: [JavaScript, Python, Cloudflare Workers, D1 (SQLite), CBP Border Wait Times, GitHub Actions]
+  category: WebApplication
+  search: [border wait times, truck border wait times, commercial border crossing wait, CBP border wait times, Laredo bridge wait times, Otay Mesa commercial wait time]
+  keywords: [border, wait times, cbp]
+
 - slug: youtube-stats
   family: Gamer
   art: /assets/og/youtube.png

@@ -6,14 +6,17 @@
  *   GET /substack  the newsletter: { items: [{ title, url, date, excerpt }] }
  *   GET /youtube   the channel: { channel, stats, recent, history, updated } (see youtube.js)
  *   GET /reefer, /reefer/history?year=Y   USDA reefer truck rates (see reefer.js)
+ *   GET /border, /border/port?id=P   truck waits at the land border, live and by hour (see border.js)
  *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
  *
  * Two cron triggers in wrangler.toml call `scheduled`: at :17 to poll YouTube, at :47 for the
- * reefer rates (a new report every sixth hour, one week of backfill the others).
+ * reefer rates (a new report every sixth hour, one week of backfill the others). Both also read
+ * CBP's border wait times, so the border board is polled every half hour.
  */
 import { catalog, CATALOG_MAX_AGE, visits, guestbook, sign, unsign, Refused } from "./music.js";
 import { poll, snapshot, YOUTUBE_MAX_AGE } from "./youtube.js";
 import { reeferTick, reeferData, reeferHistory, REEFER_MAX_AGE } from "./reefer.js";
+import { borderTick, borderNow, borderPort, BORDER_MAX_AGE, BORDER_PORT_MAX_AGE } from "./border.js";
 
 const STREMIO = "https://api.strem.io/api/datastoreGet";
 const SUBSTACK = "https://juantorresis.substack.com/feed";
@@ -37,6 +40,7 @@ export default {
     if (request.method !== "GET") return json({ error: "GET only" }, 405, cors);
     if (route === "/youtube") return youtubeRoute(env, ctx, url, cors);
     if (route === "/reefer" || route === "/reefer/history") return reeferRoute(env, ctx, route, url, cors);
+    if (route === "/border" || route === "/border/port") return borderRoute(env, ctx, route, url, cors);
 
     const feed = route === "/substack";
     const maxAge = feed ? FEED_CACHE_S : TV_CACHE_S;
@@ -71,6 +75,7 @@ export default {
     const log = (what) => (e) => console.error(what + ":", e && e.message ? e.message : e);
     if (event.cron === REEFER_CRON) ctx.waitUntil(reeferTick(env, new Date(event.scheduledTime)).catch(log("reefer")));
     else ctx.waitUntil(poll(env).catch(log("youtube poll")));
+    ctx.waitUntil(borderTick(env).catch(log("border")));
   },
 };
 
@@ -156,6 +161,26 @@ async function reeferRoute(env, ctx, route, url, cors) {
   const empty = year ? payload.lanes.length === 0 : !payload.latest;
   if (empty) return json(payload, 200, { ...cors, "Cache-Control": "no-store" });
   const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${REEFER_MAX_AGE}` });
+  ctx.waitUntil(cache.put(cacheKey, res.clone()));
+  return res;
+}
+
+/* ---------------------------------------------------------- the border wait board ---- */
+
+async function borderRoute(env, ctx, route, url, cors) {
+  const port = route === "/border/port" ? String(url.searchParams.get("id") || "") : null;
+  if (port !== null && !/^[A-Z0-9]{6}$/.test(port)) return json({ error: "Give a CBP port number, like ?id=230404" }, 400, cors);
+  const cache = caches.default, cacheKey = new Request(url.origin + "/__cache" + route + (port ? "/" + port : ""));
+  const hit = await cache.match(cacheKey);
+  if (hit) { const fresh = new Response(hit.body, hit); for (const [k, v] of Object.entries(cors)) fresh.headers.set(k, v); return fresh; }
+  let payload;
+  try {
+    payload = port ? await borderPort(env, port) : await borderNow(env);
+  } catch (e) {
+    console.error("border:", e && e.message ? e.message : e);
+    return json({ error: e.message || String(e) }, 502, cors);
+  }
+  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${port ? BORDER_PORT_MAX_AGE : BORDER_MAX_AGE}` });
   ctx.waitUntil(cache.put(cacheKey, res.clone()));
   return res;
 }

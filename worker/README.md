@@ -275,3 +275,49 @@ when it reaches the start of USDA's history. `npx.cmd wrangler tail` around :47 
 Nothing. USDA is asked about 24 times a day (4 for new reports, the rest backfill, which ends);
 EIA 4 times. Each run is a few hundred D1 writes at most, far under the free 100,000. History is
 served a year at a time so no request has to read or serialize everything at once.
+
+## The border wait board
+
+`/border-waits/` on the site, and a page per major commercial crossing, come from CBP's public
+[Border Wait Times](https://bwt.cbp.gov/) feed; the code is `src/border.js`. No key is needed.
+
+Both cron triggers (:17 and :47) read the feed, so it is polled every half hour. Each port posts a
+reading roughly once an hour, and a reading is stored once (`border_waits`, keyed on the port and
+the time it was posted), however often it is asked for. The latest feed, trimmed to the ports with
+commercial lanes, is kept whole in `border_latest` for the live board.
+
+- `GET /border` — every commercial port right now. Cached five minutes at the edge; the board's
+  script refreshes from it.
+- `GET /border/port?id=230404` — one port's last 30 days averaged by weekday and hour, plus its
+  last 7 days of readings. The daily snapshot reads this once per port; visitors never do.
+
+### Setting it up (once)
+
+```powershell
+npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
+npx.cmd wrangler deploy
+```
+
+`schema.sql` only adds `border_waits` and `border_latest`.
+
+### Check it
+
+```powershell
+Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/border" | Select-Object -ExpandProperty ports | Select-Object -First 5
+Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/border/port?id=230404"
+```
+
+The first request after a deploy reads CBP on the spot; after that the cron does.
+
+### What the numbers mean
+
+- Times are the port's own wall clock. CBP's feed already gives each port's date and time in local
+  time, so nothing is converted (its zone labels are sometimes wrong, which no longer matters).
+- A **closed lane, a pending update or "N/A" is `NULL`, never 0.** A wait of 0 means CBP said
+  "no delay". NULLs drop out of every average, so a lane that is often closed isn't made to look fast.
+- Hours a port is closed store nothing at all.
+
+### What it costs
+
+Nothing. CBP is asked 48 times a day. About 50 ports post about once an hour, so that is roughly
+1,200 rows written a day, two D1 statements per run.

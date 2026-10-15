@@ -1,0 +1,3780 @@
+{
+ "generated": "2026-10-15T16:19:07.468Z",
+ "as_of_iso": "2026-10-15",
+ "as_of_en": "Oct 15, 2026, 12:19 PM Michigan time",
+ "as_of_es": "15 oct 2026, 12:19 (hora de Michigan)",
+ "since_en": "Oct 14, 2026",
+ "since_es": "14 oct 2026",
+ "since_iso": "2026-10-14",
+ "ports": {
+  "070801": {
+   "port": "070801",
+   "border": "canada",
+   "name": "Alexandria Bay – Thousand Islands Bridge",
+   "cbp": "Alexandria Bay – Thousand Islands Bridge",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 5,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 2
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "Noon EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 12:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "300401": {
+   "port": "300401",
+   "border": "canada",
+   "name": "Blaine Pacific Highway",
+   "cbp": "Blaine – Pacific Highway",
+   "slug": "blaine-pacific-highway",
+   "city": "Blaine, Washington",
+   "across": "Surrey, British Columbia",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 3,
+   "std": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 3
+   },
+   "fast": {
+    "v": null,
+    "en": "Closed",
+    "es": "Cerrado",
+    "lanes": null
+   },
+   "posted": "9:00 am PDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 09:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 9,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 5,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 9,
+     "v": 5,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "300403": {
+   "port": "300403",
+   "border": "canada",
+   "name": "Blaine – Point Roberts",
+   "cbp": "Blaine – Point Roberts",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "090104": {
+   "port": "090104",
+   "border": "canada",
+   "name": "Lewiston–Queenston Bridge",
+   "cbp": "Buffalo/Niagara Falls – Lewiston Bridge",
+   "slug": "lewiston-queenston-bridge",
+   "city": "Lewiston, New York",
+   "across": "Queenston, Ontario",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 4,
+   "std": {
+    "v": 2,
+    "en": "2 min",
+    "es": "2 min",
+    "lanes": 2
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "12:07 pm EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 12:07",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 2,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 2,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "090101": {
+   "port": "090101",
+   "border": "canada",
+   "name": "Buffalo Peace Bridge",
+   "cbp": "Buffalo/Niagara Falls – Peace Bridge",
+   "slug": "buffalo-peace-bridge",
+   "city": "Buffalo, New York",
+   "across": "Fort Erie, Ontario",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 8,
+   "std": {
+    "v": 4,
+    "en": "4 min",
+    "es": "4 min",
+    "lanes": 4
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "12:07 pm EDT",
+   "notice": "A Ready Lane is available from 2-6pm Monday through Thursday.",
+   "readings": 1,
+   "first": "2026-10-15 12:07",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 4,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 4,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "011503": {
+   "port": "011503",
+   "border": "canada",
+   "name": "Calais – International Avenue",
+   "cbp": "Calais – International Avenue",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 3,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "Noon EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 12:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "071201": {
+   "port": "071201",
+   "border": "canada",
+   "name": "Champlain–Lacolle",
+   "cbp": "Champlain",
+   "slug": "champlain-lacolle",
+   "city": "Champlain, New York",
+   "across": "Lacolle, Quebec",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 8,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 3
+   },
+   "fast": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "posted": "Noon EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 12:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "020901": {
+   "port": "020901",
+   "border": "canada",
+   "name": "Derby Line",
+   "cbp": "Derby Line",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "Noon EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 12:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 5,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 5,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "380001": {
+   "port": "380001",
+   "border": "canada",
+   "name": "Detroit Ambassador Bridge",
+   "cbp": "Detroit – Ambassador Bridge",
+   "slug": "detroit-ambassador-bridge",
+   "city": "Detroit, Michigan",
+   "across": "Windsor, Ontario",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 13,
+   "std": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 6
+   },
+   "fast": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 2
+   },
+   "posted": "Noon EDT",
+   "notice": "A Ready Lane is available from 11am-2pm Monday through Friday.  More at: https://www.cbp.gov/travel",
+   "readings": 1,
+   "first": "2026-10-15 12:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 5,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 5,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "380102": {
+   "port": "380102",
+   "border": "canada",
+   "name": "Gordie Howe International Bridge",
+   "cbp": "Detroit – Gordie Howe International Bridge",
+   "slug": "detroit-gordie-howe-bridge",
+   "city": "Detroit, Michigan",
+   "across": "Windsor, Ontario",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 15,
+   "std": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 4
+   },
+   "fast": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 1
+   },
+   "posted": "Noon EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 12:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 5,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 5,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "380002": {
+   "port": "380002",
+   "border": "canada",
+   "name": "Detroit – Windsor Tunnel",
+   "cbp": "Detroit – Windsor Tunnel",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "Noon EDT",
+   "notice": "A Ready Lane is available from 11am-2pm Monday through Friday.  More at: https://www.cbp.gov/travel",
+   "readings": 1,
+   "first": "2026-10-15 12:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 5,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 5,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "021201": {
+   "port": "021201",
+   "border": "canada",
+   "name": "Highgate Springs",
+   "cbp": "Highgate Springs",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "11:00 am EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 11:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 11,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 11,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "010601": {
+   "port": "010601",
+   "border": "canada",
+   "name": "Houlton",
+   "cbp": "Houlton",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "Noon EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 12:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "360401": {
+   "port": "360401",
+   "border": "canada",
+   "name": "International Falls",
+   "cbp": "International Falls",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "Noon CDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-14 12:00",
+   "first_en": "Oct 14, 2026",
+   "first_es": "14 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "010401": {
+   "port": "010401",
+   "border": "canada",
+   "name": "Jackman",
+   "cbp": "Jackman",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "1:00 pm EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-14 13:00",
+   "first_en": "Oct 14, 2026",
+   "first_es": "14 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 13,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 13,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "302301": {
+   "port": "302301",
+   "border": "canada",
+   "name": "Lynden",
+   "cbp": "Lynden",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "8 am-Midnight",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "L01901": {
+   "port": "L01901",
+   "border": "canada",
+   "name": "Madawaska",
+   "cbp": "Madawaska",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 3,
+   "std": {
+    "v": 2,
+    "en": "2 min",
+    "es": "2 min",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "Noon EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 12:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 2,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 2,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "070401": {
+   "port": "070401",
+   "border": "canada",
+   "name": "Massena",
+   "cbp": "Massena",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 3,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "1:00 pm EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-14 13:00",
+   "first_en": "Oct 14, 2026",
+   "first_es": "14 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 13,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 13,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "021101": {
+   "port": "021101",
+   "border": "canada",
+   "name": "Norton",
+   "cbp": "Norton",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "8:00 am EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 08:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 8,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 8,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "070101": {
+   "port": "070101",
+   "border": "canada",
+   "name": "Ogdensburg",
+   "cbp": "Ogdensburg",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "11:00 pm EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-14 23:00",
+   "first_en": "Oct 14, 2026",
+   "first_es": "14 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 23,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 23,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "340101": {
+   "port": "340101",
+   "border": "canada",
+   "name": "Pembina",
+   "cbp": "Pembina",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 4,
+   "std": {
+    "v": 58,
+    "en": "58 min",
+    "es": "58 min",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "11:00 am CDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 11:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 11,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 58,
+       "lvl": 3
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 11,
+     "v": 58,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "380201": {
+   "port": "380201",
+   "border": "canada",
+   "name": "Port Huron Blue Water Bridge",
+   "cbp": "Port Huron – Bluewater Bridge",
+   "slug": "port-huron-blue-water-bridge",
+   "city": "Port Huron, Michigan",
+   "across": "Sarnia, Ontario",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 9,
+   "std": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 5
+   },
+   "fast": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "posted": "11:00 am EST",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 11:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 11,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 5,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 11,
+     "v": 5,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "380301": {
+   "port": "380301",
+   "border": "canada",
+   "name": "Sault Ste. Marie – International Bridge - SSM",
+   "cbp": "Sault Ste. Marie – International Bridge - SSM",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "Noon EDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 12:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "300901": {
+   "port": "300901",
+   "border": "canada",
+   "name": "Sumas",
+   "cbp": "Sumas",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "8:00 am PDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 08:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 8,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 5,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 8,
+     "v": 5,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "331001": {
+   "port": "331001",
+   "border": "canada",
+   "name": "Sweetgrass",
+   "cbp": "Sweetgrass",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "9:00 am MDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 09:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 9,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 9,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "250201": {
+   "port": "250201",
+   "border": "mexico",
+   "name": "Andrade",
+   "cbp": "Andrade",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "6 am-10 pm",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": null,
+    "en": "Closed",
+    "es": "Cerrado",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "240215": {
+   "port": "240215",
+   "border": "mexico",
+   "name": "El Paso – BOTA Cargo Facility",
+   "cbp": "El Paso – BOTA Cargo Facility",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "6 am-2 pm",
+   "open": true,
+   "max": 6,
+   "std": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "535503": {
+   "port": "535503",
+   "border": "mexico",
+   "name": "Brownsville – Los Indios",
+   "cbp": "Brownsville – Los Indios",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "6 am-10 pm",
+   "open": true,
+   "max": 4,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "Closed",
+    "es": "Cerrado",
+    "lanes": null
+   },
+   "posted": "11:00 am CDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 11:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 11,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 11,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "535502": {
+   "port": "535502",
+   "border": "mexico",
+   "name": "Brownsville Veterans International Bridge",
+   "cbp": "Brownsville – Veterans International",
+   "slug": "brownsville-veterans-bridge",
+   "city": "Brownsville, Texas",
+   "across": "Matamoros, Tamaulipas",
+   "es": {
+    "slug": "puente-los-tomates-matamoros",
+    "name": "Puente Internacional Los Tomates (Matamoros – Brownsville)",
+    "short": "Puente Los Tomates",
+    "city": "Brownsville, Texas",
+    "across": "Matamoros, Tamaulipas"
+   },
+   "hours": "6 am-Midnight",
+   "open": true,
+   "max": 4,
+   "std": {
+    "v": 10,
+    "en": "10 min",
+    "es": "10 min",
+    "lanes": 3
+   },
+   "fast": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "posted": "11:00 am CDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 11:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 11,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 10,
+       "lvl": 1
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 11,
+     "v": 10,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "250301": {
+   "port": "250301",
+   "border": "mexico",
+   "name": "Calexico East",
+   "cbp": "Calexico – East",
+   "slug": "calexico-east",
+   "city": "Calexico, California",
+   "across": "Mexicali, Baja California",
+   "es": {
+    "slug": "garita-mexicali-ii-calexico",
+    "name": "Garita Mexicali II (Mexicali – Calexico Este)",
+    "short": "Garita Mexicali II",
+    "city": "Calexico, California",
+    "across": "Mexicali, Baja California"
+   },
+   "hours": "6 am-10 pm",
+   "open": true,
+   "max": 3,
+   "std": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 2
+   },
+   "fast": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 1
+   },
+   "posted": "9:00 am PDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 09:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 9,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 5,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 9,
+     "v": 5,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "240601": {
+   "port": "240601",
+   "border": "mexico",
+   "name": "Columbus",
+   "cbp": "Columbus",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "10:00 am MDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 10:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 10,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 5,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 10,
+     "v": 5,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "230201": {
+   "port": "230201",
+   "border": "mexico",
+   "name": "Del Rio",
+   "cbp": "Del Rio",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "Noon CDT",
+   "notice": "Ready Lane is open from 6AM until MIDNIGHT seven days a week.  Ready Lane is on the far left as you approach.\r\n\r\nGo to www.GetYouHome.gov for more information.",
+   "readings": 1,
+   "first": "2026-10-14 12:00",
+   "first_en": "Oct 14, 2026",
+   "first_es": "14 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 12,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 12,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "260101": {
+   "port": "260101",
+   "border": "mexico",
+   "name": "Douglas (Raul Hector Castro)",
+   "cbp": "Douglas (Raul Hector Castro)",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 1,
+    "en": "1 min",
+    "es": "1 min",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "9:00 am PST",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 09:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 9,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 1,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 9,
+     "v": 1,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "230302": {
+   "port": "230302",
+   "border": "mexico",
+   "name": "Eagle Pass – Bridge II",
+   "cbp": "Eagle Pass – Bridge II",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": null,
+    "en": "Closed",
+    "es": "Cerrado",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "Closed",
+    "es": "Cerrado",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "File FinCEN105 - Currency and Monetary Instrument Report (CMIR)online at https://fincen105.cbp.dhs.gov/ Provide confirmation number to CBP Officer upon making entry or departing the U.S.",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "240221": {
+   "port": "240221",
+   "border": "mexico",
+   "name": "El Paso – Cargo",
+   "cbp": "El Paso – Cargo",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 6,
+   "std": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "240201": {
+   "port": "240201",
+   "border": "mexico",
+   "name": "El Paso – Bridge of the Americas (BOTA)",
+   "cbp": "El Paso – Bridge of the Americas (BOTA)",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 3,
+   "std": {
+    "v": null,
+    "en": "Closed",
+    "es": "Cerrado",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "Closed",
+    "es": "Cerrado",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "BOTA Passenger/Ready Lanes is open west side of port; Passenger Hrs 24 hours/7days, BOTA CARGO Mon-FRI 6 am to 4 pm. SAT/SUN CLOSED. Tune into AM 1610 for info.",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "240203": {
+   "port": "240203",
+   "border": "mexico",
+   "name": "El Paso Ysleta–Zaragoza Bridge",
+   "cbp": "El Paso – Ysleta",
+   "slug": "el-paso-ysleta-bridge",
+   "city": "El Paso, Texas",
+   "across": "Ciudad Juárez, Chihuahua",
+   "es": {
+    "slug": "puente-zaragoza-ysleta-juarez",
+    "name": "Puente Zaragoza–Ysleta (Ciudad Juárez – El Paso)",
+    "short": "Puente Zaragoza–Ysleta",
+    "city": "El Paso, Texas",
+    "across": "Ciudad Juárez, Chihuahua"
+   },
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 8,
+   "std": {
+    "v": 30,
+    "en": "30 min",
+    "es": "30 min",
+    "lanes": 5
+   },
+   "fast": {
+    "v": 15,
+    "en": "15 min",
+    "es": "15 min",
+    "lanes": 3
+   },
+   "posted": "10:00 am MDT",
+   "notice": "YSL Passenger/Ready Lanes is open west side of port; Passenger Hrs. 24 hours / 7 days, YSL CARGO Mon-FRI 6 am to Midnight. SAT 6 am to 2 pm. Tune into AM 1610 for info.",
+   "readings": 1,
+   "first": "2026-10-15 10:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 10,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 30,
+       "lvl": 2
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 10,
+     "v": 30,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "230502": {
+   "port": "230502",
+   "border": "mexico",
+   "name": "Pharr–Reynosa International Bridge",
+   "cbp": "Hidalgo/Pharr – Pharr",
+   "slug": "pharr-reynosa-bridge",
+   "city": "Pharr, Texas",
+   "across": "Reynosa, Tamaulipas",
+   "es": {
+    "slug": "puente-reynosa-pharr",
+    "name": "Puente Internacional Reynosa–Pharr",
+    "short": "Puente Reynosa–Pharr",
+    "city": "Pharr, Texas",
+    "across": "Reynosa, Tamaulipas"
+   },
+   "hours": "6 am-Midnight",
+   "open": true,
+   "max": 7,
+   "std": {
+    "v": 40,
+    "en": "40 min",
+    "es": "40 min",
+    "lanes": 7
+   },
+   "fast": {
+    "v": 35,
+    "en": "35 min",
+    "es": "35 min",
+    "lanes": 1
+   },
+   "posted": "10:00 am CDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 10:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 10,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 40,
+       "lvl": 3
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 10,
+     "v": 40,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "230403": {
+   "port": "230403",
+   "border": "mexico",
+   "name": "Laredo Colombia Solidarity Bridge",
+   "cbp": "Laredo – Colombia Solidarity",
+   "slug": "laredo-colombia-solidarity-bridge",
+   "city": "Laredo, Texas",
+   "across": "Colombia, Nuevo León",
+   "es": {
+    "slug": "puente-solidaridad-colombia",
+    "name": "Puente Solidaridad Colombia (Colombia, N.L. – Laredo)",
+    "short": "Puente Solidaridad Colombia",
+    "city": "Laredo, Texas",
+    "across": "Colombia, Nuevo León"
+   },
+   "hours": "8 am-Midnight",
+   "open": true,
+   "max": 8,
+   "std": {
+    "v": 30,
+    "en": "30 min",
+    "es": "30 min",
+    "lanes": 2
+   },
+   "fast": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 2
+   },
+   "posted": "10:00 am CDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 10:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 10,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 30,
+       "lvl": 2
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 10,
+     "v": 30,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "230404": {
+   "port": "230404",
+   "border": "mexico",
+   "name": "Laredo World Trade Bridge",
+   "cbp": "Laredo – World Trade Bridge",
+   "slug": "laredo-world-trade-bridge",
+   "city": "Laredo, Texas",
+   "across": "Nuevo Laredo, Tamaulipas",
+   "es": {
+    "slug": "laredo-puente-comercio-mundial",
+    "name": "Puente Comercio Mundial (Nuevo Laredo – Laredo)",
+    "short": "Puente Comercio Mundial",
+    "city": "Laredo, Texas",
+    "across": "Nuevo Laredo, Tamaulipas"
+   },
+   "hours": "7 am-Midnight",
+   "open": true,
+   "max": 19,
+   "std": {
+    "v": 35,
+    "en": "35 min",
+    "es": "35 min",
+    "lanes": 15
+   },
+   "fast": {
+    "v": 10,
+    "en": "10 min",
+    "es": "10 min",
+    "lanes": 4
+   },
+   "posted": "10:00 am CDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 10:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 10,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 35,
+       "lvl": 2
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 10,
+     "v": 35,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "260201": {
+   "port": "260201",
+   "border": "mexico",
+   "name": "Lukeville",
+   "cbp": "Lukeville",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "6 am-8 pm",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "240401": {
+   "port": "240401",
+   "border": "mexico",
+   "name": "Marcelino Serna – Tornillo",
+   "cbp": "Marcelino Serna – Tornillo",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "6 am-10 pm",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "Closed",
+    "es": "Cerrado",
+    "lanes": null
+   },
+   "posted": "10:00 am MDT",
+   "notice": "CARGO Monday-Friday 8 am to 4 pm. Saturday/Sunday Closed.",
+   "readings": 1,
+   "first": "2026-10-15 10:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 10,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 5,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 10,
+     "v": 5,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "260301": {
+   "port": "260301",
+   "border": "mexico",
+   "name": "Naco",
+   "cbp": "Naco",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "6 am-10 pm",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": 1,
+    "en": "1 min",
+    "es": "1 min",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "9:00 am PST",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 09:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 9,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 1,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 9,
+     "v": 1,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "260402": {
+   "port": "260402",
+   "border": "mexico",
+   "name": "Nogales Mariposa Port of Entry",
+   "cbp": "Nogales – Mariposa",
+   "slug": "nogales-mariposa",
+   "city": "Nogales, Arizona",
+   "across": "Nogales, Sonora",
+   "es": {
+    "slug": "garita-mariposa-nogales",
+    "name": "Garita Mariposa (Nogales, Sonora – Nogales, Arizona)",
+    "short": "Garita Mariposa",
+    "city": "Nogales, Arizona",
+    "across": "Nogales, Sonora"
+   },
+   "hours": "6 am-10 pm",
+   "open": true,
+   "max": 8,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 3
+   },
+   "fast": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 2
+   },
+   "posted": "9:00 am MST",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 09:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 9,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 9,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "250602": {
+   "port": "250602",
+   "border": "mexico",
+   "name": "Otay Mesa Commercial Crossing",
+   "cbp": "Otay Mesa – Commercial",
+   "slug": "otay-mesa-commercial",
+   "city": "San Diego, California",
+   "across": "Tijuana, Baja California",
+   "es": {
+    "slug": "garita-de-otay-tijuana",
+    "name": "Garita de Otay, cruce comercial (Tijuana – Otay Mesa)",
+    "short": "Garita de Otay",
+    "city": "San Diego, California",
+    "across": "Tijuana, Baja California"
+   },
+   "hours": "6 am-10 pm",
+   "open": true,
+   "max": 10,
+   "std": {
+    "v": 25,
+    "en": "25 min",
+    "es": "25 min",
+    "lanes": 6
+   },
+   "fast": {
+    "v": 15,
+    "en": "15 min",
+    "es": "15 min",
+    "lanes": 4
+   },
+   "posted": "8:00 am PDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 08:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 8,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 25,
+       "lvl": 2
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 8,
+     "v": 25,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "240301": {
+   "port": "240301",
+   "border": "mexico",
+   "name": "Presidio",
+   "cbp": "Presidio",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 5,
+    "en": "5 min",
+    "es": "5 min",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "11:00 am CDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 11:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 11,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 5,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 11,
+     "v": 5,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "230901": {
+   "port": "230901",
+   "border": "mexico",
+   "name": "Progreso International Bridge",
+   "cbp": "Progreso International Bridge",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": null,
+    "en": "Closed",
+    "es": "Cerrado",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "The Pedestrian Ready lanes will be open daily from 12noon to 5pm.",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "230701": {
+   "port": "230701",
+   "border": "mexico",
+   "name": "Rio Grande City",
+   "cbp": "Rio Grande City",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "7 am-11 pm",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "8:00 am CDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 08:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 8,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 8,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "231001": {
+   "port": "231001",
+   "border": "mexico",
+   "name": "Roma",
+   "cbp": "Roma",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": 0,
+    "en": "No wait",
+    "es": "Sin espera",
+    "lanes": 1
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "10:00 am CDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 10:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 10,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 0,
+       "lvl": 0
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 10,
+     "v": 0,
+     "w": 0.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "231002": {
+   "port": "231002",
+   "border": "mexico",
+   "name": "Roma – Texas (second listing)",
+   "cbp": "Roma – Texas (second listing)",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "24 hrs/day",
+   "open": true,
+   "max": 1,
+   "std": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "260802": {
+   "port": "260802",
+   "border": "mexico",
+   "name": "San Luis",
+   "cbp": "San Luis",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "9 am-5 pm",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "Pending",
+    "es": "Pendiente",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "240801": {
+   "port": "240801",
+   "border": "mexico",
+   "name": "Santa Teresa Port of Entry",
+   "cbp": "Santa Teresa",
+   "slug": "santa-teresa",
+   "city": "Santa Teresa, New Mexico",
+   "across": "San Jerónimo, Chihuahua",
+   "es": {
+    "slug": "san-jeronimo-santa-teresa",
+    "name": "Cruce San Jerónimo – Santa Teresa",
+    "short": "San Jerónimo – Santa Teresa",
+    "city": "Santa Teresa, Nuevo México",
+    "across": "San Jerónimo, Chihuahua"
+   },
+   "hours": "6 am-10 pm",
+   "open": true,
+   "max": 3,
+   "std": {
+    "v": 35,
+    "en": "35 min",
+    "es": "35 min",
+    "lanes": 1
+   },
+   "fast": {
+    "v": 30,
+    "en": "30 min",
+    "es": "30 min",
+    "lanes": 1
+   },
+   "posted": "9:00 am MDT",
+   "notice": "",
+   "readings": 1,
+   "first": "2026-10-15 09:00",
+   "first_en": "Oct 15, 2026",
+   "first_es": "15 oct 2026",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [
+    {
+     "h": 9,
+     "cells": [
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": 35,
+       "lvl": 2
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      },
+      {
+       "v": null,
+       "lvl": null
+      }
+     ]
+    }
+   ],
+   "by_hour": [
+    {
+     "h": 9,
+     "v": 35,
+     "w": 100.0
+    }
+   ],
+   "best": null,
+   "worst": null,
+   "chart": null
+  },
+  "250501": {
+   "port": "250501",
+   "border": "mexico",
+   "name": "Tecate",
+   "cbp": "Tecate",
+   "slug": null,
+   "city": "",
+   "across": "",
+   "es": null,
+   "hours": "6 am-10 pm",
+   "open": true,
+   "max": 2,
+   "std": {
+    "v": null,
+    "en": "Closed",
+    "es": "Cerrado",
+    "lanes": null
+   },
+   "fast": {
+    "v": null,
+    "en": "—",
+    "es": "—",
+    "lanes": null
+   },
+   "posted": "",
+   "notice": "",
+   "readings": 0,
+   "first": "",
+   "first_en": "",
+   "first_es": "",
+   "avg": null,
+   "fast_avg": null,
+   "grid": [],
+   "by_hour": [],
+   "best": null,
+   "worst": null,
+   "chart": null
+  }
+ },
+ "mexico": [
+  "250201",
+  "535502",
+  "535503",
+  "250301",
+  "240601",
+  "230201",
+  "260101",
+  "230302",
+  "240203",
+  "240215",
+  "240201",
+  "240221",
+  "230403",
+  "230404",
+  "260201",
+  "240401",
+  "260301",
+  "260402",
+  "250602",
+  "230502",
+  "240301",
+  "230901",
+  "230701",
+  "231001",
+  "231002",
+  "260802",
+  "240801",
+  "250501"
+ ],
+ "canada": [
+  "070801",
+  "300401",
+  "300403",
+  "090101",
+  "011503",
+  "071201",
+  "020901",
+  "380001",
+  "380002",
+  "380102",
+  "021201",
+  "010601",
+  "360401",
+  "010401",
+  "090104",
+  "302301",
+  "L01901",
+  "070401",
+  "021101",
+  "070101",
+  "340101",
+  "380201",
+  "380301",
+  "300901",
+  "331001"
+ ],
+ "busiest": [],
+ "reporting": 41,
+ "total": 53,
+ "longest": "340101"
+}
