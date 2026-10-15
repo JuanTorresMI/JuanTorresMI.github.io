@@ -136,6 +136,8 @@ def watching(d):
 
 LANES_DIR = os.path.join(ROOT, "_reefer_lanes")
 LANE_MIN_WEEKS = 4                          # fewer quotes than this makes too thin a page
+CITY_CODES = {"Atlanta": "ATL", "Baltimore": "BAL", "Boston": "BOS", "Chicago": "CHI", "Dallas": "DAL", "Los Angeles": "LA",
+              "Miami": "MIA", "New York": "NYC", "Philadelphia": "PHL", "Seattle": "SEA"}
 MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 
@@ -250,24 +252,30 @@ def reefer(base):
                      for x in reversed(weeks[-52:])],
         }
 
-    # This week's board, by origin.
-    board = {}
+    # This week's board as a rate sheet: one row per origin, one column per city, each cell the
+    # main quote in thousands ("3.8–4.4"). Rows with the most cities come first.
+    k = lambda n: f"{n / 1000:.1f}"
+    cities = sorted({q["dest"] for q in cur["quotes"]})
+    cells, also = {}, []
     for q in cur["quotes"]:
         o = place(q["district"])
-        g = board.setdefault(q["district"], {"name": o["name"], "short": o["short"], "rows": {}, "availability": set()})
-        row = g["rows"].setdefault(q["dest"], {"dest": q["dest"], "also": []})
         if q["quote"] == 0:
             slug = lane_slug(q["district"], q["dest"])
-            row.update({"range": span(q["low"], q["high"]), "mostly": span(q["mostly_low"], q["mostly_high"]),
-                        "change": pct(q["change_pct"]), "availability": q["availability"] or "",
-                        "lane": slug if slug in pages else None, "spark": spark(lanes.get((q["district"], q["dest"]), []))})
-            if q["availability"]: g["availability"].add(q["availability"])
+            cells[(q["district"], q["dest"])] = {
+                "k": "" if q["low"] is None or q["high"] is None else (k(q["low"]) if q["low"] == q["high"] else f"{k(q['low'])}–{k(q['high'])}"),
+                "range": span(q["low"], q["high"]), "mostly": span(q["mostly_low"], q["mostly_high"]),
+                "change": pct(q["change_pct"]), "n": q["change_pct"] or 0, "trucks": q["availability"] or "",
+                "lane": slug if slug in pages else None, "from": o["short"], "to": q["dest"],
+                "spark": spark(lanes.get((q["district"], q["dest"]), [])) or "",
+                "big": abs(q["change_pct"] or 0) >= 5}
         else:
-            row["also"].append({"range": span(q["low"], q["high"]), "for": ", ".join(q["commodities"])})
-    groups = sorted(board.values(), key=lambda g: g["name"])
-    for g in groups:
-        g["rows"] = sorted(g["rows"].values(), key=lambda r: r["dest"])
-        g["availability"] = " / ".join(sorted(g["availability"]))
+            also.append({"from": o["short"], "to": q["dest"], "range": span(q["low"], q["high"]), "for": ", ".join(q["commodities"])})
+    origins = sorted({d for d, _ in cells}, key=lambda d: (-sum(1 for (x, _) in cells if x == d), place(d)["short"]))
+    sheet = [{"short": place(d)["short"], "name": place(d)["name"],
+              "cells": [cells.get((d, c)) for c in cities]} for d in origins]
+    movers = sorted(cells.values(), key=lambda c: -abs(c["n"]))
+    featured = movers[0] if movers else None
+    also.sort(key=lambda a: (a["from"], a["to"]))
 
     # Every lane into each city this week, cheapest first, for the lane pages' comparison.
     into = {}
@@ -286,6 +294,7 @@ def reefer(base):
         a, b = fuel[-1], (fuel[-2] if len(fuel) > 1 else None)
         d = None if not b else round((a["price"] - b["price"]) * 100, 1)
         diesel = {"price": f"${a['price']:.3f}", "week": week_of(a["week"]),
+                  "delta": "" if d is None else ("±0¢" if d == 0 else f"{'+' if d > 0 else '−'}{abs(d):.1f}¢"),
                   "change": "" if d is None else ("no change from the week before" if d == 0 else f"{'+' if d > 0 else '−'}{abs(d):.1f}¢ from the week before")}
 
     # The download: every lane's main quote for every week, oldest first. A static file, so it
@@ -309,8 +318,9 @@ def reefer(base):
             fh.write(f"---\nlane: {slug}\ntitle: {json.dumps(title, ensure_ascii=False)}\ndescription: {json.dumps(desc, ensure_ascii=False)}\n---\n")
 
     return {"generated": cur["updated"], "latest": latest, "week": week_of(latest), "first": week_of(cur["first"]), "first_iso": cur["first"],
-            "backfill_done": bool(cur.get("backfill_done")), "diesel": diesel, "board": groups, "lanes": pages,
-            "lane_count": len(pages), "origin_count": len(groups),
+            "backfill_done": bool(cur.get("backfill_done")), "diesel": diesel, "lanes": pages,
+            "cities": [{"name": c, "code": CITY_CODES.get(c, c[:3].upper())} for c in cities], "sheet": sheet, "also": also,
+            "featured": featured, "quoted": len(cells), "origin_count": len(sheet), "lane_count": len(pages),
             "row_count": sum(len(w) for w in lanes.values())}
 
 

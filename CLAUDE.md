@@ -59,6 +59,13 @@ dates and figures. Spacing steps are multiples of 8.
   pages. A project page brings its own classes, scoped under a root class of its own (`.cl` for
   the ledger); it may use the tokens.
 - Keep `.label` (11px, 0.16em tracking, uppercase) and `.data` (mono, 12px) for the small type.
+- Pages are not all one layout. Each belongs to a family and takes that family's form while
+  keeping the tokens, fonts, square corners and nav: **work** (reefer board, planner, fruit fly:
+  a dense rate sheet or control panel, mono figures), **professional** (résumé, projects, home: the
+  raised eggshell card), **gamer** (Craft Ledger, YouTube: the dark tokens, HUD frames and slot
+  grids), **chill** (the house TV: dark, italic serif, posters) and **personal** (writing: a letter,
+  serif reading text). The reefer board (`.rb` in `style.css`) is the first one built this way;
+  put a small family label above each page title.
 
 ## Adding things
 
