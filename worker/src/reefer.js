@@ -81,16 +81,19 @@ export function toQuotes(rows) {
 }
 
 async function store(env, quotes) {
-  const sql = `INSERT INTO reefer_quotes (week, district, dest, quote, low, high, mostly_low, mostly_high, change_pct, availability, commodities, published)
-    VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)
-    ON CONFLICT(week, district, dest, quote) DO UPDATE SET low = ?5, high = ?6, mostly_low = ?7, mostly_high = ?8,
-      change_pct = ?9, availability = ?10, commodities = ?11, published = ?12`;
-  const stmts = quotes.map((q) => env.DB.prepare(sql).bind(q.week, q.district, q.dest, q.quote, q.low, q.high,
-    q.mostly_low, q.mostly_high, q.change_pct, q.availability, q.commodities, q.published));
-  // A week can lose a quote on a correction; clear the week first so no stale quote 1 survives.
-  const weeks = [...new Set(quotes.map((q) => q.week))];
-  const clear = weeks.map((w) => env.DB.prepare("DELETE FROM reefer_quotes WHERE week = ?1").bind(w));
-  for (let i = 0; i < stmts.length; i += 400) await env.DB.batch(i === 0 ? [...clear, ...stmts.slice(0, 400)] : stmts.slice(i, i + 400));
+  // Two statements per week however many quotes it has: clear the week (a correction can drop a
+  // quote), then insert every quote from one JSON array. D1 on the free plan allows only so many
+  // queries per run, so never one statement per row.
+  const stmts = [];
+  for (const w of new Set(quotes.map((q) => q.week))) {
+    stmts.push(env.DB.prepare("DELETE FROM reefer_quotes WHERE week = ?1").bind(w));
+    stmts.push(env.DB.prepare(`INSERT INTO reefer_quotes (week, district, dest, quote, low, high, mostly_low, mostly_high, change_pct, availability, commodities, published)
+      SELECT json_extract(value, '$.week'), json_extract(value, '$.district'), json_extract(value, '$.dest'), json_extract(value, '$.quote'),
+        json_extract(value, '$.low'), json_extract(value, '$.high'), json_extract(value, '$.mostly_low'), json_extract(value, '$.mostly_high'),
+        json_extract(value, '$.change_pct'), json_extract(value, '$.availability'), json_extract(value, '$.commodities'), json_extract(value, '$.published')
+      FROM json_each(?1)`).bind(JSON.stringify(quotes.filter((q) => q.week === w))));
+  }
+  await env.DB.batch(stmts);
 }
 
 const meta = async (env, key) => ((await env.DB.prepare("SELECT value FROM reefer_meta WHERE key = ?1").bind(key).first()) || {}).value;
@@ -114,9 +117,12 @@ async function diesel(env) {
   const r = await fetch(`${EIA}?${q}`);
   if (!r.ok) throw new Error("EIA said: status " + r.status);
   const rows = ((await r.json()).response || {}).data || [];
-  const stmts = rows.filter((x) => x.period && x.value != null).map((x) =>
-    env.DB.prepare("INSERT INTO diesel_weekly (week, price) VALUES (?1, ?2) ON CONFLICT(week) DO UPDATE SET price = ?2").bind(x.period, Number(x.value)));
-  for (let i = 0; i < stmts.length; i += 400) await env.DB.batch(stmts.slice(i, i + 400));
+  const pairs = rows.filter((x) => x.period && x.value != null).map((x) => [x.period, Number(x.value)]);
+  if (!pairs.length) return;
+  // One statement for every week EIA sent (up to 520 on the first run); see store().
+  await env.DB.prepare(`INSERT INTO diesel_weekly (week, price)
+    SELECT json_extract(value, '$[0]'), json_extract(value, '$[1]') FROM json_each(?1) WHERE true
+    ON CONFLICT(week) DO UPDATE SET price = excluded.price`).bind(JSON.stringify(pairs)).run();
 }
 
 /* One older week per call, until BACKFILL_GIVE_UP empty weeks in a row. */
