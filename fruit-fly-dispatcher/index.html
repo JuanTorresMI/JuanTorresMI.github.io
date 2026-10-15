@@ -354,7 +354,7 @@ ul.assume { list-style: disc; margin: 0; padding-left: 18px; display: grid; gap:
   </section>
 </div>
 
-<script src="showcase-data.js"></script>
+{% endraw %}<script src="showcase-data.js?v={{ site.time | date: '%s' }}"></script>{% raw %}
 <script>
 (() => {
 "use strict";

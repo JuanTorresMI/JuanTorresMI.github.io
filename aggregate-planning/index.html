@@ -17,7 +17,7 @@ image_alt: "Aggregate Planner, an aggregate production planning calculator: the 
     sw.js              keeps the page usable offline once it has loaded
   The inputs are drawn by app.js from its field list, so every field is described once.
 {% endcomment %}
-<link rel="stylesheet" href="/aggregate-planning/planner.css">
+<link rel="stylesheet" href="/aggregate-planning/planner.css?v={{ site.time | date: '%s' }}">
 
 <div class="ap frame">
   <header class="ap-head">
@@ -195,8 +195,8 @@ image_alt: "Aggregate Planner, an aggregate production planning calculator: the 
 </div>
 
 <script src="/aggregate-planning/lib/chart.umd.min.js" defer></script>
-<script src="/aggregate-planning/model.js" defer></script>
-<script src="/aggregate-planning/xlsx.js" defer></script>
-<script src="/aggregate-planning/solver.js" defer></script>
-<script src="/aggregate-planning/study.js" defer></script>
-<script src="/aggregate-planning/app.js" defer></script>
+<script src="/aggregate-planning/model.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/aggregate-planning/xlsx.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/aggregate-planning/solver.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/aggregate-planning/study.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/aggregate-planning/app.js?v={{ site.time | date: '%s' }}" defer></script>
