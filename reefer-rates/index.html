@@ -74,6 +74,7 @@ image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rate
         </tbody>
       </table>
     </div>
+    <p class="rb-note" id="rb-nomatch" hidden>Nothing quoted this week matches. A shipping area missing from the sheet is usually out of season; its lane pages keep the history: see <a class="link" href="#lanes">every lane</a> below.</p>
     <p class="rb-note">A shaded cell moved 5% or more since last week. Each cell opens its lane: every week on record and every origin into the same city.</p>
     {%- if r.also.size > 0 %}
     <ol class="rb-also" aria-label="Separate rates quoted for some crops">
@@ -101,6 +102,17 @@ image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rate
   </aside>
   {%- endif %}
 </div>
+{%- assign lanes = site.reefer_lanes | sort: "title" %}
+{%- if lanes.size > 0 %}
+<section class="rb-block" id="lanes">
+  <h2>Every lane <span>{{ lanes.size }} pages, in season or not</span></h2>
+  <ul class="rb-index">
+    {%- for d in lanes %}
+    <li><a href="{{ d.url }}">{{ d.title | remove: " reefer rates" }}</a></li>
+    {%- endfor %}
+  </ul>
+</section>
+{%- endif %}
 {% else %}
 <p class="rb-empty">The first report hasn’t been collected yet. It shows up here the day after the Worker reads it.</p>
 {% endif %}
@@ -180,6 +192,7 @@ image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rate
     const showCol = cols.map((c) => !to || c.includes(to));
     sheet.querySelectorAll("tr").forEach((tr) => [...tr.children].slice(1).forEach((cell, i) => { cell.hidden = !showCol[i]; }));
     rows.forEach((tr) => { tr.hidden = !!from && !norm(tr.dataset.origin).includes(from); });
+    $("rb-nomatch").hidden = !q || rows.some((tr) => !tr.hidden) && showCol.some(Boolean);
   });
 
   // The panel: the first click on a cell shows it there, the next one follows the link.
