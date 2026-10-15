@@ -8,7 +8,10 @@ name: Snapshot live pages
 
 on:
   schedule:
-    - cron: "41 9 * * *"            # 09:41 UTC, early morning in Michigan, after the Worker's hourly poll
+    # Twice a day: GitHub sometimes delays or skips a scheduled run (it skipped the first one),
+    # and the job only commits when something changed, so the second run costs nothing.
+    - cron: "41 9 * * *"            # 09:41 UTC, early morning in Michigan
+    - cron: "41 21 * * *"           # 21:41 UTC, late afternoon in Michigan
   workflow_dispatch:
 
 permissions:
