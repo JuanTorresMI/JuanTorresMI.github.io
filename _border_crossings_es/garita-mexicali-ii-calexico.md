@@ -1,7 +1,7 @@
 ---
 port: "250301"
 title: "Tiempo de espera para camiones: Garita Mexicali II"
-description: "Cuánto esperan los camiones de carga en Garita Mexicali II: la espera ahora mismo y la habitual a cada hora de la semana, con datos de CBP."
+description: "Cuánto esperan hoy los camiones de carga en el cruce Garita Mexicali II: la espera ahora y la habitual por hora, según CBP."
 translation: "/border-waits/calexico-east/"
-seo_title: "Espera de camiones en Garita Mexicali II: ahora y por hora"
+seo_title: "Garita Mexicali II: tiempo de espera de camiones hoy"
 ---
