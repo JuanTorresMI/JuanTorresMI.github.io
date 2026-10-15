@@ -52,7 +52,8 @@ dates and figures. Spacing steps are multiples of 8.
 
 - Colors and fonts come from the tokens at the top of `style.css`. Never write a hex color in
   a page; add a token if one is missing. Dark mode is the same tokens redefined, once for
-  `prefers-color-scheme` and once for `[data-theme="dark"]`: keep those two blocks identical.
+  `prefers-color-scheme`, once for `[data-theme="dark"]` and once as `.stock-night` (the dark
+  stock that gamer and chill pages pin with `stock: night` in front matter): keep the three identical.
 - Pages sit on the 12-column grid: `.row` with `.key` (columns 1–3) and `.body` (4–12). The
   one list pattern is `.entries` / `.entry`; use it before inventing another.
 - Components for ordinary pages are scoped under `.page` so they never leak into the project
@@ -60,12 +61,13 @@ dates and figures. Spacing steps are multiples of 8.
   the ledger); it may use the tokens.
 - Keep `.label` (11px, 0.16em tracking, uppercase) and `.data` (mono, 12px) for the small type.
 - Pages are not all one layout. Each belongs to a family and takes that family's form while
-  keeping the tokens, fonts, square corners and nav: **work** (reefer board, planner, fruit fly:
-  a dense rate sheet or control panel, mono figures), **professional** (résumé, projects, home: the
-  raised eggshell card), **gamer** (Craft Ledger, YouTube: the dark tokens, HUD frames and slot
-  grids), **chill** (the house TV: dark, italic serif, posters) and **personal** (writing: a letter,
-  serif reading text). The reefer board (`.rb` in `style.css`) is the first one built this way;
-  put a small family label above each page title.
+  keeping the tokens, fonts, square corners and nav: **work** (reefer board `.rb`, planner, fruit fly:
+  a dense rate sheet or control panel, mono figures), **professional** (résumé `.cv`, projects
+  `.pj`, home: the raised eggshell card), **gamer** (YouTube `.yt`, Craft Ledger's gamer layer:
+  night stock, 2px HUD frames, mono labels, slot grids), **chill** (the house TV `.tv`: night
+  stock, italic serif, posters) and **personal** (writing `.wr`: a letter, serif reading text).
+  Gamer and chill pages set `stock: night`. Put the family label (`.family`) above each page
+  title, and give a project its `family` in `projects.yml` (its card takes that stock).
 
 ## Adding things
 
