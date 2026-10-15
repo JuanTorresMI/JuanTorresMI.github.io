@@ -20,13 +20,16 @@ WRITE_ORIGINS = "https://juantorresmi.github.io,http://localhost:4000,http://127
 # The channel the /youtube/ page shows: its handle ("@name") or channel id ("UC..."). The
 # API key that reads it is a secret (`wrangler secret put YOUTUBE_API_KEY`), not a var.
 YOUTUBE_CHANNEL = "@JuanJulio001"
+# The reefer board's keys are secrets too: USDA_MMN_KEY (required, MyMarketNews) and
+# EIA_API_KEY (optional; without it the diesel price uses api.data.gov's shared DEMO_KEY).
 # Lock the page down to one site if you ever want to; "*" is fine for read-only data.
 # ALLOW_ORIGIN = "https://juantorresmi.github.io"
 
 # Once an hour, at 17 past (off the top of the hour, when everyone else's crons run): poll
-# YouTube for the /youtube/ page and store the result in D1. Cron triggers are free.
+# YouTube for the /youtube/ page and store the result in D1. At 47 past: the reefer rate
+# board (src/reefer.js); the string must match REEFER_CRON in index.js. Cron triggers are free.
 [triggers]
-crons = ["17 * * * *"]
+crons = ["17 * * * *", "47 * * * *"]
 
 # The music page's counter and guestbook (created with `wrangler d1 create yokonjuan`).
 # Also the YouTube page's hourly snapshots. Schema: schema.sql. A database id is not a

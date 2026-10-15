@@ -92,7 +92,8 @@ except Exception as e: err("site.webmanifest", f"does not parse: {e}")
 if not os.path.isfile(os.path.join(site, "robots.txt")): err("robots.txt", "missing")
 # The Worker-backed pages carry a daily copy of their data (scripts/snapshot.py). Without it,
 # a crawler or a browser with JavaScript off sees only the placeholder.
-for page, placeholder in (("youtube/index.html", "Asking YouTube…"), ("watching/index.html", "Asking the TV…")):
+for page, placeholder in (("youtube/index.html", "Asking YouTube…"), ("watching/index.html", "Asking the TV…"),
+                          ("reefer-rates/index.html", "The first report hasn’t been collected yet")):
     f = os.path.join(site, page)
     if os.path.isfile(f) and placeholder in open(f, encoding="utf-8").read():
         err("/" + page, "has no snapshot in its HTML; run scripts/snapshot.py")

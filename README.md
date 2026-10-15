@@ -26,7 +26,8 @@ the design rules, how to add a post or project, and what to run before pushing.
 | `fruit-fly-dispatcher/` | The simulation page and its data (`runs/` are loaded on demand) |
 | `craft-ledger.html` | The ledger, a single self-contained file |
 | `aggregate-planning/` | The production-planning optimizer: the page, its scripts, and HiGHS and Chart.js in `lib/` |
-| `worker/` | The Cloudflare Worker behind `/watching/` and the Substack feed; see its README |
+| `reefer-rates/` | The reefer rate board; lane pages come from `_layouts/reefer-lane.html` and `_reefer_lanes/`, all built from the daily snapshot |
+| `worker/` | The Cloudflare Worker behind `/watching/`, the Substack feed, `/youtube/` and the reefer rates; see its README |
 | `scripts/` | `check.py` verifies a build, `screenshots.js` photographs every page, `og-images.js` draws the share pictures, `snapshot.py` copies the Worker's live data into `_data/live/` (daily, by the `Snapshot live pages` workflow), `lastmod.py` dates each page from git for the sitemap (run by the deploy) |
 
 ## Previewing and checking locally

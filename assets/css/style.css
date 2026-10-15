@@ -400,3 +400,29 @@ html { scroll-behavior: smooth; }
   .page .inline-links a[href^="mailto"]::after, .page .big-link[href^="mailto"]::after { content: none; }
   .page .inline-links a, .page .prose a { border: 0; text-decoration: none; }
 }
+
+/* ---------- the reefer rate board (/reefer-rates/ and its lane pages) ---------- */
+.page .rates-note { max-width: 44em; margin-top: 24px !important; font-size: 15px; color: var(--text-2); }
+.page .rates-group { padding: 32px 0; border-bottom: 1px solid var(--rule); align-items: start; }
+.page .rates-group:last-child { border-bottom: 0; }
+.page .rates-group .key > * + * { margin-top: 8px; }
+.page .rates-origin { font-family: var(--serif); font-weight: 500; font-size: 26px; line-height: 1.1; color: var(--ink); }
+.page .rates-wrap { overflow-x: auto; }
+.page .rates { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; color: var(--text); }
+.page .rates th, .page .rates td { padding: 8px 16px 8px 0; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: baseline; white-space: nowrap; }
+.page .rates thead th { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); border-bottom-color: var(--ink); }
+.page .rates tbody th { font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink); }
+.page .rates a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--rule); transition: color 0.15s, text-decoration-color 0.15s; }
+.page .rates a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.page .rates-also td { padding-top: 0; font-family: var(--sans); font-size: 13px; color: var(--text-2); white-space: normal; }
+.page .rates-here th, .page .rates-here td { color: var(--accent); }
+.page .rates-trend { width: 112px; padding-right: 0; }
+.page .rates-trend svg { display: block; overflow: visible; }
+.page .rates-trend polyline { fill: none; stroke: var(--accent); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.page .rates-word { font-size: 28px; }
+.page .lane-chart { margin: 32px 0 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; }
+.page .lane-chart svg { width: 100%; height: 240px; display: block; border-bottom: 1px solid var(--ink); }
+.page .lane-chart .band { fill: var(--silian); }
+.page .lane-chart .line { fill: none; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.page .lane-chart figcaption { display: flex; flex-direction: column; justify-content: space-between; }
+@media (max-width: 600px) { .page .rates-trend { display: none; } .page .lane-chart svg { height: 180px; } }

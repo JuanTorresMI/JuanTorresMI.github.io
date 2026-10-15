@@ -212,3 +212,66 @@ writes an hour; the page's requests are served from the edge cache for five minu
 - **History** is one row a day (`youtube_daily`), holding that day's last reading in UTC. The page
   uses it for "last 7 days" and "last 30 days"; those appear once there are enough days stored.
 - **Short** means the upload is three minutes or less, YouTube's own limit for a Short.
+
+## The reefer rate board
+
+`/reefer-rates/` on the site is built from data this Worker collects; the code is
+`src/reefer.js`. The source is USDA AMS's Specialty Crops National Truck Rate Report (report 2375),
+read through the MyMarketNews API, plus EIA's weekly U.S. retail diesel price.
+
+A second cron trigger runs at 47 past every hour. Every sixth hour it asks USDA for the newest
+report (rewriting nothing if that report is already stored) and refreshes diesel. The other hours
+it backfills one older week, walking back until USDA has had nothing for half a year of weeks in a row, so
+the whole history fills in by itself over about a week after the first deploy.
+
+The site has no script for this page: the `Snapshot live pages` GitHub Action reads `/reefer` and
+`/reefer/history?year=…` once a day and rebuilds the board, a page per lane and the CSV.
+
+### Setting it up (once)
+
+1. **Get a MyMarketNews key.** Free, from [mymarketnews.ams.usda.gov](https://mymarketnews.ams.usda.gov/)
+   (sign up and request an API key from your account). It reads public reports only.
+2. **Optionally, an EIA key**, free from [eia.gov/opendata](https://www.eia.gov/opendata/register.php).
+   Without one the Worker uses api.data.gov's shared `DEMO_KEY`, which works but is rate limited
+   across everyone who uses it.
+3. **Create the tables, store the keys, deploy.** From `worker/`, in PowerShell:
+
+```powershell
+npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
+npx.cmd wrangler secret put USDA_MMN_KEY
+npx.cmd wrangler secret put EIA_API_KEY      # optional
+npx.cmd wrangler deploy
+```
+
+`schema.sql` only adds what's missing (`reefer_quotes`, `diesel_weekly`, `reefer_meta`). If
+`--file` fails with an authentication error, use the `--command` form under the YouTube page above.
+
+### Check it
+
+The first cron run after deploying (at :47) stores the latest report, whatever the hour. Then:
+
+```powershell
+Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/reefer" | Select-Object latest, first, backfill_done
+```
+
+`first` moves back a week every hour or so while the backfill runs; `backfill_done` turns true
+when it reaches the start of USDA's history. `npx.cmd wrangler tail` around :47 shows each run.
+
+- `USDA said: status 401` or `403` — the key is wrong; `secret put` it again.
+- `EIA said: status 429` — the shared demo key is busy; add your own `EIA_API_KEY`. Rates are unaffected.
+
+### What the numbers mean
+
+- USDA reports one row per shipping district, destination city and **commodity**, and repeats each
+  rate for every commodity it covers. The Worker stores each distinct rate once (`reefer_quotes`),
+  with the commodities it was listed for. **Quote 0** is the rate covering the most commodities,
+  the lane's main rate; **quote 1+** is a separate rate a district gave for some crops that week
+  (often citrus). Lane history and the CSV use quote 0.
+- Rates are whole dollars per load, broker fees included. A range USDA left out is `NULL`, never 0.
+- `week` is the Monday the report covers; USDA publishes it on the Wednesday after.
+
+### What it costs
+
+Nothing. USDA is asked about 24 times a day (4 for new reports, the rest backfill, which ends);
+EIA 4 times. Each run is a few hundred D1 writes at most, far under the free 100,000. History is
+served a year at a time so no request has to read or serialize everything at once.

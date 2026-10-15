@@ -66,6 +66,26 @@
     - CSV export and shareable links
   keywords: [aggregate, planner, planning, highs]
 
+- slug: reefer-rates
+  title: Reefer Rate Board
+  url: /reefer-rates/
+  guide: /reefer-rates/#how-it-works
+  kind: Data
+  status: Live
+  short: USDA’s weekly spot rates for refrigerated trucks, from the produce shipping districts to ten big cities, on one board with a page and a history for every lane.
+  summary: >-
+    Every week USDA publishes what it costs to move a truckload of produce in a refrigerated trailer, from
+    shipping areas like South Texas, the Imperial Valley and the Mexico crossing at Nogales to ten big
+    cities. It comes as a PDF or as raw API rows, one per commodity. A Cloudflare Worker reads the report,
+    boils the rows down to one rate per lane, fills in the past a week at a time, and adds the weekly U.S.
+    diesel price. The site rebuilds from it daily: a board for this week, a page per lane with its history,
+    and the whole dataset as a CSV.
+  metric: Weekly · 68 lanes in the latest report · CSV download · $0 to run
+  stack: [JavaScript, Python, Cloudflare Workers, D1 (SQLite), USDA MyMarketNews API, EIA API, GitHub Actions]
+  category: WebApplication
+  search: [reefer rates, reefer truck rates, produce truck rates, USDA truck rate report, refrigerated freight rates, reefer spot rates]
+  keywords: [reefer, truck rates, usda]
+
 - slug: youtube-stats
   title: YouTube Stats
   url: /youtube/

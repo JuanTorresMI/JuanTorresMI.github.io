@@ -1,0 +1,123 @@
+---
+layout: default
+title: Reefer truck rates
+seo_title: "Reefer Truck Rates This Week · USDA Produce Lanes, Weekly"
+permalink: /reefer-rates/
+description: This week's spot rates for refrigerated trucks from U.S. produce shipping districts and Mexico crossings to ten cities, from USDA's National Truck Rate Report, with history.
+image: /assets/og/reefer-rates.png
+image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rates, lane by lane."
+---
+{%- comment -%}
+  Drawn entirely from site.data.live.reefer, the daily copy scripts/snapshot.py makes of the
+  Worker's /reefer data (USDA report 2375). The data changes once a week, so there is no script
+  on this page: the copy is the page. Lane pages come from _layouts/reefer-lane.html.
+{%- endcomment -%}
+{%- assign r = site.data.live.reefer -%}
+<header class="phead row">
+  <p class="key label">Reefer rates</p>
+  <div class="body">
+    <h1>Reefer truck rates</h1>
+    <p class="lede">What a refrigerated truckload of produce costs this week, from the main U.S. shipping districts and Mexico border crossings to ten big cities. The numbers are USDA’s, from its weekly National Truck Rate Report; this page puts them in one place, lane by lane, with the history behind them.</p>
+    {%- if r %}
+    <div class="actions">
+      <a class="btn primary" href="/reefer-rates/usda-reefer-truck-rates.csv" download>Download the data (CSV)</a>
+      <a class="btn" href="#how-it-works">How it works</a>
+    </div>
+    {%- endif %}
+  </div>
+</header>
+
+{% if r %}
+<section class="sec">
+  <header class="sec-head"><h2>Week of {{ r.week }}</h2><span class="label">USDA report 2375</span></header>
+  <div class="tally">
+    <div class="tile"><span class="n">{{ r.board.size }}</span><span class="l label">shipping areas quoted</span></div>
+    <div class="tile"><span class="n">{% assign n = 0 %}{% for g in r.board %}{% assign n = n | plus: g.rows.size %}{% endfor %}{{ n }}</span><span class="l label">lanes this week</span></div>
+    {%- if r.diesel %}
+    <div class="tile"><span class="n">{{ r.diesel.price }}</span><span class="l label">diesel, U.S. average / gal</span></div>
+    {%- endif %}
+  </div>
+  {%- if r.diesel %}
+  <p class="rates-note">Diesel: {{ r.diesel.price }} a gallon, the U.S. average retail price for the week of {{ r.diesel.week }}{% if r.diesel.change != "" %}, {{ r.diesel.change }}{% endif %} (EIA). Most fuel surcharge schedules are keyed to this number.</p>
+  {%- endif %}
+</section>
+
+<section class="sec" id="board">
+  <header class="sec-head"><h2>The board</h2><span class="label">Per load, broker fees included</span></header>
+  {%- for g in r.board %}
+  <div class="row rates-group">
+    <div class="key">
+      <h3 class="rates-origin">{{ g.short }}</h3>
+      <p class="data">{{ g.name }}</p>
+      {%- if g.availability != "" %}<p class="label">Trucks: {{ g.availability }}</p>{% endif %}
+    </div>
+    <div class="body rates-wrap">
+      <table class="rates">
+        <thead><tr><th scope="col">To</th><th scope="col">Range</th><th scope="col">Mostly</th><th scope="col">Change</th><th scope="col" class="rates-trend">Last 26 weeks</th></tr></thead>
+        <tbody>
+        {%- for row in g.rows %}
+          <tr>
+            <th scope="row">{% if row.lane %}<a href="/reefer-rates/{{ row.lane }}/">{{ row.dest }}</a>{% else %}{{ row.dest }}{% endif %}</th>
+            <td>{{ row.range | default: "—" }}</td>
+            <td>{{ row.mostly | default: "—" }}</td>
+            <td>{{ row.change | default: "—" }}</td>
+            <td class="rates-trend">{% if row.spark %}<svg viewBox="0 0 96 24" width="96" height="24" role="img" aria-label="Trend of the {{ row.dest }} rate over the last 26 weeks"><polyline points="{{ row.spark }}"/></svg>{% endif %}</td>
+          </tr>
+          {%- for a in row.also %}
+          <tr class="rates-also"><td colspan="5">Also quoted {{ a.range }} for {{ a.for }}</td></tr>
+          {%- endfor %}
+        {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {%- endfor %}
+</section>
+{% else %}
+<section class="sec">
+  <p class="log-note">The first report hasn’t been collected yet. It shows up here the day after the Worker reads it.</p>
+</section>
+{% endif %}
+
+<section class="sec" id="how-it-works">
+  <header class="sec-head"><h2>How it works</h2>{% if r %}<span class="label">Copied {{ r.generated | date: "%b %-d, %Y" }}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+      <p>Every week the U.S. Department of Agriculture’s market news reporters ask shippers, receivers and truck brokers what it’s costing to move produce, and publish the answer as the <a href="https://mymarketnews.ams.usda.gov/viewReport/2375">Specialty Crops National Truck Rate Report</a>. It’s the most consistent public record of reefer spot rates there is, but it comes as a PDF or as raw rows through an API, one row per commodity.</p>
+      <ol>
+        <li><strong>A Cloudflare Worker reads the report.</strong> The same small Worker behind this site’s <a href="/youtube/">YouTube</a> page asks USDA’s MyMarketNews API for the newest report every six hours, and stores it in a SQLite database on Cloudflare (D1) once it’s new. The key it uses is free, read-only, and kept as an encrypted secret, never in this site’s code.</li>
+        <li><strong>It boils the rows down to lanes.</strong> USDA repeats each rate once per commodity it covers, so the same number shows up dozens of times. The Worker keeps each distinct rate a shipping area quotes to a city once. Usually there’s one; sometimes an area quotes a second rate for a group of crops, citrus most often, and that shows on the board as “also quoted”.</li>
+        <li><strong>It fills in the past by itself.</strong> In the hours between new reports it asks for one older week at a time, walking back until USDA has nothing older. That’s where the history on each lane page comes from{% if r %}: right now it goes back to the week of {{ r.first }}{% endif %}.</li>
+        <li><strong>Once a day, this page is rebuilt from it.</strong> A GitHub Action copies the Worker’s data into the site and rebuilds it, including a page for every lane and the CSV download. So everything here is plain HTML: it loads instantly and reads the same with or without JavaScript.</li>
+      </ol>
+      <p>How to read the board: the <strong>range</strong> is the lowest to highest rate reported for a full load in a 48 to 53 foot refrigerated trailer, broker fees included. <strong>Mostly</strong> is where most loads actually moved, when USDA reports it. <strong>Change</strong> is USDA’s own figure for the move from the week before. The truck label is USDA’s read on supply in that area that week, from surplus (more trucks than loads) to shortage (more loads than trucks).</p>
+      <p>Shipping areas come and go with the growing seasons, so a lane missing from the board this week is usually just out of season. Its page stays up with its history, and lists the months it has been quoted in.</p>
+      <p>Diesel is the U.S. average retail price of No. 2 diesel from the <a href="https://www.eia.gov/petroleum/gasdiesel/">Energy Information Administration</a>, also weekly. It’s here for context: most fuel surcharge tables are built on it.</p>
+      <p>Source: USDA Agricultural Marketing Service, Specialty Crops Market News. The numbers are theirs and are public; any mistakes in presenting them are mine. The Worker’s code is in the <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">worker folder</a> of this site’s repository.</p>
+    </div>
+  </div>
+</section>
+
+{% if r %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Weekly reefer truck rates for U.S. produce lanes",
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "temporalCoverage": "{{ r.first_iso }}/{{ r.latest }}",
+  "spatialCoverage": { "@type": "Place", "name": "United States and Mexico border crossings" },
+  "variableMeasured": ["Spot rate per truckload, low and high (USD)", "Mostly rate, low and high (USD)", "Weekly change (%)", "Truck availability"],
+  "isBasedOn": "https://mymarketnews.ams.usda.gov/viewReport/2375",
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "creator": [
+    { "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" },
+    { "@type": "Person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
+  ],
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ "/reefer-rates/usda-reefer-truck-rates.csv" | absolute_url | jsonify }} }],
+  "dateModified": {{ r.latest | jsonify }}
+}
+</script>
+{% endif %}
