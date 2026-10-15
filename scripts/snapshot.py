@@ -336,8 +336,7 @@ def reefer(base):
         f = os.path.join(LANES_DIR, slug + ".md")
         if os.path.exists(f): continue
         title = f"{p['short']} to {p['dest']} reefer rates"
-        desc = (f"Weekly spot rates for a refrigerated truck from {p['origin']} to {p['dest']}, from USDA's National "
-                f"Truck Rate Report: the latest rate, every week on record, and how the lane compares.")
+        desc = f"USDA's weekly spot rates for a reefer truck from {p['short']} to {p['dest']}: the latest rate, every week on record, and every origin into {p['dest']}."
         with open(f, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(f"---\nlane: {slug}\ntitle: {json.dumps(title, ensure_ascii=False)}\ndescription: {json.dumps(desc, ensure_ascii=False)}\n---\n")
 

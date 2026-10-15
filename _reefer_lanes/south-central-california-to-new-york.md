@@ -1,5 +1,5 @@
 ---
 lane: south-central-california-to-new-york
 title: "South & Central CA to New York reefer rates"
-description: "Weekly spot rates for a refrigerated truck from South and Central California to New York, from USDA's National Truck Rate Report: the latest rate, every week on record, and how the lane compares."
+description: "USDA's weekly spot rates for a reefer truck from South & Central CA to New York: the latest rate, every week on record, and every origin into New York."
 ---

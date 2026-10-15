@@ -1,5 +1,5 @@
 ---
 lane: salinas-ca-to-miami
 title: "Salinas, CA to Miami reefer rates"
-description: "Weekly spot rates for a refrigerated truck from Salinas–Watsonville, California to Miami, from USDA's National Truck Rate Report: the latest rate, every week on record, and how the lane compares."
+description: "USDA's weekly spot rates for a reefer truck from Salinas, CA to Miami: the latest rate, every week on record, and every origin into Miami."
 ---

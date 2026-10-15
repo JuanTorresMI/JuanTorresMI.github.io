@@ -1,5 +1,5 @@
 ---
 lane: idaho-malheur-or-to-dallas
 title: "Idaho & Malheur, OR to Dallas reefer rates"
-description: "Weekly spot rates for a refrigerated truck from Idaho and Malheur County, Oregon to Dallas, from USDA's National Truck Rate Report: the latest rate, every week on record, and how the lane compares."
+description: "USDA's weekly spot rates for a reefer truck from Idaho & Malheur, OR to Dallas: the latest rate, every week on record, and every origin into Dallas."
 ---
