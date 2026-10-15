@@ -113,6 +113,9 @@ dates and figures. Spacing steps are multiples of 8.
 ## Things that are the way they are on purpose
 
 - Fonts are self-hosted and preloaded; do not add Google Fonts links to Jekyll pages.
+- Stylesheets and page scripts are linked with `?v={{ site.time | date: '%s' }}`, so each deploy
+  changes their address and no browser pairs new HTML with a cached old file. Do the same for any
+  new stylesheet or script a page links.
 - `/watching/` is `noindex` and out of the sitemap: public, but not for searches of his name.
 - The Fruit Fly Dispatcher loads a 2–3 MB run file only when the reader nears "Watch a week".
 - The Aggregate Planner serves its solver (`lib/highs.wasm`, 3.5 MB) from the repo, not a CDN, and keeps
