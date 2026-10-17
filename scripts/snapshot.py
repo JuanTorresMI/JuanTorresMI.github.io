@@ -1158,6 +1158,17 @@ def beef():
     grade_order = {"choice": 0, "select": 1, "": 2}
 
     # ---- the item pages
+    def tool_grade(g, rows):
+        """What a cut page's price check needs for one grade, in dollars per hundredweight: the
+        latest day's average and range, the last 30 days' range of averages, and every daily average
+        of the past year, sorted, to say where a quoted price would have ranked."""
+        last = rows[-1]
+        since30 = (iso_day(last[0]) - timedelta(days=30)).date().isoformat()
+        d30 = [r[3] for r in rows if r[0] > since30]
+        return {"key": g, "grade": GRADE_NAMES.get(g, g), "date": d_full(last[0]), "current": last[0] == latest,
+                "v": last[3], "low": last[1], "high": last[2], "d30": [min(d30), max(d30)] if d30 else None,
+                "year": sorted(round(r[3], 2) for r in rows if r[0] > year_start)}
+
     pages = {}
     for (section, item), grades in by_item.items():
         traded = {r[0] for rows in grades.values() for r in rows if r[0] > year_start}
@@ -1191,6 +1202,7 @@ def beef():
             "grid_unit": "$ per lb" if section != "primal" else "$ per cwt",
             "season": seasons(mavg, latest),
             "heads": [GRADE_NAMES.get(g, g) for g in gs], "rows": rows,
+            "tool": [tool_grade(g, grades[g]) for g in gs],
         }
 
     # Where each item sits: the primal it comes from, and what else from there traded today.
@@ -1268,8 +1280,14 @@ def beef():
         ch, se, un = traded_today(grades, "choice"), traded_today(grades, "select"), traded_today(grades, "")
         main, sold = ch or un, [x for x in (ch, se, un) if x]
         total = lambda i: fmt(sum(x[i] for x in sold if x[i])) if any(x[i] for x in sold) else ""
-        return {"name": info(item)["name"], "slug": slug_of[(section, item)] if slug_of[(section, item)] in pages else "",
-                "imps": info(item).get("imps", ""), "fl": info(item).get("fl", ""),
+        # The main price against the same grade's on the last day a week or more before.
+        g = "choice" if ch else ""
+        then = on_or_before(grades.get(g, [])[:-1], (iso_day(latest) - timedelta(days=7)).date().isoformat()) if main and grades.get(g) else None
+        i = info(item)
+        words = " ".join(x for x in (i["name"], i.get("imps", ""), i.get("also", ""), dict(PRIMALS).get(i.get("primal") or "", ""), item) if x)
+        return {"name": i["name"], "slug": slug_of[(section, item)] if slug_of[(section, item)] in pages else "",
+                "imps": i.get("imps", ""), "fl": i.get("fl", ""), "also": i.get("also", ""), "find": " ".join(words.lower().replace(",", " ").split()),
+                "week": pct_change(main[3], then[3]) if main and then else "",
                 "price": usd(main[3]) if main else "", "price_lb": per_lb(main[3]) if main else "",
                 "select": usd(se[3]) if se else "", "select_lb": per_lb(se[3]) if se else "",
                 "lbs": total(5), "trades": total(4), "traded": bool(sold), "ungraded": section == "mixed", "v": (main or se)[3] if sold else 0}
