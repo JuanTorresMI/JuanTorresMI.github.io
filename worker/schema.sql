@@ -1,4 +1,4 @@
--- The music page's counter and guestbook, the YouTube page's snapshots, the reefer rate board, the border wait board and the boxed beef board (D1). Apply with:
+-- The music page's counter and guestbook, the YouTube page's snapshots, the border wait board and the boxed beef board (D1). Apply with:
 --   npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
 -- Safe to run again: nothing is dropped.
 
@@ -30,35 +30,9 @@ CREATE TABLE IF NOT EXISTS youtube_daily (
   videos      INTEGER
 );
 
--- The reefer rate board (src/reefer.js). One row per distinct rate a shipping district quoted to
--- a city in a week: quote 0 is the main rate, quote 1+ a separate rate for some commodities.
--- Prices are whole US dollars per load; a range USDA didn't give is NULL, never 0.
-CREATE TABLE IF NOT EXISTS reefer_quotes (
-  week         TEXT NOT NULL,                      -- "YYYY-MM-DD", the Monday the report covers
-  district     TEXT NOT NULL,                      -- USDA's shipping district, as USDA writes it
-  dest         TEXT NOT NULL,                      -- destination city
-  quote        INTEGER NOT NULL,
-  low          INTEGER,
-  high         INTEGER,
-  mostly_low   INTEGER,
-  mostly_high  INTEGER,
-  change_pct   INTEGER,                            -- USDA's change from the week before
-  availability TEXT,                               -- Surplus … Shortage
-  commodities  TEXT NOT NULL,                      -- JSON array of the commodities it was listed for
-  published    TEXT,                               -- USDA's "MM/DD/YYYY HH:MM:SS"
-  PRIMARY KEY (week, district, dest, quote)
-);
-CREATE INDEX IF NOT EXISTS reefer_lane ON reefer_quotes (quote, district, dest, week);
-
-CREATE TABLE IF NOT EXISTS diesel_weekly (
-  week  TEXT PRIMARY KEY,                          -- EIA's period, "YYYY-MM-DD"
-  price REAL NOT NULL                              -- U.S. retail No. 2 diesel, $/gal
-);
-
-CREATE TABLE IF NOT EXISTS reefer_meta (           -- the backfill's place in history
-  key   TEXT PRIMARY KEY,
-  value TEXT
-);
+-- The reefer rate board (src/reefer.js) keeps nothing here: USDA and EIA keep the history, and the
+-- Worker asks them on request. (Its first version kept reefer_quotes, diesel_weekly and reefer_meta;
+-- those were dropped on Oct 17, 2026.)
 
 -- The border wait board (src/border.js). One row per commercial port per posted reading. Times are
 -- the port's own wall clock. A closed or pending lane is NULL, never 0: unknown is not "no wait".

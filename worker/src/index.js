@@ -5,18 +5,18 @@
  *   GET /          the house TV: { now, last, lately, deck, tally, updated }
  *   GET /substack  the newsletter: { items: [{ title, url, date, excerpt }] }
  *   GET /youtube   the channel: { channel, stats, recent, history, updated } (see youtube.js)
- *   GET /reefer, /reefer/history?year=Y   USDA reefer truck rates (see reefer.js)
+ *   GET /reefer, /reefer?week=YYYY-MM-DD   USDA reefer truck rates, any week, asked of USDA (see reefer.js)
  *   GET /border, /border/port?id=P   truck waits at the land border, live and by hour (see border.js)
  *   GET /beef      USDA's newest boxed beef report: the cutout and every cut's price (see beef.js)
  *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
  *
- * Two cron triggers in wrangler.toml call `scheduled`: at :17 to poll YouTube, at :47 for the
- * reefer rates (a new report every sixth hour, one week of backfill the others). Both also read
- * CBP's border wait times and check for a new boxed beef report, so those are polled every half hour.
+ * Two cron triggers in wrangler.toml call `scheduled`, at :17 and :47. Both read CBP's border wait
+ * times and check for a new boxed beef report, so those are polled every half hour; the :17 run
+ * also polls YouTube. The reefer rates need no cron: USDA keeps them, and they're asked for on request.
  */
 import { catalog, CATALOG_MAX_AGE, visits, guestbook, sign, unsign, Refused } from "./music.js";
 import { poll, snapshot, YOUTUBE_MAX_AGE } from "./youtube.js";
-import { reeferTick, reeferData, reeferHistory, REEFER_MAX_AGE } from "./reefer.js";
+import { reeferWeek, REEFER_MAX_AGE, REEFER_WEEK_MAX_AGE } from "./reefer.js";
 import { borderTick, borderNow, borderPort, BORDER_MAX_AGE, BORDER_PORT_MAX_AGE } from "./border.js";
 import { beefTick, beefData, BEEF_MAX_AGE } from "./beef.js";
 
@@ -41,7 +41,7 @@ export default {
     if (route.startsWith("/music")) return musicRoute(request, env, ctx, route, url, cors);
     if (request.method !== "GET") return json({ error: "GET only" }, 405, cors);
     if (route === "/youtube") return youtubeRoute(env, ctx, url, cors);
-    if (route === "/reefer" || route === "/reefer/history") return reeferRoute(env, ctx, route, url, cors);
+    if (route === "/reefer") return reeferRoute(env, ctx, url, cors);
     if (route === "/border" || route === "/border/port") return borderRoute(env, ctx, route, url, cors);
     if (route === "/beef") return beefRoute(env, ctx, url, cors);
 
@@ -76,8 +76,7 @@ export default {
   // Crons in wrangler.toml. A failed poll is logged and the last stored data stays.
   async scheduled(event, env, ctx) {
     const log = (what) => (e) => console.error(what + ":", e && e.message ? e.message : e);
-    if (event.cron === REEFER_CRON) ctx.waitUntil(reeferTick(env, new Date(event.scheduledTime)).catch(log("reefer")));
-    else ctx.waitUntil(poll(env).catch(log("youtube poll")));
+    if (event.cron === YOUTUBE_CRON) ctx.waitUntil(poll(env).catch(log("youtube poll")));
     ctx.waitUntil(borderTick(env).catch(log("border")));
     ctx.waitUntil(beefTick(env).catch(log("beef")));
   },
@@ -145,26 +144,26 @@ async function youtubeRoute(env, ctx, url, cors) {
 
 /* ---------------------------------------------------------- the reefer rate board ---- */
 
-const REEFER_CRON = "47 * * * *";   // must match the second entry in wrangler.toml
+const YOUTUBE_CRON = "17 * * * *";   // must match the first entry in wrangler.toml
 
-async function reeferRoute(env, ctx, route, url, cors) {
-  const year = route === "/reefer/history" ? Number(url.searchParams.get("year")) : null;
-  if (year !== null && !(year >= 2000 && year <= 2100)) return json({ error: "Give a year, like ?year=2025" }, 400, cors);
-  const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/v2" + route + (year ? "/" + year : ""));
+/* The newest report, or any week (?week=, the Monday it covers), asked of USDA with this Worker's
+   key; nothing is stored. scripts/snapshot.py is the only caller, a few times a day. */
+async function reeferRoute(env, ctx, url, cors) {
+  const week = url.searchParams.get("week");
+  if (week !== null && !/^20\d\d-\d\d-\d\d$/.test(week)) return json({ error: "Give the Monday a report covers, like ?week=2026-10-12" }, 400, cors);
+  const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/v3/reefer" + (week ? "/" + week : ""));
   const hit = await cache.match(cacheKey);
   if (hit) { const fresh = new Response(hit.body, hit); for (const [k, v] of Object.entries(cors)) fresh.headers.set(k, v); return fresh; }
   let payload;
   try {
-    payload = year ? await reeferHistory(env, year) : await reeferData(env);
+    payload = await reeferWeek(env, week);
   } catch (e) {
     console.error("reefer:", e && e.message ? e.message : e);
     return json({ error: e.message || String(e) }, 502, cors);
   }
-  // Nothing stored yet (the hour after a first deploy): answer, but don't keep that empty
-  // answer at the edge for an hour after the data arrives.
-  const empty = year ? payload.lanes.length === 0 : !payload.latest;
-  if (empty) return json(payload, 200, { ...cors, "Cache-Control": "no-store" });
-  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${REEFER_MAX_AGE}` });
+  // A week USDA has nothing for: answer, but don't keep it at the edge (it may be posted yet).
+  if (!payload.latest) return json(payload, 200, { ...cors, "Cache-Control": "no-store" });
+  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${week ? REEFER_WEEK_MAX_AGE : REEFER_MAX_AGE}` });
   ctx.waitUntil(cache.put(cacheKey, res.clone()));
   return res;
 }
