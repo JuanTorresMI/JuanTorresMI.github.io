@@ -585,6 +585,8 @@ html { scroll-behavior: smooth; }
 .bf-season .bf-hi { background: color-mix(in srgb, var(--accent) 25%, var(--stock)); color: var(--ink); font-weight: 500; }
 .bf-season .bf-lo { background: var(--silian); color: var(--ink); }
 .bf-dict code { font-family: var(--mono); font-size: 14px; }
+.bf-live { padding: 12px 16px; border-left: 2px solid var(--accent); background: var(--stock); color: var(--ink) !important; }
+.bf-live[hidden] { display: none; }
 .bf-dict td:nth-child(2), .bf-fat td:nth-child(2) { white-space: normal; }   /* words, not figures */
 .bf-dict tbody th { font-family: var(--mono); font-size: 14px; white-space: nowrap; }
 .bf-fat { margin: 8px 0 16px; max-width: 560px; }

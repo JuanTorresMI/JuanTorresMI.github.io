@@ -22,9 +22,9 @@ CSV downloads. A source that fails or answers with an error is skipped and its l
 stays. The `Snapshot live pages` workflow runs this twice a day and commits whatever changed.
 Needs only the standard library.
 """
-import csv, json, os, re, sys, urllib.request
+import calendar, csv, json, os, re, sys, urllib.request
 from urllib.parse import quote
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from itertools import groupby
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -800,18 +800,21 @@ def reefer(base):
 
 
 # ------------------------------------------------------------------- the boxed beef board ----
-# /beef-prices/ and a page per cut (/beef-prices/<slug>/), from the Worker's /beef (the newest
-# report) and /beef/history (a month at a time). Like the reefer board, no page script: USDA posts
-# once a day, so the copy is the page. The CSV downloads are also the archive: they are read back
-# first and the Worker's days laid over them, so a day once collected is never lost, and the pages
-# keep the whole history even while a freshly deployed Worker is still backfilling.
+# /beef-prices/ and a page per cut (/beef-prices/<slug>/), from USDA's own archive. USDA keeps every
+# report and its datamart serves any date range with no key, so neither the Worker nor this script
+# logs a history of its own: the CSV downloads are read back first (they hold every day already
+# fetched), and only the months they don't settle are asked of USDA, which on an ordinary run is the
+# last month or two. The Worker keeps just the newest report, for the page script that shows a new
+# report within half an hour of USDA posting it (beef-prices/live.js).
 
 BEEF_DIR = os.path.join(ROOT, "beef-prices")
 BEEF_CUTS_DIR = os.path.join(ROOT, "_beef_cuts")
 BEEF_CUTOUT_CSV = os.path.join(BEEF_DIR, "boxed-beef-cutout-daily.csv")
 BEEF_YEAR_CSV = lambda y: os.path.join(BEEF_DIR, f"boxed-beef-cut-prices-{y}.csv")
 BEEF_PAGE_DAYS = 26                          # days with a price in the last year before an item gets a page
-BEEF_RECENT_DAYS = 45                        # the Worker's months this close to the latest are always re-read
+BEEF_RECENT_DAYS = 45                        # months this close to the newest day are always re-read (USDA corrects)
+BEEF_START = date(2020, 1, 1)                # how far back the history goes; earlier years exist if ever wanted
+BEEF_USDA = "https://mpr.datamart.ams.usda.gov/services/v1.1/reports/2453"
 BEEF_MOVER_TRADES = 10                       # trades a cut needs today to count as a mover (thin days are noise)
 PRIMALS = [("rib", "Rib"), ("chuck", "Chuck"), ("round", "Round"), ("loin", "Loin"), ("brisket", "Brisket"), ("plate", "Short plate"), ("flank", "Flank")]
 PRIMAL_ITEM = {"rib": "Primal Rib", "chuck": "Primal Chuck", "round": "Primal Round", "loin": "Primal Loin",
@@ -853,6 +856,44 @@ def cut_names():
     d = json.load(open(os.path.join(ROOT, "_data", "beef_cuts.json"), encoding="utf-8"))
     d.pop("_about", None)
     return d
+
+
+def beef_usda(first, last):
+    """USDA's whole report (allSections) for every business day from `first` to `last`, as
+    days {day: [day, choice, select, choice_loads, select_loads, trim_loads, coarse_loads]},
+    items {(section, item, grade): {day: [day, low, high, wavg, trades, lbs]}} and published
+    {day: USDA's timestamp}. The same rules as parse() in worker/src/beef.js: a cut that didn't
+    trade (USDA's $0.00) is no row, and runs of spaces in a description are made one."""
+    q = f"q=report_date={first:%m/%d/%Y}:{last:%m/%d/%Y}&allSections=true"
+    req = urllib.request.Request(f"{BEEF_USDA}?{q}", headers={"User-Agent": "site-snapshot (github.com/JuanTorresMI)", "Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=180) as r:
+        body = json.load(r)
+    by = {sec.get("reportSection"): sec.get("results") or [] for sec in (body if isinstance(body, list) else [body])}
+    def num(v):
+        try: return None if v in (None, "") else float(str(v).replace(",", ""))
+        except ValueError: return None
+    tidy = lambda v: " ".join(str(v or "").split())
+    day = lambda r: datetime.strptime(str(r["report_date"]).split(" ")[0], "%m/%d/%Y").date().isoformat()
+    days, items, published = {}, {}, {}
+    for r in by.get("Summary", []): published[day(r)] = r.get("published_date") or ""
+    vol = {day(r): r for r in by.get("Current Volume", [])}
+    for r in by.get("Current Cutout Values", []):
+        d, v = day(r), vol.get(day(r), {})
+        days[d] = [d, num(r.get("choice_600_900_current")), num(r.get("select_600_900_current")), num(v.get("choice_volume_loads")),
+                   num(v.get("select_volume_loads")), num(v.get("trimmings_volume_loads")), num(v.get("coarse_volume_loads"))]
+    for r in by.get("Composite Primal Values", []):
+        for grade, v in (("choice", num(r.get("choice_600_900"))), ("select", num(r.get("select_600_900")))):
+            if tidy(r.get("primal_desc")) and v: items.setdefault(("primal", tidy(r["primal_desc"]), grade), {})[day(r)] = [day(r), None, None, v, None, None]
+    for name, section, grade, field in (("Choice Cuts", "cut", "choice", "item_description"), ("Select Cuts", "cut", "select", "item_description"),
+                                        ("Choice and Select Cuts", "mixed", "", "trim_description"), ("Ground Beef", "ground", "", "trim_description"),
+                                        ("Blended Ground Beef", "blended", "", "trim_description"), ("Beef Trimmings", "trim", "", "trim_description")):
+        for r in by.get(name, []):
+            wavg, item = num(r.get("weighted_average")), tidy(r.get(field))
+            if not item or not wavg: continue
+            n = lambda k: None if num(r.get(k)) is None else int(num(r.get(k)))
+            items.setdefault((section, item, grade), {})[day(r)] = [day(r), num(r.get("price_range_low")) or None, num(r.get("price_range_high")) or None, wavg, n("number_trades"), n("total_pounds")]
+    days = {d: v for d, v in days.items() if v[1] is not None or any(d in rows for rows in items.values())}
+    return days, items, published
 
 
 def beef_archive():
@@ -1021,35 +1062,37 @@ def grade_facts(rows, latest, days="days it traded"):
     }
 
 
-def beef(base):
-    cur = get(base + "/beef")
-    if not cur.get("latest"): raise RuntimeError("the Worker has no beef data yet")
+def beef():
     names = cut_names()
 
-    # History: the archive (the committed CSVs), with the Worker's days laid over it. Old months the
-    # archive already holds aren't asked for again; recent ones always are, in case USDA corrected
-    # them, and so is the archive's oldest month, which is where a backfill still running stopped.
+    # History: the archive (the committed CSVs) first. USDA is asked only for the months it doesn't
+    # settle: any month since BEEF_START with nothing in it, and the last BEEF_RECENT_DAYS, which
+    # USDA sometimes corrects. On an ordinary run that is one or two requests of about 2 MB each.
     days, items = beef_archive()
     have = {d[:7] for d in days}
-    have.discard(min(have, default=None))
-    recent = (iso_day(cur["latest"]) - timedelta(days=BEEF_RECENT_DAYS)).date().isoformat()[:7]
-    for m in cur.get("months") or []:
-        if m in have and m < recent: continue
-        h = get(f"{base}/beef/history?month={m}")
-        got = {r[0] for r in h.get("days") or []}
-        if not got: continue
-        for k in items:
-            for d in got: items[k].pop(d, None)
-        for r in h["days"]: days[r[0]] = r
-        for it in h.get("items") or []:
-            bucket = items.setdefault((it["section"], it["item"], it["grade"]), {})
-            for r in it["days"]: bucket[r[0]] = r
+    today_ct = datetime.now(ZoneInfo("America/Chicago")).date() if TZ is not timezone.utc else datetime.now(timezone.utc).date()
+    recent = ((iso_day(max(days)) - timedelta(days=BEEF_RECENT_DAYS)).date() if days else BEEF_START).isoformat()[:7]
+    published, fetched = {}, 0
+    y, m = BEEF_START.year, BEEF_START.month
+    while (y, m) <= (today_ct.year, today_ct.month):
+        key = f"{y}-{m:02d}"
+        if key not in have or key >= recent:
+            first_day, last_day = date(y, m, 1), min(date(y, m, calendar.monthrange(y, m)[1]), today_ct)
+            got_days, got_items, got_pub = beef_usda(first_day, last_day)
+            fetched += 1
+            if got_days:
+                for k in items:
+                    for d in got_days: items[k].pop(d, None)
+                days.update(got_days); published.update(got_pub)
+                for k, rows in got_items.items(): items.setdefault(k, {}).update(rows)
+        m += 1
+        if m > 12: y, m = y + 1, 1
+    if not days: raise RuntimeError("USDA returned no boxed beef reports")
+    print(f"beef: asked USDA for {fetched} month{'s' if fetched != 1 else ''}")
     series = {k: [v[d] for d in sorted(v)] for k, v in items.items() if v}
     order = sorted(days)
     latest, first = order[-1], order[0]
-    # The history is whole once it reaches the Worker's start date, whether the Worker walked there
-    # itself or the archive already held it (a freshly deployed Worker is still backfilling).
-    complete = bool(cur.get("backfill_done")) or (iso_day(first) - iso_day(cur.get("start") or first)).days < 7
+    complete = (iso_day(first).date() - BEEF_START).days < 7      # the record reaches back to the start
     today, prior = days[latest], (days[order[-2]] if len(order) > 1 else None)
 
     def info(item):
@@ -1285,15 +1328,37 @@ def beef(base):
                      f"description: {json.dumps(desc, ensure_ascii=False)}\n---\n")
 
     pub = None
-    try: pub = datetime.strptime((cur.get("published") or "").split(" ")[0], "%m/%d/%Y")
+    try: pub = datetime.strptime((published.get(latest) or "").split(" ")[0], "%m/%d/%Y")
     except ValueError: pass
     due = next_business_day(latest)
-    return {"generated": cur["updated"], "latest": latest, "date": d_full(latest), "day": d_label(latest), "on_day": f"{iso_day(latest):%A}, {d_full(latest)}",
+
+    # The newest report as one plain JSON file, for anyone who wants it in code without learning
+    # USDA's datamart: plain names, codes and both units, beside the CSVs. Served by GitHub Pages,
+    # which allows any site to fetch it. No timestamp of its own, so it only changes with the data.
+    feed = {"source": "USDA AMS Livestock Mandatory Reporting, LM_XB403 (National Daily Boxed Beef Cutout & Boxed Beef Cuts, Negotiated Sales, PM)",
+            "source_url": "https://mymarketnews.ams.usda.gov/viewReport/2453", "license": "U.S. government data, public domain. Credit USDA AMS.",
+            "units": "USD per hundredweight (100 lb) unless a field says per_lb", "report_date": latest, "published": published.get(latest, ""),
+            "cutout": {"choice": today[1], "select": today[2], "choice_select_spread": None if today[1] is None or today[2] is None else round(today[1] - today[2], 2)},
+            "loads": {"choice": today[3], "select": today[4], "trimmings": today[5], "coarse_ground": today[6]},
+            "primals": [{"primal": k, "choice": (items.get(("primal", PRIMAL_ITEM[k], "choice")) or {}).get(latest, [None] * 4)[3],
+                         "select": (items.get(("primal", PRIMAL_ITEM[k], "select")) or {}).get(latest, [None] * 4)[3]} for k, _ in PRIMALS],
+            "items": [{"name": info(item)["name"], "usda_description": item, "section": sec, "grade": grade, "imps": info(item).get("imps", ""),
+                       "fat_limitation": info(item).get("fl"), "primal": info(item).get("primal", ""), "low": r[1], "high": r[2], "weighted_average": r[3],
+                       "weighted_average_per_lb": round(r[3] / 100, 4), "trades": r[4], "pounds": r[5],
+                       "page": f"https://juantorresmi.github.io/beef-prices/{info(item)['slug']}/" if info(item)["slug"] in pages else None}
+                      for (sec, item, grade), rows in sorted(series.items(), key=lambda kv: (kv[0][0], kv[0][1], grade_order.get(kv[0][2], 3)))
+                      if sec != "primal" for r in [rows[-1]] if r[0] == latest],
+            "history": {"cutout_daily": "https://juantorresmi.github.io/beef-prices/boxed-beef-cutout-daily.csv",
+                        "cuts_by_year": [f"https://juantorresmi.github.io/beef-prices/{x['file']}" for x in downloads[1:]]}}
+    with open(os.path.join(BEEF_DIR, "latest.json"), "w", encoding="utf-8", newline="\n") as fh:
+        json.dump(feed, fh, ensure_ascii=False, indent=1); fh.write("\n")
+
+    return {"generated": datetime.now(timezone.utc).isoformat(timespec="seconds"), "latest": latest, "date": d_full(latest), "day": d_label(latest), "on_day": f"{iso_day(latest):%A}, {d_full(latest)}",
             "published": full_date(pub) if pub else "", "next_due": f"{due:%a}, {full_date(due)}",
             "first_iso": first, "first": d_full(first), "record_days": fmt(len(order)), "backfill_done": complete,
             "stamp": {"choice": usd(c), "choice_chg": money_change(c, pc), "select": usd(s), "select_chg": money_change(s, ps),
                       "spread": usd(spread) if spread is not None else "", "loads": fmt(round(loads[0] + loads[1])) if loads[0] is not None and loads[1] is not None else ""},
-            "summary": " ".join(parts), "cutout": cutout, "chart_year": chart_year, "chart_all": chart_all, "recent": recent,
+            "raw": {"choice": c, "select": s}, "summary": " ".join(parts), "cutout": cutout, "chart_year": chart_year, "chart_all": chart_all, "recent": recent,
             "grid": year_grid(cmonths, lambda v: f"{v:,.0f}"), "season": seasons(cmonths, latest),
             "primals": primals, "groups": groups, "quiet": sorted(quiet, key=lambda q: q["name"]), "ground": ground,
             "ups": ups, "downs": downs, "index": index, "downloads": downloads,
@@ -1306,7 +1371,7 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     failed = 0
     jobs = (("youtube", lambda: youtube(get(base + "/youtube"))), ("watching", lambda: watching(get(base + "/"))),
-            ("reefer", lambda: reefer(base)), ("border", lambda: border(base)), ("beef", lambda: beef(base)))
+            ("reefer", lambda: reefer(base)), ("border", lambda: border(base)), ("beef", beef))
     only = sys.argv[1:]                          # `snapshot.py beef` runs just that one
     if only: jobs = tuple(j for j in jobs if j[0] in only)
     for name, job in jobs:

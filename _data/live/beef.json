@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-17T13:11:08.756Z",
+ "generated": "2026-10-17T16:48:01+00:00",
  "latest": "2026-10-16",
  "date": "Oct 16, 2026",
  "day": "Fri, Oct 16",
@@ -17,6 +17,10 @@
   "select_chg": "+$0.43",
   "spread": "$19.26",
   "loads": "109"
+ },
+ "raw": {
+  "choice": 372.31,
+  "select": 353.05
  },
  "summary": "On Friday, October 16, the Choice cutout was $372.31 per hundredweight, down $1.67 from the day before, and Select was $353.05, up $0.43. Choice ran $19.26 over Select. Packers sold 103 loads of Choice cuts and 5 of Select on negotiated deals that day, plus 15 of trimmings and 11 of coarse ground beef.",
  "cutout": {
@@ -22959,7 +22963,7 @@
      "iso": "2026-10-05",
      "cwt": "$532.00",
      "lb": "$5.32",
-     "v": 532,
+     "v": 532.0,
      "range": "$530.00–$540.00",
      "trades": "3",
      "lbs": "2,496",

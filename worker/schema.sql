@@ -80,33 +80,10 @@ CREATE TABLE IF NOT EXISTS border_latest (
   updated_at TEXT NOT NULL
 );
 
--- The boxed beef board (src/beef.js). Prices are US dollars per hundredweight (100 lb). A cut that
--- didn't trade has no row at all: USDA prints $0.00 for it, which is unknown, never free.
-CREATE TABLE IF NOT EXISTS beef_days (
-  day           TEXT PRIMARY KEY,                  -- "YYYY-MM-DD", the report date
-  choice_cutout REAL,                              -- Choice cutout, 600-900 lb carcasses
-  select_cutout REAL,
-  choice_loads  REAL,                              -- volume, in loads of 40,000 lb
-  select_loads  REAL,
-  trim_loads    REAL,
-  coarse_loads  REAL,                              -- coarse ground beef
-  published     TEXT                               -- USDA's "MM/DD/YYYY HH:MM:SS"
-);
-
-CREATE TABLE IF NOT EXISTS beef_items (
-  day     TEXT NOT NULL,
-  section TEXT NOT NULL,                           -- primal, cut, mixed, ground, blended or trim
-  item    TEXT NOT NULL,                           -- USDA's description, whitespace tidied: "Rib, ribeye, bnls, heavy (112A 3)"
-  grade   TEXT NOT NULL,                           -- choice, select, or "" for items sold without a grade
-  low     REAL,
-  high    REAL,
-  wavg    REAL NOT NULL,                           -- weighted average; for a primal, its composite value
-  trades  INTEGER,
-  lbs     INTEGER,
-  PRIMARY KEY (day, item, grade)
-) WITHOUT ROWID;
-
-CREATE TABLE IF NOT EXISTS beef_meta (             -- the backfill's place in history
-  key   TEXT PRIMARY KEY,
-  value TEXT
+-- The boxed beef board (src/beef.js). One row: USDA's newest report. USDA keeps the history and
+-- serves any date range, so nothing here duplicates it (scripts/snapshot.py reads it from USDA).
+CREATE TABLE IF NOT EXISTS beef_latest (
+  id         INTEGER PRIMARY KEY CHECK (id = 1),
+  body       TEXT NOT NULL,                        -- the JSON GET /beef serves
+  updated_at TEXT NOT NULL
 );
