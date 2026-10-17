@@ -7,16 +7,19 @@
  *   GET /youtube   the channel: { channel, stats, recent, history, updated } (see youtube.js)
  *   GET /reefer, /reefer/history?year=Y   USDA reefer truck rates (see reefer.js)
  *   GET /border, /border/port?id=P   truck waits at the land border, live and by hour (see border.js)
+ *   GET /beef, /beef/history?month=YYYY-MM   USDA's daily boxed beef cutout and cut prices (see beef.js)
  *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
  *
- * Two cron triggers in wrangler.toml call `scheduled`: at :17 to poll YouTube, at :47 for the
+ * Three cron triggers in wrangler.toml call `scheduled`: at :17 to poll YouTube, at :47 for the
  * reefer rates (a new report every sixth hour, one week of backfill the others). Both also read
- * CBP's border wait times, so the border board is polled every half hour.
+ * CBP's border wait times, so the border board is polled every half hour. The third, at :02 and
+ * :32, is the beef board's alone (a new report when there is one, a week of backfill otherwise).
  */
 import { catalog, CATALOG_MAX_AGE, visits, guestbook, sign, unsign, Refused } from "./music.js";
 import { poll, snapshot, YOUTUBE_MAX_AGE } from "./youtube.js";
 import { reeferTick, reeferData, reeferHistory, REEFER_MAX_AGE } from "./reefer.js";
 import { borderTick, borderNow, borderPort, BORDER_MAX_AGE, BORDER_PORT_MAX_AGE } from "./border.js";
+import { beefTick, beefData, beefHistory, BEEF_MAX_AGE } from "./beef.js";
 
 const STREMIO = "https://api.strem.io/api/datastoreGet";
 const SUBSTACK = "https://juantorresis.substack.com/feed";
@@ -41,6 +44,7 @@ export default {
     if (route === "/youtube") return youtubeRoute(env, ctx, url, cors);
     if (route === "/reefer" || route === "/reefer/history") return reeferRoute(env, ctx, route, url, cors);
     if (route === "/border" || route === "/border/port") return borderRoute(env, ctx, route, url, cors);
+    if (route === "/beef" || route === "/beef/history") return beefRoute(env, ctx, route, url, cors);
 
     const feed = route === "/substack";
     const maxAge = feed ? FEED_CACHE_S : TV_CACHE_S;
@@ -73,6 +77,8 @@ export default {
   // Crons in wrangler.toml. A failed poll is logged and the last stored data stays.
   async scheduled(event, env, ctx) {
     const log = (what) => (e) => console.error(what + ":", e && e.message ? e.message : e);
+    // The beef board's trigger runs nothing else, so its week of backfill has the run's CPU to itself.
+    if (event.cron === BEEF_CRON) return ctx.waitUntil(beefTick(env).catch(log("beef")));
     if (event.cron === REEFER_CRON) ctx.waitUntil(reeferTick(env, new Date(event.scheduledTime)).catch(log("reefer")));
     else ctx.waitUntil(poll(env).catch(log("youtube poll")));
     ctx.waitUntil(borderTick(env).catch(log("border")));
@@ -181,6 +187,31 @@ async function borderRoute(env, ctx, route, url, cors) {
     return json({ error: e.message || String(e) }, 502, cors);
   }
   const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${port ? BORDER_PORT_MAX_AGE : BORDER_MAX_AGE}` });
+  ctx.waitUntil(cache.put(cacheKey, res.clone()));
+  return res;
+}
+
+/* ------------------------------------------------------------ the boxed beef board ---- */
+
+const BEEF_CRON = "2,32 * * * *";   // must match the third entry in wrangler.toml
+
+async function beefRoute(env, ctx, route, url, cors) {
+  const month = route === "/beef/history" ? String(url.searchParams.get("month") || "") : null;
+  if (month !== null && !/^20\d\d-(0[1-9]|1[0-2])$/.test(month)) return json({ error: "Give a month, like ?month=2025-07" }, 400, cors);
+  const cache = caches.default, cacheKey = new Request(url.origin + "/__cache" + route + (month ? "/" + month : ""));
+  const hit = await cache.match(cacheKey);
+  if (hit) { const fresh = new Response(hit.body, hit); for (const [k, v] of Object.entries(cors)) fresh.headers.set(k, v); return fresh; }
+  let payload;
+  try {
+    payload = month ? await beefHistory(env, month) : await beefData(env);
+  } catch (e) {
+    console.error("beef:", e && e.message ? e.message : e);
+    return json({ error: e.message || String(e) }, 502, cors);
+  }
+  // Nothing stored yet: answer, but don't keep the empty answer at the edge (see reeferRoute).
+  const empty = month ? payload.days.length === 0 : !payload.latest;
+  if (empty) return json(payload, 200, { ...cors, "Cache-Control": "no-store" });
+  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${BEEF_MAX_AGE}` });
   ctx.waitUntil(cache.put(cacheKey, res.clone()));
   return res;
 }

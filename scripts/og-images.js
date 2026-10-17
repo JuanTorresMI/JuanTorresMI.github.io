@@ -36,6 +36,8 @@ const CARDS = {
     sub: "USDA’s weekly produce truck rates, lane by lane, with the history", bottom: ["juantorresmi.github.io/reefer-rates", "USDA AMS · Cloudflare Worker"] },
   "border-waits": { top: ["Juan Torres", "Data"], name: "Border truck waits",
     sub: "CBP’s commercial lane waits, right now and by hour of the week", bottom: ["juantorresmi.github.io/border-waits", "CBP · Cloudflare Worker"] },
+  "beef-prices": { top: ["Juan Torres", "Data"], name: "Boxed beef prices",
+    sub: "USDA’s daily cutout and the price of every cut, with the history", bottom: ["juantorresmi.github.io/beef-prices", "USDA AMS · Cloudflare Worker"] },
   youtube: { top: ["Juan Torres", "YouTube"], name: "On YouTube",
     sub: "The channel’s numbers, refreshed every hour", bottom: ["juantorresmi.github.io/youtube", "Cloudflare Worker · YouTube Data API"] },
 };

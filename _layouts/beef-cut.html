@@ -1,0 +1,151 @@
+---
+layout: default
+---
+{%- comment -%}
+  One item on the beef price board: /beef-prices/<slug>/, a cut, a primal, or a ground beef or
+  trimmings item, in the board's rate-sheet style (.rb .bf in style.css). The page file in
+  _beef_cuts/ is only front matter (cut, title, description), written by scripts/snapshot.py;
+  everything shown comes from site.data.live.beef.items[page.cut].
+{%- endcomment -%}
+{%- assign r = site.data.live.beef -%}
+{%- assign c = r.items[page.cut] -%}
+{%- assign m = c.grades | first -%}
+<div class="rb bf">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family"><a class="rb-lane-back" href="/beef-prices/">Work · Beef prices</a></p>
+    <h1>{{ c.name | default: page.title }}</h1>
+    {%- if c %}
+    <p class="rb-lede">
+      {%- if c.section == "primal" -%}
+        The composite value of the beef {{ c.primal_name | downcase }} primal: what the day’s negotiated sales of its cuts add up to, per hundredweight of the primal, from USDA’s daily boxed beef report.
+      {%- else -%}
+        USDA’s daily wholesale price for {{ c.name | downcase }}{% if c.imps != "" %} (IMPS {{ c.imps }}{% if c.fl %}, fat limitation {{ c.fl }}: {{ c.fat }}{% endif %}){% endif %}, sold by packers in boxes on negotiated deals.{% if c.also != "" %} Stores often sell it as {{ c.also }}.{% endif %}
+      {%- endif %}
+      {% if m.current %}The latest {% if m.grade != "" %}{{ m.label }} {% endif %}{% if c.section == "primal" %}value{% else %}price{% endif %}, for {{ m.date }}, is <strong>{{ m.cwt }}</strong> per hundredweight{% if c.section != "primal" %}, or <strong>{{ m.lb }} a pound</strong>{% endif %}.{% else %}It didn’t trade on the latest report ({{ r.on_day }}); its last {% if m.grade != "" %}{{ m.label }} {% endif %}price was {{ m.cwt }} per hundredweight{% if c.section != "primal" %} ({{ m.lb }} a pound){% endif %}, on {{ m.date }}.{% endif %}
+    </p>
+    {%- else %}
+    <p class="rb-lede">This item’s numbers aren’t in the latest copy of the data. The <a class="link" href="/beef-prices/">beef price board</a> has today’s prices.</p>
+    {%- endif %}
+  </div>
+  {%- if c %}
+  <dl class="rb-stamp">
+    {%- for g in c.grades %}
+    <div><dt>{{ g.label }}{% if g.current == false %}, {{ g.day }}{% endif %}</dt><dd>{% if c.section == "primal" %}{{ g.cwt }}{% if g.current and g.change != "" %} <span>{{ g.change }}</span>{% endif %}{% else %}{{ g.lb }}/lb{% if g.current and g.change_pct != "" %} <span>{{ g.change_pct }}</span>{% endif %}{% endif %}</dd></div>
+    {%- endfor %}
+    {%- if m.lbs != "" and m.current %}<div><dt>Pounds sold</dt><dd>{{ m.lbs }}</dd></div>{% endif %}
+    {%- if m.trades != "" and m.current %}<div><dt>Trades</dt><dd>{{ m.trades }}</dd></div>{% endif %}
+  </dl>
+  {%- endif %}
+</header>
+
+{% if c %}
+<div class="rb-judge">
+  <p class="rb-tag">{% if m.current %}Is today’s price high or low?{% else %}How its last price compared{% endif %}{% if m.standing.tag != "" %} · {{ m.standing.tag }}{% endif %}</p>
+  <p class="rb-say">{{ m.standing.text }}</p>
+  {%- if m.standing.pos %}
+  <div class="rb-meter" role="img" aria-label="{{ m.standing.text }}"><span style="left: {{ m.standing.pos }}%"></span></div>
+  <p class="rb-meter-k"><span>Lowest of the year</span><span>Highest of the year</span></p>
+  {%- endif %}
+</div>
+<p class="rb-note">
+  {%- if m.year_ago %}A year earlier ({{ m.year_ago.date }}) it was {{ m.year_ago.cwt }} per hundredweight; {% if m.current %}today’s price{% else %}its last price{% endif %} is {{ m.year_ago.change }} against that. {% endif -%}
+  {%- if m.days_year > 0 %}{% if c.section == "primal" %}Over the past year’s {{ m.days_year }} reports it averaged{% else %}Over the past year it traded on {{ m.days_year }} days, averaging{% endif %} {{ m.avg }}, from a low of {{ m.low }} ({{ m.low_day }}) to a high of {{ m.high }} ({{ m.high_day }}). {% endif -%}
+  {%- if c.season %}In a usual year ({{ c.season.years }}) it runs highest in {{ c.season.high }} ({{ c.season.high_v }} against its own year’s average) and lowest in {{ c.season.low }} ({{ c.season.low_v }}).{% endif %}
+</p>
+
+{%- if c.grades.size > 1 %}
+<div class="rb-scroll">
+  <table class="rb-t rb-stack bf-grades">
+    <thead><tr><th scope="col">Grade</th><th scope="col">{% if c.section == "primal" %}Latest{% else %}Last traded{% endif %}</th><th scope="col">Per cwt</th>{% if c.section != "primal" %}<th scope="col">Per lb</th><th scope="col">Range, per cwt</th><th scope="col">Pounds</th>{% endif %}<th scope="col">Change</th></tr></thead>
+    <tbody>
+    {%- for g in c.grades %}
+      <tr><th scope="row">{{ g.label }}</th><td data-label="{% if c.section == "primal" %}Latest{% else %}Last traded{% endif %}">{{ g.day }}</td><td data-label="Per cwt">{{ g.cwt }}</td>{% if c.section != "primal" %}<td data-label="Per lb">{{ g.lb }}</td><td data-label="Range">{{ g.range | default: "—" }}</td><td data-label="Pounds">{{ g.lbs | default: "—" }}</td>{% endif %}<td data-label="Change"><span>{{ g.change | default: "—" }}{% if g.change_since != "" %} <span class="bf-was">since {{ g.change_since }}</span>{% endif %}</span></td></tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+</div>
+{%- endif %}
+
+{%- if c.chart %}
+<section class="rb-block">
+  <h2>Every week on record <span>{{ c.chart.start }} to {{ c.chart.end }}</span></h2>
+  <figure class="rb-chart">
+    <svg viewBox="0 0 {{ c.chart.w }} {{ c.chart.h }}" preserveAspectRatio="none" role="img" aria-label="Weekly average price of {{ c.name | escape }}{% for l in c.chart.lines %}{% if forloop.first %}, {% elsif forloop.last %} and {% else %}, {% endif %}{{ l.label }}{% endfor %}, from {{ c.chart.start }} to {{ c.chart.end }}, between {{ c.chart.bottom }} and {{ c.chart.top }} per hundredweight.">
+      {%- for l in c.chart.lines %}<path class="{{ l.cls }}" d="{{ l.d }}"/>{% endfor %}
+    </svg>
+    <figcaption><span>{{ c.chart.top }}</span><span>{{ c.chart.bottom }}</span></figcaption>
+  </figure>
+  <ul class="bf-key">{% for l in c.chart.lines %}<li><span class="bf-swatch{% if l.cls == 'line2' %} bf-swatch2{% endif %}"></span>{{ l.label }}</li>{% endfor %}<li>Weekly average, dollars per hundredweight</li></ul>
+  <p class="rb-note">Each point is the average of the week’s daily prices. Gaps are stretches of three weeks or more with no sales{% unless r.backfill_done %}, or that haven’t been collected yet{% endunless %}. On record since {{ c.since }}: {{ c.days_all }} days with a price.</p>
+</section>
+{%- endif %}
+
+{%- if c.grid.size > 0 %}
+<section class="rb-block">
+  <h2>Average {{ c.main }} price by month <span>{{ c.grid_unit }}</span></h2>
+  <div class="rb-scroll">
+    <table class="rb-table bf-grid">
+      <thead><tr><th scope="col">Year</th>{% assign mnames = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" | split: "," %}{% for mn in mnames %}<th scope="col">{{ mn }}</th>{% endfor %}<th scope="col">Year</th></tr></thead>
+      <tbody>
+      {%- for y in c.grid %}
+        <tr><th scope="row">{{ y.year }}</th>{% for v in y.cells %}<td>{{ v | default: "·" }}</td>{% endfor %}<td><strong>{{ y.avg }}</strong></td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="rb-note">Each month is weighted by the pounds sold on each day{% if c.section == "primal" %} (primal values are a plain average){% endif %}. A dot is a month with no sales on record.</p>
+  {%- if c.season %}
+  <h3 class="bf-h3">Its usual year <span>Each month against its own year’s average, the median over {{ c.season.years }}</span></h3>
+  <ol class="bf-season">
+    {%- for s in c.season.cells %}<li{% if s.hi %} class="bf-hi"{% elsif s.lo %} class="bf-lo"{% endif %}><span>{{ s.m }}</span>{{ s.v | default: "·" }}</li>{% endfor %}
+  </ol>
+  {%- endif %}
+</section>
+{%- endif %}
+
+<section class="rb-block">
+  <h2>Day by day <span>The last {{ c.rows.size }} days it traded</span></h2>
+  <div class="rb-scroll">
+    <table class="rb-table">
+      <thead><tr><th scope="col">Day</th>{% for h in c.heads %}<th scope="col">{% if c.grades.size > 1 %}{{ h }}, {% endif %}per cwt</th>{% if c.section != "primal" %}<th scope="col">Per lb</th><th scope="col">Pounds</th>{% endif %}{% endfor %}</tr></thead>
+      <tbody>
+      {%- for d in c.rows %}
+        <tr><th scope="row">{{ d.day }}</th>{% for x in d.cells %}<td>{{ x.cwt | default: "—" }}</td>{% if c.section != "primal" %}<td>{{ x.lb | default: "—" }}</td><td>{{ x.lbs | default: "—" }}</td>{% endif %}{% endfor %}</tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="rb-note">Every day is in the <a class="link" href="/beef-prices/#data">CSV downloads</a>, with the day’s low and high and the number of trades.</p>
+</section>
+
+{%- if c.siblings.size > 0 %}
+<section class="rb-block">
+  <h2>{% if c.section == "primal" %}Cuts from the {{ c.primal_name | downcase }}{% else %}Other cuts from the {{ c.primal_name | downcase }}{% endif %} today <span>Dearest first, per pound</span></h2>
+  <div class="rb-scroll">
+    <table class="rb-table">
+      <thead><tr><th scope="col">Cut</th><th scope="col">Per lb</th><th scope="col">Grade</th></tr></thead>
+      <tbody>
+      {%- for s in c.siblings %}
+        <tr{% if s.here %} class="rb-here"{% endif %}><th scope="row">{% if s.here %}{{ s.name }}{% else %}<a href="/beef-prices/{{ s.slug }}/">{{ s.name }}</a>{% endif %}</th><td>{{ s.lb }}</td><td>{{ s.grade }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  {%- if c.section != "primal" and c.primal_slug != "" %}
+  <p class="rb-note">The {{ c.primal_name | downcase }} primal as a whole{% if c.primal_value != "" %} was worth {{ c.primal_value }} per hundredweight (Choice) on {{ r.on_day }}{% endif %}: <a class="link" href="/beef-prices/{{ c.primal_slug }}/">its page</a>.</p>
+  {%- endif %}
+</section>
+{%- endif %}
+{% endif %}
+</div>
+
+<section class="sec">
+  <header class="sec-head"><h2>About these numbers</h2></header>
+  <div class="row">
+    <div class="body prose">
+      <p>Prices are USDA’s, from the <a href="https://mymarketnews.ams.usda.gov/viewReport/2453">National Daily Boxed Beef Cutout and Boxed Beef Cuts, Negotiated Sales</a> afternoon report (LM_XB403): the weighted average of the day’s negotiated sales of boxed beef, FOB the packing plant, for delivery within 0 to 21 days, in dollars per hundredweight (100 lb). Divide by 100 for the price per pound. These are wholesale prices for whole cuts in boxes, well below what the same cut costs at a store.{% if c and c.usda %} USDA lists this item as “{{ c.usda }}”.{% endif %}{% if r.next_due %} The latest report is for {{ r.date }}; the next is due {{ r.next_due }}.{% endif %}</p>
+      <p>The <a href="/beef-prices/">beef price board</a> has every cut for today, the cutout, how the data is collected, and the whole history as <a href="/beef-prices/#data">CSV downloads</a>. Source: USDA Agricultural Marketing Service, Livestock, Poultry and Grain Market News.</p>
+    </div>
+  </div>
+</section>

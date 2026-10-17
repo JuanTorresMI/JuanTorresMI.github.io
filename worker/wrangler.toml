@@ -27,9 +27,11 @@ YOUTUBE_CHANNEL = "@JuanJulio001"
 
 # Once an hour, at 17 past (off the top of the hour, when everyone else's crons run): poll
 # YouTube for the /youtube/ page and store the result in D1. At 47 past: the reefer rate
-# board (src/reefer.js); the string must match REEFER_CRON in index.js. Cron triggers are free.
+# board (src/reefer.js); the string must match REEFER_CRON in index.js. At 2 and 32 past: the
+# boxed beef board (src/beef.js), on a trigger of its own; the string must match BEEF_CRON.
+# Cron triggers are free (the free plan allows five per account; these are three).
 [triggers]
-crons = ["17 * * * *", "47 * * * *"]
+crons = ["17 * * * *", "47 * * * *", "2,32 * * * *"]
 
 # The music page's counter and guestbook (created with `wrangler d1 create yokonjuan`).
 # Also the YouTube page's hourly snapshots. Schema: schema.sql. A database id is not a

@@ -16,7 +16,7 @@ how the live data flows, the workflows and scripts.
 | `_layouts/default.html` | Ordinary pages: content inside `<main class="page frame">` |
 | `_layouts/post.html` | Writing. Adds date, reading time, tags, previous / next |
 | `_layouts/app.html` | Full-width project pages: nav, project bar, the page's own markup, footer |
-| `_layouts/reefer-lane.html`, `border-crossing.html` | One generated page per reefer lane / border crossing (see "Live data pages") |
+| `_layouts/reefer-lane.html`, `border-crossing.html`, `beef-cut.html` | One generated page per reefer lane / border crossing / beef cut (see "Live data pages") |
 | `_layouts/artist.html`, `music/`, `_data/music.yml` | Yokonjuan's page (`/music/`); see "The music page" |
 | `_layouts/redirect.html`, `redirects/` | Old addresses that moved |
 | `assets/css/style.css` | The only stylesheet for the portfolio. Fonts, tokens, grid, every component, print |
@@ -25,7 +25,7 @@ how the live data flows, the workflows and scripts.
 | `fruit-fly-dispatcher/` | The simulation: `index.html` (layout `app`, its own unscoped styles and copy of the tokens), `showcase-data.js`, `runs/*.js` (loaded on demand) |
 | `craft-ledger.html` | The ledger: one file (styles, markup, recipe JSON, script) inside layout `app`, styles scoped under `.cl`. Below the app sits its guide (`#guide`, ordinary `.page` markup): what search engines and SMP players read. The old guide address redirects there |
 | `aggregate-planning/` | The planner: `index.html` (layout `app`), `planner.css` (scoped under `.ap`), `model.js` (the LP/MIP; no DOM, runs in Node), `solver.js` + `solver-worker.js` (HiGHS in a Web Worker), `app.js`, `study.js` (study mode: the plan taken apart step by step; the worker's `explain()` does the extra solves), `xlsx.js` (the downloadable workbook, no library), `sw.js` (offline). `lib/` holds HiGHS and Chart.js, vendored unchanged |
-| `reefer-rates/`, `border-waits/`, `es/tiempos-de-espera/` | The two data boards' index pages, their CSVs and `border-waits/live.js` (see "Live data pages") |
+| `reefer-rates/`, `border-waits/`, `es/tiempos-de-espera/`, `beef-prices/` | The three data boards' index pages, their CSVs and `border-waits/live.js` (see "Live data pages") |
 | `worker/` | The Cloudflare Worker behind every live page. Not part of the Jekyll build; its README lists its routes, crons, secrets and tables |
 | `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` and `music-og.js` (share pictures), `snapshot.py` (Worker data → `_data/live/`), `lastmod.py` (git dates for the sitemap), `indexnow.py` (pings Bing and other IndexNow engines after each deploy) |
 | `_data/live/` | Twice-daily copies of the Worker's answers, already formatted. Written by `snapshot.py` from the `Snapshot live pages` workflow, which commits them and starts a deploy. Don't edit these files by hand |
@@ -49,7 +49,9 @@ insist on `bundle exec`.
 For anything visual, also run `scripts/screenshots.js` and look at the pictures. On the web,
 the session hook in `.claude/hooks/` installs Jekyll; Playwright is only there if the container
 has it. Without Jekyll (a Windows machine with no Ruby, say), push a branch and let the
-`Check the site` workflow build it.
+`Check the site` workflow build it; it keeps the build as the run's `site` artifact
+(`gh run download <run id> -n site -D _site`), so the screenshots can still run on the real thing.
+Playwright can drive an installed Edge or Chrome (`channel: "msedge"`) instead of downloading Chromium.
 
 ## Design rules
 
@@ -79,7 +81,7 @@ dates and figures. Spacing steps are multiples of 8.
 
 | Family | Form | Pages (root class) |
 | --- | --- | --- |
-| **Work** | A dense rate sheet or control panel, mono figures | Reefer board (`.rb`), border waits (`.rb .bw`), planner (`.ap`), Fruit Fly Dispatcher |
+| **Work** | A dense rate sheet or control panel, mono figures | Reefer board (`.rb`), border waits (`.rb .bw`), beef prices (`.rb .bf`), planner (`.ap`), Fruit Fly Dispatcher |
 | **Professional** | The raised eggshell card | Home, résumé (`.cv`), projects (`.pj`) |
 | **Gamer** | Night stock, 2px HUD frames, mono labels, slot grids | YouTube (`.yt`), Craft Ledger's gamer layer (`.cl`) |
 | **Chill** | Night stock, italic serif, posters, lots of air | The house TV (`.tv`) |
@@ -115,6 +117,17 @@ JavaScript get real content; and, where it matters, a page script swaps in fresh
   `_data/border_text.yml`. Beside the board's own readings, `snapshot.py` pulls CBP's published
   averages for the current month of the previous year (`bwt.cbp.gov/api/historicalwaittimes`) and
   shows them until the board has its own. Data is CBP's Border Wait Times: credit it.
+- **The beef board (`/beef-prices/`, one page per cut, primal and ground beef item)**: built
+  only from `_data/live/beef.json`, with no page script. The source is USDA's LM_XB403 report
+  (boxed beef cutout and cuts, negotiated sales, afternoon), from the LMR datamart, which needs no
+  key; the Worker polls it on a cron trigger of its own. `snapshot.py` writes the JSON, the stubs in
+  `_beef_cuts/` (front matter only, never deleted) and the CSVs in `beef-prices/`: the daily cutout
+  and primals, and one file per year of every cut. Those CSVs are also the archive: each run reads
+  them back and lays the Worker's newest months over them. Names and slugs come from
+  `_data/beef_cuts.json`, keyed on USDA's description; never change a slug once its page is live.
+  Prices are dollars per hundredweight; a cut with no sales that day has no row, never $0. Credit
+  USDA AMS, and make no claims the numbers don't show (seasonal swings are computed against each
+  year's own average, so the drift in prices doesn't read as a season).
 - **`/blog/`**: renders the local posts in HTML and merges Substack's items by script, so the
   list works without JavaScript and for crawlers.
 

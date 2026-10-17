@@ -4,6 +4,7 @@ also have real content in their HTML: for search engines, AI crawlers and reader
 JavaScript off. The script on each page still fetches fresh numbers for everyone else.
 
     python3 scripts/snapshot.py
+    python3 scripts/snapshot.py beef                                  # one source only
     WORKER_URL=http://127.0.0.1:8787 python3 scripts/snapshot.py     # against `wrangler dev`
 
 Writes, already formatted the way the pages show them (Liquid on GitHub Pages can't put commas
@@ -13,11 +14,13 @@ in numbers or say "Oct 14"), so the templates only loop:
     _data/live/watching.json    /watching/
     _data/live/reefer.json      /reefer-rates/ and every lane page
     _data/live/border.json      /border-waits/, /es/tiempos-de-espera/ and every crossing page
+    _data/live/beef.json        /beef-prices/ and every cut page
 
-plus a front-matter stub for each reefer lane (_reefer_lanes/) and each named border crossing
-(_border_crossings/, _border_crossings_es/), never deleted, and the two CSV downloads. A source
-that fails or answers with an error is skipped and its last good file stays. The `Snapshot live
-pages` workflow runs this twice a day and commits whatever changed. Needs only the standard library.
+plus a front-matter stub for each reefer lane (_reefer_lanes/), each named border crossing
+(_border_crossings/, _border_crossings_es/) and each beef cut (_beef_cuts/), never deleted, and the
+CSV downloads. A source that fails or answers with an error is skipped and its last good file
+stays. The `Snapshot live pages` workflow runs this twice a day and commits whatever changed.
+Needs only the standard library.
 """
 import csv, json, os, re, sys, urllib.request
 from urllib.parse import quote
@@ -796,13 +799,513 @@ def reefer(base):
             "row_count": sum(len(w) for w in lanes.values())}
 
 
+# ------------------------------------------------------------------- the boxed beef board ----
+# /beef-prices/ and a page per cut (/beef-prices/<slug>/), from the Worker's /beef (the newest
+# report) and /beef/history (a month at a time). Like the reefer board, no page script: USDA posts
+# once a day, so the copy is the page. The CSV downloads are also the archive: they are read back
+# first and the Worker's days laid over them, so a day once collected is never lost, and the pages
+# keep the whole history even while a freshly deployed Worker is still backfilling.
+
+BEEF_DIR = os.path.join(ROOT, "beef-prices")
+BEEF_CUTS_DIR = os.path.join(ROOT, "_beef_cuts")
+BEEF_CUTOUT_CSV = os.path.join(BEEF_DIR, "boxed-beef-cutout-daily.csv")
+BEEF_YEAR_CSV = lambda y: os.path.join(BEEF_DIR, f"boxed-beef-cut-prices-{y}.csv")
+BEEF_PAGE_DAYS = 26                          # days with a price in the last year before an item gets a page
+BEEF_RECENT_DAYS = 45                        # the Worker's months this close to the latest are always re-read
+BEEF_MOVER_TRADES = 10                       # trades a cut needs today to count as a mover (thin days are noise)
+PRIMALS = [("rib", "Rib"), ("chuck", "Chuck"), ("round", "Round"), ("loin", "Loin"), ("brisket", "Brisket"), ("plate", "Short plate"), ("flank", "Flank")]
+PRIMAL_ITEM = {"rib": "Primal Rib", "chuck": "Primal Chuck", "round": "Primal Round", "loin": "Primal Loin",
+               "brisket": "Primal Brisket", "plate": "Primal Plate", "flank": "Primal Flank"}
+SECTIONS = {"primal": "Primal value", "cut": "Boxed beef cut", "mixed": "Cut sold without a grade", "ground": "Ground beef",
+            "blended": "Blended ground beef", "trim": "Trimmings"}
+GRADE_NAMES = {"choice": "Choice", "select": "Select", "": "Price"}
+# USDA's fat limitation codes, from its boxed beef reports' key (the number after the IMPS number).
+FAT = {1: "3/4 inch average fat, 1 inch at most", 2: "1/4 inch average fat, 1/2 inch at most", 3: "1/8 inch average fat, 1/4 inch at most",
+       4: "practically free of fat (at least 75% of the surface lean)", 5: "peeled or denuded", 6: "peeled or denuded, with the surface membrane removed"}
+MONTH_ABBR = [m[:3] for m in MONTHS]
+
+usd = lambda v: "" if v is None else f"${v:,.2f}"
+per_lb = lambda v: "" if v is None else f"${v / 100:,.2f}"
+iso_day = lambda s: datetime.fromisoformat(s)
+d_label = lambda s: day_label(iso_day(s))                  # Fri, Oct 16
+d_full = lambda s: full_date(iso_day(s))                   # Oct 16, 2026
+
+
+def money_change(a, b):
+    if a is None or b is None: return ""
+    d = round(a - b, 2)
+    return "±$0.00" if d == 0 else f"{'+' if d > 0 else '−'}${abs(d):,.2f}"
+
+
+def pct_change(a, b):
+    if a is None or not b: return ""
+    p = round((a - b) / b * 100, 1)
+    return "0.0%" if p == 0 else f"{'+' if p > 0 else '−'}{abs(p):.1f}%"
+
+
+def next_business_day(s):
+    d = iso_day(s) + timedelta(days=1)
+    while d.weekday() >= 5: d += timedelta(days=1)
+    return d
+
+
+def cut_names():
+    d = json.load(open(os.path.join(ROOT, "_data", "beef_cuts.json"), encoding="utf-8"))
+    d.pop("_about", None)
+    return d
+
+
+def beef_archive():
+    """The committed CSVs read back: days {day: [day, choice, select, choice_loads, select_loads,
+    trim_loads, coarse_loads]} and items {(section, item, grade): {day: [day, low, high, wavg, trades, lbs]}}."""
+    days, items = {}, {}
+    f = lambda r, k: None if r.get(k, "") == "" else float(r[k])
+    n = lambda r, k: None if r.get(k, "") == "" else int(float(r[k]))
+    if os.path.exists(BEEF_CUTOUT_CSV):
+        with open(BEEF_CUTOUT_CSV, encoding="utf-8", newline="") as fh:
+            for r in csv.DictReader(fh):
+                d = r["date"]
+                days[d] = [d, f(r, "choice_cutout"), f(r, "select_cutout"), f(r, "choice_loads"), f(r, "select_loads"), f(r, "trimmings_loads"), f(r, "coarse_ground_loads")]
+                for k, _ in PRIMALS:
+                    for g in ("choice", "select"):
+                        v = f(r, f"{k}_{g}")
+                        if v: items.setdefault(("primal", PRIMAL_ITEM[k], g), {})[d] = [d, None, None, v, None, None]
+    year = 2000
+    while year <= datetime.now().year + 1:
+        p = BEEF_YEAR_CSV(year)
+        if os.path.exists(p):
+            with open(p, encoding="utf-8", newline="") as fh:
+                for r in csv.DictReader(fh):
+                    items.setdefault((r["section"], r["usda_description"], r["grade"]), {})[r["date"]] = [
+                        r["date"], f(r, "low"), f(r, "high"), f(r, "weighted_average"), n(r, "trades"), n(r, "pounds")]
+        year += 1
+    return days, items
+
+
+def standing(prior, value, days="days it traded"):
+    """How today's price ranks against the other days of the past year, in words."""
+    prior = [v for v in prior if v is not None]
+    if value is None or len(prior) < 20:
+        return {"text": "Too few days on record yet to say how this price compares.", "tag": "", "pos": None}
+    n, lower, higher = len(prior), sum(1 for p in prior if p < value), sum(1 for p in prior if p > value)
+    if lower == n: text = f"Higher than on any of the other {n} {days} in the past year."
+    elif higher == n: text = f"Lower than on any of the other {n} {days} in the past year."
+    else: text = f"Higher than on {lower} of the other {n} {days} in the past year."
+    tag = "On the high side" if lower / n > 2 / 3 else "On the low side" if lower / n < 1 / 3 else "About average"
+    return {"text": text, "tag": tag, "pos": round(lower / n * 100)}
+
+
+def near(rows, target, slack=5):
+    """The row nearest a date, within `slack` days of it (rows are [day, ...] sorted by day)."""
+    t = iso_day(target)
+    best = min(rows, key=lambda r: abs((iso_day(r[0]) - t).days), default=None)
+    return best if best and abs((iso_day(best[0]) - t).days) <= slack else None
+
+
+def on_or_before(rows, target, within=14):
+    """The last row on or before a date, if it is no more than `within` days before it."""
+    t = iso_day(target)
+    for r in reversed(rows):
+        d = iso_day(r[0])
+        if d <= t: return r if (t - d).days <= within else None
+    return None
+
+
+def beef_chart(lines, fmt, w=640, h=220, pad=8, weekly=False):
+    """Several price lines on one scale, as SVG paths. lines = [(class, label, [(day, value)])].
+    Weekly averages the days of each week (Monday to Friday); a line breaks where it has no point
+    for more than three weeks, so a cut that stopped trading is drawn with a gap, not a ramp."""
+    series, seen = [], []
+    for cls, label, pts in lines:
+        pts = [(d, v) for d, v in pts if v is not None]
+        seen += [pts[0][0], pts[-1][0]] if pts else []
+        if weekly:
+            wk = {}
+            for d, v in pts:
+                monday = (iso_day(d) - timedelta(days=iso_day(d).weekday())).date().isoformat()
+                wk.setdefault(monday, []).append(v)
+            pts = [(k, sum(v) / len(v)) for k, v in sorted(wk.items())]
+        if len(pts) >= 2: series.append((cls, label, pts))
+    if not series: return None
+    t0 = min(iso_day(s[2][0][0]) for s in series)
+    t1 = max(iso_day(s[2][-1][0]) for s in series)
+    lo = min(v for s in series for _, v in s[2])
+    hi = max(v for s in series for _, v in s[2])
+    if hi == lo: hi = lo + 1
+    span_days = max((t1 - t0).days, 1)
+    X = lambda d: round(pad + (iso_day(d) - t0).days / span_days * (w - 2 * pad), 1)
+    Y = lambda v: round(h - pad - (v - lo) / (hi - lo) * (h - 2 * pad), 1)
+    out = []
+    for cls, label, pts in series:
+        path, prev = "", None
+        for d, v in pts:
+            gap = prev is None or (iso_day(d) - iso_day(prev)).days > 21
+            path += (" M" if gap else " L") + f"{X(d)},{Y(v)}"
+            prev = d
+        out.append({"cls": cls, "label": label, "d": path.strip()})
+    # The dates name the first and last day with a price, not the Monday of their week.
+    return {"w": w, "h": h, "lines": out, "top": fmt(hi), "bottom": fmt(lo), "start": d_full(min(seen)), "end": d_full(max(seen))}
+
+
+def monthly(rows):
+    """[day, low, high, wavg, trades, lbs] rows -> {(year, month): average}, weighted by pounds where
+    USDA gives them (a day that moved 700,000 lb counts for more than one that moved 4,000)."""
+    acc = {}
+    for r in rows:
+        if r[3] is None: continue
+        k = (int(r[0][:4]), int(r[0][5:7]))
+        wt = r[5] if r[5] else 1
+        a = acc.setdefault(k, [0.0, 0.0])
+        a[0] += r[3] * wt; a[1] += wt
+    return {k: a[0] / a[1] for k, a in acc.items() if a[1]}
+
+
+def year_grid(months_avg, fmt):
+    """The monthly averages as a year-by-month table, newest year first, with each year's average."""
+    if not months_avg: return []
+    years = sorted({y for y, _ in months_avg}, reverse=True)
+    rows = []
+    for y in years:
+        vals = [months_avg.get((y, m)) for m in range(1, 13)]
+        have = [v for v in vals if v is not None]
+        rows.append({"year": y, "cells": [fmt(v) if v is not None else "" for v in vals], "avg": fmt(sum(have) / len(have)) if have else ""})
+    return rows
+
+
+def seasons(months_avg, latest):
+    """Each calendar month against its own year's average, the median over the full years on record.
+    Prices drift a long way in six years; comparing a month to its own year takes the drift out. The
+    median, not the mean, so one wild year can't make a season: May 2020, when plants closed and the
+    cutout hit its record, would otherwise make every May look 15% dear. Needs three full years."""
+    full = []
+    for y in sorted({y for y, _ in months_avg}):
+        vals = [months_avg.get((y, m)) for m in range(1, 13)]
+        if y < int(latest[:4]) and sum(1 for v in vals if v is not None) >= 11:
+            have = [v for v in vals if v is not None]
+            mean = sum(have) / len(have)
+            full.append((y, [None if v is None else (v / mean - 1) * 100 for v in vals]))
+    if len(full) < 3: return None
+    def median(xs):
+        xs = sorted(xs); n = len(xs)
+        return None if not n else xs[n // 2] if n % 2 else (xs[n // 2 - 1] + xs[n // 2]) / 2
+    idx = [median([row[m] for _, row in full if row[m] is not None]) for m in range(12)]
+    known = [(m, v) for m, v in enumerate(idx) if v is not None]
+    hi = max(known, key=lambda x: x[1]); lo = min(known, key=lambda x: x[1])
+    return {"years": f"{full[0][0]}–{full[-1][0]}", "count": len(full),
+            "cells": [{"m": MONTH_ABBR[m], "v": "" if v is None else f"{'+' if v >= 0.05 else '−' if v <= -0.05 else '±'}{abs(v):.1f}%",
+                       "hi": m == hi[0], "lo": m == lo[0]} for m, v in enumerate(idx)],
+            "high": MONTHS[hi[0]], "high_v": f"{hi[1]:+.1f}%".replace("-", "−"), "low": MONTHS[lo[0]], "low_v": f"{lo[1]:+.1f}%".replace("-", "−")}
+
+
+def grade_facts(rows, latest, days="days it traded"):
+    """The newest price of one item in one grade, and how it sits against its own past year."""
+    last = rows[-1]
+    before = rows[-2] if len(rows) > 1 else None
+    year_start = (iso_day(latest) - timedelta(days=365)).date().isoformat()
+    year = [r for r in rows if r[0] > year_start]
+    vals = [r[3] for r in year]
+    lo = min(year, key=lambda r: r[3]) if year else None
+    hi = max(year, key=lambda r: r[3]) if year else None
+    ago = near(rows, (iso_day(last[0]) - timedelta(days=365)).date().isoformat())
+    return {
+        "current": last[0] == latest, "day": d_label(last[0]), "date": d_full(last[0]), "iso": last[0],
+        "cwt": usd(last[3]), "lb": per_lb(last[3]), "v": last[3],
+        "range": "" if last[1] is None or last[2] is None else (usd(last[1]) if last[1] == last[2] else f"{usd(last[1])}–{usd(last[2])}"),
+        "trades": "" if last[4] is None else fmt(last[4]), "lbs": "" if last[5] is None else fmt(last[5]),
+        "change": money_change(last[3], before[3]) if before else "", "change_pct": pct_change(last[3], before[3]) if before else "",
+        "change_since": d_label(before[0]) if before else "",
+        "standing": standing([r[3] for r in year if r is not last], last[3], days),
+        "year_ago": None if not ago else {"date": d_full(ago[0]), "cwt": usd(ago[3]), "lb": per_lb(ago[3]), "change": pct_change(last[3], ago[3])},
+        "avg": usd(sum(vals) / len(vals)) if vals else "", "low": usd(lo[3]) if lo else "", "low_day": d_full(lo[0]) if lo else "",
+        "high": usd(hi[3]) if hi else "", "high_day": d_full(hi[0]) if hi else "", "days_year": len(year),
+    }
+
+
+def beef(base):
+    cur = get(base + "/beef")
+    if not cur.get("latest"): raise RuntimeError("the Worker has no beef data yet")
+    names = cut_names()
+
+    # History: the archive (the committed CSVs), with the Worker's days laid over it. Old months the
+    # archive already holds aren't asked for again; recent ones always are, in case USDA corrected
+    # them, and so is the archive's oldest month, which is where a backfill still running stopped.
+    days, items = beef_archive()
+    have = {d[:7] for d in days}
+    have.discard(min(have, default=None))
+    recent = (iso_day(cur["latest"]) - timedelta(days=BEEF_RECENT_DAYS)).date().isoformat()[:7]
+    for m in cur.get("months") or []:
+        if m in have and m < recent: continue
+        h = get(f"{base}/beef/history?month={m}")
+        got = {r[0] for r in h.get("days") or []}
+        if not got: continue
+        for k in items:
+            for d in got: items[k].pop(d, None)
+        for r in h["days"]: days[r[0]] = r
+        for it in h.get("items") or []:
+            bucket = items.setdefault((it["section"], it["item"], it["grade"]), {})
+            for r in it["days"]: bucket[r[0]] = r
+    series = {k: [v[d] for d in sorted(v)] for k, v in items.items() if v}
+    order = sorted(days)
+    latest, first = order[-1], order[0]
+    today, prior = days[latest], (days[order[-2]] if len(order) > 1 else None)
+
+    def info(item):
+        if item not in names:
+            print(f"beef: add {item!r} to _data/beef_cuts.json", file=sys.stderr)
+            names[item] = {"name": item, "slug": slugify(item)}
+        return names[item]
+
+    # Every item, its grades together: {(section, item): {grade: rows}}.
+    by_item = {}
+    for (section, item, grade), rows in series.items():
+        by_item.setdefault((section, item), {})[grade] = rows
+    year_start = (iso_day(latest) - timedelta(days=365)).date().isoformat()
+    grade_order = {"choice": 0, "select": 1, "": 2}
+
+    # ---- the item pages
+    pages = {}
+    for (section, item), grades in by_item.items():
+        traded = {r[0] for rows in grades.values() for r in rows if r[0] > year_start}
+        if section != "primal" and len(traded) < BEEF_PAGE_DAYS and not os.path.exists(os.path.join(BEEF_CUTS_DIR, info(item)["slug"] + ".md")):
+            continue
+        i = info(item)
+        gs = sorted(grades, key=lambda g: grade_order.get(g, 3))
+        main = gs[0]
+        facts = [{"grade": g, "label": GRADE_NAMES.get(g, g), **grade_facts(grades[g], latest, "business days" if section == "primal" else "days it traded")} for g in gs]
+        lines = [("line" if n == 0 else "line2", GRADE_NAMES.get(g, g), [(r[0], r[3]) for r in grades[g]]) for n, g in enumerate(gs)]
+        mavg = monthly(grades[main])
+        # The last 20 days it traded, in any grade, newest first.
+        recent_days = sorted({r[0] for g in gs for r in grades[g]})[-20:][::-1]
+        lookup = {g: {r[0]: r for r in grades[g]} for g in gs}
+        rows = []
+        for d in recent_days:
+            cells = [lookup[g].get(d) for g in gs]
+            rows.append({"day": d_full(d), "cells": [{"cwt": usd(c[3]) if c else "", "lb": per_lb(c[3]) if c else "",
+                                                       "range": "" if not c or c[1] is None or c[2] is None else f"{usd(c[1])}–{usd(c[2])}",
+                                                       "lbs": "" if not c or c[5] is None else fmt(c[5]), "trades": "" if not c or c[4] is None else fmt(c[4])} for c in cells]})
+        all_days = sorted({r[0] for g in gs for r in grades[g]})
+        pk = i.get("primal")
+        pages[i["slug"]] = {
+            "name": i["name"], "usda": item, "section": section, "kind": SECTIONS.get(section, section),
+            "imps": i.get("imps", ""), "fl": i.get("fl"), "fat": FAT.get(i.get("fl"), ""), "also": i.get("also", ""),
+            "primal": pk or "", "primal_name": dict(PRIMALS).get(pk, ""), "grades": facts, "main": GRADE_NAMES.get(main, main),
+            "current": any(f["current"] for f in facts), "last_iso": max(f["iso"] for f in facts),
+            "since": d_full(all_days[0]), "days_all": fmt(len(all_days)), "days_year": len(traded),
+            "chart": beef_chart(lines, usd, weekly=True),
+            "grid": year_grid(mavg, lambda v: f"{v / 100:,.2f}" if section != "primal" else f"{v:,.0f}"),
+            "grid_unit": "$ per lb" if section != "primal" else "$ per cwt",
+            "season": seasons(mavg, latest),
+            "heads": [GRADE_NAMES.get(g, g) for g in gs], "rows": rows,
+        }
+
+    # Where each item sits: the primal it comes from, and what else from there traded today.
+    slug_of = {(s, it): info(it)["slug"] for (s, it) in by_item}
+    today_price = {}
+    for (section, item), grades in by_item.items():
+        g = "choice" if "choice" in grades else sorted(grades, key=lambda x: grade_order.get(x, 3))[0]
+        last = grades[g][-1]
+        if last[0] == latest: today_price[(section, item)] = (g, last)
+    for slug, pg in pages.items():
+        if not pg["primal"]: pg["siblings"] = []; continue
+        sib = []
+        for (section, item), (g, last) in today_price.items():
+            if section in ("cut", "mixed") and info(item).get("primal") == pg["primal"] and slug_of[(section, item)] in pages:
+                sib.append({"name": info(item)["name"], "slug": slug_of[(section, item)], "lb": per_lb(last[3]), "grade": GRADE_NAMES.get(g, g),
+                            "here": slug_of[(section, item)] == slug, "v": last[3]})
+        pg["siblings"] = [{k: v for k, v in s.items() if k != "v"} for s in sorted(sib, key=lambda s: -s["v"])]
+        pv = series.get(("primal", PRIMAL_ITEM[pg["primal"]], "choice"))
+        pg["primal_slug"] = slug_of.get(("primal", PRIMAL_ITEM[pg["primal"]]), "")
+        pg["primal_value"] = usd(pv[-1][3]) if pv and pv[-1][0] == latest else ""
+
+    # ---- the board: the cutout
+    cday = [(d, days[d][1]) for d in order if days[d][1] is not None]
+    sday = [(d, days[d][2]) for d in order if days[d][2] is not None]
+    c, s = today[1], today[2]
+    pc, ps = (prior[1], prior[2]) if prior else (None, None)
+    spread = None if c is None or s is None else c - s
+    loads = [today[i] for i in (3, 4, 5, 6)]
+    say = lambda a, b, tail="": "" if a is None or b is None else ("unchanged" + tail if round(a - b, 2) == 0 else f"{'up' if a > b else 'down'} {usd(abs(a - b))}{tail}")
+    weekday = f"{iso_day(latest):%A}, {iso_day(latest):%B} {iso_day(latest).day}"
+    parts = [f"On {weekday}, the Choice cutout was {usd(c)} per hundredweight" + (f", {say(c, pc, ' from the day before')}" if say(c, pc) else "") +
+             f", and Select was {usd(s)}" + (f", {say(s, ps)}" if say(s, ps) else "") + "."]
+    if spread is not None: parts.append(f"Choice ran {usd(spread)} over Select.")
+    if loads[0] is not None and loads[1] is not None:
+        parts.append(f"Packers sold {fmt(round(loads[0]))} loads of Choice cuts and {fmt(round(loads[1]))} of Select on negotiated deals that day"
+                     + (f", plus {fmt(round(loads[2]))} of trimmings and {fmt(round(loads[3]))} of coarse ground beef." if loads[2] is not None and loads[3] is not None else "."))
+    year_c = [v for d, v in cday if d > year_start]
+    hi52 = max(((d, v) for d, v in cday if d > year_start), key=lambda x: x[1])
+    lo52 = min(((d, v) for d, v in cday if d > year_start), key=lambda x: x[1])
+    rec = max(cday, key=lambda x: x[1])
+    ago = near([[d, v] for d, v in cday], (iso_day(latest) - timedelta(days=365)).date().isoformat())
+    cutout = {"standing": standing([v for d, v in cday if year_start < d < latest], c, "business days"),
+              "high": usd(hi52[1]), "high_day": d_full(hi52[0]), "low": usd(lo52[1]), "low_day": d_full(lo52[0]),
+              "avg": usd(sum(year_c) / len(year_c)), "record": usd(rec[1]), "record_day": d_full(rec[0]),
+              "record_now": rec[0] == latest, "carcass_lb": per_lb(c),
+              "year_ago": None if not ago else {"date": d_full(ago[0]), "cwt": usd(ago[1]), "change": pct_change(c, ago[1])}}
+    chart_year = beef_chart([("line", "Choice", [x for x in cday if x[0] > year_start]), ("line2", "Select", [x for x in sday if x[0] > year_start])], usd)
+    chart_all = beef_chart([("line", "Choice", cday), ("line2", "Select", sday)], usd, weekly=True)
+    recent = []
+    for n, d in enumerate(order[::-1][:10]):
+        r, p = days[d], (days[order[-2 - n]] if len(order) > n + 1 else None)
+        recent.append({"day": d_label(d), "choice": usd(r[1]), "choice_chg": money_change(r[1], p[1]) if p else "",
+                       "select": usd(r[2]), "select_chg": money_change(r[2], p[2]) if p else "",
+                       "spread": usd(r[1] - r[2]) if r[1] is not None and r[2] is not None else "",
+                       "loads": fmt(round(r[3] + r[4])) if r[3] is not None and r[4] is not None else ""})
+    cmonths = monthly([[d, None, None, v, None, None] for d, v in cday])
+
+    # The primal values.
+    primals = []
+    for k, label in PRIMALS:
+        ch, se = series.get(("primal", PRIMAL_ITEM[k], "choice"), []), series.get(("primal", PRIMAL_ITEM[k], "select"), [])
+        if not ch or ch[-1][0] != latest: continue
+        primals.append({"name": label, "slug": slug_of.get(("primal", PRIMAL_ITEM[k]), ""),
+                        "choice": usd(ch[-1][3]), "choice_chg": money_change(ch[-1][3], ch[-2][3]) if len(ch) > 1 else "",
+                        "select": usd(se[-1][3]) if se and se[-1][0] == latest else "",
+                        "select_chg": money_change(se[-1][3], se[-2][3]) if len(se) > 1 and se[-1][0] == latest else ""})
+
+    # Every cut that traded today, by primal; then the ones that didn't.
+    def traded_today(grades, g):
+        rows = grades.get(g)
+        return rows[-1] if rows and rows[-1][0] == latest else None
+
+    def row(section, item):
+        grades = by_item[(section, item)]
+        ch, se, un = traded_today(grades, "choice"), traded_today(grades, "select"), traded_today(grades, "")
+        main, sold = ch or un, [x for x in (ch, se, un) if x]
+        total = lambda i: fmt(sum(x[i] for x in sold if x[i])) if any(x[i] for x in sold) else ""
+        return {"name": info(item)["name"], "slug": slug_of[(section, item)] if slug_of[(section, item)] in pages else "",
+                "imps": info(item).get("imps", ""), "fl": info(item).get("fl", ""),
+                "price": usd(main[3]) if main else "", "price_lb": per_lb(main[3]) if main else "",
+                "select": usd(se[3]) if se else "", "select_lb": per_lb(se[3]) if se else "",
+                "lbs": total(5), "trades": total(4), "traded": bool(sold), "ungraded": section == "mixed", "v": (main or se)[3] if sold else 0}
+    groups, quiet = [], []
+    for k, label in PRIMALS + [("", "Other cuts")]:
+        rows = []
+        for (section, item) in by_item:
+            if section not in ("cut", "mixed") or (info(item).get("primal") or "") != k: continue
+            r = row(section, item)
+            if r["traded"]: rows.append(r)
+            elif r["slug"]:
+                last = max(rows_[-1][0] for rows_ in by_item[(section, item)].values())
+                quiet.append({"name": r["name"], "slug": r["slug"], "last": d_full(last)})
+        if rows: groups.append({"name": label, "key": k, "rows": sorted(rows, key=lambda r: -r["v"])})
+    ground = [row(section, item) for (section, item) in by_item if section in ("ground", "blended", "trim")]
+    ground = sorted([g for g in ground if g["traded"]], key=lambda r: -r["v"])
+
+    # Movers: today's weighted average against the same cut a week earlier, busy cuts only.
+    moves = []
+    for (section, item, grade), rows in series.items():
+        if section not in ("cut", "mixed") or grade == "select" or rows[-1][0] != latest or (rows[-1][4] or 0) < BEEF_MOVER_TRADES: continue
+        then = on_or_before(rows[:-1], (iso_day(latest) - timedelta(days=7)).date().isoformat())
+        if not then: continue
+        p = (rows[-1][3] - then[3]) / then[3] * 100
+        moves.append({"name": info(item)["name"], "slug": slug_of[(section, item)] if slug_of[(section, item)] in pages else "",
+                      "lb": per_lb(rows[-1][3]), "then": per_lb(then[3]), "then_day": d_label(then[0]), "change": pct_change(rows[-1][3], then[3]), "p": p})
+    ups = [{k: v for k, v in m.items() if k != "p"} for m in sorted([m for m in moves if m["p"] >= 0.5], key=lambda m: -m["p"])[:6]]
+    downs = [{k: v for k, v in m.items() if k != "p"} for m in sorted([m for m in moves if m["p"] <= -0.5], key=lambda m: m["p"])[:6]]
+
+    # The index of every page, grouped the way a meat case is.
+    index = []
+    for k, label in PRIMALS:
+        entries = sorted([(pg["name"], slug, pg["imps"]) for slug, pg in pages.items() if pg["primal"] == k and pg["section"] != "primal"])
+        prim = next((slug for slug, pg in pages.items() if pg["section"] == "primal" and pg["primal"] == k), None)
+        index.append({"name": label, "primal": prim, "pages": [{"name": n, "slug": sl, "imps": im} for n, sl, im in entries]})
+    other = sorted([(pg["name"], slug, pg["imps"]) for slug, pg in pages.items() if not pg["primal"] and pg["section"] in ("cut", "mixed")])
+    if other: index.append({"name": "Other cuts", "primal": None, "pages": [{"name": n, "slug": sl, "imps": im} for n, sl, im in other]})
+    grinds = sorted([(pg["name"], slug, pg["imps"]) for slug, pg in pages.items() if pg["section"] in ("ground", "blended", "trim")])
+    if grinds: index.append({"name": "Ground beef and trimmings", "primal": None, "pages": [{"name": n, "slug": sl, "imps": im} for n, sl, im in grinds]})
+
+    # ---- the downloads, which are also the archive the next run reads back
+    os.makedirs(BEEF_DIR, exist_ok=True)
+    num2 = lambda v: "" if v is None else f"{v:.2f}"
+    numi = lambda v: "" if v is None else str(int(v))
+    with open(BEEF_CUTOUT_CSV, "w", encoding="utf-8", newline="") as fh:
+        wr = csv.writer(fh, lineterminator="\n")
+        wr.writerow(["date", "choice_cutout", "select_cutout", "choice_select_spread", "choice_loads", "select_loads", "trimmings_loads", "coarse_ground_loads"]
+                    + [f"{k}_{g}" for k, _ in PRIMALS for g in ("choice", "select")])
+        for d in order:
+            r = days[d]
+            prim = []
+            for k, _ in PRIMALS:
+                for g in ("choice", "select"):
+                    x = items.get(("primal", PRIMAL_ITEM[k], g), {}).get(d)
+                    prim.append(num2(x[3]) if x else "")
+            wr.writerow([d, num2(r[1]), num2(r[2]), num2(r[1] - r[2]) if r[1] is not None and r[2] is not None else "",
+                         num2(r[3]), num2(r[4]), num2(r[5]), num2(r[6])] + prim)
+    downloads = [{"file": os.path.basename(BEEF_CUTOUT_CSV), "label": f"The cutout and primal values, every day since {d_full(first)}",
+                  "rows": fmt(len(order)), "kb": fmt(round(os.path.getsize(BEEF_CUTOUT_CSV) / 1024))}]
+    sec_order = {"cut": 0, "mixed": 1, "ground": 2, "blended": 3, "trim": 4}
+    flat = sorted(((r[0], sec_order.get(sec, 9), sec, item, grade, r) for (sec, item, grade), rows in series.items() if sec != "primal" for r in rows),
+                  key=lambda x: x[:2] + (x[3], grade_order.get(x[4], 3)))
+    for y, grp in groupby(flat, key=lambda x: x[0][:4]):
+        grp = list(grp)
+        with open(BEEF_YEAR_CSV(y), "w", encoding="utf-8", newline="") as fh:
+            wr = csv.writer(fh, lineterminator="\n")
+            wr.writerow(["date", "section", "usda_description", "name", "imps", "fat_limitation", "primal", "grade",
+                         "low", "high", "weighted_average", "weighted_average_per_lb", "trades", "pounds"])
+            for d, _, sec, item, grade, r in grp:
+                i = info(item)
+                wr.writerow([d, sec, item, i["name"], i.get("imps", ""), i.get("fl", ""), i.get("primal", ""), grade,
+                             num2(r[1]), num2(r[2]), num2(r[3]), "" if r[3] is None else f"{r[3] / 100:.4f}", numi(r[4]), numi(r[5])])
+        downloads.append({"file": os.path.basename(BEEF_YEAR_CSV(y)), "label": f"Every cut, every day of {y}" + (" so far" if y == latest[:4] else ""),
+                          "rows": fmt(len(grp)), "kb": fmt(round(os.path.getsize(BEEF_YEAR_CSV(y)) / 1024)), "year": y})
+    downloads = downloads[:1] + sorted(downloads[1:], key=lambda x: x["year"], reverse=True)
+
+    # ---- page stubs: new ones only, never deleted, so a cut that stops trading keeps its address
+    os.makedirs(BEEF_CUTS_DIR, exist_ok=True)
+    for slug, pg in pages.items():
+        f = os.path.join(BEEF_CUTS_DIR, slug + ".md")
+        code = f" ({pg['imps']})" if pg["imps"] else ""
+        if pg["section"] == "primal":
+            title = f"Beef {pg['primal_name'].lower()} primal value"
+            seo = fit(f"Beef {pg['primal_name']} Primal Value Today · USDA Cutout", f"Beef {pg['primal_name']} Primal Value Today")
+            desc = f"USDA's daily composite value of the beef {pg['primal_name'].lower()} primal, Choice and Select: the latest value, every day since {pg['since']}, and the cuts it is made of."
+        elif pg["section"] in ("ground", "blended", "trim"):
+            title = f"{pg['name']} wholesale price"
+            seo = fit(f"{pg['name']} Wholesale Price Today · USDA", f"{pg['name']} Wholesale Price Today", f"{pg['name']} Wholesale Price")
+            desc = fit(f"USDA's daily wholesale price for {pg['name'].lower()}, per pound and per hundredweight: the latest weighted average and every day since {pg['since']}.",
+                       f"USDA's daily wholesale price for {pg['name'].lower()}: the latest weighted average per pound and every day on record.", limit=160)
+        else:
+            title = f"{pg['name']}{code} wholesale price"
+            seo = fit(f"{pg['name']}{code} Wholesale Price Today · USDA", f"{pg['name']}{code} Wholesale Price Today",
+                      f"{pg['name']}{code} Wholesale Price", f"{pg['name']} Wholesale Price")
+            grades = " and ".join(g["label"] for g in pg["grades"] if g["grade"])
+            desc = fit(f"USDA's daily boxed beef price for {pg['name'].lower()}{' (IMPS ' + pg['imps'] + ')' if pg['imps'] else ''}"
+                       f"{', ' + grades if grades else ''}: the latest price per pound, every day since {pg['since']}, and its usual seasonal swing.",
+                       f"USDA's daily boxed beef price for {pg['name'].lower()}{' (IMPS ' + pg['imps'] + ')' if pg['imps'] else ''}: the latest price per pound and every day since {pg['since']}.",
+                       f"USDA's daily boxed beef price for {pg['name'].lower()}: the latest price per pound and every day on record.", limit=160)
+        if os.path.exists(f):
+            ensure_front(f, "seo_title", seo)
+            continue
+        with open(f, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(f"---\ncut: {slug}\ntitle: {json.dumps(title, ensure_ascii=False)}\nseo_title: {json.dumps(seo, ensure_ascii=False)}\n"
+                     f"description: {json.dumps(desc, ensure_ascii=False)}\n---\n")
+
+    pub = None
+    try: pub = datetime.strptime((cur.get("published") or "").split(" ")[0], "%m/%d/%Y")
+    except ValueError: pass
+    due = next_business_day(latest)
+    return {"generated": cur["updated"], "latest": latest, "date": d_full(latest), "day": d_label(latest), "on_day": f"{iso_day(latest):%A}, {d_full(latest)}",
+            "published": full_date(pub) if pub else "", "next_due": f"{due:%a}, {full_date(due)}",
+            "first_iso": first, "first": d_full(first), "record_days": fmt(len(order)), "backfill_done": bool(cur.get("backfill_done")),
+            "stamp": {"choice": usd(c), "choice_chg": money_change(c, pc), "select": usd(s), "select_chg": money_change(s, ps),
+                      "spread": usd(spread) if spread is not None else "", "loads": fmt(round(loads[0] + loads[1])) if loads[0] is not None and loads[1] is not None else ""},
+            "summary": " ".join(parts), "cutout": cutout, "chart_year": chart_year, "chart_all": chart_all, "recent": recent,
+            "grid": year_grid(cmonths, lambda v: f"{v:,.0f}"), "season": seasons(cmonths, latest),
+            "primals": primals, "groups": groups, "quiet": sorted(quiet, key=lambda q: q["name"]), "ground": ground,
+            "ups": ups, "downs": downs, "index": index, "downloads": downloads,
+            "traded": sum(len(g["rows"]) for g in groups), "page_count": len(pages), "items": pages}
+
+
 def main():
     base = worker_url()
     if not base: sys.exit("no worker_url in _config.yml")
     os.makedirs(OUT, exist_ok=True)
     failed = 0
     jobs = (("youtube", lambda: youtube(get(base + "/youtube"))), ("watching", lambda: watching(get(base + "/"))),
-            ("reefer", lambda: reefer(base)), ("border", lambda: border(base)))
+            ("reefer", lambda: reefer(base)), ("border", lambda: border(base)), ("beef", lambda: beef(base)))
+    only = sys.argv[1:]                          # `snapshot.py beef` runs just that one
+    if only: jobs = tuple(j for j in jobs if j[0] in only)
     for name, job in jobs:
         try:
             data = job()

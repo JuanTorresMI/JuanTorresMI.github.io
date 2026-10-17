@@ -22,11 +22,13 @@ npx.cmd wrangler deploy
 | `GET /youtube` | The channel's numbers, uploads and daily history | `/youtube/`, `snapshot.py` | `src/youtube.js` |
 | `GET /reefer`, `/reefer/history?year=Y` | USDA reefer truck rates and diesel | `snapshot.py` only | `src/reefer.js` |
 | `GET /border`, `/border/port?id=P` | CBP truck waits now; one port by weekday and hour | border pages ("right now"), `snapshot.py` | `src/border.js` |
+| `GET /beef`, `/beef/history?month=YYYY-MM` | USDA's daily boxed beef cutout and every cut's price | `snapshot.py` only | `src/beef.js` |
 | `GET /music`, `/music/visits`, `/music/guestbook` (+ `POST`, `DELETE /music/guestbook/<id>`) | Yokonjuan's catalog, visitor counter, guestbook | `/music/` | `src/music.js` |
 
 **Cron triggers** (`wrangler.toml`): at :17 every hour it polls YouTube, at :47 the reefer rates
 (a new report every sixth hour, one week of backfill the others). Both runs also read CBP, so
-the border board is polled every half hour.
+the border board is polled every half hour. A third trigger, at :02 and :32, runs the beef board
+and nothing else (the free plan allows five triggers per account).
 
 **Secrets** (`npx.cmd wrangler secret put NAME`, never in the repo): `STREMIO_AUTH_KEY`,
 `YOUTUBE_API_KEY`, `USDA_MMN_KEY`, `EIA_API_KEY` (optional), `GUESTBOOK_ADMIN_KEY`.
@@ -36,7 +38,8 @@ the border board is polled every half hour.
 
 **Storage**: one D1 database, `yokonjuan` (binding `DB`), whose tables are all in `schema.sql`:
 `counters` and `guestbook` (music), `youtube_latest` and `youtube_daily`, `reefer_quotes`,
-`diesel_weekly` and `reefer_meta`, `border_waits` and `border_latest`. The schema only ever adds
+`diesel_weekly` and `reefer_meta`, `border_waits` and `border_latest`, `beef_days`, `beef_items`
+and `beef_meta`. The schema only ever adds
 what's missing, so it is safe to run again. Workers AI (binding `AI`) checks guestbook posts.
 
 The sections below set up and explain each part. The last one, on the free plan's limits, is
@@ -370,6 +373,58 @@ The first request after a deploy reads CBP on the spot; after that the cron does
 
 Nothing. CBP is asked 48 times a day. About 50 ports post about once an hour, so that is roughly
 1,200 rows written a day, two D1 statements per run.
+
+## The boxed beef board
+
+`/beef-prices/` on the site, and a page per cut, come from USDA's National Daily Boxed Beef Cutout
+and Boxed Beef Cuts, Negotiated Sales, afternoon edition (LM_XB403, report 2453), read from the
+Livestock Mandatory Reporting datamart (`mpr.datamart.ams.usda.gov`). No key is needed. The code is
+`src/beef.js`.
+
+The beef trigger (`2,32 * * * *`) runs nothing else, so a run's whole CPU allowance is its own. Each
+run asks for the newest report's summary (a few hundred bytes). A report it hasn't stored, or one
+USDA has corrected since, is fetched whole with `allSections=true` (about 110 KB) and stored; that
+is the run's work. Otherwise the run backfills one older week (about 540 KB, a millisecond or two
+to parse), walking back to `BEEF_START` (January 1, 2020), so the history fills in over about a
+week after the first deploy. The site doesn't wait for it: the CSVs in `beef-prices/` already hold
+every day, and `snapshot.py` only asks the Worker for recent months.
+
+### Setting it up (once)
+
+```powershell
+npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
+npx.cmd wrangler deploy
+```
+
+`schema.sql` only adds `beef_days`, `beef_items` and `beef_meta`.
+
+### Check it
+
+```powershell
+Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/beef" | Select-Object latest, first, backfill_done
+Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/beef/history?month=2025-07" | Select-Object -ExpandProperty days | Select-Object -First 3
+```
+
+`first` moves back a week every half hour or so while the backfill runs; `backfill_done` turns true
+when it reaches 2020. `npx.cmd wrangler tail` around :02 or :32 shows each run.
+
+### What the numbers mean
+
+- Prices are dollars per hundredweight (100 lb), FOB the plant, delivery within 0 to 21 days. The
+  cutout values are for 600 to 900 lb carcasses; a primal's value is per hundredweight of the primal.
+- `beef_items` holds one row per item, grade and day. `section` says which table of the report it
+  came from: `primal`, `cut` (Choice and Select), `mixed` (sold without a grade), `ground`, `blended`
+  or `trim`. `item` is USDA's description with runs of spaces made one; the site maps it to a plain
+  name and page address in `_data/beef_cuts.json`.
+- A cut that didn't trade is printed by USDA as $0.00 with no trades. That is unknown, not free,
+  so no row is stored. Trades or pounds USDA kept confidential are `NULL`.
+
+### What it costs
+
+Nothing. USDA is asked twice an hour (48 small requests a day, plus one full report on business
+days and one week of history per run until the backfill ends). A business day writes about 80 rows;
+the backfill writes about 400 a run while it lasts, some 20,000 a day for a week, well under the
+free 100,000. The whole history since 2020 is roughly 130,000 rows.
 
 ## Staying inside the free plan
 
