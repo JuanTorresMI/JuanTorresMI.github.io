@@ -113,18 +113,24 @@ last_modified_at: 2026-10-16
 
 <section class="rb-sec" id="cuts" aria-labelledby="cuts-h">
   <h2 id="cuts-h">Wholesale price of every beef cut today</h2>
-  <p>Every cut that traded on {{ r.on_day }}, {{ r.traded }} in all, by primal and dearest first. Prices are the weighted average of the day’s negotiated sales, per hundredweight and per pound. The code after each name is its IMPS number and fat limitation (see <a class="link" href="#codes">how to read the codes</a>). Click a cut for every day on record.</p>
+  <p>Every cut that traded on {{ r.on_day }}, {{ r.traded }} in all, by primal and dearest first. Prices are the weighted average of the day’s negotiated sales, per pound, with the price per hundredweight USDA reports under it. “Week” is the change from the same grade’s price a week earlier. The code after each name is its IMPS number and fat limitation (see <a class="link" href="#codes">how to read the codes</a>). Click a cut for every day on record and to check a price you were quoted.</p>
+  <form class="rb-look bf-find" id="bf-find" role="search" onsubmit="return false" hidden>
+    <label>Find a cut <input type="search" id="bf-q" placeholder="ribeye, brisket, 112A, skirt…" autocomplete="off" spellcheck="false"></label>
+  </form>
+  <p class="rb-note bf-find-n" id="bf-find-n" aria-live="polite" hidden></p>
   {%- for g in r.groups %}
+  <div class="bf-group">
   <h3>{{ g.name }}</h3>
   <div class="rb-scroll">
     <table class="rb-t rb-stack bf-cuts">
-      <thead><tr><th scope="col">Cut</th><th scope="col">Code</th><th scope="col">Choice, per cwt</th><th scope="col">Per lb</th><th scope="col">Select, per cwt</th><th scope="col">Per lb</th><th scope="col">Pounds</th></tr></thead>
+      <thead><tr><th scope="col">Cut</th><th scope="col">Code</th><th scope="col">Choice, per lb</th><th scope="col">Select, per lb</th><th scope="col">Week</th><th scope="col">Pounds</th></tr></thead>
       <tbody>
       {%- for c in g.rows %}
-        <tr><th scope="row">{% if c.slug != "" %}<a href="/beef-prices/{{ c.slug }}/">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}{% if c.ungraded %} <span class="bf-tag">any grade</span>{% endif %}</th><td data-label="Code">{% if c.imps != "" %}{{ c.imps }}{% endif %}{% if c.fl != "" %} · {{ c.fl }}{% endif %}</td><td data-label="{% if c.ungraded %}Any grade{% else %}Choice{% endif %}, per cwt">{{ c.price | default: "—" }}</td><td data-label="Per lb">{{ c.price_lb | default: "—" }}</td><td data-label="Select, per cwt"{% if c.select == "" %} class="bf-empty"{% endif %}>{{ c.select | default: "—" }}</td><td data-label="Per lb"{% if c.select == "" %} class="bf-empty"{% endif %}>{{ c.select_lb | default: "—" }}</td><td data-label="Pounds">{{ c.lbs | default: "—" }}</td></tr>
+        <tr data-find="{{ c.find | escape }}"><th scope="row">{% if c.slug != "" %}<a href="/beef-prices/{{ c.slug }}/">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}{% if c.ungraded %} <span class="bf-tag">any grade</span>{% endif %}{% if c.also != "" %} <span class="bf-also">{{ c.also }}</span>{% endif %}</th><td data-label="Code">{% if c.imps != "" %}{{ c.imps }}{% endif %}{% if c.fl != "" %} · {{ c.fl }}{% endif %}</td><td data-label="{% if c.ungraded %}Any grade{% else %}Choice{% endif %}, per lb">{% if c.price_lb != "" %}<span class="bf-px"><strong>{{ c.price_lb }}</strong> <span class="bf-cwt">{{ c.price }}/cwt</span></span>{% else %}—{% endif %}</td><td data-label="Select, per lb"{% if c.select == "" %} class="bf-empty"{% endif %}>{% if c.select_lb != "" %}<span class="bf-px"><strong>{{ c.select_lb }}</strong> <span class="bf-cwt">{{ c.select }}/cwt</span></span>{% else %}—{% endif %}</td><td data-label="Week">{{ c.week | default: "—" }}</td><td data-label="Pounds">{{ c.lbs | default: "—" }}</td></tr>
       {%- endfor %}
       </tbody>
     </table>
+  </div>
   </div>
   {%- endfor %}
   {%- if r.quiet.size > 0 %}
@@ -138,10 +144,10 @@ last_modified_at: 2026-10-16
   <p>Ground beef is sold by lean percentage (81% lean is 81% lean and 19% fat) and isn’t split by grade. Trimmings are the lean and fat left from cutting, sold to grinders by their lean content.</p>
   <div class="rb-scroll">
     <table class="rb-t rb-stack">
-      <thead><tr><th scope="col">Item</th><th scope="col">Per cwt</th><th scope="col">Per lb</th><th scope="col">Pounds</th><th scope="col">Trades</th></tr></thead>
+      <thead><tr><th scope="col">Item</th><th scope="col">Per lb</th><th scope="col">Week</th><th scope="col">Pounds</th><th scope="col">Trades</th></tr></thead>
       <tbody>
       {%- for c in r.ground %}
-        <tr><th scope="row">{% if c.slug != "" %}<a href="/beef-prices/{{ c.slug }}/">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}</th><td data-label="Per cwt">{{ c.price }}</td><td data-label="Per lb">{{ c.price_lb }}</td><td data-label="Pounds">{{ c.lbs | default: "—" }}</td><td data-label="Trades">{{ c.trades | default: "—" }}</td></tr>
+        <tr data-find="{{ c.find | escape }}"><th scope="row">{% if c.slug != "" %}<a href="/beef-prices/{{ c.slug }}/">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}</th><td data-label="Per lb"><span class="bf-px"><strong>{{ c.price_lb }}</strong> <span class="bf-cwt">{{ c.price }}/cwt</span></span></td><td data-label="Week">{{ c.week | default: "—" }}</td><td data-label="Pounds">{{ c.lbs | default: "—" }}</td><td data-label="Trades">{{ c.trades | default: "—" }}</td></tr>
       {%- endfor %}
       </tbody>
     </table>
@@ -314,6 +320,7 @@ last_modified_at: 2026-10-16
 {% if r %}
 <script>window.BF = { endpoint: {{ site.worker_url | default: "" | jsonify }}, latest: {{ r.latest | jsonify }}, values: {{ r.raw | jsonify }} };</script>
 <script src="/beef-prices/live.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/beef-prices/tools.js?v={{ site.time | date: '%s' }}" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

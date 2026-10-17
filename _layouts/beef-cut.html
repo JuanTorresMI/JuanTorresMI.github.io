@@ -57,6 +57,36 @@ layout: default
   {%- if c.season %}In a usual year ({{ c.season.years }}) it runs highest in {{ c.season.high }} ({{ c.season.high_v }} against its own year’s average) and lowest in {{ c.season.low }} ({{ c.season.low_v }}).{% endif %}
 </p>
 
+{%- if c.section != "primal" %}
+<div class="bf-tools" id="bf-tools" hidden>
+  <section class="rb-block" id="check" aria-labelledby="check-h">
+    <h2 id="check-h">Check a price <span>Against USDA’s sales of this {% if c.section == "cut" or c.section == "mixed" %}cut{% else %}item{% endif %}</span></h2>
+    <form class="rb-look" onsubmit="return false">
+      {%- if c.tool.size > 1 %}
+      <label>Grade <select id="bf-grade">{% for t in c.tool %}<option value="{{ forloop.index0 }}">{{ t.grade }}</option>{% endfor %}</select></label>
+      {%- endif %}
+      <label>Price you were quoted, per lb <input id="bf-quote" type="number" inputmode="decimal" min="0" step="0.01" placeholder="{{ m.lb | remove: '$' }}"></label>
+    </form>
+    <div class="rb-answer" id="bf-quote-out" aria-live="polite"><p>Enter a price per pound to see where it sits against the day’s sales and the past year.</p></div>
+    <p class="rb-note">USDA’s prices are for full boxes, FOB the packing plant. A delivered price also covers freight and whoever handles the boxes in between, so a quote somewhat above USDA’s range can still be a fair one.</p>
+  </section>
+  {%- if c.section == "cut" or c.section == "mixed" %}
+  <section class="rb-block" id="trim" aria-labelledby="trim-h">
+    <h2 id="trim-h">What it costs after trimming <span>Your yield, your numbers</span></h2>
+    <form class="rb-look bf-calc" onsubmit="return false">
+      <label>Price you pay, per lb <input id="bf-price" type="number" inputmode="decimal" min="0" step="0.01" value="{{ m.v | divided_by: 100.0 | round: 2 }}"></label>
+      <label>Yield, % you can sell <input id="bf-yield" type="number" inputmode="decimal" min="1" max="100" step="0.1" placeholder="from your cutting test"></label>
+      <label>Labor and packaging, per lb bought <input id="bf-labor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00"></label>
+      <label>Portion, oz <input id="bf-oz" type="number" inputmode="decimal" min="0.5" step="0.5" value="8"></label>
+    </form>
+    <div class="rb-answer" id="bf-trim-out" aria-live="polite"><p>Enter the yield from your own cutting test: the share of the box’s weight you end up selling after trim, fat and bone.</p></div>
+    <p class="rb-note">The price starts at USDA’s latest weighted average{% if m.grade != "" %} for {{ m.label }}{% endif %}; change it to what you actually pay. Cost per sellable pound is the price plus labor, divided by the yield.</p>
+  </section>
+  {%- endif %}
+  <script type="application/json" id="bf-tool-data">{{ c.tool | jsonify }}</script>
+</div>
+{%- endif %}
+
 {%- if c.grades.size > 1 %}
 <div class="rb-scroll">
   <table class="rb-t rb-stack bf-grades">
@@ -142,6 +172,7 @@ layout: default
 {%- endif %}
 <script>window.BF = { endpoint: {{ site.worker_url | default: "" | jsonify }}, latest: {{ r.latest | jsonify }}, item: { usda: {{ c.usda | jsonify }}, per_lb: {% if c.section == "primal" %}false{% else %}true{% endif %} }, values: { {% for g in c.grades %}{{ g.grade | jsonify }}: {% if g.current %}{{ g.v }}{% else %}null{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %} } };</script>
 <script src="/beef-prices/live.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/beef-prices/tools.js?v={{ site.time | date: '%s' }}" defer></script>
 {% endif %}
 </div>
 

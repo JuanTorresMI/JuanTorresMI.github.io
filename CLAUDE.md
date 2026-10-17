@@ -128,7 +128,8 @@ JavaScript get real content; and, where it matters, a page script swaps in fresh
   `beef-prices/` (the daily cutout and primals, and one file per year of every cut) and
   `beef-prices/latest.json` (the newest report, for anyone's code). The Worker stores one row, the
   newest report; `beef-prices/live.js` asks it only when a page's copy is older than a report that
-  should be out, and then shows the new figures at the top. Names and slugs come from
+  should be out, and then shows the new figures at the top. `beef-prices/tools.js` adds the board's find-a-cut box and, on each cut page, a price
+  check and a trim-cost calculator; they use only data already in the page (`tool` in beef.json). Names and slugs come from
   `_data/beef_cuts.json`, keyed on USDA's description; never change a slug once its page is live.
   Prices are dollars per hundredweight; a cut with no sales that day has no row, never $0. Credit
   USDA AMS, and make no claims the numbers don't show (seasonal swings are computed against each
