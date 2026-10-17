@@ -44,6 +44,8 @@ defaults:
     values: { layout: border-crossing, lang: en, translations_live: true, parent: { title: Border truck wait times, url: /border-waits/ }, image: /assets/og/border-waits.png, image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits, now and by hour." }
   - scope: { path: "", type: border_crossings_es }
     values: { layout: border-crossing, lang: es, translations_live: true, parent: { title: Tiempos de espera en la frontera, url: /es/tiempos-de-espera/ }, image: /assets/og/border-waits.png, image_alt: "Tiempos de espera para camiones en la frontera, por Juan Torres." }
+  - scope: { path: "", type: beef_cuts }
+    values: { layout: beef-cut, parent: { title: Boxed beef prices, url: /beef-prices/ }, image: /assets/og/beef-prices.png, image_alt: "Boxed beef prices, by Juan Torres. USDA's daily boxed beef cutout and the price of every cut." }
 
 # One page per reefer lane (/reefer-rates/<origin>-to-<city>/). The files in _reefer_lanes/ are
 # front matter only, written by scripts/snapshot.py; the data is _data/live/reefer.json.
@@ -60,6 +62,12 @@ collections:
   border_crossings_es:
     output: true
     permalink: /es/tiempos-de-espera/:name/
+  # One page per beef cut, primal and ground beef item (/beef-prices/<slug>/). Front matter only,
+  # written by scripts/snapshot.py; names and slugs from _data/beef_cuts.json, the data is
+  # _data/live/beef.json.
+  beef_cuts:
+    output: true
+    permalink: /beef-prices/:name/
 
 # Cloudflare Web Analytics: cookieless page counts, no consent banner needed. Paste the token
 # from the dashboard's JS snippet (Web Analytics > the site > Manage site). It is public by
@@ -68,8 +76,8 @@ cloudflare_analytics_token: 4cfd147b97f442a989f4267e1349c474
 
 # The site's Cloudflare Worker (worker/, see its README). It answers what a browser can't fetch
 # itself: the house TV (/watching/), the Substack feed (/blog/), the YouTube numbers, the reefer
-# rates, the border waits and the music page's catalog, counter and guestbook. scripts/snapshot.py
-# also reads it. The keys it needs are Cloudflare secrets, never here. Blank it and every page
+# rates, the border waits, the beef prices and the music page's catalog, counter and guestbook.
+# scripts/snapshot.py also reads it. The keys it needs are Cloudflare secrets, never here. Blank it and every page
 # falls back to its built-in copy or a polite notice rather than breaking.
 worker_url: "https://house-tv.5342543fsd.workers.dev"
 # The family label on /watching/.

@@ -1,0 +1,335 @@
+---
+layout: default
+title: Boxed beef prices
+seo_title: "Boxed Beef Cutout Today · Beef Prices by Cut (USDA)"
+permalink: /beef-prices/
+description: Today's USDA boxed beef cutout, Choice and Select, and the wholesale price of every beef cut that traded, per pound, with daily history and free CSVs.
+image: /assets/og/beef-prices.png
+image_alt: "Boxed beef prices, by Juan Torres. USDA's daily boxed beef cutout and the price of every cut."
+last_modified_at: 2026-10-16
+---
+{%- comment -%}
+  A "work" page (see the families in CLAUDE.md), in the reefer board's rate-sheet style (.rb in
+  style.css, plus .bf for the two-line charts and the year-by-month grids). Drawn entirely from
+  site.data.live.beef, the copy scripts/snapshot.py makes of the Worker's /beef data (USDA's
+  LM_XB403 report): no page script, and visitors never call the Worker. Cut pages:
+  _layouts/beef-cut.html.
+{%- endcomment -%}
+{%- assign r = site.data.live.beef -%}
+<div class="rb bf">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family">Work · Wholesale beef</p>
+    <h1>Boxed beef prices today</h1>
+    <p class="rb-sub">What beef sells for when packers sell it by the box to grocers, restaurants and processors: USDA’s daily boxed beef cutout for Choice and Select, and the price of every cut that traded, per hundredweight and per pound. From the negotiated sales packers report to USDA, updated every business day.</p>
+  </div>
+  {%- if r %}
+  <dl class="rb-stamp">
+    <div><dt>Report for</dt><dd>{{ r.day }}</dd></div>
+    <div><dt>Choice cutout</dt><dd>{{ r.stamp.choice }}{% if r.stamp.choice_chg != "" %} <span>{{ r.stamp.choice_chg }}</span>{% endif %}</dd></div>
+    <div><dt>Select cutout</dt><dd>{{ r.stamp.select }}{% if r.stamp.select_chg != "" %} <span>{{ r.stamp.select_chg }}</span>{% endif %}</dd></div>
+    {%- if r.stamp.spread != "" %}<div><dt>Choice over Select</dt><dd>{{ r.stamp.spread }}</dd></div>{% endif %}
+    {%- if r.stamp.loads != "" %}<div><dt>Loads sold</dt><dd>{{ r.stamp.loads }}</dd></div>{% endif %}
+  </dl>
+  {%- endif %}
+</header>
+
+{% if r %}
+<nav class="rb-jump" aria-label="Sections on this page">
+  <a href="#today">Today</a>
+  <a href="#primals">Primals</a>
+  <a href="#cuts">Every cut</a>
+  <a href="#ground">Ground beef</a>
+  <a href="#movers">Biggest moves</a>
+  <a href="#history">History since {{ r.first_iso | slice: 0, 4 }}</a>
+  <a href="#data">Download the data</a>
+  <a href="#faq">Questions</a>
+</nav>
+
+<section class="rb-sec" id="today" aria-labelledby="today-h">
+  <h2 id="today-h">The boxed beef cutout today</h2>
+  <p class="rb-big">{{ r.summary }}</p>
+  <div class="rb-judge">
+    <p class="rb-tag">Is today’s Choice cutout high or low?{% if r.cutout.standing.tag != "" %} · {{ r.cutout.standing.tag }}{% endif %}</p>
+    <p class="rb-say">{{ r.cutout.standing.text }}</p>
+    {%- if r.cutout.standing.pos %}
+    <div class="rb-meter" role="img" aria-label="{{ r.cutout.standing.text }}"><span style="left: {{ r.cutout.standing.pos }}%"></span></div>
+    <p class="rb-meter-k"><span>Lowest of the year</span><span>Highest of the year</span></p>
+    {%- endif %}
+  </div>
+  <p class="rb-note">
+    {%- if r.cutout.year_ago %}A year earlier ({{ r.cutout.year_ago.date }}) the Choice cutout was {{ r.cutout.year_ago.cwt }}; today’s is {{ r.cutout.year_ago.change }} against that. {% endif -%}
+    Over the past year it averaged {{ r.cutout.avg }}, from a low of {{ r.cutout.low }} ({{ r.cutout.low_day }}) to a high of {{ r.cutout.high }} ({{ r.cutout.high_day }}).
+    {%- if r.cutout.record_now %} Today is the highest Choice cutout on record since {{ r.first }}.{% else %} The highest on record since {{ r.first }} is {{ r.cutout.record }}, on {{ r.cutout.record_day }}.{% endif %}
+    At {{ r.stamp.choice }} per hundredweight, a Choice carcass’s cuts are worth about {{ r.cutout.carcass_lb }} a pound.
+  </p>
+
+  {%- if r.chart_year %}
+  <section class="rb-block">
+    <h3>The cutout, day by day <span>{{ r.chart_year.start }} to {{ r.chart_year.end }}</span></h3>
+    {%- assign ch = r.chart_year %}
+    <figure class="rb-chart">
+      <svg viewBox="0 0 {{ ch.w }} {{ ch.h }}" preserveAspectRatio="none" role="img" aria-label="The Choice and Select boxed beef cutout every business day from {{ ch.start }} to {{ ch.end }}, between {{ ch.bottom }} and {{ ch.top }} per hundredweight.">
+        {%- for l in ch.lines %}<path class="{{ l.cls }}" d="{{ l.d }}"/>{% endfor %}
+      </svg>
+      <figcaption><span>{{ ch.top }}</span><span>{{ ch.bottom }}</span></figcaption>
+    </figure>
+    <ul class="bf-key"><li><span class="bf-swatch"></span>Choice</li><li><span class="bf-swatch bf-swatch2"></span>Select</li></ul>
+  </section>
+  {%- endif %}
+
+  <section class="rb-block">
+    <h3>The last {{ r.recent.size }} reports <span>Dollars per hundredweight</span></h3>
+    <div class="rb-scroll">
+      <table class="rb-table">
+        <thead><tr><th scope="col">Day</th><th scope="col">Choice</th><th scope="col">Change</th><th scope="col">Select</th><th scope="col">Change</th><th scope="col">Spread</th><th scope="col">Loads</th></tr></thead>
+        <tbody>
+        {%- for d in r.recent %}
+          <tr><th scope="row">{{ d.day }}</th><td>{{ d.choice }}</td><td>{{ d.choice_chg | default: "—" }}</td><td>{{ d.select }}</td><td>{{ d.select_chg | default: "—" }}</td><td>{{ d.spread | default: "—" }}</td><td>{{ d.loads | default: "—" }}</td></tr>
+        {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
+<section class="rb-sec" id="primals" aria-labelledby="primals-h">
+  <h2 id="primals-h">Primal values today</h2>
+  <p>The cutout is built from seven primals, the big sections a carcass is first broken into. Each value is what that primal’s cuts were worth on {{ r.on_day }}, per hundredweight of the primal. Click one for its history and the cuts it is made of.</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack">
+      <thead><tr><th scope="col">Primal</th><th scope="col">Choice</th><th scope="col">Change</th><th scope="col">Select</th><th scope="col">Change</th></tr></thead>
+      <tbody>
+      {%- for p in r.primals %}
+        <tr><th scope="row">{% if p.slug != "" %}<a href="/beef-prices/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}</th><td data-label="Choice">{{ p.choice }}</td><td data-label="Change">{{ p.choice_chg | default: "—" }}</td><td data-label="Select">{{ p.select | default: "—" }}</td><td data-label="Change">{{ p.select_chg | default: "—" }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="rb-sec" id="cuts" aria-labelledby="cuts-h">
+  <h2 id="cuts-h">Wholesale price of every beef cut today</h2>
+  <p>Every cut that traded on {{ r.on_day }}, {{ r.traded }} in all, by primal and dearest first. Prices are the weighted average of the day’s negotiated sales, per hundredweight and per pound. The code after each name is its IMPS number and fat limitation (see <a class="link" href="#codes">how to read the codes</a>). Click a cut for every day on record.</p>
+  {%- for g in r.groups %}
+  <h3>{{ g.name }}</h3>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack bf-cuts">
+      <thead><tr><th scope="col">Cut</th><th scope="col">Code</th><th scope="col">Choice, per cwt</th><th scope="col">Per lb</th><th scope="col">Select, per cwt</th><th scope="col">Per lb</th><th scope="col">Pounds</th></tr></thead>
+      <tbody>
+      {%- for c in g.rows %}
+        <tr><th scope="row">{% if c.slug != "" %}<a href="/beef-prices/{{ c.slug }}/">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}{% if c.ungraded %} <span class="bf-tag">any grade</span>{% endif %}</th><td data-label="Code">{% if c.imps != "" %}{{ c.imps }}{% endif %}{% if c.fl != "" %} · {{ c.fl }}{% endif %}</td><td data-label="{% if c.ungraded %}Any grade{% else %}Choice{% endif %}, per cwt">{{ c.price | default: "—" }}</td><td data-label="Per lb">{{ c.price_lb | default: "—" }}</td><td data-label="Select, per cwt"{% if c.select == "" %} class="bf-empty"{% endif %}>{{ c.select | default: "—" }}</td><td data-label="Per lb"{% if c.select == "" %} class="bf-empty"{% endif %}>{{ c.select_lb | default: "—" }}</td><td data-label="Pounds">{{ c.lbs | default: "—" }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  {%- endfor %}
+  {%- if r.quiet.size > 0 %}
+  <p class="rb-note">Didn’t trade on {{ r.on_day }}: {% for q in r.quiet %}<a class="link" href="/beef-prices/{{ q.slug }}/">{{ q.name }}</a> (last {{ q.last }}){% unless forloop.last %}, {% endunless %}{% endfor %}. A cut with no sales has no price that day, which is different from a price of zero.</p>
+  {%- endif %}
+</section>
+
+{%- if r.ground.size > 0 %}
+<section class="rb-sec" id="ground" aria-labelledby="ground-h">
+  <h2 id="ground-h">Ground beef and trimmings today</h2>
+  <p>Ground beef is sold by lean percentage (81% lean is 81% lean and 19% fat) and isn’t split by grade. Trimmings are the lean and fat left from cutting, sold to grinders by their lean content.</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack">
+      <thead><tr><th scope="col">Item</th><th scope="col">Per cwt</th><th scope="col">Per lb</th><th scope="col">Pounds</th><th scope="col">Trades</th></tr></thead>
+      <tbody>
+      {%- for c in r.ground %}
+        <tr><th scope="row">{% if c.slug != "" %}<a href="/beef-prices/{{ c.slug }}/">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}</th><td data-label="Per cwt">{{ c.price }}</td><td data-label="Per lb">{{ c.price_lb }}</td><td data-label="Pounds">{{ c.lbs | default: "—" }}</td><td data-label="Trades">{{ c.trades | default: "—" }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{%- endif %}
+
+<section class="rb-sec" id="movers" aria-labelledby="movers-h">
+  <h2 id="movers-h">Biggest moves from a week ago</h2>
+  <p>Choice cuts (and the cuts sold without a grade) with at least 10 trades on {{ r.on_day }}, against their own price on the last business day a week or more before. A cut with only a few sales can swing a long way on one deal, so those are left out.</p>
+  <div class="rb-two">
+    <div>
+      <h3>Up</h3>
+      <table class="rb-t">
+        <thead><tr><th scope="col">Cut</th><th scope="col">Per lb</th><th scope="col">Change</th></tr></thead>
+        <tbody>
+        {%- for m in r.ups %}
+          <tr><th scope="row">{% if m.slug != "" %}<a href="/beef-prices/{{ m.slug }}/">{{ m.name }}</a>{% else %}{{ m.name }}{% endif %}</th><td>{{ m.lb }} <span class="bf-was">from {{ m.then }}</span></td><td><strong>{{ m.change }}</strong></td></tr>
+        {%- else %}<tr><td colspan="3">No busy cut rose by half a percent or more.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>Down</h3>
+      <table class="rb-t">
+        <thead><tr><th scope="col">Cut</th><th scope="col">Per lb</th><th scope="col">Change</th></tr></thead>
+        <tbody>
+        {%- for m in r.downs %}
+          <tr><th scope="row">{% if m.slug != "" %}<a href="/beef-prices/{{ m.slug }}/">{{ m.name }}</a>{% else %}{{ m.name }}{% endif %}</th><td>{{ m.lb }} <span class="bf-was">from {{ m.then }}</span></td><td><strong>{{ m.change }}</strong></td></tr>
+        {%- else %}<tr><td colspan="3">No busy cut fell by half a percent or more.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="rb-sec" id="history" aria-labelledby="history-h">
+  <h2 id="history-h">The boxed beef cutout since {{ r.first_iso | slice: 0, 4 }}</h2>
+  <p>Every business day since {{ r.first }}, {{ r.record_days }} reports in all{% unless r.backfill_done %}, with older years still being collected{% endunless %}. The chart shows each week’s average; the table each month’s, in dollars per hundredweight.</p>
+  {%- if r.chart_all %}
+  {%- assign ch = r.chart_all %}
+  <figure class="rb-chart">
+    <svg viewBox="0 0 {{ ch.w }} {{ ch.h }}" preserveAspectRatio="none" role="img" aria-label="Weekly average Choice and Select boxed beef cutout from {{ ch.start }} to {{ ch.end }}, between {{ ch.bottom }} and {{ ch.top }} per hundredweight.">
+      {%- for l in ch.lines %}<path class="{{ l.cls }}" d="{{ l.d }}"/>{% endfor %}
+    </svg>
+    <figcaption><span>{{ ch.top }}</span><span>{{ ch.bottom }}</span></figcaption>
+  </figure>
+  <ul class="bf-key"><li><span class="bf-swatch"></span>Choice</li><li><span class="bf-swatch bf-swatch2"></span>Select</li><li>{{ ch.start }} to {{ ch.end }}</li></ul>
+  {%- endif %}
+  {%- if r.grid.size > 0 %}
+  <h3>Average Choice cutout by month</h3>
+  <div class="rb-scroll">
+    <table class="rb-table bf-grid">
+      <thead><tr><th scope="col">Year</th>{% assign mnames = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" | split: "," %}{% for m in mnames %}<th scope="col">{{ m }}</th>{% endfor %}<th scope="col">Year</th></tr></thead>
+      <tbody>
+      {%- for y in r.grid %}
+        <tr><th scope="row">{{ y.year }}</th>{% for v in y.cells %}<td>{{ v | default: "·" }}</td>{% endfor %}<td><strong>{{ y.avg }}</strong></td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  {%- endif %}
+  {%- if r.season %}
+  <h3>The cutout’s usual year</h3>
+  <p>Each month against its own year’s average: the median over {{ r.season.years }}. Prices drifted a long way in those years, so comparing a month to its own year shows the seasonal swing without the drift, and the median keeps one wild year from making a season (in May 2020, with packing plants shut, the cutout set its record). The Choice cutout usually runs highest in {{ r.season.high }} ({{ r.season.high_v }}) and lowest in {{ r.season.low }} ({{ r.season.low_v }}).</p>
+  <ol class="bf-season">
+    {%- for m in r.season.cells %}<li{% if m.hi %} class="bf-hi"{% elsif m.lo %} class="bf-lo"{% endif %}><span>{{ m.m }}</span>{{ m.v }}</li>{% endfor %}
+  </ol>
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="data" aria-labelledby="data-h">
+  <h2 id="data-h">Download the data</h2>
+  <p>Everything on this page and the cut pages, as plain CSV files anyone can open in a spreadsheet or load into code. They’re rewritten twice a day with the newest report and are free to use: the numbers are USDA’s, and U.S. government data is in the public domain. Credit USDA AMS Livestock, Poultry and Grain Market News.</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-wrap">
+      <thead><tr><th scope="col">File</th><th scope="col">Rows</th><th scope="col">Size</th><th scope="col">What’s in it</th></tr></thead>
+      <tbody>
+      {%- for f in r.downloads %}
+        <tr><th scope="row"><a href="/beef-prices/{{ f.file }}" download>{{ f.file }}</a></th><td>{{ f.rows }}</td><td>{{ f.kb }} KB</td><td>{{ f.label }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <h3>The columns</h3>
+  <div class="rb-scroll">
+    <table class="rb-t rb-wrap bf-dict">
+      <thead><tr><th scope="col">Column</th><th scope="col">Meaning</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">date</th><td>The report date, YYYY-MM-DD. Sales are for product delivered within 0 to 21 days.</td></tr>
+        <tr><th scope="row">choice_cutout, select_cutout</th><td>The day’s cutout value for 600 to 900 lb carcasses, dollars per hundredweight (100 lb) of carcass.</td></tr>
+        <tr><th scope="row">choice_select_spread</th><td>Choice minus Select.</td></tr>
+        <tr><th scope="row">choice_loads … coarse_ground_loads</th><td>Volume sold that day, in loads of 40,000 lb: Choice cuts, Select cuts, trimmings and coarse ground beef.</td></tr>
+        <tr><th scope="row">rib_choice … flank_select</th><td>Each primal’s composite value, dollars per hundredweight of the primal.</td></tr>
+        <tr><th scope="row">section</th><td><code>cut</code> (sold by grade), <code>mixed</code> (sold without a grade, such as skirts), <code>ground</code>, <code>blended</code> or <code>trim</code>.</td></tr>
+        <tr><th scope="row">usda_description</th><td>The item exactly as USDA lists it (runs of spaces made one). The code in brackets is the IMPS number and the fat limitation.</td></tr>
+        <tr><th scope="row">name, imps, fat_limitation, primal</th><td>A plain name, and the item’s code and primal pulled out into their own columns. Blank where USDA gives none.</td></tr>
+        <tr><th scope="row">grade</th><td><code>choice</code>, <code>select</code>, or blank for items sold without a grade.</td></tr>
+        <tr><th scope="row">low, high, weighted_average</th><td>The day’s lowest and highest sale and the volume-weighted average, dollars per hundredweight.</td></tr>
+        <tr><th scope="row">weighted_average_per_lb</th><td>The same weighted average per pound.</td></tr>
+        <tr><th scope="row">trades, pounds</th><td>How many sales and how many pounds the price is based on. Blank where USDA kept them confidential.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>A cut that didn’t trade has no row for that day. USDA prints those as $0.00, which here is left out rather than read as a price of zero, so averages and charts aren’t dragged toward nothing.</p>
+</section>
+
+{%- assign idx = r.index %}
+<section class="rb-sec" id="every-cut" aria-labelledby="every-cut-h">
+  <h2 id="every-cut-h">Every cut page</h2>
+  <p>{{ r.page_count }} pages, each with its daily price history, a year-by-month table and the cut’s usual seasonal swing. Cuts that didn’t trade today are still here.</p>
+  {%- for g in idx %}{% if g.pages.size > 0 or g.primal %}
+  <h3>{% if g.primal %}<a class="link" href="/beef-prices/{{ g.primal }}/">{{ g.name }}</a>{% else %}{{ g.name }}{% endif %}</h3>
+  <ul class="rb-index">
+    {%- for p in g.pages %}<li><a href="/beef-prices/{{ p.slug }}/">{{ p.name }}{% if p.imps != "" %} <span class="bf-code">{{ p.imps }}</span>{% endif %}</a></li>{% endfor %}
+  </ul>
+  {%- endif %}{% endfor %}
+</section>
+{% else %}
+<p class="rb-empty">The first report hasn’t been collected yet. It shows up here the day after the Worker reads it.</p>
+{% endif %}
+</div>
+
+<section class="sec" id="faq">
+  <header class="sec-head"><h2>Questions</h2></header>
+  <div class="row">
+    <div class="body prose bw-faq">
+      <h3>What is the boxed beef cutout?</h3>
+      <p>It’s an estimate of what a beef carcass is worth broken down into the boxed cuts packers actually sell. USDA prices every cut from the day’s sales, weights them by how much of a typical carcass each one makes up, and adds them up. The result is a single number, in dollars per hundredweight of carcass, that the whole beef trade watches: when the cutout rises, packers are getting more for the same animal.</p>
+      <h3>What does “per hundredweight” mean?</h3>
+      <p>Per 100 pounds, written cwt. Divide by 100 for the price per pound: a cut at $1,546.81 per cwt is $15.47 a pound. These are wholesale prices for whole subprimals in boxes, FOB the packing plant, so they’re well below what the same cut costs cut and wrapped at a store.</p>
+      <h3>What’s the difference between Choice and Select?</h3>
+      <p>They’re USDA quality grades, set mostly by marbling, the fat inside the muscle. Choice has more, Select less. Most fed beef in the U.S. grades Choice, so it trades in far bigger volume, and it costs more. The Choice–Select spread is how much more that day.</p>
+      <h3 id="codes">How do I read a cut’s code, like 112A · 3?</h3>
+      <p>The first part is the cut’s number in the Institutional Meat Purchase Specifications (IMPS), the catalog buyers use to order beef: 112A is a boneless ribeye. The second is USDA’s fat limitation, how closely the outside fat is trimmed:</p>
+      <table class="rb-t rb-wrap bf-fat">
+        <thead><tr><th scope="col">Fat limitation</th><th scope="col">Trim</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">1</th><td>3/4 inch average fat, 1 inch at most</td></tr>
+          <tr><th scope="row">2</th><td>1/4 inch average fat, 1/2 inch at most</td></tr>
+          <tr><th scope="row">3</th><td>1/8 inch average fat, 1/4 inch at most</td></tr>
+          <tr><th scope="row">4</th><td>Practically free of fat (at least 75% of the surface lean)</td></tr>
+          <tr><th scope="row">5</th><td>Peeled or denuded</td></tr>
+          <tr><th scope="row">6</th><td>Peeled or denuded, with the surface membrane removed</td></tr>
+        </tbody>
+      </table>
+      <h3>Where does the data come from, and when?</h3>
+      <p>From USDA’s <a href="https://mymarketnews.ams.usda.gov/viewReport/2453">National Daily Boxed Beef Cutout and Boxed Beef Cuts, Negotiated Sales, afternoon report</a> (LM_XB403). Packers are required by law to report their sales under Livestock Mandatory Reporting, and USDA publishes the totals every business day in the middle of the afternoon, Central time. This page is rebuilt twice a day, so the newest report is here by evening.{% if r %} The latest is for {{ r.date }}; the next is due {{ r.next_due }}.{% endif %}</p>
+      <h3>Why does a cut sometimes have no price?</h3>
+      <p>Because nobody bought it on a negotiated deal that day, or too few did for USDA to publish it without giving away who traded. Those days are left blank rather than counted as zero.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="how-it-works">
+  <header class="sec-head"><h2>How it works</h2>{% if r %}<span class="label">Copied {{ r.generated | date: "%b %-d, %Y" }}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+      <ol>
+        <li><strong>A Cloudflare Worker reads the report.</strong> The same small Worker behind this site’s <a href="/reefer-rates/">reefer rate board</a> and <a href="/border-waits/">border wait board</a> checks USDA’s Livestock Mandatory Reporting datamart every half hour. When there’s a new report it fetches the whole thing in one request and stores it in a SQLite database on Cloudflare (D1). USDA’s datamart needs no key.</li>
+        <li><strong>It keeps every cut once a day.</strong> One row per cut, grade and day: the low, the high, the weighted average, the number of trades and the pounds. A cut that didn’t trade gets no row, never a zero.</li>
+        <li><strong>It fills in the past by itself.</strong> Between new reports it asks for one older week at a time, walking back to January 2020.</li>
+        <li><strong>Twice a day, this page is rebuilt from it.</strong> A GitHub Action copies the Worker’s data into the site and rebuilds this board, a page for every cut, and the CSV downloads. The CSVs are also the long-term record: each run reads them back first, so a day once collected is never lost. Because the pages are plain HTML, reading them never touches the Worker, however many people visit.</li>
+      </ol>
+      <p>Source: USDA Agricultural Marketing Service, Livestock, Poultry and Grain Market News. The numbers are theirs and are public; any mistakes in presenting them are mine. The Worker’s code is in the <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">worker folder</a> of this site’s repository.</p>
+    </div>
+  </div>
+</section>
+
+{% if r %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Daily USDA boxed beef cutout and wholesale beef cut prices",
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "keywords": ["boxed beef cutout", "wholesale beef prices", "beef cut prices", "Choice Select spread", "beef primal values", "ground beef wholesale price", "USDA LM_XB403"],
+  "temporalCoverage": "{{ r.first_iso }}/{{ r.latest }}",
+  "spatialCoverage": { "@type": "Place", "name": "United States" },
+  "variableMeasured": ["Choice and Select boxed beef cutout (USD per cwt)", "Primal values (USD per cwt)", "Weighted average price of each cut (USD per cwt and per lb)", "Trades", "Pounds sold", "Loads sold"],
+  "measurementTechnique": "Negotiated sales reported to USDA under Livestock Mandatory Reporting",
+  "isBasedOn": "https://mymarketnews.ams.usda.gov/viewReport/2453",
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "creator": [
+    { "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" },
+    { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
+  ],
+  "distribution": [{% for f in r.downloads %}{ "@type": "DataDownload", "encodingFormat": "text/csv", "name": {{ f.label | jsonify }}, "contentUrl": {{ "/beef-prices/" | append: f.file | absolute_url | jsonify }} }{% unless forloop.last %}, {% endunless %}{% endfor %}],
+  "dateModified": {{ r.latest | jsonify }}
+}
+</script>
+{% endif %}

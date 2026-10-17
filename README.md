@@ -27,6 +27,7 @@ on purpose. This README is the overview.
 | `/reefer-rates/`, `/reefer-rates/<lane>/` | USDA's weekly reefer truck rates, a page per lane | Work | `_data/live/reefer.json` |
 | `/border-waits/`, `/border-waits/<crossing>/` | CBP truck waits at the land border, now and by hour | Work | `_data/live/border.json`, plus the Worker for "right now" |
 | `/es/tiempos-de-espera/`, `…/<cruce>/` | The same for the Mexico crossings, in Spanish | Work | `_data/live/border.json` |
+| `/beef-prices/`, `/beef-prices/<cut>/` | USDA's daily boxed beef cutout and the price of every cut, a page per cut | Work | `_data/live/beef.json` |
 | `/youtube/` | The YouTube channel's numbers and uploads | Gamer | `_data/live/youtube.json`, refreshed live by the Worker |
 | `/watching/` | What's on the house TV (public, but `noindex`) | Chill | `_data/live/watching.json`, refreshed live by the Worker |
 | `/music/` | Yokonjuan, the music page (its own layout and look) | Separate | `_data/music.yml`, refreshed live by the Worker |
@@ -37,28 +38,29 @@ redirect stubs for addresses that moved (`redirects/`).
 ## How it fits together
 
 ```
-                     ┌─ Stremio, YouTube, USDA, EIA, CBP, Substack, SoundCloud, Spotify
+                     ┌─ Stremio, YouTube, USDA (truck rates, boxed beef), EIA, CBP, Substack, SoundCloud, Spotify
                      │
 Cloudflare Worker  ◄─┘  worker/: polls on cron triggers, keeps history in D1, holds the keys
      │
      ├─► browsers: the live parts of /watching/, /youtube/, /blog/, /music/ and the border pages
      │
      └─► scripts/snapshot.py, twice a day (Snapshot live pages workflow)
-              │  writes _data/live/*.json, lane and crossing stubs, CSVs; commits; starts a deploy
+              │  writes _data/live/*.json, lane, crossing and cut stubs, CSVs; commits; starts a deploy
               ▼
          Jekyll on GitHub Pages ─► the site ─► scripts/indexnow.py pings Bing and others
 ```
 
 Every page that shows live data also carries a copy of it in its HTML, so search engines and
 readers without JavaScript see real numbers; the page's script then swaps in fresh ones. The
-reefer board has no script at all: it is rebuilt from the copy.
+reefer and beef boards have no script at all: they are rebuilt from the copy, and their CSVs
+double as the archive each snapshot reads back, so a week or a day once collected is never lost.
 
 ### Workflows (`.github/workflows/`)
 
 | Workflow | When | What it does |
 | --- | --- | --- |
 | `jekyll-gh-pages.yml` (Deploy) | Every push to `main`, or when the snapshot starts it | Dates each page from git (`lastmod.py`), builds with GitHub Pages' Jekyll, publishes, then pings IndexNow |
-| `check.yml` (Check the site) | Every pull request and every push to another branch | The same build, then `scripts/check.py` on the result |
+| `check.yml` (Check the site) | Every pull request and every push to another branch | The same build, then `scripts/check.py` on the result; the build is kept as the run's `site` artifact for five days |
 | `snapshot.yml` (Snapshot live pages) | 09:41 and 21:41 UTC daily, or by hand | Runs `snapshot.py`, commits only if something changed, then starts a deploy |
 
 ## Where things live
@@ -66,14 +68,14 @@ reefer board has no script at all: it is rebuilt from the copy.
 | Path | What it is |
 | --- | --- |
 | `_config.yml` | Name, tagline, description, social links, default share picture, Worker URL, collections, build excludes |
-| `_data/` | `projects.yml`, `resume.yml`, `music.yml`, the border and reefer reference lists, and `live/` (the Worker's data, written by `snapshot.py`, never edited by hand) |
+| `_data/` | `projects.yml`, `resume.yml`, `music.yml`, the border, reefer and beef reference lists, and `live/` (the Worker's data, written by `snapshot.py`, never edited by hand) |
 | `_includes/` | `head.html` (titles, meta tags, structured data, for every page), the nav, footer and project bar, the border heat map |
-| `_layouts/` | `default` (ordinary pages), `post`, `app` (full-width projects), `reefer-lane`, `border-crossing`, `artist` (the music page), `redirect` |
+| `_layouts/` | `default` (ordinary pages), `post`, `app` (full-width projects), `reefer-lane`, `border-crossing`, `beef-cut`, `artist` (the music page), `redirect` |
 | `_posts/` | Writing published on this site (`/blog/<slug>/`) |
-| `_reefer_lanes/`, `_border_crossings/`, `_border_crossings_es/` | Front-matter stubs, one per generated page, written by `snapshot.py` |
+| `_reefer_lanes/`, `_border_crossings/`, `_border_crossings_es/`, `_beef_cuts/` | Front-matter stubs, one per generated page, written by `snapshot.py` |
 | `assets/` | `css/style.css` (the one stylesheet), self-hosted fonts, share pictures (`og/`), icons, the résumé PDF and its `.docx` source |
 | `fruit-fly-dispatcher/`, `craft-ledger.html`, `aggregate-planning/` | The three browser projects |
-| `reefer-rates/`, `border-waits/`, `es/` | The data boards' index pages and their CSV downloads |
+| `reefer-rates/`, `border-waits/`, `es/`, `beef-prices/` | The data boards' index pages and their CSV downloads |
 | `music/` | The music page, its stylesheet, script, icon and share picture |
 | `worker/` | The Cloudflare Worker; see [worker/README.md](worker/README.md) |
 | `scripts/` | Build checks, the snapshot, and the image and screenshot generators (below) |
@@ -91,7 +93,8 @@ jekyll build && python3 scripts/check.py _site # what the PR check runs (python 
 ```
 
 A plain local build uses a newer Jekyll than GitHub Pages does (3.10), so the pull request check
-is the one that counts. `check.py` needs only Python's standard library; it fails on unrendered
+is the one that counts. Without Ruby, push a branch and download what the check built:
+`gh run download <run id> -n site -D _site`, then run the screenshots on that. `check.py` needs only Python's standard library; it fails on unrendered
 Liquid, broken structured data, missing titles, descriptions, canonicals or share pictures,
 links and hreflang that point at nothing, images without alt text and a bad sitemap, feed or
 manifest, and warns about duplicate titles or descriptions.
@@ -116,7 +119,8 @@ NODE_PATH=$(npm root -g) node scripts/og-images.js
 ```
 
 `snapshot.py` writes straight into the repo, so leave it to the workflow unless you mean to
-commit what it fetches.
+commit what it fetches. `python3 scripts/snapshot.py beef` runs one source alone. Playwright can
+use an installed Chrome or Edge instead of its own Chromium (`chromium.launch({ channel: "msedge" })`).
 
 ## Search and sharing
 

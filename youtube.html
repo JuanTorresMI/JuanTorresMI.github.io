@@ -53,7 +53,7 @@ stock: night
     <div class="yt-shorts" id="yt-shorts">
     {%- for v in yt.shorts %}
       <a class="yt-short" href="{{ v.url | escape }}">
-        <span class="yt-thumb tall">{% if v.thumb %}<img src="{{ v.thumb | escape }}" alt="" loading="lazy">{% endif %}{% if v.views != "" %}<span class="yt-len">{{ v.views }}</span>{% endif %}</span>
+        <span class="yt-thumb tall">{% if v.thumb %}<img src="{{ v.thumb | escape }}" alt="" loading="lazy" width="320" height="180">{% endif %}{% if v.views != "" %}<span class="yt-len">{{ v.views }}</span>{% endif %}</span>
         <span class="yt-short-t">{{ v.title | escape }}</span>
       </a>
     {%- endfor -%}
@@ -134,7 +134,7 @@ stock: night
     : Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"));
   const dayName = (day) => new Date(day + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" });
   const shortDate = (iso) => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  const thumb = (src, cls, extra) => `<span class="yt-thumb${cls}">${src ? `<img src="${esc(src)}" alt="" loading="lazy">` : ""}${extra}</span>`;
+  const thumb = (src, cls, extra) => `<span class="yt-thumb${cls}">${src ? `<img src="${esc(src)}" alt="" loading="lazy" width="320" height="180">` : ""}${extra}</span>`;
 
   function renderHud(d) {
     const s = d.stats || {};

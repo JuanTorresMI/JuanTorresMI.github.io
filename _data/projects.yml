@@ -127,6 +127,27 @@
   search: [border wait times, truck border wait times, commercial border crossing wait, CBP border wait times, Laredo bridge wait times, Otay Mesa commercial wait time]
   keywords: [border, wait times, cbp]
 
+- slug: beef-prices
+  family: Work
+  title: Boxed Beef Prices
+  url: /beef-prices/
+  guide: /beef-prices/#faq
+  writeup: /blog/usda-boxed-beef-prices-by-cut/
+  kind: Data
+  status: Live
+  short: USDA’s daily boxed beef cutout and the wholesale price of every beef cut that traded, with a page and the full daily history for each cut.
+  summary: >-
+    Every business day, packers report their boxed beef sales to USDA, which publishes the cutout and a price for
+    every cut, but only as a PDF or as raw rows in a datamart. A Cloudflare Worker reads the report each afternoon,
+    keeps each cut’s price once a day, and filled in the history back to 2020 on its own. The site rebuilds from it
+    twice a day: a board for today, a page per cut with its history and its usual seasonal swing, and every day as
+    free CSV downloads.
+  metric: Every business day · 58 cut pages · 1,731 days since 2020 · CSV downloads · $0 to run
+  stack: [JavaScript, Python, Cloudflare Workers, D1 (SQLite), USDA LMR datamart, GitHub Actions]
+  category: WebApplication
+  search: [boxed beef cutout, wholesale beef prices, beef cut prices, choice select spread, beef primal values, ground beef wholesale price, USDA LM_XB403]
+  keywords: [beef, cutout, boxed beef]
+
 - slug: youtube-stats
   family: Gamer
   art: /assets/og/youtube.png

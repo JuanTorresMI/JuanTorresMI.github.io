@@ -1,7 +1,7 @@
 # Twice a day, copies the Worker's live data into the site (scripts/snapshot.py): /youtube/ and
 # /watching/ get real numbers in their HTML for crawlers and readers without JavaScript, and the
-# reefer and border boards (built from the copy alone, apart from the border's "right now"
-# columns) get fresh data, any new lane or crossing pages and their CSVs.
+# reefer, border and beef boards (built from the copy alone, apart from the border's "right now"
+# columns) get fresh data, any new lane, crossing or cut pages and their CSVs.
 # Commits only when something changed, then starts a deploy: a push made with the workflow's
 # own token doesn't trigger other workflows, but an explicit dispatch does.
 name: Snapshot live pages
@@ -36,9 +36,9 @@ jobs:
         id: commit
         run: |
           git add _data/live
-          # These only exist once there is reefer or border data (lane pages need 4 weeks of it),
-          # and a git add of a path with nothing in it fails the job.
-          for p in reefer-rates/usda-reefer-truck-rates.csv _reefer_lanes/*.md border-waits/border-truck-wait-times.csv _border_crossings/*.md _border_crossings_es/*.md; do
+          # These only exist once there is reefer, border or beef data (lane pages need 4 weeks of
+          # it), and a git add of a path with nothing in it fails the job.
+          for p in reefer-rates/usda-reefer-truck-rates.csv _reefer_lanes/*.md border-waits/border-truck-wait-times.csv _border_crossings/*.md _border_crossings_es/*.md beef-prices/*.csv _beef_cuts/*.md; do
             if [ -e "$p" ]; then git add "$p"; fi
           done
           if git diff --cached --quiet; then

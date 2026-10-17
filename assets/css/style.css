@@ -8,7 +8,7 @@
    The Fruit Fly Dispatcher page carries its own copy of the neutrals and type tokens, so keep
    the two in step. Sections, in order: fonts, tokens, base, grid, nav, project bar, footer, page
    furniture, entries, raised stock, home, project log, writing and posts, the house TV board,
-   print, then one block per page family (reefer, border, YouTube, TV, résumé, projects, writing). */
+   print, then one block per page family (reefer, border, beef, YouTube, TV, résumé, projects, writing). */
 
 /* ---------- fonts, served from here rather than Google ----------
    Latin subsets only (the same files Google would send a browser in the US), so one origin,
@@ -560,6 +560,40 @@ html { scroll-behavior: smooth; }
 .bw-faq p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--text); }
 .bw-faq .rb-note { margin-top: 24px !important; }
 @media (max-width: 520px) { .bw-near th:nth-child(4), .bw-near td:nth-child(4) { display: none; } .bw-near th, .bw-near td { padding-left: 8px; padding-right: 8px; } }
+/* ---------- Beef prices (/beef-prices/ and its cut pages) ----------
+   The reefer board's components (.rb) plus a second chart line (Select, dashed in the secondary
+   ink), the year-by-month grids and the seasonal strip. Scoped under .bf. */
+.bf .rb-block > h3, .bf .bf-h3 { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; margin: 0 0 12px; padding-top: 12px; border-top: 1px solid var(--ink); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); }
+.bf .rb-block > h3 span, .bf .bf-h3 span { font-weight: 400; color: var(--muted); }
+.bf .bf-h3 { margin-top: 32px; }
+.bf .rb-chart .line2 { fill: none; stroke: var(--text-2); stroke-width: 1.5; stroke-dasharray: 5 4; vector-effect: non-scaling-stroke; }
+.bf-key { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 12px 0 0; padding: 0; list-style: none; font-size: 13px; color: var(--text-2); }
+.bf-key li { display: flex; align-items: center; gap: 8px; }
+.bf-swatch { display: inline-block; width: 24px; height: 0; border-top: 2px solid var(--accent); }
+.bf-swatch2 { border-top: 2px dashed var(--text-2); }
+.bf-tag, .bf-code { display: inline-block; margin-left: 4px; padding: 0 6px; border: 1px solid var(--rule); font: 500 11px/1.6 var(--sans); letter-spacing: 0.06em; color: var(--muted); white-space: nowrap; vertical-align: 1px; }
+.bf-code { font-family: var(--mono); letter-spacing: 0; }
+.bf-was { font-family: var(--sans); font-size: 13px; color: var(--muted); white-space: nowrap; }
+.bf-cuts td:nth-child(2) { color: var(--muted); }
+.bf-grid { min-width: 720px; }
+.bf-grid th, .bf-grid td { padding: 8px 6px; text-align: right; }
+.bf-grid th:first-child, .bf-grid tbody th { text-align: left; }
+.bf-grid td:last-child, .bf-grid th:last-child { border-left: 1px solid var(--ink); }
+.bf-season { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1px; margin: 12px 0 0; padding: 0; list-style: none; border: 1px solid var(--ink); background: var(--ink); }
+.bf-season li { display: flex; flex-direction: column; gap: 2px; padding: 8px 4px; background: var(--stock); font: 400 13px var(--mono); text-align: center; color: var(--text); }
+.bf-season li span { font: 500 11px var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.bf-season .bf-hi { background: color-mix(in srgb, var(--accent) 25%, var(--stock)); color: var(--ink); font-weight: 500; }
+.bf-season .bf-lo { background: var(--silian); color: var(--ink); }
+.bf-dict code { font-family: var(--mono); font-size: 14px; }
+.bf-dict td:nth-child(2), .bf-fat td:nth-child(2) { white-space: normal; }   /* words, not figures */
+.bf-dict tbody th { font-family: var(--mono); font-size: 14px; white-space: nowrap; }
+.bf-fat { margin: 8px 0 16px; max-width: 560px; }
+.bf-fat tbody th { width: 9em; font-family: var(--mono); }
+@media (max-width: 600px) {
+  .bf-season { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .bf .rb-stack td.bf-empty { display: none; }   /* a cut with no Select sale that day: no empty lines on its card */
+  .bf-dict tbody th { white-space: normal; }
+}
 /* ---------- YouTube (/youtube/) ----------
    A "gamer" page on night stock: HUD frames (2px), uppercase mono labels, square thumbnails.
    Scoped under .yt. */
