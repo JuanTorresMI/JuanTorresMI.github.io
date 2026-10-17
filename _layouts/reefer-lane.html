@@ -48,6 +48,18 @@ layout: default
   Months it has been quoted in: {{ l.season }}.
 </p>
 
+{%- if l.raw.low and l.raw.high %}
+<section class="rb-block bf-tools" id="per-mile" hidden>
+  <h2>Rate per mile <span>{% if l.current %}This week’s{% else %}The last{% endif %} quote, for your trip</span></h2>
+  <form class="rb-look" onsubmit="return false">
+    <label>Miles from pickup to delivery <input id="pm-miles" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 1,350"></label>
+  </form>
+  <div class="rb-answer" id="pm-out" aria-live="polite"><p>Enter the trip’s miles to turn the {{ l.range }} rate into dollars per mile.</p></div>
+  <script type="application/json" id="pm-data">{{ l.raw | jsonify }}</script>
+</section>
+<script src="/reefer-rates/tools.js?v={{ site.time | date: '%s' }}" defer></script>
+{%- endif %}
+
 {%- if l.chart %}
 <section class="rb-block">
   <h2>Every week on record <span>{{ l.chart.start }} to {{ l.chart.end }}</span></h2>
@@ -143,3 +155,23 @@ layout: default
     </div>
   </div>
 </section>
+
+{%- if l %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": {{ l.short | append: " to " | append: l.dest | append: " reefer truck rates, weekly" | jsonify }},
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "temporalCoverage": "{{ l.first_iso }}/{{ l.last_iso }}",
+  "spatialCoverage": { "@type": "Place", "name": {{ l.origin | append: " to " | append: l.dest | jsonify }} },
+  "variableMeasured": ["Spot rate per truckload, low and high (USD)", "Mostly rate (USD)", "Weekly change (%)", "Truck availability"],
+  "isBasedOn": "https://mymarketnews.ams.usda.gov/viewReport/2375",
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "creator": [{ "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" }, { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }} }],
+  "distribution": [{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ "/reefer-rates/usda-reefer-truck-rates.csv" | absolute_url | jsonify }} }]
+}
+</script>
+{%- endif %}

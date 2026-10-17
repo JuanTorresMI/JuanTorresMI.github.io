@@ -669,6 +669,7 @@ def reefer(base):
             "origin": o["name"], "short": o["short"], "usda": district, "dest": dest, "border": o.get("border", []),
             "current": last[0] == latest, "last_week": week_of(last[0]), "last_iso": last[0],
             "range": span(last[1], last[2]), "mostly": span(last[3], last[4]), "change": pct(last[5]), "availability": last[6] or "",
+            "raw": {"low": last[1], "high": last[2], "mostly_low": last[3], "mostly_high": last[4]}, "first_iso": weeks[0][0],
             "verdict": verdict(weeks),
             "crops": crop_list(crops.get(district, []), 8) if last[0] == latest else "",
             "year_ago": None if not ago or mid(ago) is None or mid(last) is None else
@@ -798,7 +799,10 @@ def reefer(base):
         a, b = fuel[-1], (fuel[-2] if len(fuel) > 1 else None)
         d = None if not b else round((a["price"] - b["price"]) * 100, 1)
         peak = max(fuel, key=lambda x: x["price"])
-        diesel = {"price": f"${a['price']:.3f}", "week": week_of(a["week"]),
+        bases, mpgs = [1.25, 2.00, 2.50, 3.00, 3.50, 4.00], [5.5, 6.0, 6.5, 7.0]
+        surcharge = {"bases": [f"${x:.2f}" for x in bases],
+                     "rows": [{"mpg": f"{m:g}", "cells": [f"${(a['price'] - x) / m:.3f}" if a["price"] > x else "$0.000" for x in bases]} for m in mpgs]}
+        diesel = {"price": f"${a['price']:.3f}", "v": a["price"], "surcharge": surcharge, "week": week_of(a["week"]),
                   "delta": "" if d is None else ("±0¢" if d == 0 else f"{'+' if d > 0 else '−'}{abs(d):.1f}¢"),
                   "change": "" if d is None else ("no change from the week before" if d == 0 else f"{'+' if d > 0 else '−'}{abs(d):.1f}¢ from the week before"),
                   "peak": f"${peak['price']:.3f}", "peak_week": week_of(peak["week"]),
@@ -1196,7 +1200,7 @@ def beef():
             "imps": i.get("imps", ""), "fl": i.get("fl"), "fat": FAT.get(i.get("fl"), ""), "also": i.get("also", ""),
             "primal": pk or "", "primal_name": dict(PRIMALS).get(pk, ""), "grades": facts, "main": GRADE_NAMES.get(main, main),
             "current": any(f["current"] for f in facts), "last_iso": max(f["iso"] for f in facts),
-            "since": d_full(all_days[0]), "days_all": fmt(len(all_days)), "days_year": len(traded),
+            "since": d_full(all_days[0]), "first_iso": all_days[0], "days_all": fmt(len(all_days)), "days_year": len(traded),
             "chart": beef_chart(lines, usd, weekly=True),
             "grid": year_grid(mavg, lambda v: f"{v / 100:,.2f}" if section != "primal" else f"{v:,.0f}"),
             "grid_unit": "$ per lb" if section != "primal" else "$ per cwt",

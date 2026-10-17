@@ -601,6 +601,9 @@ html { scroll-behavior: smooth; }
 .bf-tools .rb-answer { max-width: 760px; }
 .bf-tools .rb-tag { margin: 0 0 4px !important; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
 .bf-calc label { flex: 1 1 180px; }
+.bw-plan { max-width: 520px; margin-top: 12px; }
+.bw-plan .bw-plan-bar { width: 45%; }
+.bw-plan-bar span { display: block; height: 10px; background: var(--accent); min-width: 2px; }
 .bf-tools .rb-price span { display: block; margin-top: 4px; line-height: 1.5; }   /* the sentence under a big figure, not beside it */
 .bf-live[hidden] { display: none; }
 .bf-dict td:nth-child(2), .bf-fat td:nth-child(2) { white-space: normal; }   /* words, not figures */
