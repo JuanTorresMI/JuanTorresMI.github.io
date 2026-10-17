@@ -831,7 +831,8 @@ def reefer(base):
             ensure_front(f, "seo_title", seo)
             continue
         title = f"{p['short']} to {p['dest']} reefer rates"
-        desc = f"USDA's weekly spot rates for a reefer truck from {p['short']} to {p['dest']}: the latest rate, every week on record, and every origin into {p['dest']}."
+        desc = fit(f"USDA's weekly spot rates for a reefer truck from {p['short']} to {p['dest']}: the latest rate, every week on record, and every origin into {p['dest']}.",
+                   f"USDA's weekly spot rates for a reefer truck from {p['short']} to {p['dest']}: the latest rate and every week on record.", limit=160)
         with open(f, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(f"---\nlane: {slug}\ntitle: {json.dumps(title, ensure_ascii=False)}\nseo_title: {json.dumps(seo, ensure_ascii=False)}\n"
                      f"description: {json.dumps(desc, ensure_ascii=False)}\n---\n")
