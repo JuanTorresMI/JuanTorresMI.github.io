@@ -1,57 +1,135 @@
 # juantorresmi.github.io
 
-Personal site of Juan Torres: a home page, a résumé, a writing index that mirrors Substack,
-and three projects that run in the browser (the Fruit Fly Dispatcher simulation, Craft Ledger
-and the Aggregate Planner).
+The personal site of Juan Torres, a Logistics Management student at Central Michigan University:
+a résumé, the projects he builds (simulations, planners and live freight data that all run in
+the browser), his writing, and a few pages fed by live data. It also hosts Yokonjuan's music
+page, which is kept deliberately separate from the rest.
 
-Built with Jekyll and published by GitHub Pages from `main`
-(`.github/workflows/jekyll-gh-pages.yml`). There is no build step to run locally for ordinary
-edits: change a file, push, and the site updates. Every pull request is built the same way
-and checked by `.github/workflows/check.yml`.
+Built with Jekyll and published by GitHub Pages from `main`. There is nothing to compile for an
+ordinary edit: change a file, open a pull request, and the `Check the site` workflow builds it
+exactly the way GitHub Pages will and checks the result. Merging deploys it.
 
-`CLAUDE.md` is the guide for anyone (or any AI) changing the site: the layout of the repo,
-the design rules, how to add a post or project, and what to run before pushing.
+**[CLAUDE.md](CLAUDE.md) is the working guide** for anyone (or any AI) changing the site: the
+design rules, the page families, how to add a post, project or page, and what is the way it is
+on purpose. This README is the overview.
+
+## What's on the site
+
+| Address | Page | Family | Built from |
+| --- | --- | --- | --- |
+| `/` | Home: business card, about, projects, work, contact | Professional | `_data/projects.yml`, `_data/resume.yml` |
+| `/resume/` | Résumé, printable, with the PDF to download | Professional | `_data/resume.yml`, `assets/Juan Torres Resume.pdf` |
+| `/projects/` | Every project as a card, plus a log of recent commits | Professional | `_data/projects.yml`, GitHub's API (in the browser) |
+| `/blog/`, `/blog/<slug>/` | Writing: project write-ups here, newsletter posts from Substack | Personal | `_posts/`, Substack through the Worker |
+| `/fruit-fly-dispatcher/` | A fruit fly's brain routing deliveries against Google OR-Tools | Work | `fruit-fly-dispatcher/` (run files load on demand) |
+| `/craft-ledger.html` | Minecraft crafting profit calculator, with a guide below it | Gamer | One self-contained file; prices stay in the browser |
+| `/aggregate-planning/` | Aggregate production planning optimizer and study tool | Work | `aggregate-planning/` (HiGHS solver in a Web Worker) |
+| `/reefer-rates/`, `/reefer-rates/<lane>/` | USDA's weekly reefer truck rates, a page per lane | Work | `_data/live/reefer.json` |
+| `/border-waits/`, `/border-waits/<crossing>/` | CBP truck waits at the land border, now and by hour | Work | `_data/live/border.json`, plus the Worker for "right now" |
+| `/es/tiempos-de-espera/`, `…/<cruce>/` | The same for the Mexico crossings, in Spanish | Work | `_data/live/border.json` |
+| `/youtube/` | The YouTube channel's numbers and uploads | Gamer | `_data/live/youtube.json`, refreshed live by the Worker |
+| `/watching/` | What's on the house TV (public, but `noindex`) | Chill | `_data/live/watching.json`, refreshed live by the Worker |
+| `/music/` | Yokonjuan, the music page (its own layout and look) | Separate | `_data/music.yml`, refreshed live by the Worker |
+
+Plus `/feed.xml` (RSS), `/sitemap.xml`, `/robots.txt`, `/site.webmanifest`, a 404 page and a few
+redirect stubs for addresses that moved (`redirects/`).
+
+## How it fits together
+
+```
+                     ┌─ Stremio, YouTube, USDA, EIA, CBP, Substack, SoundCloud, Spotify
+                     │
+Cloudflare Worker  ◄─┘  worker/: polls on cron triggers, keeps history in D1, holds the keys
+     │
+     ├─► browsers: the live parts of /watching/, /youtube/, /blog/, /music/ and the border pages
+     │
+     └─► scripts/snapshot.py, twice a day (Snapshot live pages workflow)
+              │  writes _data/live/*.json, lane and crossing stubs, CSVs; commits; starts a deploy
+              ▼
+         Jekyll on GitHub Pages ─► the site ─► scripts/indexnow.py pings Bing and others
+```
+
+Every page that shows live data also carries a copy of it in its HTML, so search engines and
+readers without JavaScript see real numbers; the page's script then swaps in fresh ones. The
+reefer board has no script at all: it is rebuilt from the copy.
+
+### Workflows (`.github/workflows/`)
+
+| Workflow | When | What it does |
+| --- | --- | --- |
+| `jekyll-gh-pages.yml` (Deploy) | Every push to `main`, or when the snapshot starts it | Dates each page from git (`lastmod.py`), builds with GitHub Pages' Jekyll, publishes, then pings IndexNow |
+| `check.yml` (Check the site) | Every pull request and every push to another branch | The same build, then `scripts/check.py` on the result |
+| `snapshot.yml` (Snapshot live pages) | 09:41 and 21:41 UTC daily, or by hand | Runs `snapshot.py`, commits only if something changed, then starts a deploy |
 
 ## Where things live
 
 | Path | What it is |
 | --- | --- |
-| `_config.yml` | Site name, tagline, description, social links, the Worker URL, and what is excluded from the build |
-| `_data/resume.yml` | The résumé as the site shows it (the PDF in `assets/` is separate; change both) |
-| `_data/projects.yml` | Every project, in the order the Projects page shows them |
-| `_includes/head.html` | Titles, descriptions, link-preview tags and structured data for every page |
-| `_layouts/` | `default` for ordinary pages, `post` for writing, `app` for full-width project pages |
-| `assets/css/style.css` | The one stylesheet, fonts included (served from `assets/fonts/`) |
-| `assets/og/` | Link-preview pictures, drawn by `scripts/og-images.js` |
-| `fruit-fly-dispatcher/` | The simulation page and its data (`runs/` are loaded on demand) |
-| `craft-ledger.html` | The ledger, a single self-contained file |
-| `aggregate-planning/` | The production-planning optimizer: the page, its scripts, and HiGHS and Chart.js in `lib/` |
-| `reefer-rates/` | The reefer rate board; lane pages come from `_layouts/reefer-lane.html` and `_reefer_lanes/`, all built from the daily snapshot |
-| `border-waits/` | The border wait board; crossing pages (English, and Spanish for Mexico crossings) come from `_layouts/border-crossing.html` and `_border_crossings*/`, built from the twice-daily snapshot |
-| `worker/` | The Cloudflare Worker behind `/watching/`, the Substack feed, `/youtube/`, the reefer rates and the border waits; see its README |
-| `scripts/` | `check.py` verifies a build, `screenshots.js` photographs every page, `og-images.js` draws the share pictures, `snapshot.py` copies the Worker's live data into `_data/live/` (daily, by the `Snapshot live pages` workflow), `lastmod.py` dates each page from git for the sitemap (run by the deploy) |
+| `_config.yml` | Name, tagline, description, social links, default share picture, Worker URL, collections, build excludes |
+| `_data/` | `projects.yml`, `resume.yml`, `music.yml`, the border and reefer reference lists, and `live/` (the Worker's data, written by `snapshot.py`, never edited by hand) |
+| `_includes/` | `head.html` (titles, meta tags, structured data, for every page), the nav, footer and project bar, the border heat map |
+| `_layouts/` | `default` (ordinary pages), `post`, `app` (full-width projects), `reefer-lane`, `border-crossing`, `artist` (the music page), `redirect` |
+| `_posts/` | Writing published on this site (`/blog/<slug>/`) |
+| `_reefer_lanes/`, `_border_crossings/`, `_border_crossings_es/` | Front-matter stubs, one per generated page, written by `snapshot.py` |
+| `assets/` | `css/style.css` (the one stylesheet), self-hosted fonts, share pictures (`og/`), icons, the résumé PDF and its `.docx` source |
+| `fruit-fly-dispatcher/`, `craft-ledger.html`, `aggregate-planning/` | The three browser projects |
+| `reefer-rates/`, `border-waits/`, `es/` | The data boards' index pages and their CSV downloads |
+| `music/` | The music page, its stylesheet, script, icon and share picture |
+| `worker/` | The Cloudflare Worker; see [worker/README.md](worker/README.md) |
+| `scripts/` | Build checks, the snapshot, and the image and screenshot generators (below) |
+| `redirects/` | Stubs that send old addresses to new ones |
 
-## Previewing and checking locally
+## Working locally
+
+You need Ruby with Jekyll for a build, Python 3 for the scripts, and Node with Playwright only
+for pictures.
 
 ```sh
 gem install jekyll
-jekyll serve                  # http://localhost:4000
-jekyll build -d /tmp/_site && python3 scripts/check.py /tmp/_site
+jekyll serve                                   # http://localhost:4000
+jekyll build && python3 scripts/check.py _site # what the PR check runs (python on Windows)
 ```
 
-`check.py` needs only Python's standard library. For a visual pass across every page at
-desktop and phone widths in both themes:
+A plain local build uses a newer Jekyll than GitHub Pages does (3.10), so the pull request check
+is the one that counts. `check.py` needs only Python's standard library; it fails on unrendered
+Liquid, broken structured data, missing titles, descriptions, canonicals or share pictures,
+links and hreflang that point at nothing, images without alt text and a bad sitemap, feed or
+manifest, and warns about duplicate titles or descriptions.
+
+### Scripts
+
+| Script | Run | What it does |
+| --- | --- | --- |
+| `check.py` | On every PR (and before you push) | Verifies a built site; see above |
+| `screenshots.js` | By hand, for anything visual | Photographs one page of every kind at desktop and phone widths, light and dark, and reports script errors |
+| `og-images.js` | After changing a share picture's words | Redraws `assets/og/*.png` and the home-screen icons from the site's fonts |
+| `music-og.js` | After changing the music page's picture | Redraws `music/og.jpg` |
+| `snapshot.py` | By the snapshot workflow | Copies the Worker's data into `_data/live/` and writes the generated pages' stubs and CSVs |
+| `lastmod.py` | By the deploy and check workflows | Dates every page from git for the sitemap (`_data/lastmod.json`, never committed) |
+| `indexnow.py` | By the deploy workflow | Tells IndexNow engines which pages changed today or yesterday |
 
 ```sh
-NODE_PATH=$(npm root -g) node scripts/screenshots.js /tmp/_site /tmp/shots
-```
-
-## Link-preview pictures and icons
-
-`assets/og/*.png` and `assets/icon-*.png` are drawn from the site's fonts by a small
-Playwright script. After changing a title in it, re-run it and commit the PNGs:
-
-```sh
+# screenshots and share pictures need Playwright and its Chromium:
 npm install -g playwright && npx playwright install chromium
+NODE_PATH=$(npm root -g) node scripts/screenshots.js _site screenshots
 NODE_PATH=$(npm root -g) node scripts/og-images.js
 ```
+
+`snapshot.py` writes straight into the repo, so leave it to the workflow unless you mean to
+commit what it fetches.
+
+## Search and sharing
+
+Every page goes through `_includes/head.html`, which writes its title, description, canonical
+address, Open Graph and Twitter tags and schema.org structured data: a `Person`, `WebSite` and
+`ProfilePage` on the home page, a `BlogPosting` for each post (linked to the project it writes
+up), a `WebApplication` for each project, a `Dataset` for each data board, and breadcrumbs on
+every other page. The sitemap and feed are written by hand, so no plugin is needed, and each
+sitemap date is only ever a real change. The border pages in English and Spanish point at each
+other with hreflang. Search Console and Bing verify through `_config.yml`; IndexNow's key file
+sits at the root.
+
+## Secrets
+
+None in this repository. The Worker's keys are Cloudflare secrets (see its README); the
+analytics token, IndexNow key and search-console codes in `_config.yml` are public by design.

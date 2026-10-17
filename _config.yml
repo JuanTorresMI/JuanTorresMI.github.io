@@ -66,17 +66,19 @@ collections:
 # design (it sits in every page's source), so it is fine here. Blank turns analytics off.
 cloudflare_analytics_token: 4cfd147b97f442a989f4267e1349c474
 
-# The site's edge helper (worker/). It serves two things the browser cannot fetch itself:
-# the house TV board at "/" and the Substack feed at "/substack". Read-only and public;
-# the keys it needs are Cloudflare secrets, never here. Blank it and both features fall
-# back to a polite notice rather than breaking.
+# The site's Cloudflare Worker (worker/, see its README). It answers what a browser can't fetch
+# itself: the house TV (/watching/), the Substack feed (/blog/), the YouTube numbers, the reefer
+# rates, the border waits and the music page's catalog, counter and guestbook. scripts/snapshot.py
+# also reads it. The keys it needs are Cloudflare secrets, never here. Blank it and every page
+# falls back to its built-in copy or a polite notice rather than breaking.
 worker_url: "https://house-tv.5342543fsd.workers.dev"
+# The family label on /watching/.
 tv_label: The living room TV
 
-# Anything not listed here is published. Without this the Worker source, its README and
-# (the moment anyone runs npm install) a whole node_modules tree would be served as part
-# of the website. The .docx is the resume's source file: it belongs in the repo, not on
-# the web, where the PDF is what people should get.
+# Anything not listed here is published (Jekyll already skips dotfiles and _folders). Without
+# this the Worker source, the scripts and (the moment anyone runs npm install) a node_modules
+# tree would be served as part of the website. The .docx is the résumé's source file: it
+# belongs in the repo, not on the web, where the PDF is what people should get.
 #
 # GitHub Pages renders every Markdown file as a page even without front matter (its build
 # loads jekyll-optional-front-matter; a plain local build does not), so any .md file that is

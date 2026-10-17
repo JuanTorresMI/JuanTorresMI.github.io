@@ -144,7 +144,7 @@ translations_live: true
   "license": "https://www.usa.gov/government-works",
   "creator": [
     { "@type": "Organization", "name": "U.S. Customs and Border Protection", "url": "https://www.cbp.gov/" },
-    { "@type": "Person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
+    { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
   ],
   "distribution": [{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ "/border-waits/border-truck-wait-times.csv" | absolute_url | jsonify }} }],
   "dateModified": {{ b.as_of_iso | jsonify }}

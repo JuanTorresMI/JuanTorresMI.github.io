@@ -1,6 +1,19 @@
-# Every project on the site, in the order the Projects page and the project bar show them.
-# family is the page family (Work, Gamer…; see CLAUDE.md): it labels the card and picks its stock.
-# keywords tag commits in the Project log (matched against the repository name and commit message).
+# Every project on the site, in the order the home page, the Projects page and the project bar
+# show them (the first one is the featured card on /projects/). The page itself sets
+# `project: <slug>` in its front matter.
+#
+#   slug       the page's id; also its share picture, assets/og/<slug>.png, unless `art` names another
+#   family     the page family (Work, Gamer…; see CLAUDE.md): labels the card and picks its stock
+#   title, url
+#   kind       the small label beside it (Simulation, Tool, Data…); `status` is kept for reference, nothing shows it
+#   short      one line for the home page and the cards; `summary` is the longer one the featured card shows
+#   metric     the mono line of figures under a card
+#   writeup    the post about it: linked from its card and the project bar, and from the JSON-LD both ways
+#   guide      a section of its own page that explains it, linked instead of a write-up
+#   stack      what it's built with; also its JSON-LD keywords unless `search` gives better ones
+#   category   schema.org applicationCategory (default EducationalApplication)
+#   features   JSON-LD featureList; learning: { type, level, audience, teaches } makes it a LearningResource
+#   keywords   tag commits in the Project log (matched against the repository name and commit message)
 
 - slug: fruit-fly-dispatcher
   family: Work

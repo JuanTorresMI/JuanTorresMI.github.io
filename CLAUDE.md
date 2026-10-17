@@ -1,48 +1,55 @@
 # Working on this site
 
 Personal site of Juan Torres, built with Jekyll and served by GitHub Pages from `main`.
-Read this before changing anything; README.md covers the same ground for people.
+Read this before changing anything. README.md is the overview for people: what each page is,
+how the live data flows, the workflows and scripts.
 
 ## The shape of it
 
 | Where | What |
 | --- | --- |
-| `_config.yml` | Name, tagline, description, social links, share image, Worker URL, build excludes |
+| `_config.yml` | Name, tagline, description, social links, default share picture, Worker URL, collections and their defaults, build excludes |
 | `_data/resume.yml` | The résumé. `/resume/` shows all of it; the home page shows each job's `summary` |
-| `_data/projects.yml` | Every project, in display order. Feeds the home page, `/projects/`, the project bar and the JSON-LD |
-| `music/`, `_layouts/artist.html`, `_data/music.yml` | Yokonjuan's page (`/music/`), Juan's music. **Deliberately separate from the portfolio:** its own layout, stylesheet (`music/music.css`), script (`music/music.js`), icon and share picture (`scripts/music-og.js`). Nothing on it may name or link Juan Torres, and the portfolio's JSON-LD doesn't connect the two names: the portfolio links in (nav, home About), the music page never links back. Any words in Juan's voice (`about` in the data file) are his; don't write them. The page reads the live catalog, visitor counter and guestbook from the Worker; the data file is the fallback and what crawlers see |
-| `_includes/head.html` | Title, description, canonical, Open Graph / Twitter tags, structured data, fonts. Every page goes through it |
-| `_includes/navbar.html`, `footer.html`, `project-bar.html` | Site chrome |
+| `_data/projects.yml` | Every project, in display order, with its fields documented at the top. Feeds the home page, `/projects/`, the project bar and the JSON-LD |
+| `_includes/head.html` | Title, description, canonical, hreflang, Open Graph / Twitter tags, structured data, fonts, the stylesheet. Every page but the music page goes through it |
+| `_includes/navbar.html`, `footer.html`, `project-bar.html` | Site chrome. `border-heat.html` is the crossing pages' heat map |
 | `_layouts/default.html` | Ordinary pages: content inside `<main class="page frame">` |
 | `_layouts/post.html` | Writing. Adds date, reading time, tags, previous / next |
 | `_layouts/app.html` | Full-width project pages: nav, project bar, the page's own markup, footer |
-| `assets/css/style.css` | The only stylesheet. Fonts, tokens, grid, every component, print |
+| `_layouts/reefer-lane.html`, `border-crossing.html` | One generated page per reefer lane / border crossing (see "Live data pages") |
+| `_layouts/artist.html`, `music/`, `_data/music.yml` | Yokonjuan's page (`/music/`); see "The music page" |
+| `_layouts/redirect.html`, `redirects/` | Old addresses that moved |
+| `assets/css/style.css` | The only stylesheet for the portfolio. Fonts, tokens, grid, every component, print |
 | `assets/fonts/` | Cormorant Garamond, Inter, IBM Plex Mono (latin woff2, self-hosted) |
 | `assets/og/` | 1200×630 share pictures, drawn by `scripts/og-images.js` |
-| `fruit-fly-dispatcher/` | The simulation: `index.html` (layout `app`), `showcase-data.js`, `runs/*.js` (loaded on demand) |
+| `fruit-fly-dispatcher/` | The simulation: `index.html` (layout `app`, its own unscoped styles and copy of the tokens), `showcase-data.js`, `runs/*.js` (loaded on demand) |
 | `craft-ledger.html` | The ledger: one file (styles, markup, recipe JSON, script) inside layout `app`, styles scoped under `.cl`. Below the app sits its guide (`#guide`, ordinary `.page` markup): what search engines and SMP players read. The old guide address redirects there |
 | `aggregate-planning/` | The planner: `index.html` (layout `app`), `planner.css` (scoped under `.ap`), `model.js` (the LP/MIP; no DOM, runs in Node), `solver.js` + `solver-worker.js` (HiGHS in a Web Worker), `app.js`, `study.js` (study mode: the plan taken apart step by step; the worker's `explain()` does the extra solves), `xlsx.js` (the downloadable workbook, no library), `sw.js` (offline). `lib/` holds HiGHS and Chart.js, vendored unchanged |
-| `reefer-rates/`, `_layouts/reefer-lane.html`, `_reefer_lanes/`, `_data/reefer_districts.json` | The reefer rate board (`/reefer-rates/`) and one page per lane. Built only from `_data/live/reefer.json` (no page script): `snapshot.py` writes that, the lane stubs (front matter only, never deleted) and `reefer-rates/usda-reefer-truck-rates.csv`. District names and lane slugs come from `reefer_districts.json`; never change a slug once its page is live. Rates are USDA's (report 2375): credit them, and no claims about a lane that the data doesn't show |
-| `border-waits/`, `_layouts/border-crossing.html`, `_border_crossings/`, `_border_crossings_es/`, `_data/border_crossings.json`, `_data/border_text.yml` | The border wait board (`/border-waits/`), one page per major commercial crossing, and a Spanish page (`/es/tiempos-de-espera/`) for each Mexico crossing. Built from `_data/live/border.json`; a page script only refreshes "right now". `snapshot.py` writes that, the stubs (never deleted) and the CSV of 30-day averages. Crossings with pages, their slugs and Spanish names are in `border_crossings.json`; never change a slug once live. A closed lane is unknown, never 0. The Spanish pages are live and paired with hreflang (`translations_live` in `_config.yml`); their wording follows CBP's own Spanish ("sin demora", "carriles generales"). Beside the board's own readings, `snapshot.py` pulls CBP's published averages for the current month of the previous year (`bwt.cbp.gov/api/historicalwaittimes`) and shows them until the board has its own. Data is CBP's Border Wait Times: credit it |
-| `worker/` | Cloudflare Worker for `/watching/`, the Substack feed, `/youtube/`, the reefer rates (`src/reefer.js`, USDA + EIA, D1), the border waits (`src/border.js`, CBP, D1) and the music page's catalog, counter and guestbook (`src/music.js`, D1 + Workers AI). Not part of the Jekyll build; own README |
-| `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` (share pictures), `snapshot.py` (Worker data → `_data/live/`), `lastmod.py` (git dates for the sitemap), `indexnow.py` (pings Bing and other IndexNow engines with changed pages after each deploy; key in `_config.yml`, proof file at the root) |
-| `_data/live/` | Daily copies of the Worker's answers, already formatted, written by `snapshot.py` from the `Snapshot live pages` workflow, which commits them and starts a deploy. Pages that fill themselves in by script (`/youtube/`, `/watching/`) render this copy in their HTML and the script replaces it; `/reefer-rates/` is built from it alone, and `/border-waits/` is too apart from its "right now" columns. Don't edit these files by hand |
+| `reefer-rates/`, `border-waits/`, `es/tiempos-de-espera/` | The two data boards' index pages, their CSVs and `border-waits/live.js` (see "Live data pages") |
+| `worker/` | The Cloudflare Worker behind every live page. Not part of the Jekyll build; its README lists its routes, crons, secrets and tables |
+| `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` and `music-og.js` (share pictures), `snapshot.py` (Worker data → `_data/live/`), `lastmod.py` (git dates for the sitemap), `indexnow.py` (pings Bing and other IndexNow engines after each deploy) |
+| `_data/live/` | Twice-daily copies of the Worker's answers, already formatted. Written by `snapshot.py` from the `Snapshot live pages` workflow, which commits them and starts a deploy. Don't edit these files by hand |
 
 ## Before you push
 
 ```sh
-jekyll build -d /tmp/_site && python3 scripts/check.py /tmp/_site
+jekyll build && python3 scripts/check.py _site
 ```
 
 `check.py` fails on unrendered Liquid, broken JSON-LD, a page missing its title, description,
-canonical or share image, an internal link that points at nothing, and a bad sitemap, feed or
-manifest. The `Check the site` workflow runs the same thing on every pull request with the exact
-Jekyll GitHub Pages uses (the `github-pages` gem, Jekyll 3.10). Stay inside what that build
-supports: no plugins beyond the GitHub Pages allowlist, and the Liquid filters Jekyll 3.10 has.
-There is no Gemfile on purpose: one would make `jekyll build` insist on `bundle exec`.
+canonical or share image, an internal link, canonical or hreflang that points at nothing, an
+hreflang pair that only points one way, an `<img>` without `alt`, and a bad sitemap, feed or
+manifest. It warns on description lengths, duplicate titles or descriptions, and indexable pages
+without exactly one `<h1>`. The `Check the site` workflow runs the same thing on every pull
+request with the exact Jekyll GitHub Pages uses (the `github-pages` gem, Jekyll 3.10). Stay
+inside what that build supports: no plugins beyond the GitHub Pages allowlist, and only the
+Liquid filters Jekyll 3.10 has. There is no Gemfile on purpose: one would make `jekyll build`
+insist on `bundle exec`.
 
 For anything visual, also run `scripts/screenshots.js` and look at the pictures. On the web,
-the session hook in `.claude/hooks/` installs Jekyll; Playwright is only there if the container has it.
+the session hook in `.claude/hooks/` installs Jekyll; Playwright is only there if the container
+has it. Without Jekyll (a Windows machine with no Ruby, say), push a branch and let the
+`Check the site` workflow build it.
 
 ## Design rules
 
@@ -52,23 +59,75 @@ sets names and titles, Inter carries text and the spaced uppercase labels, IBM P
 dates and figures. Spacing steps are multiples of 8.
 
 - Colors and fonts come from the tokens at the top of `style.css`. Never write a hex color in
-  a page; add a token if one is missing. Dark mode is the same tokens redefined, once for
-  `prefers-color-scheme`, once for `[data-theme="dark"]` and once as `.stock-night` (the dark
-  stock that gamer and chill pages pin with `stock: night` in front matter): keep the three identical.
+  a page or a component rule; add a token if one is missing. Dark mode is the same tokens
+  redefined, once for `prefers-color-scheme`, once for `[data-theme="dark"]` and once as
+  `.stock-night` (the dark stock that gamer and chill pages pin with `stock: night` in front
+  matter): keep the three identical. The Fruit Fly Dispatcher keeps its own copy of the
+  neutrals and type tokens in its page; keep that in step too.
 - Pages sit on the 12-column grid: `.row` with `.key` (columns 1–3) and `.body` (4–12). The
   one list pattern is `.entries` / `.entry`; use it before inventing another.
 - Components for ordinary pages are scoped under `.page` so they never leak into the project
   pages. A project page brings its own classes, scoped under a root class of its own (`.cl` for
   the ledger); it may use the tokens.
 - Keep `.label` (11px, 0.16em tracking, uppercase) and `.data` (mono, 12px) for the small type.
+- The business card, the résumé card, the featured project and the writing letter share one
+  "raised stock" shadow in `style.css`; a new raised surface joins that rule.
 - Pages are not all one layout. Each belongs to a family and takes that family's form while
-  keeping the tokens, fonts, square corners and nav: **work** (reefer board `.rb`, border waits `.bw`, planner, fruit fly:
-  a dense rate sheet or control panel, mono figures), **professional** (résumé `.cv`, projects
-  `.pj`, home: the raised eggshell card), **gamer** (YouTube `.yt`, Craft Ledger's gamer layer:
-  night stock, 2px HUD frames, mono labels, slot grids), **chill** (the house TV `.tv`: night
-  stock, italic serif, posters) and **personal** (writing `.wr`: a letter, serif reading text).
-  Gamer and chill pages set `stock: night`. Put the family label (`.family`) above each page
-  title, and give a project its `family` in `projects.yml` (its card takes that stock).
+  keeping the tokens, fonts, square corners and nav. Put the family label (`.family`, or
+  `.rb-family` on the boards) above each page title, and give a project its `family` in
+  `projects.yml` (its card takes that stock).
+
+| Family | Form | Pages (root class) |
+| --- | --- | --- |
+| **Work** | A dense rate sheet or control panel, mono figures | Reefer board (`.rb`), border waits (`.rb .bw`), planner (`.ap`), Fruit Fly Dispatcher |
+| **Professional** | The raised eggshell card | Home, résumé (`.cv`), projects (`.pj`) |
+| **Gamer** | Night stock, 2px HUD frames, mono labels, slot grids | YouTube (`.yt`), Craft Ledger's gamer layer (`.cl`) |
+| **Chill** | Night stock, italic serif, posters, lots of air | The house TV (`.tv`) |
+| **Personal** | A letter, serif reading text | Writing (`.wr`) and the posts |
+
+Gamer and chill pages set `stock: night`.
+
+## Live data pages
+
+Some pages show data the Worker collects (`worker/`, see its README). The pattern is always
+the same: the Worker polls its source on a cron and keeps history in D1; `snapshot.py` copies
+its answer into `_data/live/<name>.json`, already formatted (Liquid on GitHub Pages can't format
+numbers or dates); the page renders that copy into its HTML, so crawlers and readers without
+JavaScript get real content; and, where it matters, a page script swaps in fresh numbers.
+
+- **`/youtube/`, `/watching/`**: render the copy, and the script replaces it (and leaves it
+  standing if the fetch fails). `/watching/` is `noindex` and out of the sitemap: public, but not
+  for searches of his name.
+- **The reefer board (`/reefer-rates/`, one page per lane)**: built only from
+  `_data/live/reefer.json`, with no page script. `snapshot.py` writes that, the lane stubs in
+  `_reefer_lanes/` (front matter only, never deleted) and `reefer-rates/usda-reefer-truck-rates.csv`.
+  District names and lane slugs come from `_data/reefer_districts.json`; never change a slug
+  once its page is live. Rates are USDA's (report 2375): credit them, and make no claims about a
+  lane that the data doesn't show.
+- **The border board (`/border-waits/`, a page per major commercial crossing, and a Spanish
+  page under `/es/tiempos-de-espera/` for each Mexico crossing)**: built from
+  `_data/live/border.json`; `border-waits/live.js` only refreshes "right now". `snapshot.py`
+  writes that, the stubs in `_border_crossings/` and `_border_crossings_es/` (never deleted) and
+  the CSV of 30-day averages. Crossings with pages, their slugs and Spanish names are in
+  `_data/border_crossings.json`; never change a slug once live. A closed lane is unknown, never 0.
+  The Spanish pages are live and paired with hreflang (`translations_live` in `_config.yml`);
+  their wording follows CBP's own Spanish ("sin demora", "carriles generales"), kept in
+  `_data/border_text.yml`. Beside the board's own readings, `snapshot.py` pulls CBP's published
+  averages for the current month of the previous year (`bwt.cbp.gov/api/historicalwaittimes`) and
+  shows them until the board has its own. Data is CBP's Border Wait Times: credit it.
+- **`/blog/`**: renders the local posts in HTML and merges Substack's items by script, so the
+  list works without JavaScript and for crawlers.
+
+## The music page
+
+`/music/` is Yokonjuan's page, Juan's music, and it is **deliberately separate from the
+portfolio**: its own layout (`_layouts/artist.html`, which doesn't use `head.html`), stylesheet
+(`music/music.css`), script (`music/music.js`), icon and share picture (`scripts/music-og.js`).
+Nothing on it may name or link Juan Torres, and the portfolio's JSON-LD doesn't connect the two
+names: the portfolio links in (nav, home About), the music page never links back. Any words in
+Juan's voice (`about` in the data file) are his; don't write them. The page reads the live
+catalog, visitor counter and guestbook from the Worker; the data file is the fallback and what
+crawlers see.
 
 ## Adding things
 
@@ -88,27 +147,31 @@ dates and figures. Spacing steps are multiples of 8.
     and a link to try it.
   - Voice: the site's plain first person. No hype, no filler openers, search phrases only where
     they read naturally (title, first paragraph). Juan reviews every post before it merges.
-  - Link both ways: set the project's `writeup` in `projects.yml` (shows on `/projects/` and in
-    the project bar), and link the project from the post.
+  - Link both ways: set the project's `writeup` in `projects.yml` (shows on `/projects/`, in the
+    project bar, and links the post and the project in the JSON-LD), and link the project from
+    the post.
 - **A moved page**: never just delete the old address. Add a stub in `redirects/` with
   `layout: redirect`, the old address as `permalink`, the new one as `to`, and `sitemap: false`.
-- **A project**: add it to `_data/projects.yml` (slug, title, url, kind, status, short, summary,
-  metric, stack, keywords; optionally a schema.org `category`, a `features` list,
-  `search` terms and a `learning` block (type, level, audience, teaches) for the JSON-LD), then make the page with `layout: app`, `project: <slug>`, `title`,
+- **A project**: add it to `_data/projects.yml` (slug, family, title, url, kind, status, short,
+  summary, metric, stack, keywords; optionally `writeup` or `guide`, a schema.org `category`, a
+  `features` list, `search` terms and a `learning` block for the JSON-LD; the file's header says
+  what each does), then make the page with `layout: app`, `project: <slug>`, `title`,
   `description`, `image` and `image_alt`. Give it a share picture in `scripts/og-images.js` and
   re-run that script. The project bar, home page and `/projects/` update on their own.
-- **A page**: `layout: default`, a `permalink`, `title`, `description`. Add `image` if a share
-  picture exists, `noindex: true` and `sitemap: false` to keep it out of search.
+- **A page**: `layout: default`, a `permalink`, `title`, `description`. Add `image` (and an
+  `image_alt` that describes the picture) if a share picture exists; `seo_title` when the search
+  title should say more than the page title; `noindex: true` and `sitemap: false` to keep it out
+  of search.
 - **A real change to a page's content**: set `last_modified_at: YYYY-MM-DD` in its front matter.
   It becomes the page's `<lastmod>` in the sitemap (a post's `dateModified` too). Pages without
   it get the date `scripts/lastmod.py` finds in git at deploy: the newest commit to the page or to
   any data file it reads (through includes too), so the home page moves with `projects.yml` and
-  `/youtube/` with its daily snapshot. Layouts and chrome don't count. `_data/lastmod.json` is
+  `/youtube/` with its snapshot. Layouts and chrome don't count. `_data/lastmod.json` is
   written at build time and never committed.
 - **A new Worker-backed page**: give `snapshot.py` a function that shapes the Worker's answer
   for display, render `site.data.live.<name>` in the page as the fallback, and have the script
   replace it (and leave it standing if the fetch fails). Add the page's placeholder to the
-  snapshot check in `check.py`.
+  snapshot check in `check.py`, and the page to `screenshots.js`.
 - **Anything changing the head**: it is one include for every page. Test with `check.py`.
 
 ## Things that are the way they are on purpose
@@ -117,21 +180,21 @@ dates and figures. Spacing steps are multiples of 8.
 - Stylesheets and page scripts are linked with `?v={{ site.time | date: '%s' }}`, so each deploy
   changes their address and no browser pairs new HTML with a cached old file. Do the same for any
   new stylesheet or script a page links.
-- `/watching/` is `noindex` and out of the sitemap: public, but not for searches of his name.
 - The Fruit Fly Dispatcher loads a 2–3 MB run file only when the reader nears "Watch a week".
-- The Aggregate Planner serves its solver (`lib/highs.wasm`, 3.5 MB) from the repo, not a CDN, and keeps
-  its inputs in the URL hash, never the query string. Its expected sample costs (Level 5,261,040, Band
-  5,062,160, Chase 4,875,900 with whole teams) are a quick regression check after touching `model.js`.
-  It is shaped like a textbook aggregate planning case (all three policies solved at once, the Solver
-  layout with period 0, an Excel export with live formulas), but no real case's names or numbers go in the
-  repo: case documents are copyrighted, and the sample is neutral on purpose.
-- The writing index renders local posts in HTML and merges Substack items by script, so the
-  list works without JavaScript and for crawlers.
-- The sitemap and feed are written by hand (no plugins) so they build anywhere. Redirects are
-  the same: `_layouts/redirect.html` rather than jekyll-redirect-from, whose bare pages
-  `check.py` would reject.
+- The Aggregate Planner serves its solver (`lib/highs.wasm`, 3.5 MB) from the repo, not a CDN, and
+  keeps its inputs in the URL hash, never the query string. Its expected sample costs (Level
+  5,261,040, Band 5,062,160, Chase 4,875,900 with whole teams) are a quick regression check after
+  touching `model.js`. It is shaped like a textbook aggregate planning case (all three policies
+  solved at once, the Solver layout with period 0, an Excel export with live formulas), but no
+  real case's names or numbers go in the repo: case documents are copyrighted, and the sample is
+  neutral on purpose.
+- The sitemap and feed are written by hand (no plugins) so they build anywhere; the sitemap has no
+  `<changefreq>` or `<priority>`, which search engines ignore, and a `<lastmod>` only when it is
+  true. Redirects are the same: `_layouts/redirect.html` rather than jekyll-redirect-from, whose
+  bare pages `check.py` would reject.
+- `robots.txt` blocks nothing: a noindex page has to stay crawlable for its noindex to be seen.
 - Analytics is Cloudflare Web Analytics (cookieless), switched on by `cloudflare_analytics_token`
-  in `_config.yml` and written in `footer.html`.
+  in `_config.yml` and written in `_includes/analytics.html`.
 - The `.docx` résumé source, `worker/`, `scripts/` and the documentation files (README, this
   file) are excluded from the build in `_config.yml`. That last part matters: GitHub Pages
   renders every Markdown file as a page even without front matter, which a plain local build
@@ -139,8 +202,10 @@ dates and figures. Spacing steps are multiples of 8.
 - The PDF résumé (`assets/Juan Torres Resume.pdf`, with its `.docx` source beside it) is a separate
   document from `_data/resume.yml`; update both together. The data file is written in the site's
   plain first-person voice, not the PDF's résumé phrasing, and leaves out the phone number.
+- Text files are LF everywhere (`.gitattributes`, `.editorconfig`), Windows checkouts included.
 
 ## Secrets
 
-None in the repo. The Stremio key is a Cloudflare secret on the Worker; `worker/README.md`
-explains. Never put keys in `_config.yml` or any page.
+None in the repo. The Worker's keys (Stremio, YouTube, USDA, EIA, the guestbook admin key) are
+Cloudflare secrets; `worker/README.md` explains each. Never put keys in `_config.yml` or any
+page. The analytics token, IndexNow key and search-console codes there are public by design.

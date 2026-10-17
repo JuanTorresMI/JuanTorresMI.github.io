@@ -4,12 +4,20 @@ also have real content in their HTML: for search engines, AI crawlers and reader
 JavaScript off. The script on each page still fetches fresh numbers for everyone else.
 
     python3 scripts/snapshot.py
+    WORKER_URL=http://127.0.0.1:8787 python3 scripts/snapshot.py     # against `wrangler dev`
 
-Writes _data/live/youtube.json, watching.json, reefer.json and border.json (plus a stub page for each
-reefer lane in _reefer_lanes/ and each named border crossing), already formatted the way the pages show them (Liquid on GitHub Pages can't put commas in numbers or say "Oct 14"), so the
-templates only loop. A source that fails or answers with an error is skipped and its last
-good file stays. The `Snapshot live pages` workflow runs this once a day and commits the result.
-Needs only the standard library.
+Writes, already formatted the way the pages show them (Liquid on GitHub Pages can't put commas
+in numbers or say "Oct 14"), so the templates only loop:
+
+    _data/live/youtube.json     /youtube/
+    _data/live/watching.json    /watching/
+    _data/live/reefer.json      /reefer-rates/ and every lane page
+    _data/live/border.json      /border-waits/, /es/tiempos-de-espera/ and every crossing page
+
+plus a front-matter stub for each reefer lane (_reefer_lanes/) and each named border crossing
+(_border_crossings/, _border_crossings_es/), never deleted, and the two CSV downloads. A source
+that fails or answers with an error is skipped and its last good file stays. The `Snapshot live
+pages` workflow runs this twice a day and commits whatever changed. Needs only the standard library.
 """
 import csv, json, os, re, sys, urllib.request
 from urllib.parse import quote
@@ -46,6 +54,7 @@ def get(url):
 def when(iso):
     return datetime.fromisoformat(iso.replace("Z", "+00:00")).astimezone(TZ)
 
+MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 fmt = lambda n: f"{n:,}"
 signed = lambda n: ("+" if n > 0 else "−" if n < 0 else "") + fmt(abs(n))
 plural = lambda n, one, many: fmt(n) + " " + (one if n == 1 else many)
@@ -456,7 +465,6 @@ LANES_DIR = os.path.join(ROOT, "_reefer_lanes")
 LANE_MIN_WEEKS = 4                          # fewer quotes than this makes too thin a page
 CITY_CODES = {"Atlanta": "ATL", "Baltimore": "BAL", "Boston": "BOS", "Chicago": "CHI", "Dallas": "DAL", "Los Angeles": "LA",
               "Miami": "MIA", "New York": "NYC", "Philadelphia": "PHL", "Seattle": "SEA"}
-MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 
 def slugify(s):
@@ -518,15 +526,6 @@ def chart(weeks, w=640, h=200, pad=8):
         line += "M" + " L".join(f"{X(x[0])},{Y(mid(x))}" for x in r) + " "
     return {"w": w, "h": h, "band": band.strip(), "line": line.strip(), "top": money(hi), "bottom": money(lo),
             "start": week_of(pts[0][0]), "end": week_of(pts[-1][0])}
-
-
-def spark(weeks, n=26, w=96, h=24):
-    vals = [mid(x) for x in weeks[-n:] if mid(x) is not None]
-    if len(vals) < 3: return None
-    lo, hi = min(vals), max(vals)
-    hi = hi if hi > lo else lo + 1
-    step = (w - 2) / (len(vals) - 1)
-    return " ".join(f"{round(1 + i * step, 1)},{round(h - 2 - (v - lo) / (hi - lo) * (h - 4), 1)}" for i, v in enumerate(vals))
 
 
 CSV_PATH = os.path.join(ROOT, "reefer-rates", "usda-reefer-truck-rates.csv")

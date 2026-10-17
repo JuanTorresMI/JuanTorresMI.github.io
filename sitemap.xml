@@ -4,15 +4,19 @@ layout: null
 sitemap: false
 ---
 {%- comment -%}
-  Written out by hand rather than with jekyll-sitemap, so it works whatever plugin set the
-  build happens to have. A page opts out with `sitemap: false` in its front matter.
-  <lastmod> is only written when it is true: a page's `last_modified_at` if it sets one,
-  otherwise the date scripts/lastmod.py found in git (the newest commit to the page or to a
-  data file it reads, so /youtube/ moves with its daily snapshot); a post's date for posts;
-  for a reefer lane, the week it was last quoted.
-  Stamping every page with the build time would tell Google that everything changed on every
-  push, and it stops trusting a sitemap's dates once they lie. A local build has no git
-  dates unless you run lastmod.py first; those pages then simply list no date.
+  Written by hand rather than with jekyll-sitemap, so it builds with any plugin set. A page opts
+  out with `sitemap: false` in its front matter (redirects, /watching/, the 404).
+
+  <lastmod> is only written when it is true:
+    - a page: its `last_modified_at`, else the date scripts/lastmod.py found in git (the newest
+      commit to the page or to a data file it reads, so /youtube/ moves with its daily snapshot);
+    - a reefer lane: the week it was last quoted;
+    - a border crossing (English and Spanish): the time of the last data copy;
+    - a post: its `last_modified_at`, else its date.
+  Stamping every page with the build time would tell search engines everything changed on every
+  push, and they stop trusting a sitemap's dates once those lie. A local build has no git dates
+  unless lastmod.py ran first; those pages then list no date.
+  No <changefreq> or <priority>: Google and Bing ignore both.
 {%- endcomment -%}
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -25,8 +29,6 @@ sitemap: false
     {%- if mod %}
     <lastmod>{{ mod | date_to_xmlschema }}</lastmod>
     {%- endif %}
-    <changefreq>{% if p.url == "/" %}weekly{% else %}monthly{% endif %}</changefreq>
-    <priority>{% if p.url == "/" %}1.0{% elsif p.url contains "projects" %}0.8{% else %}0.6{% endif %}</priority>
   </url>
 {%- endunless -%}
 {%- endfor -%}
@@ -37,12 +39,8 @@ sitemap: false
     {%- if l %}
     <lastmod>{{ l.last_iso | date_to_xmlschema }}</lastmod>
     {%- endif %}
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
   </url>
 {%- endfor -%}
-{%- comment %} Border crossings: their data is copied twice a day, so that copy's date is their lastmod.
-  The Spanish pages carry sitemap: false until they're reviewed (see _config.yml). {% endcomment -%}
 {%- assign crossings = site.border_crossings | concat: site.border_crossings_es | where_exp: "c", "c.sitemap != false" -%}
 {%- for c in crossings %}
   <url>
@@ -50,16 +48,12 @@ sitemap: false
     {%- if site.data.live.border %}
     <lastmod>{{ site.data.live.border.as_of_iso | date_to_xmlschema }}</lastmod>
     {%- endif %}
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
   </url>
 {%- endfor -%}
 {%- for post in site.posts %}
   <url>
     <loc>{{ post.url | absolute_url | xml_escape }}</loc>
     <lastmod>{{ post.last_modified_at | default: post.date | date_to_xmlschema }}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
 {%- endfor %}
 </urlset>
