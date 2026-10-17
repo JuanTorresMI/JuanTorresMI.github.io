@@ -429,8 +429,25 @@ free 100,000. The whole history since 2020 is roughly 130,000 rows.
 ## Staying inside the free plan
 
 The limits that matter: 100,000 requests a day, 10 ms of CPU per request or cron run, 50 outside
-fetches per run, and D1's 5 million rows read and 100,000 written a day. Measured on Oct 15, 2026
-(`npx.cmd wrangler d1 info yokonjuan`): about 15,000 rows read and 3,300 written in 24 hours.
+fetches per run, five cron triggers per account, and D1's 5 million rows read and 100,000 written a
+day, in a database of at most 500 MB. On the free plan a limit is never billed: past it, requests
+fail until the next day (00:00 UTC), and every page falls back to the copy in its HTML.
+
+Where it stands (`npx.cmd wrangler d1 info yokonjuan`, Oct 17, 2026, the day the beef board went in):
+
+| Limit | Free plan | In use | Headroom |
+| --- | --- | --- | --- |
+| Rows read a day | 5,000,000 | about 28,000 | 175× |
+| Rows written a day | 100,000 | about 4,500, plus about 20,000 a day for the beef backfill's first week | 4× during the backfill, then 20× |
+| Database size | 500 MB | 1.3 MB, about 20 MB once the beef history is in | grows about 15 MB a year: decades |
+| Cron triggers | 5 per account | 3 | 2 spare |
+| Outside fetches per run | 50 | at most about 6 | |
+| Cron requests a day | | 96 (24 + 24 + 48) | |
+
+Requests from visitors are the only number that scales with traffic, and only the pages with
+something live ask: `/watching/` (every 40 s while visible), `/youtube/`, `/blog/`, `/music/` and
+the border pages (once per view). The reefer and beef boards and every lane and cut page are plain
+HTML and never call the Worker, so a burst of search traffic to them costs nothing here.
 
 What keeps it there, so a later change doesn't undo it:
 
@@ -444,4 +461,8 @@ What keeps it there, so a later change doesn't undo it:
 - **Many rows go in one statement** (`json_each`), never one statement per row: the free plan
   allows 50 queries per run.
 - **Pages read the twice-daily copy, not the Worker**, wherever the data changes slowly (reefer,
-  the border averages). Visitors only reach the Worker for "right now".
+  beef, the border averages). Visitors only reach the Worker for "right now".
+- **A heavy cron job gets its own trigger.** The beef board's backfill parses about 540 KB a run,
+  so it runs on `2,32 * * * *` alone instead of sharing a run's 10 ms with YouTube, reefer and CBP.
+- **The snapshot asks for little.** `snapshot.py` reads the beef history back from the committed
+  CSVs and only asks the Worker for the last couple of months, not all of them, every run.
