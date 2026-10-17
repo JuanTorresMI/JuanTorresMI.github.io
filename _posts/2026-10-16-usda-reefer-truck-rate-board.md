@@ -3,6 +3,7 @@ layout: post
 title: "I turned USDA's weekly truck rate report into a reefer rate board"
 seo_title: "Building a Reefer Rate Board from USDA Data · Juan Torres"
 date: 2026-10-16
+last_modified_at: 2026-10-17
 tags: [logistics, freight, cloudflare, usda]
 description: "How I built a weekly reefer truck rate board from USDA's truck rate report with a Cloudflare Worker, the typos I found in USDA's data, and what diesel did."
 image: /assets/og/reefer-rates.png
@@ -21,15 +22,15 @@ Through the MyMarketNews API it comes as one row per shipping area, city and com
 
 ## How it works
 
-1. **A Cloudflare Worker asks USDA on its own.** A cron trigger runs it at 47 past every hour. Every sixth hour it asks for the newest report and the U.S. diesel price from the Energy Information Administration. The other hours it fetches one older week, walking back through USDA's history until there's nothing older. The API key is free, read-only, and stored as a Cloudflare secret, never in the site's code.
-2. **It boils the rows down to lanes.** Each distinct rate a shipping area quotes to a city is stored once, in a SQLite database on Cloudflare (D1), with the crops it covered. Usually there's one rate per lane. Sometimes an area quotes a second rate for a group of crops, citrus most often, and the board lists that separately.
-3. **Twice a day, the site rebuilds from it.** A GitHub Action reads the Worker and writes the board, a page for every lane and a CSV of every week on record. The pages are plain HTML, so reading them never touches the Worker, however many people visit.
+1. **A Cloudflare Worker asks USDA.** It holds the API key, which is free, read-only, and stored as a Cloudflare secret, never in the site's code. It fetches whichever week it's asked for, and the U.S. diesel price from the Energy Information Administration. It stores none of it: USDA and EIA already keep the history.
+2. **It boils the rows down to lanes.** Each distinct rate a shipping area quotes to a city comes back once, with the crops it covered. Usually there's one rate per lane. Sometimes an area quotes a second rate for a group of crops, citrus most often, and the board lists that separately.
+3. **Twice a day, the site rebuilds.** A GitHub Action reads back the CSV of every week on record and asks the Worker only for the newest week and the four before it, in case USDA corrected one. Then it writes the board, a page for every lane and the CSV. The pages are plain HTML, so reading them never touches the Worker, however many people visit.
 
-The free plan shaped the design. A request gets 10 milliseconds of CPU, so the history is served a year at a time, and the CSV is written by the GitHub Action as a static file instead of by the Worker. The whole thing costs nothing to run.
+The free plan shaped the design. A request gets 10 milliseconds of CPU, so the Worker answers one week at a time, and the CSV is written by the GitHub Action as a static file instead of by the Worker. The whole thing costs nothing to run.
 
 ## What it shows
 
-The report for the week of October 12, 2026, published October 14, quoted 68 lanes from 10 shipping areas. Areas out of season keep their pages, so there are 161 lane pages in all, and the CSV holds 3,027 weekly rates. The biggest moves that week:
+The report for the week of October 12, 2026, published October 14, quoted 68 lanes from 10 shipping areas. Areas out of season keep their pages, so there are 299 lane pages in all, and the CSV holds 30,908 weekly rates back to April 2021. The biggest moves that week:
 
 | Lane | Rate per load | Change |
 | --- | --- | --- |
@@ -41,7 +42,9 @@ The report for the week of October 12, 2026, published October 14, quoted 68 lan
 
 Trucks were short in Delmarva, South and Central California, and Yakima and Wenatchee.
 
-Each lane page compares the week with that lane's own history. [South Texas to Chicago](/reefer-rates/south-texas-to-chicago/) was $3,800–4,400 a load, mostly $3,800–4,000, which is higher than only 9 of its 37 earlier weeks on record. Over the last 52 weeks it was quoted 33 times, from a low of $3,400 to a high of $7,000, averaging $4,744 at the middle of the range.
+Each lane page compares the week with that lane's own history. [South Texas to Chicago](/reefer-rates/south-texas-to-chicago/) was $3,800–4,400 a load, mostly $3,800–4,000, which is higher than 154 of its 283 earlier weeks on record. Over the last 52 weeks it was quoted every week, from a low of $2,400 to a high of $7,000, averaging $4,510 at the middle of the range.
+
+The history changes the answer. When I first wrote this, the record only went back to March 2026, and the same rate was higher than just 9 of 37 earlier weeks, which read as cheap. With every week back to April 2021, it's about average.
 
 ## What surprised me
 
@@ -55,7 +58,7 @@ For a while the board took those numbers at face value, and the Florida to New Y
 
 - **The rates are USDA's survey, not a quote.** They're what reporters heard for spot loads that week. A contract rate, or one specific load, can sit outside the range.
 - **The board can't split a rate into fuel and everything else.** USDA's rates are all-in, so the diesel table sits beside them without saying how much of a move came from fuel.
-- **The history is still filling in.** As I write this, the record has every week back to March 2, 2026, plus five weeks from January 2024. The Worker fills in the gap one week an hour, and "higher than 9 of 37 weeks" will mean more once there are two years behind it.
+- **The history starts in April 2021.** That's as far back as USDA's API goes for this report, and USDA published no report for one week in between. The comparisons on each lane page are against that record, not against every rate ever charged.
 - **Lanes come and go with the seasons.** A lane missing from this week's sheet is usually just out of season. Its page stays up with its history.
 
 The [Reefer Rate Board](/reefer-rates/) has this week's sheet, a lookup for any lane, the rates into each city and the [whole history as a CSV](/reefer-rates/usda-reefer-truck-rates.csv). The lanes from Mexico also show the live truck waits at their border crossings, from the [border wait board](/border-waits/).

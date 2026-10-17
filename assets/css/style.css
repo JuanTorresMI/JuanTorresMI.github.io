@@ -482,6 +482,7 @@ html { scroll-behavior: smooth; }
   .rb-sec { margin-top: 56px; }
 }
 @media (max-width: 600px) {
+  .rb-stamp dd { white-space: normal; }   /* a long value ("9:00 AM CDT · 3 h ago, old reading") wraps instead of running off a phone */
   .rb-barcol { display: none; }
   .rb-t th, .rb-t td { padding: 8px 8px; }
   .rb-t td { font-size: 14px; }

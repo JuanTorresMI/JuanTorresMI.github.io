@@ -25,9 +25,9 @@ npx.cmd wrangler deploy
 | `GET /beef`, `/beef/history?month=YYYY-MM` | USDA's daily boxed beef cutout and every cut's price | `snapshot.py` only | `src/beef.js` |
 | `GET /music`, `/music/visits`, `/music/guestbook` (+ `POST`, `DELETE /music/guestbook/<id>`) | Yokonjuan's catalog, visitor counter, guestbook | `/music/` | `src/music.js` |
 
-**Cron triggers** (`wrangler.toml`): at :17 every hour it polls YouTube, at :47 the reefer rates
-(a new report every sixth hour, one week of backfill the others). Both runs also read CBP, so
-the border board is polled every half hour, and both check for a new boxed beef report.
+**Cron triggers** (`wrangler.toml`): at :17 and :47 every hour it reads CBP's border waits and
+checks for a new boxed beef report; the :17 run also polls YouTube. The reefer rates need no cron:
+USDA keeps them, and the Worker asks on request.
 
 **Secrets** (`npx.cmd wrangler secret put NAME`, never in the repo): `STREMIO_AUTH_KEY`,
 `YOUTUBE_API_KEY`, `USDA_MMN_KEY`, `EIA_API_KEY` (optional), `GUESTBOOK_ADMIN_KEY`.
@@ -36,8 +36,8 @@ the border board is polled every half hour, and both check for a new boxed beef 
 `MODERATION_MODEL`, `WRITE_ORIGINS`, `YOUTUBE_CHANNEL`, and optionally `ALLOW_ORIGIN`.
 
 **Storage**: one D1 database, `yokonjuan` (binding `DB`), whose tables are all in `schema.sql`:
-`counters` and `guestbook` (music), `youtube_latest` and `youtube_daily`, `reefer_quotes`,
-`diesel_weekly` and `reefer_meta`, `border_waits` and `border_latest`, and `beef_latest`. The schema only ever adds
+`counters` and `guestbook` (music), `youtube_latest` and `youtube_daily`, `border_waits` and
+`border_latest`, and `beef_latest`. The reefer board stores nothing. The schema only ever adds
 what's missing, so it is safe to run again. Workers AI (binding `AI`) checks guestbook posts.
 
 The sections below set up and explain each part. The last one, on the free plan's limits, is
@@ -265,17 +265,21 @@ writes an hour; the page's requests are served from the edge cache for five minu
 
 ## The reefer rate board
 
-`/reefer-rates/` on the site is built from data this Worker collects; the code is
-`src/reefer.js`. The source is USDA AMS's Specialty Crops National Truck Rate Report (report 2375),
-read through the MyMarketNews API, plus EIA's weekly U.S. retail diesel price.
+`/reefer-rates/` on the site is built from USDA AMS's Specialty Crops National Truck Rate Report
+(report 2375), read through the MyMarketNews API, plus EIA's weekly U.S. retail diesel price. The
+code is `src/reefer.js`.
 
-A second cron trigger runs at 47 past every hour. Every sixth hour it asks USDA for the newest
-report (rewriting nothing if that report is already stored) and refreshes diesel. The other hours
-it backfills one older week, walking back until USDA has had nothing for half a year of weeks in a row, so
-the whole history fills in by itself over about a week after the first deploy.
+**This Worker stores none of it.** USDA and EIA keep every week and serve any of it, so the Worker
+only holds the USDA key (which must never reach a browser or the repo) and asks on request:
 
-The site has no script for this page: the `Snapshot live pages` GitHub Action reads `/reefer` and
-`/reefer/history?year=…` twice a day and rebuilds the board, a page per lane and the CSV.
+- `GET /reefer` is the newest report, its quotes boiled down to lanes, plus the last 104 weeks of
+  diesel. Cached an hour at the edge.
+- `GET /reefer?week=2026-10-05` is any week, by the Monday it covers. Cached six hours.
+
+The site has no script for this page: the `Snapshot live pages` GitHub Action reads its committed
+CSV back twice a day and asks here only for the weeks it doesn't settle, normally the newest and
+the four before it (USDA sometimes corrects a report). The CSV is the long-term record, filled once
+from USDA back to January 2020 (`REEFER_FILL=1 python3 scripts/snapshot.py reefer`).
 
 ### Setting it up (once)
 
@@ -284,47 +288,42 @@ The site has no script for this page: the `Snapshot live pages` GitHub Action re
 2. **Optionally, an EIA key**, free from [eia.gov/opendata](https://www.eia.gov/opendata/register.php).
    Without one the Worker uses api.data.gov's shared `DEMO_KEY`, which works but is rate limited
    across everyone who uses it.
-3. **Create the tables, store the keys, deploy.** From `worker/`, in PowerShell:
+3. **Store the keys and deploy.** From `worker/`, in PowerShell:
 
 ```powershell
-npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
 npx.cmd wrangler secret put USDA_MMN_KEY
 npx.cmd wrangler secret put EIA_API_KEY      # optional
 npx.cmd wrangler deploy
 ```
 
-`schema.sql` only adds what's missing (`reefer_quotes`, `diesel_weekly`, `reefer_meta`). If
-`--file` fails with an authentication error, use the `--command` form under the YouTube page above.
+(The first version of this board kept a history in D1, in `reefer_quotes`, `diesel_weekly` and
+`reefer_meta`, and backfilled it a week an hour; those were dropped on Oct 17, 2026.)
 
 ### Check it
 
-The first cron run after deploying (at :47) stores the latest report, whatever the hour. Then:
-
 ```powershell
-Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/reefer" | Select-Object latest, first, backfill_done
+Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/reefer" | Select-Object latest, published
+Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/reefer?week=2025-06-02" | Select-Object latest
 ```
 
-`first` moves back a week every hour or so while the backfill runs; `backfill_done` turns true
-when it reaches the start of USDA's history. `npx.cmd wrangler tail` around :47 shows each run.
-
 - `USDA said: status 401` or `403` — the key is wrong; `secret put` it again.
-- `EIA said: status 429` — the shared demo key is busy; add your own `EIA_API_KEY`. Rates are unaffected.
+- `diesel` empty — EIA didn't answer (with the shared demo key, `status 429` means it's busy). The
+  site keeps its last diesel figures; add your own `EIA_API_KEY` if it happens often. Rates are unaffected.
 
 ### What the numbers mean
 
 - USDA reports one row per shipping district, destination city and **commodity**, and repeats each
-  rate for every commodity it covers. The Worker stores each distinct rate once (`reefer_quotes`),
-  with the commodities it was listed for. **Quote 0** is the rate covering the most commodities,
-  the lane's main rate; **quote 1+** is a separate rate a district gave for some crops that week
-  (often citrus). Lane history and the CSV use quote 0.
-- Rates are whole dollars per load, broker fees included. A range USDA left out is `NULL`, never 0.
-- `week` is the Monday the report covers; USDA publishes it on the Wednesday after.
+  rate for every commodity it covers. The Worker returns each distinct rate once, with the
+  commodities it was listed for. **Quote 0** is the rate covering the most commodities, the lane's
+  main rate; **quote 1+** is a separate rate a district gave for some crops that week (often citrus).
+  Lane history and the CSV use quote 0.
+- Rates are whole dollars per load, broker fees included. A range USDA left out is `null`, never 0.
+- `latest` is the Monday the report covers; USDA publishes it on the Wednesday after.
 
 ### What it costs
 
-Nothing. USDA is asked about 24 times a day (4 for new reports, the rest backfill, which ends);
-EIA 4 times. Each run is a few hundred D1 writes at most, far under the free 100,000. History is
-served a year at a time so no request has to read or serialize everything at once.
+Nothing, and nothing stored. The snapshot makes about six requests a run, twice a day, and each one
+is a USDA call (one week is about 700 rows, a few milliseconds to boil down) or an edge-cache hit.
 
 ## The border wait board
 
@@ -462,8 +461,9 @@ What keeps it there, so a later change doesn't undo it:
   allows 50 queries per run.
 - **Pages read the twice-daily copy, not the Worker**, wherever the data changes slowly (reefer,
   beef, the border averages). Visitors only reach the Worker for "right now".
-- **Don't keep what the source keeps.** USDA's datamart serves the whole boxed beef history, so the
-  Worker stores only the newest report and `snapshot.py` asks USDA for the history it needs. Logging
-  a history here is for sources that only show "now" (CBP, YouTube's counts).
+- **Don't keep what the source keeps.** USDA serves the whole truck rate and boxed beef history,
+  and EIA the diesel history, so the Worker stores none of it (just the newest beef report, for the
+  page script) and `snapshot.py` asks for only the weeks or months its CSVs don't settle. Logging a
+  history here is for sources that only show "now" (CBP, YouTube's counts).
 - **Ask only when the copy could be behind.** `beef-prices/live.js` works out whether a new report
   should be out before it asks, so a visit to a current page makes no request.

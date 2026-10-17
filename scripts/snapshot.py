@@ -463,9 +463,19 @@ def border(base):
 # this page has no script of its own: the data changes once a week, so the daily copy *is* the
 # page. Lane pages are a Jekyll collection (_reefer_lanes/); this writes a stub for every lane
 # with enough history and never deletes one, so a lane out of season keeps its address.
+#
+# USDA keeps the history, so nothing else does: the committed CSV is read back first, and the
+# Worker (which holds the USDA key) is asked only for the weeks it doesn't settle, normally the
+# newest and the four before it. `REEFER_FILL=1 python3 scripts/snapshot.py reefer` also walks
+# back through any gap and past the oldest week to REEFER_START (or until USDA has nothing older);
+# it was run once, by hand, on Oct 17, 2026, and the CSV keeps what it found.
 
 LANES_DIR = os.path.join(ROOT, "_reefer_lanes")
 LANE_MIN_WEEKS = 4                          # fewer quotes than this makes too thin a page
+REEFER_RECENT_WEEKS = 4                     # weeks before the newest that are always re-read (USDA corrects)
+REEFER_GIVE_UP = 26                         # filling: half a year of empty weeks in a row means USDA's history has ended
+REEFER_START = "2020-01-06"                 # filling stops here (the beef board's window too); USDA has older weeks
+REEFER_FIRST_WEEK = "2021-04-19"            # the oldest week USDA's API has for report 2375, as the fill found it
 CITY_CODES = {"Atlanta": "ATL", "Baltimore": "BAL", "Boston": "BOS", "Chicago": "CHI", "Dallas": "DAL", "Los Angeles": "LA",
               "Miami": "MIA", "New York": "NYC", "Philadelphia": "PHL", "Seattle": "SEA"}
 
@@ -593,7 +603,7 @@ place_key = lambda x: x["usda"]
 
 def reefer(base):
     cur = get(base + "/reefer")
-    if not cur.get("latest"): raise RuntimeError("the Worker has no reefer data yet")
+    if not cur.get("latest"): raise RuntimeError("USDA returned no truck rate report")
     names = districts()
     def place(d):
         if d not in names:
@@ -602,12 +612,41 @@ def reefer(base):
         return names[d]
     lane_slug = lambda district, dest: f"{place(district)['slug']}-to-{slugify(dest)}"
 
-    # History: the archive (the committed CSV), with the Worker's weeks laid over it.
+    # History: the archive (the committed CSV) first, then the weeks it doesn't settle, from USDA
+    # through the Worker: the newest, the REEFER_RECENT_WEEKS before it, and any since the archive's
+    # newest. A week USDA answers replaces that week whole (a correction can drop a lane).
     merged = archive()
-    for y in cur.get("years") or []:
-        for l in get(f"{base}/reefer/history?year={y}")["lanes"]:
-            got = merged.setdefault((l["district"], l["dest"]), {})
-            for w in l["weeks"]: got[w[0]] = w
+    plus = lambda w, n: (datetime.fromisoformat(w) + timedelta(days=7 * n)).date().isoformat()
+    def lay(payload):
+        main = [q for q in payload.get("quotes") or [] if q.get("quote") == 0]
+        if not payload.get("latest") or not main: return False
+        wk = payload["latest"]
+        for v in merged.values(): v.pop(wk, None)
+        for q in main:
+            merged.setdefault((q["district"], q["dest"]), {})[wk] = [wk, q["low"], q["high"], q["mostly_low"], q["mostly_high"], q["change_pct"], q["availability"]]
+        return True
+    week = lambda w: get(f"{base}/reefer?week={w}")
+    on_file = sorted({w for v in merged.values() for w in v})
+    ask = {plus(cur["latest"], -n) for n in range(1, REEFER_RECENT_WEEKS + 1)}
+    w = on_file[-1] if on_file else cur["latest"]
+    while plus(w, 1) < cur["latest"]:
+        w = plus(w, 1); ask.add(w)
+    asked = 0
+    for w in sorted(ask):
+        lay(week(w)); asked += 1
+    if os.environ.get("REEFER_FILL") and on_file:
+        held = set(on_file)
+        w = on_file[0]
+        while w < on_file[-1]:                                       # gaps inside the record
+            w = plus(w, 1)
+            if w not in held and w not in ask: lay(week(w)); asked += 1
+        misses, w = 0, on_file[0]
+        while misses < REEFER_GIVE_UP and plus(w, -1) >= REEFER_START:   # and back past its oldest week
+            w = plus(w, -1); asked += 1
+            misses = 0 if lay(week(w)) else misses + 1
+        print(f"reefer: filled back to {min(x for v in merged.values() for x in v)}; set REEFER_FIRST_WEEK to it")
+    lay(cur)
+    print(f"reefer: asked USDA for {asked} week{'s' if asked != 1 else ''} besides the newest")
     lanes = {k: [v[w] for w in sorted(v)] for k, v in merged.items() if v}      # as published: the CSV
     shown = {k: [plausible(w) for w in v] for k, v in lanes.items()}              # what the pages show
     latest = cur["latest"]
@@ -729,12 +768,18 @@ def reefer(base):
     while (datetime.fromisoformat(run) - timedelta(days=7)).date().isoformat() in have:
         run = (datetime.fromisoformat(run) - timedelta(days=7)).date().isoformat()
     older = [w for w in have if w < run]
-    if cur.get("backfill_done") or not older:
-        history = f"Every week back to {week_of(have[0])}." if cur.get("backfill_done") else \
-            f"Every week back to {week_of(run)} so far; the rest of USDA’s history is still being collected, one week an hour."
+    # Complete once the record reaches the oldest week USDA has; a week missing after that is one
+    # USDA didn't publish (the fill asked for every one of them).
+    complete = bool(REEFER_FIRST_WEEK) and have[0] <= REEFER_FIRST_WEEK
+    skipped = (datetime.fromisoformat(latest) - datetime.fromisoformat(have[0])).days // 7 + 1 - len(have)
+    if complete:
+        history = f"Every week back to {week_of(have[0])}." if not skipped else \
+            f"Every report back to {week_of(have[0])}: {fmt(len(have))} weeks (USDA published none for {skipped} of the weeks in between)."
+    elif not older:
+        history = f"Every week back to {week_of(run)}."
     else:
-        history = (f"Every week back to {week_of(run)} so far, plus {len(older)} week{'s' if len(older) != 1 else ''} from "
-                   f"{week_of(older[0])} to {week_of(older[-1])}. The gap between is still being collected, one week an hour.")
+        history = (f"Every week back to {week_of(run)}, plus {len(older)} week{'s' if len(older) != 1 else ''} from "
+                   f"{week_of(older[0])} to {week_of(older[-1])}.")
 
     # When USDA published this week's report, and when the next one is due (Wednesdays, for the
     # week that started the Monday before).
@@ -743,9 +788,12 @@ def reefer(base):
     except ValueError: pass
     due = datetime.fromisoformat(latest) + timedelta(days=9)
 
-    # 6. Diesel.
+    # 6. Diesel. If EIA didn't answer this time, the last copy's diesel section stays.
     fuel = cur.get("diesel") or []
     diesel = None
+    if not fuel:
+        try: diesel = json.load(open(os.path.join(OUT, "reefer.json"), encoding="utf-8")).get("diesel")
+        except Exception: diesel = None
     if fuel:
         a, b = fuel[-1], (fuel[-2] if len(fuel) > 1 else None)
         d = None if not b else round((a["price"] - b["price"]) * 100, 1)
@@ -783,14 +831,15 @@ def reefer(base):
             ensure_front(f, "seo_title", seo)
             continue
         title = f"{p['short']} to {p['dest']} reefer rates"
-        desc = f"USDA's weekly spot rates for a reefer truck from {p['short']} to {p['dest']}: the latest rate, every week on record, and every origin into {p['dest']}."
+        desc = fit(f"USDA's weekly spot rates for a reefer truck from {p['short']} to {p['dest']}: the latest rate, every week on record, and every origin into {p['dest']}.",
+                   f"USDA's weekly spot rates for a reefer truck from {p['short']} to {p['dest']}: the latest rate and every week on record.", limit=160)
         with open(f, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(f"---\nlane: {slug}\ntitle: {json.dumps(title, ensure_ascii=False)}\nseo_title: {json.dumps(seo, ensure_ascii=False)}\n"
                      f"description: {json.dumps(desc, ensure_ascii=False)}\n---\n")
 
-    return {"generated": cur["updated"], "latest": latest, "week": week_of(latest), "first": week_of(record[0] + "-01") if record else week_of(cur["first"]),
+    return {"generated": cur["updated"], "latest": latest, "week": week_of(latest), "first": week_of(record[0] + "-01") if record else week_of(latest),
             "first_iso": min(x[0] for weeks in lanes.values() for x in weeks), "record_months": len(record),
-            "backfill_done": bool(cur.get("backfill_done")), "diesel": diesel, "lanes": pages, "history": history,
+            "backfill_done": complete, "diesel": diesel, "lanes": pages, "history": history,
             "published": full_date(pub) if pub else "", "next_due": f"{due:%a}, {full_date(due)}",
             "summary": " ".join(parts), "ups": [public(x) for x in ups], "downs": [public(x) for x in downs],
             "capacity": capacity, "city_tables": city_tables, "seasons": seasons, "lookup": lookup,

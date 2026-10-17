@@ -25,10 +25,9 @@ YOUTUBE_CHANNEL = "@JuanJulio001"
 # Lock the page down to one site if you ever want to; "*" is fine for read-only data.
 # ALLOW_ORIGIN = "https://juantorresmi.github.io"
 
-# Once an hour, at 17 past (off the top of the hour, when everyone else's crons run): poll
-# YouTube for the /youtube/ page and store the result in D1. At 47 past: the reefer rate
-# board (src/reefer.js); the string must match REEFER_CRON in index.js. Both runs also read CBP's
-# border waits and check for a new boxed beef report. Cron triggers are free (five per account).
+# Twice an hour, at 17 and 47 past (off the top of the hour, when everyone else's crons run): read
+# CBP's border waits and check for a new boxed beef report. The :17 run also polls YouTube for the
+# /youtube/ page; that string must match YOUTUBE_CRON in index.js. Cron triggers are free (five per account).
 [triggers]
 crons = ["17 * * * *", "47 * * * *"]
 

@@ -103,6 +103,8 @@ JavaScript get real content; and, where it matters, a page script swaps in fresh
 - **The reefer board (`/reefer-rates/`, one page per lane)**: built only from
   `_data/live/reefer.json`, with no page script. `snapshot.py` writes that, the lane stubs in
   `_reefer_lanes/` (front matter only, never deleted) and `reefer-rates/usda-reefer-truck-rates.csv`.
+  USDA keeps the history, so nothing else does: the CSV is read back first and the Worker, which
+  holds the USDA key, is asked only for the newest week and the four before it.
   District names and lane slugs come from `_data/reefer_districts.json`; never change a slug
   once its page is live. Rates are USDA's (report 2375): credit them, and make no claims about a
   lane that the data doesn't show.
