@@ -1047,6 +1047,9 @@ def beef(base):
     series = {k: [v[d] for d in sorted(v)] for k, v in items.items() if v}
     order = sorted(days)
     latest, first = order[-1], order[0]
+    # The history is whole once it reaches the Worker's start date, whether the Worker walked there
+    # itself or the archive already held it (a freshly deployed Worker is still backfilling).
+    complete = bool(cur.get("backfill_done")) or (iso_day(first) - iso_day(cur.get("start") or first)).days < 7
     today, prior = days[latest], (days[order[-2]] if len(order) > 1 else None)
 
     def info(item):
@@ -1287,7 +1290,7 @@ def beef(base):
     due = next_business_day(latest)
     return {"generated": cur["updated"], "latest": latest, "date": d_full(latest), "day": d_label(latest), "on_day": f"{iso_day(latest):%A}, {d_full(latest)}",
             "published": full_date(pub) if pub else "", "next_due": f"{due:%a}, {full_date(due)}",
-            "first_iso": first, "first": d_full(first), "record_days": fmt(len(order)), "backfill_done": bool(cur.get("backfill_done")),
+            "first_iso": first, "first": d_full(first), "record_days": fmt(len(order)), "backfill_done": complete,
             "stamp": {"choice": usd(c), "choice_chg": money_change(c, pc), "select": usd(s), "select_chg": money_change(s, ps),
                       "spread": usd(spread) if spread is not None else "", "loads": fmt(round(loads[0] + loads[1])) if loads[0] is not None and loads[1] is not None else ""},
             "summary": " ".join(parts), "cutout": cutout, "chart_year": chart_year, "chart_all": chart_all, "recent": recent,
