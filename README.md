@@ -27,7 +27,7 @@ on purpose. This README is the overview.
 | `/reefer-rates/`, `/reefer-rates/<lane>/` | USDA's weekly reefer truck rates, a page per lane | Work | `_data/live/reefer.json` |
 | `/border-waits/`, `/border-waits/<crossing>/` | CBP truck waits at the land border, now and by hour | Work | `_data/live/border.json`, plus the Worker for "right now" |
 | `/es/tiempos-de-espera/`, `…/<cruce>/` | The same for the Mexico crossings, in Spanish | Work | `_data/live/border.json` |
-| `/beef-prices/`, `/beef-prices/<cut>/` | USDA's daily boxed beef cutout and the price of every cut, a page per cut | Work | `_data/live/beef.json` |
+| `/beef-prices/`, `/beef-prices/<cut>/` | USDA's daily boxed beef cutout and the price of every cut, a page per cut | Work | `_data/live/beef.json` (history from USDA's own archive), plus the Worker for a report posted since the last rebuild |
 | `/youtube/` | The YouTube channel's numbers and uploads | Gamer | `_data/live/youtube.json`, refreshed live by the Worker |
 | `/watching/` | What's on the house TV (public, but `noindex`) | Chill | `_data/live/watching.json`, refreshed live by the Worker |
 | `/music/` | Yokonjuan, the music page (its own layout and look) | Separate | `_data/music.yml`, refreshed live by the Worker |
@@ -52,8 +52,9 @@ Cloudflare Worker  ◄─┘  worker/: polls on cron triggers, keeps history in 
 
 Every page that shows live data also carries a copy of it in its HTML, so search engines and
 readers without JavaScript see real numbers; the page's script then swaps in fresh ones. The
-reefer and beef boards have no script at all: they are rebuilt from the copy, and their CSVs
-double as the archive each snapshot reads back, so a week or a day once collected is never lost.
+reefer board has no script at all: it is rebuilt from the copy. The reefer and beef CSVs double
+as the archive each snapshot reads back, so a week or a day once collected is never lost; the beef
+history comes straight from USDA, which keeps it, so the Worker stores only the newest report.
 
 ### Workflows (`.github/workflows/`)
 

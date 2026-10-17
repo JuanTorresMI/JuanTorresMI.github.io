@@ -26,10 +26,10 @@ USDA's Livestock Mandatory Reporting datamart serves all of it as JSON with no k
 
 ## How it works
 
-1. **A Cloudflare Worker checks USDA every half hour.** It has a cron trigger of its own, at :02 and :32, so its runs never share the free plan's 10 milliseconds of CPU with the other boards. Each run asks for the newest report's summary, a few hundred bytes. If there's a report it hasn't stored, it fetches the whole thing and stores it in a SQLite database on Cloudflare (D1): one row per cut, grade and day.
+1. **The history stays USDA's.** USDA already keeps every report, and the datamart serves any date range, so nothing on this site stores a second copy of it. A GitHub Action runs twice a day and reads back the CSVs the site already publishes, which hold every day fetched so far. It asks USDA only for what they don't settle, which on an ordinary run is the last month or two (USDA sometimes corrects a report). The very first run asked for all 82 months since January 2020, about two minutes of downloads.
 2. **A cut that didn't trade is left blank, never zero.** USDA prints those as $0.00 with no trades. Stored as a price, they'd drag every average toward nothing, so they're not stored at all.
-3. **It fills in the past by itself.** When there's no new report, a run fetches one older week instead, about 540 KB, which takes a millisecond or two to parse. It walks back to January 2020, so the whole history fills in over about a week.
-4. **Twice a day, the site rebuilds from it.** A GitHub Action writes the board, a page for each of 58 cuts, primals and ground beef items, and the CSVs: the daily cutout and primal values, and one file per year of every cut. The CSVs are also the archive. Each run reads them back first and lays the Worker's newest months over them, so a day once collected is never lost. The pages are plain HTML, so visitors never touch the Worker.
+3. **The Action rebuilds the site.** It writes the board, a page for each of 58 cuts, primals and ground beef items, the CSVs (the daily cutout and primal values, and one file per year of every cut) and a JSON file of the newest report. The pages are plain HTML.
+4. **A Cloudflare Worker watches for the next report.** Every half hour it asks USDA for the newest report's summary, a few hundred bytes. When there's a new one, it fetches the whole report, about 110 KB, and keeps it: one row in a SQLite database on Cloudflare (D1), the only thing it stores. The rebuilds only come twice a day, so a page whose copy is older than a report that should be out asks the Worker and puts the new figures at the top, usually within half an hour of USDA posting them. Otherwise the pages ask nothing.
 
 ## What it shows
 

@@ -31,13 +31,16 @@ layout: default
   {%- if c %}
   <dl class="rb-stamp">
     {%- for g in c.grades %}
-    <div><dt>{{ g.label }}{% if g.current == false %}, {{ g.day }}{% endif %}</dt><dd>{% if c.section == "primal" %}{{ g.cwt }}{% if g.current and g.change != "" %} <span>{{ g.change }}</span>{% endif %}{% else %}{{ g.lb }}/lb{% if g.current and g.change_pct != "" %} <span>{{ g.change_pct }}</span>{% endif %}{% endif %}</dd></div>
+    <div><dt>{{ g.label }}{% if g.current == false %}, {{ g.day }}{% endif %}</dt><dd data-bf="{{ g.grade | default: 'price' }}">{% if c.section == "primal" %}{{ g.cwt }}{% if g.current and g.change != "" %} <span>{{ g.change }}</span>{% endif %}{% else %}{{ g.lb }}/lb{% if g.current and g.change_pct != "" %} <span>{{ g.change_pct }}</span>{% endif %}{% endif %}</dd></div>
     {%- endfor %}
     {%- if m.lbs != "" and m.current %}<div><dt>Pounds sold</dt><dd>{{ m.lbs }}</dd></div>{% endif %}
     {%- if m.trades != "" and m.current %}<div><dt>Trades</dt><dd>{{ m.trades }}</dd></div>{% endif %}
   </dl>
   {%- endif %}
 </header>
+{%- if c %}
+<p class="rb-note bf-live" data-bf="notice" role="status" hidden></p>
+{%- endif %}
 
 {% if c %}
 <div class="rb-judge">
@@ -137,6 +140,8 @@ layout: default
   {%- endif %}
 </section>
 {%- endif %}
+<script>window.BF = { endpoint: {{ site.worker_url | default: "" | jsonify }}, latest: {{ r.latest | jsonify }}, item: { usda: {{ c.usda | jsonify }}, per_lb: {% if c.section == "primal" %}false{% else %}true{% endif %} }, values: { {% for g in c.grades %}{{ g.grade | jsonify }}: {% if g.current %}{{ g.v }}{% else %}null{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %} } };</script>
+<script src="/beef-prices/live.js?v={{ site.time | date: '%s' }}" defer></script>
 {% endif %}
 </div>
 

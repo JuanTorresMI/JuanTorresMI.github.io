@@ -118,12 +118,15 @@ JavaScript get real content; and, where it matters, a page script swaps in fresh
   averages for the current month of the previous year (`bwt.cbp.gov/api/historicalwaittimes`) and
   shows them until the board has its own. Data is CBP's Border Wait Times: credit it.
 - **The beef board (`/beef-prices/`, one page per cut, primal and ground beef item)**: built
-  only from `_data/live/beef.json`, with no page script. The source is USDA's LM_XB403 report
-  (boxed beef cutout and cuts, negotiated sales, afternoon), from the LMR datamart, which needs no
-  key; the Worker polls it on a cron trigger of its own. `snapshot.py` writes the JSON, the stubs in
-  `_beef_cuts/` (front matter only, never deleted) and the CSVs in `beef-prices/`: the daily cutout
-  and primals, and one file per year of every cut. Those CSVs are also the archive: each run reads
-  them back and lays the Worker's newest months over them. Names and slugs come from
+  from `_data/live/beef.json`. The source is USDA's LM_XB403 report (boxed beef cutout and cuts,
+  negotiated sales, afternoon), from the LMR datamart, which needs no key and serves any date range,
+  so nothing keeps a second copy of USDA's history: `snapshot.py` reads the committed CSVs back and
+  asks USDA directly only for the months they don't settle (normally the last one or two). It
+  writes the JSON, the stubs in `_beef_cuts/` (front matter only, never deleted), the CSVs in
+  `beef-prices/` (the daily cutout and primals, and one file per year of every cut) and
+  `beef-prices/latest.json` (the newest report, for anyone's code). The Worker stores one row, the
+  newest report; `beef-prices/live.js` asks it only when a page's copy is older than a report that
+  should be out, and then shows the new figures at the top. Names and slugs come from
   `_data/beef_cuts.json`, keyed on USDA's description; never change a slug once its page is live.
   Prices are dollars per hundredweight; a cut with no sales that day has no row, never $0. Credit
   USDA AMS, and make no claims the numbers don't show (seasonal swings are computed against each

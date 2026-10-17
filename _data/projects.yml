@@ -138,10 +138,10 @@
   short: USDA’s daily boxed beef cutout and the wholesale price of every beef cut that traded, with a page and the full daily history for each cut.
   summary: >-
     Every business day, packers report their boxed beef sales to USDA, which publishes the cutout and a price for
-    every cut, but only as a PDF or as raw rows in a datamart. A Cloudflare Worker reads the report each afternoon,
-    keeps each cut’s price once a day, and filled in the history back to 2020 on its own. The site rebuilds from it
-    twice a day: a board for today, a page per cut with its history and its usual seasonal swing, and every day as
-    free CSV downloads.
+    every cut, but only as a PDF or as raw rows in a datamart. The site reads the history straight from USDA’s own
+    archive and rebuilds twice a day: a board for today, a page per cut with its history and its usual seasonal
+    swing, every day as free CSV downloads and the newest report as JSON. A Cloudflare Worker keeps only the newest
+    report, so the pages show it within about half an hour of USDA posting it.
   metric: Every business day · 58 cut pages · 1,731 days since 2020 · CSV downloads · $0 to run
   stack: [JavaScript, Python, Cloudflare Workers, D1 (SQLite), USDA LMR datamart, GitHub Actions]
   category: WebApplication

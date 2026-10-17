@@ -27,8 +27,7 @@ npx.cmd wrangler deploy
 
 **Cron triggers** (`wrangler.toml`): at :17 every hour it polls YouTube, at :47 the reefer rates
 (a new report every sixth hour, one week of backfill the others). Both runs also read CBP, so
-the border board is polled every half hour. A third trigger, at :02 and :32, runs the beef board
-and nothing else (the free plan allows five triggers per account).
+the border board is polled every half hour, and both check for a new boxed beef report.
 
 **Secrets** (`npx.cmd wrangler secret put NAME`, never in the repo): `STREMIO_AUTH_KEY`,
 `YOUTUBE_API_KEY`, `USDA_MMN_KEY`, `EIA_API_KEY` (optional), `GUESTBOOK_ADMIN_KEY`.
@@ -38,8 +37,7 @@ and nothing else (the free plan allows five triggers per account).
 
 **Storage**: one D1 database, `yokonjuan` (binding `DB`), whose tables are all in `schema.sql`:
 `counters` and `guestbook` (music), `youtube_latest` and `youtube_daily`, `reefer_quotes`,
-`diesel_weekly` and `reefer_meta`, `border_waits` and `border_latest`, `beef_days`, `beef_items`
-and `beef_meta`. The schema only ever adds
+`diesel_weekly` and `reefer_meta`, `border_waits` and `border_latest`, and `beef_latest`. The schema only ever adds
 what's missing, so it is safe to run again. Workers AI (binding `AI`) checks guestbook posts.
 
 The sections below set up and explain each part. The last one, on the free plan's limits, is
@@ -381,13 +379,15 @@ and Boxed Beef Cuts, Negotiated Sales, afternoon edition (LM_XB403, report 2453)
 Livestock Mandatory Reporting datamart (`mpr.datamart.ams.usda.gov`). No key is needed. The code is
 `src/beef.js`.
 
-The beef trigger (`2,32 * * * *`) runs nothing else, so a run's whole CPU allowance is its own. Each
-run asks for the newest report's summary (a few hundred bytes). A report it hasn't stored, or one
-USDA has corrected since, is fetched whole with `allSections=true` (about 110 KB) and stored; that
-is the run's work. Otherwise the run backfills one older week (about 540 KB, a millisecond or two
-to parse), walking back to `BEEF_START` (January 1, 2020), so the history fills in over about a
-week after the first deploy. The site doesn't wait for it: the CSVs in `beef-prices/` already hold
-every day, and `snapshot.py` only asks the Worker for recent months.
+**This Worker keeps no beef history.** USDA keeps every report and serves any date range, so a
+second copy would only cost writes and storage: `scripts/snapshot.py` reads the history from the
+site's committed CSVs and asks USDA directly for the months they don't settle. The Worker keeps one
+row, `beef_latest`: the newest report. Both cron runs (:17 and :47) ask USDA for the newest report's
+summary, a few hundred bytes, and only when there is a report it hasn't stored (or a correction) fetch
+the whole thing with `allSections=true`, about 110 KB, and replace the row. The board's page script
+(`beef-prices/live.js`) reads `GET /beef` only when a page's copy is older than a report that should
+be out, so a report shows on the site within about half an hour of USDA posting it, hours before the
+evening rebuild.
 
 ### Setting it up (once)
 
@@ -396,35 +396,34 @@ npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
 npx.cmd wrangler deploy
 ```
 
-`schema.sql` only adds `beef_days`, `beef_items` and `beef_meta`.
+`schema.sql` only adds `beef_latest`. (The first version of this board kept a history here, in
+`beef_days`, `beef_items` and `beef_meta`; those were dropped on Oct 17, 2026.)
 
 ### Check it
 
 ```powershell
-Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/beef" | Select-Object latest, first, backfill_done
-Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/beef/history?month=2025-07" | Select-Object -ExpandProperty days | Select-Object -First 3
+Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/beef" | Select-Object latest, published, stored
 ```
 
-`first` moves back a week every half hour or so while the backfill runs; `backfill_done` turns true
-when it reaches 2020. `npx.cmd wrangler tail` around :02 or :32 shows each run.
+`latest` is the newest report's date; `stored` is when this Worker saw it. `npx.cmd wrangler tail`
+around :17 or :47 shows each run.
 
 ### What the numbers mean
 
 - Prices are dollars per hundredweight (100 lb), FOB the plant, delivery within 0 to 21 days. The
   cutout values are for 600 to 900 lb carcasses; a primal's value is per hundredweight of the primal.
-- `beef_items` holds one row per item, grade and day. `section` says which table of the report it
-  came from: `primal`, `cut` (Choice and Select), `mixed` (sold without a grade), `ground`, `blended`
-  or `trim`. `item` is USDA's description with runs of spaces made one; the site maps it to a plain
-  name and page address in `_data/beef_cuts.json`.
-- A cut that didn't trade is printed by USDA as $0.00 with no trades. That is unknown, not free,
-  so no row is stored. Trades or pounds USDA kept confidential are `NULL`.
+- `items` holds one entry per item and grade. `section` says which table of the report it came from:
+  `primal`, `cut` (Choice and Select), `mixed` (sold without a grade), `ground`, `blended` or `trim`.
+  `item` is USDA's description with runs of spaces made one; the site maps it to a plain name and page
+  address in `_data/beef_cuts.json`.
+- A cut that didn't trade is printed by USDA as $0.00 with no trades. That is unknown, not free, so it
+  is left out. Trades or pounds USDA kept confidential are `null`.
 
 ### What it costs
 
-Nothing. USDA is asked twice an hour (48 small requests a day, plus one full report on business
-days and one week of history per run until the backfill ends). A business day writes about 80 rows;
-the backfill writes about 400 a run while it lasts, some 20,000 a day for a week, well under the
-free 100,000. The whole history since 2020 is roughly 130,000 rows.
+Nothing. USDA is asked 48 times a day for a few hundred bytes, plus one full report on business days.
+That is one row written a business day. Visitors reach the Worker only when a page's copy is behind,
+which happens between USDA posting a report (mid-afternoon) and the evening rebuild.
 
 ## Staying inside the free plan
 
@@ -433,21 +432,22 @@ fetches per run, five cron triggers per account, and D1's 5 million rows read an
 day, in a database of at most 500 MB. On the free plan a limit is never billed: past it, requests
 fail until the next day (00:00 UTC), and every page falls back to the copy in its HTML.
 
-Where it stands (`npx.cmd wrangler d1 info yokonjuan`, Oct 17, 2026, the day the beef board went in):
+Where it stands (`npx.cmd wrangler d1 info yokonjuan`, Oct 17, 2026):
 
 | Limit | Free plan | In use | Headroom |
 | --- | --- | --- | --- |
 | Rows read a day | 5,000,000 | about 28,000 | 175× |
-| Rows written a day | 100,000 | about 4,500, plus about 20,000 a day for the beef backfill's first week | 4× during the backfill, then 20× |
-| Database size | 500 MB | 1.3 MB, about 20 MB once the beef history is in | grows about 15 MB a year: decades |
-| Cron triggers | 5 per account | 3 | 2 spare |
-| Outside fetches per run | 50 | at most about 6 | |
-| Cron requests a day | | 96 (24 + 24 + 48) | |
+| Rows written a day | 100,000 | about 4,500 | 20× |
+| Database size | 500 MB | about 1.3 MB | grows about 10 MB a year (border readings): decades |
+| Cron triggers | 5 per account | 2 | 3 spare |
+| Outside fetches per run | 50 | at most about 7 | |
+| Cron requests a day | | 48 (24 + 24) | |
 
 Requests from visitors are the only number that scales with traffic, and only the pages with
 something live ask: `/watching/` (every 40 s while visible), `/youtube/`, `/blog/`, `/music/` and
-the border pages (once per view). The reefer and beef boards and every lane and cut page are plain
-HTML and never call the Worker, so a burst of search traffic to them costs nothing here.
+the border pages (once per view), and the beef pages only in the hours their copy is behind a new
+report. The reefer board and every lane page are plain HTML and never call the Worker, so a burst of
+search traffic to them costs nothing here.
 
 What keeps it there, so a later change doesn't undo it:
 
@@ -462,7 +462,8 @@ What keeps it there, so a later change doesn't undo it:
   allows 50 queries per run.
 - **Pages read the twice-daily copy, not the Worker**, wherever the data changes slowly (reefer,
   beef, the border averages). Visitors only reach the Worker for "right now".
-- **A heavy cron job gets its own trigger.** The beef board's backfill parses about 540 KB a run,
-  so it runs on `2,32 * * * *` alone instead of sharing a run's 10 ms with YouTube, reefer and CBP.
-- **The snapshot asks for little.** `snapshot.py` reads the beef history back from the committed
-  CSVs and only asks the Worker for the last couple of months, not all of them, every run.
+- **Don't keep what the source keeps.** USDA's datamart serves the whole boxed beef history, so the
+  Worker stores only the newest report and `snapshot.py` asks USDA for the history it needs. Logging
+  a history here is for sources that only show "now" (CBP, YouTube's counts).
+- **Ask only when the copy could be behind.** `beef-prices/live.js` works out whether a new report
+  should be out before it asks, so a visit to a current page makes no request.
