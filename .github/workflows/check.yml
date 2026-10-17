@@ -28,3 +28,12 @@ jobs:
           destination: ./_site
       - name: Check the build
         run: python3 scripts/check.py _site
+      # The built site, to download and look at (screenshots.js) on a machine without Jekyll:
+      # gh run download <run id> -n site -D _site
+      - name: Keep the build
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: _site
+          retention-days: 5

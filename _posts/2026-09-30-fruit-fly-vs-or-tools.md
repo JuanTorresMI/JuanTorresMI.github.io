@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "I raced a fruit fly's brain against Google's OR-Tools"
+seo_title: "Racing a Fruit Fly's Brain Against OR-Tools · Juan Torres"
 date: 2026-09-30
 tags: [logistics, simulation, or-tools, flywire]
 description: "I put a fruit fly's navigation circuit, wired from FlyWire, in charge of a delivery truck and raced it against OR-Tools. Where the fly won, and where it didn't."
