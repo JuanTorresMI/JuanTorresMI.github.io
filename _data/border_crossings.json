@@ -1,5 +1,5 @@
 {
- "_about": "The crossings with a page of their own on the border wait board: CBP port number, the page's slug (never change one once its page is live), how it's named, and the city across. Mexico crossings also get a Spanish page (es), drafted for review by a fluent speaker. scripts/snapshot.py writes the page stubs from this list.",
+ "_about": "The crossings with a page of their own on the border wait board: CBP port number, the page's slug (never change one once its page is live), how it's named, and the city across. Mexico crossings also get a Spanish page (es), paired with the English one by hreflang. scripts/snapshot.py writes the page stubs from this list.",
  "_names": "How the board names ports whose CBP name reads badly (all caps, or the crossing repeating the port). Every other port is CBP's port name plus crossing name.",
  "names": {"240215": "El Paso – BOTA Cargo Facility", "240221": "El Paso – Cargo", "240301": "Presidio", "231002": "Roma – Texas (second listing)", "230901": "Progreso International Bridge"},
  "crossings": [

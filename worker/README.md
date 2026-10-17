@@ -1,16 +1,52 @@
-# house-tv
+# The site's Worker (`house-tv`)
 
-The little service behind [/watching/](../watching.html). It holds the Stremio auth key,
-asks Stremio what the TV has been doing, and returns the handful of fields the page draws.
+One small Cloudflare Worker answers everything the site can't fetch from a browser itself:
+Stremio and YouTube need keys that must never be public, USDA wants a key too, and Substack's
+feed and CBP's wait times have no CORS headers. It is read-only toward every outside service,
+holds its keys as Cloudflare secrets, and runs on the free plan. It is not part of the Jekyll
+build (`_config.yml` excludes this folder); the site finds it through `worker_url` there.
 
-The page cannot talk to Stremio directly: a Stremio `authKey` is full account access, and
-anything in a public page is readable by everyone. The key lives here as a Cloudflare
-secret instead, and the Worker only ever *reads*.
+It started as the house TV board, hence the name. It is served from
+`https://house-tv.5342543fsd.workers.dev`, and deployed by hand from this folder:
 
-Cost is nothing. Cloudflare's free plan allows 100,000 requests a day; a browser tab left
-open around the clock polling every 40 seconds uses about 2,200.
+```powershell
+npx.cmd wrangler deploy
+```
 
-## Setting it up
+## At a glance
+
+| Route | What it returns | Read by | Code |
+| --- | --- | --- | --- |
+| `GET /` | The house TV: what's on, lately, the shelf, the tally | `/watching/` (every 40 s while visible), `snapshot.py` | `src/index.js` |
+| `GET /substack` | The newsletter's latest posts as JSON | `/blog/` | `src/index.js` |
+| `GET /youtube` | The channel's numbers, uploads and daily history | `/youtube/`, `snapshot.py` | `src/youtube.js` |
+| `GET /reefer`, `/reefer/history?year=Y` | USDA reefer truck rates and diesel | `snapshot.py` only | `src/reefer.js` |
+| `GET /border`, `/border/port?id=P` | CBP truck waits now; one port by weekday and hour | border pages ("right now"), `snapshot.py` | `src/border.js` |
+| `GET /music`, `/music/visits`, `/music/guestbook` (+ `POST`, `DELETE /music/guestbook/<id>`) | Yokonjuan's catalog, visitor counter, guestbook | `/music/` | `src/music.js` |
+
+**Cron triggers** (`wrangler.toml`): at :17 every hour it polls YouTube, at :47 the reefer rates
+(a new report every sixth hour, one week of backfill the others). Both runs also read CBP, so
+the border board is polled every half hour.
+
+**Secrets** (`npx.cmd wrangler secret put NAME`, never in the repo): `STREMIO_AUTH_KEY`,
+`YOUTUBE_API_KEY`, `USDA_MMN_KEY`, `EIA_API_KEY` (optional), `GUESTBOOK_ADMIN_KEY`.
+
+**Vars** (`[vars]` in `wrangler.toml`): `LIVE_WINDOW_MIN`, `GUESTBOOK_DAILY_MAX`,
+`MODERATION_MODEL`, `WRITE_ORIGINS`, `YOUTUBE_CHANNEL`, and optionally `ALLOW_ORIGIN`.
+
+**Storage**: one D1 database, `yokonjuan` (binding `DB`), whose tables are all in `schema.sql`:
+`counters` and `guestbook` (music), `youtube_latest` and `youtube_daily`, `reefer_quotes`,
+`diesel_weekly` and `reefer_meta`, `border_waits` and `border_latest`. The schema only ever adds
+what's missing, so it is safe to run again. Workers AI (binding `AI`) checks guestbook posts.
+
+The sections below set up and explain each part. The last one, on the free plan's limits, is
+worth reading before changing anything that runs on a schedule.
+
+## The house TV (/watching/)
+
+`/watching/` shows what the TV downstairs is playing. The page cannot talk to Stremio directly:
+a Stremio `authKey` is full account access, and anything in a public page is readable by
+everyone. The key lives here as a Cloudflare secret instead, and the Worker only ever *reads*.
 
 ### 1. Get a Stremio auth key
 
@@ -58,8 +94,8 @@ npx.cmd wrangler deploy
 to this repo — `wrangler.toml` holds no secrets, which is why it is safe to commit.
 
 Deploy prints a URL like `https://house-tv.<your-subdomain>.workers.dev`. Open it: you
-should see JSON. Put that URL in `_config.yml` as `worker_url`; the site reads it from there
-for both the TV board and the blog's Substack feed.
+should see JSON. Put that URL in `_config.yml` as `worker_url`; every page that uses the Worker,
+and `scripts/snapshot.py`, reads it from there.
 
 ### 3. Check it
 
@@ -70,16 +106,29 @@ Invoke-RestMethod "https://house-tv.<your-subdomain>.workers.dev" | ConvertTo-Js
 - `{"error":"Couldn't reach Stremio: Session does not exist"}` — the key is wrong or expired, redo step 1.
 - `"now": null` with a populated `lately` — working; nothing is playing this second.
 
-## Knobs
+### Knobs
 
 `LIVE_WINDOW_MIN` in `wrangler.toml` (default 5) decides how recently Stremio must have
 synced for something to count as playing *now* rather than merely recent. Stremio decides
 when to sync, not us, so this is the dial to turn if the live tile feels too eager or too
 shy. Change it and run `npx.cmd wrangler deploy` again.
 
-## Rotating the key
+### Rotating the key
 
 Sign out of Stremio everywhere, then redo step 1 and `npx.cmd wrangler secret put STREMIO_AUTH_KEY`.
+
+### What it costs
+
+Nothing. Cloudflare's free plan allows 100,000 requests a day; a browser tab left open and
+visible around the clock, polling every 40 seconds, uses about 2,200. Stremio's answer is kept
+for 25 seconds, so any number of viewers at once is one call to Stremio.
+
+## The Substack feed (/blog/)
+
+`GET /substack` reads the newsletter's RSS feed and returns its latest posts as JSON, cached for
+half an hour. Nothing to set up: the feed is public, and the address is `SUBSTACK` in
+`src/index.js`. The writing index merges these with the site's own posts and drops any title
+that appears in both.
 
 ## The music page: catalog, counter, guestbook
 
@@ -98,8 +147,8 @@ npx.cmd wrangler login
 npx.cmd wrangler d1 create yokonjuan
 ```
 
-`d1 create` prints a `database_id`. Paste it into `wrangler.toml` in place of
-`PASTE-FROM-wrangler-d1-create`, then:
+`d1 create` prints a `database_id`. Put it in `wrangler.toml` as the `database_id` under
+`[[d1_databases]]` (the one there now is this site's database), then:
 
 ```powershell
 npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
@@ -225,7 +274,7 @@ it backfills one older week, walking back until USDA has had nothing for half a 
 the whole history fills in by itself over about a week after the first deploy.
 
 The site has no script for this page: the `Snapshot live pages` GitHub Action reads `/reefer` and
-`/reefer/history?year=…` once a day and rebuilds the board, a page per lane and the CSV.
+`/reefer/history?year=…` twice a day and rebuilds the board, a page per lane and the CSV.
 
 ### Setting it up (once)
 
@@ -289,7 +338,7 @@ commercial lanes, is kept whole in `border_latest` for the live board.
 - `GET /border` — every commercial port right now. Cached five minutes at the edge; the board's
   script refreshes from it.
 - `GET /border/port?id=230404` — one port's last 30 days averaged by weekday and hour, plus its
-  last 7 days of readings. The daily snapshot reads this once per port; visitors never do.
+  last 7 days of readings. The twice-daily snapshot reads this once per port; visitors never do.
 
 ### Setting it up (once)
 

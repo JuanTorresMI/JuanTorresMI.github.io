@@ -1,0 +1,3 @@
+# Text files are stored and checked out with LF everywhere (matching .editorconfig), so a Windows
+# checkout doesn't turn every file it touches into a whole-file CRLF diff. Git spots binaries itself.
+* text=auto eol=lf

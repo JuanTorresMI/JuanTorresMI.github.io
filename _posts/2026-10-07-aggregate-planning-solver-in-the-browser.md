@@ -6,7 +6,7 @@ date: 2026-10-07
 tags: [operations, optimization, highs, aggregate-planning]
 description: "Why I built a web-based aggregate planning calculator instead of using Excel Solver, how it finds the cheapest level, band and chase plans, and what it shows."
 image: /assets/og/aggregate-planning.png
-image_alt: "Aggregate Planner, an aggregate production planning calculator: the cheapest level, band or chase plan, month by month. A tool by Juan Torres."
+image_alt: "Aggregate Planner: level, band and chase plans, with the math step by step. A tool by Juan Torres."
 ---
 
 My logistics class had an aggregate planning case study. The usual way to solve it is Excel Solver: you lay out the decision variables, write the constraints as formulas and hope nothing is off by one row. That works if you already know Excel well, and it doesn't if you don't. I wanted to learn how to build an online solver that handles the data entry and the projections, so that someone without that Excel background could still work the case. That became the [Aggregate Planner](/aggregate-planning/), an aggregate planning calculator that runs entirely in the browser.

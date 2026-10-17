@@ -136,6 +136,8 @@
 }
 </script>
 {% elsif is_post %}
+{%- comment %} A post that is a project's write-up (`writeup` in projects.yml) is about that project. {% endcomment -%}
+{%- assign written_up = site.data.projects | where: "writeup", page.url | first %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -150,7 +152,8 @@
   "dateModified": {{ page.last_modified_at | default: page.date | date_to_xmlschema | jsonify }},
   "inLanguage": "en-US",
   "keywords": {% if page.tags %}{{ page.tags | join: ", " | jsonify }}{% else %}""{% endif %},
-  "wordCount": {{ content | strip_html | number_of_words }},
+  "wordCount": {{ content | strip_html | number_of_words }},{% if written_up %}
+  "about": { "@type": "WebApplication", "@id": "{{ written_up.url | absolute_url }}#page", "name": {{ written_up.title | jsonify }}, "url": {{ written_up.url | absolute_url | jsonify }} },{% endif %}
   "author": { "@type": "Person", "@id": {{ person_id | jsonify }}, "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" },
   "publisher": { "@type": "Person", "@id": {{ person_id | jsonify }}, "name": {{ site.author | jsonify }} },
   "isPartOf": { "@type": "WebSite", "@id": {{ site_id | jsonify }} }
@@ -196,7 +199,8 @@
       "learningResourceType": {{ project.learning.type | jsonify }},
       "educationalLevel": {{ project.learning.level | jsonify }},
       "audience": { "@type": "EducationalAudience", "educationalRole": "student", "audienceType": {{ project.learning.audience | jsonify }} },
-      "teaches": {{ project.learning.teaches | jsonify }},{% endif %}
+      "teaches": {{ project.learning.teaches | jsonify }},{% endif %}{% if project.writeup %}
+      "subjectOf": { "@type": "BlogPosting", "@id": "{{ project.writeup | absolute_url }}#post", "url": {{ project.writeup | absolute_url | jsonify }} },{% endif %}
       "creator": { "@type": "Person", "@id": {{ person_id | jsonify }} }{% endif %}
     }
   ]

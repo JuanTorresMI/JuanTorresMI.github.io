@@ -270,7 +270,7 @@ last_modified_at: 2026-10-15
   "license": "https://www.usa.gov/government-works",
   "creator": [
     { "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" },
-    { "@type": "Person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
+    { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
   ],
   "distribution": [{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ "/reefer-rates/usda-reefer-truck-rates.csv" | absolute_url | jsonify }} }],
   "dateModified": {{ r.latest | jsonify }}

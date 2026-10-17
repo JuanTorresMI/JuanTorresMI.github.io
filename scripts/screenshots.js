@@ -4,14 +4,21 @@
  *   NODE_PATH=$(npm root -g) node scripts/screenshots.js _site /tmp/shots
  *
  * Needs the playwright package and its Chromium (npm install -g playwright && npx playwright
- * install chromium). Errors from outside services (GitHub's API, the Worker, Google Fonts on
- * pages that still use them) are expected when the network is restricted.
+ * install chromium). Errors from outside services (GitHub's API, the Worker, YouTube and
+ * SoundCloud embeds) are expected when the network is restricted.
  */
 const { chromium } = require("playwright");
 const http = require("http"), fs = require("fs"), path = require("path");
 const [siteDir = "_site", outDir = "screenshots"] = process.argv.slice(2);
-const PAGES = ["/", "/projects/", "/resume/", "/blog/", "/fruit-fly-dispatcher/", "/craft-ledger.html", "/aggregate-planning/", "/watching/", "/border-waits/", "/border-waits/laredo-world-trade-bridge/", "/es/tiempos-de-espera/", "/es/tiempos-de-espera/laredo-puente-comercio-mundial/", "/404.html"];
-const TYPES = { html: "text/html", css: "text/css", js: "text/javascript", png: "image/png", svg: "image/svg+xml", woff2: "font/woff2", xml: "application/xml", txt: "text/plain", json: "application/json", webmanifest: "application/manifest+json", wasm: "application/wasm", pdf: "application/pdf" };
+// One page of every kind: each family, each layout, one generated page per collection.
+const PAGES = [
+  "/", "/projects/", "/resume/", "/blog/", "/blog/fruit-fly-vs-or-tools/", "/404.html",
+  "/fruit-fly-dispatcher/", "/craft-ledger.html", "/aggregate-planning/",
+  "/reefer-rates/", "/reefer-rates/south-texas-to-chicago/",
+  "/border-waits/", "/border-waits/laredo-world-trade-bridge/", "/es/tiempos-de-espera/", "/es/tiempos-de-espera/laredo-puente-comercio-mundial/",
+  "/youtube/", "/watching/", "/music/",
+];
+const TYPES = { html: "text/html", css: "text/css", js: "text/javascript", png: "image/png", jpg: "image/jpeg", svg: "image/svg+xml", woff2: "font/woff2", xml: "application/xml", txt: "text/plain", json: "application/json", webmanifest: "application/manifest+json", wasm: "application/wasm", pdf: "application/pdf", csv: "text/csv" };
 
 const server = http.createServer((req, res) => {
   let f = path.join(siteDir, decodeURIComponent(req.url.split("?")[0]));
