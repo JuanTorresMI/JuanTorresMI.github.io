@@ -9,7 +9,7 @@
 #   short      one line for the home page and the cards; `summary` is the longer one the featured card shows
 #   metric     the mono line of figures under a card
 #   writeup    the post about it: linked from its card and the project bar, and from the JSON-LD both ways
-#   guide      a section of its own page that explains it, linked instead of a write-up
+#   guide      a section of its own page that explains it, linked from its card when there is no write-up
 #   stack      what it's built with; also its JSON-LD keywords unless `search` gives better ones
 #   category   schema.org applicationCategory (default EducationalApplication)
 #   features   JSON-LD featureList; learning: { type, level, audience, teaches } makes it a LearningResource
@@ -88,6 +88,7 @@
   title: Reefer Rate Board
   url: /reefer-rates/
   guide: /reefer-rates/#how-it-works
+  writeup: /blog/usda-reefer-truck-rate-board/
   kind: Data
   status: Live
   short: USDA’s weekly spot rates for refrigerated trucks, from the produce shipping districts to ten big cities, on one board with a page and a history for every lane.
@@ -109,6 +110,7 @@
   title: Border Wait Board
   url: /border-waits/
   guide: /border-waits/#how-it-works
+  writeup: /blog/border-truck-wait-times-from-cbp/
   kind: Data
   status: Live
   short: How long trucks wait at every U.S. land port on the Mexican and Canadian borders right now, and how long they usually wait at each hour of the week.
@@ -131,6 +133,7 @@
   title: YouTube Stats
   url: /youtube/
   guide: /youtube/#how-it-works
+  writeup: /blog/youtube-channel-stats-on-my-site/
   kind: Service
   status: Live
   short: My YouTube channel’s numbers on this site, refreshed every hour by a Cloudflare Worker that polls YouTube on its own, for free.

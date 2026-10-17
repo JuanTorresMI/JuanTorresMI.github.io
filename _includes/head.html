@@ -153,7 +153,7 @@
   "inLanguage": "en-US",
   "keywords": {% if page.tags %}{{ page.tags | join: ", " | jsonify }}{% else %}""{% endif %},
   "wordCount": {{ content | strip_html | number_of_words }},{% if written_up %}
-  "about": { "@type": "WebApplication", "@id": "{{ written_up.url | absolute_url }}#page", "name": {{ written_up.title | jsonify }}, "url": {{ written_up.url | absolute_url | jsonify }} },{% endif %}
+  "about": { "@id": "{{ written_up.url | absolute_url }}#page", "name": {{ written_up.title | jsonify }}, "url": {{ written_up.url | absolute_url | jsonify }} },{% endif %}
   "author": { "@type": "Person", "@id": {{ person_id | jsonify }}, "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" },
   "publisher": { "@type": "Person", "@id": {{ person_id | jsonify }}, "name": {{ site.author | jsonify }} },
   "isPartOf": { "@type": "WebSite", "@id": {{ site_id | jsonify }} }

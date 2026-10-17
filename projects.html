@@ -44,7 +44,7 @@ image_alt: "Things I’ve built, by Juan Torres: a fly-brained delivery truck, a
         <img class="pj-art" src="{{ art }}" alt="" loading="lazy" width="1200" height="630">
       </span>
     </a>
-    {%- if p.guide %}<a class="pj-more" href="{{ p.guide }}">Read the guide →</a>{% elsif p.writeup %}<a class="pj-more" href="{{ p.writeup }}">How I built it →</a>{% endif %}
+    {%- if p.writeup %}<a class="pj-more" href="{{ p.writeup }}">How I built it →</a>{% elsif p.guide %}<a class="pj-more" href="{{ p.guide }}">Read the guide →</a>{% endif %}
   </article>
   {%- endfor %}
 </div>

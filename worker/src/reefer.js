@@ -6,7 +6,7 @@
  *
  * History comes a year at a time so no single request has to read and serialize every row:
  * the free plan gives a request 10 ms of CPU. For the same reason there is no CSV here: the
- * site's daily snapshot (scripts/snapshot.py) writes the download as a static file.
+ * site's twice-daily snapshot (scripts/snapshot.py) writes the download as a static file.
  *
  * The source is USDA AMS's Specialty Crops National Truck Rate Report (report 2375), read from
  * the MyMarketNews API with a free key (secret USDA_MMN_KEY). The report posts on Wednesdays,
