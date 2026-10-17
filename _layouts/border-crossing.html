@@ -102,6 +102,21 @@ layout: default
 </section>
 {%- endif %}
 
+{%- if p.grid.size > 0 %}{% assign plan = p.grid %}{% assign plan_src = "ours" %}{% elsif ly.grid.size > 0 %}{% assign plan = ly.grid %}{% assign plan_src = "cbp" %}{% else %}{% assign plan = nil %}{% endif %}
+{%- if plan %}
+<section class="rb-block bf-tools" id="plan" hidden>
+  <h2>{% if es %}¿A qué hora cruzar?{% else %}When to cross{% endif %} <span>{% if plan_src == "ours" %}{% if es %}Según los últimos 30 días{% else %}From the last 30 days{% endif %}{% else %}{% if es %}Según los promedios de CBP de {{ ly.month_es }} del año pasado{% else %}From CBP’s averages for {{ ly.month_en }} last year{% endif %}{% endif %}</span></h2>
+  <form class="rb-look" onsubmit="return false">
+    <label>{% if es %}Día{% else %}Day{% endif %} <select id="pl-day">{% for d in t.days %}<option value="{{ forloop.index0 }}">{{ d | capitalize }}</option>{% endfor %}</select></label>
+    <label>{% if es %}Desde{% else %}From{% endif %} <select id="pl-from">{% for h in t.hours %}<option value="{{ forloop.index0 }}"{% if forloop.index0 == 6 %} selected{% endif %}>{{ h }}</option>{% endfor %}</select></label>
+    <label>{% if es %}Hasta{% else %}Until{% endif %} <select id="pl-to">{% for h in t.hours %}<option value="{{ forloop.index0 }}"{% if forloop.index0 == 18 %} selected{% endif %}>{{ h }}</option>{% endfor %}</select></label>
+  </form>
+  <div class="rb-answer" id="pl-out" aria-live="polite"></div>
+  <script type="application/json" id="pl-data">{ "grid": {{ plan | jsonify }}, "hours": {{ t.hours | jsonify }}, "days": {{ t.days_plural | jsonify }}, "es": {% if es %}true{% else %}false{% endif %} }</script>
+</section>
+<script src="/border-waits/plan.js?v={{ site.time | date: '%s' }}" defer></script>
+{%- endif %}
+
 {%- if ly.grid.size > 0 %}
 <section class="rb-block">
   <h2>{% if es %}{{ ly.month_es | capitalize }} del año pasado, por día y hora{% else %}{{ ly.month_en }} last year, by day and hour{% endif %} <span>{% if es %}Promedios de CBP, carriles generales, minutos{% else %}CBP’s averages, standard lanes, minutes{% endif %}</span></h2>

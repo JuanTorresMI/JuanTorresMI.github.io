@@ -8,6 +8,63 @@
  "backfill_done": true,
  "diesel": {
   "price": "$6.179",
+  "v": 6.179,
+  "surcharge": {
+   "bases": [
+    "$1.25",
+    "$2.00",
+    "$2.50",
+    "$3.00",
+    "$3.50",
+    "$4.00"
+   ],
+   "rows": [
+    {
+     "mpg": "5.5",
+     "cells": [
+      "$0.896",
+      "$0.760",
+      "$0.669",
+      "$0.578",
+      "$0.487",
+      "$0.396"
+     ]
+    },
+    {
+     "mpg": "6",
+     "cells": [
+      "$0.822",
+      "$0.697",
+      "$0.613",
+      "$0.530",
+      "$0.447",
+      "$0.363"
+     ]
+    },
+    {
+     "mpg": "6.5",
+     "cells": [
+      "$0.758",
+      "$0.643",
+      "$0.566",
+      "$0.489",
+      "$0.412",
+      "$0.335"
+     ]
+    },
+    {
+     "mpg": "7",
+     "cells": [
+      "$0.704",
+      "$0.597",
+      "$0.526",
+      "$0.454",
+      "$0.383",
+      "$0.311"
+     ]
+    }
+   ]
+  },
   "week": "Oct 12, 2026",
   "delta": "−2.0¢",
   "change": "−2.0¢ from the week before",
@@ -72,6 +129,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 1500,
+    "high": 1700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 103 of the 161 earlier weeks on record.",
     "tag": "About average",
@@ -521,6 +585,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 4100,
+    "high": 4300,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 153 of the 166 earlier weeks on record.",
     "tag": "On the high side",
@@ -992,6 +1063,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 5700,
+    "high": 5900,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 148 of the 160 earlier weeks on record.",
     "tag": "On the high side",
@@ -1441,6 +1519,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 3500,
+    "high": 3700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 141 of the 161 earlier weeks on record.",
     "tag": "On the high side",
@@ -1902,6 +1987,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 5000,
+    "high": 5200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 141 of the 159 earlier weeks on record.",
     "tag": "On the high side",
@@ -2363,6 +2455,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 4900,
+    "high": 5100,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 154 of the 161 earlier weeks on record.",
     "tag": "On the high side",
@@ -2830,6 +2929,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 3800,
+    "high": 4200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 19 of the 207 earlier weeks on record.",
     "tag": "On the low side",
@@ -3283,6 +3389,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 3500,
+    "high": 3800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 18 of the 215 earlier weeks on record.",
     "tag": "On the low side",
@@ -3754,6 +3867,13 @@
    "mostly": "$4,500–4,800",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 4000,
+    "high": 4800,
+    "mostly_low": 4500,
+    "mostly_high": 4800
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 19 of the 205 earlier weeks on record.",
     "tag": "On the low side",
@@ -4207,6 +4327,13 @@
    "mostly": "$1,300",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 1200,
+    "high": 1500,
+    "mostly_low": 1300,
+    "mostly_high": 1300
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 38 of the 215 earlier weeks on record.",
     "tag": "On the low side",
@@ -4672,6 +4799,13 @@
    "mostly": "$4,000",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3400,
+    "high": 4400,
+    "mostly_low": 4000,
+    "mostly_high": 4000
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 71 of the 112 earlier weeks on record.",
     "tag": "About average",
@@ -5113,6 +5247,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 5100,
+    "high": 5600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 18 of the 207 earlier weeks on record.",
     "tag": "On the low side",
@@ -5554,6 +5695,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 4200,
+    "high": 4800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 74 of the 211 earlier weeks on record.",
     "tag": "About average",
@@ -6019,6 +6167,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4050,
+    "high": 4600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 19 of the 75 earlier weeks on record.",
     "tag": "On the low side",
@@ -6490,6 +6645,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 6500,
+    "high": 7000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 23 of the 214 earlier weeks on record.",
     "tag": "On the low side",
@@ -6943,6 +7105,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 5100,
+    "high": 5300,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 23 of the 214 earlier weeks on record.",
     "tag": "On the low side",
@@ -7384,6 +7553,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 2800,
+    "high": 3400,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 55 of the 214 earlier weeks on record.",
     "tag": "On the low side",
@@ -7807,6 +7983,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 7900,
+    "high": 9600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 79 of the 214 earlier weeks on record.",
     "tag": "About average",
@@ -8248,6 +8431,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 7200,
+    "high": 7600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 41 of the 208 earlier weeks on record.",
     "tag": "On the low side",
@@ -8713,6 +8903,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 7400,
+    "high": 7700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 34 of the 95 earlier weeks on record.",
     "tag": "About average",
@@ -9180,6 +9377,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2500,
+    "high": 2500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 0 of the 103 earlier weeks on record.",
     "tag": "On the low side",
@@ -9633,6 +9837,13 @@
    "mostly": "",
    "change": "−11%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1800,
+    "high": 2000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 0 of the 103 earlier weeks on record.",
     "tag": "On the low side",
@@ -10104,6 +10315,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4000,
+    "high": 4250,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 46 of the 103 earlier weeks on record.",
     "tag": "About average",
@@ -10557,6 +10775,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5000,
+    "high": 5000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 46 of the 103 earlier weeks on record.",
     "tag": "About average",
@@ -11022,6 +11247,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3500,
+    "high": 3800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 60 of the 103 earlier weeks on record.",
     "tag": "About average",
@@ -11463,6 +11695,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2500,
+    "high": 2500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 0 of the 103 earlier weeks on record.",
     "tag": "On the low side",
@@ -11928,6 +12167,13 @@
    "mostly": "",
    "change": "+9%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2500,
+    "high": 2500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 65 of the 103 earlier weeks on record.",
     "tag": "About average",
@@ -12399,6 +12645,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1300,
+    "high": 1400,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 36 of the 71 earlier weeks on record.",
     "tag": "About average",
@@ -12848,6 +13101,13 @@
    "mostly": "$4,400–4,600",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 4400,
+    "high": 6800,
+    "mostly_low": 4400,
+    "mostly_high": 4600
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 0 of the 5 earlier weeks on record.",
     "tag": "On the low side",
@@ -12975,6 +13235,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3300,
+    "high": 3500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 0 of the 5 earlier weeks on record.",
     "tag": "On the low side",
@@ -13114,6 +13381,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 800,
+    "high": 900,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 31 of the 72 earlier weeks on record.",
     "tag": "About average",
@@ -13551,6 +13825,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2800,
+    "high": 2900,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 12 of the 54 earlier weeks on record.",
     "tag": "On the low side",
@@ -14012,6 +14293,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2000,
+    "high": 2200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 2 of the 35 earlier weeks on record.",
     "tag": "On the low side",
@@ -14371,6 +14659,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6163,
+    "high": 6800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 24 of the 88 earlier weeks on record.",
     "tag": "On the low side",
@@ -14820,6 +15115,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6375,
+    "high": 7000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 10 of the 88 earlier weeks on record.",
     "tag": "On the low side",
@@ -15287,6 +15589,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6800,
+    "high": 7225,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 5 of the 88 earlier weeks on record.",
     "tag": "On the low side",
@@ -15736,6 +16045,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4600,
+    "high": 5100,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 13 of the 81 earlier weeks on record.",
     "tag": "On the low side",
@@ -16197,6 +16513,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5000,
+    "high": 5525,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 10 of the 88 earlier weeks on record.",
     "tag": "On the low side",
@@ -16634,6 +16957,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2125,
+    "high": 2500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 8 of the 88 earlier weeks on record.",
     "tag": "On the low side",
@@ -17053,6 +17383,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6800,
+    "high": 7225,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 1 of the 88 earlier weeks on record.",
     "tag": "On the low side",
@@ -17490,6 +17827,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7013,
+    "high": 7225,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 5 of the 88 earlier weeks on record.",
     "tag": "On the low side",
@@ -17951,6 +18295,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6375,
+    "high": 7000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 1 of the 88 earlier weeks on record.",
     "tag": "On the low side",
@@ -18418,6 +18769,13 @@
    "mostly": "$5,900–6,500",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5300,
+    "high": 6600,
+    "mostly_low": 5900,
+    "mostly_high": 6500
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 33 of the 193 earlier weeks on record.",
     "tag": "On the low side",
@@ -18900,6 +19258,13 @@
    "mostly": "",
    "change": "+4%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10370,
+    "high": 10750,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 240 of the 282 earlier weeks on record.",
     "tag": "On the high side",
@@ -19400,6 +19765,13 @@
    "mostly": "$7,800–8,300",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7800,
+    "high": 9200,
+    "mostly_low": 7800,
+    "mostly_high": 8300
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 68 of the 167 earlier weeks on record.",
     "tag": "About average",
@@ -19882,6 +20254,13 @@
    "mostly": "",
    "change": "+5%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7310,
+    "high": 7650,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 179 of the 212 earlier weeks on record.",
     "tag": "On the high side",
@@ -20376,6 +20755,13 @@
    "mostly": "$4,000–4,200",
    "change": "−5%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3800,
+    "high": 4800,
+    "mostly_low": 4000,
+    "mostly_high": 4200
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 23 of the 159 earlier weeks on record.",
     "tag": "On the low side",
@@ -20846,6 +21232,13 @@
    "mostly": "$11,100–11,700",
    "change": "−1%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 10200,
+    "high": 11900,
+    "mostly_low": 11100,
+    "mostly_high": 11700
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 10 of the 15 earlier weeks on record.",
     "tag": "About average",
@@ -21060,6 +21453,13 @@
    "mostly": "",
    "change": "+3%",
    "availability": "Adequate",
+   "raw": {
+    "low": 11720,
+    "high": 12450,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 66 of the 71 earlier weeks on record.",
     "tag": "On the high side",
@@ -21554,6 +21954,13 @@
    "mostly": "",
    "change": "+4%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10200,
+    "high": 10600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 72 of the 118 earlier weeks on record.",
     "tag": "About average",
@@ -22054,6 +22461,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3000,
+    "high": 3200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 7 of the 19 earlier weeks on record.",
     "tag": "About average",
@@ -22291,6 +22705,13 @@
    "mostly": "$6,000",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5600,
+    "high": 6200,
+    "mostly_low": 6000,
+    "mostly_high": 6000
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 24 of the 55 earlier weeks on record.",
     "tag": "About average",
@@ -22758,6 +23179,13 @@
    "mostly": "",
    "change": "+8%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 6500,
+    "high": 6800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 165 of the 200 earlier weeks on record.",
     "tag": "On the high side",
@@ -23209,6 +23637,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 8400,
+    "high": 8700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 159 of the 191 earlier weeks on record.",
     "tag": "On the high side",
@@ -23678,6 +24113,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 9400,
+    "high": 9700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 152 of the 186 earlier weeks on record.",
     "tag": "On the high side",
@@ -24129,6 +24571,13 @@
    "mostly": "",
    "change": "+1%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 5200,
+    "high": 5400,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 142 of the 210 earlier weeks on record.",
     "tag": "On the high side",
@@ -24596,6 +25045,13 @@
    "mostly": "",
    "change": "−3%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 3000,
+    "high": 3200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 88 of the 205 earlier weeks on record.",
     "tag": "About average",
@@ -25039,6 +25495,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1500,
+    "high": 1700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 152 of the 244 earlier weeks on record.",
     "tag": "About average",
@@ -25460,6 +25923,13 @@
    "mostly": "$6,400–6,600",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 6200,
+    "high": 6800,
+    "mostly_low": 6400,
+    "mostly_high": 6600
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 64 of the 155 earlier weeks on record.",
     "tag": "About average",
@@ -25899,6 +26369,13 @@
    "mostly": "",
    "change": "−1%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 8800,
+    "high": 9300,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 186 of the 222 earlier weeks on record.",
     "tag": "On the high side",
@@ -26366,6 +26843,13 @@
    "mostly": "",
    "change": "−4%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 8500,
+    "high": 8700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 153 of the 190 earlier weeks on record.",
     "tag": "On the high side",
@@ -26841,6 +27325,13 @@
    "mostly": "$4,500–4,600",
    "change": "+14%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 4200,
+    "high": 4700,
+    "mostly_low": 4500,
+    "mostly_high": 4600
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 251 of the 283 earlier weeks on record.",
     "tag": "On the high side",
@@ -27362,6 +27853,13 @@
    "mostly": "$5,800–6,000",
    "change": "−4%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 5600,
+    "high": 6400,
+    "mostly_low": 5800,
+    "mostly_high": 6000
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 196 of the 283 earlier weeks on record.",
     "tag": "On the high side",
@@ -27901,6 +28399,13 @@
    "mostly": "$6,700–6,900",
    "change": "−1%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 6700,
+    "high": 7300,
+    "mostly_low": 6700,
+    "mostly_high": 6900
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 76 of the 175 earlier weeks on record.",
     "tag": "About average",
@@ -28418,6 +28923,13 @@
    "mostly": "$3,800–4,000",
    "change": "−3%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 3800,
+    "high": 4400,
+    "mostly_low": 3800,
+    "mostly_high": 4000
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 154 of the 283 earlier weeks on record.",
     "tag": "About average",
@@ -28951,6 +29463,13 @@
    "mostly": "$2,100–2,200",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 2000,
+    "high": 2300,
+    "mostly_low": 2100,
+    "mostly_high": 2200
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 253 of the 283 earlier weeks on record.",
     "tag": "On the high side",
@@ -29460,6 +29979,13 @@
    "mostly": "$3,900–4,100",
    "change": "−2%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3700,
+    "high": 4200,
+    "mostly_low": 3900,
+    "mostly_high": 4100
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 205 of the 283 earlier weeks on record.",
     "tag": "On the high side",
@@ -29951,6 +30477,13 @@
    "mostly": "$6,300–6,500",
    "change": "+7%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 6000,
+    "high": 6600,
+    "mostly_low": 6300,
+    "mostly_high": 6500
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 278 of the 283 earlier weeks on record.",
     "tag": "On the high side",
@@ -30460,6 +30993,13 @@
    "mostly": "$6,400–6,600",
    "change": "−2%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 6400,
+    "high": 7000,
+    "mostly_low": 6400,
+    "mostly_high": 6600
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 102 of the 202 earlier weeks on record.",
     "tag": "About average",
@@ -30989,6 +31529,13 @@
    "mostly": "$6,400–6,600",
    "change": "+5%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 6100,
+    "high": 6600,
+    "mostly_low": 6400,
+    "mostly_high": 6600
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 221 of the 283 earlier weeks on record.",
     "tag": "On the high side",
@@ -31528,6 +32075,13 @@
    "mostly": "$8,800–9,200",
    "change": "−1%",
    "availability": "Adequate",
+   "raw": {
+    "low": 8500,
+    "high": 9500,
+    "mostly_low": 8800,
+    "mostly_high": 9200
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 87 of the 89 earlier weeks on record.",
     "tag": "On the high side",
@@ -32027,6 +32581,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3600,
+    "high": 3800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 25 of the 42 earlier weeks on record.",
     "tag": "About average",
@@ -32417,6 +32978,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3100,
+    "high": 3300,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 14 of the 42 earlier weeks on record.",
     "tag": "About average",
@@ -32825,6 +33393,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 1000,
+    "high": 1200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 14 of the 42 earlier weeks on record.",
     "tag": "About average",
@@ -33227,6 +33802,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3200,
+    "high": 3400,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 14 of the 42 earlier weeks on record.",
     "tag": "About average",
@@ -33605,6 +34187,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3600,
+    "high": 3800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 14 of the 42 earlier weeks on record.",
     "tag": "About average",
@@ -34007,6 +34596,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3200,
+    "high": 3400,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 10 of the 42 earlier weeks on record.",
     "tag": "On the low side",
@@ -34415,6 +35011,13 @@
    "mostly": "$4,730–4,945",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4515,
+    "high": 4945,
+    "mostly_low": 4730,
+    "mostly_high": 4945
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 3 of the 59 earlier weeks on record.",
     "tag": "On the low side",
@@ -34868,6 +35471,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 7095,
+    "high": 9245,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 2 of the 4 earlier weeks on record.",
     "tag": "About average",
@@ -35006,6 +35616,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5805,
+    "high": 6128,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 15 of the 50 earlier weeks on record.",
     "tag": "On the low side",
@@ -35452,6 +36069,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2365,
+    "high": 3010,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 5 of the 66 earlier weeks on record.",
     "tag": "On the low side",
@@ -35917,6 +36541,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3655,
+    "high": 4085,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 5 of the 67 earlier weeks on record.",
     "tag": "On the low side",
@@ -36358,6 +36989,13 @@
    "mostly": "$6,558–6,665",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6450,
+    "high": 6773,
+    "mostly_low": 6558,
+    "mostly_high": 6665
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 5 of the 34 earlier weeks on record.",
     "tag": "On the low side",
@@ -36676,6 +37314,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5375,
+    "high": 5805,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 4 of the 21 earlier weeks on record.",
     "tag": "On the low side",
@@ -36927,6 +37572,13 @@
    "mostly": "$5,160–5,805",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4945,
+    "high": 5805,
+    "mostly_low": 5160,
+    "mostly_high": 5805
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 28 of the 54 earlier weeks on record.",
     "tag": "About average",
@@ -37398,6 +38050,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1200,
+    "high": 1400,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 0 of the 138 earlier weeks on record.",
     "tag": "On the low side",
@@ -37851,6 +38510,13 @@
    "mostly": "$2,100–2,200",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2000,
+    "high": 2400,
+    "mostly_low": 2100,
+    "mostly_high": 2200
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 32 of the 146 earlier weeks on record.",
     "tag": "On the low side",
@@ -38316,6 +38982,13 @@
    "mostly": "$2,600–2,800",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2200,
+    "high": 2800,
+    "mostly_low": 2600,
+    "mostly_high": 2800
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 4 of the 29 earlier weeks on record.",
     "tag": "On the low side",
@@ -38599,6 +39272,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3500,
+    "high": 3500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 0 of the 239 earlier weeks on record.",
     "tag": "On the low side",
@@ -39052,6 +39732,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1500,
+    "high": 1800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 0 of the 111 earlier weeks on record.",
     "tag": "On the low side",
@@ -39523,6 +40210,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2500,
+    "high": 2800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 44 of the 246 earlier weeks on record.",
     "tag": "On the low side",
@@ -39976,6 +40670,13 @@
    "mostly": "$3,800–4,500",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2800,
+    "high": 4500,
+    "mostly_low": 3800,
+    "mostly_high": 4500
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 0 of the 239 earlier weeks on record.",
     "tag": "On the low side",
@@ -40417,6 +41118,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1800,
+    "high": 2500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 37 of the 217 earlier weeks on record.",
     "tag": "On the low side",
@@ -40888,6 +41596,13 @@
    "mostly": "$5,900–6,400",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5300,
+    "high": 6900,
+    "mostly_low": 5900,
+    "mostly_high": 6400
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 60 of the 173 earlier weeks on record.",
     "tag": "About average",
@@ -41356,6 +42071,13 @@
    "mostly": "",
    "change": "+3%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10500,
+    "high": 10900,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 251 of the 265 earlier weeks on record.",
     "tag": "On the high side",
@@ -41842,6 +42564,13 @@
    "mostly": "$12,100–12,800",
    "change": "",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 11300,
+    "high": 12800,
+    "mostly_low": 12100,
+    "mostly_high": 12800
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "The highest of the 13 weeks on record.",
     "tag": "On the high side",
@@ -42033,6 +42762,13 @@
    "mostly": "$4,800–5,500",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4400,
+    "high": 5900,
+    "mostly_low": 4800,
+    "mostly_high": 5500
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 39 of the 147 earlier weeks on record.",
     "tag": "On the low side",
@@ -42513,6 +43249,13 @@
    "mostly": "$4,200–4,700",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3800,
+    "high": 5200,
+    "mostly_low": 4200,
+    "mostly_high": 4700
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 62 of the 146 earlier weeks on record.",
     "tag": "About average",
@@ -42969,6 +43712,13 @@
    "mostly": "$7,900–8,500",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6900,
+    "high": 8600,
+    "mostly_low": 7900,
+    "mostly_high": 8500
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 30 of the 62 earlier weeks on record.",
     "tag": "About average",
@@ -43421,6 +44171,13 @@
    "mostly": "$10,900–11,800",
    "change": "",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 10700,
+    "high": 12300,
+    "mostly_low": 10900,
+    "mostly_high": 11800
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 10 of the 12 earlier weeks on record.",
     "tag": "On the high side",
@@ -43624,6 +44381,13 @@
    "mostly": "",
    "change": "+2%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10300,
+    "high": 10700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 170 of the 193 earlier weeks on record.",
     "tag": "On the high side",
@@ -44110,6 +44874,13 @@
    "mostly": "$5,900–6,200",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5300,
+    "high": 7300,
+    "mostly_low": 5900,
+    "mostly_high": 6200
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 26 of the 132 earlier weeks on record.",
     "tag": "On the low side",
@@ -44592,6 +45363,13 @@
    "mostly": "",
    "change": "+4%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10300,
+    "high": 10700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 164 of the 210 earlier weeks on record.",
     "tag": "On the high side",
@@ -45092,6 +45870,13 @@
    "mostly": "$7,800–8,100",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7700,
+    "high": 8600,
+    "mostly_low": 7800,
+    "mostly_high": 8100
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 31 of the 161 earlier weeks on record.",
     "tag": "On the low side",
@@ -45574,6 +46359,13 @@
    "mostly": "",
    "change": "+4%",
    "availability": "Adequate",
+   "raw": {
+    "low": 8750,
+    "high": 9250,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 194 of the 198 earlier weeks on record.",
     "tag": "On the high side",
@@ -46068,6 +46860,13 @@
    "mostly": "$4,200–4,700",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3800,
+    "high": 5200,
+    "mostly_low": 4200,
+    "mostly_high": 4700
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 40 of the 129 earlier weeks on record.",
     "tag": "On the low side",
@@ -46538,6 +47337,13 @@
    "mostly": "$7,900–8,200",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7200,
+    "high": 8400,
+    "mostly_low": 7900,
+    "mostly_high": 8200
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 34 of the 161 earlier weeks on record.",
     "tag": "On the low side",
@@ -47008,6 +47814,13 @@
    "mostly": "",
    "change": "+3%",
    "availability": "Adequate",
+   "raw": {
+    "low": 11100,
+    "high": 11650,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 168 of the 190 earlier weeks on record.",
     "tag": "On the high side",
@@ -47502,6 +48315,13 @@
    "mostly": "",
    "change": "+7%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10400,
+    "high": 10800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 163 of the 212 earlier weeks on record.",
     "tag": "On the high side",
@@ -48002,6 +48822,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4000,
+    "high": 4500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 33 of the 248 earlier weeks on record.",
     "tag": "On the low side",
@@ -48455,6 +49282,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5600,
+    "high": 5850,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 13 of the 228 earlier weeks on record.",
     "tag": "On the low side",
@@ -48926,6 +49760,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6200,
+    "high": 6250,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 39 of the 223 earlier weeks on record.",
     "tag": "On the low side",
@@ -49379,6 +50220,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 2925,
+    "high": 3150,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 4 of the 29 earlier weeks on record.",
     "tag": "On the low side",
@@ -49686,6 +50534,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2200,
+    "high": 2250,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 4 of the 248 earlier weeks on record.",
     "tag": "On the low side",
@@ -50127,6 +50982,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6200,
+    "high": 6250,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 42 of the 73 earlier weeks on record.",
     "tag": "About average",
@@ -50592,6 +51454,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5600,
+    "high": 6250,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 13 of the 83 earlier weeks on record.",
     "tag": "On the low side",
@@ -51063,6 +51932,13 @@
    "mostly": "",
    "change": "+3%",
    "availability": "Adequate",
+   "raw": {
+    "low": 9050,
+    "high": 9450,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 182 of the 199 earlier weeks on record.",
     "tag": "On the high side",
@@ -51576,6 +52452,13 @@
    "mostly": "",
    "change": "+1%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10300,
+    "high": 10800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 237 of the 282 earlier weeks on record.",
     "tag": "On the high side",
@@ -52111,6 +52994,13 @@
    "mostly": "",
    "change": "+4%",
    "availability": "Adequate",
+   "raw": {
+    "low": 11100,
+    "high": 11700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 169 of the 217 earlier weeks on record.",
     "tag": "On the high side",
@@ -52624,6 +53514,13 @@
    "mostly": "",
    "change": "+5%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7000,
+    "high": 7500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 166 of the 217 earlier weeks on record.",
     "tag": "On the high side",
@@ -53149,6 +54046,13 @@
    "mostly": "",
    "change": "+5%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6500,
+    "high": 7100,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 195 of the 217 earlier weeks on record.",
     "tag": "On the high side",
@@ -53650,6 +54554,13 @@
    "mostly": "",
    "change": "+1%",
    "availability": "Adequate",
+   "raw": {
+    "low": 12500,
+    "high": 13100,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "The highest of the 187 weeks on record.",
     "tag": "On the high side",
@@ -54151,6 +55062,13 @@
    "mostly": "",
    "change": "+2%",
    "availability": "Adequate",
+   "raw": {
+    "low": 11500,
+    "high": 12100,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 218 of the 224 earlier weeks on record.",
     "tag": "On the high side",
@@ -54676,6 +55594,13 @@
    "mostly": "",
    "change": "+2%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10100,
+    "high": 10900,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 235 of the 282 earlier weeks on record.",
     "tag": "On the high side",
@@ -55211,6 +56136,13 @@
    "mostly": "$7,000–7,700",
    "change": "+9%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6800,
+    "high": 7900,
+    "mostly_low": 7000,
+    "mostly_high": 7700
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 47 of the 122 earlier weeks on record.",
     "tag": "About average",
@@ -55664,6 +56596,13 @@
    "mostly": "$7,400–8,200",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7200,
+    "high": 8400,
+    "mostly_low": 7400,
+    "mostly_high": 8200
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 36 of the 116 earlier weeks on record.",
     "tag": "On the low side",
@@ -56135,6 +57074,13 @@
    "mostly": "$8,500–9,100",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 8200,
+    "high": 9400,
+    "mostly_low": 8500,
+    "mostly_high": 9100
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 41 of the 122 earlier weeks on record.",
     "tag": "About average",
@@ -56588,6 +57534,13 @@
    "mostly": "$5,500–6,000",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5300,
+    "high": 6200,
+    "mostly_low": 5500,
+    "mostly_high": 6000
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 42 of the 123 earlier weeks on record.",
     "tag": "About average",
@@ -57053,6 +58006,13 @@
    "mostly": "$4,800–5,200",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4500,
+    "high": 5400,
+    "mostly_low": 4800,
+    "mostly_high": 5200
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 19 of the 119 earlier weeks on record.",
     "tag": "On the low side",
@@ -57494,6 +58454,13 @@
    "mostly": "$8,000–8,700",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7800,
+    "high": 9000,
+    "mostly_low": 8000,
+    "mostly_high": 8700
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 39 of the 121 earlier weeks on record.",
     "tag": "On the low side",
@@ -57935,6 +58902,13 @@
    "mostly": "$7,800–8,600",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7700,
+    "high": 8900,
+    "mostly_low": 7800,
+    "mostly_high": 8600
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 42 of the 118 earlier weeks on record.",
     "tag": "About average",
@@ -58400,6 +59374,13 @@
    "mostly": "$7,500–8,300",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7300,
+    "high": 8500,
+    "mostly_low": 7500,
+    "mostly_high": 8300
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 38 of the 90 earlier weeks on record.",
     "tag": "About average",
@@ -58867,6 +59848,13 @@
    "mostly": "$2,600–3,000",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2400,
+    "high": 3200,
+    "mostly_low": 2600,
+    "mostly_high": 3000
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 1 of the 123 earlier weeks on record.",
     "tag": "On the low side",
@@ -59302,6 +60290,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 5000,
+    "high": 5800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 100 of the 219 earlier weeks on record.",
     "tag": "About average",
@@ -59755,6 +60750,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 6000,
+    "high": 6500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 48 of the 218 earlier weeks on record.",
     "tag": "On the low side",
@@ -60226,6 +61228,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 6800,
+    "high": 7000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 55 of the 197 earlier weeks on record.",
     "tag": "On the low side",
@@ -60675,6 +61684,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 3700,
+    "high": 4500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 96 of the 219 earlier weeks on record.",
     "tag": "About average",
@@ -61140,6 +62156,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 3700,
+    "high": 4600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 84 of the 219 earlier weeks on record.",
     "tag": "About average",
@@ -61581,6 +62604,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 2100,
+    "high": 2500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 39 of the 219 earlier weeks on record.",
     "tag": "On the low side",
@@ -62004,6 +63034,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 6800,
+    "high": 7200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 39 of the 219 earlier weeks on record.",
     "tag": "On the low side",
@@ -62445,6 +63482,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 6500,
+    "high": 6800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 37 of the 199 earlier weeks on record.",
     "tag": "On the low side",
@@ -62910,6 +63954,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 6400,
+    "high": 7000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 42 of the 161 earlier weeks on record.",
     "tag": "On the low side",
@@ -63381,6 +64432,13 @@
    "mostly": "$10,800–11,700",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 10500,
+    "high": 11900,
+    "mostly_low": 10800,
+    "mostly_high": 11700
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 277 of the 283 earlier weeks on record.",
     "tag": "On the high side",
@@ -63905,6 +64963,13 @@
    "mostly": "$10,900–12,000",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 10500,
+    "high": 16000,
+    "mostly_low": 10900,
+    "mostly_high": 12000
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 277 of the 285 earlier weeks on record.",
     "tag": "On the high side",
@@ -64447,6 +65512,13 @@
    "mostly": "$11,800–13,500",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 11000,
+    "high": 16000,
+    "mostly_low": 11800,
+    "mostly_high": 13500
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 278 of the 285 earlier weeks on record.",
     "tag": "On the high side",
@@ -64971,6 +66043,13 @@
    "mostly": "$8,200–9,000",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 7800,
+    "high": 9200,
+    "mostly_low": 8200,
+    "mostly_high": 9000
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 273 of the 285 earlier weeks on record.",
     "tag": "On the high side",
@@ -65507,6 +66586,13 @@
    "mostly": "$8,700–10,200",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 8400,
+    "high": 10700,
+    "mostly_low": 8700,
+    "mostly_high": 10200
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 281 of the 284 earlier weeks on record.",
     "tag": "On the high side",
@@ -66019,6 +67105,13 @@
    "mostly": "$3,700–4,200",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 3500,
+    "high": 4500,
+    "mostly_low": 3700,
+    "mostly_high": 4200
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 275 of the 285 earlier weeks on record.",
     "tag": "On the high side",
@@ -66513,6 +67606,13 @@
    "mostly": "$13,500–14,800",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 12500,
+    "high": 15500,
+    "mostly_low": 13500,
+    "mostly_high": 14800
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 282 of the 285 earlier weeks on record.",
     "tag": "On the high side",
@@ -67025,6 +68125,13 @@
    "mostly": "$11,800–13,400",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 11500,
+    "high": 15000,
+    "mostly_low": 11800,
+    "mostly_high": 13400
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 280 of the 285 earlier weeks on record.",
     "tag": "On the high side",
@@ -67561,6 +68668,13 @@
    "mostly": "$10,800–12,200",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 10500,
+    "high": 14500,
+    "mostly_low": 10800,
+    "mostly_high": 12200
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 276 of the 285 earlier weeks on record.",
     "tag": "On the high side",
@@ -68103,6 +69217,13 @@
    "mostly": "$1,400–1,600",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 1300,
+    "high": 1800,
+    "mostly_low": 1400,
+    "mostly_high": 1600
+   },
+   "first_iso": "2021-04-19",
    "verdict": {
     "text": "Higher than 270 of the 272 earlier weeks on record.",
     "tag": "On the high side",
@@ -68609,6 +69730,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4800,
+    "high": 5500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 0 of the 11 earlier weeks on record.",
     "tag": "On the low side",
@@ -68796,6 +69924,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3500,
+    "high": 4000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 0 of the 11 earlier weeks on record.",
     "tag": "On the low side",
@@ -68977,6 +70112,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4500,
+    "high": 4600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 6 of the 13 earlier weeks on record.",
     "tag": "About average",
@@ -69148,6 +70290,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7800,
+    "high": 8000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 7 of the 11 earlier weeks on record.",
     "tag": "About average",
@@ -69333,6 +70482,13 @@
    "mostly": "$5,000",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5000,
+    "high": 5600,
+    "mostly_low": 5000,
+    "mostly_high": 5000
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 0 of the 18 earlier weeks on record.",
     "tag": "On the low side",
@@ -69569,6 +70725,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 1000,
+    "high": 1600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 41 of the 100 earlier weeks on record.",
     "tag": "About average",
@@ -70022,6 +71185,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 2300,
+    "high": 3800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 64 of the 116 earlier weeks on record.",
     "tag": "About average",
@@ -70493,6 +71663,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 3500,
+    "high": 4300,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 40 of the 111 earlier weeks on record.",
     "tag": "About average",
@@ -70946,6 +72123,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 2400,
+    "high": 3200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 42 of the 107 earlier weeks on record.",
     "tag": "About average",
@@ -71411,6 +72595,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 2400,
+    "high": 3500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 62 of the 115 earlier weeks on record.",
     "tag": "About average",
@@ -71852,6 +73043,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 4500,
+    "high": 5900,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 67 of the 100 earlier weeks on record.",
     "tag": "On the high side",
@@ -72275,6 +73473,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 2000,
+    "high": 3500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 103 of the 116 earlier weeks on record.",
     "tag": "On the high side",
@@ -72716,6 +73921,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 3000,
+    "high": 4500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 56 of the 114 earlier weeks on record.",
     "tag": "About average",
@@ -73181,6 +74393,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 2700,
+    "high": 4200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-04-26",
    "verdict": {
     "text": "Higher than 65 of the 116 earlier weeks on record.",
     "tag": "About average",
@@ -73652,6 +74871,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3400,
+    "high": 3400,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-05-10",
    "verdict": {
     "text": "Higher than 3 of the 9 earlier weeks on record.",
     "tag": "About average",
@@ -73807,6 +75033,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1700,
+    "high": 1800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-05-10",
    "verdict": {
     "text": "Higher than 2 of the 9 earlier weeks on record.",
     "tag": "On the low side",
@@ -73950,6 +75183,13 @@
    "mostly": "$8,900–9,700",
    "change": "+1%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 8200,
+    "high": 9700,
+    "mostly_low": 8900,
+    "mostly_high": 9700
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "The highest of the 7 weeks on record.",
     "tag": "On the high side",
@@ -74084,6 +75324,13 @@
    "mostly": "$10,100–10,900",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 9400,
+    "high": 11300,
+    "mostly_low": 10100,
+    "mostly_high": 10900
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "The highest of the 7 weeks on record.",
     "tag": "On the high side",
@@ -74236,6 +75483,13 @@
    "mostly": "$10,000–11,500",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 9900,
+    "high": 12200,
+    "mostly_low": 10000,
+    "mostly_high": 11500
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 2 of the 6 earlier weeks on record.",
     "tag": "About average",
@@ -74370,6 +75624,13 @@
    "mostly": "$7,200–7,700",
    "change": "",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 7000,
+    "high": 8200,
+    "mostly_low": 7200,
+    "mostly_high": 7700
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "The lowest of the 8 weeks on record.",
     "tag": "On the low side",
@@ -74523,6 +75784,13 @@
    "mostly": "$7,700–8,200",
    "change": "+1%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 6100,
+    "high": 8300,
+    "mostly_low": 7700,
+    "mostly_high": 8200
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "The highest of the 7 weeks on record.",
     "tag": "On the high side",
@@ -74645,6 +75913,13 @@
    "mostly": "$9,700–10,300",
    "change": "+1%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 9500,
+    "high": 11700,
+    "mostly_low": 9700,
+    "mostly_high": 10300
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 3 of the 6 earlier weeks on record.",
     "tag": "About average",
@@ -74767,6 +76042,13 @@
    "mostly": "$10,200–10,500",
    "change": "",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 9800,
+    "high": 10800,
+    "mostly_low": 10200,
+    "mostly_high": 10500
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "The lowest of the 8 weeks on record.",
     "tag": "On the low side",
@@ -74920,6 +76202,13 @@
    "mostly": "$10,200–11,000",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 9500,
+    "high": 11400,
+    "mostly_low": 10200,
+    "mostly_high": 11000
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "The highest of the 7 weeks on record.",
     "tag": "On the high side",
@@ -75072,6 +76361,13 @@
    "mostly": "",
    "change": "−9%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1300,
+    "high": 1600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 1 of the 9 earlier weeks on record.",
     "tag": "On the low side",
@@ -75227,6 +76523,13 @@
    "mostly": "",
    "change": "−7%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2500,
+    "high": 2700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 0 of the 9 earlier weeks on record.",
     "tag": "On the low side",
@@ -75400,6 +76703,13 @@
    "mostly": "",
    "change": "−5%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3900,
+    "high": 4100,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 3 of the 9 earlier weeks on record.",
     "tag": "About average",
@@ -75555,6 +76865,13 @@
    "mostly": "",
    "change": "−5%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2650,
+    "high": 2950,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 3 of the 9 earlier weeks on record.",
     "tag": "About average",
@@ -75722,6 +77039,13 @@
    "mostly": "$3,700–3,900",
    "change": "−4%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3700,
+    "high": 4100,
+    "mostly_low": 3700,
+    "mostly_high": 3900
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 3 of the 9 earlier weeks on record.",
     "tag": "About average",
@@ -75889,6 +77213,13 @@
    "mostly": "",
    "change": "−4%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3100,
+    "high": 3300,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 2 of the 9 earlier weeks on record.",
     "tag": "On the low side",
@@ -76062,6 +77393,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1100,
+    "high": 1250,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 6 of the 14 earlier weeks on record.",
     "tag": "About average",
@@ -76256,6 +77594,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2800,
+    "high": 3000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 0 of the 14 earlier weeks on record.",
     "tag": "On the low side",
@@ -76468,6 +77813,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4100,
+    "high": 4200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 0 of the 8 earlier weeks on record.",
     "tag": "On the low side",
@@ -76616,6 +77968,13 @@
    "mostly": "$3,800",
    "change": "",
    "availability": "Shortage",
+   "raw": {
+    "low": 3400,
+    "high": 4200,
+    "mostly_low": 3800,
+    "mostly_high": 3800
+   },
+   "first_iso": "2021-06-07",
    "verdict": {
     "text": "Higher than 0 of the 5 earlier weeks on record.",
     "tag": "On the low side",
@@ -76755,6 +78114,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 5500,
+    "high": 6500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-14",
    "verdict": {
     "text": "Higher than 4 of the 69 earlier weeks on record.",
     "tag": "On the low side",
@@ -77204,6 +78570,13 @@
    "mostly": "$7,900–8,200",
    "change": "+1%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7700,
+    "high": 9000,
+    "mostly_low": 7900,
+    "mostly_high": 8200
+   },
+   "first_iso": "2021-06-14",
    "verdict": {
     "text": "Higher than 43 of the 85 earlier weeks on record.",
     "tag": "About average",
@@ -77675,6 +79048,13 @@
    "mostly": "$4,900–5,100",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4800,
+    "high": 6200,
+    "mostly_low": 4900,
+    "mostly_high": 5100
+   },
+   "first_iso": "2021-06-14",
    "verdict": {
     "text": "Higher than 6 of the 80 earlier weeks on record.",
     "tag": "On the low side",
@@ -78140,6 +79520,13 @@
    "mostly": "$4,000–4,200",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 3800,
+    "high": 4200,
+    "mostly_low": 4000,
+    "mostly_high": 4200
+   },
+   "first_iso": "2021-06-14",
    "verdict": {
     "text": "Higher than 3 of the 65 earlier weeks on record.",
     "tag": "On the low side",
@@ -78577,6 +79964,13 @@
    "mostly": "$7,900–8,200",
    "change": "+4%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7900,
+    "high": 9100,
+    "mostly_low": 7900,
+    "mostly_high": 8200
+   },
+   "first_iso": "2021-06-14",
    "verdict": {
     "text": "Higher than 19 of the 22 earlier weeks on record.",
     "tag": "On the high side",
@@ -78841,6 +80235,13 @@
    "mostly": "$4,620",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 4620,
+    "high": 5700,
+    "mostly_low": 4620,
+    "mostly_high": 4620
+   },
+   "first_iso": "2021-06-14",
    "verdict": {
     "text": "Higher than 0 of the 4 earlier weeks on record.",
     "tag": "On the low side",
@@ -78961,6 +80362,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3800,
+    "high": 5040,
+    "mostly_low": 4620,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-14",
    "verdict": {
     "text": "Higher than 0 of the 4 earlier weeks on record.",
     "tag": "On the low side",
@@ -79093,6 +80501,13 @@
    "mostly": "$2,000–2,500",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 1800,
+    "high": 3400,
+    "mostly_low": 2000,
+    "mostly_high": 2500
+   },
+   "first_iso": "2021-06-14",
    "verdict": {
     "text": "Higher than 0 of the 4 earlier weeks on record.",
     "tag": "On the low side",
@@ -79201,6 +80616,13 @@
    "mostly": "$6,500–6,720",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 6500,
+    "high": 8000,
+    "mostly_low": 6500,
+    "mostly_high": 6720
+   },
+   "first_iso": "2021-06-14",
    "verdict": {
     "text": "Higher than 0 of the 4 earlier weeks on record.",
     "tag": "On the low side",
@@ -79309,6 +80731,13 @@
    "mostly": "$6,720–6,800",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 6720,
+    "high": 8400,
+    "mostly_low": 6720,
+    "mostly_high": 6800
+   },
+   "first_iso": "2021-06-14",
    "verdict": {
     "text": "Higher than 0 of the 4 earlier weeks on record.",
     "tag": "On the low side",
@@ -79441,6 +80870,13 @@
    "mostly": "$6,300–6,720",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 6300,
+    "high": 8000,
+    "mostly_low": 6300,
+    "mostly_high": 6720
+   },
+   "first_iso": "2021-06-14",
    "verdict": {
     "text": "Higher than 0 of the 4 earlier weeks on record.",
     "tag": "On the low side",
@@ -79579,6 +81015,13 @@
    "mostly": "",
    "change": "−9%",
    "availability": "Adequate",
+   "raw": {
+    "low": 950,
+    "high": 1150,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-21",
    "verdict": {
     "text": "Higher than 0 of the 15 earlier weeks on record.",
     "tag": "On the low side",
@@ -79776,6 +81219,13 @@
    "mostly": "",
    "change": "−3%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1500,
+    "high": 1700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-21",
    "verdict": {
     "text": "The lowest of the 16 weeks on record.",
     "tag": "On the low side",
@@ -79991,6 +81441,13 @@
    "mostly": "",
    "change": "−2%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2650,
+    "high": 2850,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-21",
    "verdict": {
     "text": "The lowest of the 16 weeks on record.",
     "tag": "On the low side",
@@ -80188,6 +81645,13 @@
    "mostly": "",
    "change": "−9%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 1350,
+    "high": 1550,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-21",
    "verdict": {
     "text": "The lowest of the 16 weeks on record.",
     "tag": "On the low side",
@@ -80397,6 +81861,13 @@
    "mostly": "",
    "change": "+2%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2200,
+    "high": 2400,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-21",
    "verdict": {
     "text": "Higher than 1 of the 15 earlier weeks on record.",
     "tag": "On the low side",
@@ -80606,6 +82077,13 @@
    "mostly": "",
    "change": "−5%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1750,
+    "high": 1950,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-06-21",
    "verdict": {
     "text": "The lowest of the 16 weeks on record.",
     "tag": "On the low side",
@@ -80821,6 +82299,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1500,
+    "high": 1700,
+    "mostly_low": 1550,
+    "mostly_high": null
+   },
+   "first_iso": "2021-07-12",
    "verdict": {
     "text": "Higher than 0 of the 28 earlier weeks on record.",
     "tag": "On the low side",
@@ -81125,6 +82610,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 8500,
+    "high": 8500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-07-19",
    "verdict": {
     "text": "Higher than 0 of the 54 earlier weeks on record.",
     "tag": "On the low side",
@@ -81578,6 +83070,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1600,
+    "high": 2100,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-07-19",
    "verdict": {
     "text": "Higher than 13 of the 54 earlier weeks on record.",
     "tag": "On the low side",
@@ -82001,6 +83500,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 11000,
+    "high": 11000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-07-19",
    "verdict": {
     "text": "Higher than 0 of the 14 earlier weeks on record.",
     "tag": "On the low side",
@@ -82209,6 +83715,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 3600,
+    "high": 3800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-02",
    "verdict": {
     "text": "Higher than 56 of the 61 earlier weeks on record.",
     "tag": "On the high side",
@@ -82705,6 +84218,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 900,
+    "high": 1100,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-02",
    "verdict": {
     "text": "Higher than 26 of the 61 earlier weeks on record.",
     "tag": "About average",
@@ -83219,6 +84739,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 2700,
+    "high": 2900,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-02",
    "verdict": {
     "text": "Higher than 50 of the 62 earlier weeks on record.",
     "tag": "On the high side",
@@ -83715,6 +85242,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2400,
+    "high": 2600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-02",
    "verdict": {
     "text": "Higher than 39 of the 53 earlier weeks on record.",
     "tag": "On the high side",
@@ -84223,6 +85757,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 1900,
+    "high": 2100,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-02",
    "verdict": {
     "text": "Higher than 54 of the 61 earlier weeks on record.",
     "tag": "On the high side",
@@ -84731,6 +86272,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 1300,
+    "high": 1500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-02",
    "verdict": {
     "text": "Higher than 50 of the 61 earlier weeks on record.",
     "tag": "On the high side",
@@ -85245,6 +86793,13 @@
    "mostly": "",
    "change": "",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 825,
+    "high": 1025,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-02",
    "verdict": {
     "text": "Higher than 1 of the 51 earlier weeks on record.",
     "tag": "On the low side",
@@ -85706,6 +87261,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3548,
+    "high": 4250,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-23",
    "verdict": {
     "text": "Higher than 1 of the 8 earlier weeks on record.",
     "tag": "On the low side",
@@ -85854,6 +87416,13 @@
    "mostly": "",
    "change": "−7%",
    "availability": "Shortage",
+   "raw": {
+    "low": 5160,
+    "high": 5590,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-23",
    "verdict": {
     "text": "The lowest of the 5 weeks on record.",
     "tag": "On the low side",
@@ -85974,6 +87543,13 @@
    "mostly": "",
    "change": "−14%",
    "availability": "Shortage",
+   "raw": {
+    "low": 1720,
+    "high": 2150,
+    "mostly_low": 2150,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-23",
    "verdict": {
     "text": "The lowest of the 5 weeks on record.",
     "tag": "On the low side",
@@ -86106,6 +87682,13 @@
    "mostly": "$3,440",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3400,
+    "high": 3655,
+    "mostly_low": 3440,
+    "mostly_high": 3440
+   },
+   "first_iso": "2021-08-23",
    "verdict": {
     "text": "Higher than 0 of the 8 earlier weeks on record.",
     "tag": "On the low side",
@@ -86242,6 +87825,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5590,
+    "high": 6056,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-23",
    "verdict": {
     "text": "Higher than 1 of the 9 earlier weeks on record.",
     "tag": "On the low side",
@@ -86385,6 +87975,13 @@
    "mostly": "$4,623",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4515,
+    "high": 4781,
+    "mostly_low": 4623,
+    "mostly_high": 4623
+   },
+   "first_iso": "2021-08-23",
    "verdict": {
     "text": "Higher than 0 of the 8 earlier weeks on record.",
     "tag": "On the low side",
@@ -86545,6 +88142,13 @@
    "mostly": "",
    "change": "−2%",
    "availability": "Shortage",
+   "raw": {
+    "low": 4300,
+    "high": 6020,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-23",
    "verdict": {
     "text": "The lowest of the 5 weeks on record.",
     "tag": "On the low side",
@@ -86683,6 +88287,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2200,
+    "high": 2500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-08-23",
    "verdict": {
     "text": "Higher than 60 of the 233 earlier weeks on record.",
     "tag": "On the low side",
@@ -87148,6 +88759,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 800,
+    "high": 900,
+    "mostly_low": 875,
+    "mostly_high": null
+   },
+   "first_iso": "2021-10-04",
    "verdict": {
     "text": "Higher than 5 of the 31 earlier weeks on record.",
     "tag": "On the low side",
@@ -87461,6 +89079,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1700,
+    "high": 1800,
+    "mostly_low": 1750,
+    "mostly_high": null
+   },
+   "first_iso": "2021-10-04",
    "verdict": {
     "text": "Higher than 2 of the 31 earlier weeks on record.",
     "tag": "On the low side",
@@ -87792,6 +89417,13 @@
    "mostly": "",
    "change": "+2%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2700,
+    "high": 2800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-10-04",
    "verdict": {
     "text": "Higher than 18 of the 30 earlier weeks on record.",
     "tag": "About average",
@@ -88098,6 +89730,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1400,
+    "high": 1500,
+    "mostly_low": 1450,
+    "mostly_high": null
+   },
+   "first_iso": "2021-10-04",
    "verdict": {
     "text": "Higher than 1 of the 31 earlier weeks on record.",
     "tag": "On the low side",
@@ -88423,6 +90062,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2400,
+    "high": 2500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-10-04",
    "verdict": {
     "text": "Higher than 10 of the 31 earlier weeks on record.",
     "tag": "On the low side",
@@ -88748,6 +90394,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1900,
+    "high": 2000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-10-04",
    "verdict": {
     "text": "Higher than 5 of the 31 earlier weeks on record.",
     "tag": "On the low side",
@@ -89079,6 +90732,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 4300,
+    "high": 4500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-11-01",
    "verdict": {
     "text": "Higher than 4 of the 26 earlier weeks on record.",
     "tag": "On the low side",
@@ -89357,6 +91017,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3400,
+    "high": 3600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-11-01",
    "verdict": {
     "text": "Higher than 4 of the 26 earlier weeks on record.",
     "tag": "On the low side",
@@ -89649,6 +91316,13 @@
    "mostly": "",
    "change": "+7%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10335,
+    "high": 10825,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-11-15",
    "verdict": {
     "text": "Higher than 155 of the 171 earlier weeks on record.",
     "tag": "On the high side",
@@ -90182,6 +91856,13 @@
    "mostly": "",
    "change": "+13%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7280,
+    "high": 7705,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-11-15",
    "verdict": {
     "text": "Higher than 139 of the 159 earlier weeks on record.",
     "tag": "On the high side",
@@ -90709,6 +92390,13 @@
    "mostly": "$1,000–1,600",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1000,
+    "high": 1800,
+    "mostly_low": 1000,
+    "mostly_high": 1600
+   },
+   "first_iso": "2021-11-15",
    "verdict": {
     "text": "Higher than 20 of the 100 earlier weeks on record.",
     "tag": "On the low side",
@@ -91198,6 +92886,13 @@
    "mostly": "",
    "change": "+3%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10560,
+    "high": 11290,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-11-15",
    "verdict": {
     "text": "Higher than 160 of the 174 earlier weeks on record.",
     "tag": "On the high side",
@@ -91725,6 +93420,13 @@
    "mostly": "",
    "change": "+8%",
    "availability": "Adequate",
+   "raw": {
+    "low": 8260,
+    "high": 8740,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-11-29",
    "verdict": {
     "text": "Higher than 143 of the 157 earlier weeks on record.",
     "tag": "On the high side",
@@ -92240,6 +93942,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5185,
+    "high": 5375,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2021-12-06",
    "verdict": {
     "text": "Higher than 73 of the 121 earlier weeks on record.",
     "tag": "About average",
@@ -92741,6 +94450,13 @@
    "mostly": "$4,200–4,400",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4000,
+    "high": 4500,
+    "mostly_low": 4200,
+    "mostly_high": 4400
+   },
+   "first_iso": "2021-12-06",
    "verdict": {
     "text": "Higher than 0 of the 61 earlier weeks on record.",
     "tag": "On the low side",
@@ -93190,6 +94906,13 @@
    "mostly": "$1,200–1,400",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1000,
+    "high": 1600,
+    "mostly_low": 1200,
+    "mostly_high": 1400
+   },
+   "first_iso": "2021-12-06",
    "verdict": {
     "text": "Higher than 10 of the 160 earlier weeks on record.",
     "tag": "On the low side",
@@ -93630,6 +95353,13 @@
    "mostly": "",
    "change": "+4%",
    "availability": "Adequate",
+   "raw": {
+    "low": 6250,
+    "high": 6480,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-01-24",
    "verdict": {
     "text": "Higher than 104 of the 117 earlier weeks on record.",
     "tag": "On the high side",
@@ -94125,6 +95855,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5600,
+    "high": 5700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-04-04",
    "verdict": {
     "text": "Higher than 0 of the 13 earlier weeks on record.",
     "tag": "On the low side",
@@ -94308,6 +96045,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 1000,
+    "high": 1200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-05-02",
    "verdict": {
     "text": "Higher than 15 of the 21 earlier weeks on record.",
     "tag": "On the high side",
@@ -94551,6 +96295,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3300,
+    "high": 3500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-05-02",
    "verdict": {
     "text": "Higher than 3 of the 21 earlier weeks on record.",
     "tag": "On the low side",
@@ -94812,6 +96563,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3300,
+    "high": 3500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-05-02",
    "verdict": {
     "text": "Higher than 4 of the 21 earlier weeks on record.",
     "tag": "On the low side",
@@ -95073,6 +96831,13 @@
    "mostly": "$1,300–1,600",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1200,
+    "high": 2100,
+    "mostly_low": 1300,
+    "mostly_high": 1600
+   },
+   "first_iso": "2022-05-09",
    "verdict": {
     "text": "Higher than 49 of the 123 earlier weeks on record.",
     "tag": "About average",
@@ -95525,6 +97290,13 @@
    "mostly": "$3,700–4,200",
    "change": "+13%",
    "availability": "Slight Surplus",
+   "raw": {
+    "low": 3000,
+    "high": 5000,
+    "mostly_low": 3700,
+    "mostly_high": 4200
+   },
+   "first_iso": "2022-05-09",
    "verdict": {
     "text": "Higher than 26 of the 54 earlier weeks on record.",
     "tag": "About average",
@@ -95989,6 +97761,13 @@
    "mostly": "$1,200",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 1000,
+    "high": 1300,
+    "mostly_low": 1200,
+    "mostly_high": 1200
+   },
+   "first_iso": "2022-06-06",
    "verdict": {
     "text": "Higher than 6 of the 10 earlier weeks on record.",
     "tag": "About average",
@@ -96151,6 +97930,13 @@
    "mostly": "",
    "change": "−22%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 2100,
+    "high": 2400,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-06-06",
    "verdict": {
     "text": "The lowest of the 11 weeks on record.",
     "tag": "On the low side",
@@ -96331,6 +98117,13 @@
    "mostly": "",
    "change": "−10%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3300,
+    "high": 3700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-06-06",
    "verdict": {
     "text": "Higher than 1 of the 10 earlier weeks on record.",
     "tag": "On the low side",
@@ -96493,6 +98286,13 @@
    "mostly": "",
    "change": "−14%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 2000,
+    "high": 2300,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-06-06",
    "verdict": {
     "text": "Higher than 2 of the 7 earlier weeks on record.",
     "tag": "On the low side",
@@ -96646,6 +98446,13 @@
    "mostly": "",
    "change": "−10%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3100,
+    "high": 3400,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-06-06",
    "verdict": {
     "text": "The lowest of the 8 weeks on record.",
     "tag": "On the low side",
@@ -96799,6 +98606,13 @@
    "mostly": "",
    "change": "−17%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 2400,
+    "high": 2900,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-06-06",
    "verdict": {
     "text": "Higher than 1 of the 10 earlier weeks on record.",
     "tag": "On the low side",
@@ -96979,6 +98793,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 9000,
+    "high": 10000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-07-18",
    "verdict": {
     "text": "Higher than 0 of the 12 earlier weeks on record.",
     "tag": "On the low side",
@@ -97167,6 +98988,13 @@
    "mostly": "$7,600–7,800",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 7200,
+    "high": 8000,
+    "mostly_low": 7600,
+    "mostly_high": 7800
+   },
+   "first_iso": "2022-08-08",
    "verdict": {
     "text": "Higher than 15 of the 36 earlier weeks on record.",
     "tag": "About average",
@@ -97511,6 +99339,13 @@
    "mostly": "$8,200–8,500",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7900,
+    "high": 8700,
+    "mostly_low": 8200,
+    "mostly_high": 8500
+   },
+   "first_iso": "2022-08-08",
    "verdict": {
     "text": "Higher than 18 of the 33 earlier weeks on record.",
     "tag": "About average",
@@ -97822,6 +99657,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 8000,
+    "high": 8700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-08-22",
    "verdict": {
     "text": "Higher than 19 of the 37 earlier weeks on record.",
     "tag": "About average",
@@ -98173,6 +100015,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5500,
+    "high": 6000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-08-22",
    "verdict": {
     "text": "Higher than 34 of the 43 earlier weeks on record.",
     "tag": "On the high side",
@@ -98578,6 +100427,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2400,
+    "high": 2700,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-09-19",
    "verdict": {
     "text": "Higher than 0 of the 22 earlier weeks on record.",
     "tag": "On the low side",
@@ -98836,6 +100692,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4500,
+    "high": 4800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-09-19",
    "verdict": {
     "text": "Higher than 0 of the 22 earlier weeks on record.",
     "tag": "On the low side",
@@ -99070,6 +100933,13 @@
    "mostly": "$7,300–7,600",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7200,
+    "high": 8600,
+    "mostly_low": 7300,
+    "mostly_high": 7600
+   },
+   "first_iso": "2022-10-17",
    "verdict": {
     "text": "Higher than 5 of the 47 earlier weeks on record.",
     "tag": "On the low side",
@@ -99509,6 +101379,13 @@
    "mostly": "",
    "change": "+8%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10450,
+    "high": 11060,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-11-07",
    "verdict": {
     "text": "Higher than 101 of the 103 earlier weeks on record.",
     "tag": "On the high side",
@@ -100012,6 +101889,13 @@
    "mostly": "",
    "change": "−2%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10200,
+    "high": 10575,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2022-12-19",
    "verdict": {
     "text": "Higher than 76 of the 97 earlier weeks on record.",
     "tag": "On the high side",
@@ -100525,6 +102409,13 @@
    "mostly": "$4,200",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4000,
+    "high": 4400,
+    "mostly_low": 4200,
+    "mostly_high": 4200
+   },
+   "first_iso": "2023-01-30",
    "verdict": {
     "text": "Higher than 17 of the 65 earlier weeks on record.",
     "tag": "On the low side",
@@ -100978,6 +102869,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3600,
+    "high": 4000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2023-02-27",
    "verdict": {
     "text": "Higher than 0 of the 50 earlier weeks on record.",
     "tag": "On the low side",
@@ -101390,6 +103288,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 4000,
+    "high": null,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2023-06-05",
    "verdict": {
     "text": "Too few weeks on record yet to say how this rate compares.",
     "tag": "",
@@ -101550,6 +103455,13 @@
    "mostly": "$8,300–9,900",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 7900,
+    "high": 10200,
+    "mostly_low": 8300,
+    "mostly_high": 9900
+   },
+   "first_iso": "2023-09-04",
    "verdict": {
     "text": "Higher than 156 of the 159 earlier weeks on record.",
     "tag": "On the high side",
@@ -102067,6 +103979,13 @@
    "mostly": "",
    "change": "+4%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10300,
+    "high": 10800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2023-09-04",
    "verdict": {
     "text": "Higher than 151 of the 161 earlier weeks on record.",
     "tag": "On the high side",
@@ -102602,6 +104521,13 @@
    "mostly": "$10,300–11,800",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 9800,
+    "high": 12500,
+    "mostly_low": 10300,
+    "mostly_high": 11800
+   },
+   "first_iso": "2023-09-04",
    "verdict": {
     "text": "Higher than 149 of the 159 earlier weeks on record.",
     "tag": "On the high side",
@@ -103119,6 +105045,13 @@
    "mostly": "",
    "change": "+3%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7100,
+    "high": 7600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2023-09-04",
    "verdict": {
     "text": "Higher than 154 of the 160 earlier weeks on record.",
     "tag": "On the high side",
@@ -103648,6 +105581,13 @@
    "mostly": "$5,300–5,900",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 5000,
+    "high": 6200,
+    "mostly_low": 5300,
+    "mostly_high": 5900
+   },
+   "first_iso": "2023-09-04",
    "verdict": {
     "text": "Higher than 151 of the 159 earlier weeks on record.",
     "tag": "On the high side",
@@ -104153,6 +106093,13 @@
    "mostly": "$10,200–11,900",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 9700,
+    "high": 12300,
+    "mostly_low": 10200,
+    "mostly_high": 11900
+   },
+   "first_iso": "2023-09-04",
    "verdict": {
     "text": "Higher than 154 of the 159 earlier weeks on record.",
     "tag": "On the high side",
@@ -104658,6 +106605,13 @@
    "mostly": "",
    "change": "+2%",
    "availability": "Adequate",
+   "raw": {
+    "low": 11700,
+    "high": 12300,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2023-09-04",
    "verdict": {
     "text": "Higher than 156 of the 160 earlier weeks on record.",
     "tag": "On the high side",
@@ -105187,6 +107141,13 @@
    "mostly": "",
    "change": "+5%",
    "availability": "Adequate",
+   "raw": {
+    "low": 10400,
+    "high": 10500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2023-09-04",
    "verdict": {
     "text": "Higher than 142 of the 161 earlier weeks on record.",
     "tag": "On the high side",
@@ -105722,6 +107683,13 @@
    "mostly": "$4,900–5,500",
    "change": "0%",
    "availability": "Shortage",
+   "raw": {
+    "low": 4600,
+    "high": 5800,
+    "mostly_low": 4900,
+    "mostly_high": 5500
+   },
+   "first_iso": "2023-09-04",
    "verdict": {
     "text": "Higher than 147 of the 159 earlier weeks on record.",
     "tag": "On the high side",
@@ -106223,6 +108191,13 @@
    "mostly": "",
    "change": "+2%",
    "availability": "Adequate",
+   "raw": {
+    "low": 9580,
+    "high": 10050,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2023-11-27",
    "verdict": {
     "text": "Higher than 73 of the 86 earlier weeks on record.",
     "tag": "On the high side",
@@ -106754,6 +108729,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 2000,
+    "high": 2200,
+    "mostly_low": 2100,
+    "mostly_high": null
+   },
+   "first_iso": "2024-07-15",
    "verdict": {
     "text": "Higher than 3 of the 5 earlier weeks on record.",
     "tag": "About average",
@@ -106881,6 +108863,13 @@
    "mostly": "",
    "change": "+15%",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 2100,
+    "high": 2200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2024-07-15",
    "verdict": {
     "text": "Higher than 5 of the 10 earlier weeks on record.",
     "tag": "About average",
@@ -107043,6 +109032,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5800,
+    "high": 5800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2024-07-29",
    "verdict": {
     "text": "Higher than 0 of the 13 earlier weeks on record.",
     "tag": "On the low side",
@@ -107214,6 +109210,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7400,
+    "high": 8200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-05-12",
    "verdict": {
     "text": "Higher than 24 of the 30 earlier weeks on record.",
     "tag": "On the high side",
@@ -107534,6 +109537,13 @@
    "mostly": "",
    "change": "−2%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7600,
+    "high": 8100,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-05-12",
    "verdict": {
     "text": "Higher than 18 of the 30 earlier weeks on record.",
     "tag": "About average",
@@ -107854,6 +109864,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 1000,
+    "high": 1200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-06-02",
    "verdict": {
     "text": "Higher than 0 of the 6 earlier weeks on record.",
     "tag": "On the low side",
@@ -107988,6 +110005,13 @@
    "mostly": "",
    "change": "",
    "availability": "Slight Shortage",
+   "raw": {
+    "low": 3700,
+    "high": 4000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-06-02",
    "verdict": {
     "text": "Higher than 1 of the 6 earlier weeks on record.",
     "tag": "On the low side",
@@ -108122,6 +110146,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 2400,
+    "high": 2600,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-06-02",
    "verdict": {
     "text": "Higher than 1 of the 6 earlier weeks on record.",
     "tag": "On the low side",
@@ -108268,6 +110299,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 3000,
+    "high": 3500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-06-02",
    "verdict": {
     "text": "The lowest of the 7 weeks on record.",
     "tag": "On the low side",
@@ -108414,6 +110452,13 @@
    "mostly": "",
    "change": "",
    "availability": "Adequate",
+   "raw": {
+    "low": 2700,
+    "high": 3000,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-06-02",
    "verdict": {
     "text": "The lowest of the 7 weeks on record.",
     "tag": "On the low side",
@@ -108566,6 +110611,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2600,
+    "high": 2800,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-07-14",
    "verdict": {
     "text": "Higher than 4 of the 9 earlier weeks on record.",
     "tag": "About average",
@@ -108737,6 +110789,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 7800,
+    "high": 8200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-09-15",
    "verdict": {
     "text": "Higher than 1 of the 10 earlier weeks on record.",
     "tag": "On the low side",
@@ -108911,6 +110970,13 @@
    "mostly": "",
    "change": "−5%",
    "availability": "Adequate",
+   "raw": {
+    "low": 850,
+    "high": 950,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-10-20",
    "verdict": {
     "text": "Higher than 2 of the 4 earlier weeks on record.",
     "tag": "About average",
@@ -109031,6 +111097,13 @@
    "mostly": "",
    "change": "+3%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1850,
+    "high": 1950,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-10-20",
    "verdict": {
     "text": "Higher than 3 of the 4 earlier weeks on record.",
     "tag": "On the high side",
@@ -109169,6 +111242,13 @@
    "mostly": "",
    "change": "−2%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2750,
+    "high": 2850,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-10-20",
    "verdict": {
     "text": "Higher than 2 of the 4 earlier weeks on record.",
     "tag": "About average",
@@ -109289,6 +111369,13 @@
    "mostly": "",
    "change": "−3%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1550,
+    "high": 1650,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-10-20",
    "verdict": {
     "text": "Higher than 3 of the 4 earlier weeks on record.",
     "tag": "On the high side",
@@ -109421,6 +111508,13 @@
    "mostly": "",
    "change": "−8%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2400,
+    "high": 2500,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-10-20",
    "verdict": {
     "text": "Higher than 2 of the 4 earlier weeks on record.",
     "tag": "About average",
@@ -109553,6 +111647,13 @@
    "mostly": "",
    "change": "−9%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2000,
+    "high": 2200,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2025-10-20",
    "verdict": {
     "text": "Higher than 2 of the 4 earlier weeks on record.",
     "tag": "About average",
@@ -109691,6 +111792,13 @@
    "mostly": "",
    "change": "+11%",
    "availability": "Adequate",
+   "raw": {
+    "low": 5600,
+    "high": 5900,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2026-05-11",
    "verdict": {
     "text": "Higher than 12 of the 22 earlier weeks on record.",
     "tag": "About average",
@@ -109983,6 +112091,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 1900,
+    "high": 2100,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2026-07-27",
    "verdict": {
     "text": "Higher than 9 of the 11 earlier weeks on record.",
     "tag": "On the high side",
@@ -110195,6 +112310,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2050,
+    "high": 2250,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2026-07-27",
    "verdict": {
     "text": "Higher than 8 of the 11 earlier weeks on record.",
     "tag": "On the high side",
@@ -110425,6 +112547,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 3200,
+    "high": 3300,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2026-07-27",
    "verdict": {
     "text": "Higher than 0 of the 11 earlier weeks on record.",
     "tag": "On the low side",
@@ -110637,6 +112766,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2150,
+    "high": 2350,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2026-07-27",
    "verdict": {
     "text": "Higher than 2 of the 11 earlier weeks on record.",
     "tag": "On the low side",
@@ -110861,6 +112997,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2700,
+    "high": 2900,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2026-07-27",
    "verdict": {
     "text": "Higher than 3 of the 11 earlier weeks on record.",
     "tag": "On the low side",
@@ -111085,6 +113228,13 @@
    "mostly": "",
    "change": "0%",
    "availability": "Adequate",
+   "raw": {
+    "low": 2200,
+    "high": 2400,
+    "mostly_low": null,
+    "mostly_high": null
+   },
+   "first_iso": "2026-07-27",
    "verdict": {
     "text": "Higher than 4 of the 11 earlier weeks on record.",
     "tag": "About average",
