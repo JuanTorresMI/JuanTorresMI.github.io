@@ -544,6 +544,17 @@ def archive():
     return out
 
 
+def plausible(w):
+    """A week as the pages show it. USDA's report sometimes drops digits from a low ($53 for a
+    $5,300 load, Florida to New York, May 25, 2026; $740 for $7,400 two months later), and real
+    ranges never span more than about 2x, so a low under a quarter of its high is left out rather
+    than drawn as a record low. The CSV keeps the report as published."""
+    w = list(w)
+    for lo, hi in ((1, 2), (3, 4)):
+        if w[lo] is not None and w[hi] is not None and w[lo] * 4 < w[hi]: w[lo] = None
+    return w
+
+
 def verdict(weeks):
     """How the latest week compares with the lane's own history, in words."""
     m = mid(weeks[-1])
@@ -594,7 +605,8 @@ def reefer(base):
         for l in get(f"{base}/reefer/history?year={y}")["lanes"]:
             got = merged.setdefault((l["district"], l["dest"]), {})
             for w in l["weeks"]: got[w[0]] = w
-    lanes = {k: [v[w] for w in sorted(v)] for k, v in merged.items() if v}
+    lanes = {k: [v[w] for w in sorted(v)] for k, v in merged.items() if v}      # as published: the CSV
+    shown = {k: [plausible(w) for w in v] for k, v in lanes.items()}              # what the pages show
     latest = cur["latest"]
     year_start = (datetime.fromisoformat(latest) - timedelta(days=364)).date().isoformat()
 
@@ -605,7 +617,7 @@ def reefer(base):
 
     # The lane pages.
     pages = {}
-    for (district, dest), weeks in lanes.items():
+    for (district, dest), weeks in shown.items():
         if len(weeks) < LANE_MIN_WEEKS: continue
         o, slug, last = place(district), lane_slug(district, dest), weeks[-1]
         year = [x for x in weeks if x[0] > year_start]
@@ -701,7 +713,7 @@ def reefer(base):
 
     # 5. Seasons: the months each shipping area has been quoted in, and what it ships now.
     months = {}
-    for (d, _), weeks in lanes.items():
+    for (d, _), weeks in shown.items():
         months.setdefault(d, set()).update(int(x[0][5:7]) for x in weeks)
     shipping_now = {d for d, _ in cells}
     seasons = [{"short": place(d)["short"], "now": d in shipping_now, "months": [m in ms for m in range(1, 13)],

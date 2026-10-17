@@ -11,7 +11,7 @@ stock: night
 {%- comment -%}
   A "gamer" page (see the families in CLAUDE.md): night stock, HUD frames, mono labels. Styles
   are scoped under .yt in style.css.
-  site.data.live.youtube is a daily copy of the Worker's answer (scripts/snapshot.py), already
+  site.data.live.youtube is a twice-daily copy of the Worker's answer (scripts/snapshot.py), already
   formatted. It is what crawlers and readers without JavaScript see; the script below swaps in
   the live numbers. Each block falls back to the old placeholder if the copy is missing.
 {%- endcomment -%}
@@ -32,7 +32,7 @@ stock: night
     {%- for t in yt.hud %}<div class="yt-stat{% if t.hot %} hot{% endif %}"><span class="l">{{ t.l | escape }}</span><span class="n">{{ t.n | escape }}</span></div>{% endfor -%}
   {%- else %}<p class="yt-note">Asking YouTube…</p>{% endif -%}
 </section>
-<noscript><p class="yt-note">{% if yt %}With JavaScript off, these are the numbers as of {{ yt.checked }}, copied into the page once a day.{% else %}The numbers are filled in by a script. With JavaScript off, the channel is one click away on YouTube.{% endif %}</p></noscript>
+<noscript><p class="yt-note">{% if yt %}With JavaScript off, these are the numbers as of {{ yt.checked }}, copied into the page twice a day.{% else %}The numbers are filled in by a script. With JavaScript off, the channel is one click away on YouTube.{% endif %}</p></noscript>
 
 <div class="yt-pair">
   <section class="yt-block yt-feature-wrap" aria-labelledby="yt-feature-h">
@@ -99,7 +99,7 @@ stock: night
         <li><strong>It asks YouTube three questions.</strong> One call for the channel’s subscribers, total views and video count, one for the list of its latest uploads, and one for each upload’s views, likes and length. Each call costs one unit of YouTube’s free daily quota of 10,000, so the whole day costs 72.</li>
         <li><strong>It writes the answer down.</strong> The latest snapshot goes into a small SQLite database on Cloudflare (D1), along with one row per day, which is where the day-by-day changes above come from. If YouTube doesn’t answer, nothing is overwritten and the last good snapshot stays.</li>
         <li><strong>This page reads the snapshot, not YouTube.</strong> Your visit costs YouTube’s quota nothing, and a busy day on the site can’t use it up. Cloudflare also keeps a copy at the edge for five minutes, so most visits don’t even reach the database.</li>
-        <li><strong>Once a day, a copy goes into the page itself.</strong> A GitHub Action asks the Worker for the snapshot and writes it into this page’s HTML. That copy is what search engines, link previews and browsers with JavaScript off see; with JavaScript on, the script swaps in the live numbers a moment after the page loads.</li>
+        <li><strong>Twice a day, a copy goes into the page itself.</strong> A GitHub Action asks the Worker for the snapshot and writes it into this page’s HTML. That copy is what search engines, link previews and browsers with JavaScript off see; with JavaScript on, the script swaps in the live numbers a moment after the page loads.</li>
       </ol>
       <p>The key the Worker uses is a plain YouTube Data API key, stored as an encrypted secret on Cloudflare and never in this site’s code. It can only read public data: it can’t sign in, upload, or change anything on the channel. The uploads themselves come from a separate program on my own computer that has its own sign-in and its own quota, so this page can never get in their way.</p>
       <p>All of it runs on free plans. Cloudflare’s free tier covers the hourly job, the database and the requests with a lot of room to spare, and on that plan going over a limit makes requests fail until the next day instead of sending a bill.</p>
