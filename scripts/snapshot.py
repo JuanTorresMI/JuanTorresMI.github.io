@@ -2498,24 +2498,27 @@ def usage(d):
     size = next((x["storage_bytes"] for x in reversed(days) if x.get("storage_bytes")), None)
     ms = lambda v: "—" if v is None else f"{v:.1f} ms" if v < 10 else f"{round(v)} ms"
     left = lambda used, limit: None if used is None else max(0, limit - used)
-    cpu = today.get("cpu_p99_ms")
+    cpu, cpu50 = today.get("cpu_p99_ms"), today.get("cpu_p50_ms")
+    spare = lambda v: "—" if v is None else "over by " + ms(v - lim["cpu_ms"]) if v > lim["cpu_ms"] else ms(lim["cpu_ms"] - v) + " to spare"
     meters = [
         {"what": "Worker requests", "used": fmt(today["requests"]), "left": fmt(left(today["requests"], lim["requests"])), "limit": fmt(lim["requests"]) + " a day", **share(today["requests"], lim["requests"])},
         {"what": "Database rows read", "used": fmt(today["rows_read"]), "left": fmt(left(today["rows_read"], lim["rows_read"])), "limit": fmt(lim["rows_read"]) + " a day", **share(today["rows_read"], lim["rows_read"])},
         {"what": "Database rows written", "used": fmt(today["rows_written"]), "left": fmt(left(today["rows_written"], lim["rows_written"])), "limit": fmt(lim["rows_written"]) + " a day", **share(today["rows_written"], lim["rows_written"])},
-        {"what": "Database storage", "used": size_label(size), "left": size_label(left(size, lim["storage_bytes"])), "limit": size_label(lim["storage_bytes"]), **share(size, lim["storage_bytes"])},
-        {"what": "CPU per run (99th percentile)", "used": ms(cpu), "left": "—" if cpu is None else ms(left(cpu, lim["cpu_ms"])) + " to spare", "limit": f"{lim['cpu_ms']} ms", **share(cpu, lim["cpu_ms"])},
+        {"what": "Database storage, as Cloudflare counts it", "used": size_label(size), "left": size_label(left(size, lim["storage_bytes"])), "limit": size_label(lim["storage_bytes"]), **share(size, lim["storage_bytes"])},
+        {"what": "CPU, a typical run (median)", "used": ms(cpu50), "left": spare(cpu50), "limit": f"{lim['cpu_ms']} ms a run", **share(cpu50, lim["cpu_ms"])},
+        {"what": "CPU, the slowest 1% of runs", "used": ms(cpu), "left": spare(cpu), "limit": f"{lim['cpu_ms']} ms a run", **share(cpu, lim["cpu_ms"])},
     ]
     past = [x for x in days if x["date"] != d["today"]]
     peak = max(past, key=lambda x: x["requests"], default=None)
     rows = [{"day": day_label(datetime.fromisoformat(x["date"])), "requests": fmt(x["requests"]), "errors": fmt(x["errors"]),
-             "rows_read": fmt(x["rows_read"]), "rows_written": fmt(x["rows_written"]), "cpu": ms(x.get("cpu_p99_ms"))} for x in reversed(days)]
+             "rows_read": fmt(x["rows_read"]), "rows_written": fmt(x["rows_written"]), "cpu50": ms(x.get("cpu_p50_ms")), "cpu": ms(x.get("cpu_p99_ms"))} for x in reversed(days)]
     total = sum(x["requests"] for x in past)
     return {"ready": True, "generated": d["updated"], "checked": hour_label(when(d["updated"])) + " (Michigan time)",
             "today": full_date(datetime.fromisoformat(d["today"])), "meters": meters, "days": rows,
             "stamp": {"requests": fmt(today["requests"]), "requests_left": fmt(left(today["requests"], lim["requests"])),
                       "rows_read": fmt(today["rows_read"]), "rows_written": fmt(today["rows_written"]),
-                      "size": size_label(size), "cpu": ms(cpu)},
+                      "size": size_label(size), "cpu": ms(cpu50)},
+            "errors_30": fmt(sum(x["errors"] for x in days)), "cpu_over": cpu is not None and cpu > lim["cpu_ms"],
             "avg_requests": fmt(round(total / len(past))) if past else "—", "past_days": len(past),
             "peak": None if not peak else {"day": full_date(datetime.fromisoformat(peak["date"])), "requests": fmt(peak["requests"]),
                                            "pct": share(peak["requests"], lim["requests"])["pct"]}}

@@ -28,7 +28,7 @@ image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left,
     <div><dt>Rows read today</dt><dd data-wu="rows_read">{{ u.stamp.rows_read }}</dd></div>
     <div><dt>Rows written today</dt><dd data-wu="rows_written">{{ u.stamp.rows_written }}</dd></div>
     <div><dt>Database size</dt><dd data-wu="size">{{ u.stamp.size }}</dd></div>
-    <div><dt>CPU per run, p99</dt><dd data-wu="cpu">{{ u.stamp.cpu }}</dd></div>
+    <div><dt>CPU, typical run</dt><dd data-wu="cpu">{{ u.stamp.cpu }}</dd></div>
   </dl>
   {%- endif %}
 </header>
@@ -45,6 +45,7 @@ image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left,
     {%- endfor %}
     </tbody>
   </table>
+  <p>CPU is time spent computing, not waiting on other sites, so a run that waits half a minute for USDA still uses a few milliseconds. The 10 ms is per run. Cloudflare stops a run that uses too much, and a stopped run counts as an error: <span id="wu-errors">{{ u.errors_30 }}</span> errors in the last 30 days{% if u.cpu_over %}, though the slowest runs go past 10 ms{% endif %}.</p>
   {%- if u.peak %}
   <p>Over the last {{ u.past_days }} full days the Worker answered {{ u.avg_requests }} requests a day on average; the busiest was {{ u.peak.day }}, with {{ u.peak.requests }} ({{ u.peak.pct }} of the daily limit).</p>
   {%- endif %}
@@ -52,12 +53,12 @@ image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left,
 
 <section class="rb-sec" id="days" aria-labelledby="days-h">
   <h2 id="days-h">The last 30 days</h2>
-  <p>Requests include the scheduled runs (two an hour) as well as visitors’ pages asking for live numbers. Rows are the database’s rows read and written, which is how Cloudflare counts database use. CPU is the 99th-percentile time a run spent computing, not waiting on other sites.</p>
+  <p>Requests include the scheduled runs (two an hour) as well as visitors’ pages asking for live numbers. Rows are the database’s rows read and written, which is how Cloudflare counts database use. CPU is the typical run (median) and the slowest 1% (99th percentile). Days with nothing recorded are left out.</p>
   <table class="rb-t rb-stack">
-    <thead><tr><th scope="col">Day (UTC)</th><th scope="col">Requests</th><th scope="col">Errors</th><th scope="col">Rows read</th><th scope="col">Rows written</th><th scope="col">CPU, p99</th></tr></thead>
+    <thead><tr><th scope="col">Day (UTC)</th><th scope="col">Requests</th><th scope="col">Errors</th><th scope="col">Rows read</th><th scope="col">Rows written</th><th scope="col">CPU, typical</th><th scope="col">CPU, slowest 1%</th></tr></thead>
     <tbody id="wu-days">
     {%- for d in u.days %}
-      <tr><th scope="row">{{ d.day }}</th><td data-label="Requests">{{ d.requests }}</td><td data-label="Errors">{{ d.errors }}</td><td data-label="Rows read">{{ d.rows_read }}</td><td data-label="Rows written">{{ d.rows_written }}</td><td data-label="CPU, p99">{{ d.cpu }}</td></tr>
+      <tr><th scope="row">{{ d.day }}</th><td data-label="Requests">{{ d.requests }}</td><td data-label="Errors">{{ d.errors }}</td><td data-label="Rows read">{{ d.rows_read }}</td><td data-label="Rows written">{{ d.rows_written }}</td><td data-label="CPU, typical">{{ d.cpu50 }}</td><td data-label="CPU, slowest 1%">{{ d.cpu }}</td></tr>
     {%- endfor %}
     </tbody>
   </table>
@@ -111,20 +112,24 @@ image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left,
     const L = d.limits, t = d.days.find((x) => x.date === d.today) || { requests: 0, rows_read: 0, rows_written: 0 };
     const sz = [...d.days].reverse().find((x) => x.storage_bytes);
     const left = (used, limit) => used == null ? null : Math.max(0, limit - used);
-    const stamp = { requests: fmt(t.requests), requests_left: fmt(left(t.requests, L.requests)), rows_read: fmt(t.rows_read), rows_written: fmt(t.rows_written), size: size(sz && sz.storage_bytes), cpu: ms(t.cpu_p99_ms) };
+    const stamp = { requests: fmt(t.requests), requests_left: fmt(left(t.requests, L.requests)), rows_read: fmt(t.rows_read), rows_written: fmt(t.rows_written), size: size(sz && sz.storage_bytes), cpu: ms(t.cpu_p50_ms) };
     for (const [k, v] of Object.entries(stamp)) { const el = document.querySelector(`[data-wu="${k}"]`); if (el) el.textContent = v; }
-    const bytes = sz && sz.storage_bytes, cpu = t.cpu_p99_ms;
+    const bytes = sz && sz.storage_bytes, cpu = t.cpu_p99_ms, cpu50 = t.cpu_p50_ms;
+    const spare = (v) => v == null ? "—" : v > L.cpu_ms ? "over by " + ms(v - L.cpu_ms) : ms(L.cpu_ms - v) + " to spare";
     const rows = [
       ["Worker requests", fmt(t.requests), fmt(left(t.requests, L.requests)), fmt(L.requests) + LIMITS_NOTE.requests, share(t.requests, L.requests)],
       ["Database rows read", fmt(t.rows_read), fmt(left(t.rows_read, L.rows_read)), fmt(L.rows_read) + LIMITS_NOTE.rows_read, share(t.rows_read, L.rows_read)],
       ["Database rows written", fmt(t.rows_written), fmt(left(t.rows_written, L.rows_written)), fmt(L.rows_written) + LIMITS_NOTE.rows_written, share(t.rows_written, L.rows_written)],
-      ["Database storage", size(bytes), size(left(bytes, L.storage_bytes)), size(L.storage_bytes), share(bytes, L.storage_bytes)],
-      ["CPU per run (99th percentile)", ms(cpu), cpu == null ? "—" : ms(left(cpu, L.cpu_ms)) + " to spare", L.cpu_ms + " ms", share(cpu, L.cpu_ms)],
+      ["Database storage, as Cloudflare counts it", size(bytes), size(left(bytes, L.storage_bytes)), size(L.storage_bytes), share(bytes, L.storage_bytes)],
+      ["CPU, a typical run (median)", ms(cpu50), spare(cpu50), L.cpu_ms + " ms a run", share(cpu50, L.cpu_ms)],
+      ["CPU, the slowest 1% of runs", ms(cpu), spare(cpu), L.cpu_ms + " ms a run", share(cpu, L.cpu_ms)],
     ];
     document.getElementById("wu-meters").innerHTML = rows.map(([w, u, a, l, [p, wd]]) =>
       `<tr><th scope="row">${esc(w)}</th><td data-label="Used">${esc(u)}</td><td data-label="Available">${esc(a)}</td><td data-label="Free plan">${esc(l)}</td><td data-label="Share used">${esc(p)}<span class="rb-bar"><span style="width: ${wd}%"></span></span></td></tr>`).join("");
     document.getElementById("wu-days").innerHTML = [...d.days].reverse().map((x) =>
-      `<tr><th scope="row">${esc(day(x.date))}</th><td data-label="Requests">${fmt(x.requests)}</td><td data-label="Errors">${fmt(x.errors)}</td><td data-label="Rows read">${fmt(x.rows_read)}</td><td data-label="Rows written">${fmt(x.rows_written)}</td><td data-label="CPU, p99">${esc(ms(x.cpu_p99_ms))}</td></tr>`).join("");
+      `<tr><th scope="row">${esc(day(x.date))}</th><td data-label="Requests">${fmt(x.requests)}</td><td data-label="Errors">${fmt(x.errors)}</td><td data-label="Rows read">${fmt(x.rows_read)}</td><td data-label="Rows written">${fmt(x.rows_written)}</td><td data-label="CPU, typical">${esc(ms(x.cpu_p50_ms))}</td><td data-label="CPU, slowest 1%">${esc(ms(x.cpu_p99_ms))}</td></tr>`).join("");
+    const er = document.getElementById("wu-errors");
+    if (er) er.textContent = fmt(d.days.reduce((n, x) => n + x.errors, 0));
     const c = document.getElementById("wu-checked");
     if (c) c.textContent = "Checked " + new Date(d.updated).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) + ".";
   }).catch(() => {});
