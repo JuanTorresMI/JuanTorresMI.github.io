@@ -1,0 +1,318 @@
+{%- comment -%}
+  The pork board, in English (/pork-prices/) or Spanish (/es/precios-de-cerdo/):
+  {% include pork-board.html es=true %}. The beef board's form (.rb .bf), drawn from
+  site.data.live.pork, the copy scripts/snapshot.py makes from USDA's LM_PK602 report. Cut pages:
+  _layouts/pork-cut.html. The pork report has no grades, so every item has one price a day.
+{%- endcomment -%}
+{%- assign r = site.data.live.pork -%}
+{%- assign es = include.es -%}
+{%- if es %}{% assign base = "/es/precios-de-cerdo/" %}{% else %}{% assign base = "/pork-prices/" %}{% endif -%}
+<div class="rb bf">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family">{% if es %}Trabajo · Cerdo de mayoreo{% else %}Work · Wholesale pork{% endif %}</p>
+    <h1>{% if es %}Precios del cerdo hoy{% else %}Pork prices today{% endif %}</h1>
+    <p class="rb-sub">{% if es %}Lo que vale el cerdo cuando los empacadores lo venden a supermercados, procesadores y exportadores: el valor diario de la canal de cerdo (cutout) del USDA, sus seis primales y el precio de cada corte de cerdo que se vendió, por libra y por quintal. De las ventas negociadas que los empacadores reportan al USDA, cada día hábil.{% else %}What pork sells for when packers sell it to grocers, processors and exporters: USDA’s daily pork carcass cutout, its six primals, and the price of every pork cut that traded, per pound and per hundredweight. From the negotiated sales packers report to USDA, updated every business day.{% endif %}</p>
+  </div>
+  {%- if r %}
+  <dl class="rb-stamp">
+    <div><dt>{% if es %}Reporte del{% else %}Report for{% endif %}</dt><dd data-bf="report">{% if es %}{{ r.day_es }}{% else %}{{ r.day }}{% endif %}</dd></div>
+    <div><dt>{% if es %}Canal (cutout){% else %}Carcass cutout{% endif %}</dt><dd data-bf="carcass">{{ r.stamp.carcass }}{% if r.stamp.carcass_chg != "" %} <span>{{ r.stamp.carcass_chg }}</span>{% endif %}</dd></div>
+    <div><dt>{% if es %}Panceta{% else %}Belly{% endif %}</dt><dd data-bf="belly">{{ r.stamp.belly }}</dd></div>
+    <div><dt>{% if es %}Lomo{% else %}Loin{% endif %}</dt><dd data-bf="loin">{{ r.stamp.loin }}</dd></div>
+    <div><dt>{% if es %}Pierna{% else %}Ham{% endif %}</dt><dd data-bf="ham">{{ r.stamp.ham }}</dd></div>
+    {%- if r.stamp.loads != "" %}<div><dt>{% if es %}Cargas vendidas{% else %}Loads sold{% endif %}</dt><dd data-bf="loads">{{ r.stamp.loads }}</dd></div>{% endif %}
+  </dl>
+  {%- endif %}
+</header>
+{%- if r %}
+<p class="rb-note bf-live" data-bf="notice" role="status" hidden></p>
+{%- endif %}
+
+{% if r %}
+<nav class="rb-jump" aria-label="{% if es %}Secciones de esta página{% else %}Sections on this page{% endif %}">
+  <a href="#today">{% if es %}Hoy{% else %}Today{% endif %}</a>
+  <a href="#primals">{% if es %}Primales{% else %}Primals{% endif %}</a>
+  <a href="#cuts">{% if es %}Cada corte{% else %}Every cut{% endif %}</a>
+  <a href="#movers">{% if es %}Mayores cambios{% else %}Biggest moves{% endif %}</a>
+  <a href="#history">{% if es %}Historial desde{% else %}History since{% endif %} {{ r.first_iso | slice: 0, 4 }}</a>
+  <a href="#data">{% if es %}Descargar los datos{% else %}Download the data{% endif %}</a>
+  <a href="#faq">{% if es %}Preguntas{% else %}Questions{% endif %}</a>
+</nav>
+
+<section class="rb-sec" id="today" aria-labelledby="today-h">
+  <h2 id="today-h">{% if es %}El valor de la canal de cerdo hoy{% else %}The pork cutout today{% endif %}</h2>
+  <p class="rb-big">{% if es %}{{ r.summary_es }}{% else %}{{ r.summary }}{% endif %}</p>
+  <div class="rb-judge">
+    <p class="rb-tag">{% if es %}¿El valor de la canal de hoy está alto o bajo?{% if r.cutout.standing.tag_es != "" %} · {{ r.cutout.standing.tag_es }}{% endif %}{% else %}Is today’s pork cutout high or low?{% if r.cutout.standing.tag != "" %} · {{ r.cutout.standing.tag }}{% endif %}{% endif %}</p>
+    <p class="rb-say">{% if es %}{{ r.cutout.standing.text_es }}{% else %}{{ r.cutout.standing.text }}{% endif %}</p>
+    {%- if r.cutout.standing.pos %}
+    <div class="rb-meter" role="img" aria-label="{% if es %}{{ r.cutout.standing.text_es }}{% else %}{{ r.cutout.standing.text }}{% endif %}"><span style="left: {{ r.cutout.standing.pos }}%"></span></div>
+    <p class="rb-meter-k">{% if es %}<span>El más bajo del año</span><span>El más alto del año</span>{% else %}<span>Lowest of the year</span><span>Highest of the year</span>{% endif %}</p>
+    {%- endif %}
+  </div>
+  <p class="rb-note">
+  {%- if es -%}
+    {%- if r.cutout.year_ago %}Hace un año ({{ r.cutout.year_ago.date_es }}) la canal valía {{ r.cutout.year_ago.cwt }}; la de hoy está {{ r.cutout.year_ago.change }} frente a eso. {% endif -%}
+    En el último año promedió {{ r.cutout.avg }}, de un mínimo de {{ r.cutout.low }} ({{ r.cutout.low_day_es }}) a un máximo de {{ r.cutout.high }} ({{ r.cutout.high_day_es }}).
+    {%- if r.cutout.record_now %} Hoy es el valor más alto registrado desde el {{ r.first_es }}.{% else %} El más alto registrado desde el {{ r.first_es }} es {{ r.cutout.record }}, del {{ r.cutout.record_day_es }}.{% endif %}
+    A {{ r.stamp.carcass }} por quintal, los cortes de una canal de cerdo valen unos {{ r.cutout.carcass_lb }} por libra.
+  {%- else -%}
+    {%- if r.cutout.year_ago %}A year earlier ({{ r.cutout.year_ago.date }}) the cutout was {{ r.cutout.year_ago.cwt }}; today’s is {{ r.cutout.year_ago.change }} against that. {% endif -%}
+    Over the past year it averaged {{ r.cutout.avg }}, from a low of {{ r.cutout.low }} ({{ r.cutout.low_day }}) to a high of {{ r.cutout.high }} ({{ r.cutout.high_day }}).
+    {%- if r.cutout.record_now %} Today is the highest cutout on record since {{ r.first }}.{% else %} The highest on record since {{ r.first }} is {{ r.cutout.record }}, on {{ r.cutout.record_day }}.{% endif %}
+    At {{ r.stamp.carcass }} per hundredweight, a pork carcass’s cuts are worth about {{ r.cutout.carcass_lb }} a pound.
+  {%- endif %}
+  </p>
+
+  {%- if r.chart_year %}
+  {%- capture lab %}{% if es %}El valor de la canal de cerdo y de los primales de panceta, lomo y pierna cada día hábil del {{ r.chart_year.start_es }} al {{ r.chart_year.end_es }}, entre {{ r.chart_year.bottom }} y {{ r.chart_year.top }} por quintal.{% else %}The pork carcass cutout and the belly, loin and ham primals every business day from {{ r.chart_year.start }} to {{ r.chart_year.end }}, between {{ r.chart_year.bottom }} and {{ r.chart_year.top }} per hundredweight.{% endif %}{% endcapture %}
+  {% include price-chart.html chart=r.chart_year es=es label=lab title_en="The cutout and primals, day by day" title_es="La canal y los primales, día por día" unit_en="Dollars per hundredweight" unit_es="Dólares por quintal" names="Carcass:Canal,Belly:Panceta,Loin:Lomo,Ham:Pierna" %}
+  {%- endif %}
+
+  <section class="rb-block">
+    <h3>{% if es %}Los últimos {{ r.recent.size }} reportes <span>Dólares por quintal</span>{% else %}The last {{ r.recent.size }} reports <span>Dollars per hundredweight</span>{% endif %}</h3>
+    <div class="rb-scroll">
+      <table class="rb-table">
+        <thead><tr><th scope="col">{% if es %}Día{% else %}Day{% endif %}</th>{% if es %}<th scope="col">Canal</th><th scope="col">Cambio</th><th scope="col">Lomo</th><th scope="col">Espaldilla</th><th scope="col">Paleta</th><th scope="col">Costilla</th><th scope="col">Pierna</th><th scope="col">Panceta</th><th scope="col">Cargas</th>{% else %}<th scope="col">Carcass</th><th scope="col">Change</th><th scope="col">Loin</th><th scope="col">Butt</th><th scope="col">Picnic</th><th scope="col">Rib</th><th scope="col">Ham</th><th scope="col">Belly</th><th scope="col">Loads</th>{% endif %}</tr></thead>
+        <tbody>
+        {%- for d in r.recent %}
+          <tr><th scope="row">{% if es %}{{ d.day_es }}{% else %}{{ d.day }}{% endif %}</th><td><strong>{{ d.cells[0] }}</strong></td><td>{{ d.chg | default: "—" }}</td>{% for v in d.cells offset: 1 %}<td>{{ v | default: "—" }}</td>{% endfor %}<td>{{ d.loads | default: "—" }}</td></tr>
+        {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
+<section class="rb-sec" id="primals" aria-labelledby="primals-h">
+  <h2 id="primals-h">{% if es %}Valor de los primales hoy{% else %}Primal values today{% endif %}</h2>
+  <p>{% if es %}La canal de cerdo se divide en seis primales. Cada valor es lo que valieron los cortes de ese primal el {{ r.on_day_es }}, por quintal del primal, junto al promedio de los últimos cinco reportes. Haga clic en uno para ver su historial y los cortes que lo forman.{% else %}A pork carcass is broken into six primals. Each value is what that primal’s cuts were worth on {{ r.on_day }}, per hundredweight of the primal, beside the average of the last five reports. Click one for its history and the cuts it’s made of.{% endif %}</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack">
+      <thead><tr><th scope="col">Primal</th><th scope="col">{% if es %}Por cwt{% else %}Per cwt{% endif %}</th><th scope="col">{% if es %}Cambio{% else %}Change{% endif %}</th><th scope="col">{% if es %}Por lb{% else %}Per lb{% endif %}</th><th scope="col">{% if es %}Promedio de 5 días{% else %}5-day average{% endif %}</th></tr></thead>
+      <tbody>
+        <tr class="rb-here"><th scope="row"><a href="{{ base }}{% if es %}valor-canal-de-cerdo{% else %}pork-carcass-cutout{% endif %}/">{% if es %}Canal (cutout){% else %}Carcass cutout{% endif %}</a></th><td data-label="{% if es %}Por cwt{% else %}Per cwt{% endif %}">{{ r.stamp.carcass }}</td><td data-label="{% if es %}Cambio{% else %}Change{% endif %}">{{ r.stamp.carcass_chg | default: "—" }}</td><td data-label="{% if es %}Por lb{% else %}Per lb{% endif %}">{{ r.cutout.carcass_lb }}</td><td data-label="{% if es %}Promedio de 5 días{% else %}5-day average{% endif %}">{{ r.five.carcass }}</td></tr>
+      {%- for p in r.primals %}
+        <tr><th scope="row"><a href="{{ base }}{% if es %}{{ p.slug_es }}{% else %}{{ p.slug }}{% endif %}/">{% if es %}{{ p.es }}{% else %}{{ p.name }}{% endif %}</a></th><td data-label="{% if es %}Por cwt{% else %}Per cwt{% endif %}">{{ p.v }}</td><td data-label="{% if es %}Cambio{% else %}Change{% endif %}">{{ p.chg | default: "—" }}</td><td data-label="{% if es %}Por lb{% else %}Per lb{% endif %}">{{ p.lb }}</td><td data-label="{% if es %}Promedio de 5 días{% else %}5-day average{% endif %}">{{ r.five[p.key] }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="rb-sec" id="cuts" aria-labelledby="cuts-h">
+  <h2 id="cuts-h">{% if es %}Precio de mayoreo de cada corte de cerdo hoy{% else %}Wholesale price of every pork cut today{% endif %}</h2>
+  <p>{% if es %}Cada corte que se vendió el {{ r.on_day_es }}, {{ r.traded }} en total, agrupados como en el reporte del USDA y del más caro al más barato. Los precios son el promedio ponderado de las ventas negociadas del día, por libra, con el precio por quintal debajo. “Semana” es el cambio frente a su propio precio una semana antes. Haga clic en un corte para ver cada día registrado y revisar un precio que le cotizaron.{% else %}Every cut that traded on {{ r.on_day }}, {{ r.traded }} in all, grouped the way USDA’s report groups them and dearest first. Prices are the weighted average of the day’s negotiated sales, per pound, with the price per hundredweight under it. “Week” is the change from its own price a week earlier. Click a cut for every day on record and to check a price you were quoted.{% endif %}</p>
+  <form class="rb-look bf-find" id="bf-find" role="search" onsubmit="return false" hidden>
+    <label>{% if es %}Buscar un corte <input type="search" id="bf-q" placeholder="filete, panceta, costillas, espaldilla…" autocomplete="off" spellcheck="false">{% else %}Find a cut <input type="search" id="bf-q" placeholder="tenderloin, belly, ribs, butt…" autocomplete="off" spellcheck="false">{% endif %}</label>
+  </form>
+  <p class="rb-note bf-find-n" id="bf-find-n" aria-live="polite" hidden></p>
+  {%- for g in r.groups %}
+  <div class="bf-group">
+  <h3>{% if es %}{{ g.es }}{% else %}{{ g.name }}{% endif %}</h3>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack bf-cuts">
+      <thead><tr><th scope="col">{% if es %}Corte{% else %}Cut{% endif %}</th><th scope="col">{% if es %}Por lb{% else %}Per lb{% endif %}</th><th scope="col">{% if es %}Rango, por lb{% else %}Range, per lb{% endif %}</th><th scope="col">{% if es %}Semana{% else %}Week{% endif %}</th><th scope="col">{% if es %}Libras{% else %}Pounds{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for c in g.rows %}
+        {%- if es %}{% assign cslug = c.slug_es %}{% assign cname = c.es %}{% assign calso = c.also_es %}{% else %}{% assign cslug = c.slug %}{% assign cname = c.name %}{% assign calso = c.also %}{% endif %}
+        <tr data-find="{{ c.find | escape }}"><th scope="row">{% if cslug != "" %}<a href="{{ base }}{{ cslug }}/">{{ cname }}</a>{% else %}{{ cname }}{% endif %}{% if calso != "" %} <span class="bf-also">{{ calso }}</span>{% endif %}</th><td data-label="{% if es %}Por lb{% else %}Per lb{% endif %}"><span class="bf-px"><strong>{{ c.price_lb }}</strong> <span class="bf-cwt">{{ c.price }}/cwt</span></span></td><td data-label="{% if es %}Rango{% else %}Range{% endif %}">{{ c.range | default: "—" }}</td><td data-label="{% if es %}Semana{% else %}Week{% endif %}">{{ c.week | default: "—" }}</td><td data-label="{% if es %}Libras{% else %}Pounds{% endif %}">{{ c.lbs | default: "—" }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+  {%- endfor %}
+  <section class="rb-block bf-tools" id="budget" hidden>
+    <h3>{% if es %}Presupuestar una compra <span>Los precios de hoy del USDA para su pedido</span>{% else %}Budget a buy <span>Today’s USDA prices for your order</span>{% endif %}</h3>
+    <form class="rb-look" id="bg-form" onsubmit="return false">
+      <label>{% if es %}Corte{% else %}Cut{% endif %} <select id="bg-cut"></select></label>
+      <label>{% if es %}Libras{% else %}Pounds{% endif %} <input id="bg-lbs" type="number" inputmode="decimal" min="0.1" step="0.1" placeholder="{% if es %}p. ej. 60{% else %}e.g. 60{% endif %}"></label>
+      <label class="bf-btn-label"><span>&nbsp;</span><button type="submit" class="rb-btn" id="bg-add">{% if es %}Agregar al pedido{% else %}Add to the order{% endif %}</button></label>
+    </form>
+    <div class="rb-answer" id="bg-out" aria-live="polite"><p>{% if es %}Agregue los cortes y las libras que compra para ver cuánto suma el pedido a los promedios ponderados de hoy, y cuánto habría costado hace una semana.{% else %}Add the cuts and pounds you buy to see what the order comes to at today’s weighted averages, and what it would have cost a week ago.{% endif %}</p></div>
+    <script type="application/json" id="bg-data">[{% for g in r.groups %}{% for c in g.rows %}{"name": {% if es %}{{ c.es | jsonify }}{% else %}{{ c.name | jsonify }}{% endif %}, "slug": {% if es %}{{ c.slug_es | jsonify }}{% else %}{{ c.slug | jsonify }}{% endif %}, "grade": "Price", "v": {{ c.v }}, "then": {{ c.then_v | jsonify }}},{% endfor %}{% endfor %}null]</script>
+  </section>
+  {%- if r.quiet.size > 0 %}
+  <p class="rb-note">{% if es %}Con página, pero sin ventas el {{ r.on_day_es }}: {% for q in r.quiet %}<a class="link" href="{{ base }}{{ q.slug_es }}/">{{ q.es }}</a> (último {{ q.last_es }}){% unless forloop.last %}, {% endunless %}{% endfor %}{% if r.quiet_count > r.quiet.size %} y otros {{ r.quiet_count | minus: r.quiet.size }}, en la <a class="link" href="#every-cut">lista de páginas</a>{% endif %}. Un corte sin ventas no tiene precio ese día, lo cual es distinto de un precio de cero.{% else %}With a page, but no sales on {{ r.on_day }}: {% for q in r.quiet %}<a class="link" href="{{ base }}{{ q.slug }}/">{{ q.name }}</a> (last {{ q.last }}){% unless forloop.last %}, {% endunless %}{% endfor %}{% if r.quiet_count > r.quiet.size %} and {{ r.quiet_count | minus: r.quiet.size }} more in the <a class="link" href="#every-cut">page list</a>{% endif %}. A cut with no sales has no price that day, which is different from a price of zero.{% endif %}</p>
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="movers" aria-labelledby="movers-h">
+  <h2 id="movers-h">{% if es %}Los mayores cambios frente a hace una semana{% else %}Biggest moves from a week ago{% endif %}</h2>
+  <p>{% if es %}Cortes con al menos 20,000 libras vendidas el {{ r.on_day_es }}, frente a su propio precio del último día hábil de una semana o más antes. Un corte con pocas ventas puede moverse mucho con un solo trato, así que esos se dejan fuera.{% else %}Cuts with at least 20,000 pounds sold on {{ r.on_day }}, against their own price on the last business day a week or more before. A cut with only a few sales can swing a long way on one deal, so those are left out.{% endif %}</p>
+  <div class="rb-two">
+    {%- assign sides = "ups,downs" | split: "," %}
+    {%- for side in sides %}
+    {%- if side == "ups" %}{% assign ms = r.ups %}{% else %}{% assign ms = r.downs %}{% endif %}
+    <div>
+      <h3>{% if side == "ups" %}{% if es %}Suben{% else %}Up{% endif %}{% else %}{% if es %}Bajan{% else %}Down{% endif %}{% endif %}</h3>
+      <table class="rb-t">
+        <thead><tr><th scope="col">{% if es %}Corte{% else %}Cut{% endif %}</th><th scope="col">{% if es %}Por lb{% else %}Per lb{% endif %}</th><th scope="col">{% if es %}Cambio{% else %}Change{% endif %}</th></tr></thead>
+        <tbody>
+        {%- for m in ms %}
+          {%- if es %}{% assign mslug = m.slug_es %}{% assign mname = m.es %}{% else %}{% assign mslug = m.slug %}{% assign mname = m.name %}{% endif %}
+          <tr><th scope="row">{% if mslug != "" %}<a href="{{ base }}{{ mslug }}/">{{ mname }}</a>{% else %}{{ mname }}{% endif %}</th><td>{{ m.lb }} <span class="bf-was">{% if es %}desde{% else %}from{% endif %} {{ m.then }}</span></td><td><strong>{{ m.change }}</strong></td></tr>
+        {%- else %}<tr><td colspan="3">{% if es %}Ningún corte con mucho volumen se movió medio por ciento o más en esa dirección.{% else %}No busy cut moved half a percent or more that way.{% endif %}</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="rb-sec" id="history" aria-labelledby="history-h">
+  <h2 id="history-h">{% if es %}La canal de cerdo desde{% else %}The pork cutout since{% endif %} {{ r.first_iso | slice: 0, 4 }}</h2>
+  <p>{% if es %}Cada día hábil desde el {{ r.first_es }}, {{ r.record_days }} reportes en total. La gráfica muestra el promedio de cada semana; la tabla, el de cada mes, en dólares por quintal.{% else %}Every business day since {{ r.first }}, {{ r.record_days }} reports in all. The chart shows each week’s average; the table each month’s, in dollars per hundredweight.{% endif %}</p>
+  {%- if r.chart_all %}
+  {%- capture lab %}{% if es %}Promedio semanal del valor de la canal de cerdo del {{ r.chart_all.start_es }} al {{ r.chart_all.end_es }}, entre {{ r.chart_all.bottom }} y {{ r.chart_all.top }} por quintal.{% else %}Weekly average pork carcass cutout from {{ r.chart_all.start }} to {{ r.chart_all.end }}, between {{ r.chart_all.bottom }} and {{ r.chart_all.top }} per hundredweight.{% endif %}{% endcapture %}
+  {% include price-chart.html chart=r.chart_all es=es label=lab title_en="Every week" title_es="Cada semana" unit_en="Weekly average" unit_es="Promedio semanal" names="Carcass:Canal" %}
+  {%- endif %}
+  {%- if r.grid.size > 0 %}
+  <h3>{% if es %}Valor promedio de la canal por mes{% else %}Average carcass cutout by month{% endif %}</h3>
+  {% include price-grid.html grid=r.grid es=es %}
+  {%- endif %}
+  {%- if r.season %}
+  <h3>{% if es %}El año típico de la canal de cerdo{% else %}The pork cutout’s usual year{% endif %}</h3>
+  <p>{% if es %}Cada mes frente al promedio de su propio año: la mediana de {{ r.season.years }}. La canal de cerdo suele estar más alta en {{ r.season.high_es }} ({{ r.season.high_v }}) y más baja en {{ r.season.low_es }} ({{ r.season.low_v }}).{% else %}Each month against its own year’s average: the median over {{ r.season.years }}. The pork cutout usually runs highest in {{ r.season.high }} ({{ r.season.high_v }}) and lowest in {{ r.season.low }} ({{ r.season.low_v }}).{% endif %}</p>
+  {% include price-season.html season=r.season es=es %}
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="data" aria-labelledby="data-h">
+  <h2 id="data-h">{% if es %}Descargar los datos{% else %}Download the data{% endif %}</h2>
+  <p>{% if es %}Todo lo de esta página y de las páginas de cada corte, como archivos CSV, con el nombre de cada producto en inglés y en español. Se reescriben dos veces al día y son de uso libre: los números son del USDA y son de dominio público. Dé crédito a USDA AMS.{% else %}Everything on this page and the cut pages, as plain CSV files, with each item’s name in English and Spanish. They’re rewritten twice a day and are free to use: the numbers are USDA’s and in the public domain. Credit USDA AMS.{% endif %}</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-wrap">
+      <thead><tr><th scope="col">{% if es %}Archivo{% else %}File{% endif %}</th><th scope="col">{% if es %}Filas{% else %}Rows{% endif %}</th><th scope="col">{% if es %}Tamaño{% else %}Size{% endif %}</th><th scope="col">{% if es %}Qué contiene{% else %}What’s in it{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for f in r.downloads %}
+        <tr><th scope="row"><a href="/pork-prices/{{ f.file }}" download>{{ f.file }}</a></th><td>{{ f.rows }}</td><td>{{ f.kb }} KB</td><td>{% if es %}{{ f.label_es }}{% else %}{{ f.label }}{% endif %}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p>{% if es %}El reporte más nuevo también está en <a class="link" href="/pork-prices/latest.json">latest.json</a>, que cualquier sitio o script puede leer sin clave.{% else %}The newest report is also one plain JSON file, <a class="link" href="/pork-prices/latest.json">latest.json</a>, that any site or script can fetch, no key needed.{% endif %}</p>
+  <h3>{% if es %}Las columnas{% else %}The columns{% endif %}</h3>
+  <div class="rb-scroll">
+    <table class="rb-t rb-wrap bf-dict">
+      <thead><tr><th scope="col">{% if es %}Columna{% else %}Column{% endif %}</th><th scope="col">{% if es %}Significado{% else %}Meaning{% endif %}</th></tr></thead>
+      <tbody>
+      {%- if es %}
+        <tr><th scope="row">date</th><td>La fecha del reporte, AAAA-MM-DD.</td></tr>
+        <tr><th scope="row">carcass … belly</th><td>El valor de la canal y de cada primal, dólares por quintal.</td></tr>
+        <tr><th scope="row">total_loads, cut_loads, trim_and_process_loads</th><td>Cargas vendidas ese día (en total, de cortes, y de recortes y productos para procesar).</td></tr>
+        <tr><th scope="row">section</th><td>La tabla del reporte del USDA: <code>loin</code>, <code>butt</code>, <code>picnic</code>, <code>ham</code>, <code>belly</code>, <code>sparerib</code>, <code>jowl</code>, <code>trim</code>, <code>variety</code> o <code>ai</code> (con ingredientes añadidos).</td></tr>
+        <tr><th scope="row">usda_description, name, nombre</th><td>El producto tal como lo lista el USDA, y un nombre sencillo en inglés y en español.</td></tr>
+        <tr><th scope="row">low, high, weighted_average</th><td>La venta más baja, la más alta y el promedio ponderado del día, dólares por quintal; <code>weighted_average_per_lb</code> por libra.</td></tr>
+        <tr><th scope="row">pounds</th><td>Las libras vendidas en las que se basa el precio.</td></tr>
+      {%- else %}
+        <tr><th scope="row">date</th><td>The report date, YYYY-MM-DD.</td></tr>
+        <tr><th scope="row">carcass … belly</th><td>The carcass cutout and each primal’s value, dollars per hundredweight.</td></tr>
+        <tr><th scope="row">total_loads, cut_loads, trim_and_process_loads</th><td>Loads sold that day (in all, of cuts, and of trim and processing items).</td></tr>
+        <tr><th scope="row">section</th><td>The table of USDA’s report: <code>loin</code>, <code>butt</code>, <code>picnic</code>, <code>ham</code>, <code>belly</code>, <code>sparerib</code>, <code>jowl</code>, <code>trim</code>, <code>variety</code> or <code>ai</code> (added ingredients).</td></tr>
+        <tr><th scope="row">usda_description, name, nombre</th><td>The item exactly as USDA lists it, and a plain name in English and in Spanish.</td></tr>
+        <tr><th scope="row">low, high, weighted_average</th><td>The day’s lowest and highest sale and the weighted average, dollars per hundredweight; <code>weighted_average_per_lb</code> per pound.</td></tr>
+        <tr><th scope="row">pounds</th><td>The pounds sold the price is based on.</td></tr>
+      {%- endif %}
+      </tbody>
+    </table>
+  </div>
+  <p>{% if es %}Un corte que no se vendió no tiene fila para ese día, nunca un precio de cero.{% else %}A cut that didn’t trade has no row for that day, never a price of zero.{% endif %}</p>
+</section>
+
+<section class="rb-sec" id="every-cut" aria-labelledby="every-cut-h">
+  <h2 id="every-cut-h">{% if es %}Todas las páginas de cortes{% else %}Every cut page{% endif %}</h2>
+  <p>{% if es %}{{ r.page_count }} páginas, cada una con su historial diario, una tabla por año y mes y su temporada típica. Un corte tiene página cuando se vendió en al menos 26 días del último año.{% else %}{{ r.page_count }} pages, each with its daily history, a year-by-month table and its usual seasonal swing. A cut gets a page once it has traded on at least 26 days in the past year.{% endif %}</p>
+  <h3>{% if es %}La canal y los primales{% else %}The carcass and primals{% endif %}</h3>
+  <ul class="rb-index">
+    {%- for p in r.prim_pages %}<li><a href="{{ base }}{% if es %}{{ p.slug_es }}{% else %}{{ p.slug }}{% endif %}/">{% if es %}{{ p.es }}{% else %}{{ p.name }}{% endif %}</a></li>{% endfor %}
+  </ul>
+  {%- for g in r.index %}
+  <h3>{% if es %}{{ g.es }}{% else %}{{ g.name }}{% endif %}</h3>
+  <ul class="rb-index">
+    {%- for p in g.pages %}<li><a href="{{ base }}{% if es %}{{ p.slug_es }}{% else %}{{ p.slug }}{% endif %}/">{% if es %}{{ p.es }}{% else %}{{ p.name }}{% endif %}</a></li>{% endfor %}
+  </ul>
+  {%- endfor %}
+</section>
+{% include usda-boards.html es=es here="pork" %}
+{% else %}
+<p class="rb-empty">The first report hasn’t been collected yet. It shows up here the day after the snapshot reads it.</p>
+{% endif %}
+</div>
+
+<section class="sec" id="faq">
+  <header class="sec-head"><h2>{% if es %}Preguntas{% else %}Questions{% endif %}</h2></header>
+  <div class="row">
+    <div class="body prose bw-faq">
+    {%- if es %}
+      <h3>¿Qué es el valor de la canal de cerdo (pork cutout)?</h3>
+      <p>Es una estimación de lo que vale una canal de cerdo dividida en los cortes que los empacadores venden. El USDA pone precio a cada corte con las ventas negociadas del día, los pondera según cuánto de una canal típica representa cada uno y los suma en un solo número por quintal de canal. Los seis primales (lomo, espaldilla, paleta picnic, costilla, pierna y panceta) se calculan igual, cada uno por quintal del primal.</p>
+      <h3>¿Qué significa “LAB planta” (FOB plant)?</h3>
+      <p>Que el precio es en la planta empacadora, antes del flete. Lo que paga un comprador entregado en su puerta incluye el transporte y el margen de quien distribuye.</p>
+      <h3>¿Qué quieren decir “combo”, “al vacío” y “1/4 de pulgada”?</h3>
+      <p>Así se empaca y se recorta: “combo” es un contenedor grande de unas 2,000 libras para procesadores; “al vacío” y “en caja” son para el comercio; “1/4 de pulgada” o “1/8 de pulgada” es cuánta grasa exterior se deja. “Con ingredientes añadidos” es producto marinado o inyectado. El nombre exacto del USDA está en la página de cada corte.</p>
+      <h3>¿De dónde vienen los datos, y cuándo?</h3>
+      <p>Del <a href="https://mymarketnews.ams.usda.gov/viewReport/2498">reporte diario nacional de cerdo LAB planta, ventas negociadas, de la tarde</a> del USDA (LM_PK602), que la ley obliga a los empacadores a reportar. Se publica cada día hábil a media tarde, hora del Centro.{% if r %} El último es del {{ r.date_es }}; el siguiente se espera el {{ r.next_due_es }}.{% endif %}</p>
+      <h3>¿Por qué un corte no tiene precio algunos días?</h3>
+      <p>Porque nadie lo compró en un trato negociado ese día, o fueron tan pocos que el USDA no puede publicarlo. Esos días quedan en blanco, nunca como cero.</p>
+    {%- else %}
+      <h3>What is the pork cutout?</h3>
+      <p>It’s an estimate of what a pork carcass is worth broken down into the cuts packers sell. USDA prices every cut from the day’s negotiated sales, weights each by how much of a typical carcass it makes up, and adds them into a single number per hundredweight of carcass. The six primals (loin, butt, picnic, rib, ham and belly) are built the same way, each per hundredweight of the primal.</p>
+      <h3>What does “FOB plant” mean?</h3>
+      <p>That the price is at the packing plant, before freight. What a buyer pays delivered to their door adds the trucking and whoever distributes it.</p>
+      <h3>What do “combo”, “vacuum-packed” and “1/4-inch trim” mean?</h3>
+      <p>They’re how it’s packed and trimmed: a combo bin is a big container of about 2,000 pounds for processors; vacuum-packed and boxed product is for retail and foodservice; 1/4-inch or 1/8-inch trim is how much outside fat is left. “With added ingredients” is marinated or injected product. USDA’s exact description is on each cut’s page.</p>
+      <h3>Where does the data come from, and when?</h3>
+      <p>From USDA’s <a href="https://mymarketnews.ams.usda.gov/viewReport/2498">National Daily Pork FOB Plant, Negotiated Sales, afternoon report</a> (LM_PK602), which packers are required by law to report. It posts every business day in the middle of the afternoon, Central time.{% if r %} The latest is for {{ r.date }}; the next is due {{ r.next_due }}.{% endif %}</p>
+      <h3>Why does a cut have no price on some days?</h3>
+      <p>Because nobody bought it on a negotiated deal that day, or too few did for USDA to publish it. Those days are left blank, never counted as zero.</p>
+    {%- endif %}
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="how-it-works">
+  <header class="sec-head"><h2>{% if es %}Cómo funciona{% else %}How it works{% endif %}</h2>{% if r %}<span class="label">{% if es %}Copiado el {{ r.generated | date: "%Y-%m-%d" }}{% else %}Copied {{ r.generated | date: "%b %-d, %Y" }}{% endif %}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+    {%- if es %}
+      <p>Igual que el <a href="/es/precios-de-carne-de-res/">tablero de la res</a>: el historial es del propio USDA, que lo sirve sin clave. Dos veces al día una GitHub Action vuelve a leer los CSV ya publicados y solo le pide al USDA el último mes o dos; con eso reconstruye esta página, una página por corte y los archivos. Un Cloudflare Worker guarda solo el reporte más nuevo, para que la parte de arriba muestre el reporte de la tarde sin esperar a la reconstrucción de la noche. Fuente: USDA AMS, Livestock, Poultry and Grain Market News; cualquier error al presentar los números es mío.</p>
+    {%- else %}
+      <p>The same way as the <a href="/beef-prices/">beef board</a>: the history is USDA’s own, served with no key. Twice a day a GitHub Action reads back the CSVs already published and asks USDA only for the last month or two, then rebuilds this board, a page per cut and the files. A Cloudflare Worker keeps just the newest report, so the top of the page can show the afternoon’s report without waiting for the evening rebuild. Source: USDA AMS, Livestock, Poultry and Grain Market News; any mistakes in presenting the numbers are mine.</p>
+    {%- endif %}
+    </div>
+  </div>
+</section>
+
+{% if r %}
+<script>window.BF = { endpoint: {{ site.worker_url | default: "" | jsonify }}, path: "/pork", kind: "pork", lang: {% if es %}"es"{% else %}"en"{% endif %}, base: {{ base | jsonify }}, latest: {{ r.latest | jsonify }}, values: {{ r.raw | jsonify }} };</script>
+<script src="/pork-prices/live.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/beef-prices/tools.js?v={{ site.time | date: '%s' }}" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": {% if es %}"Valor de la canal de cerdo y precios de mayoreo de cada corte de cerdo, diario (USDA)"{% else %}"Daily USDA pork cutout and wholesale pork cut prices"{% endif %},
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "inLanguage": {% if es %}"es-MX"{% else %}"en-US"{% endif %},
+  "keywords": {% if es %}["precio del cerdo hoy", "valor de la canal de cerdo", "precio de la panceta de cerdo", "precio del lomo de cerdo", "precios de mayoreo de cerdo", "USDA LM_PK602"]{% else %}["pork cutout", "pork prices today", "pork belly price", "wholesale pork prices", "pork primal values", "pork loin price", "USDA LM_PK602"]{% endif %},
+  "temporalCoverage": "{{ r.first_iso }}/{{ r.latest }}",
+  "spatialCoverage": { "@type": "Place", "name": "United States" },
+  "variableMeasured": ["Pork carcass cutout (USD per cwt)", "Primal values (USD per cwt)", "Weighted average price of each cut (USD per cwt and per lb)", "Pounds sold", "Loads sold"],
+  "measurementTechnique": "Negotiated sales reported to USDA under Livestock Mandatory Reporting",
+  "isBasedOn": "https://mymarketnews.ams.usda.gov/viewReport/2498",
+  "isPartOf": { "@id": "{{ site.url }}{% if es %}/es/precios-usda/{% else %}/usda-market-prices/{% endif %}#collection" },
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "creator": [
+    { "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" },
+    { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
+  ],
+  "distribution": [{% for f in r.downloads %}{ "@type": "DataDownload", "encodingFormat": "text/csv", "name": {% if es %}{{ f.label_es | jsonify }}{% else %}{{ f.label | jsonify }}{% endif %}, "contentUrl": {{ "/pork-prices/" | append: f.file | absolute_url | jsonify }} }, {% endfor %}{ "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": {{ "/pork-prices/latest.json" | absolute_url | jsonify }} }],
+  "dateModified": {{ r.latest | jsonify }}
+}
+</script>
+{% endif %}

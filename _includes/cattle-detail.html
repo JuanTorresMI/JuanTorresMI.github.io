@@ -1,0 +1,12 @@
+{%- comment -%} A fed cattle report's latest week by class, selling basis and grade (snapshot's `detail`). {% include cattle-detail.html detail=… es=… %} {%- endcomment -%}
+{%- assign es = include.es -%}
+<div class="rb-scroll">
+  <table class="rb-t rb-stack bf-cuts">
+    <thead><tr><th scope="col">{% if es %}Clase y base{% else %}Class and basis{% endif %}</th><th scope="col">{% if es %}Todos los grados{% else %}All grades{% endif %}</th><th scope="col">{% if es %}Más de 80% Choice{% else %}Over 80% Choice{% endif %}</th><th scope="col">65–80% Choice</th><th scope="col">35–65% Choice</th><th scope="col">0–35% Choice</th></tr></thead>
+    <tbody>
+    {%- for d in include.detail %}
+      <tr><th scope="row">{% if es %}{{ d.cls_es }} <span class="bf-also">{{ d.basis_es }}</span>{% else %}{{ d.cls }} <span class="bf-also">{{ d.basis }}</span>{% endif %}</th>{% for x in d.cells %}<td data-label="{% case forloop.index %}{% when 1 %}{% if es %}Todos los grados{% else %}All grades{% endif %}{% when 2 %}{% if es %}Más de 80% Choice{% else %}Over 80% Choice{% endif %}{% when 3 %}65–80% Choice{% when 4 %}35–65% Choice{% else %}0–35% Choice{% endcase %}">{% if x.cwt != "" %}<span class="bf-px"><strong>{{ x.cwt }}</strong> <span class="bf-cwt">{{ x.head }} {% if es %}cab.{% else %}head{% endif %}</span></span>{% else %}—{% endif %}</td>{% endfor %}</tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+</div>

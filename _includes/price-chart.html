@@ -1,0 +1,20 @@
+{%- comment -%}
+  One SVG price chart from a snapshot's chart object ({ w, h, lines: [{cls, label, d}], top, bottom,
+  start, end, start_es, end_es }), with its heading and key. Used by the beef, pork and cattle pages:
+  {% include price-chart.html chart=… es=… label=… title_en=… title_es=… unit_en=… unit_es=… names=… %}
+  `label` is the chart's text alternative; `names` (optional) maps a line's label to the Spanish one,
+  as "Carcass:Canal,Belly:Panceta".
+{%- endcomment -%}
+{%- assign ch = include.chart -%}
+{%- assign es = include.es -%}
+<section class="rb-block">
+  <h2>{% if es %}{{ include.title_es }} <span>{{ ch.start_es }} a {{ ch.end_es }}</span>{% else %}{{ include.title_en }} <span>{{ ch.start }} to {{ ch.end }}</span>{% endif %}</h2>
+  <figure class="rb-chart">
+    <svg viewBox="0 0 {{ ch.w }} {{ ch.h }}" preserveAspectRatio="none" role="img" aria-label="{{ include.label | strip }}">
+      {%- for l in ch.lines %}<path class="{{ l.cls }}" d="{{ l.d }}"/>{% endfor %}
+    </svg>
+    <figcaption><span>{{ ch.top }}</span><span>{{ ch.bottom }}</span></figcaption>
+  </figure>
+  {%- assign pairs = include.names | default: "" | split: "," %}
+  <ul class="bf-key">{% for l in ch.lines %}{% assign shown = l.label %}{% if es %}{% if l.label == "Price" %}{% assign shown = "Precio" %}{% endif %}{% for p in pairs %}{% assign kv = p | split: ":" %}{% if kv[0] == l.label %}{% assign shown = kv[1] %}{% endif %}{% endfor %}{% endif %}<li><span class="bf-swatch bf-sw-{{ l.cls }}"></span>{{ shown }}</li>{% endfor %}<li>{% if es %}{{ include.unit_es }}{% else %}{{ include.unit_en }}{% endif %}</li></ul>
+</section>

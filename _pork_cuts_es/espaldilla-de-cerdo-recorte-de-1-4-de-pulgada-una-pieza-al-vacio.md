@@ -1,0 +1,7 @@
+---
+cut: pork-butt-1-4-inch-trim-one-piece-vacuum-packed
+title: "Espaldilla de cerdo, recorte de 1/4 de pulgada, una pieza, al vacío: precio de mayoreo"
+seo_title: "Espaldilla de cerdo, recorte de 1/4 de pulgada, una pieza, al vacío"
+description: "Precio de mayoreo diario de espaldilla de cerdo, recorte de 1/4 de pulgada, una pieza, al vacío según el USDA, por libra."
+translation: "/pork-prices/pork-butt-1-4-inch-trim-one-piece-vacuum-packed/"
+---

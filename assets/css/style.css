@@ -575,6 +575,15 @@ html { scroll-behavior: smooth; }
 .bf-key li { display: flex; align-items: center; gap: 8px; }
 .bf-swatch { display: inline-block; width: 24px; height: 0; border-top: 2px solid var(--accent); }
 .bf-swatch2 { border-top: 2px dashed var(--text-2); }
+.bf-sw-line2 { border-top: 2px dashed var(--text-2); }
+.bf-sw-line3 { border-top: 2px dotted var(--ink); }
+.bf-sw-line4 { border-top: 1px solid var(--muted); }
+.bf .rb-chart .line3 { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 1 3; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.bf .rb-chart .line4 { fill: none; stroke: var(--muted); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ub-list li strong { font-weight: 500; color: var(--ink); }
+.ub-why { margin: 0; padding-left: 20px; max-width: 760px; }
+.ub-why li { margin: 0 0 12px; line-height: 1.6; }
+.ub-why strong { font-weight: 500; color: var(--ink); }
 .bf-tag, .bf-code { display: inline-block; margin-left: 4px; padding: 0 6px; border: 1px solid var(--rule); font: 500 11px/1.6 var(--sans); letter-spacing: 0.06em; color: var(--muted); white-space: nowrap; vertical-align: 1px; }
 .bf-code { font-family: var(--mono); letter-spacing: 0; }
 .bf-was { font-family: var(--sans); font-size: 13px; color: var(--muted); white-space: nowrap; }

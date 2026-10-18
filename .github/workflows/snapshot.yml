@@ -1,6 +1,6 @@
 # Twice a day, copies the Worker's live data into the site (scripts/snapshot.py): /youtube/ and
 # /watching/ get real numbers in their HTML for crawlers and readers without JavaScript, and the
-# reefer, border and beef boards (built from the copy alone, apart from the border's "right now"
+# reefer, border, beef, pork and fed cattle boards (built from the copy alone, apart from the border's "right now"
 # columns) get fresh data, any new lane, crossing or cut pages and their CSVs.
 # Commits only when something changed, then starts a deploy: a push made with the workflow's
 # own token doesn't trigger other workflows, but an explicit dispatch does.
@@ -36,9 +36,9 @@ jobs:
         id: commit
         run: |
           git add _data/live
-          # These only exist once there is reefer, border or beef data (lane pages need 4 weeks of
+          # These only exist once there is reefer, border, beef, pork or cattle data (lane pages need 4 weeks of
           # it), and a git add of a path with nothing in it fails the job.
-          for p in reefer-rates/usda-reefer-truck-rates.csv _reefer_lanes/*.md border-waits/border-truck-wait-times.csv _border_crossings/*.md _border_crossings_es/*.md beef-prices/*.csv beef-prices/latest.json _beef_cuts/*.md; do
+          for p in reefer-rates/usda-reefer-truck-rates.csv _reefer_lanes/*.md border-waits/border-truck-wait-times.csv _border_crossings/*.md _border_crossings_es/*.md beef-prices/*.csv beef-prices/latest.json _beef_cuts/*.md _beef_cuts_es/*.md pork-prices/*.csv pork-prices/latest.json _pork_cuts/*.md _pork_cuts_es/*.md _data/pork_cuts.json fed-cattle-prices/*.csv fed-cattle-prices/latest.json _cattle_regions/*.md _cattle_regions_es/*.md; do
             if [ -e "$p" ]; then git add "$p"; fi
           done
           if git diff --cached --quiet; then

@@ -1,0 +1,35 @@
+{%- comment -%}
+  "Check a price" and "What it costs after trimming" on a beef or pork cut page, filled in by
+  /beef-prices/tools.js from c.tool (#bf-tool-data). Hidden until the script runs.
+  {% include cut-tools.html c=… m=… es=… trim=true %}
+{%- endcomment -%}
+{%- assign c = include.c -%}
+{%- assign m = include.m -%}
+{%- assign es = include.es -%}
+<div class="bf-tools" id="bf-tools" hidden>
+  <section class="rb-block" id="check" aria-labelledby="check-h">
+    <h2 id="check-h">{% if es %}Revisar un precio <span>Frente a las ventas de este producto según el USDA</span>{% else %}Check a price <span>Against USDA’s sales of this {% if c.section == "cut" or c.section == "mixed" %}cut{% else %}item{% endif %}</span>{% endif %}</h2>
+    <form class="rb-look" onsubmit="return false">
+      {%- if c.tool.size > 1 %}
+      <label>{% if es %}Grado{% else %}Grade{% endif %} <select id="bf-grade">{% for t in c.tool %}<option value="{{ forloop.index0 }}">{{ t.grade }}</option>{% endfor %}</select></label>
+      {%- endif %}
+      <label>{% if es %}Precio que le cotizaron, por lb{% else %}Price you were quoted, per lb{% endif %} <input id="bf-quote" type="number" inputmode="decimal" min="0" step="0.01" placeholder="{{ m.lb | remove: '$' }}"></label>
+    </form>
+    <div class="rb-answer" id="bf-quote-out" aria-live="polite"><p>{% if es %}Escriba un precio por libra para ver dónde queda frente a las ventas del día y del último año.{% else %}Enter a price per pound to see where it sits against the day’s sales and the past year.{% endif %}</p></div>
+    <p class="rb-note">{% if es %}Los precios del USDA son por cajas completas, LAB planta empacadora. Un precio entregado también cubre el flete y a quien maneje las cajas en medio, así que una cotización algo arriba del rango del USDA todavía puede ser justa.{% else %}USDA’s prices are for full boxes, FOB the packing plant. A delivered price also covers freight and whoever handles the boxes in between, so a quote somewhat above USDA’s range can still be a fair one.{% endif %}</p>
+  </section>
+  {%- if include.trim %}
+  <section class="rb-block" id="trim" aria-labelledby="trim-h">
+    <h2 id="trim-h">{% if es %}Lo que cuesta después de recortar <span>Su rendimiento, sus números</span>{% else %}What it costs after trimming <span>Your yield, your numbers</span>{% endif %}</h2>
+    <form class="rb-look bf-calc" onsubmit="return false">
+      <label>{% if es %}Precio que paga, por lb{% else %}Price you pay, per lb{% endif %} <input id="bf-price" type="number" inputmode="decimal" min="0" step="0.01" value="{{ m.v | divided_by: 100.0 | round: 2 }}"></label>
+      <label>{% if es %}Rendimiento, % que puede vender{% else %}Yield, % you can sell{% endif %} <input id="bf-yield" type="number" inputmode="decimal" min="1" max="100" step="0.1" placeholder="{% if es %}de su prueba de corte{% else %}from your cutting test{% endif %}"></label>
+      <label>{% if es %}Mano de obra y empaque, por lb comprada{% else %}Labor and packaging, per lb bought{% endif %} <input id="bf-labor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00"></label>
+      <label>{% if es %}Porción, oz{% else %}Portion, oz{% endif %} <input id="bf-oz" type="number" inputmode="decimal" min="0.5" step="0.5" value="8"></label>
+    </form>
+    <div class="rb-answer" id="bf-trim-out" aria-live="polite"><p>{% if es %}Escriba el rendimiento de su propia prueba de corte: la parte del peso de la caja que termina vendiendo después de recorte, grasa y hueso.{% else %}Enter the yield from your own cutting test: the share of the box’s weight you end up selling after trim, fat and bone.{% endif %}</p></div>
+    <p class="rb-note">{% if es %}El precio empieza en el último promedio ponderado del USDA{% if m.grade != "" and m.grade %} para {{ m.label_es }}{% endif %}; cámbielo por lo que realmente paga. El costo por libra vendible es el precio más la mano de obra, dividido entre el rendimiento.{% else %}The price starts at USDA’s latest weighted average{% if m.grade != "" and m.grade %} for {{ m.label }}{% endif %}; change it to what you actually pay. Cost per sellable pound is the price plus labor, divided by the yield.{% endif %}</p>
+  </section>
+  {%- endif %}
+  <script type="application/json" id="bf-tool-data">{{ c.tool | jsonify }}</script>
+</div>

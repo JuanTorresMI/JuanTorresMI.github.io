@@ -44,8 +44,20 @@ defaults:
     values: { layout: border-crossing, lang: en, translations_live: true, parent: { title: Border truck wait times, url: /border-waits/ }, image: /assets/og/border-waits.png, image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits, now and by hour." }
   - scope: { path: "", type: border_crossings_es }
     values: { layout: border-crossing, lang: es, translations_live: true, parent: { title: Tiempos de espera en la frontera, url: /es/tiempos-de-espera/ }, image: /assets/og/border-waits.png, image_alt: "Tiempos de espera para camiones en la frontera, por Juan Torres." }
+  # The USDA boards' item pages, in English and Spanish, paired with hreflang through each stub's
+  # `translation` (scripts/snapshot.py writes both stubs together).
   - scope: { path: "", type: beef_cuts }
-    values: { layout: beef-cut, parent: { title: Boxed beef prices, url: /beef-prices/ }, image: /assets/og/beef-prices.png, image_alt: "Boxed beef prices, by Juan Torres. USDA's daily boxed beef cutout and the price of every cut." }
+    values: { layout: beef-cut, lang: en, translations_live: true, parent: { title: Boxed beef prices, url: /beef-prices/ }, image: /assets/og/beef-prices.png, image_alt: "Boxed beef prices, by Juan Torres. USDA's daily boxed beef cutout and the price of every cut." }
+  - scope: { path: "", type: beef_cuts_es }
+    values: { layout: beef-cut, lang: es, translations_live: true, parent: { title: Precios de la carne de res, url: /es/precios-de-carne-de-res/ }, image: /assets/og/beef-prices.png, image_alt: "Precios de la carne de res en caja, por Juan Torres. El cutout diario del USDA y el precio de cada corte." }
+  - scope: { path: "", type: pork_cuts }
+    values: { layout: pork-cut, lang: en, translations_live: true, parent: { title: Pork prices, url: /pork-prices/ }, image: /assets/og/pork-prices.png, image_alt: "Pork prices, by Juan Torres. USDA's daily pork cutout and the price of every cut." }
+  - scope: { path: "", type: pork_cuts_es }
+    values: { layout: pork-cut, lang: es, translations_live: true, parent: { title: Precios del cerdo, url: /es/precios-de-cerdo/ }, image: /assets/og/pork-prices.png, image_alt: "Precios del cerdo, por Juan Torres. El valor diario de la canal de cerdo del USDA y el precio de cada corte." }
+  - scope: { path: "", type: cattle_regions }
+    values: { layout: cattle-region, lang: en, translations_live: true, parent: { title: Fed cattle prices, url: /fed-cattle-prices/ }, image: /assets/og/fed-cattle-prices.png, image_alt: "Fed cattle prices, by Juan Torres. USDA's weekly cash cattle prices, 5-area and by region." }
+  - scope: { path: "", type: cattle_regions_es }
+    values: { layout: cattle-region, lang: es, translations_live: true, parent: { title: Precio del ganado gordo, url: /es/precios-de-ganado-gordo/ }, image: /assets/og/fed-cattle-prices.png, image_alt: "Precio del ganado gordo, por Juan Torres. Precios semanales del USDA, de 5 áreas y por región." }
 
 # One page per reefer lane (/reefer-rates/<origin>-to-<city>/). The files in _reefer_lanes/ are
 # front matter only, written by scripts/snapshot.py; the data is _data/live/reefer.json.
@@ -68,6 +80,23 @@ collections:
   beef_cuts:
     output: true
     permalink: /beef-prices/:name/
+  beef_cuts_es:
+    output: true
+    permalink: /es/precios-de-carne-de-res/:name/
+  # The pork board's cuts and primals, and the fed cattle board's regions: the same pattern, names
+  # and slugs from _data/pork_cuts.json and scripts/snapshot.py's CATTLE_REGIONS.
+  pork_cuts:
+    output: true
+    permalink: /pork-prices/:name/
+  pork_cuts_es:
+    output: true
+    permalink: /es/precios-de-cerdo/:name/
+  cattle_regions:
+    output: true
+    permalink: /fed-cattle-prices/:name/
+  cattle_regions_es:
+    output: true
+    permalink: /es/precios-de-ganado-gordo/:name/
 
 # Cloudflare Web Analytics: cookieless page counts, no consent banner needed. Paste the token
 # from the dashboard's JS snippet (Web Analytics > the site > Manage site). It is public by
@@ -76,7 +105,7 @@ cloudflare_analytics_token: 4cfd147b97f442a989f4267e1349c474
 
 # The site's Cloudflare Worker (worker/, see its README). It answers what a browser can't fetch
 # itself: the house TV (/watching/), the Substack feed (/blog/), the YouTube numbers, the reefer
-# rates, the border waits, the beef prices and the music page's catalog, counter and guestbook.
+# rates, the border waits, the beef and pork prices and the music page's catalog, counter and guestbook.
 # scripts/snapshot.py also reads it. The keys it needs are Cloudflare secrets, never here. Blank it and every page
 # falls back to its built-in copy or a polite notice rather than breaking.
 worker_url: "https://house-tv.5342543fsd.workers.dev"

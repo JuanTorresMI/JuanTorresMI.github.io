@@ -8,10 +8,11 @@
  *   GET /reefer, /reefer?week=YYYY-MM-DD   USDA reefer truck rates, any week, asked of USDA (see reefer.js)
  *   GET /border, /border/port?id=P   truck waits at the land border, live and by hour (see border.js)
  *   GET /beef      USDA's newest boxed beef report: the cutout and every cut's price (see beef.js)
+ *   GET /pork      USDA's newest pork report: the carcass cutout, primals and every cut (see pork.js)
  *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
  *
  * Two cron triggers in wrangler.toml call `scheduled`, at :17 and :47. Both read CBP's border wait
- * times and check for a new boxed beef report, so those are polled every half hour; the :17 run
+ * times and check for a new boxed beef and pork report, so those are polled every half hour; the :17 run
  * also polls YouTube. The reefer rates need no cron: USDA keeps them, and they're asked for on request.
  */
 import { catalog, CATALOG_MAX_AGE, visits, guestbook, sign, unsign, Refused } from "./music.js";
@@ -19,6 +20,7 @@ import { poll, snapshot, YOUTUBE_MAX_AGE } from "./youtube.js";
 import { reeferWeek, REEFER_MAX_AGE, REEFER_WEEK_MAX_AGE } from "./reefer.js";
 import { borderTick, borderNow, borderPort, BORDER_MAX_AGE, BORDER_PORT_MAX_AGE } from "./border.js";
 import { beefTick, beefData, BEEF_MAX_AGE } from "./beef.js";
+import { porkTick, porkData, PORK_MAX_AGE } from "./pork.js";
 
 const STREMIO = "https://api.strem.io/api/datastoreGet";
 const SUBSTACK = "https://juantorresis.substack.com/feed";
@@ -43,7 +45,8 @@ export default {
     if (route === "/youtube") return youtubeRoute(env, ctx, url, cors);
     if (route === "/reefer") return reeferRoute(env, ctx, url, cors);
     if (route === "/border" || route === "/border/port") return borderRoute(env, ctx, route, url, cors);
-    if (route === "/beef") return beefRoute(env, ctx, url, cors);
+    if (route === "/beef") return latestRoute(env, ctx, url, cors, "beef", beefData, BEEF_MAX_AGE);
+    if (route === "/pork") return latestRoute(env, ctx, url, cors, "pork", porkData, PORK_MAX_AGE);
 
     const feed = route === "/substack";
     const maxAge = feed ? FEED_CACHE_S : TV_CACHE_S;
@@ -79,6 +82,7 @@ export default {
     if (event.cron === YOUTUBE_CRON) ctx.waitUntil(poll(env).catch(log("youtube poll")));
     ctx.waitUntil(borderTick(env).catch(log("border")));
     ctx.waitUntil(beefTick(env).catch(log("beef")));
+    ctx.waitUntil(porkTick(env).catch(log("pork")));
   },
 };
 
@@ -188,24 +192,24 @@ async function borderRoute(env, ctx, route, url, cors) {
   return res;
 }
 
-/* ------------------------------------------------------------ the boxed beef board ---- */
+/* ------------------------------------------------------- the beef and pork boards ---- */
 
-/* The newest report only; the history is USDA's own, read by scripts/snapshot.py. The board's page
+/* The newest report only; the history is USDA's own, read by scripts/snapshot.py. A board's page
    script asks this only when its copy could be behind USDA, so most visits never reach it. */
-async function beefRoute(env, ctx, url, cors) {
-  const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/v2/beef");
+async function latestRoute(env, ctx, url, cors, name, data, maxAge) {
+  const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/v2/" + name);
   const hit = await cache.match(cacheKey);
   if (hit) { const fresh = new Response(hit.body, hit); for (const [k, v] of Object.entries(cors)) fresh.headers.set(k, v); return fresh; }
   let payload;
   try {
-    payload = await beefData(env);
+    payload = await data(env);
   } catch (e) {
-    console.error("beef:", e && e.message ? e.message : e);
+    console.error(name + ":", e && e.message ? e.message : e);
     return json({ error: e.message || String(e) }, 502, cors);
   }
   // Nothing stored yet: answer, but don't keep the empty answer at the edge (see reeferRoute).
   if (!payload.latest) return json(payload, 200, { ...cors, "Cache-Control": "no-store" });
-  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${BEEF_MAX_AGE}` });
+  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${maxAge}` });
   ctx.waitUntil(cache.put(cacheKey, res.clone()));
   return res;
 }

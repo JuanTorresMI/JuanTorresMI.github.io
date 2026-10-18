@@ -1,0 +1,18 @@
+{%- comment -%}
+  The USDA boards linked to each other, at the foot of each board and on the hub
+  (/usda-market-prices/, /es/precios-usda/). {% include usda-boards.html es=… here="beef" %} marks
+  the current board. One list so a new board only needs adding here.
+{%- endcomment -%}
+{%- assign es = include.es -%}
+<section class="rb-sec" id="more-boards" aria-labelledby="more-boards-h">
+  <h2 id="more-boards-h">{% if es %}Más precios del USDA en este sitio{% else %}More USDA market prices on this site{% endif %}</h2>
+  <ul class="rb-index ub-list">
+    <li>{% if include.here == "beef" %}<strong>{% if es %}Carne de res en caja{% else %}Boxed beef{% endif %}</strong>{% else %}<a href="{% if es %}/es/precios-de-carne-de-res/{% else %}/beef-prices/{% endif %}">{% if es %}Carne de res en caja: el cutout y cada corte{% else %}Boxed beef: the cutout and every cut{% endif %}</a>{% endif %}</li>
+    <li>{% if include.here == "pork" %}<strong>{% if es %}Cerdo{% else %}Pork{% endif %}</strong>{% else %}<a href="{% if es %}/es/precios-de-cerdo/{% else %}/pork-prices/{% endif %}">{% if es %}Cerdo: la canal, los primales y cada corte{% else %}Pork: the cutout, the primals and every cut{% endif %}</a>{% endif %}</li>
+    <li>{% if include.here == "cattle" %}<strong>{% if es %}Ganado gordo{% else %}Fed cattle{% endif %}</strong>{% else %}<a href="{% if es %}/es/precios-de-ganado-gordo/{% else %}/fed-cattle-prices/{% endif %}">{% if es %}Ganado gordo: lo que pagan los empacadores, por región{% else %}Fed cattle: what packers pay, region by region{% endif %}</a>{% endif %}</li>
+    <li>{% if include.here == "reefer" %}<strong>{% if es %}Camiones refrigerados{% else %}Reefer trucks{% endif %}</strong>{% else %}<a href="/reefer-rates/"{% if es %} hreflang="en"{% endif %}>{% if es %}Tarifas de camiones refrigerados, ruta por ruta (en inglés){% else %}Reefer truck rates: produce freight, lane by lane{% endif %}</a>{% endif %}</li>
+    {%- unless include.here == "hub" %}
+    <li><a href="{% if es %}/es/precios-usda/{% else %}/usda-market-prices/{% endif %}">{% if es %}Todos los tableros del USDA y cómo se construyen{% else %}All the USDA boards, and how they’re built{% endif %}</a></li>
+    {%- endunless %}
+  </ul>
+</section>

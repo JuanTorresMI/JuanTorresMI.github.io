@@ -1,0 +1,11 @@
+{%- comment -%} A year-by-month table of averages (beef, pork, cattle boards): {% include price-grid.html grid=… es=… %}. {%- endcomment -%}
+<div class="rb-scroll">
+  <table class="rb-table bf-grid">
+    <thead><tr><th scope="col">{% if include.es %}Año{% else %}Year{% endif %}</th>{% if include.es %}{% assign mnames = "ene,feb,mar,abr,may,jun,jul,ago,sep,oct,nov,dic" | split: "," %}{% else %}{% assign mnames = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" | split: "," %}{% endif %}{% for m in mnames %}<th scope="col">{{ m }}</th>{% endfor %}<th scope="col">{% if include.es %}Año{% else %}Year{% endif %}</th></tr></thead>
+    <tbody>
+    {%- for y in include.grid %}
+      <tr><th scope="row">{{ y.year }}</th>{% for v in y.cells %}<td>{{ v | default: "·" }}</td>{% endfor %}<td><strong>{{ y.avg }}</strong></td></tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+</div>

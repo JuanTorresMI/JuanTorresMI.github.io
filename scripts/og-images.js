@@ -38,6 +38,12 @@ const CARDS = {
     sub: "CBP’s commercial lane waits, right now and by hour of the week", bottom: ["juantorresmi.github.io/border-waits", "CBP · Cloudflare Worker"] },
   "beef-prices": { top: ["Juan Torres", "Data"], name: "Boxed beef prices",
     sub: "USDA’s daily cutout and the price of every cut, with the history", bottom: ["juantorresmi.github.io/beef-prices", "USDA AMS · Cloudflare Worker"] },
+  "pork-prices": { top: ["Juan Torres", "Data"], name: "Pork prices",
+    sub: "USDA’s daily pork cutout, the primals and the price of every cut", bottom: ["juantorresmi.github.io/pork-prices", "USDA AMS · Cloudflare Worker"] },
+  "fed-cattle-prices": { top: ["Juan Torres", "Data"], name: "Fed cattle prices",
+    sub: "What packers pay for cattle, live and dressed, region by region", bottom: ["juantorresmi.github.io/fed-cattle-prices", "USDA AMS · weekly since 2020"] },
+  "usda-market-prices": { top: ["Juan Torres", "Data"], name: "USDA market prices",
+    sub: "Beef · Pork · Fed cattle · Reefer freight · English and Spanish", bottom: ["juantorresmi.github.io/usda-market-prices", "USDA AMS · free CSVs"] },
   youtube: { top: ["Juan Torres", "YouTube"], name: "On YouTube",
     sub: "The channel’s numbers, refreshed every hour", bottom: ["juantorresmi.github.io/youtube", "Cloudflare Worker · YouTube Data API"] },
 };

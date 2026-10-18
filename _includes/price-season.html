@@ -1,0 +1,4 @@
+{%- comment -%} The twelve-month seasonal strip (beef, pork, cattle): {% include price-season.html season=… es=… %}. {%- endcomment -%}
+<ol class="bf-season">
+  {%- for m in include.season.cells %}<li{% if m.hi %} class="bf-hi"{% elsif m.lo %} class="bf-lo"{% endif %}><span>{% if include.es %}{{ m.m_es }}{% else %}{{ m.m }}{% endif %}</span>{{ m.v | default: "·" }}</li>{% endfor %}
+</ol>

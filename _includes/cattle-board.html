@@ -1,0 +1,256 @@
+{%- comment -%}
+  The fed cattle board, in English (/fed-cattle-prices/) or Spanish (/es/precios-de-ganado-gordo/):
+  {% include cattle-board.html es=true %}. The beef board's form (.rb .bf), drawn from
+  site.data.live.cattle (scripts/snapshot.py: USDA's LM_CT150, LM_CT154, LM_CT156-158 and LM_CT100).
+  Region pages: _layouts/cattle-region.html. The calculator is fed-cattle-prices/tools.js.
+{%- endcomment -%}
+{%- assign r = site.data.live.cattle -%}
+{%- assign es = include.es -%}
+{%- if es %}{% assign base = "/es/precios-de-ganado-gordo/" %}{% else %}{% assign base = "/fed-cattle-prices/" %}{% endif -%}
+<div class="rb bf">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family">{% if es %}Trabajo · Ganado gordo{% else %}Work · Fed cattle{% endif %}</p>
+    <h1>{% if es %}Precio del ganado gordo esta semana{% else %}Fed cattle prices this week{% endif %}</h1>
+    <p class="rb-sub">{% if es %}Lo que pagan los empacadores por novillos y vaquillas listos para el sacrificio en tratos negociados de contado, en pie y en canal, en el mercado de 5 áreas y región por región, de los reportes obligatorios del USDA. Cada semana desde 2020, con los días de esta semana.{% else %}What packers pay for slaughter-ready steers and heifers on negotiated cash deals, live and dressed, in the 5-area market and region by region, from USDA’s mandatory reports. Every week since 2020, with this week’s days so far.{% endif %}</p>
+  </div>
+  {%- if r %}
+  <dl class="rb-stamp">
+    <div><dt>{% if es %}Semana{% else %}Week{% endif %}</dt><dd>{% if es %}{{ r.span_es }}{% else %}{{ r.span }}{% endif %}</dd></div>
+    <div><dt>{% if es %}Novillos en pie{% else %}Live steers{% endif %}</dt><dd>{{ r.stamp.live }}{% if r.stamp.live_chg != "" %} <span>{{ r.stamp.live_chg }}</span>{% endif %}</dd></div>
+    <div><dt>{% if es %}Novillos en canal{% else %}Dressed steers{% endif %}</dt><dd>{{ r.stamp.dressed }}{% if r.stamp.dressed_chg != "" %} <span>{{ r.stamp.dressed_chg }}</span>{% endif %}</dd></div>
+    {%- if r.stamp.head != "" %}<div><dt>{% if es %}Cabezas{% else %}Head{% endif %}</dt><dd>{{ r.stamp.head }}</dd></div>{% endif %}
+    {%- if r.stamp.day_live != "" %}<div><dt>{% if es %}En pie, reporte del {{ r.stamp.day_es }}{% else %}Live, {{ r.stamp.day }} report{% endif %}</dt><dd>{{ r.stamp.day_live }}</dd></div>{% endif %}
+  </dl>
+  {%- endif %}
+</header>
+
+{% if r %}
+<nav class="rb-jump" aria-label="{% if es %}Secciones de esta página{% else %}Sections on this page{% endif %}">
+  <a href="#week">{% if es %}Esta semana{% else %}This week{% endif %}</a>
+  <a href="#regions">{% if es %}Por región{% else %}By region{% endif %}</a>
+  <a href="#days">{% if es %}Día por día{% else %}Day by day{% endif %}</a>
+  <a href="#grades">{% if es %}Por clase y grado{% else %}By class and grade{% endif %}</a>
+  <a href="#calc">{% if es %}¿En pie o en canal?{% else %}Live or dressed?{% endif %}</a>
+  <a href="#history">{% if es %}Historial desde{% else %}History since{% endif %} {{ r.first_iso | slice: 0, 4 }}</a>
+  <a href="#data">{% if es %}Descargar los datos{% else %}Download the data{% endif %}</a>
+  <a href="#faq">{% if es %}Preguntas{% else %}Questions{% endif %}</a>
+</nav>
+
+<section class="rb-sec" id="week" aria-labelledby="week-h">
+  <h2 id="week-h">{% if es %}El precio del ganado gordo de 5 áreas{% else %}The 5-area fed cattle price{% endif %}</h2>
+  <p class="rb-big">{% if es %}{{ r.summary_es }}{% else %}{{ r.summary }}{% endif %}</p>
+  {%- assign f = r.steer_live %}
+  <div class="rb-judge">
+    <p class="rb-tag">{% if es %}¿El precio de los novillos en pie está alto o bajo?{% if f.standing.tag_es != "" %} · {{ f.standing.tag_es }}{% endif %}{% else %}Is the live steer price high or low?{% if f.standing.tag != "" %} · {{ f.standing.tag }}{% endif %}{% endif %}</p>
+    <p class="rb-say">{% if es %}{{ f.standing.text_es }}{% else %}{{ f.standing.text }}{% endif %}</p>
+    {%- if f.standing.pos %}
+    <div class="rb-meter" role="img" aria-label="{% if es %}{{ f.standing.text_es }}{% else %}{{ f.standing.text }}{% endif %}"><span style="left: {{ f.standing.pos }}%"></span></div>
+    <p class="rb-meter-k">{% if es %}<span>El más bajo del año</span><span>El más alto del año</span>{% else %}<span>Lowest of the year</span><span>Highest of the year</span>{% endif %}</p>
+    {%- endif %}
+  </div>
+  <p class="rb-note">
+  {%- if es -%}
+    {%- if f.year_ago %}Hace un año ({{ f.year_ago.week_es }}) los novillos en pie se pagaban a {{ f.year_ago.cwt }}; esta semana están {{ f.year_ago.change }} frente a eso. {% endif -%}
+    En el último año promediaron {{ f.avg }}, de un mínimo de {{ f.low }} ({{ f.low_week_es }}) a un máximo de {{ f.high }} ({{ f.high_week_es }}).
+    {%- if r.record.now %} Esta semana es la más alta registrada desde 2020.{% else %} La más alta registrada desde 2020 es {{ r.record.cwt }}, la semana del {{ r.record.week_es | remove: "Semana del " }}.{% endif %}
+  {%- else -%}
+    {%- if f.year_ago %}A year earlier ({{ f.year_ago.week }}) live steers brought {{ f.year_ago.cwt }}; this week is {{ f.year_ago.change }} against that. {% endif -%}
+    Over the past year they averaged {{ f.avg }}, from a low of {{ f.low }} ({{ f.low_week }}) to a high of {{ f.high }} ({{ f.high_week }}).
+    {%- if r.record.now %} This week is the highest on record since 2020.{% else %} The highest on record since 2020 is {{ r.record.cwt }}, in the week of {{ r.record.week | remove: "Week of " }}.{% endif %}
+  {%- endif %}
+  </p>
+  {%- if r.chart_year %}
+  {%- capture lab %}{% if es %}Precio semanal de novillos y vaquillas en pie en las 5 áreas del {{ r.chart_year.start_es }} al {{ r.chart_year.end_es }}, entre {{ r.chart_year.bottom }} y {{ r.chart_year.top }} por quintal.{% else %}Weekly 5-area live steer and heifer prices from {{ r.chart_year.start }} to {{ r.chart_year.end }}, between {{ r.chart_year.bottom }} and {{ r.chart_year.top }} per hundredweight.{% endif %}{% endcapture %}
+  {% include price-chart.html chart=r.chart_year es=es label=lab title_en="Live steers and heifers, the past year" title_es="Novillos y vaquillas en pie, el último año" unit_en="5-area weighted average, live, FOB, dollars per hundredweight" unit_es="Promedio ponderado de 5 áreas, en pie, LAB, dólares por quintal" names="Steers:Novillos,Heifers:Vaquillas" %}
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="regions" aria-labelledby="regions-h">
+  <h2 id="regions-h">{% if es %}Precio del ganado gordo por región{% else %}Fed cattle prices by region{% endif %}</h2>
+  <p>{% if es %}Lo que se pagó la semana del {{ r.span_es }} en cada región que reporta el USDA, en pie (LAB corral) y en canal (entregado), todos los novillos y vaquillas. Una región sin precio esta semana tuvo muy pocas ventas de contado para publicarse; su página muestra la última semana con ventas.{% else %}What was paid in the week of {{ r.span }} in each region USDA reports, live (FOB the feedlot) and dressed (delivered), all steers and heifers. A region with no price this week had too few cash trades to publish; its page shows the last week that had them.{% endif %}</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack">
+      <thead><tr><th scope="col">{% if es %}Región{% else %}Region{% endif %}</th><th scope="col">{% if es %}En pie{% else %}Live{% endif %}</th><th scope="col">{% if es %}Cambio{% else %}Change{% endif %}</th><th scope="col">{% if es %}En canal{% else %}Dressed{% endif %}</th><th scope="col">{% if es %}Cambio{% else %}Change{% endif %}</th><th scope="col">{% if es %}Cabezas{% else %}Head{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for g in r.regions %}
+        {%- if es %}{% assign gn = g.es %}{% assign gs = g.slug_es %}{% else %}{% assign gn = g.name %}{% assign gs = g.slug %}{% endif %}
+        <tr><th scope="row">{% if gs != "" %}<a href="{{ base }}{{ gs }}/">{{ gn }}</a>{% else %}{{ gn }}{% endif %} <span class="bf-also">{% if es %}{{ g.states_es }}{% else %}{{ g.states }}{% endif %}</span></th><td data-label="{% if es %}En pie{% else %}Live{% endif %}">{{ g.live | default: "—" }}</td><td data-label="{% if es %}Cambio{% else %}Change{% endif %}">{{ g.live_chg | default: "—" }}</td><td data-label="{% if es %}En canal{% else %}Dressed{% endif %}">{{ g.dressed | default: "—" }}</td><td data-label="{% if es %}Cambio{% else %}Change{% endif %}">{{ g.dressed_chg | default: "—" }}</td><td data-label="{% if es %}Cabezas{% else %}Head{% endif %}">{% if g.current %}{{ g.head }}{% else %}{% if es %}última: {{ g.last_es }}{% else %}last: {{ g.last }}{% endif %}{% endif %}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{%- if r.days.size > 0 %}
+<section class="rb-sec" id="days" aria-labelledby="days-h">
+  <h2 id="days-h">{% if es %}Día por día: el reporte diario de 5 áreas{% else %}Day by day: the 5-area daily report{% endif %}</h2>
+  <p>{% if es %}Novillos, todos los grados, de las compras negociadas (LM_CT100). Cada reporte sale a media mañana y cubre las compras del día hábil anterior. Muchos días tienen pocas ventas: el contado se concentra en uno o dos días de la semana.{% else %}Steers, all grades, from negotiated purchases (LM_CT100). Each report posts late in the morning and covers the purchases of the business day before it. Many days have little trade: cash buying bunches into a day or two each week.{% endif %}</p>
+  <div class="rb-scroll">
+    <table class="rb-table">
+      <thead><tr><th scope="col">{% if es %}Reporte{% else %}Report{% endif %}</th><th scope="col">{% if es %}En pie{% else %}Live{% endif %}</th><th scope="col">{% if es %}Cabezas{% else %}Head{% endif %}</th><th scope="col">{% if es %}En canal{% else %}Dressed{% endif %}</th><th scope="col">{% if es %}Cabezas{% else %}Head{% endif %}</th><th scope="col">{% if es %}Total del día, todas las clases{% else %}All classes, the day{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for d in r.days %}
+        <tr><th scope="row">{% if es %}{{ d.day_es }}{% else %}{{ d.day }}{% endif %}</th><td>{{ d.live | default: "—" }}</td><td>{{ d.live_head | default: "—" }}</td><td>{{ d.dressed | default: "—" }}</td><td>{{ d.dressed_head | default: "—" }}</td><td>{{ d.head | default: "—" }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{%- endif %}
+
+{%- if r.detail.size > 0 %}
+<section class="rb-sec" id="grades" aria-labelledby="grades-h">
+  <h2 id="grades-h">{% if es %}Por clase, base de venta y grado{% else %}By class, selling basis and grade{% endif %}</h2>
+  <p>{% if es %}La semana del {{ r.span_es }} en las 5 áreas, por quintal, con las cabezas debajo. El grado es la parte del lote que calificó Choice.{% else %}The week of {{ r.span }} in the 5-area market, per hundredweight, with the head count under each price. The grade is the share of the pen that graded Choice.{% endif %}</p>
+  {% include cattle-detail.html detail=r.detail es=es %}
+</section>
+{%- endif %}
+
+<section class="rb-sec bf-tools" id="calc" aria-labelledby="calc-h" hidden>
+  <h2 id="calc-h">{% if es %}¿Vender en pie o en canal?{% else %}Sell live or in the beef?{% endif %}</h2>
+  {% include cattle-calc.html tool=r.tool es=es %}
+</section>
+
+<section class="rb-sec" id="history" aria-labelledby="history-h">
+  <h2 id="history-h">{% if es %}El ganado gordo desde{% else %}Fed cattle since{% endif %} {{ r.first_iso | slice: 0, 4 }}</h2>
+  <p>{% if es %}Cada semana desde la del {{ r.first_es }}, {{ r.weeks }} semanas de novillos de 5 áreas, en pie y en canal.{% else %}Every week since the week of {{ r.first }}, {{ r.weeks }} weeks of 5-area steers, live and dressed.{% endif %}</p>
+  {%- if r.chart_live %}
+  {%- capture lab %}{% if es %}Precio semanal de novillos en pie de 5 áreas del {{ r.chart_live.start_es }} al {{ r.chart_live.end_es }}, entre {{ r.chart_live.bottom }} y {{ r.chart_live.top }}.{% else %}Weekly 5-area live steer price from {{ r.chart_live.start }} to {{ r.chart_live.end }}, between {{ r.chart_live.bottom }} and {{ r.chart_live.top }}.{% endif %}{% endcapture %}
+  {% include price-chart.html chart=r.chart_live es=es label=lab title_en="Live steers, every week" title_es="Novillos en pie, cada semana" unit_en="Dollars per hundredweight, live weight" unit_es="Dólares por quintal, peso vivo" names="Live steers:Novillos en pie" %}
+  {%- endif %}
+  {%- if r.chart_dressed %}
+  {%- capture lab %}{% if es %}Precio semanal de novillos en canal de 5 áreas del {{ r.chart_dressed.start_es }} al {{ r.chart_dressed.end_es }}, entre {{ r.chart_dressed.bottom }} y {{ r.chart_dressed.top }}.{% else %}Weekly 5-area dressed steer price from {{ r.chart_dressed.start }} to {{ r.chart_dressed.end }}, between {{ r.chart_dressed.bottom }} and {{ r.chart_dressed.top }}.{% endif %}{% endcapture %}
+  {% include price-chart.html chart=r.chart_dressed es=es label=lab title_en="Dressed steers, every week" title_es="Novillos en canal, cada semana" unit_en="Dollars per hundredweight, carcass weight" unit_es="Dólares por quintal, peso en canal" names="Dressed steers:Novillos en canal" %}
+  {%- endif %}
+  {%- if r.grid.size > 0 %}
+  <h3>{% if es %}Novillos en pie, promedio por mes{% else %}Live steers, average by month{% endif %}</h3>
+  {% include price-grid.html grid=r.grid es=es %}
+  <p class="rb-note">{% if es %}Cada mes se pondera por las cabezas de cada semana.{% else %}Each month is weighted by each week’s head count.{% endif %}</p>
+  {%- endif %}
+  {%- if r.season %}
+  <h3>{% if es %}El año típico del ganado gordo{% else %}The fed cattle price’s usual year{% endif %}</h3>
+  <p>{% if es %}Cada mes frente al promedio de su propio año, la mediana de {{ r.season.years }}: los novillos en pie suelen estar más altos en {{ r.season.high_es }} ({{ r.season.high_v }}) y más bajos en {{ r.season.low_es }} ({{ r.season.low_v }}).{% else %}Each month against its own year’s average, the median over {{ r.season.years }}: live steers usually run highest in {{ r.season.high }} ({{ r.season.high_v }}) and lowest in {{ r.season.low }} ({{ r.season.low_v }}).{% endif %}</p>
+  {% include price-season.html season=r.season es=es %}
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="data" aria-labelledby="data-h">
+  <h2 id="data-h">{% if es %}Descargar los datos{% else %}Download the data{% endif %}</h2>
+  <p>{% if es %}Cada semana y cada región, con cada clase, base de venta, grado y tipo de compra que publica el USDA, como CSV de uso libre. Los números son del USDA y son de dominio público; dé crédito a USDA AMS.{% else %}Every week and region, with every class, selling basis, grade and purchase type USDA publishes, as CSV files free to use. The numbers are USDA’s and in the public domain; credit USDA AMS.{% endif %}</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-wrap">
+      <thead><tr><th scope="col">{% if es %}Archivo{% else %}File{% endif %}</th><th scope="col">{% if es %}Filas{% else %}Rows{% endif %}</th><th scope="col">{% if es %}Tamaño{% else %}Size{% endif %}</th><th scope="col">{% if es %}Qué contiene{% else %}What’s in it{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for f in r.downloads %}
+        <tr><th scope="row"><a href="/fed-cattle-prices/{{ f.file }}" download>{{ f.file }}</a></th><td>{{ f.rows }}</td><td>{{ f.kb }} KB</td><td>{% if es %}{{ f.label_es }}{% else %}{{ f.label }}{% endif %}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p>{% if es %}La semana más reciente, por región, también está en <a class="link" href="/fed-cattle-prices/latest.json">latest.json</a>.{% else %}The latest week, region by region, is also in <a class="link" href="/fed-cattle-prices/latest.json">latest.json</a>.{% endif %}</p>
+  <h3>{% if es %}Las columnas{% else %}The columns{% endif %}</h3>
+  <div class="rb-scroll">
+    <table class="rb-t rb-wrap bf-dict">
+      <thead><tr><th scope="col">{% if es %}Columna{% else %}Column{% endif %}</th><th scope="col">{% if es %}Significado{% else %}Meaning{% endif %}</th></tr></thead>
+      <tbody>
+      {%- if es %}
+        <tr><th scope="row">report_date, week_start, week_end</th><td>La fecha del reporte semanal (un lunes) y la semana que cubre, de lunes a domingo.</td></tr>
+        <tr><th scope="row">region</th><td><code>five-area</code>, <code>texas-oklahoma</code>, <code>kansas</code>, <code>nebraska</code>, <code>colorado</code>, <code>western-cornbelt</code>, <code>eastern-cornbelt</code>, <code>northern-plains</code>, <code>western-states</code> o <code>northeast</code>.</td></tr>
+        <tr><th scope="row">purchase</th><td><code>cash</code> (contado negociado) o <code>grid</code> (precio base de una parrilla negociada).</td></tr>
+        <tr><th scope="row">class, basis, grade</th><td>Clase (<code>all</code>, <code>steer</code>, <code>heifer</code>…), base de venta (<code>live_fob</code>, <code>dressed_delivered</code>…) y grado (<code>total</code> o la parte Choice del lote).</td></tr>
+        <tr><th scope="row">head, dress_pct</th><td>Cabezas compradas y rendimiento en canal (%).</td></tr>
+        <tr><th scope="row">weight_low … weighted_average</th><td>Pesos (lb) y precios (dólares por quintal): mínimo, máximo y promedio ponderado.</td></tr>
+      {%- else %}
+        <tr><th scope="row">report_date, week_start, week_end</th><td>The weekly report’s date (a Monday) and the week it covers, Monday to Sunday.</td></tr>
+        <tr><th scope="row">region</th><td><code>five-area</code>, <code>texas-oklahoma</code>, <code>kansas</code>, <code>nebraska</code>, <code>colorado</code>, <code>western-cornbelt</code>, <code>eastern-cornbelt</code>, <code>northern-plains</code>, <code>western-states</code> or <code>northeast</code>.</td></tr>
+        <tr><th scope="row">purchase</th><td><code>cash</code> (negotiated cash) or <code>grid</code> (the base price of a negotiated grid).</td></tr>
+        <tr><th scope="row">class, basis, grade</th><td>Class (<code>all</code>, <code>steer</code>, <code>heifer</code>…), selling basis (<code>live_fob</code>, <code>dressed_delivered</code>…) and grade (<code>total</code> or the pen’s share of Choice).</td></tr>
+        <tr><th scope="row">head, dress_pct</th><td>Head bought and dressing percentage.</td></tr>
+        <tr><th scope="row">weight_low … weighted_average</th><td>Weights (lb) and prices (dollars per hundredweight): low, high and weighted average.</td></tr>
+      {%- endif %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="rb-sec" id="every-region" aria-labelledby="every-region-h">
+  <h2 id="every-region-h">{% if es %}Todas las páginas de regiones{% else %}Every region page{% endif %}</h2>
+  <ul class="rb-index">
+    {%- for g in r.regions %}{% if g.slug != "" %}<li><a href="{{ base }}{% if es %}{{ g.slug_es }}{% else %}{{ g.slug }}{% endif %}/">{% if es %}Ganado gordo en {{ g.es }}{% else %}{{ g.name }} fed cattle{% endif %}</a></li>{% endif %}{% endfor %}
+  </ul>
+</section>
+{% include usda-boards.html es=es here="cattle" %}
+{% else %}
+<p class="rb-empty">The first report hasn’t been collected yet. It shows up here the day after the snapshot reads it.</p>
+{% endif %}
+</div>
+
+<section class="sec" id="faq">
+  <header class="sec-head"><h2>{% if es %}Preguntas{% else %}Questions{% endif %}</h2></header>
+  <div class="row">
+    <div class="body prose bw-faq">
+    {%- if es %}
+      <h3>¿Qué es el precio de 5 áreas?</h3>
+      <p>El promedio ponderado de lo que pagaron los empacadores por ganado gordo en las cinco regiones principales de engorda: Texas-Oklahoma-Nuevo México, Kansas, Nebraska, Colorado e Iowa-Minnesota. Es la referencia principal que publica el USDA para el mercado del ganado gordo.</p>
+      <h3>¿Qué diferencia hay entre en pie y en canal?</h3>
+      <p>En pie es por quintal de peso vivo, pesado en el corral (LAB). En canal es por quintal de la canal ya sacrificada, entregada en la planta. El rendimiento en canal (el peso de la canal entre el peso vivo, alrededor de 63%) convierte uno en otro; la calculadora de arriba hace la cuenta.</p>
+      <h3>¿Por qué algunas regiones no tienen precio esta semana?</h3>
+      <p>El USDA no publica un precio si hubo muy pocas ventas de contado o si revelaría quién compró. En Texas-Oklahoma y Kansas el contado es escaso (lo muestran los propios datos: muchas semanas sin precio), así que la región queda sin precio esas semanas, nunca en cero.</p>
+      <h3>¿De dónde vienen los datos, y cuándo?</h3>
+      <p>De los reportes de Reportes Obligatorios de Ganado del USDA: el semanal de 5 áreas (<a href="https://mymarketnews.ams.usda.gov/viewReport/2477">LM_CT150</a>), los semanales de Texas-Oklahoma, Kansas y Nebraska (LM_CT156 a 158), el nacional semanal con su tabla por región (<a href="https://mymarketnews.ams.usda.gov/viewReport/2481">LM_CT154</a>) y el diario de 5 áreas (<a href="https://mymarketnews.ams.usda.gov/viewReport/2466">LM_CT100</a>). Los semanales salen los lunes y el diario cada día hábil a mediodía, hora del Centro.</p>
+    {%- else %}
+      <h3>What is the 5-area price?</h3>
+      <p>The weighted average of what packers paid for fed cattle across the five main feeding regions: Texas-Oklahoma-New Mexico, Kansas, Nebraska, Colorado and Iowa-Minnesota. It’s USDA’s main benchmark for the fed cattle market.</p>
+      <h3>What’s the difference between live and dressed?</h3>
+      <p>Live is per hundredweight of the live animal, weighed at the feedlot (FOB). Dressed (“in the beef”) is per hundredweight of the carcass after slaughter, delivered to the plant. The dressing percentage (carcass weight over live weight, about 63%) turns one into the other; the calculator above does the math.</p>
+      <h3>Why do some regions have no price this week?</h3>
+      <p>USDA publishes no price when there were too few cash trades, or when it would give away who bought. In Texas-Oklahoma and Kansas cash trade is thin (the data shows it: many weeks with no price), so those weeks the region is left blank, never zero.</p>
+      <h3>Where does the data come from, and when?</h3>
+      <p>From USDA’s Livestock Mandatory Reporting: the 5-area weekly (<a href="https://mymarketnews.ams.usda.gov/viewReport/2477">LM_CT150</a>), the Texas-Oklahoma, Kansas and Nebraska weeklies (LM_CT156 to 158), the national weekly with its regional table (<a href="https://mymarketnews.ams.usda.gov/viewReport/2481">LM_CT154</a>) and the 5-area daily (<a href="https://mymarketnews.ams.usda.gov/viewReport/2466">LM_CT100</a>). The weeklies post on Mondays and the daily every business day around midday, Central time.</p>
+    {%- endif %}
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="how-it-works">
+  <header class="sec-head"><h2>{% if es %}Cómo funciona{% else %}How it works{% endif %}</h2>{% if r %}<span class="label">{% if es %}Copiado el {{ r.generated | date: "%Y-%m-%d" }}{% else %}Copied {{ r.generated | date: "%b %-d, %Y" }}{% endif %}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+    {%- if es %}
+      <p>Igual que los tableros de la <a href="/es/precios-de-carne-de-res/">res</a> y el <a href="/es/precios-de-cerdo/">cerdo</a>: el historial es del USDA, que lo sirve sin clave. Dos veces al día una GitHub Action vuelve a leer los CSV ya publicados, le pide al USDA solo el año en curso y el último mes del reporte diario, y reconstruye esta página, una página por región y los archivos. Nada aquí guarda una segunda copia de lo que el USDA ya tiene, y visitarla no le cuesta nada a nadie. Fuente: USDA AMS; cualquier error al presentar los números es mío.</p>
+    {%- else %}
+      <p>The same way as the <a href="/beef-prices/">beef</a> and <a href="/pork-prices/">pork</a> boards: the history is USDA’s own, served with no key. Twice a day a GitHub Action reads back the CSVs already published, asks USDA only for the current year and the daily report’s last month, and rebuilds this board, a page per region and the files. Nothing here keeps a second copy of what USDA already stores, and visiting costs nothing to run. Source: USDA AMS; any mistakes in presenting the numbers are mine.</p>
+    {%- endif %}
+    </div>
+  </div>
+</section>
+
+{% if r %}
+<script src="/fed-cattle-prices/tools.js?v={{ site.time | date: '%s' }}" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": {% if es %}"Precio semanal del ganado gordo del USDA, de 5 áreas y por región"{% else %}"Weekly USDA fed cattle prices, 5-area and by region"{% endif %},
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "inLanguage": {% if es %}"es-MX"{% else %}"en-US"{% endif %},
+  "keywords": {% if es %}["precio del ganado gordo", "precio del novillo", "ganado 5 áreas", "precio del ganado en pie", "precio del ganado en canal", "USDA LM_CT150"]{% else %}["fed cattle prices", "5-area weighted average", "cash cattle price", "live cattle price this week", "dressed cattle price", "fed steer price", "USDA LM_CT150"]{% endif %},
+  "temporalCoverage": "{{ r.first_iso }}/{{ r.latest_day | default: r.latest_week }}",
+  "spatialCoverage": { "@type": "Place", "name": "United States" },
+  "variableMeasured": ["Weighted average price, live and dressed (USD per cwt)", "Head count", "Weights (lb)", "Dressing percentage"],
+  "measurementTechnique": "Negotiated purchases reported to USDA under Livestock Mandatory Reporting",
+  "isBasedOn": ["https://mymarketnews.ams.usda.gov/viewReport/2477", "https://mymarketnews.ams.usda.gov/viewReport/2481", "https://mymarketnews.ams.usda.gov/viewReport/2466"],
+  "isPartOf": { "@id": "{{ site.url }}{% if es %}/es/precios-usda/{% else %}/usda-market-prices/{% endif %}#collection" },
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "creator": [
+    { "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" },
+    { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
+  ],
+  "distribution": [{% for f in r.downloads %}{ "@type": "DataDownload", "encodingFormat": "text/csv", "name": {% if es %}{{ f.label_es | jsonify }}{% else %}{{ f.label | jsonify }}{% endif %}, "contentUrl": {{ "/fed-cattle-prices/" | append: f.file | absolute_url | jsonify }} }, {% endfor %}{ "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": {{ "/fed-cattle-prices/latest.json" | absolute_url | jsonify }} }],
+  "dateModified": {{ r.latest_day | default: r.latest_week | jsonify }}
+}
+</script>
+{% endif %}
