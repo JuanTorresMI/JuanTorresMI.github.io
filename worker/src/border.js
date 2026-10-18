@@ -3,12 +3,14 @@
  * at each hour of each day of the week.
  *
  *   GET /border             { updated, ports: [{ port, border, name, crossing, hours, status, max, std, fast, notice, posted_at, age }] }
- *   GET /border/port?id=P   { port, first, days, profile: [[dow, hour, std_avg, std_n, fast_avg, fast_n]], recent: [[at, std, std_lanes, fast, fast_lanes]] }
+ *   GET /border/readings?since=YYYY-MM-DD   { since, oldest, buffer_days, readings: [[port, at, std, std_lanes, fast, fast_lanes]] }
  *
  * The source is CBP's public Border Wait Times feed (bwt.cbp.gov/api/waittimes), no key needed.
  * CBP keeps no past readings (its "historical" API is last year's monthly averages by weekday and
- * hour), so this records them, from Oct 14, 2026. Sep 13 to Oct 14 was filled once from an
- * independent hourly archive of the same feed (scripts/border-backfill.mjs).
+ * hour), so this catches each one as it's posted, from Oct 14, 2026 (Sep 13 to Oct 14 was filled once
+ * from an independent hourly archive of the same feed, scripts/border-backfill.mjs). The permanent
+ * archive is the site's: the snapshot copies the readings into border-waits/*.csv, and this keeps
+ * only the last BORDER_BUFFER_DAYS.
  * It lists ~85 ports; about 50 have commercial lanes, and only those are kept. Each port's officers
  * post a reading roughly once an hour ("At 10:00 am CDT"), standard and FAST lanes together.
  *
@@ -24,9 +26,9 @@
 
 const CBP = "https://bwt.cbp.gov/api/waittimes";
 export const BORDER_MAX_AGE = 300;          // the live board: five minutes at the edge
-export const BORDER_PORT_MAX_AGE = 3600;    // a crossing's history moves slowly
-const PROFILE_DAYS = 30;
-const RECENT_DAYS = 7;
+// The Worker is not the archive: the site's snapshot copies every reading into border-waits/*.csv, and
+// this only holds the readings it hasn't been sure to copy yet (two weeks of failed snapshots).
+export const BORDER_BUFFER_DAYS = 14;
 
 const num = (v) => (v == null || v === "" || !/^\d+$/.test(String(v).trim()) ? null : Number(v));
 const pad = (n) => String(n).padStart(2, "0");
@@ -131,28 +133,25 @@ export async function borderNow(env) {
   return JSON.parse((await env.DB.prepare("SELECT body FROM border_latest WHERE id = 1").first()).body);
 }
 
-/* GET /border/port?id=P: one crossing's last 30 days, averaged by weekday and hour, and its last
-   7 days of readings. Local times compared as text, so the cut-off is a day or so loose; fine. */
-export async function borderPort(env, port, now = new Date()) {
-  const since = (days) => new Date(now.getTime() - days * 86400000).toISOString().slice(0, 10);
-  const [profile, recent, first] = await env.DB.batch([
-    env.DB.prepare(`SELECT dow, hour, ROUND(AVG(std_delay), 1) AS s, COUNT(std_delay) AS sn, ROUND(AVG(fast_delay), 1) AS f, COUNT(fast_delay) AS fn
-      FROM border_waits WHERE port = ?1 AND at >= ?2 GROUP BY dow, hour ORDER BY dow, hour`).bind(port, since(PROFILE_DAYS)),
-    env.DB.prepare("SELECT at, std_delay, std_lanes, fast_delay, fast_lanes FROM border_waits WHERE port = ?1 AND at >= ?2 ORDER BY at")
-      .bind(port, since(RECENT_DAYS)),
-    // The count is the 30-day window's, so it reads at most a month of one port's rows however long
-    // the record gets; MIN(at) is answered from the primary key, one row.
-    env.DB.prepare("SELECT (SELECT MIN(at) FROM border_waits WHERE port = ?1) AS first, COUNT(*) AS n FROM border_waits WHERE port = ?1 AND at >= ?2")
-      .bind(port, since(PROFILE_DAYS)),
+/* GET /border/readings?since=YYYY-MM-DD: every reading in the buffer posted on or after that local date,
+   for the site's snapshot to add to its permanent archive (border-waits/*.csv), and the oldest reading
+   still held, so the snapshot can tell if it fell behind the buffer. */
+export async function borderReadings(env, since) {
+  const [rows, oldest] = await env.DB.batch([
+    env.DB.prepare("SELECT port, at, std_delay, std_lanes, fast_delay, fast_lanes FROM border_waits WHERE at >= ?1 ORDER BY at, port").bind(since),
+    env.DB.prepare("SELECT MIN(at) AS at FROM border_waits"),
   ]);
-  const f = first.results[0] || {};
   return {
-    port,
-    first: f.first || null,
-    readings: f.n || 0,
-    days: PROFILE_DAYS,
-    profile: profile.results.map((r) => [r.dow, r.hour, r.s, r.sn, r.f, r.fn]),
-    recent: recent.results.map((r) => [r.at, r.std_delay, r.std_lanes, r.fast_delay, r.fast_lanes]),
-    updated: now.toISOString(),
+    since, oldest: (oldest.results[0] || {}).at || null, buffer_days: BORDER_BUFFER_DAYS,
+    readings: rows.results.map((r) => [r.port, r.at, r.std_delay, r.std_lanes, r.fast_delay, r.fast_lanes]),
+    updated: new Date().toISOString(),
   };
+}
+
+/* Once a day: drop readings older than the buffer. By then the snapshot (at least daily) has copied
+   them to the site's archive many times over; the buffer only has to outlast a run of failed snapshots. */
+export async function borderPrune(env, now = new Date()) {
+  const cut = new Date(now.getTime() - BORDER_BUFFER_DAYS * 86400000).toISOString().slice(0, 10);
+  const r = await env.DB.prepare("DELETE FROM border_waits WHERE at < ?1").bind(cut).run();
+  return { cut, deleted: r.meta.changes };
 }

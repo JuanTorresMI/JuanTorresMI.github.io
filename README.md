@@ -46,7 +46,7 @@ redirect stubs for addresses that moved (`redirects/`).
 ```
                      ┌─ Stremio, YouTube, USDA (truck rates, newest beef and pork), EIA, CBP, Substack, SoundCloud, Spotify
                      │
-Cloudflare Worker  ◄─┘  worker/: polls on cron triggers, keeps history in D1, holds the keys
+Cloudflare Worker  ◄─┘  worker/: polls on cron triggers, holds short buffers in D1 (no permanent history), holds the keys
      │
      ├─► browsers: the live parts of /watching/, /youtube/, /blog/, /music/ and the border pages
      │
@@ -62,7 +62,11 @@ readers without JavaScript see real numbers; the page's script then swaps in fre
 reefer and cattle boards have no live script at all: they are rebuilt from the copy. The reefer,
 beef, pork and cattle CSVs double as the archive each snapshot reads back, so a week or a day once
 collected is never lost, and USDA, which keeps every report, is asked only for the recent stretch;
-the Worker stores only the newest beef and pork reports, for the pages' freshness check.
+the Worker stores only the newest beef and pork reports, for the pages' freshness check. The same goes for
+the sources that keep no history: the border readings (CBP), the YouTube days and the Worker's own usage
+are copied from the Worker's short buffers into CSVs here (`border-waits/`, `youtube/`, `worker-usage/`),
+which are the permanent record; CBP's published averages are kept beside the border readings to check
+them against.
 
 ### Workflows (`.github/workflows/`)
 

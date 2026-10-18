@@ -27,6 +27,24 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-18 — Every permanent record in the repository; the database only runs the site
+
+- **Border readings archive in the repository**: `border-waits/border-truck-wait-readings-2026.csv`, every
+  reading since Sep 13 (15,396), each marked `worker` (1,874, caught by this site's Worker) or `archive`
+  (13,522, the one-time backfill). `snapshot.py` adds the Worker's buffer on each run, never rewrites a kept
+  reading, and computes every crossing's 30-day averages and 7-day chart from the files: identical to what
+  the Worker's SQL gave (checked cell by cell, rounding included). The Worker's `/border/port` is gone
+  (one request per run instead of 53); `/border/readings` serves the buffer, which is trimmed to 14 days at
+  04:17 UTC daily.
+- **CBP's published averages kept**: `border-waits/cbp-published-averages.csv`, all 12 months for every
+  crossing CBP has them for (64,651 figures), refreshed when CBP changes them, to check the board's own
+  readings against. CBP's weekday 0 is Monday (checked against the World Trade Bridge's weekend hours).
+- **YouTube days** kept in `youtube/youtube-channel-daily.csv`; the Worker keeps 40 days.
+- **Usage page**: tables always drawn and filled from the Worker (it showed nothing without its copy), a
+  permanent `worker-usage/worker-usage-daily.csv` (Cloudflare keeps 30 days), typical and slowest CPU shown
+  apart, empty days left out; a missing copy now fails `check.py`.
+- Downloads on the border board for all three files; docs say where each record lives.
+
 ## 2026-10-18 — Worker usage page
 
 - **`/worker-usage/`**, a project of its own: today's use of Cloudflare's free plan, used and available, against each limit (Worker requests, CPU
