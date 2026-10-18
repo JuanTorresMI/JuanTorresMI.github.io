@@ -2,13 +2,18 @@
  * the Worker's data into the pages and redeploys them. GitHub's own schedule for it is late by hours
  * or skipped often enough that the pages fell a day behind, so the Worker starts it instead:
  *
- *   - twice a day from the cron, at the :47 runs of 09 and 21 UTC (SNAPSHOT_HOURS_UTC);
+ *   - every morning, from the :47 cron run at 11 UTC (SNAPSHOT_HOUR_UTC): the border averages, the
+ *     YouTube and TV copies, and any weekly cattle or reefer report;
+ *   - when a new or corrected beef or pork report is stored (index.js marks it pending; see
+ *     `pagesTick` there): the new prices reach the pages about half an hour after USDA posts them;
  *   - on request, from the "Update now" button on the data boards (POST /refresh).
  *
- * Both share one global cooldown (REFRESH_COOLDOWN_MS, an hour): however many people press the
+ * All share one global cooldown (REFRESH_COOLDOWN_MS, an hour): however many people press the
  * button, the workflow starts at most once an hour. The time of the last start is one row of the
  * `counters` table (name 'refresh_at', milliseconds), claimed with a single conditional UPDATE so two
  * presses in the same instant can't both win. If GitHub refuses the start, the claim is given back.
+ * A report that arrives during the cooldown isn't lost: it stays pending ('refresh_pending') and the
+ * next cron run after the cooldown starts it.
  *
  *   GET  /refresh   { ready, last, next }   ready is false until GH_DISPATCH_TOKEN is set
  *   POST /refresh   202 { started: true, last, next } | 429 { started: false, last, next }
@@ -17,7 +22,7 @@
  * "Actions: read and write" and nothing else (see README.md). Without it nothing here runs.
  */
 export const REFRESH_COOLDOWN_MS = 60 * 60 * 1000;
-export const SNAPSHOT_HOURS_UTC = [9, 21];
+export const SNAPSHOT_HOUR_UTC = 11;     // 6:47 am Central in summer, 5:47 in winter
 const REPO = "JuanTorresMI/JuanTorresMI.github.io";
 const WORKFLOW = "snapshot.yml";
 
@@ -64,7 +69,17 @@ export async function startSnapshot(env, why) {
   return { started: true, ...state(env, now) };
 }
 
-/* The cron's twice-a-day start: the :47 run in each of SNAPSHOT_HOURS_UTC. */
+/* The cron's daily start: the :47 run at SNAPSHOT_HOUR_UTC. */
 export function snapshotDue(now, cron) {
-  return cron === "47 * * * *" && SNAPSHOT_HOURS_UTC.includes(now.getUTCHours());
+  return cron === "47 * * * *" && now.getUTCHours() === SNAPSHOT_HOUR_UTC;
+}
+
+/* A new report waiting for the pages: set when one is stored, cleared when a start goes through. */
+export async function setPending(env, on) {
+  await env.DB.prepare("INSERT INTO counters (name, value) VALUES ('refresh_pending', ?1) ON CONFLICT(name) DO UPDATE SET value = ?1")
+    .bind(on ? 1 : 0).run();
+}
+export async function isPending(env) {
+  const row = await env.DB.prepare("SELECT value FROM counters WHERE name = 'refresh_pending'").first();
+  return Boolean(row && row.value);
 }

@@ -1,8 +1,8 @@
 /* The beef board's freshness check, on the board and on every cut page.
  *
- * The pages are rebuilt twice a day, but USDA posts the afternoon report around 3 pm Central, hours
- * before the evening rebuild. So when the copy in a page could be behind (a business day's report is
- * due and the copy is older), this asks the Worker for the newest report, and if it is newer, puts
+ * The Worker starts a rebuild once it has stored the afternoon report (around 3 pm Central), but the
+ * rebuild takes a few minutes and can fail. So when the copy in a page could be behind (a business
+ * day's report is due and the copy is older), this asks the Worker for the newest report, and if it is newer, puts
  * its numbers in the page's top line and says so. Most visits find the copy current and ask nothing.
  *
  * window.BF = { endpoint, latest, values, item }  (set by the page)

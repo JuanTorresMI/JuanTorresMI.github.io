@@ -11,9 +11,10 @@
  * USDA keeps every report back to the 2000s and serves any date range, so nothing here keeps a
  * history: the site's snapshot (scripts/snapshot.py) reads the history from USDA and from the CSVs
  * it has already committed. The Worker holds one row, the newest report, so the board's page script
- * can show a report within half an hour of USDA posting it instead of waiting for the evening rebuild.
+ * can show a report within half an hour of USDA posting it before the pages are rebuilt with it.
  *
- * The cron runs (:17 and :47) on weekdays, 6 am to 8 pm Central (lmrHours in index.js), call `beefTick`. It asks for the newest report's summary, a few
+ * The cron runs (:17 and :47) in USDA's windows (lmrWindow in index.js: weekdays 1:30-6 pm Central until
+ * the day's report is stored, and 6-8 am for corrections) call `beefTick`. It asks for the newest report's summary, a few
  * hundred bytes; only when USDA has posted something it hasn't stored (a new report, or a correction)
  * does it fetch the whole report with allSections=true, about 110 KB, and replace the row.
  */
@@ -81,17 +82,21 @@ const stored = async (env) => {
 };
 
 /* Stores the newest report if USDA has posted one this Worker hasn't seen (or corrected one). */
-export async function beefTick(env) {
-  const head = ((await usda("/Summary", "lastReports=1"))[0] || {}).results || [];
-  if (!head.length) return;
-  const day = iso(head[0].report_date), published = head[0].published_date || null;
+/* Returns { changed, latest }: whether a new or corrected report was stored, and the day it covers.
+   With skipDay ("YYYY-MM-DD"), a stored report for that day ends it before asking USDA anything. */
+export async function beefTick(env, { skipDay } = {}) {
   const have = await stored(env);
-  if (have && have.latest === day && have.published === published) return;
+  if (skipDay && have && have.latest === skipDay) return { changed: false, latest: have.latest };
+  const head = ((await usda("/Summary", "lastReports=1"))[0] || {}).results || [];
+  if (!head.length) return { changed: false, latest: have && have.latest };
+  const day = iso(head[0].report_date), published = head[0].published_date || null;
+  if (have && have.latest === day && have.published === published) return { changed: false, latest: day };
   const report = parse(await usda("", `q=report_date=${encodeURIComponent(mdy(day))}&allSections=true`));
-  if (!report || !report.items.length) return;
+  if (!report || !report.items.length) return { changed: false, latest: have && have.latest };
   const body = { latest: report.day.day, published: report.day.published, day: report.day, items: report.items, stored: new Date().toISOString() };
   await env.DB.prepare(`INSERT INTO beef_latest (id, body, updated_at) VALUES (1, ?1, ?2)
     ON CONFLICT(id) DO UPDATE SET body = ?1, updated_at = ?2`).bind(JSON.stringify(body), body.stored).run();
+  return { changed: true, latest: body.latest };
 }
 
 /* GET /beef: the stored newest report. The very first request after deploying fetches it on the spot. */

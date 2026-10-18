@@ -13,10 +13,10 @@
  *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
  *
  * Two cron triggers in wrangler.toml call `scheduled`, at :17 and :47. Both read CBP's border wait
- * times, so those are polled every half hour; on weekdays from 6 am to 8 pm Central (lmrHours) they
- * also check for a new boxed beef and pork report. The :17 run also polls YouTube. The :47 runs at 09
- * and 21 UTC start the site's snapshot workflow (refresh.js), since GitHub's own schedule for it runs
- * hours late or not at all. The reefer rates
+ * times, so those are polled every half hour. On weekdays, in the windows USDA posts and corrects the
+ * boxed beef and pork reports (lmrWindow), they check for a new one, and a new one starts the site's
+ * snapshot workflow (refresh.js); so does the :47 run at 11 UTC, every day. The :17 run every three
+ * hours polls YouTube. The reefer rates
  * need no cron: USDA keeps them, and they're asked for on request.
  */
 import { catalog, CATALOG_MAX_AGE, visits, guestbook, sign, unsign, Refused } from "./music.js";
@@ -25,7 +25,7 @@ import { reeferWeek, REEFER_MAX_AGE, REEFER_WEEK_MAX_AGE } from "./reefer.js";
 import { borderTick, borderNow, borderPort, BORDER_MAX_AGE, BORDER_PORT_MAX_AGE } from "./border.js";
 import { beefTick, beefData, BEEF_MAX_AGE } from "./beef.js";
 import { porkTick, porkData, PORK_MAX_AGE } from "./pork.js";
-import { refreshState, startSnapshot, snapshotDue } from "./refresh.js";
+import { refreshState, startSnapshot, snapshotDue, setPending, isPending } from "./refresh.js";
 
 const STREMIO = "https://api.strem.io/api/datastoreGet";
 const SUBSTACK = "https://juantorresis.substack.com/feed";
@@ -85,25 +85,56 @@ export default {
   // Crons in wrangler.toml. A failed poll is logged and the last stored data stays.
   async scheduled(event, env, ctx) {
     const log = (what) => (e) => console.error(what + ":", e && e.message ? e.message : e);
-    if (event.cron === YOUTUBE_CRON) ctx.waitUntil(poll(env).catch(log("youtube poll")));
+    const now = new Date(event.scheduledTime || Date.now());
+    // A small channel's numbers barely move in an hour, and the page says when they were checked.
+    if (event.cron === YOUTUBE_CRON && now.getUTCHours() % YOUTUBE_EVERY_H === 0) ctx.waitUntil(poll(env).catch(log("youtube poll")));
     ctx.waitUntil(borderTick(env).catch(log("border")));
-    if (snapshotDue(new Date(event.scheduledTime || Date.now()), event.cron)) ctx.waitUntil(startSnapshot(env, "cron").catch(log("snapshot start")));
-    // USDA posts the beef and pork reports on weekday afternoons and corrects them the same day or
-    // the next morning, so the summary checks only run then: 28 a weekday instead of 48 every day.
-    if (lmrHours(new Date(event.scheduledTime || Date.now()))) {
-      ctx.waitUntil(beefTick(env).catch(log("beef")));
-      ctx.waitUntil(porkTick(env).catch(log("pork")));
-    }
+    ctx.waitUntil(pagesTick(env, now, event.cron, log).catch(log("usda and pages")));
   },
 };
 
-/* Monday to Friday, 6 am to 8 pm Central: when a new or corrected USDA livestock report can appear.
-   A page whose copy is behind outside these hours still gets the stored report from /beef or /pork. */
-export function lmrHours(now) {
-  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", weekday: "short", hour: "numeric", hourCycle: "h23" })
-    .formatToParts(now).map((p) => [p.type, p.value]));
-  const hour = Number(parts.hour);
-  return !["Sat", "Sun"].includes(parts.weekday) && hour >= 6 && hour < 20;
+const YOUTUBE_EVERY_H = 3;
+
+/* The beef and pork report checks, then whether to start the site's snapshot (refresh.js).
+   In the afternoon window a check stops once that day's report is stored, so most afternoons it asks
+   USDA two or three times; the morning window catches USDA's corrections to the day before. A new or
+   corrected report marks the pages pending. In the afternoon a pending start waits until both
+   reports for the day are in (they come about ten minutes apart, and one start covers both) or the
+   window ends; in the morning, or once the window is over, it starts at the next run the cooldown
+   allows. The daily morning start covers everything else and clears anything pending. */
+export async function pagesTick(env, now, cron, log) {
+  const w = lmrWindow(now), today = centralDay(now);
+  let both = false;
+  if (w) {
+    const skipDay = w === "afternoon" ? today : null;
+    const [b, p] = await Promise.all([beefTick(env, { skipDay }).catch(log("beef")), porkTick(env, { skipDay }).catch(log("pork"))]);
+    if ((b && b.changed) || (p && p.changed)) await setPending(env, true);
+    both = Boolean(b && p && b.latest === today && p.latest === today);
+  }
+  if (!env.GH_DISPATCH_TOKEN) return;
+  if (snapshotDue(now, cron)) {
+    if ((await startSnapshot(env, "morning")).started) await setPending(env, false);
+    return;
+  }
+  if ((both || w !== "afternoon") && (await isPending(env))) {
+    if ((await startSnapshot(env, "new report")).started) await setPending(env, false);
+  }
+}
+
+const central = (now) => Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23" })
+  .formatToParts(now).map((p) => [p.type, p.value]));
+const centralDay = (now) => new Intl.DateTimeFormat("en-CA", { timeZone: "America/Chicago" }).format(now);   // "YYYY-MM-DD"
+
+/* When a check can find something, Monday to Friday, Central time: "afternoon" from 1:30 to 6 pm, when
+   USDA posts the day's report (about 2:45 pm for beef, 2:55 for pork, sometimes late); "morning" from
+   6 to 8 am, when it corrects the day before. Otherwise null: a stored report can't change then, and
+   a page whose copy is behind still gets it from /beef or /pork. */
+export function lmrWindow(now) {
+  const c = central(now), mins = Number(c.hour) * 60 + Number(c.minute);
+  if (["Sat", "Sun"].includes(c.weekday)) return null;
+  if (mins >= 13 * 60 + 30 && mins < 18 * 60) return "afternoon";
+  if (mins >= 6 * 60 && mins < 8 * 60) return "morning";
+  return null;
 }
 
 const json = (body, status, headers) =>
@@ -249,8 +280,8 @@ async function latestRoute(env, ctx, url, cors, name, data, maxAge) {
   }
   // Nothing stored yet: answer, but don't keep the empty answer at the edge (see reeferRoute).
   if (!payload.latest) return json(payload, 200, { ...cors, "Cache-Control": "no-store" });
-  // Outside the hours a report can change (lmrHours) the stored one holds until morning: an hour at the edge.
-  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${lmrHours(new Date()) ? maxAge : 3600}` });
+  // Outside the windows a report can change (lmrWindow) the stored one holds: an hour at the edge.
+  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${lmrWindow(new Date()) ? maxAge : 3600}` });
   ctx.waitUntil(cache.put(cacheKey, res.clone()));
   return res;
 }

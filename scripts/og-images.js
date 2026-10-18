@@ -45,7 +45,7 @@ const CARDS = {
   "usda-market-prices": { top: ["Juan Torres", "Data"], name: "USDA market prices",
     sub: "Beef · Pork · Fed cattle · Reefer freight · English and Spanish", bottom: ["juantorresmi.github.io/usda-market-prices", "USDA AMS · free CSVs"] },
   youtube: { top: ["Juan Torres", "YouTube"], name: "On YouTube",
-    sub: "The channel’s numbers, refreshed every hour", bottom: ["juantorresmi.github.io/youtube", "Cloudflare Worker · YouTube Data API"] },
+    sub: "The channel’s numbers, refreshed every three hours", bottom: ["juantorresmi.github.io/youtube", "Cloudflare Worker · YouTube Data API"] },
 };
 
 const css = `

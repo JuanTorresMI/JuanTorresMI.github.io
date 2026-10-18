@@ -22,7 +22,7 @@ plus a front-matter stub for each reefer lane (_reefer_lanes/), each named borde
 (_border_crossings/, _border_crossings_es/), each beef and pork cut and each cattle region, in both
 languages (_beef_cuts/, _pork_cuts/, _cattle_regions/ and their _es twins), never deleted, and the
 CSV downloads. A source that fails or answers with an error is skipped and its last good file
-stays. The `Snapshot live pages` workflow runs this twice a day and commits whatever changed.
+stays. The `Snapshot live pages` workflow runs this at least once a day and commits whatever changed.
 Needs only the standard library.
 """
 import calendar, csv, json, os, re, sys, urllib.request
