@@ -1771,6 +1771,12 @@ def pork():
                  "v": last[3], "low": last[1], "high": last[2], "d30": [min(d30), max(d30)] if d30 else None,
                  "year": sorted(round(r[3], 2) for r in rows if r[0] > year_start)}]
 
+    def also_of(key):
+        """What stores call an item, in each language, unless that is just its own name."""
+        if key[0] == "primal": return "", ""
+        a, mt = PORK_ALSO.get(key[1]) or ("", ""), meta(key)
+        return ("" if a[0].lower() == mt["name"].lower() else a[0]), ("" if a[1].lower() == mt["es"].lower() else a[1])
+
     pages = {}
     for key, rows in series.items():
         section, item = key
@@ -1784,8 +1790,7 @@ def pork():
         pages[mt["slug"]] = {
             "name": mt["name"], "es": mt["es"], "slug": mt["slug"], "slug_es": mt["slug_es"], "usda": item if section != "primal" else "",
             "section": section, "primal": PRIM_OF.get(mt.get("primal"), mt.get("primal") if section == "primal" else ""),
-            "group": mt.get("primal", section), "also": (PORK_ALSO.get(item) or ("", ""))[0] if section != "primal" else "",
-            "also_es": (PORK_ALSO.get(item) or ("", ""))[1] if section != "primal" else "",
+            "group": mt.get("primal", section), "also": also_of(key)[0], "also_es": also_of(key)[1],
             "f": fx, "current": fx["current"], "last_iso": rows[-1][0], "since": d_full(rows[0][0]), "since_es": d_full_es(rows[0][0]),
             "first_iso": rows[0][0], "days_all": fmt(len(rows)), "days_year": len(traded),
             "chart": beef_chart([("line", "Price", [(r[0], r[3]) for r in rows])], usd, weekly=True),
@@ -1836,7 +1841,7 @@ def pork():
               "avg": usd(sum(v for _, v in year_c) / len(year_c)), "record": usd(rec[1]), "record_day": d_full(rec[0]), "record_day_es": d_full_es(rec[0]),
               "record_now": rec[0] == latest, "carcass_lb": per_lb(c),
               "year_ago": None if not ago else {"date": d_full(ago[0]), "date_es": d_full_es(ago[0]), "cwt": usd(ago[1]), "change": pct_change(c, ago[1])}}
-    LINES = [("line", "Carcass", "Canal", 1), ("line2", "Belly", "Panceta", 7), ("line3", "Loin", "Lomo", 2), ("line4", "Ham", "Pierna", 6)]
+    LINES = [("line", "Carcass", "Canal", 1), ("line2", "Belly", "Panceta", 7)]
     chart_year = beef_chart([(cls, lab, [(d, days[d][i]) for d in order if d > year_start]) for cls, lab, _, i in LINES], usd)
     chart_all = beef_chart([("line", "Carcass", carcass)], usd, weekly=True)
     key_lines = [{"cls": cls, "en": en, "es": es} for cls, en, es, _ in LINES]
@@ -1857,7 +1862,7 @@ def pork():
         last = rows[-1]
         mt = meta(key)
         then = on_or_before(rows[:-1], (iso_day(latest) - timedelta(days=7)).date().isoformat())
-        also = PORK_ALSO.get(key[1]) or ("", "")
+        also = also_of(key)
         words = " ".join(x for x in (mt["name"], mt["es"], also[0], also[1], key[1]) if x)
         return {"name": mt["name"], "es": mt["es"], "slug": mt["slug"] if mt["slug"] in pages else "", "slug_es": mt["slug_es"] if mt["slug"] in pages else "",
                 "also": also[0], "also_es": also[1], "find": " ".join(words.lower().replace(",", " ").split()),
@@ -2145,8 +2150,8 @@ def cattle():
     lbs = lambda v: "" if v is None else f"{v:,.0f} lb"
     pct = lambda v: "" if v is None else f"{v:.1f}%"
     hd = lambda v: "" if v is None else fmt(int(v))
-    wk_label = lambda d: f"Week of {d_full(week_of(d)[0])}"
-    wk_label_es = lambda d: f"Semana del {d_full_es(week_of(d)[0])}"
+    wk_label = lambda d: f"week of {d_full(week_of(d)[0])}"          # read mid-sentence: "(week of Oct 5, 2026)"
+    wk_label_es = lambda d: f"semana del {d_full_es(week_of(d)[0])}"
 
     # USDA's own notes on the week (the "trend" paragraph), where a report has one.
     notes = {}
@@ -2241,6 +2246,8 @@ def cattle():
         pg = {"slug": slug, "slug_es": slug_es, "name": name, "es": name_es, "states": states, "states_es": states_es, "report": code,
               "report_url": f"https://mymarketnews.ams.usda.gov/viewReport/{rid}", "main_basis": main_basis,
               "main_label": BASIS_WORDS[main_basis][0], "main_label_es": BASIS_WORDS[main_basis][1],
+              "main_short": {"live_fob": "live, FOB the feedlot", "dressed_delivered": "dressed, delivered to the plant"}[main_basis],
+              "main_short_es": {"live_fob": "en pie, LAB corral", "dressed_delivered": "en canal, entregado en la planta"}[main_basis],
               "live": fl, "dressed": fd, "main": fl if main_basis == "live_fob" else fd, "current": main[-1][0] == latest_week,
               "bases": bases, "detail": detail, "has_detail": rid != 2481, "grid_base": grid_base,
               "weeks_year": weeks_year, "first_iso": main[0][0], "since": d_full(week_of(min(r[0] for r in (live + dressed)))[0]),
@@ -2329,18 +2336,28 @@ def cattle():
     # ---- stubs, English and Spanish, never deleted
     os.makedirs(CATTLE_REG_DIR, exist_ok=True); os.makedirs(CATTLE_REG_ES_DIR, exist_ok=True)
     for slug, pg in pages.items():
+        # Region names with their article: "the Eastern Cornbelt", "el Cornbelt oriental".
+        IN_EN = {"five-area": "the 5-area market", "western-cornbelt": "the Western Cornbelt", "eastern-cornbelt": "the Eastern Cornbelt",
+                 "northern-plains": "the Northern Plains", "western-states": "the Western States", "northeast": "the Northeast"}
+        IN_ES = {"five-area": "las 5 áreas", "western-cornbelt": "el Cornbelt occidental", "eastern-cornbelt": "el Cornbelt oriental",
+                 "northern-plains": "las Planicies del norte", "western-states": "los Estados del oeste", "northeast": "el Noreste"}
+        where, where_es = IN_EN.get(slug, pg["name"]), IN_ES.get(slug, pg["es"])
+        since_y = pg["first_iso"][:4]
         if slug == "five-area":
             t, t_es = "5-area fed cattle prices", "Precio del ganado gordo en las 5 áreas"
             seo, seo_es = "5-Area Fed Cattle Price This Week · USDA Weighted Average", "Precio del ganado gordo, 5 áreas · USDA"
         else:
-            t, t_es = f"Fed cattle prices in {pg['name']}" if slug not in ("western-cornbelt", "eastern-cornbelt", "northern-plains", "western-states", "northeast") else f"Fed cattle prices in the {pg['name']}", f"Precio del ganado gordo en {pg['es']}"
+            t, t_es = f"Fed cattle prices in {where}", f"Precio del ganado gordo en {where_es}"
             seo = fit(f"{pg['name']} Fed Cattle Prices This Week · USDA", f"{pg['name']} Fed Cattle Prices This Week", f"{pg['name']} Fed Cattle Prices")
-            seo_es = fit(f"Ganado gordo en {pg['es']}: precio · USDA", f"Ganado gordo en {pg['es']}: precio")
-        desc = fit(f"What packers paid for fed steers and heifers in {pg['states']} each week, live and dressed, from USDA's negotiated cash reports, with every week since {pg['since']}.",
-                   f"What packers paid for fed cattle in {pg['states']} each week, live and dressed, from USDA's negotiated cash reports since {pg['since'][-4:]}.",
-                   f"Weekly USDA fed cattle prices for {pg['name']}, live and dressed, since {pg['since'][-4:]}.", limit=160)
-        desc_es = fit(f"Lo que pagaron los empacadores por novillos y vaquillas gordos en {pg['states_es']} cada semana, en pie y en canal, según el USDA, desde el {pg['since_es']}.",
-                      f"Precio semanal del ganado gordo en {pg['es']} según el USDA, en pie y en canal, desde {pg['since'][-4:]}.", limit=160)
+            seo_es = fit(f"Precio del ganado gordo en {where_es} · USDA", f"Ganado gordo en {where_es}: precio · USDA", f"Ganado gordo en {where_es}")
+        states = "" if slug == "five-area" else f" ({pg['states']})"
+        states_es = "" if slug == "five-area" else f" ({pg['states_es']})"
+        desc = fit(f"What packers paid for fed steers and heifers in {where}{states} each week, live and dressed, from USDA's cash reports, every week since {since_y}.",
+                   f"What packers paid for fed steers and heifers in {where} each week, live and dressed, from USDA's negotiated cash reports, every week since {since_y}.",
+                   f"Weekly USDA fed cattle prices for {where}, live and dressed, every week since {since_y}.", limit=160)
+        desc_es = fit(f"Lo que pagaron los empacadores por novillos y vaquillas gordos en {where_es}{states_es} cada semana, en pie y en canal, desde {since_y}.",
+                      f"Lo que pagaron los empacadores por novillos y vaquillas gordos en {where_es} cada semana, en pie y en canal, según el USDA, desde {since_y}.",
+                      f"Precio semanal del ganado gordo en {where_es} según el USDA, en pie y en canal, desde {since_y}.", limit=160)
         for d_, s_, t_, so_, de_, tr_ in ((CATTLE_REG_DIR, slug, t, seo, desc, f"/es/precios-de-ganado-gordo/{pg['slug_es']}/"),
                                           (CATTLE_REG_ES_DIR, pg["slug_es"], t_es, seo_es, desc_es, f"/fed-cattle-prices/{slug}/")):
             f = os.path.join(d_, s_ + ".md")

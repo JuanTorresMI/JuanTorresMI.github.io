@@ -53,11 +53,11 @@
   {%- if es -%}
     {%- if f.year_ago %}Hace un año ({{ f.year_ago.week_es }}) los novillos en pie se pagaban a {{ f.year_ago.cwt }}; esta semana están {{ f.year_ago.change }} frente a eso. {% endif -%}
     En el último año promediaron {{ f.avg }}, de un mínimo de {{ f.low }} ({{ f.low_week_es }}) a un máximo de {{ f.high }} ({{ f.high_week_es }}).
-    {%- if r.record.now %} Esta semana es la más alta registrada desde 2020.{% else %} La más alta registrada desde 2020 es {{ r.record.cwt }}, la semana del {{ r.record.week_es | remove: "Semana del " }}.{% endif %}
+    {%- if r.record.now %} Esta semana es la más alta registrada desde 2020.{% else %} La más alta registrada desde 2020 es {{ r.record.cwt }}, la {{ r.record.week_es }}.{% endif %}
   {%- else -%}
     {%- if f.year_ago %}A year earlier ({{ f.year_ago.week }}) live steers brought {{ f.year_ago.cwt }}; this week is {{ f.year_ago.change }} against that. {% endif -%}
     Over the past year they averaged {{ f.avg }}, from a low of {{ f.low }} ({{ f.low_week }}) to a high of {{ f.high }} ({{ f.high_week }}).
-    {%- if r.record.now %} This week is the highest on record since 2020.{% else %} The highest on record since 2020 is {{ r.record.cwt }}, in the week of {{ r.record.week | remove: "Week of " }}.{% endif %}
+    {%- if r.record.now %} This week is the highest on record since 2020.{% else %} The highest on record since 2020 is {{ r.record.cwt }}, in the {{ r.record.week }}.{% endif %}
   {%- endif %}
   </p>
   {%- if r.chart_year %}

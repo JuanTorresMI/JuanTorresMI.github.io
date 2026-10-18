@@ -1,7 +1,7 @@
 ---
 region: northeast
-title: "Precio del ganado gordo en Noreste"
-seo_title: "Ganado gordo en Noreste: precio · USDA"
-description: "Precio semanal del ganado gordo en Noreste según el USDA, en pie y en canal, desde 2019."
+title: "Precio del ganado gordo en el Noreste"
+seo_title: "Precio del ganado gordo en el Noreste · USDA"
+description: "Lo que pagaron los empacadores por novillos y vaquillas gordos en el Noreste cada semana, en pie y en canal, según el USDA, desde 2020."
 translation: "/fed-cattle-prices/northeast/"
 ---

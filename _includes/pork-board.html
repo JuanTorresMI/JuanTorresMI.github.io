@@ -66,8 +66,8 @@
   </p>
 
   {%- if r.chart_year %}
-  {%- capture lab %}{% if es %}El valor de la canal de cerdo y de los primales de panceta, lomo y pierna cada día hábil del {{ r.chart_year.start_es }} al {{ r.chart_year.end_es }}, entre {{ r.chart_year.bottom }} y {{ r.chart_year.top }} por quintal.{% else %}The pork carcass cutout and the belly, loin and ham primals every business day from {{ r.chart_year.start }} to {{ r.chart_year.end }}, between {{ r.chart_year.bottom }} and {{ r.chart_year.top }} per hundredweight.{% endif %}{% endcapture %}
-  {% include price-chart.html chart=r.chart_year es=es label=lab title_en="The cutout and primals, day by day" title_es="La canal y los primales, día por día" unit_en="Dollars per hundredweight" unit_es="Dólares por quintal" names="Carcass:Canal,Belly:Panceta,Loin:Lomo,Ham:Pierna" %}
+  {%- capture lab %}{% if es %}El valor de la canal de cerdo y del primal de panceta cada día hábil del {{ r.chart_year.start_es }} al {{ r.chart_year.end_es }}, entre {{ r.chart_year.bottom }} y {{ r.chart_year.top }} por quintal.{% else %}The pork carcass cutout and the belly primal every business day from {{ r.chart_year.start }} to {{ r.chart_year.end }}, between {{ r.chart_year.bottom }} and {{ r.chart_year.top }} per hundredweight.{% endif %}{% endcapture %}
+  {% include price-chart.html chart=r.chart_year es=es label=lab title_en="The cutout and the belly, day by day" title_es="La canal y la panceta, día por día" unit_en="Dollars per hundredweight" unit_es="Dólares por quintal" names="Carcass:Canal,Belly:Panceta,Loin:Lomo,Ham:Pierna" %}
   {%- endif %}
 
   <section class="rb-block">

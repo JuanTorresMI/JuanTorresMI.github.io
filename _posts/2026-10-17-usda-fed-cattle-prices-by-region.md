@@ -4,7 +4,7 @@ title: "What packers pay for cattle, region by region, from six USDA reports"
 seo_title: "A Fed Cattle Price Board from USDA Data · Juan Torres"
 date: 2026-10-17
 tags: [logistics, cattle, usda, data]
-description: "How the site's fed cattle board puts USDA's 5-area, state and regional cash cattle reports on one page, what six years of steer prices show, and where the data is thin."
+description: "How the site's fed cattle board puts USDA's 5-area, state and regional cash cattle reports on one page, what six years of prices show, and where data is thin."
 image: /assets/og/fed-cattle-prices.png
 image_alt: "Fed cattle prices, by Juan Torres. USDA's weekly cash cattle prices, 5-area and by region."
 ---

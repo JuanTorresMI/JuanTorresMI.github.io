@@ -19,10 +19,10 @@ layout: default
     <p class="rb-lede">
     {%- if es -%}
       Lo que pagaron los empacadores por novillos y vaquillas gordos en {{ c.states_es }}, en tratos negociados de contado, según el reporte {{ c.report }} del USDA.
-      {% if m.current %}En la semana del {{ m.week_es | remove: "Semana del " }} el precio {{ c.main_label_es | downcase }} fue de <strong>{{ m.cwt }}</strong> por quintal{% if m.head != "" %}, por {{ m.head }} cabezas{% endif %}.{% else %}No hubo suficiente contado para publicar un precio la semana más reciente; el último precio {{ c.main_label_es | downcase }} fue de {{ m.cwt }} por quintal, en la semana del {{ m.week_es | remove: "Semana del " }}.{% endif %}
+      {% if m.current %}En la {{ m.week_es }}, el ganado vendido {{ c.main_short_es }} se pagó a <strong>{{ m.cwt }}</strong> por quintal{% if m.head != "" %}, por {{ m.head }} cabezas{% endif %}.{% else %}No hubo suficiente contado para publicar un precio la semana más reciente; el último precio del ganado vendido {{ c.main_short_es }} fue de {{ m.cwt }} por quintal, en la {{ m.week_es }}.{% endif %}
     {%- else -%}
       What packers paid for fed steers and heifers in {{ c.states }}, on negotiated cash deals, from USDA’s {{ c.report }} report.
-      {% if m.current %}In the week of {{ m.week | remove: "Week of " }} the {{ c.main_label | downcase }} price was <strong>{{ m.cwt }}</strong> per hundredweight{% if m.head != "" %}, on {{ m.head }} head{% endif %}.{% else %}There wasn’t enough cash trade to publish a price in the latest week; the last {{ c.main_label | downcase }} price was {{ m.cwt }} per hundredweight, in the week of {{ m.week | remove: "Week of " }}.{% endif %}
+      {% if m.current %}In the {{ m.week }}, cattle sold {{ c.main_short }} brought <strong>{{ m.cwt }}</strong> per hundredweight{% if m.head != "" %}, on {{ m.head }} head{% endif %}.{% else %}There wasn’t enough cash trade to publish a price in the latest week; the last price for cattle sold {{ c.main_short }} was {{ m.cwt }} per hundredweight, in the {{ m.week }}.{% endif %}
     {%- endif %}
     </p>
     {%- else %}
@@ -31,7 +31,7 @@ layout: default
   </div>
   {%- if c %}
   <dl class="rb-stamp">
-    <div><dt>{% if es %}Semana{% else %}Week{% endif %}</dt><dd>{% if es %}{{ m.week_es | remove: "Semana del " }}{% else %}{{ m.week | remove: "Week of " }}{% endif %}</dd></div>
+    <div><dt>{% if es %}Semana{% else %}Week{% endif %}</dt><dd>{% if es %}{{ m.week_es | remove: "semana del " }}{% else %}{{ m.week | remove: "week of " }}{% endif %}</dd></div>
     {%- if c.live %}<div><dt>{% if es %}En pie, LAB{% else %}Live, FOB{% endif %}{% unless c.live.current %}{% if es %}, último{% else %}, last{% endif %}{% endunless %}</dt><dd>{{ c.live.cwt }}{% if c.live.current and c.live.change != "" %} <span>{{ c.live.change }}</span>{% endif %}</dd></div>{% endif %}
     {%- if c.dressed %}<div><dt>{% if es %}En canal, entregado{% else %}Dressed, delivered{% endif %}{% unless c.dressed.current %}{% if es %}, último{% else %}, last{% endif %}{% endunless %}</dt><dd>{{ c.dressed.cwt }}{% if c.dressed.current and c.dressed.change != "" %} <span>{{ c.dressed.change }}</span>{% endif %}</dd></div>{% endif %}
     {%- if m.weight != "" %}<div><dt>{% if es %}Peso promedio{% else %}Average weight{% endif %}</dt><dd>{{ m.weight }}</dd></div>{% endif %}
@@ -124,7 +124,7 @@ layout: default
       <thead><tr><th scope="col">{% if es %}Semana{% else %}Week{% endif %}</th><th scope="col">{% if es %}En pie{% else %}Live{% endif %}</th><th scope="col">{% if es %}Cabezas{% else %}Head{% endif %}</th><th scope="col">{% if es %}En canal{% else %}Dressed{% endif %}</th><th scope="col">{% if es %}Cabezas{% else %}Head{% endif %}</th></tr></thead>
       <tbody>
       {%- for w in c.rows %}
-        <tr><th scope="row">{% if es %}{{ w.week_es | remove: "Semana del " }}{% else %}{{ w.week | remove: "Week of " }}{% endif %}</th><td>{{ w.live | default: "—" }}</td><td>{{ w.live_head | default: "—" }}</td><td>{{ w.dressed | default: "—" }}</td><td>{{ w.dressed_head | default: "—" }}</td></tr>
+        <tr><th scope="row">{% if es %}{{ w.week_es | remove: "semana del " }}{% else %}{{ w.week | remove: "week of " }}{% endif %}</th><td>{{ w.live | default: "—" }}</td><td>{{ w.live_head | default: "—" }}</td><td>{{ w.dressed | default: "—" }}</td><td>{{ w.dressed_head | default: "—" }}</td></tr>
       {%- endfor %}
       </tbody>
     </table>
