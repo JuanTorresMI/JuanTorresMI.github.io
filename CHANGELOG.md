@@ -21,6 +21,17 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-18 — Worker tuning
+
+- The beef and pork report checks run only on weekdays, 6 am to 8 pm Central (`lmrHours()` in
+  `worker/src/index.js`), the hours USDA posts and corrects them: 28 checks a weekday instead of 48
+  every day, about 58% fewer calls to USDA. Nothing a visitor sees changes: reports still show up
+  within half an hour, and the border, YouTube and TV polling is untouched.
+- Outside those hours `/beef` and `/pork` stay an hour in the edge cache instead of ten minutes, so
+  a stale page's question is answered without reading D1.
+- Tested locally with `wrangler dev --test-scheduled` (the window's edges, a cron run, the routes), then
+  deployed; every live route checked.
+
 ## 2026-10-18 — SEO, bug and speed passes
 
 - **SEO** (audit of all 797 sitemap pages, beyond check.py): 30 pork search titles over 65

@@ -26,8 +26,9 @@ npx.cmd wrangler deploy
 | `GET /pork` | USDA's newest pork report: the carcass cutout, primals and every cut | the pork pages, when their copy is behind | `src/pork.js` |
 | `GET /music`, `/music/visits`, `/music/guestbook` (+ `POST`, `DELETE /music/guestbook/<id>`) | Yokonjuan's catalog, visitor counter, guestbook | `/music/` | `src/music.js` |
 
-**Cron triggers** (`wrangler.toml`): at :17 and :47 every hour it reads CBP's border waits and
-checks for a new boxed beef and pork report; the :17 run also polls YouTube. The fed cattle board
+**Cron triggers** (`wrangler.toml`): at :17 and :47 every hour it reads CBP's border waits; on
+weekdays from 6 am to 8 pm Central (`lmrHours` in `src/index.js`) it also checks for a new boxed beef and pork report, the only hours USDA posts or corrects
+them; the :17 run also polls YouTube. The fed cattle board
 needs nothing from the Worker: `snapshot.py` reads USDA's datamart directly. The reefer rates need no cron:
 USDA keeps them, and the Worker asks on request.
 
@@ -380,7 +381,7 @@ Nothing. CBP is asked 48 times a day. About 50 ports post about once an hour, so
 
 `/pork-prices/` works exactly like the beef board below, for USDA's National Daily Pork FOB Plant,
 Negotiated Sales, afternoon (LM_PK602, report 2498): `src/pork.js` keeps one row, `pork_latest`,
-the newest report, and both cron runs call `porkTick` (a few-hundred-byte summary; the whole report,
+the newest report, and the cron runs on weekdays from 6 am to 8 pm Central (`lmrHours` in `src/index.js`) call `porkTick` (a few-hundred-byte summary; the whole report,
 about 150 KB, only when USDA has posted something new). `GET /pork` serves it to
 `pork-prices/live.js`. The history is USDA's, read by `scripts/snapshot.py`. The fed cattle board
 needs nothing from the Worker.
@@ -395,7 +396,7 @@ Livestock Mandatory Reporting datamart (`mpr.datamart.ams.usda.gov`). No key is 
 **This Worker keeps no beef history.** USDA keeps every report and serves any date range, so a
 second copy would only cost writes and storage: `scripts/snapshot.py` reads the history from the
 site's committed CSVs and asks USDA directly for the months they don't settle. The Worker keeps one
-row, `beef_latest`: the newest report. Both cron runs (:17 and :47) ask USDA for the newest report's
+row, `beef_latest`: the newest report. The cron runs (:17 and :47) on weekdays from 6 am to 8 pm Central (`lmrHours` in `src/index.js`) ask USDA for the newest report's
 summary, a few hundred bytes, and only when there is a report it hasn't stored (or a correction) fetch
 the whole thing with `allSections=true`, about 110 KB, and replace the row. The board's page script
 (`beef-prices/live.js`) reads `GET /beef` only when a page's copy is older than a report that should
@@ -434,7 +435,9 @@ around :17 or :47 shows each run.
 
 ### What it costs
 
-Nothing. USDA is asked 48 times a day for a few hundred bytes, plus one full report on business days.
+Nothing. USDA is asked 28 times a weekday for a few hundred bytes (none at night or on weekends,
+when no report can appear), plus one full report on business days. Outside those hours `/beef` and
+`/pork` stay an hour at the edge instead of ten minutes, since the stored report can't change.
 That is one row written a business day. Visitors reach the Worker only when a page's copy is behind,
 which happens between USDA posting a report (mid-afternoon) and the evening rebuild.
 
@@ -455,7 +458,7 @@ beef and reefer histories moved out of D1):
 | Database size | 500 MB | 160 KB | grows about 10 MB a year (border readings): decades |
 | Cron triggers | 5 per account | 2 | 3 spare |
 | Outside fetches per run | 50 | at most about 9 (CBP, YouTube, a beef and a pork summary, and a full report when one is new) | |
-| Cron requests a day | | 48 (24 + 24) | |
+| Cron requests a day | | 48 (24 + 24); USDA is asked only on 28 of them, weekdays | |
 
 Requests from visitors are the only number that scales with traffic, and only the pages with
 something live ask: `/watching/` (every 40 s while visible), `/youtube/`, `/blog/`, `/music/` and
