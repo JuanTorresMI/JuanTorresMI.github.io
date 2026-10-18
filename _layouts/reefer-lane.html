@@ -57,6 +57,14 @@ layout: default
   <div class="rb-answer" id="pm-out" aria-live="polite"><p>Enter the trip’s miles to turn the {{ l.range }} rate into dollars per mile.</p></div>
   <script type="application/json" id="pm-data">{{ l.raw | jsonify }}</script>
 </section>
+<section class="rb-block bf-tools" id="per-case" hidden>
+  <h2>Freight cost per case <span>What the truck adds to each case and pound</span></h2>
+  <form class="rb-look" onsubmit="return false">
+    <label>Cases on the truck <input id="pc-cases" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 1,000"></label>
+    <label>Pounds per case <input id="pc-lbs" type="number" inputmode="decimal" min="0" step="0.1" placeholder="optional, e.g. 25"></label>
+  </form>
+  <div class="rb-answer" id="pc-out" aria-live="polite"><p>Enter how many cases fill the truck to spread the {{ l.range }} rate across them.</p></div>
+</section>
 <script src="/reefer-rates/tools.js?v={{ site.time | date: '%s' }}" defer></script>
 {%- endif %}
 

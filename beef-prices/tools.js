@@ -2,7 +2,8 @@
  * Worker or USDA; without JavaScript the forms stay hidden and the tables and figures still work.
  *
  * The board: "Find a cut" filters every table on the page by name, IMPS code or what stores call it
- * (?q= in the address fills it in, so a search can be shared).
+ * (?q= in the address fills it in, so a search can be shared), and "Budget a buy" prices an order
+ * of cuts and pounds at today's averages and a week earlier.
  * A cut page: "Check a price" puts a quoted price per pound against the latest day's sales, the last
  * 30 days and the past year (#bf-tool-data); "What it costs after trimming" turns a price, a yield
  * and labor into the cost of a sellable pound and of a portion, and how much to buy. The yield and
@@ -45,6 +46,46 @@
     q.addEventListener("input", run);
     const start = new URL(location.href).searchParams.get("q");
     if (start) { q.value = start; run(); }
+  }
+
+  /* ---------------------------------------------------------- budget a buy (the board) */
+  // An order of cuts and pounds priced at today's weighted averages, and the same order a week
+  // earlier where the cut traded then. The order is remembered in this browser.
+  const bgData = $("bg-data");
+  if (bgData) {
+    const cuts = JSON.parse(bgData.textContent).filter(Boolean);
+    const sel = $("bg-cut"), lbsIn = $("bg-lbs"), bout = $("bg-out"), bblank = bout.innerHTML;
+    sel.innerHTML = cuts.map((c, i) => `<option value="${i}">${esc(c.name)}${c.grade === "Choice" || c.grade === "Price" ? "" : ` (${esc(c.grade)})`} · ${lb(c.v)}/lb</option>`).join("");
+    $("budget").hidden = false;
+    let order = [];
+    try { order = JSON.parse(localStorage.getItem("bf-budget") || "[]").filter((o) => cuts.some((c) => c.name === o.name)); } catch (e) { order = []; }
+    const keep = () => { try { localStorage.setItem("bf-budget", JSON.stringify(order)); } catch (e) { /* private window */ } };
+    const draw = () => {
+      if (!order.length) { bout.innerHTML = bblank; return; }
+      let total = 0, then = 0, thenAll = true;
+      const rows = order.map((o, i) => {
+        const c = cuts.find((x) => x.name === o.name);
+        const cost = (c.v / 100) * o.lbs;
+        total += cost;
+        if (c.then) then += (c.then / 100) * o.lbs; else thenAll = false;
+        return `<tr><th scope="row">${c.slug ? `<a href="/beef-prices/${esc(c.slug)}/">${esc(c.name)}</a>` : esc(c.name)}</th><td>${o.lbs.toLocaleString("en-US")} lb</td><td>${lb(c.v)}</td><td><strong>${money(cost)}</strong></td><td><button type="button" class="rb-chip" data-drop="${i}" aria-label="Remove ${esc(c.name)}">Remove</button></td></tr>`;
+      }).join("");
+      const diff = total - then;
+      bout.innerHTML = `<p class="rb-price">${money(total)} <span>for the order at today’s USDA weighted averages</span></p>
+        <div class="rb-scroll"><table class="rb-table"><thead><tr><th scope="col">Cut</th><th scope="col">Pounds</th><th scope="col">Per lb</th><th scope="col">Cost</th><th scope="col"></th></tr></thead><tbody>${rows}</tbody></table></div>
+        ${thenAll && then > 0 ? `<p>A week earlier the same order would have cost ${money(then)}, so it’s ${money(Math.abs(diff))} (${Math.abs((diff / then) * 100).toFixed(1)}%) ${diff >= 0 ? "more" : "less"} now.</p>` : `<p class="rb-note">Not every cut traded a week ago, so there’s no week-ago total.</p>`}
+        <p class="rb-note">Wholesale boxed prices, FOB the packing plant; freight and handling come on top.</p>`;
+    };
+    $("bg-form").addEventListener("submit", () => {
+      const lbs = num(lbsIn);
+      if (!(lbs > 0)) { lbsIn.focus(); return; }
+      const c = cuts[Number(sel.value)];
+      const had = order.find((o) => o.name === c.name);
+      if (had) had.lbs += lbs; else order.push({ name: c.name, lbs });
+      lbsIn.value = ""; keep(); draw();
+    });
+    bout.addEventListener("click", (e) => { const b = e.target.closest("[data-drop]"); if (b) { order.splice(Number(b.dataset.drop), 1); keep(); draw(); } });
+    draw();
   }
 
   /* ------------------------------------------------------------ the tools on a cut page */

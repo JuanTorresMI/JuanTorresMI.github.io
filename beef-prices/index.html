@@ -133,6 +133,16 @@ last_modified_at: 2026-10-16
   </div>
   </div>
   {%- endfor %}
+  <section class="rb-block bf-tools" id="budget" hidden>
+    <h3>Budget a buy <span>Today’s USDA prices for your order</span></h3>
+    <form class="rb-look" id="bg-form" onsubmit="return false">
+      <label>Cut <select id="bg-cut"></select></label>
+      <label>Pounds <input id="bg-lbs" type="number" inputmode="decimal" min="0.1" step="0.1" placeholder="e.g. 60"></label>
+      <label class="bf-btn-label"><span>&nbsp;</span><button type="submit" class="rb-btn" id="bg-add">Add to the order</button></label>
+    </form>
+    <div class="rb-answer" id="bg-out" aria-live="polite"><p>Add the cuts and pounds you buy to see what the order comes to at today’s weighted averages, and what it would have cost a week ago.</p></div>
+    <script type="application/json" id="bg-data">[{% for g in r.groups %}{% for c in g.rows %}{% if c.v > 0 %}{"name": {{ c.name | jsonify }}, "slug": {{ c.slug | jsonify }}, "grade": {{ c.grade | jsonify }}, "v": {{ c.v }}, "then": {{ c.then_v | jsonify }}},{% endif %}{% endfor %}{% endfor %}{% for c in r.ground %}{"name": {{ c.name | jsonify }}, "slug": {{ c.slug | jsonify }}, "grade": "Price", "v": {{ c.v }}, "then": {{ c.then_v | jsonify }}},{% endfor %}null]</script>
+  </section>
   {%- if r.quiet.size > 0 %}
   <p class="rb-note">Didn’t trade on {{ r.on_day }}: {% for q in r.quiet %}<a class="link" href="/beef-prices/{{ q.slug }}/">{{ q.name }}</a> (last {{ q.last }}){% unless forloop.last %}, {% endunless %}{% endfor %}. A cut with no sales has no price that day, which is different from a price of zero.</p>
   {%- endif %}
