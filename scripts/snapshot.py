@@ -1291,7 +1291,8 @@ def beef():
         words = " ".join(x for x in (i["name"], i.get("imps", ""), i.get("also", ""), dict(PRIMALS).get(i.get("primal") or "", ""), item) if x)
         return {"name": i["name"], "slug": slug_of[(section, item)] if slug_of[(section, item)] in pages else "",
                 "imps": i.get("imps", ""), "fl": i.get("fl", ""), "also": i.get("also", ""), "find": " ".join(words.lower().replace(",", " ").split()),
-                "week": pct_change(main[3], then[3]) if main and then else "",
+                "week": pct_change(main[3], then[3]) if main and then else "", "then_v": then[3] if main and then else None,
+                "grade": "Choice" if ch else ("Any grade" if section == "mixed" else "Price" if un else "Select"),
                 "price": usd(main[3]) if main else "", "price_lb": per_lb(main[3]) if main else "",
                 "select": usd(se[3]) if se else "", "select_lb": per_lb(se[3]) if se else "",
                 "lbs": total(5), "trades": total(4), "traded": bool(sold), "ungraded": section == "mixed", "v": (main or se)[3] if sold else 0}

@@ -112,7 +112,9 @@ layout: default
     <label>{% if es %}Hasta{% else %}Until{% endif %} <select id="pl-to">{% for h in t.hours %}<option value="{{ forloop.index0 }}"{% if forloop.index0 == 18 %} selected{% endif %}>{{ h }}</option>{% endfor %}</select></label>
   </form>
   <div class="rb-answer" id="pl-out" aria-live="polite"></div>
-  <script type="application/json" id="pl-data">{ "grid": {{ plan | jsonify }}, "hours": {{ t.hours | jsonify }}, "days": {{ t.days_plural | jsonify }}, "es": {% if es %}true{% else %}false{% endif %} }</script>
+  <div id="pl-near" aria-live="polite"></div>
+  <script type="application/json" id="pl-data">{ "grid": {{ plan | jsonify }}, "hours": {{ t.hours | jsonify }}, "days": {{ t.days_plural | jsonify }}, "es": {% if es %}true{% else %}false{% endif %},
+    "near": [{% for k in p.nearby %}{% assign n = b.ports[k] %}{% if n.grid.size > 0 %}{% assign ng = n.grid %}{% elsif n.last_year.grid.size > 0 %}{% assign ng = n.last_year.grid %}{% else %}{% assign ng = nil %}{% endif %}{% if ng %}{% if es and n.es %}{% assign nurl = "/es/tiempos-de-espera/" | append: n.es.slug | append: "/" %}{% elsif n.slug %}{% assign nurl = "/border-waits/" | append: n.slug | append: "/" %}{% else %}{% assign nurl = "" %}{% endif %}{"name": {{ n.name | jsonify }}, "url": {{ nurl | jsonify }}, "grid": {{ ng | jsonify }}},{% endif %}{% endfor %}null] }</script>
 </section>
 <script src="/border-waits/plan.js?v={{ site.time | date: '%s' }}" defer></script>
 {%- endif %}
