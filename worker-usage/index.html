@@ -47,13 +47,14 @@ image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left,
   </table>
   <p>CPU is time spent computing, not waiting on other sites, so a run that waits half a minute for USDA still uses a few milliseconds. The 10 ms is per run. Cloudflare stops a run that uses too much, and a stopped run counts as an error: <span id="wu-errors">{{ u.errors_30 | default: "—" }}</span> errors in the last 30 days{% if u.cpu_over %}, though the slowest runs go past 10 ms{% endif %}.</p>
   {%- if u.peak %}
-  <p>Over the last {{ u.past_days }} full days the Worker answered {{ u.avg_requests }} requests a day on average; the busiest was {{ u.peak.day }}, with {{ u.peak.requests }} ({{ u.peak.pct }} of the daily limit).</p>
+  <p>The busiest day of the last 30 was {{ u.peak.day }}, with {{ u.peak.requests }} requests ({{ u.peak.pct }} of the daily limit).</p>
   {%- endif %}
 </section>
 
 <section class="rb-sec" id="days" aria-labelledby="days-h">
   <h2 id="days-h">The last 30 days</h2>
-  <p>Requests include the scheduled runs (two an hour) as well as visitors’ pages asking for live numbers. Rows are the database’s rows read and written, which is how Cloudflare counts database use. CPU is the typical run (median) and the slowest 1% (99th percentile). Days with nothing recorded are left out.</p>
+  <p><a class="rb-btn" href="/worker-usage/worker-usage-daily.csv" download>Download every day on record (CSV)</a></p>
+  <p>Cloudflare keeps 30 days of these figures; this site keeps its own copy of every finished day{% if u.kept_days %} ({{ u.kept_days }} so far){% endif %}, in that file. Requests include the scheduled runs (two an hour) as well as visitors’ pages asking for live numbers. Rows are the database’s rows read and written, which is how Cloudflare counts database use. CPU is the typical run (median) and the slowest 1% (99th percentile). Days with nothing recorded are left out.</p>
   <table class="rb-t rb-stack">
     <thead><tr><th scope="col">Day (UTC)</th><th scope="col">Requests</th><th scope="col">Errors</th><th scope="col">Rows read</th><th scope="col">Rows written</th><th scope="col">CPU, typical</th><th scope="col">CPU, slowest 1%</th></tr></thead>
     <tbody id="wu-days">
@@ -71,7 +72,7 @@ image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left,
 <section class="rb-sec" id="schedule" aria-labelledby="schedule-h">
   <h2 id="schedule-h">What runs, and when</h2>
   <p>Most of the Worker’s requests are its own schedule, not visitors. Times are UTC unless noted.</p>
-  <table class="rb-t rb-stack">
+  <table class="rb-t rb-stack wu-sched">
     <thead><tr><th scope="col">Job</th><th scope="col">When</th><th scope="col">Why then</th></tr></thead>
     <tbody>
       <tr><th scope="row"><a href="/border-waits/">Border waits</a> from CBP</th><td data-label="When">every 30 minutes, at :17 and :47</td><td data-label="Why then">Crossings post about hourly, at different minutes, and CBP keeps no history, so each reading has to be caught.</td></tr>
@@ -124,7 +125,8 @@ image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left,
     ];
     document.getElementById("wu-meters").innerHTML = rows.map(([w, u, a, l, [p, wd]]) =>
       `<tr><th scope="row">${esc(w)}</th><td data-label="Used">${esc(u)}</td><td data-label="Available">${esc(a)}</td><td data-label="Free plan">${esc(l)}</td><td data-label="Share used">${esc(p)}<span class="rb-bar"><span style="width: ${wd}%"></span></span></td></tr>`).join("");
-    document.getElementById("wu-days").innerHTML = [...d.days].reverse().map((x) =>
+    const active = d.days.filter((x) => x.requests || x.rows_read || x.rows_written || x.date === d.today);
+    document.getElementById("wu-days").innerHTML = [...active].reverse().map((x) =>
       `<tr><th scope="row">${esc(day(x.date))}</th><td data-label="Requests">${fmt(x.requests)}</td><td data-label="Errors">${fmt(x.errors)}</td><td data-label="Rows read">${fmt(x.rows_read)}</td><td data-label="Rows written">${fmt(x.rows_written)}</td><td data-label="CPU, typical">${esc(ms(x.cpu_p50_ms))}</td><td data-label="CPU, slowest 1%">${esc(ms(x.cpu_p99_ms))}</td></tr>`).join("");
     const er = document.getElementById("wu-errors");
     if (er) er.textContent = fmt(d.days.reduce((n, x) => n + x.errors, 0));

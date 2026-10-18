@@ -396,6 +396,8 @@ html { scroll-behavior: smooth; }
 .rb-stamp dt, .rb-facts dt { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 .rb-stamp dd { margin: 4px 0 0; font-family: var(--mono); font-size: 17px; color: var(--ink); white-space: nowrap; }
 .rb-stamp dd span { color: var(--text-2); }
+.wu-sched td { font-family: var(--sans); font-size: 15px; white-space: normal !important; }
+.wu-sched th { width: 22%; }
 .rb-update { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 16px; }
 .rb-update[hidden] { display: none; }
 .rb-update p { flex: 1 1 280px; margin: 0; font-size: 14px; line-height: 1.5; color: var(--text-2); }
