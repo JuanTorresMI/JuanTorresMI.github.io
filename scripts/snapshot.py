@@ -1656,6 +1656,22 @@ def pork_name(desc, sec=""):
     return name_en, name_es
 
 
+PORK_SEO_SHORT = [("with added ingredients", "enhanced"), ("vacuum-packed", "vac-packed"), ("one piece", "1-piece"),
+                  ("-inch trim", '" trim'), ("con ingredientes añadidos", "inyectado"), (" de pulgada", '"'),
+                  ("recorte de ", "recorte "), ("una pieza", "1 pieza"),
+                  ("Costillas de lomo (baby back)", "Costillas baby back"), ("Huesos de pecho (brisket) de cerdo", "Huesos de brisket de cerdo"),
+                  ("de corte central", "corte central"), ("Lomo de cerdo corte central", "Lomo de cerdo centro"), ("medio corte", "1/2 corte"), ("recorte para ahumar", "para ahumar")]
+
+
+def pork_seo_short(title, limit=60):
+    """A pork search title in the trade's shorter words ("enhanced" for "with added ingredients",
+    1/4" for 1/4-inch), used only when the full one runs past `limit` characters; page titles and
+    headings keep the full name."""
+    if len(title) <= limit: return title
+    for a, b in PORK_SEO_SHORT: title = title.replace(a, b)
+    return title
+
+
 def pork_names():
     d = json.load(open(os.path.join(ROOT, "_data", "pork_cuts.json"), encoding="utf-8"))
     d.pop("_about", None)
@@ -1959,8 +1975,8 @@ def pork():
                           f"El valor diario de {pg['es'].lower()} según el USDA: el último y cada día desde el {pg['since_es']}.", limit=160)
         else:
             title, title_es = f"{pg['name']}: wholesale price", f"{pg['es']}: precio de mayoreo"
-            seo = fit(f"{pg['name']} Price Today · USDA", f"{pg['name']} Price Today", f"{pg['name']} Price", pg["name"])
-            seo_es = fit(f"{pg['es']}: precio hoy · USDA", f"{pg['es']}: precio hoy", f"{pg['es']}: precio", pg["es"])
+            seo = pork_seo_short(fit(f"{pg['name']} Price Today · USDA", f"{pg['name']} Price Today", f"{pg['name']} Price", pg["name"]))
+            seo_es = pork_seo_short(fit(f"{pg['es']}: precio hoy · USDA", f"{pg['es']}: precio hoy", f"{pg['es']}: precio", pg["es"]))
             desc = fit(f"USDA's daily wholesale price for {pg['name'].lower()}, per pound and per hundredweight: the latest weighted average and every day since {pg['since']}.",
                        f"USDA's daily wholesale price for {pg['name'].lower()}: the latest per pound and every day since {pg['since']}.",
                        f"USDA's daily wholesale price for {pg['name'].lower()}, per pound.", limit=160)

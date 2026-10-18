@@ -37,7 +37,7 @@ defaults:
   - scope: { path: "", type: posts }
     values: { permalink: "/blog/:title/" }
   - scope: { path: "", type: reefer_lanes }
-    values: { layout: reefer-lane, parent: { title: Reefer truck rates, url: /reefer-rates/ }, image: /assets/og/reefer-rates.png, image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rates, lane by lane." }
+    values: { layout: reefer-lane, parent: { title: Reefer truck rates, url: /reefer-rates/, parent: { title: USDA market prices, url: /usda-market-prices/ } }, image: /assets/og/reefer-rates.png, image_alt: "Reefer truck rates, by Juan Torres. USDA's weekly produce truck rates, lane by lane." }
   # Border crossings, in English and (Mexico crossings) Spanish. translations_live makes each
   # language point at the other with hreflang; set it false in both to unpair them.
   - scope: { path: "", type: border_crossings }
@@ -47,17 +47,17 @@ defaults:
   # The USDA boards' item pages, in English and Spanish, paired with hreflang through each stub's
   # `translation` (scripts/snapshot.py writes both stubs together).
   - scope: { path: "", type: beef_cuts }
-    values: { layout: beef-cut, lang: en, translations_live: true, parent: { title: Boxed beef prices, url: /beef-prices/ }, image: /assets/og/beef-prices.png, image_alt: "Boxed beef prices, by Juan Torres. USDA's daily boxed beef cutout and the price of every cut." }
+    values: { layout: beef-cut, lang: en, translations_live: true, parent: { title: Boxed beef prices, url: /beef-prices/, parent: { title: USDA market prices, url: /usda-market-prices/ } }, image: /assets/og/beef-prices.png, image_alt: "Boxed beef prices, by Juan Torres. USDA's daily boxed beef cutout and the price of every cut." }
   - scope: { path: "", type: beef_cuts_es }
-    values: { layout: beef-cut, lang: es, translations_live: true, parent: { title: Precios de la carne de res, url: /es/precios-de-carne-de-res/ }, image: /assets/og/beef-prices.png, image_alt: "Precios de la carne de res en caja, por Juan Torres. El cutout diario del USDA y el precio de cada corte." }
+    values: { layout: beef-cut, lang: es, translations_live: true, parent: { title: Precios de la carne de res, url: /es/precios-de-carne-de-res/, parent: { title: Precios del USDA, url: /es/precios-usda/ } }, image: /assets/og/beef-prices.png, image_alt: "Precios de la carne de res en caja, por Juan Torres. El cutout diario del USDA y el precio de cada corte." }
   - scope: { path: "", type: pork_cuts }
-    values: { layout: pork-cut, lang: en, translations_live: true, parent: { title: Pork prices, url: /pork-prices/ }, image: /assets/og/pork-prices.png, image_alt: "Pork prices, by Juan Torres. USDA's daily pork cutout and the price of every cut." }
+    values: { layout: pork-cut, lang: en, translations_live: true, parent: { title: Pork prices, url: /pork-prices/, parent: { title: USDA market prices, url: /usda-market-prices/ } }, image: /assets/og/pork-prices.png, image_alt: "Pork prices, by Juan Torres. USDA's daily pork cutout and the price of every cut." }
   - scope: { path: "", type: pork_cuts_es }
-    values: { layout: pork-cut, lang: es, translations_live: true, parent: { title: Precios del cerdo, url: /es/precios-de-cerdo/ }, image: /assets/og/pork-prices.png, image_alt: "Precios del cerdo, por Juan Torres. El valor diario de la canal de cerdo del USDA y el precio de cada corte." }
+    values: { layout: pork-cut, lang: es, translations_live: true, parent: { title: Precios del cerdo, url: /es/precios-de-cerdo/, parent: { title: Precios del USDA, url: /es/precios-usda/ } }, image: /assets/og/pork-prices.png, image_alt: "Precios del cerdo, por Juan Torres. El valor diario de la canal de cerdo del USDA y el precio de cada corte." }
   - scope: { path: "", type: cattle_regions }
-    values: { layout: cattle-region, lang: en, translations_live: true, parent: { title: Fed cattle prices, url: /fed-cattle-prices/ }, image: /assets/og/fed-cattle-prices.png, image_alt: "Fed cattle prices, by Juan Torres. USDA's weekly cash cattle prices, 5-area and by region." }
+    values: { layout: cattle-region, lang: en, translations_live: true, parent: { title: Fed cattle prices, url: /fed-cattle-prices/, parent: { title: USDA market prices, url: /usda-market-prices/ } }, image: /assets/og/fed-cattle-prices.png, image_alt: "Fed cattle prices, by Juan Torres. USDA's weekly cash cattle prices, 5-area and by region." }
   - scope: { path: "", type: cattle_regions_es }
-    values: { layout: cattle-region, lang: es, translations_live: true, parent: { title: Precio del ganado gordo, url: /es/precios-de-ganado-gordo/ }, image: /assets/og/fed-cattle-prices.png, image_alt: "Precio del ganado gordo, por Juan Torres. Precios semanales del USDA, de 5 áreas y por región." }
+    values: { layout: cattle-region, lang: es, translations_live: true, parent: { title: Precio del ganado gordo, url: /es/precios-de-ganado-gordo/, parent: { title: Precios del USDA, url: /es/precios-usda/ } }, image: /assets/og/fed-cattle-prices.png, image_alt: "Precio del ganado gordo, por Juan Torres. Precios semanales del USDA, de 5 áreas y por región." }
 
 # One page per reefer lane (/reefer-rates/<origin>-to-<city>/). The files in _reefer_lanes/ are
 # front matter only, written by scripts/snapshot.py; the data is _data/live/reefer.json.

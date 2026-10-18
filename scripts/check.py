@@ -82,7 +82,7 @@ for f in sorted(files):
     for key in ("description", "canonical", "og:title", "og:description", "og:image", "twitter:card"):
         if not p.metas.get(key): err(rel, f"missing {key}")
     d = html.unescape(p.metas.get("description", ""))
-    if d and not (70 <= len(d) <= 165): warn(rel, f"description is {len(d)} chars (aim for 70–160)")
+    if d and not (70 <= len(d) <= 160): warn(rel, f"description is {len(d)} chars (aim for 70–160)")
     for ref in p.refs:
         if ref.startswith("/") and not ref.startswith("//") and not exists(ref):
             err(rel, f"points at nothing: {ref}")
