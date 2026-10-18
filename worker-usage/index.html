@@ -21,31 +21,31 @@ image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left,
     <h1>Worker usage</h1>
     <p class="rb-sub">Everything live on this site runs through one Cloudflare Worker and its database, on Cloudflare’s free plan. This is how much of that plan they have used today and how much is left, and the last 30 days, from Cloudflare’s own analytics.</p>
   </div>
-  {%- if u.ready %}
   <dl class="rb-stamp" id="wu-stamp">
-    <div><dt>Requests today</dt><dd data-wu="requests">{{ u.stamp.requests }}</dd></div>
-    <div><dt>Requests left</dt><dd data-wu="requests_left">{{ u.stamp.requests_left }}</dd></div>
-    <div><dt>Rows read today</dt><dd data-wu="rows_read">{{ u.stamp.rows_read }}</dd></div>
-    <div><dt>Rows written today</dt><dd data-wu="rows_written">{{ u.stamp.rows_written }}</dd></div>
-    <div><dt>Database size</dt><dd data-wu="size">{{ u.stamp.size }}</dd></div>
-    <div><dt>CPU, typical run</dt><dd data-wu="cpu">{{ u.stamp.cpu }}</dd></div>
+    <div><dt>Requests today</dt><dd data-wu="requests">{{ u.stamp.requests | default: "—" }}</dd></div>
+    <div><dt>Requests left</dt><dd data-wu="requests_left">{{ u.stamp.requests_left | default: "—" }}</dd></div>
+    <div><dt>Rows read today</dt><dd data-wu="rows_read">{{ u.stamp.rows_read | default: "—" }}</dd></div>
+    <div><dt>Rows written today</dt><dd data-wu="rows_written">{{ u.stamp.rows_written | default: "—" }}</dd></div>
+    <div><dt>Database size</dt><dd data-wu="size">{{ u.stamp.size | default: "—" }}</dd></div>
+    <div><dt>CPU, typical run</dt><dd data-wu="cpu">{{ u.stamp.cpu | default: "—" }}</dd></div>
   </dl>
-  {%- endif %}
 </header>
 
-{%- if u.ready %}
 <section class="rb-sec" id="today" aria-labelledby="today-h">
   <h2 id="today-h">Today against the free plan</h2>
-  <p>Today is the UTC day, {{ u.today }}: the free plan’s daily limits reset at midnight UTC (8 PM in Michigan in summer). Past a limit, requests fail until then and the pages fall back to the copy in their HTML; nothing is ever billed. <span id="wu-checked">Checked {{ u.checked }}.</span></p>
+  <p>Today is the UTC day{% if u.today %}, {{ u.today }}{% endif %}: the free plan’s daily limits reset at midnight UTC (8 PM in Michigan in summer). Past a limit, requests fail until then and the pages fall back to the copy in their HTML; nothing is ever billed. <span id="wu-checked">{% if u.ready %}Checked {{ u.checked }}.{% endif %}</span></p>
   <table class="rb-t rb-stack">
     <thead><tr><th scope="col">What</th><th scope="col">Used</th><th scope="col">Available</th><th scope="col">Free plan</th><th scope="col" class="rb-barcol">Share used</th></tr></thead>
     <tbody id="wu-meters">
     {%- for m in u.meters %}
       <tr><th scope="row">{{ m.what }}</th><td data-label="Used">{{ m.used }}</td><td data-label="Available">{{ m.left }}</td><td data-label="Free plan">{{ m.limit }}</td><td data-label="Share used">{{ m.pct }}<span class="rb-bar"><span style="width: {{ m.w }}%"></span></span></td></tr>
     {%- endfor %}
+    {%- unless u.ready %}
+      <tr><td colspan="5">Asking Cloudflare…</td></tr>
+    {%- endunless %}
     </tbody>
   </table>
-  <p>CPU is time spent computing, not waiting on other sites, so a run that waits half a minute for USDA still uses a few milliseconds. The 10 ms is per run. Cloudflare stops a run that uses too much, and a stopped run counts as an error: <span id="wu-errors">{{ u.errors_30 }}</span> errors in the last 30 days{% if u.cpu_over %}, though the slowest runs go past 10 ms{% endif %}.</p>
+  <p>CPU is time spent computing, not waiting on other sites, so a run that waits half a minute for USDA still uses a few milliseconds. The 10 ms is per run. Cloudflare stops a run that uses too much, and a stopped run counts as an error: <span id="wu-errors">{{ u.errors_30 | default: "—" }}</span> errors in the last 30 days{% if u.cpu_over %}, though the slowest runs go past 10 ms{% endif %}.</p>
   {%- if u.peak %}
   <p>Over the last {{ u.past_days }} full days the Worker answered {{ u.avg_requests }} requests a day on average; the busiest was {{ u.peak.day }}, with {{ u.peak.requests }} ({{ u.peak.pct }} of the daily limit).</p>
   {%- endif %}
@@ -60,15 +60,13 @@ image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left,
     {%- for d in u.days %}
       <tr><th scope="row">{{ d.day }}</th><td data-label="Requests">{{ d.requests }}</td><td data-label="Errors">{{ d.errors }}</td><td data-label="Rows read">{{ d.rows_read }}</td><td data-label="Rows written">{{ d.rows_written }}</td><td data-label="CPU, typical">{{ d.cpu50 }}</td><td data-label="CPU, slowest 1%">{{ d.cpu }}</td></tr>
     {%- endfor %}
+    {%- unless u.ready %}
+      <tr><td colspan="7">Asking Cloudflare…</td></tr>
+    {%- endunless %}
     </tbody>
   </table>
 </section>
-{%- else %}
-<section class="rb-sec" id="today" aria-labelledby="today-h">
-  <h2 id="today-h">Today against the free plan</h2>
-  <p class="rb-empty">The usage figures appear once the Worker has its read-only analytics token (see the worker folder’s README).</p>
-</section>
-{%- endif %}
+
 
 <section class="rb-sec" id="schedule" aria-labelledby="schedule-h">
   <h2 id="schedule-h">What runs, and when</h2>
@@ -108,7 +106,7 @@ image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left,
   const share = (used, limit) => { if (used == null || !limit) return ["—", 0]; const p = used / limit * 100; return [p > 0 && p < 0.1 ? "under 0.1%" : p < 10 ? p.toFixed(1) + "%" : Math.round(p) + "%", Math.min(100, p)]; };
   const day = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" });
   fetch(ENDPOINT.replace(/\/+$/, "") + "/usage").then((r) => r.json()).then((d) => {
-    if (!d.ready || !d.days || !document.getElementById("wu-meters")) return;
+    if (!d.ready || !d.days) return;
     const L = d.limits, t = d.days.find((x) => x.date === d.today) || { requests: 0, rows_read: 0, rows_written: 0 };
     const sz = [...d.days].reverse().find((x) => x.storage_bytes);
     const left = (used, limit) => used == null ? null : Math.max(0, limit - used);
