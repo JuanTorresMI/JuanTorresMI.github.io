@@ -220,7 +220,7 @@
   short: My YouTube channel’s numbers on this site, refreshed every three hours by a Cloudflare Worker that polls YouTube on its own, for free.
   summary: >-
     The YouTube page on this site shows my channel’s subscribers, views and latest uploads. A Cloudflare
-    Worker wakes up once an hour on a cron trigger, asks the YouTube Data API three questions with a
+    Worker wakes up every three hours on a cron trigger, asks the YouTube Data API three questions with a
     read-only key, and stores the answer in a small D1 database, one row per day for the history. The page
     only ever reads that stored snapshot, so visitors never touch YouTube’s quota and the key never
     reaches the browser. It runs entirely on free tiers.
@@ -228,3 +228,23 @@
   stack: [JavaScript, Cloudflare Workers, Cron Triggers, D1 (SQLite), YouTube Data API v3]
   category: WebApplication
   keywords: [youtube stats, youtube page, channel stats]
+
+- slug: worker-usage
+  family: Work
+  title: Worker Usage
+  url: /worker-usage/
+  guide: /worker-usage/#how-it-works
+  kind: Service
+  status: Live
+  short: How much of Cloudflare’s free plan the Worker behind every live page on this site has used today, and how much is left.
+  summary: >-
+    Every live number on this site, from border waits to beef prices to the YouTube page, goes through one
+    Cloudflare Worker and its D1 database on Cloudflare’s free plan. This page shows today’s use of each
+    limit (requests, CPU per run, database rows read and written, storage) next to what’s left, and the
+    last 30 days. The Worker reads Cloudflare’s own GraphQL Analytics once an hour with a read-only token
+    and keeps one row, so viewing the page never calls the API.
+  metric: Hourly · 5 free-plan limits · used and left · $0 to run
+  stack: [JavaScript, Python, Cloudflare Workers, D1 (SQLite), Cloudflare GraphQL Analytics, GitHub Actions]
+  category: WebApplication
+  search: [cloudflare worker usage, cloudflare free plan limits, cloudflare workers free tier, d1 free tier limits]
+  keywords: [usage, analytics]

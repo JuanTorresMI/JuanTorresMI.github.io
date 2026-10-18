@@ -29,7 +29,7 @@ Things waiting on a decision or on Juan, so they aren't lost:
 
 ## 2026-10-18 — Worker usage page
 
-- **`/worker-usage/`**: today's use of Cloudflare's free plan against each limit (Worker requests, CPU
+- **`/worker-usage/`**, a project of its own: today's use of Cloudflare's free plan, used and available, against each limit (Worker requests, CPU
   per run, D1 rows read and written, storage) and the last 30 days, plus what runs when. The Worker reads
   Cloudflare's GraphQL Analytics hourly with a read-only token (`worker/src/usage.js`, table
   `usage_latest`, route `/usage`); the snapshot copies it into the page. Linked from the border and

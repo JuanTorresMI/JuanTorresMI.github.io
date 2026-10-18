@@ -1,9 +1,11 @@
 ---
 layout: default
 title: Worker usage
-seo_title: "Cloudflare Worker Usage · This Site on the Free Plan"
+seo_title: "Cloudflare Worker Usage · Used and Left on the Free Plan"
 permalink: /worker-usage/
-description: How much of Cloudflare's free plan this site's Worker and database use, today and for the last 30 days, from Cloudflare's own analytics.
+description: How much of Cloudflare's free plan this site's Worker and database have used today and how much is left, plus the last 30 days, from Cloudflare's own analytics.
+image: /assets/og/worker-usage.png
+image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left, from its own analytics."
 ---
 {%- comment -%}
   A "work" page (see the families in CLAUDE.md), in the boards' rate-sheet style (.rb in style.css).
@@ -17,11 +19,12 @@ description: How much of Cloudflare's free plan this site's Worker and database 
   <div class="rb-title">
     <p class="rb-family">Work · Site infrastructure</p>
     <h1>Worker usage</h1>
-    <p class="rb-sub">Everything live on this site runs through one Cloudflare Worker and its database, on Cloudflare’s free plan. This is how much of that plan they use, today and for the last 30 days, from Cloudflare’s own analytics.</p>
+    <p class="rb-sub">Everything live on this site runs through one Cloudflare Worker and its database, on Cloudflare’s free plan. This is how much of that plan they have used today and how much is left, and the last 30 days, from Cloudflare’s own analytics.</p>
   </div>
   {%- if u.ready %}
   <dl class="rb-stamp" id="wu-stamp">
     <div><dt>Requests today</dt><dd data-wu="requests">{{ u.stamp.requests }}</dd></div>
+    <div><dt>Requests left</dt><dd data-wu="requests_left">{{ u.stamp.requests_left }}</dd></div>
     <div><dt>Rows read today</dt><dd data-wu="rows_read">{{ u.stamp.rows_read }}</dd></div>
     <div><dt>Rows written today</dt><dd data-wu="rows_written">{{ u.stamp.rows_written }}</dd></div>
     <div><dt>Database size</dt><dd data-wu="size">{{ u.stamp.size }}</dd></div>
@@ -35,10 +38,10 @@ description: How much of Cloudflare's free plan this site's Worker and database 
   <h2 id="today-h">Today against the free plan</h2>
   <p>Today is the UTC day, {{ u.today }}: the free plan’s daily limits reset at midnight UTC (8 PM in Michigan in summer). Past a limit, requests fail until then and the pages fall back to the copy in their HTML; nothing is ever billed. <span id="wu-checked">Checked {{ u.checked }}.</span></p>
   <table class="rb-t rb-stack">
-    <thead><tr><th scope="col">What</th><th scope="col">Used</th><th scope="col">Free plan</th><th scope="col" class="rb-barcol">Share</th></tr></thead>
+    <thead><tr><th scope="col">What</th><th scope="col">Used</th><th scope="col">Available</th><th scope="col">Free plan</th><th scope="col" class="rb-barcol">Share used</th></tr></thead>
     <tbody id="wu-meters">
     {%- for m in u.meters %}
-      <tr><th scope="row">{{ m.what }}</th><td data-label="Used">{{ m.used }}</td><td data-label="Free plan">{{ m.limit }}</td><td data-label="Share">{{ m.pct }}<span class="rb-bar"><span style="width: {{ m.w }}%"></span></span></td></tr>
+      <tr><th scope="row">{{ m.what }}</th><td data-label="Used">{{ m.used }}</td><td data-label="Available">{{ m.left }}</td><td data-label="Free plan">{{ m.limit }}</td><td data-label="Share used">{{ m.pct }}<span class="rb-bar"><span style="width: {{ m.w }}%"></span></span></td></tr>
     {%- endfor %}
     </tbody>
   </table>
@@ -107,17 +110,19 @@ description: How much of Cloudflare's free plan this site's Worker and database 
     if (!d.ready || !d.days || !document.getElementById("wu-meters")) return;
     const L = d.limits, t = d.days.find((x) => x.date === d.today) || { requests: 0, rows_read: 0, rows_written: 0 };
     const sz = [...d.days].reverse().find((x) => x.storage_bytes);
-    const stamp = { requests: fmt(t.requests), rows_read: fmt(t.rows_read), rows_written: fmt(t.rows_written), size: size(sz && sz.storage_bytes), cpu: ms(t.cpu_p99_ms) };
+    const left = (used, limit) => used == null ? null : Math.max(0, limit - used);
+    const stamp = { requests: fmt(t.requests), requests_left: fmt(left(t.requests, L.requests)), rows_read: fmt(t.rows_read), rows_written: fmt(t.rows_written), size: size(sz && sz.storage_bytes), cpu: ms(t.cpu_p99_ms) };
     for (const [k, v] of Object.entries(stamp)) { const el = document.querySelector(`[data-wu="${k}"]`); if (el) el.textContent = v; }
+    const bytes = sz && sz.storage_bytes, cpu = t.cpu_p99_ms;
     const rows = [
-      ["Worker requests", fmt(t.requests), fmt(L.requests) + LIMITS_NOTE.requests, share(t.requests, L.requests)],
-      ["Database rows read", fmt(t.rows_read), fmt(L.rows_read) + LIMITS_NOTE.rows_read, share(t.rows_read, L.rows_read)],
-      ["Database rows written", fmt(t.rows_written), fmt(L.rows_written) + LIMITS_NOTE.rows_written, share(t.rows_written, L.rows_written)],
-      ["Database storage", size(sz && sz.storage_bytes), size(L.storage_bytes), share(sz && sz.storage_bytes, L.storage_bytes)],
-      ["CPU per run (99th percentile)", ms(t.cpu_p99_ms), L.cpu_ms + " ms", share(t.cpu_p99_ms, L.cpu_ms)],
+      ["Worker requests", fmt(t.requests), fmt(left(t.requests, L.requests)), fmt(L.requests) + LIMITS_NOTE.requests, share(t.requests, L.requests)],
+      ["Database rows read", fmt(t.rows_read), fmt(left(t.rows_read, L.rows_read)), fmt(L.rows_read) + LIMITS_NOTE.rows_read, share(t.rows_read, L.rows_read)],
+      ["Database rows written", fmt(t.rows_written), fmt(left(t.rows_written, L.rows_written)), fmt(L.rows_written) + LIMITS_NOTE.rows_written, share(t.rows_written, L.rows_written)],
+      ["Database storage", size(bytes), size(left(bytes, L.storage_bytes)), size(L.storage_bytes), share(bytes, L.storage_bytes)],
+      ["CPU per run (99th percentile)", ms(cpu), cpu == null ? "—" : ms(left(cpu, L.cpu_ms)) + " to spare", L.cpu_ms + " ms", share(cpu, L.cpu_ms)],
     ];
-    document.getElementById("wu-meters").innerHTML = rows.map(([w, u, l, [p, wd]]) =>
-      `<tr><th scope="row">${esc(w)}</th><td data-label="Used">${esc(u)}</td><td data-label="Free plan">${esc(l)}</td><td data-label="Share">${esc(p)}<span class="rb-bar"><span style="width: ${wd}%"></span></span></td></tr>`).join("");
+    document.getElementById("wu-meters").innerHTML = rows.map(([w, u, a, l, [p, wd]]) =>
+      `<tr><th scope="row">${esc(w)}</th><td data-label="Used">${esc(u)}</td><td data-label="Available">${esc(a)}</td><td data-label="Free plan">${esc(l)}</td><td data-label="Share used">${esc(p)}<span class="rb-bar"><span style="width: ${wd}%"></span></span></td></tr>`).join("");
     document.getElementById("wu-days").innerHTML = [...d.days].reverse().map((x) =>
       `<tr><th scope="row">${esc(day(x.date))}</th><td data-label="Requests">${fmt(x.requests)}</td><td data-label="Errors">${fmt(x.errors)}</td><td data-label="Rows read">${fmt(x.rows_read)}</td><td data-label="Rows written">${fmt(x.rows_written)}</td><td data-label="CPU, p99">${esc(ms(x.cpu_p99_ms))}</td></tr>`).join("");
     const c = document.getElementById("wu-checked");
