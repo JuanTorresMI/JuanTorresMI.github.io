@@ -68,3 +68,11 @@ CREATE TABLE IF NOT EXISTS pork_latest (
   body       TEXT NOT NULL,                        -- the JSON GET /pork serves
   updated_at TEXT NOT NULL
 );
+
+-- The usage page (src/usage.js). One row: the last 30 days of this account's Workers and D1 use, from
+-- Cloudflare's GraphQL Analytics API, refreshed hourly.
+CREATE TABLE IF NOT EXISTS usage_latest (
+  id         INTEGER PRIMARY KEY CHECK (id = 1),
+  body       TEXT NOT NULL,                        -- the JSON GET /usage serves
+  updated_at TEXT NOT NULL
+);

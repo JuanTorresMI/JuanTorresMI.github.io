@@ -10,6 +10,7 @@
  *   GET /beef      USDA's newest boxed beef report: the cutout and every cut's price (see beef.js)
  *   GET /pork      USDA's newest pork report: the carcass cutout, primals and every cut (see pork.js)
  *   GET, POST /refresh   start the site's snapshot workflow, at most once an hour (see refresh.js)
+ *   GET /usage     this account's use of the free plan, from Cloudflare's analytics (see usage.js)
  *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
  *
  * Two cron triggers in wrangler.toml call `scheduled`, at :17 and :47. Both read CBP's border wait
@@ -26,6 +27,7 @@ import { borderTick, borderNow, borderPort, BORDER_MAX_AGE, BORDER_PORT_MAX_AGE 
 import { beefTick, beefData, BEEF_MAX_AGE } from "./beef.js";
 import { porkTick, porkData, PORK_MAX_AGE } from "./pork.js";
 import { refreshState, startSnapshot, snapshotDue, setPending, isPending } from "./refresh.js";
+import { usageTick, usageData, USAGE_MAX_AGE } from "./usage.js";
 
 const STREMIO = "https://api.strem.io/api/datastoreGet";
 const SUBSTACK = "https://juantorresis.substack.com/feed";
@@ -53,6 +55,7 @@ export default {
     if (route === "/border" || route === "/border/port") return borderRoute(env, ctx, route, url, cors);
     if (route === "/beef") return latestRoute(env, ctx, url, cors, "beef", beefData, BEEF_MAX_AGE);
     if (route === "/pork") return latestRoute(env, ctx, url, cors, "pork", porkData, PORK_MAX_AGE);
+    if (route === "/usage") return usageRoute(env, ctx, url, cors);
 
     const feed = route === "/substack";
     const maxAge = feed ? FEED_CACHE_S : TV_CACHE_S;
@@ -90,6 +93,8 @@ export default {
     if (event.cron === YOUTUBE_CRON && now.getUTCHours() % YOUTUBE_EVERY_H === 0) ctx.waitUntil(poll(env).catch(log("youtube poll")));
     ctx.waitUntil(borderTick(env).catch(log("border")));
     ctx.waitUntil(pagesTick(env, now, event.cron, log).catch(log("usda and pages")));
+    // Cloudflare's analytics for the usage page, once an hour.
+    if (event.cron === "47 * * * *") ctx.waitUntil(usageTick(env, now).catch(log("usage")));
   },
 };
 
@@ -139,6 +144,26 @@ export function lmrWindow(now) {
 
 const json = (body, status, headers) =>
   new Response(JSON.stringify(body), { status, headers: { ...headers, "Content-Type": "application/json" } });
+
+/* ------------------------------------------------------------ the usage page ---- */
+
+/* GET /usage: the stored hourly summary (usage.js). Ten minutes at the edge; never cached while
+   the analytics token isn't set, so the page sees it the moment it is. */
+async function usageRoute(env, ctx, url, cors) {
+  const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/usage");
+  const hit = await cache.match(cacheKey);
+  if (hit) { const fresh = new Response(hit.body, hit); for (const [k, v] of Object.entries(cors)) fresh.headers.set(k, v); return fresh; }
+  try {
+    const payload = await usageData(env);
+    if (!payload.ready) return json(payload, 200, { ...cors, "Cache-Control": "no-store" });
+    const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${USAGE_MAX_AGE}` });
+    ctx.waitUntil(cache.put(cacheKey, res.clone()));
+    return res;
+  } catch (e) {
+    console.error("usage:", e && e.message ? e.message : e);
+    return json({ error: "Cloudflare's analytics didn't answer; try again later" }, 502, { ...cors, "Cache-Control": "no-store" });
+  }
+}
 
 /* ------------------------------------------------------------ the update button ---- */
 
