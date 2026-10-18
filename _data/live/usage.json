@@ -109,24 +109,6 @@
    "cpu": "14 ms"
   },
   {
-   "day": "Mon, Oct 12",
-   "requests": "0",
-   "errors": "0",
-   "rows_read": "0",
-   "rows_written": "0",
-   "cpu50": "—",
-   "cpu": "—"
-  },
-  {
-   "day": "Sun, Oct 11",
-   "requests": "0",
-   "errors": "0",
-   "rows_read": "0",
-   "rows_written": "0",
-   "cpu50": "—",
-   "cpu": "—"
-  },
-  {
    "day": "Sat, Oct 10",
    "requests": "6",
    "errors": "0",
@@ -134,15 +116,6 @@
    "rows_written": "1",
    "cpu50": "2.3 ms",
    "cpu": "9.4 ms"
-  },
-  {
-   "day": "Fri, Oct 9",
-   "requests": "0",
-   "errors": "0",
-   "rows_read": "0",
-   "rows_written": "0",
-   "cpu50": "—",
-   "cpu": "—"
   },
   {
    "day": "Thu, Oct 8",
@@ -179,24 +152,6 @@
    "rows_written": "2",
    "cpu50": "2.0 ms",
    "cpu": "8.9 ms"
-  },
-  {
-   "day": "Sun, Oct 4",
-   "requests": "0",
-   "errors": "0",
-   "rows_read": "0",
-   "rows_written": "0",
-   "cpu50": "—",
-   "cpu": "—"
-  },
-  {
-   "day": "Sat, Oct 3",
-   "requests": "0",
-   "errors": "0",
-   "rows_read": "0",
-   "rows_written": "0",
-   "cpu50": "—",
-   "cpu": "—"
   },
   {
    "day": "Fri, Oct 2",
@@ -281,8 +236,9 @@
  },
  "errors_30": "0",
  "cpu_over": true,
- "avg_requests": "111",
- "past_days": 23,
+ "avg_requests": "141",
+ "past_days": 18,
+ "kept_days": 23,
  "peak": {
   "day": "Oct 17, 2026",
   "requests": "898",
