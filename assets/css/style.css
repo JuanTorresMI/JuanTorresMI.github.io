@@ -602,6 +602,8 @@ html { scroll-behavior: smooth; }
 .bf-tools .rb-tag { margin: 0 0 4px !important; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
 .bf-calc label { flex: 1 1 180px; }
 .rb-look .bf-btn-label { flex: 0 0 auto; }
+.rb-look select { width: 100%; max-width: 100%; }   /* a long option (a cut and its price) never widens the page */
+#pl-near .rb-table th, #bg-out .rb-table th { white-space: normal; }   /* long bridge and cut names wrap */
 .rb-look .bf-btn-label .rb-btn { min-height: 52px; }
 .bf-tools .rb-answer .rb-table { margin: 8px 0 12px; }
 .bw-plan { max-width: 520px; margin-top: 12px; }
