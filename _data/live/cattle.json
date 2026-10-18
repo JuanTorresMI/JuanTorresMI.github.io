@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-18T03:52:29+00:00",
+ "generated": "2026-10-18T03:58:12+00:00",
  "latest_week": "2026-10-12",
  "week": "week of Oct 5, 2026",
  "week_es": "semana del 5 oct 2026",
@@ -1895,7 +1895,7 @@
    "tool": {
     "live": 220.2,
     "dressed": 345.74,
-    "dress": null,
+    "dress": 64.1,
     "weight": 1550.0
    },
    "others": [
@@ -1979,7 +1979,8 @@
      "last": "week of Oct 5, 2026",
      "last_es": "semana del 5 oct 2026"
     }
-   ]
+   ],
+   "tool_from_5area": false
   },
   "texas-oklahoma": {
    "slug": "texas-oklahoma",
@@ -2464,8 +2465,8 @@
    },
    "note": null,
    "tool": {
-    "live": 258.0,
-    "dressed": 301.0,
+    "live": 220.2,
+    "dressed": 345.74,
     "dress": 63.8,
     "weight": 1411.0
    },
@@ -2566,7 +2567,8 @@
      "last": "week of Oct 5, 2026",
      "last_es": "semana del 5 oct 2026"
     }
-   ]
+   ],
+   "tool_from_5area": true
   },
   "kansas": {
    "slug": "kansas",
@@ -3056,8 +3058,8 @@
    },
    "note": null,
    "tool": {
-    "live": 228.0,
-    "dressed": 360.0,
+    "live": 220.2,
+    "dressed": 345.74,
     "dress": 64.3,
     "weight": 1418.0
    },
@@ -3158,7 +3160,8 @@
      "last": "week of Oct 5, 2026",
      "last_es": "semana del 5 oct 2026"
     }
-   ]
+   ],
+   "tool_from_5area": true
   },
   "nebraska": {
    "slug": "nebraska",
@@ -4038,7 +4041,8 @@
      "last": "week of Oct 5, 2026",
      "last_es": "semana del 5 oct 2026"
     }
-   ]
+   ],
+   "tool_from_5area": false
   },
   "western-cornbelt": {
    "slug": "western-cornbelt",
@@ -4671,7 +4675,8 @@
      "last": "week of Oct 5, 2026",
      "last_es": "semana del 5 oct 2026"
     }
-   ]
+   ],
+   "tool_from_5area": false
   },
   "eastern-cornbelt": {
    "slug": "eastern-cornbelt",
@@ -5300,7 +5305,8 @@
      "last": "week of Oct 5, 2026",
      "last_es": "semana del 5 oct 2026"
     }
-   ]
+   ],
+   "tool_from_5area": false
   },
   "northern-plains": {
    "slug": "northern-plains",
@@ -5916,7 +5922,8 @@
      "last": "week of Oct 5, 2026",
      "last_es": "semana del 5 oct 2026"
     }
-   ]
+   ],
+   "tool_from_5area": false
   },
   "northeast": {
    "slug": "northeast",
@@ -6447,7 +6454,7 @@
    "note": null,
    "tool": {
     "live": 218.71,
-    "dressed": 374.9,
+    "dressed": 345.74,
     "dress": 60.7,
     "weight": 1405.0
    },
@@ -6532,7 +6539,8 @@
      "last": "week of Oct 5, 2026",
      "last_es": "semana del 5 oct 2026"
     }
-   ]
+   ],
+   "tool_from_5area": true
   }
  }
 }

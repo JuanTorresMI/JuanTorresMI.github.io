@@ -135,6 +135,9 @@ for page, placeholder in (("youtube/index.html", "Asking YouTube…"), ("watchin
                           ("beef-prices/index.html", "The first report hasn’t been collected yet"),
                           ("pork-prices/index.html", "The first report hasn’t been collected yet"),
                           ("fed-cattle-prices/index.html", "The first report hasn’t been collected yet"),
+                          ("es/precios-de-carne-de-res/index.html", "The first report hasn’t been collected yet"),
+                          ("es/precios-de-cerdo/index.html", "The first report hasn’t been collected yet"),
+                          ("es/precios-de-ganado-gordo/index.html", "The first report hasn’t been collected yet"),
                           ("es/tiempos-de-espera/index.html", "Todavía no hay lecturas")):
     f = os.path.join(site, page)
     if os.path.isfile(f) and placeholder in open(f, encoding="utf-8").read():

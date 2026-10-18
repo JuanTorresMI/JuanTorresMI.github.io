@@ -34,8 +34,7 @@
     insideW: (a, b) => `dentro del rango del día, de ${a} a ${b}`,
     close: "Cerca del promedio del día", aboveAvg: "Arriba del promedio del día", belowAvg: "Abajo del promedio del día",
     noRange: "frente al promedio del día (el USDA no dio rango)",
-    same: ", lo mismo que", vs: (d, p, up) => `, ${d} (${p}%) ${up ? "arriba" : "abajo"} d`,
-    avg: (g, v, d) => `el promedio ${g}de ${v} del USDA el ${d}`, perLb: "por lb",
+    perLb: "por lb",
     dayS: "Las ventas de ese día", dayW: (w) => `Su precio está ${w}.`, d30: "Los últimos 30 días", d30W: (a, b) => `El promedio diario del USDA fue de ${a} a ${b}.`,
     yr: "El último año", yrW: (b, n) => `El promedio diario del USDA estuvo abajo de su precio en ${b === n ? `todos los ${n} días` : b === 0 ? `ninguno de los ${n} días` : `${b} de los ${n} días`} con ventas.`,
     meter: (b, n) => `Su precio frente al último año: más alto que ${b} de ${n} días`, lo: "El más bajo del año", hi: "El más alto del año",
@@ -54,8 +53,7 @@
     insideW: (a, b) => `inside the day’s range of ${a} to ${b}`,
     close: "Close to the day’s average", aboveAvg: "Above the day’s average", belowAvg: "Below the day’s average",
     noRange: "compared with the day’s average (USDA gave no range)",
-    same: ", the same as", vs: (d, p, up) => `, ${d} (${p}%) ${up ? "above" : "below"}`,
-    avg: (g, v, d) => `USDA’s ${g}average of ${v} on ${d}`, perLb: "per lb",
+    perLb: "per lb",
     dayS: "That day’s sales", dayW: (w) => `Your price is ${w}.`, d30: "The last 30 days", d30W: (a, b) => `USDA’s daily average ran from ${a} to ${b}.`,
     yr: "The past year", yrW: (b, n) => `USDA’s daily average was below your price on ${b === n ? `every one of the ${n} days` : b === 0 ? `none of the ${n} days` : `${b} of the ${n} days`} it traded.`,
     meter: (b, n) => `Your price against the past year: higher than ${b} of ${n} days`, lo: "Lowest of the year", hi: "Highest of the year",
@@ -166,9 +164,13 @@
     const sameDay = Math.abs(diff) < 0.5;
     const date = es && t.date_es ? t.date_es : t.date;
     const g = t.key ? esc(t.grade) + " " : "";
-    const avgText = es ? `el promedio ${g ? g.trim() + " " : ""}del USDA de ${lb(t.v)} el ${esc(date)}` : `USDA’s ${g}average of ${lb(t.v)} on ${esc(date)}`;
+    // "abajo del promedio": Spanish folds "de el" into "del", so the sentence is built whole in each language.
+    const gap = `${money(Math.abs(diff) / 100)} (${Math.abs(pct).toFixed(1)}%)`;
+    const vs = es
+      ? (sameDay ? ", lo mismo que el promedio" : `, ${gap} ${diff > 0 ? "arriba del" : "abajo del"} promedio`) + ` ${g ? g.trim() + " " : ""}del USDA de ${lb(t.v)} el ${esc(date)}`
+      : (sameDay ? ", the same as" : `, ${gap} ${diff > 0 ? "above" : "below"}`) + ` USDA’s ${g}average of ${lb(t.v)} on ${esc(date)}`;
     out.innerHTML = `<p class="rb-tag">${esc(tag)}</p>
-      <p class="rb-price">${money(p)} <span>${T.perLb}${sameDay ? T.same : `${es ? `, ${money(Math.abs(diff) / 100)} (${Math.abs(pct).toFixed(1)}%) ${diff > 0 ? "arriba de" : "abajo de"}` : `, ${money(Math.abs(diff) / 100)} (${Math.abs(pct).toFixed(1)}%) ${diff > 0 ? "above" : "below"}`}`} ${avgText}</span></p>
+      <p class="rb-price">${money(p)} <span>${T.perLb}${vs}</span></p>
       <dl class="rb-facts">
         <div><dt>${T.dayS}</dt><dd>${T.dayW(where)}</dd></div>
         ${t.d30 ? `<div><dt>${T.d30}</dt><dd>${T.d30W(lb(t.d30[0]), lb(t.d30[1]))}</dd></div>` : ""}
