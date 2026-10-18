@@ -13,7 +13,7 @@
  * it has already committed. The Worker holds one row, the newest report, so the board's page script
  * can show a report within half an hour of USDA posting it instead of waiting for the evening rebuild.
  *
- * Both cron runs (:17 and :47) call `beefTick`. It asks for the newest report's summary, a few
+ * The cron runs (:17 and :47) on weekdays, 6 am to 8 pm Central (lmrHours in index.js), call `beefTick`. It asks for the newest report's summary, a few
  * hundred bytes; only when USDA has posted something it hasn't stored (a new report, or a correction)
  * does it fetch the whole report with allSections=true, about 110 KB, and replace the row.
  */

@@ -12,8 +12,9 @@
  *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
  *
  * Two cron triggers in wrangler.toml call `scheduled`, at :17 and :47. Both read CBP's border wait
- * times and check for a new boxed beef and pork report, so those are polled every half hour; the :17 run
- * also polls YouTube. The reefer rates need no cron: USDA keeps them, and they're asked for on request.
+ * times, so those are polled every half hour; on weekdays from 6 am to 8 pm Central (lmrHours) they
+ * also check for a new boxed beef and pork report. The :17 run also polls YouTube. The reefer rates
+ * need no cron: USDA keeps them, and they're asked for on request.
  */
 import { catalog, CATALOG_MAX_AGE, visits, guestbook, sign, unsign, Refused } from "./music.js";
 import { poll, snapshot, YOUTUBE_MAX_AGE } from "./youtube.js";
@@ -81,10 +82,23 @@ export default {
     const log = (what) => (e) => console.error(what + ":", e && e.message ? e.message : e);
     if (event.cron === YOUTUBE_CRON) ctx.waitUntil(poll(env).catch(log("youtube poll")));
     ctx.waitUntil(borderTick(env).catch(log("border")));
-    ctx.waitUntil(beefTick(env).catch(log("beef")));
-    ctx.waitUntil(porkTick(env).catch(log("pork")));
+    // USDA posts the beef and pork reports on weekday afternoons and corrects them the same day or
+    // the next morning, so the summary checks only run then: 28 a weekday instead of 48 every day.
+    if (lmrHours(new Date(event.scheduledTime || Date.now()))) {
+      ctx.waitUntil(beefTick(env).catch(log("beef")));
+      ctx.waitUntil(porkTick(env).catch(log("pork")));
+    }
   },
 };
+
+/* Monday to Friday, 6 am to 8 pm Central: when a new or corrected USDA livestock report can appear.
+   A page whose copy is behind outside these hours still gets the stored report from /beef or /pork. */
+export function lmrHours(now) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", weekday: "short", hour: "numeric", hourCycle: "h23" })
+    .formatToParts(now).map((p) => [p.type, p.value]));
+  const hour = Number(parts.hour);
+  return !["Sat", "Sun"].includes(parts.weekday) && hour >= 6 && hour < 20;
+}
 
 const json = (body, status, headers) =>
   new Response(JSON.stringify(body), { status, headers: { ...headers, "Content-Type": "application/json" } });
@@ -209,7 +223,8 @@ async function latestRoute(env, ctx, url, cors, name, data, maxAge) {
   }
   // Nothing stored yet: answer, but don't keep the empty answer at the edge (see reeferRoute).
   if (!payload.latest) return json(payload, 200, { ...cors, "Cache-Control": "no-store" });
-  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${maxAge}` });
+  // Outside the hours a report can change (lmrHours) the stored one holds until morning: an hour at the edge.
+  const res = json(payload, 200, { ...cors, "Cache-Control": `public, max-age=${lmrHours(new Date()) ? maxAge : 3600}` });
   ctx.waitUntil(cache.put(cacheKey, res.clone()));
   return res;
 }

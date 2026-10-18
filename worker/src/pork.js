@@ -10,7 +10,7 @@
  *
  * As with beef (beef.js), USDA keeps the history and scripts/snapshot.py reads it from there, so the
  * Worker holds one row, the newest report, for the page script that shows it within half an hour.
- * Both cron runs call `porkTick`: a summary of a few hundred bytes, and the whole report only when
+ * The cron runs on weekdays, 6 am to 8 pm Central, call `porkTick`: a summary of a few hundred bytes, and the whole report only when
  * USDA has posted something new or corrected.
  */
 
