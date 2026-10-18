@@ -1189,7 +1189,7 @@ def beef():
         last = rows[-1]
         since30 = (iso_day(last[0]) - timedelta(days=30)).date().isoformat()
         d30 = [r[3] for r in rows if r[0] > since30]
-        return {"key": g, "grade": GRADE_NAMES.get(g, g), "date": d_full(last[0]), "current": last[0] == latest,
+        return {"key": g, "grade": GRADE_NAMES.get(g, g), "date": d_full(last[0]), "date_es": d_full_es(last[0]), "current": last[0] == latest,
                 "v": last[3], "low": last[1], "high": last[2], "d30": [min(d30), max(d30)] if d30 else None,
                 "year": sorted(round(r[3], 2) for r in rows if r[0] > year_start)}
 
@@ -2255,7 +2255,7 @@ def cattle():
               "weeks_all": fmt(len({r[0] for r in live + dressed})),
               "chart_live": mchart([("line", "Live", live)]), "chart_dressed": mchart([("line2", "Dressed", dressed)]),
               "rows": grid_rows, "grid": year_grid(mavg, grid_fmt), "season": seasons(mavg, latest_week), "note": notes.get(slug),
-              "tool": {"live": fl["v"] if fl and fl["current"] else (fl["v"] if fl else None), "dressed": fd["v"] if fd else None,
+              "tool": {"live": fl["v"] if fl else None, "dressed": fd["v"] if fd else None,
                        "dress": next((r[2] for b in ("dressed_delivered", "live_fob") for r in series(slug, b)[-1:] if r[2]), None),
                        "weight": next((r[5] for r in live[-1:] if r[5]), None)}}
         if weeks_year >= CATTLE_PAGE_WEEKS or os.path.exists(os.path.join(CATTLE_REG_DIR, slug + ".md")):
@@ -2267,9 +2267,16 @@ def cattle():
                         "head": fmt(int(sum((series(slug, b)[-1][1] or 0) for b in BASIS.values() if series(slug, b) and series(slug, b)[-1][0] == latest_week))),
                         "last": wk_label(main[-1][0]), "last_es": wk_label_es(main[-1][0])})
 
-    # Other regions on each page.
+    # Other regions on each page; and a region with no price this week starts its calculator at
+    # this week's 5-area prices rather than one of its own from weeks ago.
+    fa_tool = (pages.get("five-area") or {}).get("tool") or {}
     for slug, pg in pages.items():
         pg["others"] = [r for r in regions if r["slug"] != slug and (r["live"] or r["dressed"])]
+        t, cur_l, cur_d = pg["tool"], pg["live"] and pg["live"]["current"], pg["dressed"] and pg["dressed"]["current"]
+        pg["tool_from_5area"] = not (cur_l and cur_d)
+        if not cur_l: t["live"] = fa_tool.get("live")
+        if not cur_d: t["dressed"] = fa_tool.get("dressed")
+        if not t.get("dress"): t["dress"] = (pages.get("nebraska") or {}).get("tool", {}).get("dress")
 
     # ---- the board: 5-area steers, this week's days, and the regions
     fa = pages.get("five-area")
