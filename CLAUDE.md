@@ -165,6 +165,10 @@ JavaScript get real content; and, where it matters, a page script swaps in fresh
   pork, cattle and reefer boards (`_includes/usda-hub.html`, a schema.org `DataCatalog` that each
   board's `Dataset` names in `isPartOf`). Every board ends with `_includes/usda-boards.html`, the
   list of the others, so a new board is added there once.
+- **`/worker-usage/`**: the account's use of Cloudflare's free plan (Worker requests, CPU, D1 rows and
+  size), today and for 30 days. The Worker reads Cloudflare's GraphQL Analytics hourly with a read-only
+  token (`CF_ANALYTICS_TOKEN`, `worker/src/usage.js`) and keeps one row; the page renders the snapshot's
+  copy (`_data/live/usage.json`) and its script swaps in `/usage`.
 - **`/blog/`**: renders the local posts in HTML and merges Substack's items by script, so the
   list works without JavaScript and for crawlers.
 

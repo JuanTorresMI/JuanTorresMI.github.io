@@ -27,6 +27,14 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-18 — Worker usage page
+
+- **`/worker-usage/`**, a project of its own: today's use of Cloudflare's free plan, used and available, against each limit (Worker requests, CPU
+  per run, D1 rows read and written, storage) and the last 30 days, plus what runs when. The Worker reads
+  Cloudflare's GraphQL Analytics hourly with a read-only token (`worker/src/usage.js`, table
+  `usage_latest`, route `/usage`); the snapshot copies it into the page. Linked from the border and
+  YouTube pages.
+
 ## 2026-10-18 — Border history back to Sep 13; a date bug that would have stopped it
 
 - **CBP keeps no past readings** (checked: its feed shows the latest reading per port, and its

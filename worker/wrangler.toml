@@ -22,6 +22,9 @@ WRITE_ORIGINS = "https://juantorresmi.github.io,http://localhost:4000,http://127
 YOUTUBE_CHANNEL = "@JuanJulio001"
 # The reefer board's keys are secrets too: USDA_MMN_KEY (required, MyMarketNews) and
 # EIA_API_KEY (optional; without it the diesel price uses api.data.gov's shared DEMO_KEY).
+# The account the usage page reports on (src/usage.js). Not a secret: it's useless without a token,
+# and the token (CF_ANALYTICS_TOKEN, Account Analytics: Read only) is a secret.
+CF_ACCOUNT_ID = "00c57d97f1dca68db3d64925aaef505f"
 # Lock the page down to one site if you ever want to; "*" is fine for read-only data.
 # ALLOW_ORIGIN = "https://juantorresmi.github.io"
 

@@ -2475,13 +2475,63 @@ def cattle():
             "downloads": downloads, "tool": None if not fa else {**fa["tool"], "dress": fa["tool"]["dress"] or (pages.get("nebraska") or {}).get("tool", {}).get("dress")}, "page_count": len(pages), "items": pages}
 
 
+def size_label(b):
+    if b is None: return "—"
+    for unit, n in (("GB", 1e9), ("MB", 1e6), ("KB", 1e3)):
+        if b >= n: return f"{b / n:.1f} {unit}" if b < 10 * n else f"{round(b / n):,} {unit}"
+    return f"{int(b)} bytes"
+
+
+def share(used, limit):
+    """Used as a share of a free-plan limit: the label and a bar width (0-100)."""
+    if used is None or not limit: return {"pct": "—", "w": 0}
+    pct = used / limit * 100
+    return {"pct": "under 0.1%" if 0 < pct < 0.1 else f"{pct:.1f}%" if pct < 10 else f"{round(pct)}%", "w": min(100, round(pct, 1))}
+
+
+def usage(d):
+    """The /worker-usage/ page: today's use of the free plan (the UTC day, when its limits reset) and
+    the last 30 days, from the Worker's /usage (Cloudflare's GraphQL Analytics, summarized hourly)."""
+    if not d.get("ready"): return {"ready": False}
+    lim, days = d["limits"], d.get("days") or []
+    today = next((x for x in days if x["date"] == d["today"]), None) or {"date": d["today"], "requests": 0, "errors": 0, "rows_read": 0, "rows_written": 0, "storage_bytes": None, "cpu_p50_ms": None, "cpu_p99_ms": None}
+    size = next((x["storage_bytes"] for x in reversed(days) if x.get("storage_bytes")), None)
+    ms = lambda v: "—" if v is None else f"{v:.1f} ms" if v < 10 else f"{round(v)} ms"
+    left = lambda used, limit: None if used is None else max(0, limit - used)
+    cpu, cpu50 = today.get("cpu_p99_ms"), today.get("cpu_p50_ms")
+    spare = lambda v: "—" if v is None else "over by " + ms(v - lim["cpu_ms"]) if v > lim["cpu_ms"] else ms(lim["cpu_ms"] - v) + " to spare"
+    meters = [
+        {"what": "Worker requests", "used": fmt(today["requests"]), "left": fmt(left(today["requests"], lim["requests"])), "limit": fmt(lim["requests"]) + " a day", **share(today["requests"], lim["requests"])},
+        {"what": "Database rows read", "used": fmt(today["rows_read"]), "left": fmt(left(today["rows_read"], lim["rows_read"])), "limit": fmt(lim["rows_read"]) + " a day", **share(today["rows_read"], lim["rows_read"])},
+        {"what": "Database rows written", "used": fmt(today["rows_written"]), "left": fmt(left(today["rows_written"], lim["rows_written"])), "limit": fmt(lim["rows_written"]) + " a day", **share(today["rows_written"], lim["rows_written"])},
+        {"what": "Database storage, as Cloudflare counts it", "used": size_label(size), "left": size_label(left(size, lim["storage_bytes"])), "limit": size_label(lim["storage_bytes"]), **share(size, lim["storage_bytes"])},
+        {"what": "CPU, a typical run (median)", "used": ms(cpu50), "left": spare(cpu50), "limit": f"{lim['cpu_ms']} ms a run", **share(cpu50, lim["cpu_ms"])},
+        {"what": "CPU, the slowest 1% of runs", "used": ms(cpu), "left": spare(cpu), "limit": f"{lim['cpu_ms']} ms a run", **share(cpu, lim["cpu_ms"])},
+    ]
+    past = [x for x in days if x["date"] != d["today"]]
+    peak = max(past, key=lambda x: x["requests"], default=None)
+    rows = [{"day": day_label(datetime.fromisoformat(x["date"])), "requests": fmt(x["requests"]), "errors": fmt(x["errors"]),
+             "rows_read": fmt(x["rows_read"]), "rows_written": fmt(x["rows_written"]), "cpu50": ms(x.get("cpu_p50_ms")), "cpu": ms(x.get("cpu_p99_ms"))} for x in reversed(days)]
+    total = sum(x["requests"] for x in past)
+    return {"ready": True, "generated": d["updated"], "checked": hour_label(when(d["updated"])) + " (Michigan time)",
+            "today": full_date(datetime.fromisoformat(d["today"])), "meters": meters, "days": rows,
+            "stamp": {"requests": fmt(today["requests"]), "requests_left": fmt(left(today["requests"], lim["requests"])),
+                      "rows_read": fmt(today["rows_read"]), "rows_written": fmt(today["rows_written"]),
+                      "size": size_label(size), "cpu": ms(cpu50)},
+            "errors_30": fmt(sum(x["errors"] for x in days)), "cpu_over": cpu is not None and cpu > lim["cpu_ms"],
+            "avg_requests": fmt(round(total / len(past))) if past else "—", "past_days": len(past),
+            "peak": None if not peak else {"day": full_date(datetime.fromisoformat(peak["date"])), "requests": fmt(peak["requests"]),
+                                           "pct": share(peak["requests"], lim["requests"])["pct"]}}
+
+
 def main():
     base = worker_url()
     if not base: sys.exit("no worker_url in _config.yml")
     os.makedirs(OUT, exist_ok=True)
     failed = 0
     jobs = (("youtube", lambda: youtube(get(base + "/youtube"))), ("watching", lambda: watching(get(base + "/"))),
-            ("reefer", lambda: reefer(base)), ("border", lambda: border(base)), ("beef", beef), ("pork", pork), ("cattle", cattle))
+            ("reefer", lambda: reefer(base)), ("border", lambda: border(base)), ("beef", beef), ("pork", pork), ("cattle", cattle),
+            ("usage", lambda: usage(get(base + "/usage"))))
     only = sys.argv[1:]                          # `snapshot.py beef` runs just that one
     if only: jobs = tuple(j for j in jobs if j[0] in only)
     for name, job in jobs:

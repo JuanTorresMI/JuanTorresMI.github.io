@@ -24,6 +24,7 @@ npx.cmd wrangler deploy
 | `GET /border`, `/border/port?id=P` | CBP truck waits now; one port by weekday and hour | border pages ("right now"), `snapshot.py` | `src/border.js` |
 | `GET /beef` | USDA's newest boxed beef report: the cutout and every cut's price | the beef pages, when their copy is behind | `src/beef.js` |
 | `GET /pork` | USDA's newest pork report: the carcass cutout, primals and every cut | the pork pages, when their copy is behind | `src/pork.js` |
+| `GET /usage` | This account's use of the free plan for the last 30 days, from Cloudflare's GraphQL Analytics | `/worker-usage/`, `snapshot.py` | `src/usage.js` |
 | `GET /refresh`, `POST /refresh` | Whether the pages can be updated yet; starts the site's snapshot workflow (one global hour of cooldown) | the "Update now" button on the data boards | `src/refresh.js` |
 | `GET /music`, `/music/visits`, `/music/guestbook` (+ `POST`, `DELETE /music/guestbook/<id>`) | Yokonjuan's catalog, visitor counter, guestbook | `/music/` | `src/music.js` |
 
@@ -34,7 +35,7 @@ YouTube. The fed cattle board
 needs nothing from the Worker: `snapshot.py` reads USDA's datamart directly. The reefer rates need no cron:
 USDA keeps them, and the Worker asks on request.
 
-**Secrets** (`npx.cmd wrangler secret put NAME`, never in the repo): `GH_DISPATCH_TOKEN` (starts the snapshot workflow, see "Updating the pages"), `STREMIO_AUTH_KEY`,
+**Secrets** (`npx.cmd wrangler secret put NAME`, never in the repo): `CF_ANALYTICS_TOKEN` (reads this account's analytics for the usage page), `GH_DISPATCH_TOKEN` (starts the snapshot workflow, see "Updating the pages"), `STREMIO_AUTH_KEY`,
 `YOUTUBE_API_KEY`, `USDA_MMN_KEY`, `EIA_API_KEY` (optional), `GUESTBOOK_ADMIN_KEY`.
 
 **Vars** (`[vars]` in `wrangler.toml`): `LIVE_WINDOW_MIN`, `GUESTBOOK_DAILY_MAX`,
@@ -503,6 +504,30 @@ A few D1 rows per cron run (the pending flag) and at most one write per start. U
 on a weekend day and two on a weekday (morning, and the afternoon reports), plus any presses of the
 button (24 a day at most); each is one GitHub Actions run (free for a public repository) and one
 Pages deploy.
+
+## The usage page (`/usage`)
+
+`/worker-usage/` shows how much of the free plan the account uses, from Cloudflare's own GraphQL
+Analytics API (`src/usage.js`). The :47 cron run asks once an hour for the last 30 UTC days, in one
+request: Worker invocations (`workersInvocationsAdaptive`: requests, errors, subrequests, CPU p50 and
+p99), D1 queries and rows (`d1AnalyticsAdaptiveGroups`) and D1 size (`d1StorageAdaptiveGroups`), all
+account-wide because the limits are. The answer is one row, `usage_latest`; `GET /usage` serves it,
+ten minutes at the edge.
+
+### Setting it up (once)
+
+1. Cloudflare dashboard → My Profile → **API Tokens** → **Create Token** → Custom token, **Get started**.
+2. Name it `house-tv usage`. Permissions: **Account** → **Account Analytics** → **Read**, nothing else.
+   Account Resources: Include → this account.
+3. Create it, copy it, and from `worker/`: `npx.cmd wrangler secret put CF_ANALYTICS_TOKEN`.
+4. `CF_ACCOUNT_ID` is in `wrangler.toml` (not a secret). The table: `npx.cmd wrangler d1 execute
+   yokonjuan --remote --file=schema.sql` (only adds `usage_latest`).
+
+Without the token `/usage` answers `ready: false` and the page says so.
+
+### What it costs
+
+24 analytics requests a day (one subrequest each) and 24 one-row writes.
 
 ## Staying inside the free plan
 

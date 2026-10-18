@@ -1,0 +1,137 @@
+---
+layout: default
+title: Worker usage
+seo_title: "Cloudflare Worker Usage · Used and Left on the Free Plan"
+permalink: /worker-usage/
+description: How much of Cloudflare's free plan this site's Worker and database have used today and how much is left, plus the last 30 days, from Cloudflare's own analytics.
+image: /assets/og/worker-usage.png
+image_alt: "Worker usage, by Juan Torres. Cloudflare's free plan, used and left, from its own analytics."
+---
+{%- comment -%}
+  A "work" page (see the families in CLAUDE.md), in the boards' rate-sheet style (.rb in style.css).
+  Drawn from site.data.live.usage, the copy scripts/snapshot.py makes of the Worker's /usage
+  (worker/src/usage.js: Cloudflare's GraphQL Analytics, summarized hourly). The script at the
+  bottom swaps in the Worker's newer figures, and leaves the copy standing if it can't get them.
+{%- endcomment -%}
+{%- assign u = site.data.live.usage -%}
+<div class="rb wu">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family">Work · Site infrastructure</p>
+    <h1>Worker usage</h1>
+    <p class="rb-sub">Everything live on this site runs through one Cloudflare Worker and its database, on Cloudflare’s free plan. This is how much of that plan they have used today and how much is left, and the last 30 days, from Cloudflare’s own analytics.</p>
+  </div>
+  {%- if u.ready %}
+  <dl class="rb-stamp" id="wu-stamp">
+    <div><dt>Requests today</dt><dd data-wu="requests">{{ u.stamp.requests }}</dd></div>
+    <div><dt>Requests left</dt><dd data-wu="requests_left">{{ u.stamp.requests_left }}</dd></div>
+    <div><dt>Rows read today</dt><dd data-wu="rows_read">{{ u.stamp.rows_read }}</dd></div>
+    <div><dt>Rows written today</dt><dd data-wu="rows_written">{{ u.stamp.rows_written }}</dd></div>
+    <div><dt>Database size</dt><dd data-wu="size">{{ u.stamp.size }}</dd></div>
+    <div><dt>CPU, typical run</dt><dd data-wu="cpu">{{ u.stamp.cpu }}</dd></div>
+  </dl>
+  {%- endif %}
+</header>
+
+{%- if u.ready %}
+<section class="rb-sec" id="today" aria-labelledby="today-h">
+  <h2 id="today-h">Today against the free plan</h2>
+  <p>Today is the UTC day, {{ u.today }}: the free plan’s daily limits reset at midnight UTC (8 PM in Michigan in summer). Past a limit, requests fail until then and the pages fall back to the copy in their HTML; nothing is ever billed. <span id="wu-checked">Checked {{ u.checked }}.</span></p>
+  <table class="rb-t rb-stack">
+    <thead><tr><th scope="col">What</th><th scope="col">Used</th><th scope="col">Available</th><th scope="col">Free plan</th><th scope="col" class="rb-barcol">Share used</th></tr></thead>
+    <tbody id="wu-meters">
+    {%- for m in u.meters %}
+      <tr><th scope="row">{{ m.what }}</th><td data-label="Used">{{ m.used }}</td><td data-label="Available">{{ m.left }}</td><td data-label="Free plan">{{ m.limit }}</td><td data-label="Share used">{{ m.pct }}<span class="rb-bar"><span style="width: {{ m.w }}%"></span></span></td></tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  <p>CPU is time spent computing, not waiting on other sites, so a run that waits half a minute for USDA still uses a few milliseconds. The 10 ms is per run. Cloudflare stops a run that uses too much, and a stopped run counts as an error: <span id="wu-errors">{{ u.errors_30 }}</span> errors in the last 30 days{% if u.cpu_over %}, though the slowest runs go past 10 ms{% endif %}.</p>
+  {%- if u.peak %}
+  <p>Over the last {{ u.past_days }} full days the Worker answered {{ u.avg_requests }} requests a day on average; the busiest was {{ u.peak.day }}, with {{ u.peak.requests }} ({{ u.peak.pct }} of the daily limit).</p>
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="days" aria-labelledby="days-h">
+  <h2 id="days-h">The last 30 days</h2>
+  <p>Requests include the scheduled runs (two an hour) as well as visitors’ pages asking for live numbers. Rows are the database’s rows read and written, which is how Cloudflare counts database use. CPU is the typical run (median) and the slowest 1% (99th percentile). Days with nothing recorded are left out.</p>
+  <table class="rb-t rb-stack">
+    <thead><tr><th scope="col">Day (UTC)</th><th scope="col">Requests</th><th scope="col">Errors</th><th scope="col">Rows read</th><th scope="col">Rows written</th><th scope="col">CPU, typical</th><th scope="col">CPU, slowest 1%</th></tr></thead>
+    <tbody id="wu-days">
+    {%- for d in u.days %}
+      <tr><th scope="row">{{ d.day }}</th><td data-label="Requests">{{ d.requests }}</td><td data-label="Errors">{{ d.errors }}</td><td data-label="Rows read">{{ d.rows_read }}</td><td data-label="Rows written">{{ d.rows_written }}</td><td data-label="CPU, typical">{{ d.cpu50 }}</td><td data-label="CPU, slowest 1%">{{ d.cpu }}</td></tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+</section>
+{%- else %}
+<section class="rb-sec" id="today" aria-labelledby="today-h">
+  <h2 id="today-h">Today against the free plan</h2>
+  <p class="rb-empty">The usage figures appear once the Worker has its read-only analytics token (see the worker folder’s README).</p>
+</section>
+{%- endif %}
+
+<section class="rb-sec" id="schedule" aria-labelledby="schedule-h">
+  <h2 id="schedule-h">What runs, and when</h2>
+  <p>Most of the Worker’s requests are its own schedule, not visitors. Times are UTC unless noted.</p>
+  <table class="rb-t rb-stack">
+    <thead><tr><th scope="col">Job</th><th scope="col">When</th><th scope="col">Why then</th></tr></thead>
+    <tbody>
+      <tr><th scope="row"><a href="/border-waits/">Border waits</a> from CBP</th><td data-label="When">every 30 minutes, at :17 and :47</td><td data-label="Why then">Crossings post about hourly, at different minutes, and CBP keeps no history, so each reading has to be caught.</td></tr>
+      <tr><th scope="row"><a href="/beef-prices/">Beef</a> and <a href="/pork-prices/">pork</a> reports from USDA</th><td data-label="When">weekdays 1:30–6 PM Central until the day’s report is in; 6–8 AM Central for corrections</td><td data-label="Why then">The only hours USDA posts or corrects them.</td></tr>
+      <tr><th scope="row"><a href="/youtube/">YouTube</a> numbers</th><td data-label="When">every 3 hours</td><td data-label="Why then">A small channel’s numbers barely move in an hour.</td></tr>
+      <tr><th scope="row">Rebuilding the pages</th><td data-label="When">11:47 every day; when a new beef and pork report is stored; and on “Update now”, at most once an hour</td><td data-label="Why then">The pages carry a copy of the data, so they’re rebuilt when it changes.</td></tr>
+      <tr><th scope="row">This page’s figures</th><td data-label="When">every hour, at :47</td><td data-label="Why then">Cloudflare’s analytics lag a few minutes; hourly is plenty.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec" id="how-it-works">
+  <header class="sec-head"><h2>How it works</h2>{% if u.ready %}<span class="label">Checked {{ u.checked }}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+      <p>Cloudflare counts every request a Worker answers and every row its database reads or writes, and publishes those counts through its GraphQL Analytics API. Once an hour the Worker asks for the last 30 days of its account (the free plan’s limits are per account) and keeps the answer as one row in its database, so viewing this page never calls the API. A GitHub Action copies that row into this page when the site is rebuilt, and the script on the page swaps in the newer figures.</p>
+      <p>The limits shown are Cloudflare’s for the free plan: 100,000 Worker requests a day, 10 ms of CPU per run, 5 million database rows read and 100,000 written a day, and 5 GB of storage. The Worker reads its analytics with a token that can only read them. Its code is in the <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">worker folder</a> of this site’s repository.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<script>
+(() => {
+  const ENDPOINT = {{ site.worker_url | default: "" | jsonify }};
+  if (!ENDPOINT) return;
+  const LIMITS_NOTE = { requests: " a day", rows_read: " a day", rows_written: " a day" };
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const size = (b) => b == null ? "—" : b >= 1e9 ? (b / 1e9).toFixed(1) + " GB" : b >= 1e6 ? (b / 1e6).toFixed(1) + " MB" : b >= 1e3 ? Math.round(b / 1e3) + " KB" : b + " bytes";
+  const ms = (v) => v == null ? "—" : v < 10 ? v.toFixed(1) + " ms" : Math.round(v) + " ms";
+  const share = (used, limit) => { if (used == null || !limit) return ["—", 0]; const p = used / limit * 100; return [p > 0 && p < 0.1 ? "under 0.1%" : p < 10 ? p.toFixed(1) + "%" : Math.round(p) + "%", Math.min(100, p)]; };
+  const day = (iso) => new Date(iso + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" });
+  fetch(ENDPOINT.replace(/\/+$/, "") + "/usage").then((r) => r.json()).then((d) => {
+    if (!d.ready || !d.days || !document.getElementById("wu-meters")) return;
+    const L = d.limits, t = d.days.find((x) => x.date === d.today) || { requests: 0, rows_read: 0, rows_written: 0 };
+    const sz = [...d.days].reverse().find((x) => x.storage_bytes);
+    const left = (used, limit) => used == null ? null : Math.max(0, limit - used);
+    const stamp = { requests: fmt(t.requests), requests_left: fmt(left(t.requests, L.requests)), rows_read: fmt(t.rows_read), rows_written: fmt(t.rows_written), size: size(sz && sz.storage_bytes), cpu: ms(t.cpu_p50_ms) };
+    for (const [k, v] of Object.entries(stamp)) { const el = document.querySelector(`[data-wu="${k}"]`); if (el) el.textContent = v; }
+    const bytes = sz && sz.storage_bytes, cpu = t.cpu_p99_ms, cpu50 = t.cpu_p50_ms;
+    const spare = (v) => v == null ? "—" : v > L.cpu_ms ? "over by " + ms(v - L.cpu_ms) : ms(L.cpu_ms - v) + " to spare";
+    const rows = [
+      ["Worker requests", fmt(t.requests), fmt(left(t.requests, L.requests)), fmt(L.requests) + LIMITS_NOTE.requests, share(t.requests, L.requests)],
+      ["Database rows read", fmt(t.rows_read), fmt(left(t.rows_read, L.rows_read)), fmt(L.rows_read) + LIMITS_NOTE.rows_read, share(t.rows_read, L.rows_read)],
+      ["Database rows written", fmt(t.rows_written), fmt(left(t.rows_written, L.rows_written)), fmt(L.rows_written) + LIMITS_NOTE.rows_written, share(t.rows_written, L.rows_written)],
+      ["Database storage, as Cloudflare counts it", size(bytes), size(left(bytes, L.storage_bytes)), size(L.storage_bytes), share(bytes, L.storage_bytes)],
+      ["CPU, a typical run (median)", ms(cpu50), spare(cpu50), L.cpu_ms + " ms a run", share(cpu50, L.cpu_ms)],
+      ["CPU, the slowest 1% of runs", ms(cpu), spare(cpu), L.cpu_ms + " ms a run", share(cpu, L.cpu_ms)],
+    ];
+    document.getElementById("wu-meters").innerHTML = rows.map(([w, u, a, l, [p, wd]]) =>
+      `<tr><th scope="row">${esc(w)}</th><td data-label="Used">${esc(u)}</td><td data-label="Available">${esc(a)}</td><td data-label="Free plan">${esc(l)}</td><td data-label="Share used">${esc(p)}<span class="rb-bar"><span style="width: ${wd}%"></span></span></td></tr>`).join("");
+    document.getElementById("wu-days").innerHTML = [...d.days].reverse().map((x) =>
+      `<tr><th scope="row">${esc(day(x.date))}</th><td data-label="Requests">${fmt(x.requests)}</td><td data-label="Errors">${fmt(x.errors)}</td><td data-label="Rows read">${fmt(x.rows_read)}</td><td data-label="Rows written">${fmt(x.rows_written)}</td><td data-label="CPU, typical">${esc(ms(x.cpu_p50_ms))}</td><td data-label="CPU, slowest 1%">${esc(ms(x.cpu_p99_ms))}</td></tr>`).join("");
+    const er = document.getElementById("wu-errors");
+    if (er) er.textContent = fmt(d.days.reduce((n, x) => n + x.errors, 0));
+    const c = document.getElementById("wu-checked");
+    if (c) c.textContent = "Checked " + new Date(d.updated).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) + ".";
+  }).catch(() => {});
+})();
+</script>

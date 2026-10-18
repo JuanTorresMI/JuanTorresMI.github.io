@@ -21,7 +21,7 @@ const PAGES = [
   "/pork-prices/", "/pork-prices/pork-tenderloin/", "/pork-prices/pork-belly-primal/", "/es/precios-de-cerdo/", "/es/precios-de-cerdo/filete-de-cerdo/",
   "/fed-cattle-prices/", "/fed-cattle-prices/eastern-cornbelt/", "/es/precios-de-ganado-gordo/", "/es/precios-de-ganado-gordo/nebraska/",
   "/usda-market-prices/", "/es/precios-usda/", "/blog/usda-pork-prices-by-cut/",
-  "/youtube/", "/watching/", "/music/",
+  "/youtube/", "/watching/", "/music/", "/worker-usage/",
 ];
 const TYPES = { html: "text/html", css: "text/css", js: "text/javascript", png: "image/png", jpg: "image/jpeg", svg: "image/svg+xml", woff2: "font/woff2", xml: "application/xml", txt: "text/plain", json: "application/json", webmanifest: "application/manifest+json", wasm: "application/wasm", pdf: "application/pdf", csv: "text/csv" };
 

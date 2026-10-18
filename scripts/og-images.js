@@ -44,6 +44,8 @@ const CARDS = {
     sub: "What packers pay for cattle, live and dressed, region by region", bottom: ["juantorresmi.github.io/fed-cattle-prices", "USDA AMS · weekly since 2020"] },
   "usda-market-prices": { top: ["Juan Torres", "Data"], name: "USDA market prices",
     sub: "Beef · Pork · Fed cattle · Reefer freight · English and Spanish", bottom: ["juantorresmi.github.io/usda-market-prices", "USDA AMS · free CSVs"] },
+  "worker-usage": { top: ["Juan Torres", "Data"], name: "Worker usage",
+    sub: "Cloudflare’s free plan, used and left, from its own analytics", bottom: ["juantorresmi.github.io/worker-usage", "Cloudflare Workers · D1 · GraphQL Analytics"] },
   youtube: { top: ["Juan Torres", "YouTube"], name: "On YouTube",
     sub: "The channel’s numbers, refreshed every three hours", bottom: ["juantorresmi.github.io/youtube", "Cloudflare Worker · YouTube Data API"] },
 };
