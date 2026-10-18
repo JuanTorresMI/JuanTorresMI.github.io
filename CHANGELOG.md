@@ -1,7 +1,7 @@
 # Changelog
 
 What changed on the site and why, newest first. Snapshot refreshes ("Refresh the live page
-snapshots", twice a day) aren't listed; `git log` has every commit. Excluded from the Jekyll build
+snapshots", every three hours) aren't listed; `git log` has every commit. Excluded from the Jekyll build
 (`_config.yml`). Add an entry with each pull request that changes what a reader sees, how data is
 collected, or what it costs to run.
 
@@ -20,6 +20,20 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **More USDA boards** (Juan wants all of them): next are hogs (LM_HG217/218), lamb (LM_XL502) and cow
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
+
+## 2026-10-18 — Snapshot every three hours
+
+- **The pages fell behind the live data.** The snapshot ran twice a day on GitHub's schedule, which
+  delays runs by hours or skips them: the 09:41 UTC run started at 13:31, and the 21:41 run hadn't
+  started by 22:06. The Worker was current all along; the pages' copy (border averages and charts,
+  YouTube and TV copies, the boards' text and CSVs) could be most of a day old. It now runs every
+  three hours (`41 */3 * * *`), so a late or skipped run costs three hours. Wording on the pages and
+  in the docs changed to match.
+- **IndexNow is sent only pages whose date moved.** With eight deploys a day, sending every page
+  dated today or yesterday would resend the same pages each time. The deploy now saves the live
+  sitemap before publishing and `indexnow.py --since` sends only the pages whose `<lastmod>` changed.
+- Free plan: the snapshot's border reads go from two to eight a day, at most about 160,000 D1 rows
+  read a day out of 5 million.
 
 ## 2026-10-18 — Worker tuning
 

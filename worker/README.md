@@ -283,7 +283,7 @@ only holds the USDA key (which must never reach a browser or the repo) and asks 
 - `GET /reefer?week=2026-10-05` is any week, by the Monday it covers. Cached six hours.
 
 The site has no script for this page: the `Snapshot live pages` GitHub Action reads its committed
-CSV back twice a day and asks here only for the weeks it doesn't settle, normally the newest and
+CSV back every three hours and asks here only for the weeks it doesn't settle, normally the newest and
 the four before it (USDA sometimes corrects a report). The CSV is the long-term record, filled once
 from USDA back to January 2020 (`REEFER_FILL=1 python3 scripts/snapshot.py reefer`).
 
@@ -328,7 +328,7 @@ Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/reefer?week=2025-06-0
 
 ### What it costs
 
-Nothing, and nothing stored. The snapshot makes about six requests a run, twice a day, and each one
+Nothing, and nothing stored. The snapshot makes about six requests a run, eight runs a day, and each one
 is a USDA call (one week is about 700 rows, a few milliseconds to boil down) or an edge-cache hit.
 
 ## The border wait board
@@ -344,7 +344,7 @@ commercial lanes, is kept whole in `border_latest` for the live board.
 - `GET /border` — every commercial port right now. Cached five minutes at the edge; the board's
   script refreshes from it.
 - `GET /border/port?id=230404` — one port's last 30 days averaged by weekday and hour, plus its
-  last 7 days of readings. The twice-daily snapshot reads this once per port; visitors never do.
+  last 7 days of readings. The snapshot (every three hours) reads this once per port; visitors never do.
 
 ### Setting it up (once)
 
@@ -439,7 +439,7 @@ Nothing. USDA is asked 28 times a weekday for a few hundred bytes (none at night
 when no report can appear), plus one full report on business days. Outside those hours `/beef` and
 `/pork` stay an hour at the edge instead of ten minutes, since the stored report can't change.
 That is one row written a business day. Visitors reach the Worker only when a page's copy is behind,
-which happens between USDA posting a report (mid-afternoon) and the evening rebuild.
+which happens between USDA posting a report (mid-afternoon) and the next rebuild, at most three hours later.
 
 ## Staying inside the free plan
 
@@ -453,7 +453,7 @@ beef and reefer histories moved out of D1):
 
 | Limit | Free plan | In use | Headroom |
 | --- | --- | --- | --- |
-| Rows read a day | 5,000,000 | about 40,000 | 125× |
+| Rows read a day | 5,000,000 | about 40,000 with the snapshot twice a day; at most about 160,000 with it every three hours (since Oct 18) | 31× or more |
 | Rows written a day | 100,000 | about 2,500 | 40× |
 | Database size | 500 MB | 160 KB | grows about 10 MB a year (border readings): decades |
 | Cron triggers | 5 per account | 2 | 3 spare |
@@ -477,7 +477,7 @@ What keeps it there, so a later change doesn't undo it:
   make a run read more rows.
 - **Many rows go in one statement** (`json_each`), never one statement per row: the free plan
   allows 50 queries per run.
-- **Pages read the twice-daily copy, not the Worker**, wherever the data changes slowly (reefer,
+- **Pages read the snapshot's copy (every three hours), not the Worker**, wherever the data changes slowly (reefer,
   beef, the border averages). Visitors only reach the Worker for "right now".
 - **Don't keep what the source keeps.** USDA serves the whole truck rate and boxed beef history,
   and EIA the diesel history, so the Worker stores none of it (just the newest beef and pork

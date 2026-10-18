@@ -1,4 +1,4 @@
-# Twice a day, copies the Worker's live data into the site (scripts/snapshot.py): /youtube/ and
+# Every three hours, copies the Worker's live data into the site (scripts/snapshot.py): /youtube/ and
 # /watching/ get real numbers in their HTML for crawlers and readers without JavaScript, and the
 # reefer, border, beef, pork and fed cattle boards (built from the copy alone, apart from the border's "right now"
 # columns) get fresh data, any new lane, crossing or cut pages and their CSVs.
@@ -8,10 +8,12 @@ name: Snapshot live pages
 
 on:
   schedule:
-    # Twice a day: GitHub sometimes delays or skips a scheduled run (it skipped the first one),
-    # and the job only commits when something changed, so the second run costs nothing.
-    - cron: "41 9 * * *"            # 09:41 UTC, early morning in Michigan
-    - cron: "41 21 * * *"           # 21:41 UTC, late afternoon in Michigan
+    # Every three hours. GitHub delays scheduled runs, often by hours (the 09:41 run of Oct 18
+    # started at 13:31, and that evening's hadn't started 25 minutes after its time), and sometimes
+    # skips one, so twice a day left the pages up to a day behind. With eight a day a late or skipped
+    # run costs three hours, not twelve. The job only commits when something changed. Off the hour,
+    # when GitHub is least busy.
+    - cron: "41 */3 * * *"
   workflow_dispatch:
 
 permissions:
