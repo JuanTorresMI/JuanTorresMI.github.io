@@ -14,10 +14,13 @@ in numbers or say "Oct 14"), so the templates only loop:
     _data/live/watching.json    /watching/
     _data/live/reefer.json      /reefer-rates/ and every lane page
     _data/live/border.json      /border-waits/, /es/tiempos-de-espera/ and every crossing page
-    _data/live/beef.json        /beef-prices/ and every cut page
+    _data/live/beef.json        /beef-prices/, /es/precios-de-carne-de-res/ and every cut page
+    _data/live/pork.json        /pork-prices/, /es/precios-de-cerdo/ and every cut page
+    _data/live/cattle.json      /fed-cattle-prices/, /es/precios-de-ganado-gordo/ and every region page
 
 plus a front-matter stub for each reefer lane (_reefer_lanes/), each named border crossing
-(_border_crossings/, _border_crossings_es/) and each beef cut (_beef_cuts/), never deleted, and the
+(_border_crossings/, _border_crossings_es/), each beef and pork cut and each cattle region, in both
+languages (_beef_cuts/, _pork_cuts/, _cattle_regions/ and their _es twins), never deleted, and the
 CSV downloads. A source that fails or answers with an error is skipped and its last good file
 stays. The `Snapshot live pages` workflow runs this twice a day and commits whatever changed.
 Needs only the standard library.

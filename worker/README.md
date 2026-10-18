@@ -22,7 +22,8 @@ npx.cmd wrangler deploy
 | `GET /youtube` | The channel's numbers, uploads and daily history | `/youtube/`, `snapshot.py` | `src/youtube.js` |
 | `GET /reefer`, `/reefer/history?year=Y` | USDA reefer truck rates and diesel | `snapshot.py` only | `src/reefer.js` |
 | `GET /border`, `/border/port?id=P` | CBP truck waits now; one port by weekday and hour | border pages ("right now"), `snapshot.py` | `src/border.js` |
-| `GET /beef`, `/beef/history?month=YYYY-MM` | USDA's daily boxed beef cutout and every cut's price | `snapshot.py` only | `src/beef.js` |
+| `GET /beef` | USDA's newest boxed beef report: the cutout and every cut's price | the beef pages, when their copy is behind | `src/beef.js` |
+| `GET /pork` | USDA's newest pork report: the carcass cutout, primals and every cut | the pork pages, when their copy is behind | `src/pork.js` |
 | `GET /music`, `/music/visits`, `/music/guestbook` (+ `POST`, `DELETE /music/guestbook/<id>`) | Yokonjuan's catalog, visitor counter, guestbook | `/music/` | `src/music.js` |
 
 **Cron triggers** (`wrangler.toml`): at :17 and :47 every hour it reads CBP's border waits and
@@ -37,7 +38,7 @@ USDA keeps them, and the Worker asks on request.
 
 **Storage**: one D1 database, `yokonjuan` (binding `DB`), whose tables are all in `schema.sql`:
 `counters` and `guestbook` (music), `youtube_latest` and `youtube_daily`, `border_waits` and
-`border_latest`, and `beef_latest`. The reefer board stores nothing. The schema only ever adds
+`border_latest`, `beef_latest` and `pork_latest`. The reefer board stores nothing. The schema only ever adds
 what's missing, so it is safe to run again. Workers AI (binding `AI`) checks guestbook posts.
 
 The sections below set up and explain each part. The last one, on the free plan's limits, is
@@ -370,6 +371,15 @@ The first request after a deploy reads CBP on the spot; after that the cron does
 
 Nothing. CBP is asked 48 times a day. About 50 ports post about once an hour, so that is roughly
 1,200 rows written a day, two D1 statements per run.
+
+## The pork board
+
+`/pork-prices/` works exactly like the beef board below, for USDA's National Daily Pork FOB Plant,
+Negotiated Sales, afternoon (LM_PK602, report 2498): `src/pork.js` keeps one row, `pork_latest`,
+the newest report, and both cron runs call `porkTick` (a few-hundred-byte summary; the whole report,
+about 150 KB, only when USDA has posted something new). `GET /pork` serves it to
+`pork-prices/live.js`. The history is USDA's, read by `scripts/snapshot.py`. The fed cattle board
+needs nothing from the Worker.
 
 ## The boxed beef board
 

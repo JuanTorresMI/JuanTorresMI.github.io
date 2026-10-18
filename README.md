@@ -28,6 +28,10 @@ on purpose. This README is the overview.
 | `/border-waits/`, `/border-waits/<crossing>/` | CBP truck waits at the land border, now and by hour | Work | `_data/live/border.json`, plus the Worker for "right now" |
 | `/es/tiempos-de-espera/`, `…/<cruce>/` | The same for the Mexico crossings, in Spanish | Work | `_data/live/border.json` |
 | `/beef-prices/`, `/beef-prices/<cut>/` | USDA's daily boxed beef cutout and the price of every cut, a page per cut | Work | `_data/live/beef.json` (history from USDA's own archive), plus the Worker for a report posted since the last rebuild |
+| `/pork-prices/`, `/pork-prices/<cut>/` | USDA's daily pork cutout, the six primals and every pork cut, a page per cut | Work | `_data/live/pork.json` (from USDA's archive), plus the Worker's `/pork` for a report posted since the last rebuild |
+| `/fed-cattle-prices/`, `/fed-cattle-prices/<region>/` | What packers pay for fed cattle each week, 5-area and by region, live and dressed | Work | `_data/live/cattle.json` (from USDA's archive; no Worker) |
+| `/usda-market-prices/` | The parent of the four USDA boards | Work | the boards' snapshots |
+| `/es/precios-de-carne-de-res/`, `/es/precios-de-cerdo/`, `/es/precios-de-ganado-gordo/`, `/es/precios-usda/` and every item under them | The same boards and pages in Spanish, paired with hreflang | Work | the same snapshots |
 | `/youtube/` | The YouTube channel's numbers and uploads | Gamer | `_data/live/youtube.json`, refreshed live by the Worker |
 | `/watching/` | What's on the house TV (public, but `noindex`) | Chill | `_data/live/watching.json`, refreshed live by the Worker |
 | `/music/` | Yokonjuan, the music page (its own layout and look) | Separate | `_data/music.yml`, refreshed live by the Worker |
@@ -71,12 +75,12 @@ history comes straight from USDA, which keeps it, so the Worker stores only the 
 | `_config.yml` | Name, tagline, description, social links, default share picture, Worker URL, collections, build excludes |
 | `_data/` | `projects.yml`, `resume.yml`, `music.yml`, the border, reefer and beef reference lists, and `live/` (the Worker's data, written by `snapshot.py`, never edited by hand) |
 | `_includes/` | `head.html` (titles, meta tags, structured data, for every page), the nav, footer and project bar, the border heat map |
-| `_layouts/` | `default` (ordinary pages), `post`, `app` (full-width projects), `reefer-lane`, `border-crossing`, `beef-cut`, `artist` (the music page), `redirect` |
+| `_layouts/` | `default` (ordinary pages), `post`, `app` (full-width projects), `reefer-lane`, `border-crossing`, `beef-cut`, `pork-cut`, `cattle-region`, `artist` (the music page), `redirect` |
 | `_posts/` | Writing published on this site (`/blog/<slug>/`) |
-| `_reefer_lanes/`, `_border_crossings/`, `_border_crossings_es/`, `_beef_cuts/` | Front-matter stubs, one per generated page, written by `snapshot.py` |
+| `_reefer_lanes/`, `_border_crossings/`, `_border_crossings_es/`, `_beef_cuts/`, `_beef_cuts_es/`, `_pork_cuts/`, `_pork_cuts_es/`, `_cattle_regions/`, `_cattle_regions_es/` | Front-matter stubs, one per generated page, written by `snapshot.py` |
 | `assets/` | `css/style.css` (the one stylesheet), self-hosted fonts, share pictures (`og/`), icons, the résumé PDF and its `.docx` source |
 | `fruit-fly-dispatcher/`, `craft-ledger.html`, `aggregate-planning/` | The three browser projects |
-| `reefer-rates/`, `border-waits/`, `es/`, `beef-prices/` | The data boards' index pages and their CSV downloads |
+| `reefer-rates/`, `border-waits/`, `es/`, `beef-prices/`, `pork-prices/`, `fed-cattle-prices/`, `usda-market-prices/` | The data boards' index pages and their CSV downloads. The beef, pork and cattle boards are one include each (`_includes/beef-board.html`, `pork-board.html`, `cattle-board.html`), rendered in English or Spanish |
 | `music/` | The music page, its stylesheet, script, icon and share picture |
 | `worker/` | The Cloudflare Worker; see [worker/README.md](worker/README.md) |
 | `scripts/` | Build checks, the snapshot, and the image and screenshot generators (below) |
