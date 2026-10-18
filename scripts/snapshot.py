@@ -1672,6 +1672,18 @@ def pork_seo_short(title, limit=60):
     return title
 
 
+def write_names(path, d):
+    """A names file (_data/beef_cuts.json, pork_cuts.json) in its hand-readable layout: the _about note,
+    then one item per line, so a new item is a one-line diff."""
+    d = dict(d)
+    lines = ["{", f'  "_about": {json.dumps(d.pop("_about", ""), ensure_ascii=False)},', ""]
+    items = list(d.items())
+    for n, (k, v) in enumerate(items):
+        body = ", ".join(f"{json.dumps(a)}: {json.dumps(b, ensure_ascii=False)}" for a, b in v.items())
+        lines.append(f"  {json.dumps(k, ensure_ascii=False)}: {{ {body} }}" + ("," if n < len(items) - 1 else ""))
+    with open(path, "w", encoding="utf-8", newline="\n") as fh: fh.write("\n".join(lines + ["}"]) + "\n")
+
+
 def pork_names():
     d = json.load(open(os.path.join(ROOT, "_data", "pork_cuts.json"), encoding="utf-8"))
     d.pop("_about", None)
@@ -1994,8 +2006,7 @@ def pork():
     if added:
         with open(os.path.join(ROOT, "_data", "pork_cuts.json"), encoding="utf-8") as fh: allnames = json.load(fh)
         for item in added: allnames[item] = names[item]
-        with open(os.path.join(ROOT, "_data", "pork_cuts.json"), "w", encoding="utf-8", newline="\n") as fh:
-            json.dump(allnames, fh, ensure_ascii=False, indent=1); fh.write("\n")
+        write_names(os.path.join(ROOT, "_data", "pork_cuts.json"), allnames)
         print(f"pork: named {len(added)} new item{'s' if len(added) != 1 else ''} in _data/pork_cuts.json")
 
     pub = None
@@ -2170,14 +2181,17 @@ def cattle():
     for k, rows in weekly.items():
         for d in rows: have_years.setdefault(k[0], set()).add(d[:4])
     # Weekly: a year a region has nothing for is fetched whole (the first run, a new region); after
-    # that only the weeks since BEEF_RECENT_DAYS before its newest row (USDA sometimes corrects), never
-    # earlier than January 1. The six regions in LM_CT154's table share one request (lmr is memoized).
+    # that only the weeks since BEEF_RECENT_DAYS before its newest row (USDA sometimes corrects), at
+    # most 60 days back. The six regions in LM_CT154's table share one request (lmr is memoized).
     fetched = 0
     starts = {}
     for reg in CATTLE_REGIONS:
         last = max((d for k, rows in weekly.items() if k[0] == reg[0] for d in rows), default=None)
         s0 = (iso_day(last) - timedelta(days=BEEF_RECENT_DAYS)).date() if last else date(today_ct.year, 1, 1)
-        starts[reg[6]] = min(starts.get(reg[6], today_ct), max(s0, date(today_ct.year, 1, 1)))
+        # Never further back than the recent window: a region silent for years (Colorado) would otherwise
+        # drag its shared report's request back to its last price. Across New Year this still reaches
+        # into December, where USDA may correct the last weeks.
+        starts[reg[6]] = min(starts.get(reg[6], today_ct), max(s0, today_ct - timedelta(days=BEEF_RECENT_DAYS + 15)))
     for reg in CATTLE_REGIONS:
         spans = [(date(y, 1, 1), date(y, 12, 31)) for y in range(CATTLE_START, today_ct.year)
                  if str(y) not in have_years.get(reg[0], set())] + [(starts[reg[6]], today_ct)]

@@ -78,6 +78,12 @@
 {% endcomment %}
 <link rel="preload" href="/assets/fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+{%- comment %} The data boards and their item pages lead with figures set in Plex Mono. {% endcomment %}
+{%- assign board_page = false -%}
+{%- for b in site.data.board_paths -%}{%- if page.url contains b -%}{%- assign board_page = true -%}{%- endif -%}{%- endfor -%}
+{%- if board_page %}
+<link rel="preload" href="/assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+{%- endif %}
 {%- comment %} ?v= is the build time: every deploy gets new stylesheet and script addresses,
   so a browser never pairs new HTML with a stylesheet it cached from the deploy before (GitHub
   Pages lets browsers keep files for ten minutes). Pages that load their own files do the same. {% endcomment %}

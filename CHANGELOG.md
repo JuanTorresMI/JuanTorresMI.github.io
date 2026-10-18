@@ -21,6 +21,20 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-18 — SEO, bug and speed passes
+
+- **SEO** (audit of all 797 sitemap pages, beyond check.py): 30 pork search titles over 65
+  characters now use the trade's shorter words where needed (`pork_seo_short()`), none duplicated;
+  every description is 160 characters or less and `check.py` warns past 160; item pages carry
+  four-level breadcrumbs (Home, the USDA hub, the board, the item), and the reefer board joins the
+  hub. Canonicals, hreflang pairs, og tags, one h1 per page, heading order, Dataset fields, internal
+  links and orphans all came back clean.
+- **Speed**: the data boards preload IBM Plex Mono, the font their figures are set in
+  (`_data/board_paths.yml` lists the board addresses).
+- **Bugs**: the cattle snapshot's recent window reaches 60 days back instead of stopping at
+  January 1, so late-December corrections aren't missed; a pork item USDA adds is written into
+  `_data/pork_cuts.json` in its one-line-per-item layout instead of reformatting the file.
+
 ## 2026-10-18 — Docs and performance pass
 
 - **Reefer snapshot timeouts fixed.** The Worker waited for EIA's diesel (51 s on the demo key)
