@@ -130,6 +130,7 @@ if not os.path.isfile(os.path.join(site, "robots.txt")): err("robots.txt", "miss
 # The Worker-backed pages carry a copy of their data (scripts/snapshot.py). Without it, a crawler
 # or a browser with JavaScript off sees only the placeholder.
 for page, placeholder in (("youtube/index.html", "Asking YouTube…"), ("watching/index.html", "Asking the TV…"),
+                          ("worker-usage/index.html", "Asking Cloudflare…"),
                           ("reefer-rates/index.html", "The first report hasn’t been collected yet"),
                           ("border-waits/index.html", "The first readings haven’t been collected yet"),
                           ("beef-prices/index.html", "The first report hasn’t been collected yet"),

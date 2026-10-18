@@ -2489,11 +2489,35 @@ def share(used, limit):
     return {"pct": "under 0.1%" if 0 < pct < 0.1 else f"{pct:.1f}%" if pct < 10 else f"{round(pct)}%", "w": min(100, round(pct, 1))}
 
 
+# Cloudflare's analytics go back 30 days, so the usage page keeps its own permanent copy: one row per
+# finished UTC day, rewritten while Cloudflare can still revise it, kept once it can't.
+USAGE_CSV = os.path.join(ROOT, "worker-usage", "worker-usage-daily.csv")
+USAGE_FIELDS = ["date", "requests", "errors", "subrequests", "cpu_p50_ms", "cpu_p99_ms", "read_queries", "write_queries", "rows_read", "rows_written", "storage_bytes"]
+
+
+def usage_archive(d):
+    rows = {}
+    if os.path.exists(USAGE_CSV):
+        with open(USAGE_CSV, encoding="utf-8", newline="") as fh:
+            rows = {r["date"]: r for r in csv.DictReader(fh)}
+    for x in d.get("days") or []:
+        if x["date"] < d["today"]:
+            rows[x["date"]] = {k: "" if x.get(k) is None else x[k] for k in USAGE_FIELDS}
+    os.makedirs(os.path.dirname(USAGE_CSV), exist_ok=True)
+    with open(USAGE_CSV, "w", encoding="utf-8", newline="\n") as fh:
+        w = csv.DictWriter(fh, USAGE_FIELDS, lineterminator="\n"); w.writeheader()
+        for k in sorted(rows): w.writerow(rows[k])
+    return len(rows)
+
+
 def usage(d):
     """The /worker-usage/ page: today's use of the free plan (the UTC day, when its limits reset) and
     the last 30 days, from the Worker's /usage (Cloudflare's GraphQL Analytics, summarized hourly)."""
     if not d.get("ready"): return {"ready": False}
-    lim, days = d["limits"], d.get("days") or []
+    kept = usage_archive(d)
+    lim = d["limits"]
+    # Days the analytics list with nothing on them (only a storage reading) are left out.
+    days = [x for x in d.get("days") or [] if x["requests"] or x["rows_read"] or x["rows_written"] or x["date"] == d["today"]]
     today = next((x for x in days if x["date"] == d["today"]), None) or {"date": d["today"], "requests": 0, "errors": 0, "rows_read": 0, "rows_written": 0, "storage_bytes": None, "cpu_p50_ms": None, "cpu_p99_ms": None}
     size = next((x["storage_bytes"] for x in reversed(days) if x.get("storage_bytes")), None)
     ms = lambda v: "—" if v is None else f"{v:.1f} ms" if v < 10 else f"{round(v)} ms"
@@ -2519,7 +2543,7 @@ def usage(d):
                       "rows_read": fmt(today["rows_read"]), "rows_written": fmt(today["rows_written"]),
                       "size": size_label(size), "cpu": ms(cpu50)},
             "errors_30": fmt(sum(x["errors"] for x in days)), "cpu_over": cpu is not None and cpu > lim["cpu_ms"],
-            "avg_requests": fmt(round(total / len(past))) if past else "—", "past_days": len(past),
+            "avg_requests": fmt(round(total / len(past))) if past else "—", "past_days": len(past), "kept_days": kept,
             "peak": None if not peak else {"day": full_date(datetime.fromisoformat(peak["date"])), "requests": fmt(peak["requests"]),
                                            "pct": share(peak["requests"], lim["requests"])["pct"]}}
 
