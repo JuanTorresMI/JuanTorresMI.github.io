@@ -9,10 +9,11 @@ collected, or what it costs to run.
 
 Things waiting on a decision or on Juan, so they aren't lost:
 
-- **`GH_DISPATCH_TOKEN`.** The Worker's on-time page updates and the "Update now" button need a
-  fine-grained GitHub token (this repo only, Actions: read and write), set with `wrangler secret put
-  GH_DISPATCH_TOKEN`; steps in worker/README.md, "Updating the pages". Until then GitHub's late
-  schedule is all there is. The token expires (a year at most): renew it then.
+- **Renew `GH_DISPATCH_TOKEN`** before it expires (set Oct 18, 2026; fine-grained, this repo only,
+  Actions: read and write). Steps in worker/README.md, "Updating the pages". If it lapses, GitHub's
+  backup schedule keeps the pages updating, hours late, and the button hides itself.
+- **Two Oct 16 posts** (YouTube, border) still describe the old timing ("once an hour", "twice a
+  day"); Juan's call whether to update them.
 
 - **Write-up reasons.** The pork and fed cattle posts (Oct 17) describe the boards and their
   numbers only; per CLAUDE.md they need Juan's own reasons for building them.
