@@ -9,11 +9,14 @@
  *   GET /border, /border/port?id=P   truck waits at the land border, live and by hour (see border.js)
  *   GET /beef      USDA's newest boxed beef report: the cutout and every cut's price (see beef.js)
  *   GET /pork      USDA's newest pork report: the carcass cutout, primals and every cut (see pork.js)
+ *   GET, POST /refresh   start the site's snapshot workflow, at most once an hour (see refresh.js)
  *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
  *
  * Two cron triggers in wrangler.toml call `scheduled`, at :17 and :47. Both read CBP's border wait
  * times, so those are polled every half hour; on weekdays from 6 am to 8 pm Central (lmrHours) they
- * also check for a new boxed beef and pork report. The :17 run also polls YouTube. The reefer rates
+ * also check for a new boxed beef and pork report. The :17 run also polls YouTube. The :47 runs at 09
+ * and 21 UTC start the site's snapshot workflow (refresh.js), since GitHub's own schedule for it runs
+ * hours late or not at all. The reefer rates
  * need no cron: USDA keeps them, and they're asked for on request.
  */
 import { catalog, CATALOG_MAX_AGE, visits, guestbook, sign, unsign, Refused } from "./music.js";
@@ -22,6 +25,7 @@ import { reeferWeek, REEFER_MAX_AGE, REEFER_WEEK_MAX_AGE } from "./reefer.js";
 import { borderTick, borderNow, borderPort, BORDER_MAX_AGE, BORDER_PORT_MAX_AGE } from "./border.js";
 import { beefTick, beefData, BEEF_MAX_AGE } from "./beef.js";
 import { porkTick, porkData, PORK_MAX_AGE } from "./pork.js";
+import { refreshState, startSnapshot, snapshotDue } from "./refresh.js";
 
 const STREMIO = "https://api.strem.io/api/datastoreGet";
 const SUBSTACK = "https://juantorresis.substack.com/feed";
@@ -42,6 +46,7 @@ export default {
     const url = new URL(request.url);
     const route = url.pathname.replace(/\/+$/, "") || "/";
     if (route.startsWith("/music")) return musicRoute(request, env, ctx, route, url, cors);
+    if (route === "/refresh") return refreshRoute(request, env, cors);
     if (request.method !== "GET") return json({ error: "GET only" }, 405, cors);
     if (route === "/youtube") return youtubeRoute(env, ctx, url, cors);
     if (route === "/reefer") return reeferRoute(env, ctx, url, cors);
@@ -82,6 +87,7 @@ export default {
     const log = (what) => (e) => console.error(what + ":", e && e.message ? e.message : e);
     if (event.cron === YOUTUBE_CRON) ctx.waitUntil(poll(env).catch(log("youtube poll")));
     ctx.waitUntil(borderTick(env).catch(log("border")));
+    if (snapshotDue(new Date(event.scheduledTime || Date.now()), event.cron)) ctx.waitUntil(startSnapshot(env, "cron").catch(log("snapshot start")));
     // USDA posts the beef and pork reports on weekday afternoons and corrects them the same day or
     // the next morning, so the summary checks only run then: 28 a weekday instead of 48 every day.
     if (lmrHours(new Date(event.scheduledTime || Date.now()))) {
@@ -102,6 +108,26 @@ export function lmrHours(now) {
 
 const json = (body, status, headers) =>
   new Response(JSON.stringify(body), { status, headers: { ...headers, "Content-Type": "application/json" } });
+
+/* ------------------------------------------------------------ the update button ---- */
+
+/* The data boards' "Update now" button: GET says whether a start is allowed yet, POST starts the
+   snapshot workflow (one global cooldown, see refresh.js). Only the site's own pages may POST. */
+async function refreshRoute(request, env, cors) {
+  const headers = { ...cors, "Cache-Control": "no-store" };
+  try {
+    if (request.method === "GET") return json(await refreshState(env), 200, headers);
+    if (request.method !== "POST") return json({ error: "GET or POST" }, 405, headers);
+    const origins = String(env.WRITE_ORIGINS || "").split(",").map((s) => s.trim()).filter(Boolean);
+    if (!origins.includes(request.headers.get("Origin") || "")) return json({ error: "Not from the site" }, 403, headers);
+    if (!env.GH_DISPATCH_TOKEN) return json({ error: "Not set up", ...(await refreshState(env)) }, 503, headers);
+    const r = await startSnapshot(env, "button");
+    return json(r, r.started ? 202 : 429, headers);
+  } catch (e) {
+    console.error("refresh:", e && e.message ? e.message : e);
+    return json({ error: "GitHub didn't take the request; try again later" }, 502, headers);
+  }
+}
 
 /* ------------------------------------------------------------ the music page ---- */
 

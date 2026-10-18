@@ -30,7 +30,7 @@ how the live data flows, the workflows and scripts.
 | `reefer-rates/`, `border-waits/`, `es/tiempos-de-espera/`, `beef-prices/`, `pork-prices/`, `fed-cattle-prices/`, `usda-market-prices/`, `es/precios-*/` | The data boards' index pages, their CSVs and scripts (see "Live data pages"). The beef, pork and cattle boards are each one include (`_includes/beef-board.html`, `pork-board.html`, `cattle-board.html`) that the English and Spanish index pages both render; `usda-hub.html` is the parent page; `price-chart`, `price-grid`, `price-season`, `cut-tools`, `cattle-detail`, `cattle-calc` and `usda-boards` are their shared parts |
 | `worker/` | The Cloudflare Worker behind every live page. Not part of the Jekyll build; its README lists its routes, crons, secrets and tables |
 | `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` and `music-og.js` (share pictures), `snapshot.py` (Worker data → `_data/live/`), `lastmod.py` (git dates for the sitemap), `indexnow.py` (pings Bing and other IndexNow engines after each deploy) |
-| `_data/live/` | Twice-daily copies of the Worker's answers, already formatted. Written by `snapshot.py` from the `Snapshot live pages` workflow, which commits them and starts a deploy. Don't edit these files by hand |
+| `_data/live/` | Twice-daily copies of the Worker's answers, already formatted. Written by `snapshot.py` from the `Snapshot live pages` workflow, which commits them and starts a deploy. The Worker starts that workflow (09:47 and 21:47 UTC, and the boards' "Update now" button, at most once an hour; `worker/src/refresh.js`), because GitHub's own schedule runs hours late; that schedule is only the backup. Don't edit these files by hand |
 
 ## Before you push
 

@@ -396,6 +396,12 @@ html { scroll-behavior: smooth; }
 .rb-stamp dt, .rb-facts dt { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 .rb-stamp dd { margin: 4px 0 0; font-family: var(--mono); font-size: 17px; color: var(--ink); white-space: nowrap; }
 .rb-stamp dd span { color: var(--text-2); }
+.rb-update { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 16px; }
+.rb-update[hidden] { display: none; }
+.rb-update p { flex: 1 1 280px; margin: 0; font-size: 14px; line-height: 1.5; color: var(--text-2); }
+.rb-update .rb-chip { margin: 0; }
+.rb-update .rb-chip:disabled { opacity: 0.45; cursor: default; }
+.rb-update .rb-chip:disabled:hover { background: transparent; color: var(--ink); }
 
 .rb-jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
 .rb-jump a, .rb-btn, .rb-chip, .rb-views button { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid var(--ink); background: transparent; color: var(--ink); font: 500 15px/1.2 var(--sans); text-decoration: none; cursor: pointer; transition: background 0.15s, color 0.15s; }

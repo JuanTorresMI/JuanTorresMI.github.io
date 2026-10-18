@@ -1,0 +1,54 @@
+{%- comment -%}
+  The data boards' "Update now" button, under each board's stamp: `include update-button.html es=true`
+  for the Spanish pages. It asks the Worker's /refresh (worker/src/refresh.js) to start the snapshot
+  workflow, which rebuilds every page with the newest data. One global cooldown of an hour, so the
+  button shows when the next update is possible. Hidden until the Worker says it is set up, and
+  without JavaScript, so it never shows a button that can't work.
+{%- endcomment -%}
+{%- assign es = include.es -%}
+<div class="rb-update" id="rb-update" hidden>
+  <button type="button" class="rb-chip" id="rb-update-btn">{% if es %}Actualizar ahora{% else %}Update now{% endif %}</button>
+  <p id="rb-update-note" aria-live="polite"></p>
+</div>
+<script>
+(() => {
+  const ENDPOINT = {{ site.worker_url | default: "" | jsonify }};
+  if (!ENDPOINT) return;
+  const ES = {{ es | default: false | jsonify }};
+  const T = ES ? {
+    idle: "Las páginas se actualizan dos veces al día. Este botón las actualiza ya, para todos (una vez por hora).",
+    wait: (ago, at) => `Última actualización iniciada ${ago}. La siguiente se puede pedir a las ${at}.`,
+    started: "Actualización en marcha: los datos nuevos estarán en unos 5 minutos. Recarga la página entonces.",
+    failed: "No se pudo iniciar la actualización. Inténtalo más tarde.",
+    now: "hace un momento", min: (n) => `hace ${n} min`,
+  } : {
+    idle: "The pages update twice a day. This updates them now, for everyone (once an hour).",
+    wait: (ago, at) => `Last update started ${ago}. The next one can be asked for at ${at}.`,
+    started: "Update started: the new data will be in the pages in about 5 minutes. Reload then.",
+    failed: "Couldn't start the update. Try again later.",
+    now: "just now", min: (n) => `${n} min ago`,
+  };
+  const box = document.getElementById("rb-update"), btn = document.getElementById("rb-update-btn"), note = document.getElementById("rb-update-note");
+  const url = ENDPOINT.replace(/\/+$/, "") + "/refresh";
+  let timer;
+  function show(d) {
+    clearTimeout(timer);
+    const next = new Date(d.next).getTime(), wait = next - Date.now();
+    if (wait <= 0) { btn.disabled = false; note.textContent = T.idle; return; }
+    const m = Math.round((Date.now() - new Date(d.last).getTime()) / 60000);
+    const at = new Date(next).toLocaleTimeString(ES ? "es-MX" : "en-US", { hour: "numeric", minute: "2-digit" });
+    btn.disabled = true;
+    note.textContent = T.wait(m < 1 ? T.now : T.min(m), at);
+    timer = setTimeout(() => show(d), Math.min(wait, 60000));
+  }
+  fetch(url).then((r) => r.json()).then((d) => { if (!d.ready) return; box.hidden = false; show(d); }).catch(() => {});
+  btn.addEventListener("click", () => {
+    btn.disabled = true;
+    fetch(url, { method: "POST" }).then((r) => r.json().then((d) => [r.status, d])).then(([status, d]) => {
+      if (status === 202) { clearTimeout(timer); note.textContent = T.started; return; }
+      if (status === 429 && d.next) return show(d);
+      throw new Error(status);
+    }).catch(() => { btn.disabled = false; note.textContent = T.failed; });
+  });
+})();
+</script>
