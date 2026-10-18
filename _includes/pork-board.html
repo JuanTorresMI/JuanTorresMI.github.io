@@ -182,7 +182,7 @@
 
 <section class="rb-sec" id="data" aria-labelledby="data-h">
   <h2 id="data-h">{% if es %}Descargar los datos{% else %}Download the data{% endif %}</h2>
-  <p>{% if es %}Todo lo de esta página y de las páginas de cada corte, como archivos CSV, con el nombre de cada producto en inglés y en español. Se reescriben dos veces al día y son de uso libre: los números son del USDA y son de dominio público. Dé crédito a USDA AMS.{% else %}Everything on this page and the cut pages, as plain CSV files, with each item’s name in English and Spanish. They’re rewritten twice a day and are free to use: the numbers are USDA’s and in the public domain. Credit USDA AMS.{% endif %}</p>
+  <p>{% if es %}Todo lo de esta página y de las páginas de cada corte, como archivos CSV, con un archivo aparte de nombres en inglés y en español. Se reescriben dos veces al día y son de uso libre: los números son del USDA y son de dominio público. Dé crédito a USDA AMS.{% else %}Everything on this page and the cut pages, as plain CSV files, with a separate file of every item’s name in English and Spanish. They’re rewritten twice a day and are free to use: the numbers are USDA’s and in the public domain. Credit USDA AMS.{% endif %}</p>
   <div class="rb-scroll">
     <table class="rb-t rb-wrap">
       <thead><tr><th scope="col">{% if es %}Archivo{% else %}File{% endif %}</th><th scope="col">{% if es %}Filas{% else %}Rows{% endif %}</th><th scope="col">{% if es %}Tamaño{% else %}Size{% endif %}</th><th scope="col">{% if es %}Qué contiene{% else %}What’s in it{% endif %}</th></tr></thead>
@@ -204,7 +204,7 @@
         <tr><th scope="row">carcass … belly</th><td>El valor de la canal y de cada primal, dólares por quintal.</td></tr>
         <tr><th scope="row">total_loads, cut_loads, trim_and_process_loads</th><td>Cargas vendidas ese día (en total, de cortes, y de recortes y productos para procesar).</td></tr>
         <tr><th scope="row">section</th><td>La tabla del reporte del USDA: <code>loin</code>, <code>butt</code>, <code>picnic</code>, <code>ham</code>, <code>belly</code>, <code>sparerib</code>, <code>jowl</code>, <code>trim</code>, <code>variety</code> o <code>ai</code> (con ingredientes añadidos).</td></tr>
-        <tr><th scope="row">usda_description, name, nombre</th><td>El producto tal como lo lista el USDA, y un nombre sencillo en inglés y en español.</td></tr>
+        <tr><th scope="row">usda_description, name</th><td>El producto tal como lo lista el USDA, y un nombre sencillo en inglés. El nombre en español y las páginas de cada producto están en <code>pork-cut-names.csv</code>, que se une por <code>usda_description</code>.</td></tr>
         <tr><th scope="row">low, high, weighted_average</th><td>La venta más baja, la más alta y el promedio ponderado del día, dólares por quintal; <code>weighted_average_per_lb</code> por libra.</td></tr>
         <tr><th scope="row">pounds</th><td>Las libras vendidas en las que se basa el precio.</td></tr>
       {%- else %}
@@ -212,7 +212,7 @@
         <tr><th scope="row">carcass … belly</th><td>The carcass cutout and each primal’s value, dollars per hundredweight.</td></tr>
         <tr><th scope="row">total_loads, cut_loads, trim_and_process_loads</th><td>Loads sold that day (in all, of cuts, and of trim and processing items).</td></tr>
         <tr><th scope="row">section</th><td>The table of USDA’s report: <code>loin</code>, <code>butt</code>, <code>picnic</code>, <code>ham</code>, <code>belly</code>, <code>sparerib</code>, <code>jowl</code>, <code>trim</code>, <code>variety</code> or <code>ai</code> (added ingredients).</td></tr>
-        <tr><th scope="row">usda_description, name, nombre</th><td>The item exactly as USDA lists it, and a plain name in English and in Spanish.</td></tr>
+        <tr><th scope="row">usda_description, name</th><td>The item exactly as USDA lists it, and a plain English name. The Spanish name and each item’s pages are in <code>pork-cut-names.csv</code>, which joins on <code>usda_description</code>.</td></tr>
         <tr><th scope="row">low, high, weighted_average</th><td>The day’s lowest and highest sale and the weighted average, dollars per hundredweight; <code>weighted_average_per_lb</code> per pound.</td></tr>
         <tr><th scope="row">pounds</th><td>The pounds sold the price is based on.</td></tr>
       {%- endif %}

@@ -1,7 +1,9 @@
 # Working on this site
 
 Personal site of Juan Torres, built with Jekyll and served by GitHub Pages from `main`.
-Read this before changing anything. README.md is the overview for people: what each page is,
+Read this before changing anything. CHANGELOG.md logs every change worth knowing and the open
+items; add an entry with each pull request that changes what readers see or how data is collected.
+README.md is the overview for people: what each page is,
 how the live data flows, the workflows and scripts.
 
 ## The shape of it
@@ -92,8 +94,10 @@ Gamer and chill pages set `stock: night`.
 ## Live data pages
 
 Some pages show data the Worker collects (`worker/`, see its README). The pattern is always
-the same: the Worker polls its source on a cron and keeps history in D1; `snapshot.py` copies
-its answer into `_data/live/<name>.json`, already formatted (Liquid on GitHub Pages can't format
+the same: a source that only shows "now" (CBP, YouTube's counts, the TV) is polled by the Worker,
+which keeps its history in D1; a source that keeps its own history (USDA, EIA) is read straight from
+it, and the committed CSVs are the archive. Either way `snapshot.py` writes `_data/live/<name>.json`,
+already formatted (Liquid on GitHub Pages can't format
 numbers or dates); the page renders that copy into its HTML, so crawlers and readers without
 JavaScript get real content; and, where it matters, a page script swaps in fresh numbers.
 
@@ -139,11 +143,14 @@ JavaScript get real content; and, where it matters, a page script swaps in fresh
   codes in English and Spanish; `pork_name()` in `snapshot.py` builds a name from the code's parts
   (bone, trim, weight, lean, pack, frozen, added ingredients) and adds any new item to the file on its
   own. Never change a slug once live. `pork-prices/live.js` asks the Worker's `/pork` when the copy is
-  behind; the tools are the beef board's `beef-prices/tools.js`.
+  behind; the tools are the beef board's `beef-prices/tools.js`. Downloads: the daily cutout, one CSV
+  per year of every cut (English name only, to keep them small) and `pork-cut-names.csv`, every item's
+  English and Spanish name and pages, which joins on `usda_description`; plus `latest.json`.
 - **The fed cattle board (`/fed-cattle-prices/`, a page per region)**: weekly negotiated cash prices
   from LM_CT150 (5-area), LM_CT156-158 (Texas-Oklahoma, Kansas, Nebraska), LM_CT154's regional table
   (the six smaller regions) and LM_CT100 (5-area daily), all keyless from the datamart. No Worker:
-  the snapshot reads the CSVs back and asks USDA for the current year. A weekly report dated Monday
+  the snapshot reads the CSVs back and asks USDA only for the weeks since 45 days before each
+  region's newest row (the six LM_CT154 regions share one request). A weekly report dated Monday
   covers the week before; a daily report covers the business day before it. A region gets a page
   after 8 weeks with a price in a year; a week with too few trades has no price, never zero.
 - **Spanish for the USDA boards**: every beef, pork and cattle page has a Spanish twin under
@@ -151,6 +158,10 @@ JavaScript get real content; and, where it matters, a page script swaps in fresh
   each stub's `translation` (`snapshot.py` writes both stubs). The snapshots carry the formatted Spanish
   dates and sentences in `*_es` fields; the templates hold the Spanish words beside the English ones.
   Spanish cut names follow Mexican usage (beef names are in `_data/beef_cuts.json`, `es`).
+- **The USDA hub (`/usda-market-prices/`, `/es/precios-usda/`)**: the parent project of the beef,
+  pork, cattle and reefer boards (`_includes/usda-hub.html`, a schema.org `DataCatalog` that each
+  board's `Dataset` names in `isPartOf`). Every board ends with `_includes/usda-boards.html`, the
+  list of the others, so a new board is added there once.
 - **`/blog/`**: renders the local posts in HTML and merges Substack's items by script, so the
   list works without JavaScript and for crawlers.
 
@@ -208,6 +219,14 @@ crawlers see.
   for display, render `site.data.live.<name>` in the page as the fallback, and have the script
   replace it (and leave it standing if the fetch fails). Add the page's placeholder to the
   snapshot check in `check.py`, and the page to `screenshots.js`.
+- **A new USDA board** (the way the beef, pork and cattle boards were made): look at the report's
+  sections in the datamart first (`/reports/<id>?lastReports=1&allSections=true`); add a job to
+  `snapshot.py` that reads its CSVs back and asks only for what they don't settle; write the board as
+  one include rendered by an English and a Spanish index page, and an item layout that reads
+  `page.lang`; reuse `price-chart`, `price-grid`, `price-season` and `cut-tools`. Then: collections
+  and defaults for both languages in `_config.yml`, the stubs' `translation` pairs, the sitemap,
+  `check.py`'s snapshot list, `snapshot.yml`'s `git add` paths, a `projects.yml` entry, a card in
+  `og-images.js`, the board in `usda-boards.html` and the hub, `screenshots.js`, and the docs.
 - **Anything changing the head**: it is one include for every page. Test with `check.py`.
 
 ## Things that are the way they are on purpose
@@ -224,6 +243,10 @@ crawlers see.
   solved at once, the Solver layout with period 0, an Excel export with live formulas), but no
   real case's names or numbers go in the repo: case documents are copyrighted, and the sample is
   neutral on purpose.
+- Liquid parses tags even inside `{% comment %}` blocks, so a comment never shows an include
+  call with its braces (write `include x.html es=…` in backticks); one did, and broke the build.
+- Board and hub pages have no `last_modified_at`: their sitemap date comes from `lastmod.py`, which
+  follows their includes to the snapshot they read, so it moves when the data does.
 - The sitemap and feed are written by hand (no plugins) so they build anywhere; the sitemap has no
   `<changefreq>` or `<priority>`, which search engines ignore, and a `<lastmod>` only when it is
   true. Redirects are the same: `_layouts/redirect.html` rather than jekyll-redirect-from, whose
@@ -232,7 +255,7 @@ crawlers see.
 - Analytics is Cloudflare Web Analytics (cookieless), switched on by `cloudflare_analytics_token`
   in `_config.yml` and written in `_includes/analytics.html`.
 - The `.docx` résumé source, `worker/`, `scripts/` and the documentation files (README, this
-  file) are excluded from the build in `_config.yml`. That last part matters: GitHub Pages
+  file, CHANGELOG) are excluded from the build in `_config.yml`. That last part matters: GitHub Pages
   renders every Markdown file as a page even without front matter, which a plain local build
   does not, so a new `.md` at the root must be added to `exclude` or it appears at `/<name>/`.
 - The PDF résumé (`assets/Juan Torres Resume.pdf`, with its `.docx` source beside it) is a separate
