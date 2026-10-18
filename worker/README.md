@@ -20,14 +20,15 @@ npx.cmd wrangler deploy
 | `GET /` | The house TV: what's on, lately, the shelf, the tally | `/watching/` (every 40 s while visible), `snapshot.py` | `src/index.js` |
 | `GET /substack` | The newsletter's latest posts as JSON | `/blog/` | `src/index.js` |
 | `GET /youtube` | The channel's numbers, uploads and daily history | `/youtube/`, `snapshot.py` | `src/youtube.js` |
-| `GET /reefer`, `/reefer/history?year=Y` | USDA reefer truck rates and diesel | `snapshot.py` only | `src/reefer.js` |
+| `GET /reefer`, `/reefer?week=YYYY-MM-DD` | USDA reefer truck rates for the newest (or any) week, plus two years of diesel | `snapshot.py` only | `src/reefer.js` |
 | `GET /border`, `/border/port?id=P` | CBP truck waits now; one port by weekday and hour | border pages ("right now"), `snapshot.py` | `src/border.js` |
 | `GET /beef` | USDA's newest boxed beef report: the cutout and every cut's price | the beef pages, when their copy is behind | `src/beef.js` |
 | `GET /pork` | USDA's newest pork report: the carcass cutout, primals and every cut | the pork pages, when their copy is behind | `src/pork.js` |
 | `GET /music`, `/music/visits`, `/music/guestbook` (+ `POST`, `DELETE /music/guestbook/<id>`) | Yokonjuan's catalog, visitor counter, guestbook | `/music/` | `src/music.js` |
 
 **Cron triggers** (`wrangler.toml`): at :17 and :47 every hour it reads CBP's border waits and
-checks for a new boxed beef report; the :17 run also polls YouTube. The reefer rates need no cron:
+checks for a new boxed beef and pork report; the :17 run also polls YouTube. The fed cattle board
+needs nothing from the Worker: `snapshot.py` reads USDA's datamart directly. The reefer rates need no cron:
 USDA keeps them, and the Worker asks on request.
 
 **Secrets** (`npx.cmd wrangler secret put NAME`, never in the repo): `STREMIO_AUTH_KEY`,
@@ -274,7 +275,10 @@ code is `src/reefer.js`.
 only holds the USDA key (which must never reach a browser or the repo) and asks on request:
 
 - `GET /reefer` is the newest report, its quotes boiled down to lanes, plus the last 104 weeks of
-  diesel. Cached an hour at the edge.
+  diesel. Cached an hour at the edge. EIA can be slow on the shared `DEMO_KEY` (51 seconds once, on
+  Oct 18, 2026, which made the snapshot time out), so the diesel request runs beside USDA's and
+  is cut off after 20 seconds (`DIESEL_TIMEOUT_MS`); the answer then has an empty `diesel` and the
+  site keeps its last figures. With your own `EIA_API_KEY` this rarely happens.
 - `GET /reefer?week=2026-10-05` is any week, by the Monday it covers. Cached six hours.
 
 The site has no script for this page: the `Snapshot live pages` GitHub Action reads its committed
@@ -441,21 +445,22 @@ fetches per run, five cron triggers per account, and D1's 5 million rows read an
 day, in a database of at most 500 MB. On the free plan a limit is never billed: past it, requests
 fail until the next day (00:00 UTC), and every page falls back to the copy in its HTML.
 
-Where it stands (`npx.cmd wrangler d1 info yokonjuan`, Oct 17, 2026):
+Where it stands (`npx.cmd wrangler d1 info yokonjuan`, Oct 18, 2026, the first full day after the
+beef and reefer histories moved out of D1):
 
 | Limit | Free plan | In use | Headroom |
 | --- | --- | --- | --- |
-| Rows read a day | 5,000,000 | about 28,000 | 175× |
-| Rows written a day | 100,000 | about 4,500 | 20× |
-| Database size | 500 MB | about 1.3 MB | grows about 10 MB a year (border readings): decades |
+| Rows read a day | 5,000,000 | about 40,000 | 125× |
+| Rows written a day | 100,000 | about 2,500 | 40× |
+| Database size | 500 MB | 160 KB | grows about 10 MB a year (border readings): decades |
 | Cron triggers | 5 per account | 2 | 3 spare |
-| Outside fetches per run | 50 | at most about 7 | |
+| Outside fetches per run | 50 | at most about 9 (CBP, YouTube, a beef and a pork summary, and a full report when one is new) | |
 | Cron requests a day | | 48 (24 + 24) | |
 
 Requests from visitors are the only number that scales with traffic, and only the pages with
 something live ask: `/watching/` (every 40 s while visible), `/youtube/`, `/blog/`, `/music/` and
-the border pages (once per view), and the beef pages only in the hours their copy is behind a new
-report. The reefer board and every lane page are plain HTML and never call the Worker, so a burst of
+the border pages (once per view), and the beef and pork pages only in the hours their copy is
+behind a new report. The fed cattle pages never call it. The reefer board and every lane page are plain HTML and never call the Worker, so a burst of
 search traffic to them costs nothing here.
 
 What keeps it there, so a later change doesn't undo it:
@@ -472,8 +477,8 @@ What keeps it there, so a later change doesn't undo it:
 - **Pages read the twice-daily copy, not the Worker**, wherever the data changes slowly (reefer,
   beef, the border averages). Visitors only reach the Worker for "right now".
 - **Don't keep what the source keeps.** USDA serves the whole truck rate and boxed beef history,
-  and EIA the diesel history, so the Worker stores none of it (just the newest beef report, for the
-  page script) and `snapshot.py` asks for only the weeks or months its CSVs don't settle. Logging a
+  and EIA the diesel history, so the Worker stores none of it (just the newest beef and pork
+  reports, for the page scripts) and `snapshot.py` asks for only the weeks or months its CSVs don't settle. Logging a
   history here is for sources that only show "now" (CBP, YouTube's counts).
-- **Ask only when the copy could be behind.** `beef-prices/live.js` works out whether a new report
+- **Ask only when the copy could be behind.** `beef-prices/live.js` (and `pork-prices/live.js`) works out whether a new report
   should be out before it asks, so a visit to a current page makes no request.

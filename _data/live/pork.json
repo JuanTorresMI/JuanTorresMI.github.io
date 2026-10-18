@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-18T13:33:20+00:00",
+ "generated": "2026-10-18T14:31:58+00:00",
  "latest": "2026-10-16",
  "date": "Oct 16, 2026",
  "date_es": "16 oct 2026",
@@ -3451,11 +3451,18 @@
    "kb": "129"
   },
   {
+   "file": "pork-cut-names.csv",
+   "label": "Every item’s plain name in English and Spanish, and its pages",
+   "label_es": "El nombre sencillo de cada producto en inglés y en español, y sus páginas",
+   "rows": "270",
+   "kb": "61"
+  },
+  {
    "file": "pork-cut-prices-2026.csv",
    "label": "Every cut, every day of 2026 so far",
    "label_es": "Cada corte, cada día de 2026 hasta hoy",
    "rows": "18,426",
-   "kb": "2,946",
+   "kb": "2,035",
    "year": "2026"
   },
   {
@@ -3463,7 +3470,7 @@
    "label": "Every cut, every day of 2025",
    "label_es": "Cada corte, cada día de 2025",
    "rows": "24,150",
-   "kb": "3,871",
+   "kb": "2,673",
    "year": "2025"
   },
   {
@@ -3471,7 +3478,7 @@
    "label": "Every cut, every day of 2024",
    "label_es": "Cada corte, cada día de 2024",
    "rows": "24,228",
-   "kb": "3,884",
+   "kb": "2,681",
    "year": "2024"
   },
   {
@@ -3479,7 +3486,7 @@
    "label": "Every cut, every day of 2023",
    "label_es": "Cada corte, cada día de 2023",
    "rows": "24,996",
-   "kb": "4,034",
+   "kb": "2,778",
    "year": "2023"
   },
   {
@@ -3487,7 +3494,7 @@
    "label": "Every cut, every day of 2022",
    "label_es": "Cada corte, cada día de 2022",
    "rows": "26,403",
-   "kb": "4,261",
+   "kb": "2,935",
    "year": "2022"
   },
   {
@@ -3495,7 +3502,7 @@
    "label": "Every cut, every day of 2021",
    "label_es": "Cada corte, cada día de 2021",
    "rows": "27,285",
-   "kb": "4,420",
+   "kb": "3,037",
    "year": "2021"
   },
   {
@@ -3503,7 +3510,7 @@
    "label": "Every cut, every day of 2020",
    "label_es": "Cada corte, cada día de 2020",
    "rows": "28,194",
-   "kb": "4,586",
+   "kb": "3,143",
    "year": "2020"
   }
  ],

@@ -9,6 +9,8 @@ Built with Jekyll and published by GitHub Pages from `main`. There is nothing to
 ordinary edit: change a file, open a pull request, and the `Check the site` workflow builds it
 exactly the way GitHub Pages will and checks the result. Merging deploys it.
 
+**[CHANGELOG.md](CHANGELOG.md)** logs what changed and why, with the open items at the top.
+
 **[CLAUDE.md](CLAUDE.md) is the working guide** for anyone (or any AI) changing the site: the
 design rules, the page families, how to add a post, project or page, and what is the way it is
 on purpose. This README is the overview.
@@ -42,23 +44,25 @@ redirect stubs for addresses that moved (`redirects/`).
 ## How it fits together
 
 ```
-                     ┌─ Stremio, YouTube, USDA (truck rates, boxed beef), EIA, CBP, Substack, SoundCloud, Spotify
+                     ┌─ Stremio, YouTube, USDA (truck rates, newest beef and pork), EIA, CBP, Substack, SoundCloud, Spotify
                      │
 Cloudflare Worker  ◄─┘  worker/: polls on cron triggers, keeps history in D1, holds the keys
      │
      ├─► browsers: the live parts of /watching/, /youtube/, /blog/, /music/ and the border pages
      │
      └─► scripts/snapshot.py, twice a day (Snapshot live pages workflow)
-              │  writes _data/live/*.json, lane, crossing and cut stubs, CSVs; commits; starts a deploy
+              │  also reads USDA's LMR datamart directly for the beef, pork and cattle history
+              │  writes _data/live/*.json, the generated pages' stubs (both languages), CSVs; commits; starts a deploy
               ▼
          Jekyll on GitHub Pages ─► the site ─► scripts/indexnow.py pings Bing and others
 ```
 
 Every page that shows live data also carries a copy of it in its HTML, so search engines and
 readers without JavaScript see real numbers; the page's script then swaps in fresh ones. The
-reefer board has no script at all: it is rebuilt from the copy. The reefer and beef CSVs double
-as the archive each snapshot reads back, so a week or a day once collected is never lost; the beef
-history comes straight from USDA, which keeps it, so the Worker stores only the newest report.
+reefer and cattle boards have no live script at all: they are rebuilt from the copy. The reefer,
+beef, pork and cattle CSVs double as the archive each snapshot reads back, so a week or a day once
+collected is never lost, and USDA, which keeps every report, is asked only for the recent stretch;
+the Worker stores only the newest beef and pork reports, for the pages' freshness check.
 
 ### Workflows (`.github/workflows/`)
 
@@ -73,7 +77,7 @@ history comes straight from USDA, which keeps it, so the Worker stores only the 
 | Path | What it is |
 | --- | --- |
 | `_config.yml` | Name, tagline, description, social links, default share picture, Worker URL, collections, build excludes |
-| `_data/` | `projects.yml`, `resume.yml`, `music.yml`, the border, reefer and beef reference lists, and `live/` (the Worker's data, written by `snapshot.py`, never edited by hand) |
+| `_data/` | `projects.yml`, `resume.yml`, `music.yml`, the border, reefer, beef and pork reference lists (`pork_cuts.json` grows on its own as USDA adds items), and `live/` (the snapshots, written by `snapshot.py`, never edited by hand) |
 | `_includes/` | `head.html` (titles, meta tags, structured data, for every page), the nav, footer and project bar, the border heat map |
 | `_layouts/` | `default` (ordinary pages), `post`, `app` (full-width projects), `reefer-lane`, `border-crossing`, `beef-cut`, `pork-cut`, `cattle-region`, `artist` (the music page), `redirect` |
 | `_posts/` | Writing published on this site (`/blog/<slug>/`) |
@@ -112,7 +116,7 @@ manifest, and warns about duplicate titles or descriptions.
 | `screenshots.js` | By hand, for anything visual | Photographs one page of every kind at desktop and phone widths, light and dark, and reports script errors |
 | `og-images.js` | After changing a share picture's words | Redraws `assets/og/*.png` and the home-screen icons from the site's fonts |
 | `music-og.js` | After changing the music page's picture | Redraws `music/og.jpg` |
-| `snapshot.py` | By the snapshot workflow | Copies the Worker's data into `_data/live/` and writes the generated pages' stubs and CSVs |
+| `snapshot.py` | By the snapshot workflow | Copies the Worker's data (and USDA's, for beef, pork and cattle) into `_data/live/` and writes the generated pages' stubs and CSVs; `snapshot.py pork cattle` runs just those |
 | `lastmod.py` | By the deploy and check workflows | Dates every page from git for the sitemap (`_data/lastmod.json`, never committed) |
 | `indexnow.py` | By the deploy workflow | Tells IndexNow engines which pages changed today or yesterday |
 
@@ -132,10 +136,11 @@ use an installed Chrome or Edge instead of its own Chromium (`chromium.launch({ 
 Every page goes through `_includes/head.html`, which writes its title, description, canonical
 address, Open Graph and Twitter tags and schema.org structured data: a `Person`, `WebSite` and
 `ProfilePage` on the home page, a `BlogPosting` for each post (linked to the project it writes
-up), a `WebApplication` for each project, a `Dataset` for each data board, and breadcrumbs on
-every other page. The sitemap and feed are written by hand, so no plugin is needed, and each
-sitemap date is only ever a real change. The border pages in English and Spanish point at each
-other with hreflang. Search Console and Bing verify through `_config.yml`; IndexNow's key file
+up), a `WebApplication` for each project, a `Dataset` for each data board and each beef cut, pork
+cut and cattle region, a `DataCatalog` for the USDA hub, and breadcrumbs on every other page. The
+sitemap and feed are written by hand, so no plugin is needed, and each sitemap date is only ever a
+real change. The border pages and every USDA board and item page exist in English and Spanish and
+point at each other with hreflang (each Spanish page sets `lang: es` and a `translation`). Search Console and Bing verify through `_config.yml`; IndexNow's key file
 sits at the root.
 
 ## Secrets

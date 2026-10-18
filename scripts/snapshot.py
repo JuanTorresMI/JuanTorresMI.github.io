@@ -48,10 +48,19 @@ def worker_url():
     return ""
 
 
-def get(url):
+def get(url, tries=2):
+    """One Worker answer as a dict. A cold Worker cache can take a minute (it is asking USDA or EIA on
+    the spot), so the timeout is generous and a timeout or a 5xx gets one more try."""
     req = urllib.request.Request(url, headers={"User-Agent": "site-snapshot (github.com/JuanTorresMI)"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        d = json.load(r)
+    for attempt in range(tries):
+        try:
+            with urllib.request.urlopen(req, timeout=90) as r:
+                d = json.load(r)
+            break
+        except (TimeoutError, OSError) as e:
+            code = getattr(e, "code", None)
+            if attempt == tries - 1 or (code is not None and code < 500): raise
+            print(f"  {url.split('?')[0]}: {e}; trying once more", file=sys.stderr)
     if not isinstance(d, dict) or d.get("error"):
         raise RuntimeError(d.get("error") if isinstance(d, dict) else "not an object")
     return d
@@ -1513,6 +1522,7 @@ PORK_CUTS_DIR = os.path.join(ROOT, "_pork_cuts")
 PORK_CUTS_ES_DIR = os.path.join(ROOT, "_pork_cuts_es")
 PORK_CUTOUT_CSV = os.path.join(PORK_DIR, "pork-cutout-daily.csv")
 PORK_YEAR_CSV = lambda y: os.path.join(PORK_DIR, f"pork-cut-prices-{y}.csv")
+PORK_NAMES_CSV = os.path.join(PORK_DIR, "pork-cut-names.csv")   # one row per item: its names and pages in both languages
 PORK_USDA = "https://mpr.datamart.ams.usda.gov/services/v1.1/reports/2498"
 PORK_PAGE_DAYS = 26
 PORK_MOVER_LBS = 20000                        # pounds a cut needs today to count as a mover
@@ -1910,14 +1920,27 @@ def pork():
         grp = list(grp)
         with open(PORK_YEAR_CSV(yr), "w", encoding="utf-8", newline="") as fh:
             wr = csv.writer(fh, lineterminator="\n")
-            wr.writerow(["date", "section", "usda_description", "name", "nombre", "low", "high", "weighted_average", "weighted_average_per_lb", "pounds"])
+            wr.writerow(["date", "section", "usda_description", "name", "low", "high", "weighted_average", "weighted_average_per_lb", "pounds"])
             for d, _, sec, item, r in grp:
                 i = info(sec, item)
-                wr.writerow([d, sec, item, i["name"], i["es"], num2(r[1]), num2(r[2]), num2(r[3]), "" if r[3] is None else f"{r[3] / 100:.4f}", "" if r[5] is None else str(r[5])])
+                wr.writerow([d, sec, item, i["name"], num2(r[1]), num2(r[2]), num2(r[3]), "" if r[3] is None else f"{r[3] / 100:.4f}", "" if r[5] is None else str(r[5])])
         downloads.append({"file": os.path.basename(PORK_YEAR_CSV(yr)), "label": f"Every cut, every day of {yr}" + (" so far" if yr == latest[:4] else ""),
                           "label_es": f"Cada corte, cada día de {yr}" + (" hasta hoy" if yr == latest[:4] else ""),
                           "rows": fmt(len(grp)), "kb": fmt(round(os.path.getsize(PORK_YEAR_CSV(yr)) / 1024)), "year": yr})
     downloads = downloads[:1] + sorted(downloads[1:], key=lambda x: x["year"], reverse=True)
+    # The names, once each rather than on every row of the yearly files: English, Spanish, and the
+    # item's pages where it has them. Join it to the yearly files on usda_description.
+    with open(PORK_NAMES_CSV, "w", encoding="utf-8", newline="") as fh:
+        wr = csv.writer(fh, lineterminator="\n")
+        wr.writerow(["usda_description", "section", "name", "nombre", "page", "pagina"])
+        for (sec, item) in sorted({(s_, i_) for (s_, i_) in series if s_ != "primal"}, key=lambda k: (sec_order.get(k[0], 99), k[1])):
+            i = info(sec, item)
+            live = i["slug"] in pages
+            wr.writerow([item, sec, i["name"], i["es"], f"https://juantorresmi.github.io/pork-prices/{i['slug']}/" if live else "",
+                         f"https://juantorresmi.github.io/es/precios-de-cerdo/{i['slug_es']}/" if live else ""])
+    downloads.insert(1, {"file": os.path.basename(PORK_NAMES_CSV), "label": "Every item’s plain name in English and Spanish, and its pages",
+                         "label_es": "El nombre sencillo de cada producto en inglés y en español, y sus páginas",
+                         "rows": fmt(len({k for k in series if k[0] != "primal"})), "kb": fmt(round(os.path.getsize(PORK_NAMES_CSV) / 1024))})
 
     # ---- page stubs, English and Spanish, never deleted
     os.makedirs(PORK_CUTS_DIR, exist_ok=True); os.makedirs(PORK_CUTS_ES_DIR, exist_ok=True)
@@ -1972,7 +1995,8 @@ def pork():
                        "page": f"https://juantorresmi.github.io/pork-prices/{meta(k)['slug']}/" if meta(k)["slug"] in pages else None}
                       for k, r in sorted(today_items.items())],
             "history": {"cutout_daily": "https://juantorresmi.github.io/pork-prices/pork-cutout-daily.csv",
-                        "cuts_by_year": [f"https://juantorresmi.github.io/pork-prices/{x['file']}" for x in downloads[1:]]}}
+                        "names": "https://juantorresmi.github.io/pork-prices/pork-cut-names.csv",
+                        "cuts_by_year": [f"https://juantorresmi.github.io/pork-prices/{x['file']}" for x in downloads if x.get("year")]}}
     with open(os.path.join(PORK_DIR, "latest.json"), "w", encoding="utf-8", newline="\n") as fh:
         json.dump(feed, fh, ensure_ascii=False, indent=1); fh.write("\n")
 
@@ -2038,7 +2062,17 @@ PURCHASE = {"NEGOTIATED CASH": "cash", "NEGOTIATED GRID BASE": "grid"}
 CW = ["head", "dress_pct", "weight_low", "weight_high", "weight_avg", "price_low", "price_high", "weighted_average"]
 
 
+_LMR_SEEN = {}
+
+
 def lmr(rid, path, query, timeout=300):
+    """One datamart answer as {section: rows}, kept for the run so a repeated request is free."""
+    if (rid, path, query) in _LMR_SEEN: return _LMR_SEEN[(rid, path, query)]
+    _LMR_SEEN[(rid, path, query)] = _lmr(rid, path, query, timeout)
+    return _LMR_SEEN[(rid, path, query)]
+
+
+def _lmr(rid, path, query, timeout):
     req = urllib.request.Request(f"{LMR}/{rid}{path}?{query}", headers={"User-Agent": "site-snapshot (github.com/JuanTorresMI)", "Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         body = json.load(r)
@@ -2119,13 +2153,23 @@ def cattle():
     have_years = {}
     for k, rows in weekly.items():
         for d in rows: have_years.setdefault(k[0], set()).add(d[:4])
+    # Weekly: a year a region has nothing for is fetched whole (the first run, a new region); after
+    # that only the weeks since BEEF_RECENT_DAYS before its newest row (USDA sometimes corrects), never
+    # earlier than January 1. The six regions in LM_CT154's table share one request (lmr is memoized).
     fetched = 0
+    starts = {}
     for reg in CATTLE_REGIONS:
-        for y in range(CATTLE_START, today_ct.year + 1):
-            if str(y) in have_years.get(reg[0], set()) and y < today_ct.year and not (y == today_ct.year - 1 and today_ct.month == 1): continue
-            got = cattle_fetch(reg, date(y, 1, 1), min(date(y, 12, 31), today_ct)); fetched += 1
+        last = max((d for k, rows in weekly.items() if k[0] == reg[0] for d in rows), default=None)
+        s0 = (iso_day(last) - timedelta(days=BEEF_RECENT_DAYS)).date() if last else date(today_ct.year, 1, 1)
+        starts[reg[6]] = min(starts.get(reg[6], today_ct), max(s0, date(today_ct.year, 1, 1)))
+    for reg in CATTLE_REGIONS:
+        spans = [(date(y, 1, 1), date(y, 12, 31)) for y in range(CATTLE_START, today_ct.year)
+                 if str(y) not in have_years.get(reg[0], set())] + [(starts[reg[6]], today_ct)]
+        for first_d, last_d in spans:
+            got = cattle_fetch(reg, first_d, last_d); fetched += 1
+            a, b = first_d.isoformat(), last_d.isoformat()
             for k in [k for k in weekly if k[0] == reg[0]]:
-                for d in [d for d in weekly[k] if d[:4] == str(y)]: weekly[k].pop(d)
+                for d in [d for d in weekly[k] if a <= d <= b]: weekly[k].pop(d)
             for k, rows in got.items(): weekly.setdefault(k, {}).update(rows)
     have_m = {d[:7] for rows in daily.values() for d in rows}
     last_d = max((d for rows in daily.values() for d in rows), default=None)
@@ -2140,7 +2184,7 @@ def cattle():
             for k, rows in got.items(): daily.setdefault(k, {}).update(rows)
         m += 1
         if m > 12: y, m = y + 1, 1
-    print(f"cattle: asked USDA {fetched} times")
+    print(f"cattle: asked USDA {len(_LMR_SEEN)} times ({fetched} region spans)")
     W = {k: [v[d] for d in sorted(v)] for k, v in weekly.items() if v}
     D = {k: [v[d] for d in sorted(v)] for k, v in daily.items() if v}
     if not W.get(("five-area", "cash", "all", "live_fob", "total")): raise RuntimeError("USDA returned no 5-area weekly report")

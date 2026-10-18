@@ -28,6 +28,7 @@
 
 const USDA = "https://marsapi.ams.usda.gov/services/v1.2/reports/2375";
 const EIA = "https://api.eia.gov/v2/petroleum/pri/gnd/data/";
+const DIESEL_TIMEOUT_MS = 20000;   // past this the rates go out without diesel; the snapshot keeps the last
 const DIESEL_SERIES = "EMD_EPD2D_PTE_NUS_DPG";
 const DIESEL_WEEKS = 104;
 export const REEFER_MAX_AGE = 3600;        // the newest report: it changes once a week; an hour at the edge is fine
@@ -76,12 +77,15 @@ export function toQuotes(rows) {
   return out.sort((a, b) => a.district.localeCompare(b.district) || a.dest.localeCompare(b.dest) || a.quote - b.quote);
 }
 
-/* EIA's weekly U.S. diesel price, oldest first. A failure here never blocks the rates. */
+/* EIA's weekly U.S. diesel price, oldest first. A failure here never blocks the rates. EIA can be
+   slow on the shared DEMO_KEY (51 seconds on Oct 18, 2026), so it gets DIESEL_TIMEOUT_MS and runs
+   beside the USDA request, not after it; scripts/snapshot.py keeps the last diesel figures when the
+   answer comes back without them. */
 async function diesel(env) {
   const q = new URLSearchParams({ frequency: "weekly", "data[0]": "value", "facets[series][]": DIESEL_SERIES,
     "sort[0][column]": "period", "sort[0][direction]": "desc", length: String(DIESEL_WEEKS),
     api_key: env.EIA_API_KEY || "DEMO_KEY" });
-  const r = await fetch(`${EIA}?${q}`);
+  const r = await fetch(`${EIA}?${q}`, { signal: AbortSignal.timeout(DIESEL_TIMEOUT_MS) });
   if (!r.ok) throw new Error("EIA said: status " + r.status);
   const rows = ((await r.json()).response || {}).data || [];
   return rows.filter((x) => x.period && x.value != null).map((x) => ({ week: x.period, price: Number(x.value) })).reverse();
@@ -89,6 +93,7 @@ async function diesel(env) {
 
 /* GET /reefer and /reefer?week=: one week's quotes, straight from USDA. */
 export async function reeferWeek(env, week) {
+  const fuel = week ? null : diesel(env).catch((e) => { console.error("diesel:", e.message || e); return []; });
   const quotes = toQuotes(await usda(env, week ? "q=report_begin_date=" + encodeURIComponent(mdy(week)) : "lastReports=1"));
   const newest = quotes.reduce((w, q) => (q.week > w ? q.week : w), "");
   const mine = quotes.filter((q) => q.week === newest);
@@ -98,9 +103,6 @@ export async function reeferWeek(env, week) {
     quotes: mine.map(({ week: _w, published: _p, ...q }) => q),
     updated: new Date().toISOString(),
   };
-  if (!week) {
-    try { out.diesel = await diesel(env); }
-    catch (e) { console.error("diesel:", e.message || e); out.diesel = []; }
-  }
+  if (fuel) out.diesel = await fuel;
   return out;
 }
