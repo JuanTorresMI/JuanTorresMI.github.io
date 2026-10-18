@@ -79,12 +79,12 @@ image_alt: "Tiempos de espera para camiones en la frontera, por Juan Torres."
     <div class="body prose">
       <p>En cada cruce fronterizo, los agentes de CBP publican aproximadamente cada hora cuánto se tardan los carriles comerciales, en el sistema <a href="https://bwt.cbp.gov/">Border Wait Times</a>. Es el mejor dato público que hay, pero solo dice cómo está ahora.</p>
       <ol>
-        <li><strong>Un pequeño servicio en Cloudflare consulta a CBP cada media hora</strong> y guarda cada lectura una sola vez, en la hora local del cruce.</li>
+        <li><strong>Un pequeño servicio en Cloudflare consulta a CBP cada media hora</strong> y guarda cada lectura una sola vez, en la hora local del cruce. CBP no guarda lecturas pasadas; las del 13 de septiembre al 14 de octubre de 2026, antes de que empezara este registro, vienen de un archivo público independiente que guardó el sistema de CBP cada hora (<a href="https://github.com/gptcbp/border-crossing-data">gptcbp/border-crossing-data</a>).</li>
         <li><strong>Lo desconocido no es cero.</strong> Si los carriles están cerrados o la actualización está pendiente, se guarda como dato desconocido; contarlo como cero haría ver más rápido un cruce que cierra seguido.</li>
         <li><strong>Los promedios.</strong> Mientras el sitio junta sus propias lecturas, cada página muestra los promedios que publica la propia CBP para el mes en curso, con datos del año anterior. Con unos días de lecturas, aparecen también los promedios de los últimos 30 días.</li>
       </ol>
       <p>FAST (Free and Secure Trade, comercio libre y seguro) es el programa de CBP para transportistas, choferes e importadores precertificados, que cruzan por carriles exclusivos. Los carriles generales son los demás carriles comerciales.</p>
-      <p>Fuente: Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP). Los datos son públicos; cualquier error al presentarlos es mío. El <a href="/border-waits/" hreflang="en" lang="en">tablero completo, en inglés</a>, incluye la frontera con Canadá y los promedios en CSV.</p>
+      <p>Fuente: Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP); las lecturas del 13 de septiembre al 14 de octubre de 2026, según las guardó <a href="https://github.com/gptcbp/border-crossing-data">gptcbp/border-crossing-data</a>. Los datos son públicos; cualquier error al presentarlos es mío. El <a href="/border-waits/" hreflang="en" lang="en">tablero completo, en inglés</a>, incluye la frontera con Canadá y los promedios en CSV.</p>
     </div>
   </div>
 </section>

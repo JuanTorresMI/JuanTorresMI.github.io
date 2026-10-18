@@ -29,7 +29,7 @@ how the live data flows, the workflows and scripts.
 | `aggregate-planning/` | The planner: `index.html` (layout `app`), `planner.css` (scoped under `.ap`), `model.js` (the LP/MIP; no DOM, runs in Node), `solver.js` + `solver-worker.js` (HiGHS in a Web Worker), `app.js`, `study.js` (study mode: the plan taken apart step by step; the worker's `explain()` does the extra solves), `xlsx.js` (the downloadable workbook, no library), `sw.js` (offline). `lib/` holds HiGHS and Chart.js, vendored unchanged |
 | `reefer-rates/`, `border-waits/`, `es/tiempos-de-espera/`, `beef-prices/`, `pork-prices/`, `fed-cattle-prices/`, `usda-market-prices/`, `es/precios-*/` | The data boards' index pages, their CSVs and scripts (see "Live data pages"). The beef, pork and cattle boards are each one include (`_includes/beef-board.html`, `pork-board.html`, `cattle-board.html`) that the English and Spanish index pages both render; `usda-hub.html` is the parent page; `price-chart`, `price-grid`, `price-season`, `cut-tools`, `cattle-detail`, `cattle-calc` and `usda-boards` are their shared parts |
 | `worker/` | The Cloudflare Worker behind every live page. Not part of the Jekyll build; its README lists its routes, crons, secrets and tables |
-| `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` and `music-og.js` (share pictures), `snapshot.py` (Worker data → `_data/live/`), `lastmod.py` (git dates for the sitemap), `indexnow.py` (pings Bing and other IndexNow engines after each deploy) |
+| `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` and `music-og.js` (share pictures), `snapshot.py` (Worker data → `_data/live/`), `lastmod.py` (git dates for the sitemap), `indexnow.py` (pings Bing and other IndexNow engines after each deploy), `border-backfill.mjs` (one-off: border history from before the Worker, from an archive of CBP's feed) |
 | `_data/live/` | Daily copies of the Worker's answers, already formatted. Written by `snapshot.py` from the `Snapshot live pages` workflow, which commits them and starts a deploy. The Worker starts that workflow (every morning at 11:47 UTC, when it stores a new beef or pork report, and from the boards' "Update now" button; at most once an hour; `worker/src/refresh.js`), because GitHub's own schedule runs hours late; that schedule is only the backup. Don't edit these files by hand |
 
 ## Before you push
@@ -120,7 +120,10 @@ JavaScript get real content; and, where it matters, a page script swaps in fresh
   `_data/border_crossings.json`; never change a slug once live. A closed lane is unknown, never 0.
   The Spanish pages are live and paired with hreflang (`translations_live` in `_config.yml`);
   their wording follows CBP's own Spanish ("sin demora", "carriles generales"), kept in
-  `_data/border_text.yml`. Beside the board's own readings, `snapshot.py` pulls CBP's published
+  `_data/border_text.yml`. CBP keeps no past readings, so this is the one history the Worker keeps
+  (D1 `border_waits`, from Oct 14, 2026; Sep 13 to Oct 14 was filled once by `scripts/border-backfill.mjs`
+  from an independent archive of the feed, credited on the pages). CBP's dates aren't zero-padded
+  ("10/1/2026"). Beside the board's own readings, `snapshot.py` pulls CBP's published
   averages for the current month of the previous year (`bwt.cbp.gov/api/historicalwaittimes`) and
   shows them until the board has its own. Data is CBP's Border Wait Times: credit it.
 - **The beef board (`/beef-prices/`, one page per cut, primal and ground beef item)**: built

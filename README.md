@@ -118,7 +118,8 @@ manifest, and warns about duplicate titles or descriptions.
 | `music-og.js` | After changing the music page's picture | Redraws `music/og.jpg` |
 | `snapshot.py` | By the snapshot workflow | Copies the Worker's data (and USDA's, for beef, pork and cattle) into `_data/live/` and writes the generated pages' stubs and CSVs; `snapshot.py pork cattle` runs just those |
 | `lastmod.py` | By the deploy and check workflows | Dates every page from git for the sitemap (`_data/lastmod.json`, never committed) |
-| `indexnow.py` | By the deploy workflow | Tells IndexNow engines which pages changed today or yesterday |
+| `indexnow.py` | By the deploy workflow | Tells IndexNow engines which pages changed since the last deploy |
+| `border-backfill.mjs` | Once, by hand (done Oct 18, 2026) | Filled the border history from Sep 13 to Oct 14 from an independent archive of CBP's feed, through the Worker's own parser |
 
 ```sh
 # screenshots and share pictures need Playwright and its Chromium:
