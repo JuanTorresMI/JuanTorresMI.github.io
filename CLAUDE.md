@@ -101,6 +101,13 @@ already formatted (Liquid on GitHub Pages can't format
 numbers or dates); the page renders that copy into its HTML, so crawlers and readers without
 JavaScript get real content; and, where it matters, a page script swaps in fresh numbers.
 
+**Where data lives:** every permanent record is a file in this repository, written by `snapshot.py`
+(the USDA boards' CSVs, the border readings and CBP's published averages, `youtube/youtube-channel-daily.csv`,
+`worker-usage/worker-usage-daily.csv`). The Worker's D1 database holds only what the Worker needs to run
+the site between snapshots: the newest report or reading of each kind, short buffers (border 14 days,
+YouTube 40) that it trims itself, and the music page's own counter and guestbook. Don't add a table
+that grows without a trim and a CSV that keeps it.
+
 - **`/youtube/`, `/watching/`**: render the copy, and the script replaces it (and leaves it
   standing if the fetch fails). `/watching/` is `noindex` and out of the sitemap: public, but not
   for searches of his name.
@@ -120,12 +127,15 @@ JavaScript get real content; and, where it matters, a page script swaps in fresh
   `_data/border_crossings.json`; never change a slug once live. A closed lane is unknown, never 0.
   The Spanish pages are live and paired with hreflang (`translations_live` in `_config.yml`);
   their wording follows CBP's own Spanish ("sin demora", "carriles generales"), kept in
-  `_data/border_text.yml`. CBP keeps no past readings, so this is the one history the Worker keeps
-  (D1 `border_waits`, from Oct 14, 2026; Sep 13 to Oct 14 was filled once by `scripts/border-backfill.mjs`
-  from an independent archive of the feed, credited on the pages). CBP's dates aren't zero-padded
-  ("10/1/2026"). Beside the board's own readings, `snapshot.py` pulls CBP's published
-  averages for the current month of the previous year (`bwt.cbp.gov/api/historicalwaittimes`) and
-  shows them until the board has its own. Data is CBP's Border Wait Times: credit it.
+  `_data/border_text.yml`. CBP keeps no past readings, so the Worker catches each one and holds the last
+  14 days (D1 `border_waits`); the permanent archive is `border-waits/border-truck-wait-readings-YYYY.csv`,
+  which `snapshot.py` adds the buffer to on every run and computes every crossing's averages from (never
+  from the Worker). Each row's `source` is `worker` or `archive` (Sep 13 to Oct 14, filled once by
+  `scripts/border-backfill.mjs` from an independent archive of the feed, credited on the pages); a kept
+  reading is never rewritten. CBP's dates aren't zero-padded ("10/1/2026"). Beside the board's own readings,
+  `snapshot.py` pulls CBP's published averages (`bwt.cbp.gov/api/historicalwaittimes`; weekday 0 is Monday),
+  keeps every month of them in `border-waits/cbp-published-averages.csv`, and shows the current month's
+  until the board has its own. Data is CBP's Border Wait Times: credit it.
 - **The beef board (`/beef-prices/`, one page per cut, primal and ground beef item)**: built
   from `_data/live/beef.json`. The source is USDA's LM_XB403 report (boxed beef cutout and cuts,
   negotiated sales, afternoon), from the LMR datamart, which needs no key and serves any date range,

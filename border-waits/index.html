@@ -12,7 +12,7 @@ translations_live: true
 {%- comment -%}
   A "work" page (see the families in CLAUDE.md), in the reefer board's rate-sheet style (.rb in
   style.css). Drawn from site.data.live.border, the copy scripts/snapshot.py makes of the Worker's
-  /border and /border/port data (CBP's Border Wait Times feed). The script at the bottom refreshes
+  /border data and the readings archive in border-waits/*.csv (CBP's Border Wait Times feed). The script at the bottom refreshes
   the "right now" columns from the Worker; everything else is the copy. Crossing pages:
   _layouts/border-crossing.html.
 {%- endcomment -%}
@@ -102,7 +102,9 @@ translations_live: true
     {%- assign es_pages = site.border_crossings_es | sort: "title" %}
     {%- for d in es_pages %}{% assign p = b.ports[d.port] %}<li><a href="{{ d.url }}" hreflang="es">{{ p.es.short | default: d.title }}</a></li>{% endfor %}
   </ul>
-  <p><a class="rb-btn" href="/border-waits/border-truck-wait-times.csv" download>Download the 30-day averages (CSV)</a></p>
+  <h3>Download the data</h3>
+  <p>Every reading the board has, kept for good{% if b.archive %} ({{ b.archive.total }} so far){% endif %}: one file per year, each reading with the time the port posted it, the standard and FAST waits and lanes open, and whether this site’s Worker caught it (<code>worker</code>) or it came from the archive that filled in the weeks before (<code>archive</code>). Beside it, every month of averages CBP has published, to check the board’s own figures against.</p>
+  <p>{% for f in b.archive.files %}<a class="rb-btn" href="{{ f.url }}" download>Every reading, {{ f.year }} (CSV)</a> {% endfor %}<a class="rb-btn" href="/border-waits/border-truck-wait-times.csv" download>The 30-day averages (CSV)</a> <a class="rb-btn" href="/border-waits/cbp-published-averages.csv" download>CBP’s published averages (CSV)</a></p>
 </section>
 {% else %}
 <p class="rb-empty">The first readings haven’t been collected yet. They show up here the day after the Worker starts reading CBP.</p>
@@ -116,7 +118,7 @@ translations_live: true
       <p>At every land port, CBP officers post how long the commercial lanes are backed up, about once an hour, to the agency’s <a href="https://bwt.cbp.gov/">Border Wait Times</a> site. It’s the best public number there is, but it’s only ever the number right now. Nobody shows what a crossing is usually like on a Tuesday at 2 PM, which is what you need to plan a load.</p>
       <ol>
         <li><strong>A Cloudflare Worker reads CBP every half hour.</strong> The same small Worker behind this site’s <a href="/reefer-rates/">reefer rate board</a> asks CBP’s public feed (no key needed) for every port, and keeps the ones with commercial lanes.</li>
-        <li><strong>Each reading is kept once.</strong> A reading is stored with the time the port posted it, in a SQLite database on Cloudflare (D1), so asking twice in the same hour never counts it twice. Times are the port’s own clock.</li>
+        <li><strong>Each reading is kept once, for good.</strong> A reading is stored with the time the port posted it, so asking twice in the same hour never counts it twice; times are the port’s own clock. The Worker holds the last two weeks in a small database on Cloudflare (D1), and every time the site is rebuilt they’re added to its permanent archive, CSV files in this site’s repository (below). Nothing is kept anywhere else.</li>
         <li><strong>The record reaches back before the Worker.</strong> CBP keeps no past readings, only the one posted last. The Worker began recording on October 14, 2026; the readings from September 13 to then come from an independent public archive that saved CBP’s whole feed about once an hour (<a href="https://github.com/gptcbp/border-crossing-data">gptcbp/border-crossing-data</a>), read with the same code the Worker uses. Where both have a reading they agree almost every time; the archive missed some hours, so those weeks rest on fewer readings.</li>
         <li><strong>Unknown is not zero.</strong> When lanes are closed or the update is pending, CBP posts no wait. Those are stored as blanks, not as zero minutes, and averages skip them. Counting them as zero would make a crossing that’s often closed look fast.</li>
         <li><strong>The averages are the last 30 days.</strong> For each crossing, each day of the week and each hour, the page shows the average posted wait. With only a few weeks on record an hour may rest on two or three readings, so the pages say how many readings they’re based on{% if b %}; the record started {{ b.since_en }}{% endif %}.</li>
@@ -148,7 +150,11 @@ translations_live: true
     { "@type": "Organization", "name": "U.S. Customs and Border Protection", "url": "https://www.cbp.gov/" },
     { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
   ],
-  "distribution": [{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ "/border-waits/border-truck-wait-times.csv" | absolute_url | jsonify }} }],
+  "distribution": [
+    {%- for f in b.archive.files %}{ "@type": "DataDownload", "name": {{ f.year | prepend: "Every reading, " | jsonify }}, "encodingFormat": "text/csv", "contentUrl": {{ f.url | absolute_url | jsonify }} },{% endfor %}
+    { "@type": "DataDownload", "name": "The 30-day averages", "encodingFormat": "text/csv", "contentUrl": {{ "/border-waits/border-truck-wait-times.csv" | absolute_url | jsonify }} },
+    { "@type": "DataDownload", "name": "CBP's published averages", "encodingFormat": "text/csv", "contentUrl": {{ "/border-waits/cbp-published-averages.csv" | absolute_url | jsonify }} }
+  ],
   "dateModified": {{ b.as_of_iso | jsonify }}
 }
 </script>

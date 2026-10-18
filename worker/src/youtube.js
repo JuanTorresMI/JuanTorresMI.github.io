@@ -19,7 +19,10 @@
 
 const API = "https://www.googleapis.com/youtube/v3";
 const RECENT = 12;            // latest uploads kept in the snapshot
-const HISTORY_DAYS = 90;      // daily rows returned to the page (the table keeps every day)
+// Daily rows kept and returned to the page. The permanent record is the site's
+// (youtube/youtube-channel-daily.csv, written by scripts/snapshot.py); this only covers the page's
+// "last 7 days" and its two weeks of days, with room for a run of failed snapshots.
+const HISTORY_DAYS = 40;
 const SHORT_MAX_S = 180;      // YouTube's own ceiling for a Short; anything longer is a video
 export const YOUTUBE_MAX_AGE = 300;   // edge cache on GET; the data only changes hourly anyway
 
@@ -117,6 +120,7 @@ export async function poll(env) {
       .bind(JSON.stringify(snap), snap.updated),
     env.DB.prepare("INSERT INTO youtube_daily (day, subscribers, views, videos) VALUES (?1, ?2, ?3, ?4) ON CONFLICT(day) DO UPDATE SET subscribers = ?2, views = ?3, videos = ?4")
       .bind(day, subscribers, views, videos),
+    env.DB.prepare("DELETE FROM youtube_daily WHERE day < ?1").bind(new Date(Date.now() - HISTORY_DAYS * 86400000).toISOString().slice(0, 10)),
   ]);
   return snap;
 }

@@ -25,7 +25,7 @@ CSV downloads. A source that fails or answers with an error is skipped and its l
 stays. The `Snapshot live pages` workflow runs this at least once a day and commits whatever changed.
 Needs only the standard library.
 """
-import calendar, csv, json, os, re, sys, urllib.request
+import calendar, csv, glob, json, math, os, re, sys, urllib.request
 from urllib.parse import quote
 from datetime import date, datetime, timedelta, timezone
 from itertools import groupby
@@ -85,8 +85,28 @@ def length(s):
     return f"{s // 60}:{s % 60:02d}"
 
 
+# The channel's permanent daily record: the Worker keeps only its last 40 days, so each run adds its
+# history to youtube/youtube-channel-daily.csv (a day's row is that UTC day's last reading; today's is
+# rewritten until the day is over).
+YOUTUBE_CSV = os.path.join(ROOT, "youtube", "youtube-channel-daily.csv")
+
+
+def youtube_archive(history):
+    rows = {}
+    if os.path.exists(YOUTUBE_CSV):
+        with open(YOUTUBE_CSV, encoding="utf-8", newline="") as fh:
+            rows = {r["day"]: r for r in csv.DictReader(fh)}
+    for r in history:
+        rows[r["day"]] = {k: "" if r.get(k) is None else r[k] for k in ("day", "subscribers", "views", "videos")}
+    os.makedirs(os.path.dirname(YOUTUBE_CSV), exist_ok=True)
+    with open(YOUTUBE_CSV, "w", encoding="utf-8", newline="\n") as fh:
+        w = csv.DictWriter(fh, ["day", "subscribers", "views", "videos"], lineterminator="\n"); w.writeheader()
+        for k in sorted(rows): w.writerow(rows[k])
+
+
 def youtube(d):
     s, h = d.get("stats") or {}, d.get("history") or []
+    youtube_archive(h)
     now = when(d["updated"])
 
     def change(field, n):                   # same rule as the page: no "last 7 days" from 2 days
@@ -178,8 +198,9 @@ def watching(d):
 
 # ------------------------------------------------------------------ the border wait board ----
 # /border-waits/ and a page per major crossing (/border-waits/<slug>/), plus a Spanish page for
-# each Mexico crossing (/es/tiempos-de-espera/<slug>/). Built from the Worker's /border (now) and
-# /border/port (the last 30 days by weekday and hour). The pages' scripts only refresh "now".
+# each Mexico crossing (/es/tiempos-de-espera/<slug>/). Built from the Worker's /border (now) and the
+# permanent archive of readings (border_archive below; the last 30 days by weekday and hour come from it).
+# The pages' scripts only refresh "now".
 # Numbers stay numbers and the few strings come in pairs (en, es); the words are in the layouts.
 
 BORDER_DIR = os.path.join(ROOT, "_border_crossings")
@@ -306,8 +327,72 @@ def summarize(profile):
             "worst": pick(max(sure, key=lambda c: (c[2], -c[0], -c[1]))) if sure and not flat else None}
 
 
-def port_detail(base, port):
-    d = get(f"{base}/border/port?id={port}")
+# The border's permanent archive: every reading the Worker has caught, one CSV per year
+# (border-waits/border-truck-wait-readings-YYYY.csv), committed like the USDA boards' CSVs. CBP keeps no
+# past readings, so the Worker has to catch each one as it's posted; it holds only the last
+# BORDER_BUFFER_DAYS (worker/src/border.js) for this job to copy. Each run reads the archive back, asks the
+# Worker for the readings since two days before the newest one it has, and computes every crossing's
+# 30-day averages and 7-day chart from the archive, so the Worker answers one request, not one a port.
+BORDER_HIST = os.path.join(ROOT, "border-waits", "border-truck-wait-readings-{}.csv")
+# `source` says whose reading it is: "worker", caught by this site's Worker, or "archive", filled in once
+# from an independent public archive of CBP's feed for the weeks before the Worker started
+# (scripts/border-backfill.mjs). The two are never mixed in one row.
+BORDER_HIST_FIELDS = ["port_number", "posted_local", "standard_wait_min", "standard_lanes_open", "fast_wait_min", "fast_lanes_open", "source"]
+PROFILE_DAYS, RECENT_DAYS = 30, 7
+
+
+def border_archive(base):
+    """{port: [(posted_local, std, std_lanes, fast, fast_lanes), ...]} from the archive and the Worker's
+    buffer, writing back any year the buffer added to."""
+    num = lambda v: None if v in ("", None) else int(v)
+    rows, source = {}, {}
+    for path in sorted(glob.glob(BORDER_HIST.format("*"))):
+        with open(path, encoding="utf-8", newline="") as fh:
+            for r in csv.DictReader(fh):
+                k = (r["port_number"], r["posted_local"])
+                rows[k] = tuple(num(r[f]) for f in BORDER_HIST_FIELDS[2:6]); source[k] = r.get("source") or "worker"
+    newest = max((k[1] for k in rows), default=None)
+    since = (datetime.strptime(newest[:10], "%Y-%m-%d") - timedelta(days=2)).strftime("%Y-%m-%d") if newest else "2000-01-01"
+    d = get(f"{base}/border/readings?since={since}")
+    if newest and d.get("oldest") and d["oldest"] > newest:
+        print(f"border: readings between {newest} and {d['oldest']} were lost (the Worker's buffer had moved on)", file=sys.stderr)
+    years = set()
+    # A reading already kept is never rewritten (the Worker's own INSERT OR IGNORE rule): the archive
+    # only grows.
+    for port, at, *v in d.get("readings") or []:
+        if (port, at) not in rows:
+            rows[(port, at)] = tuple(v); source[(port, at)] = "worker"; years.add(at[:4])
+    for y in sorted(years):
+        mine = sorted(((k, v) for k, v in rows.items() if k[1][:4] == y), key=lambda kv: (kv[0][1], kv[0][0]))
+        with open(BORDER_HIST.format(y), "w", encoding="utf-8", newline="\n") as fh:
+            w = csv.writer(fh, lineterminator="\n"); w.writerow(BORDER_HIST_FIELDS)
+            for (port, at), v in mine: w.writerow([port, at] + ["" if x is None else x for x in v] + [source[(port, at)]])
+    print(f"border: archive has {len(rows):,} readings; {len(d.get('readings') or [])} from the Worker since {since}, {len(years)} year file(s) written")
+    by_port = {}
+    for (port, at), v in sorted(rows.items()): by_port.setdefault(port, []).append((at, *v))
+    return by_port
+
+
+def port_history(items, now):
+    """One crossing's last 30 days by weekday and hour, its last 7 days of readings, its first reading
+    and the 30 days' count: what the Worker's /border/port used to answer. Local times are compared as
+    text against UTC dates, so the cut-off is a day or so loose, as it was there."""
+    since = lambda days: (now.astimezone(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
+    win = [r for r in items if r[0] >= since(PROFILE_DAYS)]
+    cells = {}
+    for at, sd, sl, fd, fl in win:
+        t = datetime.strptime(at, "%Y-%m-%d %H:%M")
+        c = cells.setdefault((t.weekday(), t.hour), [[], []])
+        if sd is not None: c[0].append(sd)
+        if fd is not None: c[1].append(fd)
+    avg = lambda xs: math.floor(sum(xs) / len(xs) * 10 + 0.5) / 10 if xs else None      # halves up, as SQLite's ROUND did
+    return {"first": items[0][0] if items else None, "readings": len(win),
+            "profile": [[dw, h, avg(c[0]), len(c[0]), avg(c[1]), len(c[1])] for (dw, h), c in sorted(cells.items())],
+            "recent": [list(r) for r in items if r[0] >= since(RECENT_DAYS)]}
+
+
+def port_detail(items, now):
+    d = port_history(items, now)
     profile = d.get("profile") or []                       # [dow, hour, std_avg, std_n, fast_avg, fast_n]
     first = local_time(d["first"]) if d.get("first") else None
     out = summarize(profile)
@@ -340,10 +425,58 @@ def cbp_ids():
     return {i["bwtId"][-6:]: i["bwtId"] for i in items if i.get("bwtId")}
 
 
+# CBP's published averages, kept for good (border-waits/cbp-published-averages.csv): CBP shows one
+# month at a time and replaces it each year, so this is the site's record of what CBP said, to set the
+# board's own readings against. One row per port, month, weekday and hour, with the day it was read.
+# Weekdays are CBP's bwt_day, which is 0 = Monday … 6 = Sunday, the board's own numbering. A month CBP
+# has nothing for is kept as one row with no weekday, so it isn't asked for again until next year.
+CBP_CSV = os.path.join(ROOT, "border-waits", "cbp-published-averages.csv")
+CBP_FIELDS = ["port_number", "month", "weekday", "hour_local", "standard_avg_min", "fast_avg_min", "retrieved"]
+CBP_SEEN = {}                                # (port, month) -> CBP's rows this run
+CBP_FILL_PER_RUN = 120                       # other months fetched per run until every one is on file
+
+
+def cbp_rows(bwt_id, month):
+    rows = cbp_get(f"historicalwaittimes/{bwt_id}/COV/GENERAL/{month}/7").get("wait_times") or []
+    n = lambda v: int(v) if str(v).strip().isdigit() else None
+    out = [[int(r["bwt_day"]), int(r["time_slot"]), n(r.get("cv_time_avg")), n(r.get("xcv_time_avg"))] for r in rows
+           if str(r.get("bwt_day", "")).isdigit() and str(r.get("time_slot", "")).isdigit() and 0 <= int(r["bwt_day"]) <= 6]
+    CBP_SEEN[(bwt_id[-6:], month)] = out
+    return rows
+
+
+def cbp_archive(ids, today):
+    """Write what CBP published this run, and fill in months not yet on file for this year, a batch per run."""
+    kept = {}
+    if os.path.exists(CBP_CSV):
+        with open(CBP_CSV, encoding="utf-8", newline="") as fh:
+            for r in csv.DictReader(fh): kept.setdefault((r["port_number"], int(r["month"]), r["retrieved"][:4]), []).append(r)
+    year = str(today.year)
+    missing = [(port, m) for port in sorted(ids) for m in range(1, 13) if (port, m, year) not in kept and (port, m) not in CBP_SEEN]
+    from concurrent.futures import ThreadPoolExecutor
+    def one(pm):
+        try: cbp_rows(ids[pm[0]], pm[1])
+        except Exception as e: print(f"border: no CBP averages for {pm[0]} month {pm[1]} ({e})", file=sys.stderr)
+    with ThreadPoolExecutor(8) as ex: list(ex.map(one, missing[:CBP_FILL_PER_RUN]))
+    strip = lambda rs: [(r["weekday"], r["hour_local"], r["standard_avg_min"], r["fast_avg_min"]) for r in rs]
+    for (port, m), rows in CBP_SEEN.items():
+        old = kept.get((port, m, year))
+        new = [(str(dw), str(h), "" if a is None else str(a), "" if f is None else str(f)) for dw, h, a, f in rows] or [("", "", "", "")]
+        if old and sorted(strip(old)) == sorted(new): continue          # unchanged: keep the day it was first read
+        kept[(port, m, year)] = [{"port_number": port, "month": m, "weekday": dw, "hour_local": h, "standard_avg_min": "" if a is None else a,
+                                  "fast_avg_min": "" if f is None else f, "retrieved": today.isoformat()} for dw, h, a, f in rows] or                                 [{"port_number": port, "month": m, "weekday": "", "hour_local": "", "standard_avg_min": "", "fast_avg_min": "", "retrieved": today.isoformat()}]
+    with open(CBP_CSV, "w", encoding="utf-8", newline="\n") as fh:
+        w = csv.DictWriter(fh, CBP_FIELDS, lineterminator="\n"); w.writeheader()
+        for k in sorted(kept, key=lambda k: (k[2], k[0], k[1])):
+            for r in sorted(kept[k], key=lambda r: (int(r["weekday"] or -1), int(r["hour_local"] or -1))): w.writerow(r)
+    left = len(missing) - min(len(missing), CBP_FILL_PER_RUN)
+    print(f"border: CBP's published averages on file for {len({(k[0], k[1]) for k in kept if k[2] == year})} port-months this year" + (f"; {left} to go" if left else ""))
+
+
 def cbp_year(bwt_id, month, has_fast):
     """CBP's averages for one port and month, last year, as a summary like ours. 0 is CBP's average
     for an hour the port was open with no wait; hours it was closed aren't listed at all."""
-    rows = cbp_get(f"historicalwaittimes/{bwt_id}/COV/GENERAL/{month}/7").get("wait_times") or []
+    rows = cbp_rows(bwt_id, month)
     n = lambda v: int(v) if str(v).strip().isdigit() else None
     profile = [[int(r["bwt_day"]), int(r["time_slot"]), n(r.get("cv_time_avg")), 1,
                 n(r.get("xcv_time_avg")) if has_fast else None, 1 if has_fast else 0] for r in rows
@@ -360,6 +493,7 @@ def border(base):
     now = get(base + "/border")
     ports = now.get("ports") or []
     if not ports: raise RuntimeError("the Worker has no border data yet")
+    history, copied = border_archive(base), when(now["updated"])
     named, renamed = crossings()
     reefer_area = {}
     for d in districts().values():
@@ -379,7 +513,7 @@ def border(base):
              "reefer": reefer_area.get(p["port"]), "bcis": p["port"][:2] in ("23", "24", "26", "53")}
         x["posted_en"], x["posted_es"] = posted_label(p.get("posted_at"), std.get("update") or fast.get("update"))
         try:
-            x.update(port_detail(base, p["port"]))
+            x.update(port_detail(history.get(p["port"], []), copied))
         except Exception as e:
             print(f"border: no history for {p['port']} ({e})", file=sys.stderr)
             x.update({"readings": 0, "first": "", "first_en": "", "first_es": "", "avg": None, "fast_avg": None,
@@ -409,6 +543,9 @@ def border(base):
         v["last_year"] = year or (old if old and old.get("month") == month else None)
     for port in named:
         if port not in out: print(f"border: {port} is in border_crossings.json but not in CBP's feed", file=sys.stderr)
+    if ids:
+        try: cbp_archive({k: v for k, v in ids.items() if k in out}, copied.date())
+        except Exception as e: print(f"border: couldn't keep CBP's averages ({e})", file=sys.stderr)
 
     order = lambda b: [v["port"] for v in sorted((v for v in out.values() if v["border"] == b), key=lambda v: v["name"])]
     ours = sum(1 for v in out.values() if v["avg"] is not None) * 2 >= len(out)
@@ -468,7 +605,17 @@ def border(base):
             "ports": out, "mexico": order("mexico"), "canada": order("canada"), "busiest": [v["port"] for v in busiest],
             "busiest_source": "ours" if ours else "cbp", "month_en": MONTHS[month - 1], "month_es": MONTHS_ES_FULL[month - 1],
             "reporting": len(reporting), "total": len(out),
-            "longest": longest["port"] if longest and longest["std"]["v"] else None}
+            "longest": longest["port"] if longest and longest["std"]["v"] else None,
+            "archive": border_files(history)}
+
+
+def border_files(history):
+    """The archive's downloads for the board: one file per year, with how many readings it holds."""
+    years = {}
+    for items in history.values():
+        for r in items: years[r[0][:4]] = years.get(r[0][:4], 0) + 1
+    return {"total": fmt(sum(years.values())), "files": [{"year": y, "rows": fmt(n), "url": f"/border-waits/border-truck-wait-readings-{y}.csv"}
+                                                         for y, n in sorted(years.items(), reverse=True)]}
 
 # ------------------------------------------------------------------ the reefer rate board ----
 # /reefer-rates/ and one page per lane (/reefer-rates/<origin>-to-<city>/). Unlike the other two,

@@ -21,7 +21,7 @@ npx.cmd wrangler deploy
 | `GET /substack` | The newsletter's latest posts as JSON | `/blog/` | `src/index.js` |
 | `GET /youtube` | The channel's numbers, uploads and daily history | `/youtube/`, `snapshot.py` | `src/youtube.js` |
 | `GET /reefer`, `/reefer?week=YYYY-MM-DD` | USDA reefer truck rates for the newest (or any) week, plus two years of diesel | `snapshot.py` only | `src/reefer.js` |
-| `GET /border`, `/border/port?id=P` | CBP truck waits now; one port by weekday and hour | border pages ("right now"), `snapshot.py` | `src/border.js` |
+| `GET /border`, `/border/readings?since=YYYY-MM-DD` | CBP truck waits now; the readings buffer (last 14 days) | border pages ("right now"), `snapshot.py` | `src/border.js` |
 | `GET /beef` | USDA's newest boxed beef report: the cutout and every cut's price | the beef pages, when their copy is behind | `src/beef.js` |
 | `GET /pork` | USDA's newest pork report: the carcass cutout, primals and every cut | the pork pages, when their copy is behind | `src/pork.js` |
 | `GET /usage` | This account's use of the free plan for the last 30 days, from Cloudflare's GraphQL Analytics | `/worker-usage/`, `snapshot.py` | `src/usage.js` |
@@ -42,8 +42,13 @@ USDA keeps them, and the Worker asks on request.
 `MODERATION_MODEL`, `WRITE_ORIGINS`, `YOUTUBE_CHANNEL`, and optionally `ALLOW_ORIGIN`.
 
 **Storage**: one D1 database, `yokonjuan` (binding `DB`), whose tables are all in `schema.sql`:
-`counters` and `guestbook` (music), `youtube_latest` and `youtube_daily`, `border_waits` and
-`border_latest`, `beef_latest` and `pork_latest`. The reefer board stores nothing. The schema only ever adds
+`counters` and `guestbook` (music), `youtube_latest` and `youtube_daily` (last 40 days), `border_waits`
+(last 14 days) and `border_latest`, `beef_latest`, `pork_latest` and `usage_latest`. The reefer board stores
+nothing. **None of it is the permanent record**: every history the site keeps lives in the repository as
+CSV (the border readings, CBP's published averages, the YouTube days, the Worker's usage, and the USDA
+boards), written by `scripts/snapshot.py`; the database holds only what the Worker needs to run the site
+between snapshots. The music page's counter and guestbook are the exception: they are that page's own live
+state. The schema only ever adds
 what's missing, so it is safe to run again. Workers AI (binding `AI`) checks guestbook posts.
 
 The sections below set up and explain each part. The last one, on the free plan's limits, is
@@ -266,8 +271,10 @@ this can't block them. On Cloudflare's side it is two D1 writes every three hour
 
 - **Subscribers** is YouTube's public count, rounded to three significant figures (12,345 shows as
   12,300). If the channel hides its count, the page shows none.
-- **History** is one row a day (`youtube_daily`), holding that day's last reading in UTC. The page
-  uses it for "last 7 days" and "last 30 days"; those appear once there are enough days stored.
+- **History** is one row a day (`youtube_daily`), holding that day's last reading in UTC, kept for the
+  last 40 days (`HISTORY_DAYS`, pruned on each poll). The page uses it for "last 7 days" and its two
+  weeks of days. Every day is kept for good in the site's `youtube/youtube-channel-daily.csv`, which
+  `snapshot.py` adds to on each run.
 - **Short** means the upload is three minutes or less, YouTube's own limit for a Short.
 
 ## The reefer rate board
@@ -340,23 +347,29 @@ is a USDA call (one week is about 700 rows, a few milliseconds to boil down) or 
 `/border-waits/` on the site, and a page per major commercial crossing, come from CBP's public
 [Border Wait Times](https://bwt.cbp.gov/) feed; the code is `src/border.js`. No key is needed.
 
-**Why the Worker keeps this history and not USDA's:** CBP keeps none. Its feed shows each port's
-latest reading only, and its historical API (`bwt.cbp.gov/api/historicalwaittimes`, which
-`snapshot.py` reads for "usually this month") is last year's averages by weekday and hour, not
-readings. So the readings are recorded here, from Oct 14, 2026; Sep 13 to Oct 14 was filled once
-from an independent public archive of the same feed, github.com/gptcbp/border-crossing-data, run
-through the Worker's own parser (`scripts/border-backfill.mjs`; 13,522 readings, matching the
-Worker's own on 523 of the 530 they share).
+**Why the Worker has to catch these, and where they're kept:** CBP keeps no past readings. Its feed
+shows each port's latest reading only, and its historical API (`bwt.cbp.gov/api/historicalwaittimes`)
+is last year's averages by weekday and hour. So the Worker catches every reading as it's posted (from
+Oct 14, 2026) and holds the last **14 days** (`BORDER_BUFFER_DAYS`) in `border_waits`; once a day, at
+04:17 UTC, it drops anything older (`borderPrune`). The **permanent archive is the site's**:
+`snapshot.py` copies the buffer into `border-waits/border-truck-wait-readings-YYYY.csv` on every run
+and computes every crossing's averages from those files. Each row says whose reading it is:
+`worker`, or `archive` for Sep 13 to Oct 14, filled once from an independent public archive of the same
+feed, github.com/gptcbp/border-crossing-data, through the Worker's own parser
+(`scripts/border-backfill.mjs`; 13,522 readings, matching the Worker's own on 523 of the 530 they
+share). CBP's published averages are kept beside them, every month for every port, in
+`border-waits/cbp-published-averages.csv`.
 
 Both cron triggers (:17 and :47) read the feed, so it is polled every half hour. Each port posts a
 reading roughly once an hour, and a reading is stored once (`border_waits`, keyed on the port and
-the time it was posted), however often it is asked for. The latest feed, trimmed to the ports with
-commercial lanes, is kept whole in `border_latest` for the live board.
+the time it was posted), however often it is asked for, until the buffer moves past it. The latest
+feed, trimmed to the ports with commercial lanes, is kept whole in `border_latest` for the live board.
 
 - `GET /border` — every commercial port right now. Cached five minutes at the edge; the board's
   script refreshes from it.
-- `GET /border/port?id=230404` — one port's last 30 days averaged by weekday and hour, plus its
-  last 7 days of readings. The snapshot reads this once per port; visitors never do.
+- `GET /border/readings?since=2026-10-16` — every reading in the buffer posted on or after that
+  local date, and the oldest one still held (so the snapshot can tell if it ever fell behind). Never
+  cached; the snapshot reads it once a run, visitors never do.
 
 ### Setting it up (once)
 
@@ -371,7 +384,7 @@ npx.cmd wrangler deploy
 
 ```powershell
 Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/border" | Select-Object -ExpandProperty ports | Select-Object -First 5
-Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/border/port?id=230404"
+Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/border/readings?since=2026-10-17" | Select-Object oldest, buffer_days
 ```
 
 The first request after a deploy reads CBP on the spot; after that the cron does.
@@ -387,7 +400,8 @@ The first request after a deploy reads CBP on the spot; after that the cron does
 ### What it costs
 
 Nothing. CBP is asked 48 times a day. About 50 ports post about once an hour, so that is roughly
-1,200 rows written a day, two D1 statements per run.
+450 rows written a day, two D1 statements per run, and one `DELETE` a day keeps the table at about
+6,500 rows (14 days) however long the archive gets.
 
 ## The pork board
 
@@ -543,7 +557,7 @@ beef and reefer histories moved out of D1):
 | --- | --- | --- | --- |
 | Rows read a day | 5,000,000 | about 40,000 | 125× |
 | Rows written a day | 100,000 | about 2,500 | 40× |
-| Database size | 500 MB | 160 KB | grows about 10 MB a year (border readings): decades |
+| Database size | 500 MB | under 1 MB | stays there: the tables that grow are trimmed (border 14 days, YouTube 40); the archive grows in the repository |
 | Cron triggers | 5 per account | 2 | 3 spare |
 | Outside fetches per run | 50 | at most about 9 (CBP, YouTube, a beef and a pork summary, and a full report when one is new) | |
 | Cron requests a day | | 48 (24 + 24); USDA is asked only on 28 of them, weekdays | |
@@ -561,8 +575,8 @@ What keeps it there, so a later change doesn't undo it:
 - **The house TV keeps Stremio's answer for 25 s**, in the edge cache and in the Worker's memory,
   so a burst of viewers is one Stremio call.
 - **No query reads a whole table on a schedule.** "Is anything stored?" is `SELECT 1 … LIMIT 1`,
-  never `COUNT(*)`; `/border/port` counts only a port's last 30 days. A growing history must never
-  make a run read more rows.
+  never `COUNT(*)`. The growing histories live in the repository, so no table here grows: the border
+  buffer is 14 days and the YouTube days 40.
 - **Many rows go in one statement** (`json_each`), never one statement per row: the free plan
   allows 50 queries per run.
 - **Pages read the daily copy, not the Worker**, wherever the data changes slowly (reefer,
