@@ -32,6 +32,7 @@ last_modified_at: 2026-10-15
     <div><dt>Lanes quoted</dt><dd>{{ r.quoted }}</dd></div>
     {%- if r.next_due %}<div><dt>Next report</dt><dd>{{ r.next_due }}</dd></div>{% endif %}
   </dl>
+  {% include update-button.html %}
   {%- endif %}
 </header>
 
@@ -268,7 +269,7 @@ last_modified_at: 2026-10-15
       <ol>
         <li><strong>A Cloudflare Worker asks USDA.</strong> The same small Worker behind this site’s <a href="/youtube/">YouTube</a> page holds the key to USDA’s MyMarketNews API, free, read-only and kept as an encrypted secret, never in this site’s code, and fetches whichever week it’s asked for.</li>
         <li><strong>It boils the rows down to lanes.</strong> USDA repeats each rate once per commodity it covers, so the same number shows up dozens of times. The Worker keeps each distinct rate a shipping area quotes to a city once. Usually there’s one; sometimes an area quotes a second rate for a group of crops, citrus most often, and that’s listed under the sheet.</li>
-        <li><strong>The history is USDA’s own.</strong> USDA keeps every week, so nothing here keeps a second copy of it. The CSV download holds every week already fetched, back to January 2020; every three hours a GitHub Action reads it back and asks the Worker only for the newest week and the four before it, in case USDA corrected one.{% if r.history %} {{ r.history }}{% endif %}</li>
+        <li><strong>The history is USDA’s own.</strong> USDA keeps every week, so nothing here keeps a second copy of it. The CSV download holds every week already fetched, back to January 2020; twice a day a GitHub Action reads it back and asks the Worker only for the newest week and the four before it, in case USDA corrected one.{% if r.history %} {{ r.history }}{% endif %}</li>
         <li><strong>Then this page is rebuilt.</strong> The Action rebuilds every section, a page for every lane and the CSV. Because the page is plain HTML, reading it never touches the Worker at all, however many people visit.</li>
       </ol>
       <p>How to read the numbers: the <strong>range</strong> is the lowest to highest rate reported for a full load in a 48 to 53 foot refrigerated trailer, broker fees included. <strong>Mostly</strong> is where most loads actually moved, when USDA reports it. <strong>Change</strong> is USDA’s own figure for the move from the week before. The truck label is USDA’s read on supply in that area that week, from surplus (more trucks than loads) to shortage (more loads than trucks). “Compared with its history” ranks this week’s middle rate against every earlier week on record for the same lane.</p>

@@ -31,6 +31,7 @@ translations_live: true
     <div><dt>Crossings reporting</dt><dd id="bw-reporting">{{ b.reporting }} of {{ b.total }}</dd></div>
     {%- if b.longest %}{% assign l = b.ports[b.longest] %}<div><dt>Longest wait</dt><dd id="bw-longest">{{ l.std.en }} <span>{{ l.name }}</span></dd></div>{% endif %}
   </dl>
+  {% include update-button.html %}
   {%- endif %}
 </header>
 
@@ -119,7 +120,7 @@ translations_live: true
         <li><strong>Unknown is not zero.</strong> When lanes are closed or the update is pending, CBP posts no wait. Those are stored as blanks, not as zero minutes, and averages skip them. Counting them as zero would make a crossing that’s often closed look fast.</li>
         <li><strong>The averages are the last 30 days.</strong> For each crossing, each day of the week and each hour, the page shows the average posted wait. With only a few weeks on record an hour may rest on two or three readings, so the pages say how many readings they’re based on{% if b %}; the record started {{ b.since_en }}{% endif %}.</li>
         <li><strong>CBP’s own history fills the gap.</strong> CBP also publishes, for every port, the average wait at each hour of each weekday of a month, from the year before. Each crossing page shows that for the current month, labeled as CBP’s, so the heat map is useful from the first day, and the board’s own averages take over once a crossing has a few days of readings.</li>
-        <li><strong>The pages are rebuilt every three hours.</strong> A GitHub Action copies the Worker’s data into the site, so every number is in the HTML. The “right now” columns also refresh from the Worker when the page opens, cached for five minutes.</li>
+        <li><strong>The pages are rebuilt twice a day.</strong> A GitHub Action copies the Worker’s data into the site, so every number is in the HTML. The “right now” columns also refresh from the Worker when the page opens, cached for five minutes.</li>
       </ol>
       <p>How to read it: <strong>Standard</strong> is the regular commercial lanes; <strong>FAST</strong> is the lane for carriers and drivers enrolled in CBP’s Free and Secure Trade program. <strong>Lanes open</strong> is standard plus FAST, out of the most the port has. The wait is CBP’s, rounded the way CBP rounds it; “no wait” is CBP’s “no delay”.</p>
       <p>Source: U.S. Customs and Border Protection, Border Wait Times. The numbers are public; any mistakes in presenting them are mine. The Worker’s code is in the <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">worker folder</a> of this site’s repository.</p>

@@ -1,4 +1,4 @@
-# Every three hours, copies the Worker's live data into the site (scripts/snapshot.py): /youtube/ and
+# Twice a day, copies the Worker's live data into the site (scripts/snapshot.py): /youtube/ and
 # /watching/ get real numbers in their HTML for crawlers and readers without JavaScript, and the
 # reefer, border, beef, pork and fed cattle boards (built from the copy alone, apart from the border's "right now"
 # columns) get fresh data, any new lane, crossing or cut pages and their CSVs.
@@ -6,14 +6,14 @@
 # own token doesn't trigger other workflows, but an explicit dispatch does.
 name: Snapshot live pages
 
+# Who starts it: the Worker (worker/src/refresh.js), by dispatch, at 09:47 and 21:47 UTC and when
+# someone presses "Update now" on a data board (at most once an hour). GitHub's own schedule below is
+# only the backup: it ran every one of its runs here 1.5 to 5 hours late (Oct 15-18, 2026) and can
+# drop one, so it steps aside when a run already happened in the last six hours.
 on:
   schedule:
-    # Every three hours. GitHub delays scheduled runs, often by hours (the 09:41 run of Oct 18
-    # started at 13:31, and that evening's hadn't started 25 minutes after its time), and sometimes
-    # skips one, so twice a day left the pages up to a day behind. With eight a day a late or skipped
-    # run costs three hours, not twelve. The job only commits when something changed. Off the hour,
-    # when GitHub is least busy.
-    - cron: "41 */3 * * *"
+    - cron: "41 11 * * *"           # backup for the Worker's 09:47 UTC start
+    - cron: "41 23 * * *"           # backup for the Worker's 21:47 UTC start
   workflow_dispatch:
 
 permissions:
@@ -28,14 +28,26 @@ jobs:
   snapshot:
     runs-on: ubuntu-latest
     steps:
+      - name: Skip a backup run the Worker already covered
+        id: skip
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          since=$(date -u -d '6 hours ago' +%Y-%m-%dT%H:%M:%SZ)
+          n=$(gh run list -R "$GITHUB_REPOSITORY" --workflow snapshot.yml --status success --limit 20 --json createdAt -q "[.[] | select(.createdAt > \"$since\")] | length")
+          if [ "${n:-0}" -gt 0 ]; then echo "A snapshot already ran since $since."; echo "skip=true" >> "$GITHUB_OUTPUT"; fi
       - name: Checkout
+        if: steps.skip.outputs.skip != 'true'
         uses: actions/checkout@v4
         with:
           ref: main
       - name: Ask the Worker
+        if: steps.skip.outputs.skip != 'true'
         run: python3 scripts/snapshot.py
       - name: Commit if changed
         id: commit
+        if: steps.skip.outputs.skip != 'true'
         run: |
           git add _data/live
           # These only exist once there is reefer, border, beef, pork or cattle data (lane pages need 4 weeks of

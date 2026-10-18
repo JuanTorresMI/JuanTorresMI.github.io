@@ -24,15 +24,17 @@ npx.cmd wrangler deploy
 | `GET /border`, `/border/port?id=P` | CBP truck waits now; one port by weekday and hour | border pages ("right now"), `snapshot.py` | `src/border.js` |
 | `GET /beef` | USDA's newest boxed beef report: the cutout and every cut's price | the beef pages, when their copy is behind | `src/beef.js` |
 | `GET /pork` | USDA's newest pork report: the carcass cutout, primals and every cut | the pork pages, when their copy is behind | `src/pork.js` |
+| `GET /refresh`, `POST /refresh` | Whether the pages can be updated yet; starts the site's snapshot workflow (one global hour of cooldown) | the "Update now" button on the data boards | `src/refresh.js` |
 | `GET /music`, `/music/visits`, `/music/guestbook` (+ `POST`, `DELETE /music/guestbook/<id>`) | Yokonjuan's catalog, visitor counter, guestbook | `/music/` | `src/music.js` |
 
 **Cron triggers** (`wrangler.toml`): at :17 and :47 every hour it reads CBP's border waits; on
 weekdays from 6 am to 8 pm Central (`lmrHours` in `src/index.js`) it also checks for a new boxed beef and pork report, the only hours USDA posts or corrects
-them; the :17 run also polls YouTube. The fed cattle board
+them; the :17 run also polls YouTube; the :47 runs at 09 and 21 UTC start the site's snapshot
+workflow (see "Updating the pages"). The fed cattle board
 needs nothing from the Worker: `snapshot.py` reads USDA's datamart directly. The reefer rates need no cron:
 USDA keeps them, and the Worker asks on request.
 
-**Secrets** (`npx.cmd wrangler secret put NAME`, never in the repo): `STREMIO_AUTH_KEY`,
+**Secrets** (`npx.cmd wrangler secret put NAME`, never in the repo): `GH_DISPATCH_TOKEN` (starts the snapshot workflow, see "Updating the pages"), `STREMIO_AUTH_KEY`,
 `YOUTUBE_API_KEY`, `USDA_MMN_KEY`, `EIA_API_KEY` (optional), `GUESTBOOK_ADMIN_KEY`.
 
 **Vars** (`[vars]` in `wrangler.toml`): `LIVE_WINDOW_MIN`, `GUESTBOOK_DAILY_MAX`,
@@ -283,7 +285,7 @@ only holds the USDA key (which must never reach a browser or the repo) and asks 
 - `GET /reefer?week=2026-10-05` is any week, by the Monday it covers. Cached six hours.
 
 The site has no script for this page: the `Snapshot live pages` GitHub Action reads its committed
-CSV back every three hours and asks here only for the weeks it doesn't settle, normally the newest and
+CSV back twice a day and asks here only for the weeks it doesn't settle, normally the newest and
 the four before it (USDA sometimes corrects a report). The CSV is the long-term record, filled once
 from USDA back to January 2020 (`REEFER_FILL=1 python3 scripts/snapshot.py reefer`).
 
@@ -328,7 +330,7 @@ Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/reefer?week=2025-06-0
 
 ### What it costs
 
-Nothing, and nothing stored. The snapshot makes about six requests a run, eight runs a day, and each one
+Nothing, and nothing stored. The snapshot makes about six requests a run, twice a day, and each one
 is a USDA call (one week is about 700 rows, a few milliseconds to boil down) or an edge-cache hit.
 
 ## The border wait board
@@ -344,7 +346,7 @@ commercial lanes, is kept whole in `border_latest` for the live board.
 - `GET /border` — every commercial port right now. Cached five minutes at the edge; the board's
   script refreshes from it.
 - `GET /border/port?id=230404` — one port's last 30 days averaged by weekday and hour, plus its
-  last 7 days of readings. The snapshot (every three hours) reads this once per port; visitors never do.
+  last 7 days of readings. The twice-daily snapshot reads this once per port; visitors never do.
 
 ### Setting it up (once)
 
@@ -439,7 +441,45 @@ Nothing. USDA is asked 28 times a weekday for a few hundred bytes (none at night
 when no report can appear), plus one full report on business days. Outside those hours `/beef` and
 `/pork` stay an hour at the edge instead of ten minutes, since the stored report can't change.
 That is one row written a business day. Visitors reach the Worker only when a page's copy is behind,
-which happens between USDA posting a report (mid-afternoon) and the next rebuild, at most three hours later.
+which happens between USDA posting a report (mid-afternoon) and the evening rebuild.
+
+## Updating the pages (`/refresh`)
+
+The pages carry a copy of the data, written by the site's `Snapshot live pages` workflow. GitHub's
+own schedule for it ran every time 1.5 to 5 hours late (Oct 15-18, 2026) and can drop a run, so the
+Worker starts it instead (`src/refresh.js`), through GitHub's workflow dispatch API:
+
+- **Twice a day**, from the :47 cron runs at 09 and 21 UTC (`SNAPSHOT_HOURS_UTC`). Cloudflare's crons
+  run on the minute. GitHub's schedule (11:41 and 23:41 UTC) stays as the backup and does nothing
+  when a snapshot already ran in the six hours before it.
+- **On request**, from the "Update now" button under each data board's stamp
+  (`_includes/update-button.html`). `POST /refresh` is accepted only from the site (`WRITE_ORIGINS`).
+
+Both share one cooldown: at most one start an hour, whoever asks (`REFRESH_COOLDOWN_MS`). The last
+start is the `refresh_at` row of `counters`, claimed with one conditional `UPDATE`, so two presses
+at once can't both start it; if GitHub refuses, the claim is given back. A start takes about five
+minutes to reach the pages (the snapshot, then the deploy).
+
+### Setting it up (once)
+
+The Worker needs a GitHub token that can start this one workflow and nothing else:
+
+1. GitHub → Settings → Developer settings → Personal access tokens → **Fine-grained tokens** →
+   Generate new token. Name it `house-tv snapshot`, pick an expiration (GitHub allows up to a year;
+   put a reminder to renew it).
+2. Repository access: **Only select repositories** → `JuanTorresMI/JuanTorresMI.github.io`.
+3. Permissions → Repository permissions → **Actions: Read and write**. Leave everything else at
+   "No access".
+4. Generate, copy it, and in `worker/` run `npx.cmd wrangler secret put GH_DISPATCH_TOKEN` and paste it.
+
+Until it is set, `GET /refresh` answers `ready: false`, the button stays hidden and the cron starts
+nothing (GitHub's backup schedule still runs). When the token expires, the same: the backup keeps
+the pages updating, and the Worker log says `GitHub refused`.
+
+### What it costs
+
+Two D1 reads and at most one write per start; at most 24 starts a day by button plus two by cron,
+each one GitHub Actions run (free for a public repository) and one Pages deploy.
 
 ## Staying inside the free plan
 
@@ -453,7 +493,7 @@ beef and reefer histories moved out of D1):
 
 | Limit | Free plan | In use | Headroom |
 | --- | --- | --- | --- |
-| Rows read a day | 5,000,000 | about 40,000 with the snapshot twice a day; at most about 160,000 with it every three hours (since Oct 18) | 31× or more |
+| Rows read a day | 5,000,000 | about 40,000 | 125× |
 | Rows written a day | 100,000 | about 2,500 | 40× |
 | Database size | 500 MB | 160 KB | grows about 10 MB a year (border readings): decades |
 | Cron triggers | 5 per account | 2 | 3 spare |
@@ -477,7 +517,7 @@ What keeps it there, so a later change doesn't undo it:
   make a run read more rows.
 - **Many rows go in one statement** (`json_each`), never one statement per row: the free plan
   allows 50 queries per run.
-- **Pages read the snapshot's copy (every three hours), not the Worker**, wherever the data changes slowly (reefer,
+- **Pages read the twice-daily copy, not the Worker**, wherever the data changes slowly (reefer,
   beef, the border averages). Visitors only reach the Worker for "right now".
 - **Don't keep what the source keeps.** USDA serves the whole truck rate and boxed beef history,
   and EIA the diesel history, so the Worker stores none of it (just the newest beef and pork

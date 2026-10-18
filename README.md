@@ -50,7 +50,7 @@ Cloudflare Worker  ◄─┘  worker/: polls on cron triggers, keeps history in 
      │
      ├─► browsers: the live parts of /watching/, /youtube/, /blog/, /music/ and the border pages
      │
-     └─► scripts/snapshot.py, every three hours (Snapshot live pages workflow)
+     └─► scripts/snapshot.py, twice a day (Snapshot live pages workflow)
               │  also reads USDA's LMR datamart directly for the beef, pork and cattle history
               │  writes _data/live/*.json, the generated pages' stubs (both languages), CSVs; commits; starts a deploy
               ▼

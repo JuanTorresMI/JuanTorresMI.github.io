@@ -24,6 +24,7 @@
     {%- if r.stamp.spread != "" %}<div><dt>{% if es %}Choice sobre Select{% else %}Choice over Select{% endif %}</dt><dd data-bf="spread">{{ r.stamp.spread }}</dd></div>{% endif %}
     {%- if r.stamp.loads != "" %}<div><dt>{% if es %}Cargas vendidas{% else %}Loads sold{% endif %}</dt><dd data-bf="loads">{{ r.stamp.loads }}</dd></div>{% endif %}
   </dl>
+  {% include update-button.html es=es %}
   {%- endif %}
 </header>
 {%- if r %}
@@ -217,7 +218,7 @@
 
 <section class="rb-sec" id="data" aria-labelledby="data-h">
   <h2 id="data-h">{% if es %}Descargar los datos{% else %}Download the data{% endif %}</h2>
-  <p>{% if es %}Todo lo de esta página y de las páginas de cada corte, como archivos CSV sencillos que cualquiera puede abrir en una hoja de cálculo o cargar en código. Se reescriben cada tres horas con el reporte más nuevo y son de uso libre: los números son del USDA, y los datos del gobierno de EE. UU. son de dominio público. Dé crédito a USDA AMS Livestock, Poultry and Grain Market News.{% else %}Everything on this page and the cut pages, as plain CSV files anyone can open in a spreadsheet or load into code. They’re rewritten every three hours with the newest report and are free to use: the numbers are USDA’s, and U.S. government data is in the public domain. Credit USDA AMS Livestock, Poultry and Grain Market News.{% endif %}</p>
+  <p>{% if es %}Todo lo de esta página y de las páginas de cada corte, como archivos CSV sencillos que cualquiera puede abrir en una hoja de cálculo o cargar en código. Se reescriben dos veces al día con el reporte más nuevo y son de uso libre: los números son del USDA, y los datos del gobierno de EE. UU. son de dominio público. Dé crédito a USDA AMS Livestock, Poultry and Grain Market News.{% else %}Everything on this page and the cut pages, as plain CSV files anyone can open in a spreadsheet or load into code. They’re rewritten twice a day with the newest report and are free to use: the numbers are USDA’s, and U.S. government data is in the public domain. Credit USDA AMS Livestock, Poultry and Grain Market News.{% endif %}</p>
   <div class="rb-scroll">
     <table class="rb-t rb-wrap">
       <thead><tr><th scope="col">{% if es %}Archivo{% else %}File{% endif %}</th><th scope="col">{% if es %}Filas{% else %}Rows{% endif %}</th><th scope="col">{% if es %}Tamaño{% else %}Size{% endif %}</th><th scope="col">{% if es %}Qué contiene{% else %}What’s in it{% endif %}</th></tr></thead>
@@ -347,14 +348,14 @@
     <div class="body prose">
     {%- if es %}
       <ol>
-        <li><strong>El historial es del propio USDA.</strong> El USDA guarda cada reporte y su base de datos de Reportes Obligatorios de Ganado entrega cualquier periodo, sin clave. Así que aquí no se guarda una segunda copia de lo que el USDA ya tiene: cada tres horas una GitHub Action vuelve a leer los CSV descargables, que contienen cada día ya obtenido, y solo le pide al USDA el último mes o dos, por si se corrigió un reporte.</li>
+        <li><strong>El historial es del propio USDA.</strong> El USDA guarda cada reporte y su base de datos de Reportes Obligatorios de Ganado entrega cualquier periodo, sin clave. Así que aquí no se guarda una segunda copia de lo que el USDA ya tiene: dos veces al día una GitHub Action vuelve a leer los CSV descargables, que contienen cada día ya obtenido, y solo le pide al USDA el último mes o dos, por si se corrigió un reporte.</li>
         <li><strong>Guarda cada corte una vez al día.</strong> Con eso reconstruye esta página, una página por corte y los CSV: una fila por corte, grado y día, con el mínimo, el máximo, el promedio ponderado, las ventas y las libras. Un corte que no se vendió no tiene fila, nunca un cero.</li>
         <li><strong>Un Cloudflare Worker vigila el siguiente reporte.</strong> El mismo Worker pequeño detrás de los <a href="/es/tiempos-de-espera/">tiempos de espera en la frontera</a> de este sitio revisa al USDA cada media hora y guarda solo el reporte más nuevo. Cuando la copia de esta página es más vieja que un reporte que ya debería haber salido, la página le pregunta al Worker y pone las cifras nuevas arriba. El resto del tiempo la página no pregunta nada, así que no cuesta nada mantenerla, la visiten cuantos la visiten.</li>
       </ol>
       <p>Fuente: Servicio de Comercialización Agrícola del USDA (AMS), Livestock, Poultry and Grain Market News. Los números son suyos y son públicos; cualquier error al presentarlos es mío. El código del Worker está en la <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">carpeta worker</a> del repositorio de este sitio.</p>
     {%- else %}
       <ol>
-        <li><strong>The history is USDA’s own.</strong> USDA keeps every report and its Livestock Mandatory Reporting datamart hands out any stretch of them, with no key. So nothing here keeps a second copy of what USDA already stores: every three hours a GitHub Action reads back the CSV downloads, which hold every day already fetched, and asks USDA only for the last month or two, in case a report was corrected.</li>
+        <li><strong>The history is USDA’s own.</strong> USDA keeps every report and its Livestock Mandatory Reporting datamart hands out any stretch of them, with no key. So nothing here keeps a second copy of what USDA already stores: twice a day a GitHub Action reads back the CSV downloads, which hold every day already fetched, and asks USDA only for the last month or two, in case a report was corrected.</li>
         <li><strong>It keeps every cut once a day.</strong> From those it rebuilds this board, a page for every cut and the CSVs: one row per cut, grade and day, with the low, the high, the weighted average, the trades and the pounds. A cut that didn’t trade gets no row, never a zero.</li>
         <li><strong>A Cloudflare Worker watches for the next report.</strong> The same small Worker behind this site’s <a href="/reefer-rates/">reefer rate board</a> and <a href="/border-waits/">border wait board</a> checks USDA every half hour and keeps only the newest report. When this page’s copy is older than a report that should be out, the page asks the Worker and puts the new figures at the top, usually within half an hour of USDA posting them. The rest of the time the page asks nothing, so however many people visit, it costs nothing to run.</li>
       </ol>
