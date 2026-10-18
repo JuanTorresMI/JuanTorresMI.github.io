@@ -6,10 +6,11 @@ date: 2026-10-16
 tags: [youtube, cloudflare, discord, league-of-legends]
 description: "Why I put my YouTube channel's stats on this site with a free Cloudflare Worker, how it reads YouTube's API without exposing a key, and what the numbers show."
 image: /assets/og/youtube.png
-image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every hour by a Cloudflare Worker."
+image_alt: "YouTube, by Juan Torres. Channel numbers refreshed every three hours by a Cloudflare Worker."
+last_modified_at: 2026-10-18
 ---
 
-My YouTube channel is League of Legends: full games and short clips from my Kalista ADC games in Emerald. I already post to it with a Discord bot. The [YouTube page](/youtube/) on this site shows the channel's numbers, refreshed every hour, and the latest uploads.
+My YouTube channel is League of Legends: full games and short clips from my Kalista ADC games in Emerald. I already post to it with a Discord bot. The [YouTube page](/youtube/) on this site shows the channel's numbers, refreshed every three hours, and the latest uploads.
 
 I had three reasons for building it. I wanted to build something that works with the Discord bot I already use for posting: the bot puts the videos up, and this page shows how they do. I wanted the channel to be easier to discover. And I wanted somewhere on my own website to track how the channel performs, so the numbers show how my tool is doing.
 
@@ -19,11 +20,11 @@ YouTube's numbers come from the YouTube Data API, and every request needs an API
 
 ## How it works
 
-1. **Once an hour, the Worker wakes itself up.** A cron trigger runs it at 17 past every hour. Nobody has to visit the page, and my computer doesn't have to be on.
-2. **It asks YouTube three questions.** One call gets the channel's subscribers, total views and video count, one gets the list of its latest uploads, and one gets each upload's views, likes and length. Each call costs one unit of YouTube's free daily quota of 10,000, so the whole day costs 72.
-3. **It writes the answer down.** The latest snapshot goes into a small SQLite database on Cloudflare (D1), along with one row per day, which is where the day-by-day changes come from. If YouTube doesn't answer, nothing is overwritten.
+1. **Every three hours, the Worker wakes itself up.** A cron trigger runs it at 17 past midnight, 3, 6 and so on (UTC). Nobody has to visit the page, and my computer doesn't have to be on.
+2. **It asks YouTube three questions.** One call gets the channel's subscribers, total views and video count, one gets the list of its latest uploads, and one gets each upload's views, likes and length. Each call costs one unit of YouTube's free daily quota of 10,000, so the whole day costs 24.
+3. **It writes the answer down.** The latest snapshot goes into a small SQLite database on Cloudflare (D1), along with one row per day for the last 40 days, which is where the day-by-day changes come from. If YouTube doesn't answer, nothing is overwritten.
 4. **The page reads the snapshot, not YouTube.** A visit costs YouTube's quota nothing, and Cloudflare keeps a copy at the edge for five minutes, so most visits don't even reach the database.
-5. **Twice a day, a copy goes into the page itself.** A GitHub Action writes the snapshot into the page's HTML. That's what search engines and link previews see.
+5. **At least once a day, a copy goes into the page itself.** A GitHub Action writes the snapshot into the page's HTML. That's what search engines and link previews see. The same run adds each day's numbers to a [CSV](/youtube/youtube-channel-daily.csv) in this site's repository, which is the permanent record; the database only keeps the recent days the page needs.
 
 The key is a plain API key stored as a Cloudflare secret. It can only read public data, so it can't upload or change anything on the channel. The bot does the uploading with its own sign-in and its own quota, so this page can never get in its way. All of it runs on free plans.
 
@@ -45,5 +46,7 @@ The most-viewed was a Short, "What should Thresh & Jhin have done vs Kalista?", 
 - **It's a few days of data.** The full games were all uploaded in those same four days, the last one hours before the copy, so their counts may still move. Four days can't say how a full game does over a month.
 - **The day-by-day history is short.** It holds one row per day, so it only says something once there are weeks of rows.
 - **Some of it is YouTube's rules, not mine.** The public subscriber count is rounded to three significant figures, and "Short" on the page means an upload three minutes long or less, which is YouTube's own limit for one.
+
+*Updated October 18, 2026: the Worker now polls every three hours instead of every hour, since a channel this size barely moves in an hour, and every day's numbers are kept in the site's repository rather than in the Worker's database. The numbers above are from the October 16 copy.*
 
 The [YouTube page](/youtube/) has the live numbers, the latest full game and Shorts, every recent upload and the day-by-day changes. The Worker's code is in the [worker folder](https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker) of this site's repository.
