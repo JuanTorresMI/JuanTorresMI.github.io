@@ -61,3 +61,10 @@ CREATE TABLE IF NOT EXISTS beef_latest (
   body       TEXT NOT NULL,                        -- the JSON GET /beef serves
   updated_at TEXT NOT NULL
 );
+
+-- The pork board (src/pork.js). One row, USDA's newest pork report, as for beef.
+CREATE TABLE IF NOT EXISTS pork_latest (
+  id         INTEGER PRIMARY KEY CHECK (id = 1),
+  body       TEXT NOT NULL,                        -- the JSON GET /pork serves
+  updated_at TEXT NOT NULL
+);

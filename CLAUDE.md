@@ -16,7 +16,7 @@ how the live data flows, the workflows and scripts.
 | `_layouts/default.html` | Ordinary pages: content inside `<main class="page frame">` |
 | `_layouts/post.html` | Writing. Adds date, reading time, tags, previous / next |
 | `_layouts/app.html` | Full-width project pages: nav, project bar, the page's own markup, footer |
-| `_layouts/reefer-lane.html`, `border-crossing.html`, `beef-cut.html` | One generated page per reefer lane / border crossing / beef cut (see "Live data pages") |
+| `_layouts/reefer-lane.html`, `border-crossing.html`, `beef-cut.html`, `pork-cut.html`, `cattle-region.html` | One generated page per reefer lane / border crossing / beef cut / pork cut / cattle region, each in English and Spanish where the board has both (see "Live data pages") |
 | `_layouts/artist.html`, `music/`, `_data/music.yml` | Yokonjuan's page (`/music/`); see "The music page" |
 | `_layouts/redirect.html`, `redirects/` | Old addresses that moved |
 | `assets/css/style.css` | The only stylesheet for the portfolio. Fonts, tokens, grid, every component, print |
@@ -25,7 +25,7 @@ how the live data flows, the workflows and scripts.
 | `fruit-fly-dispatcher/` | The simulation: `index.html` (layout `app`, its own unscoped styles and copy of the tokens), `showcase-data.js`, `runs/*.js` (loaded on demand) |
 | `craft-ledger.html` | The ledger: one file (styles, markup, recipe JSON, script) inside layout `app`, styles scoped under `.cl`. Below the app sits its guide (`#guide`, ordinary `.page` markup): what search engines and SMP players read. The old guide address redirects there |
 | `aggregate-planning/` | The planner: `index.html` (layout `app`), `planner.css` (scoped under `.ap`), `model.js` (the LP/MIP; no DOM, runs in Node), `solver.js` + `solver-worker.js` (HiGHS in a Web Worker), `app.js`, `study.js` (study mode: the plan taken apart step by step; the worker's `explain()` does the extra solves), `xlsx.js` (the downloadable workbook, no library), `sw.js` (offline). `lib/` holds HiGHS and Chart.js, vendored unchanged |
-| `reefer-rates/`, `border-waits/`, `es/tiempos-de-espera/`, `beef-prices/` | The three data boards' index pages, their CSVs and `border-waits/live.js` (see "Live data pages") |
+| `reefer-rates/`, `border-waits/`, `es/tiempos-de-espera/`, `beef-prices/`, `pork-prices/`, `fed-cattle-prices/`, `usda-market-prices/`, `es/precios-*/` | The data boards' index pages, their CSVs and scripts (see "Live data pages"). The beef, pork and cattle boards are each one include (`_includes/beef-board.html`, `pork-board.html`, `cattle-board.html`) that the English and Spanish index pages both render; `usda-hub.html` is the parent page; `price-chart`, `price-grid`, `price-season`, `cut-tools`, `cattle-detail`, `cattle-calc` and `usda-boards` are their shared parts |
 | `worker/` | The Cloudflare Worker behind every live page. Not part of the Jekyll build; its README lists its routes, crons, secrets and tables |
 | `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` and `music-og.js` (share pictures), `snapshot.py` (Worker data → `_data/live/`), `lastmod.py` (git dates for the sitemap), `indexnow.py` (pings Bing and other IndexNow engines after each deploy) |
 | `_data/live/` | Twice-daily copies of the Worker's answers, already formatted. Written by `snapshot.py` from the `Snapshot live pages` workflow, which commits them and starts a deploy. Don't edit these files by hand |
@@ -134,6 +134,23 @@ JavaScript get real content; and, where it matters, a page script swaps in fresh
   Prices are dollars per hundredweight; a cut with no sales that day has no row, never $0. Credit
   USDA AMS, and make no claims the numbers don't show (seasonal swings are computed against each
   year's own average, so the drift in prices doesn't read as a season).
+- **The pork board (`/pork-prices/`, a page per cut and primal)**: the beef board's pattern for USDA's
+  LM_PK602 (pork cutout, primals and cuts; no grades). `_data/pork_cuts.json` names USDA's ~270 item
+  codes in English and Spanish; `pork_name()` in `snapshot.py` builds a name from the code's parts
+  (bone, trim, weight, lean, pack, frozen, added ingredients) and adds any new item to the file on its
+  own. Never change a slug once live. `pork-prices/live.js` asks the Worker's `/pork` when the copy is
+  behind; the tools are the beef board's `beef-prices/tools.js`.
+- **The fed cattle board (`/fed-cattle-prices/`, a page per region)**: weekly negotiated cash prices
+  from LM_CT150 (5-area), LM_CT156-158 (Texas-Oklahoma, Kansas, Nebraska), LM_CT154's regional table
+  (the six smaller regions) and LM_CT100 (5-area daily), all keyless from the datamart. No Worker:
+  the snapshot reads the CSVs back and asks USDA for the current year. A weekly report dated Monday
+  covers the week before; a daily report covers the business day before it. A region gets a page
+  after 8 weeks with a price in a year; a week with too few trades has no price, never zero.
+- **Spanish for the USDA boards**: every beef, pork and cattle page has a Spanish twin under
+  `/es/precios-de-carne-de-res/`, `/es/precios-de-cerdo/` and `/es/precios-de-ganado-gordo/`, paired by
+  each stub's `translation` (`snapshot.py` writes both stubs). The snapshots carry the formatted Spanish
+  dates and sentences in `*_es` fields; the templates hold the Spanish words beside the English ones.
+  Spanish cut names follow Mexican usage (beef names are in `_data/beef_cuts.json`, `es`).
 - **`/blog/`**: renders the local posts in HTML and merges Substack's items by script, so the
   list works without JavaScript and for crawlers.
 

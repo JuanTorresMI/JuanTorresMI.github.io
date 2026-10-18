@@ -1,0 +1,175 @@
+---
+layout: default
+---
+{%- comment -%}
+  One item on the pork board: /pork-prices/<slug>/ and /es/precios-de-cerdo/<slug_es>/ (page.lang),
+  a cut, a primal or the carcass cutout, in the beef board's form (.rb .bf). The page files in
+  _pork_cuts/ and _pork_cuts_es/ are only front matter, written by scripts/snapshot.py; everything
+  shown comes from site.data.live.pork.items[page.cut].
+{%- endcomment -%}
+{%- assign r = site.data.live.pork -%}
+{%- assign c = r.items[page.cut] -%}
+{%- assign m = c.f -%}
+{%- if page.lang == "es" %}{% assign es = true %}{% assign base = "/es/precios-de-cerdo/" %}{% else %}{% assign es = false %}{% assign base = "/pork-prices/" %}{% endif -%}
+{%- if es %}{% assign cname = c.es %}{% else %}{% assign cname = c.name %}{% endif -%}
+{%- assign pk = c.primal -%}
+{%- case pk %}{% when "loin" %}{% assign pen = "loin" %}{% assign pes = "lomo" %}{% when "butt" %}{% assign pen = "butt" %}{% assign pes = "espaldilla" %}{% when "picnic" %}{% assign pen = "picnic" %}{% assign pes = "paleta picnic" %}{% when "rib" %}{% assign pen = "rib" %}{% assign pes = "costilla" %}{% when "ham" %}{% assign pen = "ham" %}{% assign pes = "pierna" %}{% when "belly" %}{% assign pen = "belly" %}{% assign pes = "panceta" %}{% else %}{% assign pen = "" %}{% assign pes = "" %}{% endcase -%}
+<div class="rb bf">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family"><a class="rb-lane-back" href="{{ base }}">{% if es %}Trabajo · Precios del cerdo{% else %}Work · Pork prices{% endif %}</a></p>
+    <h1>{{ cname | default: page.title }}</h1>
+    {%- if c %}
+    <p class="rb-lede">
+    {%- if es -%}
+      {%- if c.section == "primal" -%}
+        {%- if c.group == "carcass" %}El valor de la canal de cerdo: lo que suman las ventas negociadas del día de todos sus cortes, por quintal de canal, según el reporte diario de cerdo del USDA.{% else %}El valor compuesto del primal de {{ pes }} de cerdo: lo que suman las ventas negociadas del día de sus cortes, por quintal del primal, según el reporte diario de cerdo del USDA.{% endif -%}
+      {%- else -%}
+        El precio de mayoreo diario del USDA para {{ cname | slice: 0 | downcase }}{{ cname | slice: 1, 400 }}, vendido por los empacadores en tratos negociados, LAB planta.{% if c.also_es != "" %} En tiendas se le conoce como {{ c.also_es }}.{% endif %}
+      {%- endif %}
+      {% if m.current %}El último {% if c.section == "primal" %}valor{% else %}precio{% endif %}, del {{ m.date_es }}, es <strong>{{ m.cwt }}</strong> por quintal{% if c.section != "primal" %}, o <strong>{{ m.lb }} la libra</strong>{% endif %}.{% else %}No se vendió en el último reporte ({{ r.on_day_es }}); su último precio fue de {{ m.cwt }} por quintal{% if c.section != "primal" %} ({{ m.lb }} la libra){% endif %}, el {{ m.date_es }}.{% endif %}
+    {%- else -%}
+      {%- if c.section == "primal" -%}
+        {%- if c.group == "carcass" %}The pork carcass cutout: what the day’s negotiated sales of all its cuts add up to, per hundredweight of carcass, from USDA’s daily pork report.{% else %}The composite value of the pork {{ pen }} primal: what the day’s negotiated sales of its cuts add up to, per hundredweight of the primal, from USDA’s daily pork report.{% endif -%}
+      {%- else -%}
+        USDA’s daily wholesale price for {{ c.name | slice: 0 | downcase }}{{ c.name | slice: 1, 400 }}, sold by packers on negotiated deals, FOB the plant.{% if c.also != "" %} Stores often sell it as {{ c.also }}.{% endif %}
+      {%- endif %}
+      {% if m.current %}The latest {% if c.section == "primal" %}value{% else %}price{% endif %}, for {{ m.date }}, is <strong>{{ m.cwt }}</strong> per hundredweight{% if c.section != "primal" %}, or <strong>{{ m.lb }} a pound</strong>{% endif %}.{% else %}It didn’t trade on the latest report ({{ r.on_day }}); its last price was {{ m.cwt }} per hundredweight{% if c.section != "primal" %} ({{ m.lb }} a pound){% endif %}, on {{ m.date }}.{% endif %}
+    {%- endif %}
+    </p>
+    {%- else %}
+    <p class="rb-lede">{% if es %}Los números de este producto no están en la copia más reciente de los datos. El <a class="link" href="{{ base }}">tablero del cerdo</a> tiene los precios de hoy.{% else %}This item’s numbers aren’t in the latest copy of the data. The <a class="link" href="/pork-prices/">pork board</a> has today’s prices.{% endif %}</p>
+    {%- endif %}
+  </div>
+  {%- if c %}
+  <dl class="rb-stamp">
+    <div><dt>{% if es %}{% if m.current %}Precio{% else %}Precio, {{ m.day_es }}{% endif %}{% else %}{% if m.current %}Price{% else %}Price, {{ m.day }}{% endif %}{% endif %}</dt><dd data-bf="price">{% if c.section == "primal" %}{{ m.cwt }}{% if m.current and m.change != "" %} <span>{{ m.change }}</span>{% endif %}{% else %}{{ m.lb }}/lb{% if m.current and m.change_pct != "" %} <span>{{ m.change_pct }}</span>{% endif %}{% endif %}</dd></div>
+    {%- if c.section != "primal" %}<div><dt>{% if es %}Por quintal{% else %}Per cwt{% endif %}</dt><dd>{{ m.cwt }}</dd></div>{% endif %}
+    {%- if m.range != "" %}<div><dt>{% if es %}Rango del día{% else %}Day’s range{% endif %}</dt><dd>{{ m.range }}</dd></div>{% endif %}
+    {%- if m.lbs != "" and m.current %}<div><dt>{% if es %}Libras vendidas{% else %}Pounds sold{% endif %}</dt><dd>{{ m.lbs }}</dd></div>{% endif %}
+  </dl>
+  {%- endif %}
+</header>
+{%- if c %}
+<p class="rb-note bf-live" data-bf="notice" role="status" hidden></p>
+{%- endif %}
+
+{% if c %}
+<div class="rb-judge">
+  <p class="rb-tag">{% if es %}{% if m.current %}¿El precio de hoy está alto o bajo?{% else %}Cómo se comparó su último precio{% endif %}{% if m.standing.tag_es != "" %} · {{ m.standing.tag_es }}{% endif %}{% else %}{% if m.current %}Is today’s price high or low?{% else %}How its last price compared{% endif %}{% if m.standing.tag != "" %} · {{ m.standing.tag }}{% endif %}{% endif %}</p>
+  <p class="rb-say">{% if es %}{{ m.standing.text_es }}{% else %}{{ m.standing.text }}{% endif %}</p>
+  {%- if m.standing.pos %}
+  <div class="rb-meter" role="img" aria-label="{% if es %}{{ m.standing.text_es }}{% else %}{{ m.standing.text }}{% endif %}"><span style="left: {{ m.standing.pos }}%"></span></div>
+  <p class="rb-meter-k">{% if es %}<span>El más bajo del año</span><span>El más alto del año</span>{% else %}<span>Lowest of the year</span><span>Highest of the year</span>{% endif %}</p>
+  {%- endif %}
+</div>
+<p class="rb-note">
+{%- if es -%}
+  {%- if m.year_ago %}Hace un año ({{ m.year_ago.date_es }}) estaba en {{ m.year_ago.cwt }} por quintal; {% if m.current %}el de hoy{% else %}su último precio{% endif %} está {{ m.year_ago.change }} frente a eso. {% endif -%}
+  {%- if m.days_year > 0 %}{% if c.section == "primal" %}En los {{ m.days_year }} reportes del último año promedió{% else %}En el último año se vendió {{ m.days_year }} días, con un promedio de{% endif %} {{ m.avg }}, de un mínimo de {{ m.low }} ({{ m.low_day_es }}) a un máximo de {{ m.high }} ({{ m.high_day_es }}). {% endif -%}
+  {%- if c.season %}En un año típico ({{ c.season.years }}) está más alto en {{ c.season.high_es }} ({{ c.season.high_v }} frente al promedio de su propio año) y más bajo en {{ c.season.low_es }} ({{ c.season.low_v }}).{% endif %}
+{%- else -%}
+  {%- if m.year_ago %}A year earlier ({{ m.year_ago.date }}) it was {{ m.year_ago.cwt }} per hundredweight; {% if m.current %}today’s{% else %}its last price{% endif %} is {{ m.year_ago.change }} against that. {% endif -%}
+  {%- if m.days_year > 0 %}{% if c.section == "primal" %}Over the past year’s {{ m.days_year }} reports it averaged{% else %}Over the past year it traded on {{ m.days_year }} days, averaging{% endif %} {{ m.avg }}, from a low of {{ m.low }} ({{ m.low_day }}) to a high of {{ m.high }} ({{ m.high_day }}). {% endif -%}
+  {%- if c.season %}In a usual year ({{ c.season.years }}) it runs highest in {{ c.season.high }} ({{ c.season.high_v }} against its own year’s average) and lowest in {{ c.season.low }} ({{ c.season.low_v }}).{% endif %}
+{%- endif %}
+</p>
+
+{%- if c.section != "primal" %}
+{% include cut-tools.html c=c m=m es=es trim=true %}
+{%- endif %}
+
+{%- if c.chart %}
+{%- capture chart_label %}{% if es %}Precio promedio semanal de {{ cname | escape }} del {{ c.chart.start_es }} al {{ c.chart.end_es }}, entre {{ c.chart.bottom }} y {{ c.chart.top }} por quintal.{% else %}Weekly average price of {{ c.name | escape }} from {{ c.chart.start }} to {{ c.chart.end }}, between {{ c.chart.bottom }} and {{ c.chart.top }} per hundredweight.{% endif %}{% endcapture %}
+{% include price-chart.html chart=c.chart es=es label=chart_label title_en="Every week on record" title_es="Cada semana registrada" unit_en="Weekly average, dollars per hundredweight" unit_es="Promedio semanal, dólares por quintal" %}
+<p class="rb-note">{% if es %}Cada punto es el promedio de los precios diarios de la semana; los huecos son periodos de tres semanas o más sin ventas. Registrado desde el {{ c.since_es }}: {{ c.days_all }} días con precio.{% else %}Each point is the average of the week’s daily prices; gaps are stretches of three weeks or more with no sales. On record since {{ c.since }}: {{ c.days_all }} days with a price.{% endif %}</p>
+{%- endif %}
+
+{%- if c.grid.size > 0 %}
+<section class="rb-block">
+  <h2>{% if es %}Precio promedio por mes <span>{{ c.grid_unit_es }}</span>{% else %}Average price by month <span>{{ c.grid_unit }}</span>{% endif %}</h2>
+  {% include price-grid.html grid=c.grid es=es %}
+  <p class="rb-note">{% if es %}Cada mes se pondera por las libras vendidas cada día{% if c.section == "primal" %} (los valores de los primales son un promedio simple){% endif %}. Un punto es un mes sin ventas registradas.{% else %}Each month is weighted by the pounds sold on each day{% if c.section == "primal" %} (primal values are a plain average){% endif %}. A dot is a month with no sales on record.{% endif %}</p>
+  {%- if c.season %}
+  <h3 class="bf-h3">{% if es %}Su año típico <span>Cada mes frente al promedio de su propio año, la mediana de {{ c.season.years }}</span>{% else %}Its usual year <span>Each month against its own year’s average, the median over {{ c.season.years }}</span>{% endif %}</h3>
+  {% include price-season.html season=c.season es=es %}
+  {%- endif %}
+</section>
+{%- endif %}
+
+<section class="rb-block">
+  <h2>{% if es %}Día por día <span>Los últimos {{ c.rows.size }} días con ventas</span>{% else %}Day by day <span>The last {{ c.rows.size }} days it traded</span>{% endif %}</h2>
+  <div class="rb-scroll">
+    <table class="rb-table">
+      <thead><tr><th scope="col">{% if es %}Día{% else %}Day{% endif %}</th><th scope="col">{% if es %}Por cwt{% else %}Per cwt{% endif %}</th>{% if c.section != "primal" %}<th scope="col">{% if es %}Por lb{% else %}Per lb{% endif %}</th><th scope="col">{% if es %}Rango, por cwt{% else %}Range, per cwt{% endif %}</th><th scope="col">{% if es %}Libras{% else %}Pounds{% endif %}</th>{% endif %}</tr></thead>
+      <tbody>
+      {%- for d in c.rows %}
+        <tr><th scope="row">{% if es %}{{ d.day_es }}{% else %}{{ d.day }}{% endif %}</th><td>{{ d.cwt }}</td>{% if c.section != "primal" %}<td>{{ d.lb }}</td><td>{{ d.range | default: "—" }}</td><td>{{ d.lbs | default: "—" }}</td>{% endif %}</tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="rb-note">{% if es %}Cada día está en las <a class="link" href="{{ base }}#data">descargas CSV</a>.{% else %}Every day is in the <a class="link" href="/pork-prices/#data">CSV downloads</a>.{% endif %}</p>
+</section>
+
+{%- if c.siblings.size > 0 %}
+<section class="rb-block">
+  <h2>{% if es %}{% if c.section == "primal" %}Cortes de {{ pes }}{% else %}Otros cortes de {{ pes }}{% endif %} hoy <span>Del más caro al más barato, por libra</span>{% else %}{% if c.section == "primal" %}Cuts from the {{ pen }}{% else %}Other cuts from the {{ pen }}{% endif %} today <span>Dearest first, per pound</span>{% endif %}</h2>
+  <div class="rb-scroll">
+    <table class="rb-table">
+      <thead><tr><th scope="col">{% if es %}Corte{% else %}Cut{% endif %}</th><th scope="col">{% if es %}Por lb{% else %}Per lb{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for s in c.siblings %}
+        {%- if es %}{% assign sn = s.es %}{% assign su = s.slug_es %}{% else %}{% assign sn = s.name %}{% assign su = s.slug %}{% endif %}
+        <tr{% if s.here %} class="rb-here"{% endif %}><th scope="row">{% if s.here %}{{ sn }}{% else %}<a href="{{ base }}{{ su }}/">{{ sn }}</a>{% endif %}</th><td>{{ s.lb }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  {%- if c.section != "primal" and c.primal_slug != "" %}
+  <p class="rb-note">{% if es %}El primal de {{ pes }} completo{% if c.primal_value != "" %} valió {{ c.primal_value }} por quintal el {{ r.on_day_es }}{% endif %}: <a class="link" href="{{ base }}{{ c.primal_slug_es }}/">su página</a>.{% else %}The {{ pen }} primal as a whole{% if c.primal_value != "" %} was worth {{ c.primal_value }} per hundredweight on {{ r.on_day }}{% endif %}: <a class="link" href="/pork-prices/{{ c.primal_slug }}/">its page</a>.{% endif %}</p>
+  {%- endif %}
+</section>
+{%- endif %}
+<script>window.BF = { endpoint: {{ site.worker_url | default: "" | jsonify }}, path: "/pork", kind: "pork", lang: {% if es %}"es"{% else %}"en"{% endif %}, base: {{ base | jsonify }}, latest: {{ r.latest | jsonify }}, item: { usda: {{ c.usda | jsonify }}, primal: {% if c.section == "primal" %}{{ c.group | jsonify }}{% else %}null{% endif %}, per_lb: {% if c.section == "primal" %}false{% else %}true{% endif %} }, values: { "": {% if m.current %}{{ m.v }}{% else %}null{% endif %} } };</script>
+<script src="/pork-prices/live.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/beef-prices/tools.js?v={{ site.time | date: '%s' }}" defer></script>
+{% endif %}
+</div>
+
+<section class="sec">
+  <header class="sec-head"><h2>{% if es %}Sobre estos números{% else %}About these numbers{% endif %}</h2></header>
+  <div class="row">
+    <div class="body prose">
+    {%- if es %}
+      <p>Los precios son del USDA, del <a href="https://mymarketnews.ams.usda.gov/viewReport/2498">reporte diario nacional de cerdo LAB planta, ventas negociadas</a> de la tarde (LM_PK602): el promedio ponderado de las ventas negociadas del día, LAB planta empacadora, en dólares por quintal (100 lb). Divida entre 100 para el precio por libra. Son precios de mayoreo, muy por debajo de lo que cuesta el mismo corte en una tienda.{% if c and c.usda != "" %} El USDA lista este producto como “{{ c.usda }}”.{% endif %}{% if r %} El último reporte es del {{ r.date_es }}; el siguiente se espera el {{ r.next_due_es }}.{% endif %}</p>
+      <p>El <a href="{{ base }}">tablero del cerdo</a> tiene cada corte de hoy, la canal, los primales y todo el historial en <a href="{{ base }}#data">descargas CSV</a>. Fuente: Servicio de Comercialización Agrícola del USDA.</p>
+    {%- else %}
+      <p>Prices are USDA’s, from the <a href="https://mymarketnews.ams.usda.gov/viewReport/2498">National Daily Pork FOB Plant, Negotiated Sales</a> afternoon report (LM_PK602): the weighted average of the day’s negotiated sales, FOB the packing plant, in dollars per hundredweight (100 lb). Divide by 100 for the price per pound. These are wholesale prices, well below what the same cut costs at a store.{% if c and c.usda != "" %} USDA lists this item as “{{ c.usda }}”.{% endif %}{% if r %} The latest report is for {{ r.date }}; the next is due {{ r.next_due }}.{% endif %}</p>
+      <p>The <a href="/pork-prices/">pork board</a> has every cut for today, the cutout, the primals and the whole history as <a href="/pork-prices/#data">CSV downloads</a>. Source: USDA Agricultural Marketing Service.</p>
+    {%- endif %}
+    </div>
+  </div>
+</section>
+
+{%- if c %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": {% if es %}{{ cname | append: ": precio de mayoreo diario (USDA)" | jsonify }}{% else %}{{ c.name | append: ": daily wholesale price (USDA)" | jsonify }}{% endif %},
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "inLanguage": {% if es %}"es-MX"{% else %}"en-US"{% endif %},
+  "temporalCoverage": "{{ c.first_iso }}/{{ c.last_iso }}",
+  "spatialCoverage": { "@type": "Place", "name": "United States" },
+  "variableMeasured": ["Weighted average price (USD per cwt and per lb)", "Low and high sale (USD per cwt)", "Pounds sold"],
+  "isBasedOn": "https://mymarketnews.ams.usda.gov/viewReport/2498",
+  "isPartOf": { "@type": "Dataset", "url": {{ base | absolute_url | jsonify }} },
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "creator": [{ "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" }, { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }} }],
+  "distribution": [{% for f in r.downloads %}{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ "/pork-prices/" | append: f.file | absolute_url | jsonify }} }{% unless forloop.last %}, {% endunless %}{% endfor %}]
+}
+</script>
+{%- endif %}

@@ -1,0 +1,190 @@
+---
+layout: default
+---
+{%- comment -%}
+  One region on the fed cattle board: /fed-cattle-prices/<slug>/ and /es/precios-de-ganado-gordo/<slug_es>/
+  (page.lang). The page files in _cattle_regions/ and _cattle_regions_es/ are only front matter,
+  written by scripts/snapshot.py; everything shown comes from site.data.live.cattle.items[page.region].
+{%- endcomment -%}
+{%- assign r = site.data.live.cattle -%}
+{%- assign c = r.items[page.region] -%}
+{%- assign m = c.main -%}
+{%- if page.lang == "es" %}{% assign es = true %}{% assign base = "/es/precios-de-ganado-gordo/" %}{% else %}{% assign es = false %}{% assign base = "/fed-cattle-prices/" %}{% endif -%}
+<div class="rb bf">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family"><a class="rb-lane-back" href="{{ base }}">{% if es %}Trabajo · Ganado gordo{% else %}Work · Fed cattle{% endif %}</a></p>
+    <h1>{{ page.title }}</h1>
+    {%- if c %}
+    <p class="rb-lede">
+    {%- if es -%}
+      Lo que pagaron los empacadores por novillos y vaquillas gordos en {{ c.states_es }}, en tratos negociados de contado, según el reporte {{ c.report }} del USDA.
+      {% if m.current %}En la {{ m.week_es }}, el ganado vendido {{ c.main_short_es }} se pagó a <strong>{{ m.cwt }}</strong> por quintal{% if m.head != "" %}, por {{ m.head }} cabezas{% endif %}.{% else %}No hubo suficiente contado para publicar un precio la semana más reciente; el último precio del ganado vendido {{ c.main_short_es }} fue de {{ m.cwt }} por quintal, en la {{ m.week_es }}.{% endif %}
+    {%- else -%}
+      What packers paid for fed steers and heifers in {{ c.states }}, on negotiated cash deals, from USDA’s {{ c.report }} report.
+      {% if m.current %}In the {{ m.week }}, cattle sold {{ c.main_short }} brought <strong>{{ m.cwt }}</strong> per hundredweight{% if m.head != "" %}, on {{ m.head }} head{% endif %}.{% else %}There wasn’t enough cash trade to publish a price in the latest week; the last price for cattle sold {{ c.main_short }} was {{ m.cwt }} per hundredweight, in the {{ m.week }}.{% endif %}
+    {%- endif %}
+    </p>
+    {%- else %}
+    <p class="rb-lede">{% if es %}Esta región no está en la copia más reciente de los datos. El <a class="link" href="{{ base }}">tablero del ganado gordo</a> tiene los precios de esta semana.{% else %}This region isn’t in the latest copy of the data. The <a class="link" href="/fed-cattle-prices/">fed cattle board</a> has this week’s prices.{% endif %}</p>
+    {%- endif %}
+  </div>
+  {%- if c %}
+  <dl class="rb-stamp">
+    <div><dt>{% if es %}Semana{% else %}Week{% endif %}</dt><dd>{% if es %}{{ m.week_es | remove: "semana del " }}{% else %}{{ m.week | remove: "week of " }}{% endif %}</dd></div>
+    {%- if c.live %}<div><dt>{% if es %}En pie, LAB{% else %}Live, FOB{% endif %}{% unless c.live.current %}{% if es %}, último{% else %}, last{% endif %}{% endunless %}</dt><dd>{{ c.live.cwt }}{% if c.live.current and c.live.change != "" %} <span>{{ c.live.change }}</span>{% endif %}</dd></div>{% endif %}
+    {%- if c.dressed %}<div><dt>{% if es %}En canal, entregado{% else %}Dressed, delivered{% endif %}{% unless c.dressed.current %}{% if es %}, último{% else %}, last{% endif %}{% endunless %}</dt><dd>{{ c.dressed.cwt }}{% if c.dressed.current and c.dressed.change != "" %} <span>{{ c.dressed.change }}</span>{% endif %}</dd></div>{% endif %}
+    {%- if m.weight != "" %}<div><dt>{% if es %}Peso promedio{% else %}Average weight{% endif %}</dt><dd>{{ m.weight }}</dd></div>{% endif %}
+    {%- if m.dress != "" %}<div><dt>{% if es %}Rendimiento{% else %}Dressing{% endif %}</dt><dd>{{ m.dress }}</dd></div>{% endif %}
+  </dl>
+  {%- endif %}
+</header>
+
+{% if c %}
+<div class="rb-judge">
+  <p class="rb-tag">{% if es %}¿Este precio está alto o bajo?{% if m.standing.tag_es != "" %} · {{ m.standing.tag_es }}{% endif %}{% else %}Is this price high or low?{% if m.standing.tag != "" %} · {{ m.standing.tag }}{% endif %}{% endif %}</p>
+  <p class="rb-say">{% if es %}{{ m.standing.text_es }}{% else %}{{ m.standing.text }}{% endif %}</p>
+  {%- if m.standing.pos %}
+  <div class="rb-meter" role="img" aria-label="{% if es %}{{ m.standing.text_es }}{% else %}{{ m.standing.text }}{% endif %}"><span style="left: {{ m.standing.pos }}%"></span></div>
+  <p class="rb-meter-k">{% if es %}<span>El más bajo del año</span><span>El más alto del año</span>{% else %}<span>Lowest of the year</span><span>Highest of the year</span>{% endif %}</p>
+  {%- endif %}
+</div>
+<p class="rb-note">
+{%- if es -%}
+  {%- if m.year_ago %}Hace un año ({{ m.year_ago.week_es }}) era de {{ m.year_ago.cwt }}; el último precio está {{ m.year_ago.change }} frente a eso. {% endif -%}
+  {%- if m.weeks_year > 0 %}En el último año hubo precio en {{ m.weeks_year }} semanas, con un promedio de {{ m.avg }}, de {{ m.low }} ({{ m.low_week_es }}) a {{ m.high }} ({{ m.high_week_es }}). {% endif -%}
+  {%- if c.season %}En un año típico ({{ c.season.years }}) está más alto en {{ c.season.high_es }} ({{ c.season.high_v }}) y más bajo en {{ c.season.low_es }} ({{ c.season.low_v }}).{% endif %}
+{%- else -%}
+  {%- if m.year_ago %}A year earlier ({{ m.year_ago.week }}) it was {{ m.year_ago.cwt }}; the latest price is {{ m.year_ago.change }} against that. {% endif -%}
+  {%- if m.weeks_year > 0 %}Over the past year {{ m.weeks_year }} weeks had a price, averaging {{ m.avg }}, from {{ m.low }} ({{ m.low_week }}) to {{ m.high }} ({{ m.high_week }}). {% endif -%}
+  {%- if c.season %}In a usual year ({{ c.season.years }}) it runs highest in {{ c.season.high }} ({{ c.season.high_v }}) and lowest in {{ c.season.low }} ({{ c.season.low_v }}).{% endif %}
+{%- endif %}
+</p>
+
+{%- if c.note %}
+<blockquote class="rb-note bf-live">{% if es %}Nota del USDA ({{ c.note.date }}, en inglés): {% else %}USDA’s note on the week ({{ c.note.date }}): {% endif %}“{{ c.note.text }}”</blockquote>
+{%- endif %}
+
+{%- if c.bases.size > 0 %}
+<section class="rb-block">
+  <h2>{% if es %}La última semana, por base de venta <span>Todos los novillos y vaquillas, contado negociado</span>{% else %}The latest week, by selling basis <span>All steers and heifers, negotiated cash</span>{% endif %}</h2>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack">
+      <thead><tr><th scope="col">{% if es %}Base{% else %}Basis{% endif %}</th><th scope="col">{% if es %}Promedio{% else %}Average{% endif %}</th><th scope="col">{% if es %}Rango{% else %}Range{% endif %}</th><th scope="col">{% if es %}Cambio{% else %}Change{% endif %}</th><th scope="col">{% if es %}Cabezas{% else %}Head{% endif %}</th><th scope="col">{% if es %}Peso{% else %}Weight{% endif %}</th><th scope="col">{% if es %}Rendimiento{% else %}Dressing{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for b in c.bases %}
+        <tr><th scope="row">{% if es %}{{ b.basis_es }}{% else %}{{ b.basis }}{% endif %}</th><td data-label="{% if es %}Promedio{% else %}Average{% endif %}"><strong>{{ b.cwt }}</strong></td><td data-label="{% if es %}Rango{% else %}Range{% endif %}">{{ b.range | default: "—" }}</td><td data-label="{% if es %}Cambio{% else %}Change{% endif %}">{{ b.chg | default: "—" }}</td><td data-label="{% if es %}Cabezas{% else %}Head{% endif %}">{{ b.head | default: "—" }}</td><td data-label="{% if es %}Peso{% else %}Weight{% endif %}">{{ b.weight | default: "—" }}</td><td data-label="{% if es %}Rendimiento{% else %}Dressing{% endif %}">{{ b.dress | default: "—" }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  {%- if c.grid_base.size > 0 %}
+  <p class="rb-note">{% if es %}Precio base de parrilla negociada (el punto de partida de un precio por calidad): {% for g in c.grid_base %}{{ g.basis_es | downcase }} {{ g.cwt }} ({{ g.head }} cab.){% unless forloop.last %}; {% endunless %}{% endfor %}.{% else %}Negotiated grid base price (where a grid’s premiums and discounts start): {% for g in c.grid_base %}{{ g.basis | downcase }} {{ g.cwt }} ({{ g.head }} head){% unless forloop.last %}; {% endunless %}{% endfor %}.{% endif %}</p>
+  {%- endif %}
+</section>
+{%- endif %}
+
+{%- if c.detail.size > 0 %}
+<section class="rb-block">
+  <h2>{% if es %}Por clase y grado <span>La última semana, por quintal</span>{% else %}By class and grade <span>The latest week, per hundredweight</span>{% endif %}</h2>
+  {% include cattle-detail.html detail=c.detail es=es %}
+</section>
+{%- endif %}
+
+<section class="rb-block bf-tools" id="calc" aria-labelledby="calc-h" hidden>
+  <h2 id="calc-h">{% if es %}¿Vender en pie o en canal? <span>Con los precios de {{ c.es }}</span>{% else %}Sell live or in the beef? <span>At {{ c.name }}’s prices</span>{% endif %}</h2>
+  {% include cattle-calc.html tool=c.tool es=es %}
+</section>
+
+{%- if c.chart_live %}
+{%- capture lab %}{% if es %}Precio semanal del ganado gordo en pie en {{ c.es }} del {{ c.chart_live.start_es }} al {{ c.chart_live.end_es }}, entre {{ c.chart_live.bottom }} y {{ c.chart_live.top }} por quintal.{% else %}Weekly live fed cattle price in {{ c.name }} from {{ c.chart_live.start }} to {{ c.chart_live.end }}, between {{ c.chart_live.bottom }} and {{ c.chart_live.top }} per hundredweight.{% endif %}{% endcapture %}
+{% include price-chart.html chart=c.chart_live es=es label=lab title_en="Live, every week on record" title_es="En pie, cada semana registrada" unit_en="Live, FOB, dollars per hundredweight" unit_es="En pie, LAB, dólares por quintal" names="Live:En pie" %}
+{%- endif %}
+{%- if c.chart_dressed %}
+{%- capture lab %}{% if es %}Precio semanal del ganado gordo en canal en {{ c.es }} del {{ c.chart_dressed.start_es }} al {{ c.chart_dressed.end_es }}, entre {{ c.chart_dressed.bottom }} y {{ c.chart_dressed.top }} por quintal.{% else %}Weekly dressed fed cattle price in {{ c.name }} from {{ c.chart_dressed.start }} to {{ c.chart_dressed.end }}, between {{ c.chart_dressed.bottom }} and {{ c.chart_dressed.top }} per hundredweight.{% endif %}{% endcapture %}
+{% include price-chart.html chart=c.chart_dressed es=es label=lab title_en="Dressed, every week on record" title_es="En canal, cada semana registrada" unit_en="Dressed, delivered, dollars per hundredweight" unit_es="En canal, entregado, dólares por quintal" names="Dressed:En canal" %}
+{%- endif %}
+<p class="rb-note">{% if es %}Los huecos son periodos de tres semanas o más sin precio publicado. Registrado desde la semana del {{ c.since_es }}: {{ c.weeks_all }} semanas con precio.{% else %}Gaps are stretches of three weeks or more with no published price. On record since the week of {{ c.since }}: {{ c.weeks_all }} weeks with a price.{% endif %}</p>
+
+{%- if c.grid.size > 0 %}
+<section class="rb-block">
+  <h2>{% if es %}Promedio por mes <span>{{ c.main_label_es }}, $ por cwt</span>{% else %}Average by month <span>{{ c.main_label }}, $ per cwt</span>{% endif %}</h2>
+  {% include price-grid.html grid=c.grid es=es %}
+  {%- if c.season %}
+  <h3 class="bf-h3">{% if es %}Su año típico <span>La mediana de {{ c.season.years }}</span>{% else %}Its usual year <span>The median over {{ c.season.years }}</span>{% endif %}</h3>
+  {% include price-season.html season=c.season es=es %}
+  {%- endif %}
+</section>
+{%- endif %}
+
+<section class="rb-block">
+  <h2>{% if es %}Semana por semana <span>Las últimas {{ c.rows.size }}</span>{% else %}Week by week <span>The last {{ c.rows.size }}</span>{% endif %}</h2>
+  <div class="rb-scroll">
+    <table class="rb-table">
+      <thead><tr><th scope="col">{% if es %}Semana{% else %}Week{% endif %}</th><th scope="col">{% if es %}En pie{% else %}Live{% endif %}</th><th scope="col">{% if es %}Cabezas{% else %}Head{% endif %}</th><th scope="col">{% if es %}En canal{% else %}Dressed{% endif %}</th><th scope="col">{% if es %}Cabezas{% else %}Head{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for w in c.rows %}
+        <tr><th scope="row">{% if es %}{{ w.week_es | remove: "semana del " }}{% else %}{{ w.week | remove: "week of " }}{% endif %}</th><td>{{ w.live | default: "—" }}</td><td>{{ w.live_head | default: "—" }}</td><td>{{ w.dressed | default: "—" }}</td><td>{{ w.dressed_head | default: "—" }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="rb-note">{% if es %}Cada semana, con cada clase, base y grado, está en las <a class="link" href="{{ base }}#data">descargas CSV</a>.{% else %}Every week, with every class, basis and grade, is in the <a class="link" href="/fed-cattle-prices/#data">CSV downloads</a>.{% endif %}</p>
+</section>
+
+{%- if c.others.size > 0 %}
+<section class="rb-block">
+  <h2>{% if es %}Las otras regiones esta semana{% else %}The other regions this week{% endif %}</h2>
+  <div class="rb-scroll">
+    <table class="rb-table">
+      <thead><tr><th scope="col">{% if es %}Región{% else %}Region{% endif %}</th><th scope="col">{% if es %}En pie{% else %}Live{% endif %}</th><th scope="col">{% if es %}En canal{% else %}Dressed{% endif %}</th><th scope="col">{% if es %}Cabezas{% else %}Head{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for o in c.others %}
+        {%- if es %}{% assign on = o.es %}{% assign os = o.slug_es %}{% else %}{% assign on = o.name %}{% assign os = o.slug %}{% endif %}
+        <tr><th scope="row">{% if os != "" %}<a href="{{ base }}{{ os }}/">{{ on }}</a>{% else %}{{ on }}{% endif %}</th><td>{{ o.live | default: "—" }}</td><td>{{ o.dressed | default: "—" }}</td><td>{{ o.head }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{%- endif %}
+<script src="/fed-cattle-prices/tools.js?v={{ site.time | date: '%s' }}" defer></script>
+{% endif %}
+</div>
+
+<section class="sec">
+  <header class="sec-head"><h2>{% if es %}Sobre estos números{% else %}About these numbers{% endif %}</h2></header>
+  <div class="row">
+    <div class="body prose">
+    {%- if es %}
+      <p>Los precios son del USDA, del reporte <a href="{{ c.report_url }}">{{ c.report }}</a> de Reportes Obligatorios de Ganado: compras negociadas de contado de ganado gordo para sacrificio, en dólares por quintal, en pie (peso vivo, LAB corral) o en canal (peso de la canal, entregado en la planta). Un reporte semanal fechado en lunes cubre la semana anterior, de lunes a domingo. Una semana sin suficientes ventas no tiene precio, nunca cero.</p>
+      <p>El <a href="{{ base }}">tablero del ganado gordo</a> tiene todas las regiones, el reporte diario de 5 áreas y el historial en <a href="{{ base }}#data">CSV</a>. Fuente: Servicio de Comercialización Agrícola del USDA.</p>
+    {%- else %}
+      <p>Prices are USDA’s, from Livestock Mandatory Reporting’s <a href="{{ c.report_url }}">{{ c.report }}</a> report: negotiated cash purchases of slaughter cattle, in dollars per hundredweight, live (live weight, FOB the feedlot) or dressed (carcass weight, delivered to the plant). A weekly report dated on a Monday covers the week before it, Monday to Sunday. A week without enough trades has no price, never zero.</p>
+      <p>The <a href="/fed-cattle-prices/">fed cattle board</a> has every region, the 5-area daily report and the history as <a href="/fed-cattle-prices/#data">CSV downloads</a>. Source: USDA Agricultural Marketing Service.</p>
+    {%- endif %}
+    </div>
+  </div>
+</section>
+
+{%- if c %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": {% if es %}{{ "Precio semanal del ganado gordo en " | append: c.es | append: " (USDA)" | jsonify }}{% else %}{{ c.name | append: " weekly fed cattle prices (USDA)" | jsonify }}{% endif %},
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "inLanguage": {% if es %}"es-MX"{% else %}"en-US"{% endif %},
+  "temporalCoverage": "{{ c.first_iso }}/{{ c.last_iso }}",
+  "spatialCoverage": { "@type": "Place", "name": {% if es %}{{ c.states_es | jsonify }}{% else %}{{ c.states | jsonify }}{% endif %} },
+  "variableMeasured": ["Weighted average price, live and dressed (USD per cwt)", "Head count", "Average weight (lb)", "Dressing percentage"],
+  "isBasedOn": {{ c.report_url | jsonify }},
+  "isPartOf": { "@type": "Dataset", "url": {{ base | absolute_url | jsonify }} },
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "creator": [{ "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" }, { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }} }],
+  "distribution": [{% for f in r.downloads %}{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ "/fed-cattle-prices/" | append: f.file | absolute_url | jsonify }} }{% unless forloop.last %}, {% endunless %}{% endfor %}]
+}
+</script>
+{%- endif %}

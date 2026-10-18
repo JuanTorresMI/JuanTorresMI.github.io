@@ -1,0 +1,396 @@
+{%- comment -%}
+  The boxed beef board, in English (/beef-prices/) or Spanish (/es/precios-de-carne-de-res/):
+  `include beef-board.html es=true`. A "work" page in the reefer board's rate-sheet style (.rb,
+  plus .bf for the two-line charts and the year-by-month grids). Drawn entirely from
+  site.data.live.beef, the copy scripts/snapshot.py makes from USDA's LM_XB403 report; the Spanish
+  words sit beside the English ones here, and the formatted dates and sentences come from the
+  snapshot's *_es fields. Cut pages: _layouts/beef-cut.html.
+{%- endcomment -%}
+{%- assign r = site.data.live.beef -%}
+{%- assign es = include.es -%}
+{%- if es %}{% assign base = "/es/precios-de-carne-de-res/" %}{% else %}{% assign base = "/beef-prices/" %}{% endif -%}
+<div class="rb bf">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family">{% if es %}Trabajo · Res de mayoreo{% else %}Work · Wholesale beef{% endif %}</p>
+    <h1>{% if es %}Precios de la carne de res en caja hoy{% else %}Boxed beef prices today{% endif %}</h1>
+    <p class="rb-sub">{% if es %}Lo que vale la carne de res cuando los empacadores la venden por caja a supermercados, restaurantes y procesadores: el valor del corte (cutout) diario del USDA para Choice y Select, y el precio de cada corte que se vendió, por quintal (cwt) y por libra. De las ventas negociadas que los empacadores reportan al USDA, cada día hábil.{% else %}What beef sells for when packers sell it by the box to grocers, restaurants and processors: USDA’s daily boxed beef cutout for Choice and Select, and the price of every cut that traded, per hundredweight and per pound. From the negotiated sales packers report to USDA, updated every business day.{% endif %}</p>
+  </div>
+  {%- if r %}
+  <dl class="rb-stamp">
+    <div><dt>{% if es %}Reporte del{% else %}Report for{% endif %}</dt><dd data-bf="report">{% if es %}{{ r.day_es }}{% else %}{{ r.day }}{% endif %}</dd></div>
+    <div><dt>{% if es %}Cutout Choice{% else %}Choice cutout{% endif %}</dt><dd data-bf="choice">{{ r.stamp.choice }}{% if r.stamp.choice_chg != "" %} <span>{{ r.stamp.choice_chg }}</span>{% endif %}</dd></div>
+    <div><dt>{% if es %}Cutout Select{% else %}Select cutout{% endif %}</dt><dd data-bf="select">{{ r.stamp.select }}{% if r.stamp.select_chg != "" %} <span>{{ r.stamp.select_chg }}</span>{% endif %}</dd></div>
+    {%- if r.stamp.spread != "" %}<div><dt>{% if es %}Choice sobre Select{% else %}Choice over Select{% endif %}</dt><dd data-bf="spread">{{ r.stamp.spread }}</dd></div>{% endif %}
+    {%- if r.stamp.loads != "" %}<div><dt>{% if es %}Cargas vendidas{% else %}Loads sold{% endif %}</dt><dd data-bf="loads">{{ r.stamp.loads }}</dd></div>{% endif %}
+  </dl>
+  {%- endif %}
+</header>
+{%- if r %}
+<p class="rb-note bf-live" data-bf="notice" role="status" hidden></p>
+{%- endif %}
+
+{% if r %}
+<nav class="rb-jump" aria-label="{% if es %}Secciones de esta página{% else %}Sections on this page{% endif %}">
+  <a href="#today">{% if es %}Hoy{% else %}Today{% endif %}</a>
+  <a href="#primals">{% if es %}Primales{% else %}Primals{% endif %}</a>
+  <a href="#cuts">{% if es %}Cada corte{% else %}Every cut{% endif %}</a>
+  <a href="#ground">{% if es %}Carne molida{% else %}Ground beef{% endif %}</a>
+  <a href="#movers">{% if es %}Mayores cambios{% else %}Biggest moves{% endif %}</a>
+  <a href="#history">{% if es %}Historial desde{% else %}History since{% endif %} {{ r.first_iso | slice: 0, 4 }}</a>
+  <a href="#data">{% if es %}Descargar los datos{% else %}Download the data{% endif %}</a>
+  <a href="#faq">{% if es %}Preguntas{% else %}Questions{% endif %}</a>
+</nav>
+
+<section class="rb-sec" id="today" aria-labelledby="today-h">
+  <h2 id="today-h">{% if es %}El valor del corte de res hoy{% else %}The boxed beef cutout today{% endif %}</h2>
+  <p class="rb-big">{% if es %}{{ r.summary_es }}{% else %}{{ r.summary }}{% endif %}</p>
+  <div class="rb-judge">
+    <p class="rb-tag">{% if es %}¿El cutout Choice de hoy está alto o bajo?{% if r.cutout.standing.tag_es != "" %} · {{ r.cutout.standing.tag_es }}{% endif %}{% else %}Is today’s Choice cutout high or low?{% if r.cutout.standing.tag != "" %} · {{ r.cutout.standing.tag }}{% endif %}{% endif %}</p>
+    <p class="rb-say">{% if es %}{{ r.cutout.standing.text_es }}{% else %}{{ r.cutout.standing.text }}{% endif %}</p>
+    {%- if r.cutout.standing.pos %}
+    <div class="rb-meter" role="img" aria-label="{% if es %}{{ r.cutout.standing.text_es }}{% else %}{{ r.cutout.standing.text }}{% endif %}"><span style="left: {{ r.cutout.standing.pos }}%"></span></div>
+    <p class="rb-meter-k">{% if es %}<span>El más bajo del año</span><span>El más alto del año</span>{% else %}<span>Lowest of the year</span><span>Highest of the year</span>{% endif %}</p>
+    {%- endif %}
+  </div>
+  <p class="rb-note">
+  {%- if es -%}
+    {%- if r.cutout.year_ago %}Hace un año ({{ r.cutout.year_ago.date_es }}) el cutout Choice era de {{ r.cutout.year_ago.cwt }}; el de hoy está {{ r.cutout.year_ago.change }} frente a eso. {% endif -%}
+    En el último año promedió {{ r.cutout.avg }}, de un mínimo de {{ r.cutout.low }} ({{ r.cutout.low_day_es }}) a un máximo de {{ r.cutout.high }} ({{ r.cutout.high_day_es }}).
+    {%- if r.cutout.record_now %} Hoy es el cutout Choice más alto registrado desde el {{ r.first_es }}.{% else %} El más alto registrado desde el {{ r.first_es }} es {{ r.cutout.record }}, del {{ r.cutout.record_day_es }}.{% endif %}
+    A {{ r.stamp.choice }} por quintal, los cortes de una canal Choice valen unos {{ r.cutout.carcass_lb }} por libra.
+  {%- else -%}
+    {%- if r.cutout.year_ago %}A year earlier ({{ r.cutout.year_ago.date }}) the Choice cutout was {{ r.cutout.year_ago.cwt }}; today’s is {{ r.cutout.year_ago.change }} against that. {% endif -%}
+    Over the past year it averaged {{ r.cutout.avg }}, from a low of {{ r.cutout.low }} ({{ r.cutout.low_day }}) to a high of {{ r.cutout.high }} ({{ r.cutout.high_day }}).
+    {%- if r.cutout.record_now %} Today is the highest Choice cutout on record since {{ r.first }}.{% else %} The highest on record since {{ r.first }} is {{ r.cutout.record }}, on {{ r.cutout.record_day }}.{% endif %}
+    At {{ r.stamp.choice }} per hundredweight, a Choice carcass’s cuts are worth about {{ r.cutout.carcass_lb }} a pound.
+  {%- endif %}
+  </p>
+
+  {%- if r.chart_year %}
+  <section class="rb-block">
+    {%- assign ch = r.chart_year %}
+    <h3>{% if es %}El cutout, día por día <span>{{ ch.start_es }} a {{ ch.end_es }}</span>{% else %}The cutout, day by day <span>{{ ch.start }} to {{ ch.end }}</span>{% endif %}</h3>
+    <figure class="rb-chart">
+      <svg viewBox="0 0 {{ ch.w }} {{ ch.h }}" preserveAspectRatio="none" role="img" aria-label="{% if es %}El cutout de res Choice y Select cada día hábil del {{ ch.start_es }} al {{ ch.end_es }}, entre {{ ch.bottom }} y {{ ch.top }} por quintal.{% else %}The Choice and Select boxed beef cutout every business day from {{ ch.start }} to {{ ch.end }}, between {{ ch.bottom }} and {{ ch.top }} per hundredweight.{% endif %}">
+        {%- for l in ch.lines %}<path class="{{ l.cls }}" d="{{ l.d }}"/>{% endfor %}
+      </svg>
+      <figcaption><span>{{ ch.top }}</span><span>{{ ch.bottom }}</span></figcaption>
+    </figure>
+    <ul class="bf-key"><li><span class="bf-swatch"></span>Choice</li><li><span class="bf-swatch bf-swatch2"></span>Select</li></ul>
+  </section>
+  {%- endif %}
+
+  <section class="rb-block">
+    <h3>{% if es %}Los últimos {{ r.recent.size }} reportes <span>Dólares por quintal</span>{% else %}The last {{ r.recent.size }} reports <span>Dollars per hundredweight</span>{% endif %}</h3>
+    <div class="rb-scroll">
+      <table class="rb-table">
+        <thead><tr><th scope="col">{% if es %}Día{% else %}Day{% endif %}</th><th scope="col">Choice</th><th scope="col">{% if es %}Cambio{% else %}Change{% endif %}</th><th scope="col">Select</th><th scope="col">{% if es %}Cambio{% else %}Change{% endif %}</th><th scope="col">{% if es %}Diferencia{% else %}Spread{% endif %}</th><th scope="col">{% if es %}Cargas{% else %}Loads{% endif %}</th></tr></thead>
+        <tbody>
+        {%- for d in r.recent %}
+          <tr><th scope="row">{% if es %}{{ d.day_es }}{% else %}{{ d.day }}{% endif %}</th><td>{{ d.choice }}</td><td>{{ d.choice_chg | default: "—" }}</td><td>{{ d.select }}</td><td>{{ d.select_chg | default: "—" }}</td><td>{{ d.spread | default: "—" }}</td><td>{{ d.loads | default: "—" }}</td></tr>
+        {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
+<section class="rb-sec" id="primals" aria-labelledby="primals-h">
+  <h2 id="primals-h">{% if es %}Valor de los primales hoy{% else %}Primal values today{% endif %}</h2>
+  <p>{% if es %}El cutout se forma con siete primales, las secciones grandes en que primero se divide una canal. Cada valor es lo que valieron los cortes de ese primal el {{ r.on_day_es }}, por quintal del primal. Haga clic en uno para ver su historial y los cortes que lo forman.{% else %}The cutout is built from seven primals, the big sections a carcass is first broken into. Each value is what that primal’s cuts were worth on {{ r.on_day }}, per hundredweight of the primal. Click one for its history and the cuts it is made of.{% endif %}</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack">
+      <thead><tr><th scope="col">{% if es %}Primal{% else %}Primal{% endif %}</th><th scope="col">Choice</th><th scope="col">{% if es %}Cambio{% else %}Change{% endif %}</th><th scope="col">Select</th><th scope="col">{% if es %}Cambio{% else %}Change{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for p in r.primals %}
+        {%- if es %}{% assign pslug = p.slug_es %}{% assign pname = p.es %}{% else %}{% assign pslug = p.slug %}{% assign pname = p.name %}{% endif %}
+        <tr><th scope="row">{% if pslug != "" %}<a href="{{ base }}{{ pslug }}/">{{ pname }}</a>{% else %}{{ pname }}{% endif %}</th><td data-label="Choice">{{ p.choice }}</td><td data-label="{% if es %}Cambio{% else %}Change{% endif %}">{{ p.choice_chg | default: "—" }}</td><td data-label="Select">{{ p.select | default: "—" }}</td><td data-label="{% if es %}Cambio{% else %}Change{% endif %}">{{ p.select_chg | default: "—" }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="rb-sec" id="cuts" aria-labelledby="cuts-h">
+  <h2 id="cuts-h">{% if es %}Precio de mayoreo de cada corte de res hoy{% else %}Wholesale price of every beef cut today{% endif %}</h2>
+  <p>{% if es %}Cada corte que se vendió el {{ r.on_day_es }}, {{ r.traded }} en total, por primal y del más caro al más barato. Los precios son el promedio ponderado de las ventas negociadas del día, por libra, con el precio por quintal que reporta el USDA debajo. “Semana” es el cambio frente al precio del mismo grado una semana antes. El código después de cada nombre es su número IMPS y su límite de grasa (vea <a class="link" href="#codes">cómo leer los códigos</a>). Haga clic en un corte para ver cada día registrado y revisar un precio que le cotizaron.{% else %}Every cut that traded on {{ r.on_day }}, {{ r.traded }} in all, by primal and dearest first. Prices are the weighted average of the day’s negotiated sales, per pound, with the price per hundredweight USDA reports under it. “Week” is the change from the same grade’s price a week earlier. The code after each name is its IMPS number and fat limitation (see <a class="link" href="#codes">how to read the codes</a>). Click a cut for every day on record and to check a price you were quoted.{% endif %}</p>
+  <form class="rb-look bf-find" id="bf-find" role="search" onsubmit="return false" hidden>
+    <label>{% if es %}Buscar un corte <input type="search" id="bf-q" placeholder="rib eye, pecho, 112A, arrachera…" autocomplete="off" spellcheck="false">{% else %}Find a cut <input type="search" id="bf-q" placeholder="ribeye, brisket, 112A, skirt…" autocomplete="off" spellcheck="false">{% endif %}</label>
+  </form>
+  <p class="rb-note bf-find-n" id="bf-find-n" aria-live="polite" hidden></p>
+  {%- for g in r.groups %}
+  <div class="bf-group">
+  <h3>{% if es %}{{ g.es }}{% else %}{{ g.name }}{% endif %}</h3>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack bf-cuts">
+      <thead><tr><th scope="col">{% if es %}Corte{% else %}Cut{% endif %}</th><th scope="col">{% if es %}Código{% else %}Code{% endif %}</th><th scope="col">{% if es %}Choice, por lb{% else %}Choice, per lb{% endif %}</th><th scope="col">{% if es %}Select, por lb{% else %}Select, per lb{% endif %}</th><th scope="col">{% if es %}Semana{% else %}Week{% endif %}</th><th scope="col">{% if es %}Libras{% else %}Pounds{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for c in g.rows %}
+        {%- if es %}{% assign cslug = c.slug_es %}{% assign cname = c.es %}{% assign calso = c.also_es %}{% else %}{% assign cslug = c.slug %}{% assign cname = c.name %}{% assign calso = c.also %}{% endif %}
+        <tr data-find="{{ c.find | escape }}"><th scope="row">{% if cslug != "" %}<a href="{{ base }}{{ cslug }}/">{{ cname }}</a>{% else %}{{ cname }}{% endif %}{% if c.ungraded %} <span class="bf-tag">{% if es %}cualquier grado{% else %}any grade{% endif %}</span>{% endif %}{% if calso != "" %} <span class="bf-also">{{ calso }}</span>{% endif %}</th><td data-label="{% if es %}Código{% else %}Code{% endif %}">{% if c.imps != "" %}{{ c.imps }}{% endif %}{% if c.fl != "" %} · {{ c.fl }}{% endif %}</td><td data-label="{% if c.ungraded %}{% if es %}Cualquier grado{% else %}Any grade{% endif %}{% else %}Choice{% endif %}{% if es %}, por lb{% else %}, per lb{% endif %}">{% if c.price_lb != "" %}<span class="bf-px"><strong>{{ c.price_lb }}</strong> <span class="bf-cwt">{{ c.price }}/cwt</span></span>{% else %}—{% endif %}</td><td data-label="{% if es %}Select, por lb{% else %}Select, per lb{% endif %}"{% if c.select == "" %} class="bf-empty"{% endif %}>{% if c.select_lb != "" %}<span class="bf-px"><strong>{{ c.select_lb }}</strong> <span class="bf-cwt">{{ c.select }}/cwt</span></span>{% else %}—{% endif %}</td><td data-label="{% if es %}Semana{% else %}Week{% endif %}">{{ c.week | default: "—" }}</td><td data-label="{% if es %}Libras{% else %}Pounds{% endif %}">{{ c.lbs | default: "—" }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+  {%- endfor %}
+  <section class="rb-block bf-tools" id="budget" hidden>
+    <h3>{% if es %}Presupuestar una compra <span>Los precios de hoy del USDA para su pedido</span>{% else %}Budget a buy <span>Today’s USDA prices for your order</span>{% endif %}</h3>
+    <form class="rb-look" id="bg-form" onsubmit="return false">
+      <label>{% if es %}Corte{% else %}Cut{% endif %} <select id="bg-cut"></select></label>
+      <label>{% if es %}Libras{% else %}Pounds{% endif %} <input id="bg-lbs" type="number" inputmode="decimal" min="0.1" step="0.1" placeholder="{% if es %}p. ej. 60{% else %}e.g. 60{% endif %}"></label>
+      <label class="bf-btn-label"><span>&nbsp;</span><button type="submit" class="rb-btn" id="bg-add">{% if es %}Agregar al pedido{% else %}Add to the order{% endif %}</button></label>
+    </form>
+    <div class="rb-answer" id="bg-out" aria-live="polite"><p>{% if es %}Agregue los cortes y las libras que compra para ver cuánto suma el pedido a los promedios ponderados de hoy, y cuánto habría costado hace una semana.{% else %}Add the cuts and pounds you buy to see what the order comes to at today’s weighted averages, and what it would have cost a week ago.{% endif %}</p></div>
+    <script type="application/json" id="bg-data">[{% for g in r.groups %}{% for c in g.rows %}{% if c.v > 0 %}{"name": {% if es %}{{ c.es | jsonify }}{% else %}{{ c.name | jsonify }}{% endif %}, "slug": {% if es %}{{ c.slug_es | jsonify }}{% else %}{{ c.slug | jsonify }}{% endif %}, "grade": {{ c.grade | jsonify }}, "v": {{ c.v }}, "then": {{ c.then_v | jsonify }}},{% endif %}{% endfor %}{% endfor %}{% for c in r.ground %}{"name": {% if es %}{{ c.es | jsonify }}{% else %}{{ c.name | jsonify }}{% endif %}, "slug": {% if es %}{{ c.slug_es | jsonify }}{% else %}{{ c.slug | jsonify }}{% endif %}, "grade": "Price", "v": {{ c.v }}, "then": {{ c.then_v | jsonify }}},{% endfor %}null]</script>
+  </section>
+  {%- if r.quiet.size > 0 %}
+  <p class="rb-note">{% if es %}No se vendieron el {{ r.on_day_es }}: {% for q in r.quiet %}<a class="link" href="{{ base }}{{ q.slug_es }}/">{{ q.es }}</a> (último {{ q.last_es }}){% unless forloop.last %}, {% endunless %}{% endfor %}. Un corte sin ventas no tiene precio ese día, lo cual es distinto de un precio de cero.{% else %}Didn’t trade on {{ r.on_day }}: {% for q in r.quiet %}<a class="link" href="{{ base }}{{ q.slug }}/">{{ q.name }}</a> (last {{ q.last }}){% unless forloop.last %}, {% endunless %}{% endfor %}. A cut with no sales has no price that day, which is different from a price of zero.{% endif %}</p>
+  {%- endif %}
+</section>
+
+{%- if r.ground.size > 0 %}
+<section class="rb-sec" id="ground" aria-labelledby="ground-h">
+  <h2 id="ground-h">{% if es %}Carne molida y recortes hoy{% else %}Ground beef and trimmings today{% endif %}</h2>
+  <p>{% if es %}La carne molida se vende por porcentaje de carne magra (81% magra es 81% carne y 19% grasa) y no se divide por grado. Los recortes son la carne magra y la grasa que quedan al cortar, y se venden a los molinos según su contenido magro.{% else %}Ground beef is sold by lean percentage (81% lean is 81% lean and 19% fat) and isn’t split by grade. Trimmings are the lean and fat left from cutting, sold to grinders by their lean content.{% endif %}</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack">
+      <thead><tr><th scope="col">{% if es %}Producto{% else %}Item{% endif %}</th><th scope="col">{% if es %}Por lb{% else %}Per lb{% endif %}</th><th scope="col">{% if es %}Semana{% else %}Week{% endif %}</th><th scope="col">{% if es %}Libras{% else %}Pounds{% endif %}</th><th scope="col">{% if es %}Ventas{% else %}Trades{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for c in r.ground %}
+        {%- if es %}{% assign cslug = c.slug_es %}{% assign cname = c.es %}{% else %}{% assign cslug = c.slug %}{% assign cname = c.name %}{% endif %}
+        <tr data-find="{{ c.find | escape }}"><th scope="row">{% if cslug != "" %}<a href="{{ base }}{{ cslug }}/">{{ cname }}</a>{% else %}{{ cname }}{% endif %}</th><td data-label="{% if es %}Por lb{% else %}Per lb{% endif %}"><span class="bf-px"><strong>{{ c.price_lb }}</strong> <span class="bf-cwt">{{ c.price }}/cwt</span></span></td><td data-label="{% if es %}Semana{% else %}Week{% endif %}">{{ c.week | default: "—" }}</td><td data-label="{% if es %}Libras{% else %}Pounds{% endif %}">{{ c.lbs | default: "—" }}</td><td data-label="{% if es %}Ventas{% else %}Trades{% endif %}">{{ c.trades | default: "—" }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{%- endif %}
+
+<section class="rb-sec" id="movers" aria-labelledby="movers-h">
+  <h2 id="movers-h">{% if es %}Los mayores cambios frente a hace una semana{% else %}Biggest moves from a week ago{% endif %}</h2>
+  <p>{% if es %}Cortes Choice (y los que se venden sin grado) con al menos 10 ventas el {{ r.on_day_es }}, frente a su propio precio del último día hábil de una semana o más antes. Un corte con pocas ventas puede moverse mucho con un solo trato, así que esos se dejan fuera.{% else %}Choice cuts (and the cuts sold without a grade) with at least 10 trades on {{ r.on_day }}, against their own price on the last business day a week or more before. A cut with only a few sales can swing a long way on one deal, so those are left out.{% endif %}</p>
+  <div class="rb-two">
+    {%- assign sides = "ups,downs" | split: "," %}
+    {%- for side in sides %}
+    {%- if side == "ups" %}{% assign ms = r.ups %}{% else %}{% assign ms = r.downs %}{% endif %}
+    <div>
+      <h3>{% if side == "ups" %}{% if es %}Suben{% else %}Up{% endif %}{% else %}{% if es %}Bajan{% else %}Down{% endif %}{% endif %}</h3>
+      <table class="rb-t">
+        <thead><tr><th scope="col">{% if es %}Corte{% else %}Cut{% endif %}</th><th scope="col">{% if es %}Por lb{% else %}Per lb{% endif %}</th><th scope="col">{% if es %}Cambio{% else %}Change{% endif %}</th></tr></thead>
+        <tbody>
+        {%- for m in ms %}
+          {%- if es %}{% assign mslug = m.slug_es %}{% assign mname = m.es %}{% else %}{% assign mslug = m.slug %}{% assign mname = m.name %}{% endif %}
+          <tr><th scope="row">{% if mslug != "" %}<a href="{{ base }}{{ mslug }}/">{{ mname }}</a>{% else %}{{ mname }}{% endif %}</th><td>{{ m.lb }} <span class="bf-was">{% if es %}desde{% else %}from{% endif %} {{ m.then }}</span></td><td><strong>{{ m.change }}</strong></td></tr>
+        {%- else %}<tr><td colspan="3">{% if side == "ups" %}{% if es %}Ningún corte con muchas ventas subió medio por ciento o más.{% else %}No busy cut rose by half a percent or more.{% endif %}{% else %}{% if es %}Ningún corte con muchas ventas bajó medio por ciento o más.{% else %}No busy cut fell by half a percent or more.{% endif %}{% endif %}</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="rb-sec" id="history" aria-labelledby="history-h">
+  <h2 id="history-h">{% if es %}El cutout de res desde{% else %}The boxed beef cutout since{% endif %} {{ r.first_iso | slice: 0, 4 }}</h2>
+  <p>{% if es %}Cada día hábil desde el {{ r.first_es }}, {{ r.record_days }} reportes en total. La gráfica muestra el promedio de cada semana; la tabla, el de cada mes, en dólares por quintal.{% else %}Every business day since {{ r.first }}, {{ r.record_days }} reports in all{% unless r.backfill_done %}, with older years still being collected{% endunless %}. The chart shows each week’s average; the table each month’s, in dollars per hundredweight.{% endif %}</p>
+  {%- if r.chart_all %}
+  {%- assign ch = r.chart_all %}
+  <figure class="rb-chart">
+    <svg viewBox="0 0 {{ ch.w }} {{ ch.h }}" preserveAspectRatio="none" role="img" aria-label="{% if es %}Promedio semanal del cutout de res Choice y Select del {{ ch.start_es }} al {{ ch.end_es }}, entre {{ ch.bottom }} y {{ ch.top }} por quintal.{% else %}Weekly average Choice and Select boxed beef cutout from {{ ch.start }} to {{ ch.end }}, between {{ ch.bottom }} and {{ ch.top }} per hundredweight.{% endif %}">
+      {%- for l in ch.lines %}<path class="{{ l.cls }}" d="{{ l.d }}"/>{% endfor %}
+    </svg>
+    <figcaption><span>{{ ch.top }}</span><span>{{ ch.bottom }}</span></figcaption>
+  </figure>
+  <ul class="bf-key"><li><span class="bf-swatch"></span>Choice</li><li><span class="bf-swatch bf-swatch2"></span>Select</li><li>{% if es %}{{ ch.start_es }} a {{ ch.end_es }}{% else %}{{ ch.start }} to {{ ch.end }}{% endif %}</li></ul>
+  {%- endif %}
+  {%- if r.grid.size > 0 %}
+  <h3>{% if es %}Cutout Choice promedio por mes{% else %}Average Choice cutout by month{% endif %}</h3>
+  {% include price-grid.html grid=r.grid es=es %}
+  {%- endif %}
+  {%- if r.season %}
+  <h3>{% if es %}El año típico del cutout{% else %}The cutout’s usual year{% endif %}</h3>
+  <p>{% if es %}Cada mes frente al promedio de su propio año: la mediana de {{ r.season.years }}. Los precios cambiaron mucho en esos años, así que comparar un mes con su propio año muestra la temporada sin esa tendencia, y la mediana evita que un año extremo invente una temporada (en mayo de 2020, con las plantas cerradas, el cutout marcó su récord). El cutout Choice suele estar más alto en {{ r.season.high_es }} ({{ r.season.high_v }}) y más bajo en {{ r.season.low_es }} ({{ r.season.low_v }}).{% else %}Each month against its own year’s average: the median over {{ r.season.years }}. Prices drifted a long way in those years, so comparing a month to its own year shows the seasonal swing without the drift, and the median keeps one wild year from making a season (in May 2020, with packing plants shut, the cutout set its record). The Choice cutout usually runs highest in {{ r.season.high }} ({{ r.season.high_v }}) and lowest in {{ r.season.low }} ({{ r.season.low_v }}).{% endif %}</p>
+  {% include price-season.html season=r.season es=es %}
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="data" aria-labelledby="data-h">
+  <h2 id="data-h">{% if es %}Descargar los datos{% else %}Download the data{% endif %}</h2>
+  <p>{% if es %}Todo lo de esta página y de las páginas de cada corte, como archivos CSV sencillos que cualquiera puede abrir en una hoja de cálculo o cargar en código. Se reescriben dos veces al día con el reporte más nuevo y son de uso libre: los números son del USDA, y los datos del gobierno de EE. UU. son de dominio público. Dé crédito a USDA AMS Livestock, Poultry and Grain Market News.{% else %}Everything on this page and the cut pages, as plain CSV files anyone can open in a spreadsheet or load into code. They’re rewritten twice a day with the newest report and are free to use: the numbers are USDA’s, and U.S. government data is in the public domain. Credit USDA AMS Livestock, Poultry and Grain Market News.{% endif %}</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-wrap">
+      <thead><tr><th scope="col">{% if es %}Archivo{% else %}File{% endif %}</th><th scope="col">{% if es %}Filas{% else %}Rows{% endif %}</th><th scope="col">{% if es %}Tamaño{% else %}Size{% endif %}</th><th scope="col">{% if es %}Qué contiene{% else %}What’s in it{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for f in r.downloads %}
+        <tr><th scope="row"><a href="/beef-prices/{{ f.file }}" download>{{ f.file }}</a></th><td>{{ f.rows }}</td><td>{{ f.kb }} KB</td><td>{% if es %}{{ f.label_es }}{% else %}{{ f.label }}{% endif %}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p>{% if es %}El reporte más nuevo también está en un solo archivo JSON, <a class="link" href="/beef-prices/latest.json">latest.json</a>: el cutout, los primales y cada corte vendido, con nombres sencillos en inglés y español, códigos, ambas unidades y un enlace a la página de cada corte. Cualquier sitio o script lo puede leer, sin clave, y solo cambia cuando el USDA publica un reporte nuevo.{% else %}The newest report is also one plain JSON file, <a class="link" href="/beef-prices/latest.json">latest.json</a>: the cutout, the primals and every cut that traded, with plain names, codes, both units and a link to each cut’s page. Any site or script can fetch it, no key needed, and it changes only when USDA posts a new report.{% endif %}</p>
+  <h3>{% if es %}Las columnas{% else %}The columns{% endif %}</h3>
+  <div class="rb-scroll">
+    <table class="rb-t rb-wrap bf-dict">
+      <thead><tr><th scope="col">{% if es %}Columna{% else %}Column{% endif %}</th><th scope="col">{% if es %}Significado{% else %}Meaning{% endif %}</th></tr></thead>
+      <tbody>
+      {%- if es %}
+        <tr><th scope="row">date</th><td>La fecha del reporte, AAAA-MM-DD. Las ventas son para producto entregado en 0 a 21 días.</td></tr>
+        <tr><th scope="row">choice_cutout, select_cutout</th><td>El valor del corte del día para canales de 600 a 900 lb, dólares por quintal (100 lb) de canal.</td></tr>
+        <tr><th scope="row">choice_select_spread</th><td>Choice menos Select.</td></tr>
+        <tr><th scope="row">choice_loads … coarse_ground_loads</th><td>Volumen vendido ese día, en cargas de 40,000 lb: cortes Choice, cortes Select, recortes y carne molida gruesa.</td></tr>
+        <tr><th scope="row">rib_choice … flank_select</th><td>El valor compuesto de cada primal, dólares por quintal del primal.</td></tr>
+        <tr><th scope="row">section</th><td><code>cut</code> (por grado), <code>mixed</code> (sin grado, como las arracheras), <code>ground</code>, <code>blended</code> o <code>trim</code>.</td></tr>
+        <tr><th scope="row">usda_description</th><td>El producto tal como lo lista el USDA. El código entre paréntesis es el número IMPS y el límite de grasa.</td></tr>
+        <tr><th scope="row">name, imps, fat_limitation, primal</th><td>Un nombre sencillo (en inglés), y el código y el primal del producto en sus propias columnas. En blanco donde el USDA no da ninguno.</td></tr>
+        <tr><th scope="row">grade</th><td><code>choice</code>, <code>select</code>, o en blanco para productos sin grado.</td></tr>
+        <tr><th scope="row">low, high, weighted_average</th><td>La venta más baja y la más alta del día y el promedio ponderado por volumen, dólares por quintal.</td></tr>
+        <tr><th scope="row">weighted_average_per_lb</th><td>El mismo promedio ponderado por libra.</td></tr>
+        <tr><th scope="row">trades, pounds</th><td>Cuántas ventas y cuántas libras respaldan el precio. En blanco donde el USDA las mantuvo confidenciales.</td></tr>
+      {%- else %}
+        <tr><th scope="row">date</th><td>The report date, YYYY-MM-DD. Sales are for product delivered within 0 to 21 days.</td></tr>
+        <tr><th scope="row">choice_cutout, select_cutout</th><td>The day’s cutout value for 600 to 900 lb carcasses, dollars per hundredweight (100 lb) of carcass.</td></tr>
+        <tr><th scope="row">choice_select_spread</th><td>Choice minus Select.</td></tr>
+        <tr><th scope="row">choice_loads … coarse_ground_loads</th><td>Volume sold that day, in loads of 40,000 lb: Choice cuts, Select cuts, trimmings and coarse ground beef.</td></tr>
+        <tr><th scope="row">rib_choice … flank_select</th><td>Each primal’s composite value, dollars per hundredweight of the primal.</td></tr>
+        <tr><th scope="row">section</th><td><code>cut</code> (sold by grade), <code>mixed</code> (sold without a grade, such as skirts), <code>ground</code>, <code>blended</code> or <code>trim</code>.</td></tr>
+        <tr><th scope="row">usda_description</th><td>The item exactly as USDA lists it (runs of spaces made one). The code in brackets is the IMPS number and the fat limitation.</td></tr>
+        <tr><th scope="row">name, imps, fat_limitation, primal</th><td>A plain name, and the item’s code and primal pulled out into their own columns. Blank where USDA gives none.</td></tr>
+        <tr><th scope="row">grade</th><td><code>choice</code>, <code>select</code>, or blank for items sold without a grade.</td></tr>
+        <tr><th scope="row">low, high, weighted_average</th><td>The day’s lowest and highest sale and the volume-weighted average, dollars per hundredweight.</td></tr>
+        <tr><th scope="row">weighted_average_per_lb</th><td>The same weighted average per pound.</td></tr>
+        <tr><th scope="row">trades, pounds</th><td>How many sales and how many pounds the price is based on. Blank where USDA kept them confidential.</td></tr>
+      {%- endif %}
+      </tbody>
+    </table>
+  </div>
+  <p>{% if es %}Un corte que no se vendió no tiene fila para ese día. El USDA los imprime como $0.00, que aquí se omite en vez de leerse como un precio de cero, para que los promedios y las gráficas no se jalen hacia nada.{% else %}A cut that didn’t trade has no row for that day. USDA prints those as $0.00, which here is left out rather than read as a price of zero, so averages and charts aren’t dragged toward nothing.{% endif %}</p>
+</section>
+
+<section class="rb-sec" id="every-cut" aria-labelledby="every-cut-h">
+  <h2 id="every-cut-h">{% if es %}Todas las páginas de cortes{% else %}Every cut page{% endif %}</h2>
+  <p>{% if es %}{{ r.page_count }} páginas, cada una con su historial diario de precios, una tabla por año y mes y la temporada típica del corte. Los cortes que no se vendieron hoy también están aquí.{% else %}{{ r.page_count }} pages, each with its daily price history, a year-by-month table and the cut’s usual seasonal swing. Cuts that didn’t trade today are still here.{% endif %}</p>
+  {%- for g in r.index %}{% if g.pages.size > 0 or g.primal %}
+  {%- if es %}{% assign gp = g.primal_es %}{% else %}{% assign gp = g.primal %}{% endif %}
+  <h3>{% if gp %}<a class="link" href="{{ base }}{{ gp }}/">{% if es %}{{ g.es }}{% else %}{{ g.name }}{% endif %}</a>{% else %}{% if es %}{{ g.es }}{% else %}{{ g.name }}{% endif %}{% endif %}</h3>
+  <ul class="rb-index">
+    {%- for p in g.pages %}<li><a href="{{ base }}{% if es %}{{ p.slug_es }}{% else %}{{ p.slug }}{% endif %}/">{% if es %}{{ p.es }}{% else %}{{ p.name }}{% endif %}{% if p.imps != "" %} <span class="bf-code">{{ p.imps }}</span>{% endif %}</a></li>{% endfor %}
+  </ul>
+  {%- endif %}{% endfor %}
+</section>
+{% include usda-boards.html es=es here="beef" %}
+{% else %}
+<p class="rb-empty">The first report hasn’t been collected yet. It shows up here the day after the Worker reads it.</p>
+{% endif %}
+</div>
+
+<section class="sec" id="faq">
+  <header class="sec-head"><h2>{% if es %}Preguntas{% else %}Questions{% endif %}</h2></header>
+  <div class="row">
+    <div class="body prose bw-faq">
+    {%- if es %}
+      <h3>¿Qué es el cutout de la carne de res en caja?</h3>
+      <p>Es una estimación de lo que vale una canal de res dividida en los cortes en caja que los empacadores realmente venden. El USDA pone precio a cada corte con las ventas del día, los pondera según cuánto de una canal típica representa cada uno y los suma. El resultado es un solo número, en dólares por quintal de canal, que todo el mercado de la res sigue: cuando el cutout sube, los empacadores reciben más por el mismo animal.</p>
+      <h3>¿Qué significa “por quintal” (cwt)?</h3>
+      <p>Por 100 libras, que se escribe cwt. Divida entre 100 para el precio por libra: un corte a $1,546.81 por cwt cuesta $15.47 la libra. Son precios de mayoreo de subprimales enteros en caja, LAB planta empacadora, así que están muy por debajo de lo que cuesta el mismo corte ya cortado y empacado en una tienda.</p>
+      <h3>¿Cuál es la diferencia entre Choice y Select?</h3>
+      <p>Son grados de calidad del USDA, definidos sobre todo por el marmoleo, la grasa dentro del músculo. Choice tiene más y Select menos. La mayor parte de la res engordada en EE. UU. califica como Choice, así que se vende en mucho mayor volumen y cuesta más. La diferencia Choice–Select es cuánto más ese día.</p>
+      <h3 id="codes">¿Cómo leo el código de un corte, como 112A · 3?</h3>
+      <p>La primera parte es el número del corte en las Institutional Meat Purchase Specifications (IMPS), el catálogo que usan los compradores para pedir carne: 112A es un rib eye sin hueso. La segunda es el límite de grasa del USDA, qué tan recortada está la grasa exterior:</p>
+      <table class="rb-t rb-wrap bf-fat">
+        <thead><tr><th scope="col">Límite de grasa</th><th scope="col">Recorte</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">1</th><td>3/4 de pulgada de grasa en promedio, 1 pulgada como máximo</td></tr>
+          <tr><th scope="row">2</th><td>1/4 de pulgada en promedio, 1/2 pulgada como máximo</td></tr>
+          <tr><th scope="row">3</th><td>1/8 de pulgada en promedio, 1/4 de pulgada como máximo</td></tr>
+          <tr><th scope="row">4</th><td>Prácticamente sin grasa (al menos 75% de la superficie magra)</td></tr>
+          <tr><th scope="row">5</th><td>Pelado o limpio</td></tr>
+          <tr><th scope="row">6</th><td>Pelado o limpio, sin la membrana superficial</td></tr>
+        </tbody>
+      </table>
+      <h3>¿De dónde vienen los datos, y cuándo?</h3>
+      <p>Del <a href="https://mymarketnews.ams.usda.gov/viewReport/2453">reporte diario nacional de cutout y cortes de res en caja, ventas negociadas, de la tarde</a> del USDA (LM_XB403). La ley obliga a los empacadores a reportar sus ventas bajo el programa de Reportes Obligatorios de Ganado (Livestock Mandatory Reporting), y el USDA publica los totales cada día hábil a media tarde, hora del Centro. Las cifras de arriba se actualizan como media hora después de que el USDA las publica, y toda la página por la noche.{% if r %} El último es del {{ r.date_es }}; el siguiente se espera el {{ r.next_due_es }}.{% endif %}</p>
+      <h3>¿Por qué a veces un corte no tiene precio?</h3>
+      <p>Porque nadie lo compró en un trato negociado ese día, o lo compraron tan pocos que el USDA no puede publicarlo sin revelar quién negoció. Esos días quedan en blanco en vez de contarse como cero.</p>
+    {%- else %}
+      <h3>What is the boxed beef cutout?</h3>
+      <p>It’s an estimate of what a beef carcass is worth broken down into the boxed cuts packers actually sell. USDA prices every cut from the day’s sales, weights them by how much of a typical carcass each one makes up, and adds them up. The result is a single number, in dollars per hundredweight of carcass, that the whole beef trade watches: when the cutout rises, packers are getting more for the same animal.</p>
+      <h3>What does “per hundredweight” mean?</h3>
+      <p>Per 100 pounds, written cwt. Divide by 100 for the price per pound: a cut at $1,546.81 per cwt is $15.47 a pound. These are wholesale prices for whole subprimals in boxes, FOB the packing plant, so they’re well below what the same cut costs cut and wrapped at a store.</p>
+      <h3>What’s the difference between Choice and Select?</h3>
+      <p>They’re USDA quality grades, set mostly by marbling, the fat inside the muscle. Choice has more, Select less. Most fed beef in the U.S. grades Choice, so it trades in far bigger volume, and it costs more. The Choice–Select spread is how much more that day.</p>
+      <h3 id="codes">How do I read a cut’s code, like 112A · 3?</h3>
+      <p>The first part is the cut’s number in the Institutional Meat Purchase Specifications (IMPS), the catalog buyers use to order beef: 112A is a boneless ribeye. The second is USDA’s fat limitation, how closely the outside fat is trimmed:</p>
+      <table class="rb-t rb-wrap bf-fat">
+        <thead><tr><th scope="col">Fat limitation</th><th scope="col">Trim</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">1</th><td>3/4 inch average fat, 1 inch at most</td></tr>
+          <tr><th scope="row">2</th><td>1/4 inch average fat, 1/2 inch at most</td></tr>
+          <tr><th scope="row">3</th><td>1/8 inch average fat, 1/4 inch at most</td></tr>
+          <tr><th scope="row">4</th><td>Practically free of fat (at least 75% of the surface lean)</td></tr>
+          <tr><th scope="row">5</th><td>Peeled or denuded</td></tr>
+          <tr><th scope="row">6</th><td>Peeled or denuded, with the surface membrane removed</td></tr>
+        </tbody>
+      </table>
+      <h3>Where does the data come from, and when?</h3>
+      <p>From USDA’s <a href="https://mymarketnews.ams.usda.gov/viewReport/2453">National Daily Boxed Beef Cutout and Boxed Beef Cuts, Negotiated Sales, afternoon report</a> (LM_XB403). Packers are required by law to report their sales under Livestock Mandatory Reporting, and USDA publishes the totals every business day in the middle of the afternoon, Central time. The figures at the top of this page update within about half an hour of USDA posting them, and the whole page by evening.{% if r %} The latest is for {{ r.date }}; the next is due {{ r.next_due }}.{% endif %}</p>
+      <h3>Why does a cut sometimes have no price?</h3>
+      <p>Because nobody bought it on a negotiated deal that day, or too few did for USDA to publish it without giving away who traded. Those days are left blank rather than counted as zero.</p>
+    {%- endif %}
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="how-it-works">
+  <header class="sec-head"><h2>{% if es %}Cómo funciona{% else %}How it works{% endif %}</h2>{% if r %}<span class="label">{% if es %}Copiado el {{ r.generated | date: "%Y-%m-%d" }}{% else %}Copied {{ r.generated | date: "%b %-d, %Y" }}{% endif %}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+    {%- if es %}
+      <ol>
+        <li><strong>El historial es del propio USDA.</strong> El USDA guarda cada reporte y su base de datos de Reportes Obligatorios de Ganado entrega cualquier periodo, sin clave. Así que aquí no se guarda una segunda copia de lo que el USDA ya tiene: dos veces al día una GitHub Action vuelve a leer los CSV descargables, que contienen cada día ya obtenido, y solo le pide al USDA el último mes o dos, por si se corrigió un reporte.</li>
+        <li><strong>Guarda cada corte una vez al día.</strong> Con eso reconstruye esta página, una página por corte y los CSV: una fila por corte, grado y día, con el mínimo, el máximo, el promedio ponderado, las ventas y las libras. Un corte que no se vendió no tiene fila, nunca un cero.</li>
+        <li><strong>Un Cloudflare Worker vigila el siguiente reporte.</strong> El mismo Worker pequeño detrás de los <a href="/es/tiempos-de-espera/">tiempos de espera en la frontera</a> de este sitio revisa al USDA cada media hora y guarda solo el reporte más nuevo. Cuando la copia de esta página es más vieja que un reporte que ya debería haber salido, la página le pregunta al Worker y pone las cifras nuevas arriba. El resto del tiempo la página no pregunta nada, así que no cuesta nada mantenerla, la visiten cuantos la visiten.</li>
+      </ol>
+      <p>Fuente: Servicio de Comercialización Agrícola del USDA (AMS), Livestock, Poultry and Grain Market News. Los números son suyos y son públicos; cualquier error al presentarlos es mío. El código del Worker está en la <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">carpeta worker</a> del repositorio de este sitio.</p>
+    {%- else %}
+      <ol>
+        <li><strong>The history is USDA’s own.</strong> USDA keeps every report and its Livestock Mandatory Reporting datamart hands out any stretch of them, with no key. So nothing here keeps a second copy of what USDA already stores: twice a day a GitHub Action reads back the CSV downloads, which hold every day already fetched, and asks USDA only for the last month or two, in case a report was corrected.</li>
+        <li><strong>It keeps every cut once a day.</strong> From those it rebuilds this board, a page for every cut and the CSVs: one row per cut, grade and day, with the low, the high, the weighted average, the trades and the pounds. A cut that didn’t trade gets no row, never a zero.</li>
+        <li><strong>A Cloudflare Worker watches for the next report.</strong> The same small Worker behind this site’s <a href="/reefer-rates/">reefer rate board</a> and <a href="/border-waits/">border wait board</a> checks USDA every half hour and keeps only the newest report. When this page’s copy is older than a report that should be out, the page asks the Worker and puts the new figures at the top, usually within half an hour of USDA posting them. The rest of the time the page asks nothing, so however many people visit, it costs nothing to run.</li>
+      </ol>
+      <p>Source: USDA Agricultural Marketing Service, Livestock, Poultry and Grain Market News. The numbers are theirs and are public; any mistakes in presenting them are mine. The Worker’s code is in the <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">worker folder</a> of this site’s repository.</p>
+    {%- endif %}
+    </div>
+  </div>
+</section>
+
+{% if r %}
+<script>window.BF = { endpoint: {{ site.worker_url | default: "" | jsonify }}, path: "/beef", lang: {% if es %}"es"{% else %}"en"{% endif %}, base: {{ base | jsonify }}, latest: {{ r.latest | jsonify }}, values: {{ r.raw | jsonify }} };</script>
+<script src="/beef-prices/live.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/beef-prices/tools.js?v={{ site.time | date: '%s' }}" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": {% if es %}"Valor del corte de res en caja y precios de mayoreo de cada corte, diario (USDA)"{% else %}"Daily USDA boxed beef cutout and wholesale beef cut prices"{% endif %},
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "inLanguage": {% if es %}"es-MX"{% else %}"en-US"{% endif %},
+  "keywords": {% if es %}["precio de la carne de res", "cutout de res", "precios de mayoreo de res", "precio por corte de res", "Choice Select", "carne molida precio de mayoreo", "USDA LM_XB403"]{% else %}["boxed beef cutout", "wholesale beef prices", "beef cut prices", "Choice Select spread", "beef primal values", "ground beef wholesale price", "USDA LM_XB403"]{% endif %},
+  "temporalCoverage": "{{ r.first_iso }}/{{ r.latest }}",
+  "spatialCoverage": { "@type": "Place", "name": "United States" },
+  "variableMeasured": ["Choice and Select boxed beef cutout (USD per cwt)", "Primal values (USD per cwt)", "Weighted average price of each cut (USD per cwt and per lb)", "Trades", "Pounds sold", "Loads sold"],
+  "measurementTechnique": "Negotiated sales reported to USDA under Livestock Mandatory Reporting",
+  "isBasedOn": "https://mymarketnews.ams.usda.gov/viewReport/2453",
+  "isPartOf": { "@id": "{{ site.url }}{% if es %}/es/precios-usda/{% else %}/usda-market-prices/{% endif %}#collection" },
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "creator": [
+    { "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" },
+    { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
+  ],
+  "distribution": [{% for f in r.downloads %}{ "@type": "DataDownload", "encodingFormat": "text/csv", "name": {% if es %}{{ f.label_es | jsonify }}{% else %}{{ f.label | jsonify }}{% endif %}, "contentUrl": {{ "/beef-prices/" | append: f.file | absolute_url | jsonify }} }, {% endfor %}{ "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": {{ "/beef-prices/latest.json" | absolute_url | jsonify }} }],
+  "dateModified": {{ r.latest | jsonify }}
+}
+</script>
+{% endif %}

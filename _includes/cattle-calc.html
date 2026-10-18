@@ -1,0 +1,17 @@
+{%- comment -%}
+  "Sell live or in the beef?": a pen's value both ways and the dressing percentage where the two pay
+  the same. Filled in by /fed-cattle-prices/tools.js; the defaults are this page's latest prices.
+  `include cattle-calc.html tool=… es=…`
+{%- endcomment -%}
+{%- assign t = include.tool -%}
+{%- assign es = include.es -%}
+<p>{% if es %}Un lote se puede vender en pie, por su peso vivo, o en canal, por el peso de la canal. Cuál paga más depende del rendimiento en canal del lote. Escriba sus números; los precios empiezan en los de esta semana.{% else %}A pen can sell live, on its live weight, or in the beef, on its carcass weight. Which pays more depends on how the cattle dress. Enter your numbers; the prices start at this week’s.{% endif %}</p>
+<form class="rb-look bf-calc" id="cc-form" onsubmit="return false">
+  <label>{% if es %}Cabezas{% else %}Head{% endif %} <input id="cc-head" type="number" inputmode="numeric" min="1" step="1" placeholder="{% if es %}p. ej. 120{% else %}e.g. 120{% endif %}"></label>
+  <label>{% if es %}Peso vivo promedio, lb{% else %}Average live weight, lb{% endif %} <input id="cc-wt" type="number" inputmode="decimal" min="300" step="1" value="{{ t.weight | default: 1500 | round }}"></label>
+  <label>{% if es %}Rendimiento en canal, %{% else %}Dressing percentage{% endif %} <input id="cc-dress" type="number" inputmode="decimal" min="50" max="75" step="0.1" value="{{ t.dress | default: 63.5 }}"></label>
+  <label>{% if es %}Precio en pie, $/cwt{% else %}Live price, $/cwt{% endif %} <input id="cc-live" type="number" inputmode="decimal" min="0" step="0.01" value="{{ t.live }}"></label>
+  <label>{% if es %}Precio en canal, $/cwt{% else %}Dressed price, $/cwt{% endif %} <input id="cc-dressed" type="number" inputmode="decimal" min="0" step="0.01" value="{{ t.dressed }}"></label>
+</form>
+<div class="rb-answer" id="cc-out" aria-live="polite"><p>{% if es %}Escriba el peso, el rendimiento y los precios para comparar.{% else %}Enter the weight, dressing percentage and prices to compare.{% endif %}</p></div>
+<p class="rb-note">{% if es %}En pie es LAB corral y en canal es entregado en la planta, así que el flete y la merma se reparten distinto en cada caso. Es una comparación de precios, no una oferta.{% else %}Live is FOB the feedlot and dressed is delivered to the plant, so the freight and shrink sit differently on each side. It’s a price comparison, not a bid.{% endif %}</p>

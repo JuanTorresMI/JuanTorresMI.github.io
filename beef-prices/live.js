@@ -16,6 +16,7 @@
 (() => {
   const C = window.BF;
   if (!C || !C.endpoint || !C.latest) return;
+  const es = C.lang === "es";                                   // the Spanish pages (/es/precios-de-carne-de-res/)
   const pad = (n) => String(n).padStart(2, "0");
   const isoOf = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   const weekdayBefore = (d) => { do d.setDate(d.getDate() - 1); while (d.getDay() === 0 || d.getDay() === 6); return d; };
@@ -29,14 +30,14 @@
 
   const money = (v) => "$" + Number(v).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const signed = (v, f) => (Math.abs(v) < 0.005 ? "±" : v > 0 ? "+" : "−") + f(Math.abs(v));
-  const day = (iso) => new Date(iso + "T12:00:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  const day = (iso) => new Date(iso + "T12:00:00").toLocaleDateString(es ? "es-MX" : "en-US", { weekday: "short", month: "short", day: "numeric" });
   const each = (key, fn) => document.querySelectorAll(`[data-bf="${key}"]`).forEach(fn);
   const fill = (key, main, change) => each(key, (el) => {
     el.textContent = main;
     if (change) { const s = document.createElement("span"); s.textContent = change; el.append(" ", s); }
   });
 
-  fetch(C.endpoint.replace(/\/+$/, "") + "/beef").then((r) => r.json()).then((d) => {
+  fetch(C.endpoint.replace(/\/+$/, "") + (C.path || "/beef")).then((r) => r.json()).then((d) => {
     if (!d || !d.latest || d.latest <= C.latest || !d.day) return;
     // A change is only "from the day before" when the copy is the report just before this one.
     const follows = isoOf(weekdayBefore(new Date(d.latest + "T12:00:00"))) === C.latest;
@@ -59,9 +60,12 @@
     }
     const [, clock] = String(d.published || "").split(" ");
     const [h, m] = (clock || "").split(":").map(Number);
-    const at = Number.isFinite(h) && Number.isFinite(m) ? ` at ${h % 12 || 12}:${pad(m)} ${h < 12 ? "am" : "pm"} Central` : "";
+    const ok = Number.isFinite(h) && Number.isFinite(m);
+    const at = !ok ? "" : es ? ` a las ${h}:${pad(m)}, hora del Centro` : ` at ${h % 12 || 12}:${pad(m)} ${h < 12 ? "am" : "pm"} Central`;
     each("notice", (el) => {
-      el.textContent = `USDA posted the report for ${day(d.latest)}${at}. The figures at the top are from it; the rest of the page catches up when the site is rebuilt this evening.`;
+      el.textContent = es
+        ? `El USDA publicó el reporte del ${day(d.latest)}${at}. Las cifras de arriba son de ese reporte; el resto de la página se pone al día cuando el sitio se reconstruye esta noche.`
+        : `USDA posted the report for ${day(d.latest)}${at}. The figures at the top are from it; the rest of the page catches up when the site is rebuilt this evening.`;
       el.hidden = false;
     });
   }).catch(() => {});                                            // the copy stands

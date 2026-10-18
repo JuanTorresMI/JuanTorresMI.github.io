@@ -1,0 +1,88 @@
+{%- comment -%}
+  The USDA market prices hub (/usda-market-prices/, /es/precios-usda/): the parent of the beef, pork,
+  fed cattle and reefer boards. Today's headline from each board's snapshot, what every board holds,
+  and how they're built. `include usda-hub.html es=…`
+{%- endcomment -%}
+{%- assign es = include.es -%}
+{%- assign b = site.data.live.beef -%}{%- assign p = site.data.live.pork -%}{%- assign k = site.data.live.cattle -%}{%- assign rf = site.data.live.reefer -%}
+<div class="rb bf">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family">{% if es %}Trabajo · Datos del mercado{% else %}Work · Market data{% endif %}</p>
+    <h1>{% if es %}Precios del USDA, en claro{% else %}USDA market prices, plainly{% endif %}</h1>
+    <p class="rb-sub">{% if es %}El USDA publica cada día lo que se paga por la res, el cerdo, el ganado y el flete refrigerado, pero casi siempre como PDF o filas sueltas en una base de datos. Estos tableros toman esos reportes, los ponen en páginas que se pueden leer y buscar, con el historial completo desde 2020 y todo descargable gratis.{% else %}USDA publishes what’s paid for beef, pork, cattle and refrigerated freight every day, but mostly as PDFs or raw rows in a datamart. These boards take those reports and turn them into pages you can read and search, with the full history since 2020 and everything free to download.{% endif %}</p>
+  </div>
+  <dl class="rb-stamp">
+    {%- if b %}<div><dt>{% if es %}Res Choice{% else %}Choice beef{% endif %}</dt><dd>{{ b.stamp.choice }}{% if b.stamp.choice_chg != "" %} <span>{{ b.stamp.choice_chg }}</span>{% endif %}</dd></div>{% endif %}
+    {%- if p %}<div><dt>{% if es %}Canal de cerdo{% else %}Pork cutout{% endif %}</dt><dd>{{ p.stamp.carcass }}{% if p.stamp.carcass_chg != "" %} <span>{{ p.stamp.carcass_chg }}</span>{% endif %}</dd></div>{% endif %}
+    {%- if k %}<div><dt>{% if es %}Novillos en pie{% else %}Live steers{% endif %}</dt><dd>{{ k.stamp.live }}{% if k.stamp.live_chg != "" %} <span>{{ k.stamp.live_chg }}</span>{% endif %}</dd></div>{% endif %}
+  </dl>
+</header>
+
+<section class="rb-sec" id="boards" aria-labelledby="boards-h">
+  <h2 id="boards-h">{% if es %}Los tableros{% else %}The boards{% endif %}</h2>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack rb-wrap">
+      <thead><tr><th scope="col">{% if es %}Tablero{% else %}Board{% endif %}</th><th scope="col">{% if es %}Lo último{% else %}Latest{% endif %}</th><th scope="col">{% if es %}Qué contiene{% else %}What’s in it{% endif %}</th><th scope="col">{% if es %}Reporte del USDA{% else %}USDA report{% endif %}</th></tr></thead>
+      <tbody>
+        {%- if b %}
+        <tr><th scope="row"><a href="{% if es %}/es/precios-de-carne-de-res/{% else %}/beef-prices/{% endif %}">{% if es %}Carne de res en caja{% else %}Boxed beef{% endif %}</a></th><td data-label="{% if es %}Lo último{% else %}Latest{% endif %}">{% if es %}Choice {{ b.stamp.choice }}, {{ b.day_es }}{% else %}Choice {{ b.stamp.choice }}, {{ b.day }}{% endif %}</td><td data-label="{% if es %}Qué contiene{% else %}What’s in it{% endif %}">{% if es %}El cutout Choice y Select, 7 primales y {{ b.page_count }} páginas de cortes, cada día hábil desde el {{ b.first_es }}{% else %}The Choice and Select cutout, 7 primals and {{ b.page_count }} cut pages, every business day since {{ b.first }}{% endif %}</td><td data-label="{% if es %}Reporte{% else %}Report{% endif %}">LM_XB403, {% if es %}diario{% else %}daily{% endif %}</td></tr>
+        {%- endif %}
+        {%- if p %}
+        <tr><th scope="row"><a href="{% if es %}/es/precios-de-cerdo/{% else %}/pork-prices/{% endif %}">{% if es %}Cerdo{% else %}Pork{% endif %}</a></th><td data-label="{% if es %}Lo último{% else %}Latest{% endif %}">{% if es %}Canal {{ p.stamp.carcass }}, {{ p.day_es }}{% else %}Cutout {{ p.stamp.carcass }}, {{ p.day }}{% endif %}</td><td data-label="{% if es %}Qué contiene{% else %}What’s in it{% endif %}">{% if es %}La canal, 6 primales y {{ p.page_count }} páginas de cortes, cada día hábil desde el {{ p.first_es }}{% else %}The carcass cutout, 6 primals and {{ p.page_count }} cut pages, every business day since {{ p.first }}{% endif %}</td><td data-label="{% if es %}Reporte{% else %}Report{% endif %}">LM_PK602, {% if es %}diario{% else %}daily{% endif %}</td></tr>
+        {%- endif %}
+        {%- if k %}
+        <tr><th scope="row"><a href="{% if es %}/es/precios-de-ganado-gordo/{% else %}/fed-cattle-prices/{% endif %}">{% if es %}Ganado gordo{% else %}Fed cattle{% endif %}</a></th><td data-label="{% if es %}Lo último{% else %}Latest{% endif %}">{% if es %}En pie {{ k.stamp.live }}, semana del {{ k.span_es }}{% else %}Live {{ k.stamp.live }}, week of {{ k.span }}{% endif %}</td><td data-label="{% if es %}Qué contiene{% else %}What’s in it{% endif %}">{% if es %}5 áreas y {{ k.page_count | minus: 1 }} regiones, en pie y en canal, cada semana desde 2020, más el reporte diario{% else %}The 5-area market and {{ k.page_count | minus: 1 }} regions, live and dressed, every week since 2020, plus the daily report{% endif %}</td><td data-label="{% if es %}Reporte{% else %}Report{% endif %}">LM_CT150, CT154, CT156–158, CT100</td></tr>
+        {%- endif %}
+        <tr><th scope="row"><a href="/reefer-rates/"{% if es %} hreflang="en"{% endif %}>{% if es %}Camiones refrigerados (en inglés){% else %}Reefer truck rates{% endif %}</a></th><td data-label="{% if es %}Lo último{% else %}Latest{% endif %}">{% if rf %}{% if es %}Semana del {{ rf.latest | date: "%d/%m/%Y" }}{% else %}Week of {{ rf.week }}{% endif %}{% else %}—{% endif %}</td><td data-label="{% if es %}Qué contiene{% else %}What’s in it{% endif %}">{% if es %}Tarifas semanales de flete de frutas y verduras, ruta por ruta, y el diésel{% else %}Weekly produce freight rates, lane by lane, and diesel{% endif %}</td><td data-label="{% if es %}Reporte{% else %}Report{% endif %}">{% if es %}Reporte de tarifas de camiones (2375), semanal{% else %}Truck Rate report (2375), weekly{% endif %}</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="rb-sec" id="why" aria-labelledby="why-h">
+  <h2 id="why-h">{% if es %}Qué los hace distintos{% else %}What sets them apart{% endif %}</h2>
+  <ul class="ub-why">
+  {%- if es %}
+    <li><strong>Cada producto tiene su propia página</strong>, con su precio de hoy, si está alto o bajo frente al último año, su historial desde 2020 y su temporada típica.</li>
+    <li><strong>Nada se inventa.</strong> Un día sin ventas queda en blanco, nunca en cero; las temporadas se calculan contra el promedio de cada año, para que la inflación no parezca temporada.</li>
+    <li><strong>Herramientas que usan los números de la página</strong>: buscar un corte, presupuestar una compra, revisar una cotización, el costo después de recortar y si conviene vender en pie o en canal.</li>
+    <li><strong>Todo se puede descargar</strong>, en CSV y JSON, gratis y sin clave. Los datos son del USDA y de dominio público.</li>
+    <li><strong>En inglés y en español</strong>, con los nombres que se usan en México.</li>
+  {%- else %}
+    <li><strong>Every item has its own page</strong>, with today’s price, whether it’s high or low against the past year, its history since 2020 and its usual seasonal swing.</li>
+    <li><strong>Nothing is made up.</strong> A day with no sales is left blank, never zero; seasons are measured against each year’s own average, so inflation doesn’t pass for a season.</li>
+    <li><strong>Tools that use the page’s own numbers</strong>: find a cut, budget a buy, check a quote, the cost after trimming, and whether to sell cattle live or in the beef.</li>
+    <li><strong>Everything downloads</strong>, as CSV and JSON, free and with no key. The data is USDA’s and in the public domain.</li>
+    <li><strong>In English and Spanish</strong>, with the names used in Mexico.</li>
+  {%- endif %}
+  </ul>
+</section>
+
+<section class="rb-sec" id="how" aria-labelledby="how-h">
+  <h2 id="how-h">{% if es %}Cómo se construyen{% else %}How they’re built{% endif %}</h2>
+  <p>{% if es %}El USDA guarda cada reporte y los sirve sin clave, así que nada aquí guarda una segunda copia. Dos veces al día una GitHub Action vuelve a leer los CSV ya publicados y solo le pide al USDA lo más reciente; luego reconstruye cada tablero y cada página. Un Cloudflare Worker gratuito vigila los reportes de la tarde de la res y el cerdo para que aparezcan en menos de media hora. Visitar las páginas no le cuesta nada a nadie.{% else %}USDA keeps every report and serves them with no key, so nothing here keeps a second copy. Twice a day a GitHub Action reads back the CSVs already published and asks USDA only for what’s new, then rebuilds every board and page. A free Cloudflare Worker watches for the afternoon beef and pork reports so they show up within half an hour. Visiting the pages costs nothing to run.{% endif %}</p>
+  <p>{% if es %}Fuente: Servicio de Comercialización Agrícola del USDA (AMS), Livestock, Poultry and Grain Market News y Specialty Crops Market News. Los números son suyos; cualquier error al presentarlos es mío.{% else %}Source: USDA Agricultural Marketing Service, Livestock, Poultry and Grain Market News and Specialty Crops Market News. The numbers are theirs; any mistakes in presenting them are mine.{% endif %}</p>
+</section>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "DataCatalog",
+  "@id": "{{ page.url | absolute_url }}#collection",
+  "name": {% if es %}"Precios del mercado del USDA: res, cerdo, ganado y flete refrigerado"{% else %}"USDA market prices: beef, pork, cattle and reefer freight"{% endif %},
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "inLanguage": {% if es %}"es-MX"{% else %}"en-US"{% endif %},
+  "creator": { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }} },
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "dataset": [
+    { "@type": "Dataset", "name": {% if es %}"Carne de res en caja"{% else %}"Boxed beef cutout and cut prices"{% endif %}, "url": {{ "/beef-prices/" | prepend: site.url | jsonify }} },
+    { "@type": "Dataset", "name": {% if es %}"Cerdo"{% else %}"Pork cutout and cut prices"{% endif %}, "url": {{ "/pork-prices/" | prepend: site.url | jsonify }} },
+    { "@type": "Dataset", "name": {% if es %}"Ganado gordo"{% else %}"Fed cattle prices"{% endif %}, "url": {{ "/fed-cattle-prices/" | prepend: site.url | jsonify }} },
+    { "@type": "Dataset", "name": {% if es %}"Tarifas de camiones refrigerados"{% else %}"Reefer truck rates"{% endif %}, "url": {{ "/reefer-rates/" | prepend: site.url | jsonify }} }
+  ]
+}
+</script>

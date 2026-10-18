@@ -12,7 +12,8 @@ sitemap: false
       commit to the page or to a data file it reads, so /youtube/ moves with its daily snapshot);
     - a reefer lane: the week it was last quoted;
     - a border crossing (English and Spanish): the time of the last data copy;
-    - a beef cut: the last day it traded;
+    - a beef or pork cut (English and Spanish): the last day it traded;
+    - a fed cattle region: the last weekly report with a price;
     - a post: its `last_modified_at`, else its date.
   Stamping every page with the build time would tell search engines everything changed on every
   push, and they stop trusting a sitemap's dates once those lie. A local build has no git dates
@@ -51,10 +52,31 @@ sitemap: false
     {%- endif %}
   </url>
 {%- endfor -%}
-{%- for cut in site.beef_cuts %}
+{%- assign beef_pages = site.beef_cuts | concat: site.beef_cuts_es -%}
+{%- for cut in beef_pages %}
   {%- assign c = site.data.live.beef.items[cut.cut] %}
   <url>
     <loc>{{ cut.url | absolute_url | xml_escape }}</loc>
+    {%- if c %}
+    <lastmod>{{ c.last_iso | date_to_xmlschema }}</lastmod>
+    {%- endif %}
+  </url>
+{%- endfor -%}
+{%- assign pork_pages = site.pork_cuts | concat: site.pork_cuts_es -%}
+{%- for cut in pork_pages %}
+  {%- assign c = site.data.live.pork.items[cut.cut] %}
+  <url>
+    <loc>{{ cut.url | absolute_url | xml_escape }}</loc>
+    {%- if c %}
+    <lastmod>{{ c.last_iso | date_to_xmlschema }}</lastmod>
+    {%- endif %}
+  </url>
+{%- endfor -%}
+{%- assign cattle_pages = site.cattle_regions | concat: site.cattle_regions_es -%}
+{%- for reg in cattle_pages %}
+  {%- assign c = site.data.live.cattle.items[reg.region] %}
+  <url>
+    <loc>{{ reg.url | absolute_url | xml_escape }}</loc>
     {%- if c %}
     <lastmod>{{ c.last_iso | date_to_xmlschema }}</lastmod>
     {%- endif %}

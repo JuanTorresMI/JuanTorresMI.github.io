@@ -1,0 +1,97 @@
+{
+ "source": "USDA AMS Livestock Mandatory Reporting: LM_CT150 (5-area weekly), LM_CT156-158 (Texas-Oklahoma, Kansas, Nebraska weekly), LM_CT154 (national weekly, regional table), LM_CT100 (5-area daily)",
+ "license": "U.S. government data, public domain. Credit USDA AMS.",
+ "units": "USD per hundredweight (100 lb), live or dressed weight as the basis says",
+ "week": {
+  "report_date": "2026-10-12",
+  "start": "2026-10-05",
+  "end": "2026-10-11"
+ },
+ "five_area": {
+  "steer_live_fob": 220.14,
+  "steer_dressed_delivered": 345.66
+ },
+ "regions": [
+  {
+   "region": "five-area",
+   "name": "5-area",
+   "states": "Texas-Oklahoma-New Mexico, Kansas, Nebraska, Colorado and Iowa-Minnesota",
+   "report": "LM_CT150",
+   "live_fob": 220.2,
+   "dressed_delivered": 345.74,
+   "page": "https://juantorresmi.github.io/fed-cattle-prices/five-area/"
+  },
+  {
+   "region": "texas-oklahoma",
+   "name": "Texas-Oklahoma",
+   "states": "Texas, Oklahoma and New Mexico",
+   "report": "LM_CT156",
+   "live_fob": null,
+   "dressed_delivered": null,
+   "page": "https://juantorresmi.github.io/fed-cattle-prices/texas-oklahoma/"
+  },
+  {
+   "region": "kansas",
+   "name": "Kansas",
+   "states": "Kansas",
+   "report": "LM_CT157",
+   "live_fob": null,
+   "dressed_delivered": null,
+   "page": "https://juantorresmi.github.io/fed-cattle-prices/kansas/"
+  },
+  {
+   "region": "nebraska",
+   "name": "Nebraska",
+   "states": "Nebraska",
+   "report": "LM_CT158",
+   "live_fob": 221.61,
+   "dressed_delivered": 345.39,
+   "page": "https://juantorresmi.github.io/fed-cattle-prices/nebraska/"
+  },
+  {
+   "region": "western-cornbelt",
+   "name": "Western Cornbelt",
+   "states": "Iowa, Minnesota and Missouri",
+   "report": "LM_CT154",
+   "live_fob": 219.42,
+   "dressed_delivered": 346.84,
+   "page": "https://juantorresmi.github.io/fed-cattle-prices/western-cornbelt/"
+  },
+  {
+   "region": "eastern-cornbelt",
+   "name": "Eastern Cornbelt",
+   "states": "Michigan, Indiana, Illinois, Wisconsin and Kentucky",
+   "report": "LM_CT154",
+   "live_fob": 219.48,
+   "dressed_delivered": 353.0,
+   "page": "https://juantorresmi.github.io/fed-cattle-prices/eastern-cornbelt/"
+  },
+  {
+   "region": "northern-plains",
+   "name": "Northern Plains",
+   "states": "Wyoming, Montana, South Dakota and North Dakota",
+   "report": "LM_CT154",
+   "live_fob": 220.37,
+   "dressed_delivered": 345.18,
+   "page": "https://juantorresmi.github.io/fed-cattle-prices/northern-plains/"
+  },
+  {
+   "region": "northeast",
+   "name": "Northeast",
+   "states": "Ohio, Pennsylvania, New York, Virginia, West Virginia and New England",
+   "report": "LM_CT154",
+   "live_fob": 218.71,
+   "dressed_delivered": null,
+   "page": "https://juantorresmi.github.io/fed-cattle-prices/northeast/"
+  }
+ ],
+ "latest_day": {
+  "date": "2026-10-16",
+  "steer_live_fob": 222.37,
+  "steer_dressed_delivered": 353.17
+ },
+ "history": [
+  "https://juantorresmi.github.io/fed-cattle-prices/fed-cattle-weekly.csv",
+  "https://juantorresmi.github.io/fed-cattle-prices/fed-cattle-5-area-daily.csv"
+ ]
+}

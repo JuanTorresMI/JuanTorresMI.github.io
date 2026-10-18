@@ -148,6 +148,66 @@
   search: [boxed beef cutout, wholesale beef prices, beef cut prices, choice select spread, beef primal values, ground beef wholesale price, USDA LM_XB403]
   keywords: [beef, cutout, boxed beef]
 
+- slug: pork-prices
+  family: Work
+  title: Pork Prices
+  url: /pork-prices/
+  guide: /pork-prices/#faq
+  writeup: /blog/usda-pork-prices-by-cut/
+  kind: Data
+  status: Live
+  short: USDA’s daily pork carcass cutout, its six primals and the wholesale price of every pork cut that traded, each with a page and its daily history since 2020, in English and Spanish.
+  summary: >-
+    The pork board does for pork what the beef board does for beef. USDA’s afternoon pork report lists the
+    carcass cutout, six primals and a few hundred items under terse codes like “1/4 Trim Bnls Butt VAC”; the
+    site names every one in plain English and Spanish, gives each item that trades often its own page with its
+    history and seasonal swing, and publishes every day since 2020 as free CSVs. A Cloudflare Worker keeps the
+    newest report so the pages show it within half an hour.
+  metric: Every business day · 156 cut pages × 2 languages · 1,731 days since 2020 · CSV downloads · $0 to run
+  stack: [JavaScript, Python, Cloudflare Workers, D1 (SQLite), USDA LMR datamart, GitHub Actions]
+  category: WebApplication
+  search: [pork cutout, pork prices today, pork belly price, wholesale pork prices, pork primal values, pork loin price, precio del cerdo hoy, USDA LM_PK602]
+  keywords: [pork, cutout]
+
+- slug: fed-cattle-prices
+  family: Work
+  title: Fed Cattle Prices
+  url: /fed-cattle-prices/
+  guide: /fed-cattle-prices/#faq
+  writeup: /blog/usda-fed-cattle-prices-by-region/
+  kind: Data
+  status: Live
+  short: What packers pay for fed steers and heifers each week, live and dressed, in USDA’s 5-area market and region by region, with a live-or-dressed calculator, in English and Spanish.
+  summary: >-
+    USDA splits its cash cattle prices across half a dozen mandatory reports: a 5-area weekly, one each for
+    Texas-Oklahoma, Kansas and Nebraska, a national report with a table for the smaller regions, and a daily.
+    The board puts them together: this week’s 5-area price, every region side by side (the Eastern Cornbelt
+    covers Michigan), a page per region with every week since 2020, the class and grade breakdown, and a
+    calculator for whether a pen pays more live or in the beef.
+  metric: Weekly and daily · 8 regions × 2 languages · 354 weeks since 2020 · CSV downloads · $0 to run
+  stack: [JavaScript, Python, USDA LMR datamart, GitHub Actions]
+  category: WebApplication
+  search: [fed cattle prices, 5-area weighted average, cash cattle price, live cattle price this week, dressed cattle price, precio del ganado gordo, USDA LM_CT150]
+  keywords: [cattle, fed cattle]
+
+- slug: usda-market-prices
+  family: Work
+  title: USDA Market Prices
+  url: /usda-market-prices/
+  guide: /usda-market-prices/#how
+  kind: Data
+  status: Live
+  short: The parent of the beef, pork, fed cattle and reefer boards, USDA’s market reports turned into readable pages in English and Spanish, with every number free to download.
+  summary: >-
+    One home for the site’s USDA boards: boxed beef, pork, fed cattle and reefer freight. Each reads its
+    history straight from USDA, keeps nothing USDA already stores, rebuilds twice a day and costs nothing to
+    run. Every item gets a page, every page has a Spanish twin, and every number is a free CSV.
+  metric: 4 boards · 450+ pages in English and Spanish · history since 2020 · $0 to run
+  stack: [JavaScript, Python, Cloudflare Workers, USDA LMR datamart, USDA MyMarketNews, GitHub Actions]
+  category: WebApplication
+  search: [USDA market prices, USDA livestock prices, boxed beef cutout, pork cutout, fed cattle prices, precios del USDA]
+  keywords: [usda]
+
 - slug: youtube-stats
   family: Gamer
   art: /assets/og/youtube.png
