@@ -218,9 +218,9 @@
   <div class="row">
     <div class="body prose">
     {%- if es %}
-      <p>Igual que los tableros de la <a href="/es/precios-de-carne-de-res/">res</a> y el <a href="/es/precios-de-cerdo/">cerdo</a>: el historial es del USDA, que lo sirve sin clave. Dos veces al día una GitHub Action vuelve a leer los CSV ya publicados, le pide al USDA solo el año en curso y el último mes del reporte diario, y reconstruye esta página, una página por región y los archivos. Nada aquí guarda una segunda copia de lo que el USDA ya tiene, y visitarla no le cuesta nada a nadie. Fuente: USDA AMS; cualquier error al presentar los números es mío.</p>
+      <p>Igual que los tableros de la <a href="/es/precios-de-carne-de-res/">res</a> y el <a href="/es/precios-de-cerdo/">cerdo</a>: el historial es del USDA, que lo sirve sin clave. Cada tres horas una GitHub Action vuelve a leer los CSV ya publicados, le pide al USDA solo el año en curso y el último mes del reporte diario, y reconstruye esta página, una página por región y los archivos. Nada aquí guarda una segunda copia de lo que el USDA ya tiene, y visitarla no le cuesta nada a nadie. Fuente: USDA AMS; cualquier error al presentar los números es mío.</p>
     {%- else %}
-      <p>The same way as the <a href="/beef-prices/">beef</a> and <a href="/pork-prices/">pork</a> boards: the history is USDA’s own, served with no key. Twice a day a GitHub Action reads back the CSVs already published, asks USDA only for the current year and the daily report’s last month, and rebuilds this board, a page per region and the files. Nothing here keeps a second copy of what USDA already stores, and visiting costs nothing to run. Source: USDA AMS; any mistakes in presenting the numbers are mine.</p>
+      <p>The same way as the <a href="/beef-prices/">beef</a> and <a href="/pork-prices/">pork</a> boards: the history is USDA’s own, served with no key. Every three hours a GitHub Action reads back the CSVs already published, asks USDA only for the current year and the daily report’s last month, and rebuilds this board, a page per region and the files. Nothing here keeps a second copy of what USDA already stores, and visiting costs nothing to run. Source: USDA AMS; any mistakes in presenting the numbers are mine.</p>
     {%- endif %}
     </div>
   </div>

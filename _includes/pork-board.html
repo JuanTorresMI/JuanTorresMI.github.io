@@ -182,7 +182,7 @@
 
 <section class="rb-sec" id="data" aria-labelledby="data-h">
   <h2 id="data-h">{% if es %}Descargar los datos{% else %}Download the data{% endif %}</h2>
-  <p>{% if es %}Todo lo de esta página y de las páginas de cada corte, como archivos CSV, con un archivo aparte de nombres en inglés y en español. Se reescriben dos veces al día y son de uso libre: los números son del USDA y son de dominio público. Dé crédito a USDA AMS.{% else %}Everything on this page and the cut pages, as plain CSV files, with a separate file of every item’s name in English and Spanish. They’re rewritten twice a day and are free to use: the numbers are USDA’s and in the public domain. Credit USDA AMS.{% endif %}</p>
+  <p>{% if es %}Todo lo de esta página y de las páginas de cada corte, como archivos CSV, con un archivo aparte de nombres en inglés y en español. Se reescriben cada tres horas y son de uso libre: los números son del USDA y son de dominio público. Dé crédito a USDA AMS.{% else %}Everything on this page and the cut pages, as plain CSV files, with a separate file of every item’s name in English and Spanish. They’re rewritten every three hours and are free to use: the numbers are USDA’s and in the public domain. Credit USDA AMS.{% endif %}</p>
   <div class="rb-scroll">
     <table class="rb-t rb-wrap">
       <thead><tr><th scope="col">{% if es %}Archivo{% else %}File{% endif %}</th><th scope="col">{% if es %}Filas{% else %}Rows{% endif %}</th><th scope="col">{% if es %}Tamaño{% else %}Size{% endif %}</th><th scope="col">{% if es %}Qué contiene{% else %}What’s in it{% endif %}</th></tr></thead>
@@ -278,9 +278,9 @@
   <div class="row">
     <div class="body prose">
     {%- if es %}
-      <p>Igual que el <a href="/es/precios-de-carne-de-res/">tablero de la res</a>: el historial es del propio USDA, que lo sirve sin clave. Dos veces al día una GitHub Action vuelve a leer los CSV ya publicados y solo le pide al USDA el último mes o dos; con eso reconstruye esta página, una página por corte y los archivos. Un Cloudflare Worker guarda solo el reporte más nuevo, para que la parte de arriba muestre el reporte de la tarde sin esperar a la reconstrucción de la noche. Fuente: USDA AMS, Livestock, Poultry and Grain Market News; cualquier error al presentar los números es mío.</p>
+      <p>Igual que el <a href="/es/precios-de-carne-de-res/">tablero de la res</a>: el historial es del propio USDA, que lo sirve sin clave. Cada tres horas una GitHub Action vuelve a leer los CSV ya publicados y solo le pide al USDA el último mes o dos; con eso reconstruye esta página, una página por corte y los archivos. Un Cloudflare Worker guarda solo el reporte más nuevo, para que la parte de arriba muestre el reporte de la tarde sin esperar a la reconstrucción de la noche. Fuente: USDA AMS, Livestock, Poultry and Grain Market News; cualquier error al presentar los números es mío.</p>
     {%- else %}
-      <p>The same way as the <a href="/beef-prices/">beef board</a>: the history is USDA’s own, served with no key. Twice a day a GitHub Action reads back the CSVs already published and asks USDA only for the last month or two, then rebuilds this board, a page per cut and the files. A Cloudflare Worker keeps just the newest report, so the top of the page can show the afternoon’s report without waiting for the evening rebuild. Source: USDA AMS, Livestock, Poultry and Grain Market News; any mistakes in presenting the numbers are mine.</p>
+      <p>The same way as the <a href="/beef-prices/">beef board</a>: the history is USDA’s own, served with no key. Every three hours a GitHub Action reads back the CSVs already published and asks USDA only for the last month or two, then rebuilds this board, a page per cut and the files. A Cloudflare Worker keeps just the newest report, so the top of the page can show the afternoon’s report without waiting for the evening rebuild. Source: USDA AMS, Livestock, Poultry and Grain Market News; any mistakes in presenting the numbers are mine.</p>
     {%- endif %}
     </div>
   </div>

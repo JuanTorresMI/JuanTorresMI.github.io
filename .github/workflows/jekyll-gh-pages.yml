@@ -38,6 +38,15 @@ jobs:
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+      # The sitemap as it is live now, before this deploy replaces it: IndexNow is sent only the
+      # pages whose date this deploy moves. A failed fetch leaves it empty (indexnow.py falls back).
+      - name: Keep the live sitemap
+        run: curl -sf --max-time 30 https://juantorresmi.github.io/sitemap.xml -o old-sitemap.xml || touch old-sitemap.xml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: old-sitemap
+          path: old-sitemap.xml
+          retention-days: 1
 
   deploy:
     environment:
@@ -50,7 +59,8 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  # Tell Bing and the other IndexNow engines which pages changed (today's and yesterday's lastmod).
+  # Tell Bing and the other IndexNow engines which pages changed: those whose <lastmod> differs from
+  # the sitemap that was live before this deploy, so a page goes once a day at most.
   # Never fails the deploy: a missed ping just waits for the next crawl.
   indexnow:
     runs-on: ubuntu-latest
@@ -61,5 +71,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: old-sitemap
       - name: Ping IndexNow
-        run: sleep 30 && python3 scripts/indexnow.py
+        run: sleep 30 && python3 scripts/indexnow.py --since old-sitemap.xml
