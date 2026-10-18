@@ -18,3 +18,6 @@ Thumbs.db
 
 # Written by scripts/lastmod.py at build time, never committed
 _data/lastmod.json
+
+# One-off output of scripts/border-backfill.mjs
+border-backfill.sql

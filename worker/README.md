@@ -339,6 +339,14 @@ is a USDA call (one week is about 700 rows, a few milliseconds to boil down) or 
 `/border-waits/` on the site, and a page per major commercial crossing, come from CBP's public
 [Border Wait Times](https://bwt.cbp.gov/) feed; the code is `src/border.js`. No key is needed.
 
+**Why the Worker keeps this history and not USDA's:** CBP keeps none. Its feed shows each port's
+latest reading only, and its historical API (`bwt.cbp.gov/api/historicalwaittimes`, which
+`snapshot.py` reads for "usually this month") is last year's averages by weekday and hour, not
+readings. So the readings are recorded here, from Oct 14, 2026; Sep 13 to Oct 14 was filled once
+from an independent public archive of the same feed, github.com/gptcbp/border-crossing-data, run
+through the Worker's own parser (`scripts/border-backfill.mjs`; 13,522 readings, matching the
+Worker's own on 523 of the 530 they share).
+
 Both cron triggers (:17 and :47) read the feed, so it is polled every half hour. Each port posts a
 reading roughly once an hour, and a reading is stored once (`border_waits`, keyed on the port and
 the time it was posted), however often it is asked for. The latest feed, trimmed to the ports with

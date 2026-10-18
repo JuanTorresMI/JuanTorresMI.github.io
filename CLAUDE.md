@@ -120,7 +120,10 @@ JavaScript get real content; and, where it matters, a page script swaps in fresh
   `_data/border_crossings.json`; never change a slug once live. A closed lane is unknown, never 0.
   The Spanish pages are live and paired with hreflang (`translations_live` in `_config.yml`);
   their wording follows CBP's own Spanish ("sin demora", "carriles generales"), kept in
-  `_data/border_text.yml`. Beside the board's own readings, `snapshot.py` pulls CBP's published
+  `_data/border_text.yml`. CBP keeps no past readings, so this is the one history the Worker keeps
+  (D1 `border_waits`, from Oct 14, 2026; Sep 13 to Oct 14 was filled once by `scripts/border-backfill.mjs`
+  from an independent archive of the feed, credited on the pages). CBP's dates aren't zero-padded
+  ("10/1/2026"). Beside the board's own readings, `snapshot.py` pulls CBP's published
   averages for the current month of the previous year (`bwt.cbp.gov/api/historicalwaittimes`) and
   shows them until the board has its own. Data is CBP's Border Wait Times: credit it.
 - **The beef board (`/beef-prices/`, one page per cut, primal and ground beef item)**: built

@@ -6,6 +6,9 @@
  *   GET /border/port?id=P   { port, first, days, profile: [[dow, hour, std_avg, std_n, fast_avg, fast_n]], recent: [[at, std, std_lanes, fast, fast_lanes]] }
  *
  * The source is CBP's public Border Wait Times feed (bwt.cbp.gov/api/waittimes), no key needed.
+ * CBP keeps no past readings (its "historical" API is last year's monthly averages by weekday and
+ * hour), so this records them, from Oct 14, 2026. Sep 13 to Oct 14 was filled once from an
+ * independent hourly archive of the same feed (scripts/border-backfill.mjs).
  * It lists ~85 ports; about 50 have commercial lanes, and only those are kept. Each port's officers
  * post a reading roughly once an hour ("At 10:00 am CDT"), standard and FAST lanes together.
  *
@@ -50,11 +53,11 @@ function clock(s) {
 
 const minutesOf = (time) => { const t = /^(\d{1,2}):(\d{2})/.exec(String(time || "").trim()); return t ? Number(t[1]) * 60 + Number(t[2]) : null; };
 
-/* The port's local date ("MM/DD/YYYY") and time ("HH:MM:SS") of the feed, plus the posted clock
+/* The port's local date ("M/D/YYYY": CBP doesn't pad, "10/1/2026") and time ("HH:MM:SS") of the feed, plus the posted clock
    time -> "YYYY-MM-DD HH:MM", the local moment the reading was posted. A posted time later than
    the feed's own clock was yesterday's (a port that last posted at 11 PM). */
 function posted(date, time, minutes) {
-  const d = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(date || "").trim());
+  const d = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(String(date || "").trim());
   const t = /^(\d{1,2}):(\d{2})/.exec(String(time || "").trim());
   if (!d || !t || minutes == null) return null;
   let day = Date.UTC(Number(d[3]), Number(d[1]) - 1, Number(d[2]));

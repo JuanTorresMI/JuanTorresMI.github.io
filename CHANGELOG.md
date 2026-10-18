@@ -27,6 +27,20 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-18 — Border history back to Sep 13; a date bug that would have stopped it
+
+- **CBP keeps no past readings** (checked: its feed shows the latest reading per port, and its
+  historical API is last year's monthly averages by weekday and hour). So the Worker stays the
+  record, unlike the USDA boards. An independent public archive, github.com/gptcbp/border-crossing-data,
+  saved CBP's whole feed about hourly from Sep 13; `scripts/border-backfill.mjs` runs its 670 snapshots
+  through the Worker's own parser and added 13,522 readings (D1 `border_waits`: 1,859 to 15,381; 49
+  ports). Where both have a reading, they agree on 523 of 530; the archive has gaps of a few hours on
+  some days, so those weeks rest on fewer readings. Credited on the board, the Spanish list and every
+  crossing page.
+- **Bug fixed:** the Worker read CBP's date as `MM/DD/YYYY`, but CBP writes `10/1/2026`. Every reading
+  from the 1st to the 9th of a month, and all of January to September, would have been dropped, so the
+  history would have stopped on Nov 1. The parser takes one- or two-digit months and days now.
+
 ## 2026-10-18 — Worker timed to the reports
 
 - **Beef and pork checks only when USDA can post**: weekdays 1:30 to 6 pm Central, stopping once the
