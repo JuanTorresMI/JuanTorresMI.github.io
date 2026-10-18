@@ -1052,6 +1052,7 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,15,10,2,30,2026-10-18
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,16,46,2,30,2026-10-18
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,17,34,2,30,2026-10-18
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,18,2,1,30,2026-10-18
 011503,canada,Calais – International Avenue,standard,Wednesday,16,0,1,30,2026-10-18
 011503,canada,Calais – International Avenue,standard,Thursday,2,0,1,30,2026-10-18
 011503,canada,Calais – International Avenue,standard,Thursday,6,0,1,30,2026-10-18
@@ -1165,6 +1166,7 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 020901,canada,Derby Line,standard,Sunday,14,0,1,30,2026-10-18
 020901,canada,Derby Line,standard,Sunday,15,0,1,30,2026-10-18
 020901,canada,Derby Line,standard,Sunday,17,0,1,30,2026-10-18
+020901,canada,Derby Line,standard,Sunday,18,0,1,30,2026-10-18
 380001,canada,Detroit – Ambassador Bridge,standard,Thursday,12,5,1,30,2026-10-18
 380001,canada,Detroit – Ambassador Bridge,FAST,Thursday,12,5,1,30,2026-10-18
 380001,canada,Detroit – Ambassador Bridge,standard,Thursday,13,5,1,30,2026-10-18
@@ -1250,6 +1252,8 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 380001,canada,Detroit – Ambassador Bridge,FAST,Sunday,16,0,1,30,2026-10-18
 380001,canada,Detroit – Ambassador Bridge,standard,Sunday,17,5,1,30,2026-10-18
 380001,canada,Detroit – Ambassador Bridge,FAST,Sunday,17,0,1,30,2026-10-18
+380001,canada,Detroit – Ambassador Bridge,standard,Sunday,18,5,1,30,2026-10-18
+380001,canada,Detroit – Ambassador Bridge,FAST,Sunday,18,0,1,30,2026-10-18
 380002,canada,Detroit – Windsor Tunnel,standard,Thursday,12,5,1,30,2026-10-18
 380002,canada,Detroit – Windsor Tunnel,standard,Thursday,13,5,1,30,2026-10-18
 380002,canada,Detroit – Windsor Tunnel,standard,Thursday,14,0,1,30,2026-10-18
@@ -1349,6 +1353,7 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,15,0,1,30,2026-10-18
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,16,5,1,30,2026-10-18
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,17,5,1,30,2026-10-18
+380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,18,5,1,30,2026-10-18
 021201,canada,Highgate Springs,standard,Thursday,4,0,1,30,2026-10-18
 021201,canada,Highgate Springs,standard,Thursday,11,0,1,30,2026-10-18
 021201,canada,Highgate Springs,standard,Thursday,22,0,1,30,2026-10-18
@@ -1497,6 +1502,7 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 360401,canada,International Falls,standard,Saturday,16,0,1,30,2026-10-18
 360401,canada,International Falls,standard,Saturday,17,0,1,30,2026-10-18
 360401,canada,International Falls,standard,Saturday,18,0,1,30,2026-10-18
+360401,canada,International Falls,standard,Saturday,19,0,1,30,2026-10-18
 360401,canada,International Falls,standard,Saturday,23,0,1,30,2026-10-18
 360401,canada,International Falls,standard,Sunday,8,0,1,30,2026-10-18
 010401,canada,Jackman,standard,Wednesday,13,0,1,30,2026-10-18
@@ -1549,6 +1555,7 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 010401,canada,Jackman,standard,Sunday,14,0,1,30,2026-10-18
 010401,canada,Jackman,standard,Sunday,15,0,1,30,2026-10-18
 010401,canada,Jackman,standard,Sunday,16,0,1,30,2026-10-18
+010401,canada,Jackman,standard,Sunday,18,0,1,30,2026-10-18
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Thursday,12,2,2,30,2026-10-18
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Thursday,13,0.5,2,30,2026-10-18
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Thursday,14,2,2,30,2026-10-18
@@ -1627,6 +1634,7 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,15,28.5,2,30,2026-10-18
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,16,5,2,30,2026-10-18
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,17,13,2,30,2026-10-18
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,18,35,1,30,2026-10-18
 302301,canada,Lynden,standard,Wednesday,23,0,1,30,2026-10-18
 302301,canada,Lynden,standard,Thursday,15,0,1,30,2026-10-18
 302301,canada,Lynden,standard,Thursday,16,0,1,30,2026-10-18
@@ -1844,6 +1852,7 @@ L01901,canada,Madawaska,standard,Sunday,18,5,1,30,2026-10-18
 340101,canada,Pembina,standard,Sunday,12,0,1,30,2026-10-18
 340101,canada,Pembina,standard,Sunday,13,6,1,30,2026-10-18
 340101,canada,Pembina,standard,Sunday,15,0,1,30,2026-10-18
+340101,canada,Pembina,standard,Sunday,17,24,1,30,2026-10-18
 380201,canada,Port Huron – Bluewater Bridge,standard,Wednesday,22,0,1,30,2026-10-18
 380201,canada,Port Huron – Bluewater Bridge,FAST,Wednesday,22,0,1,30,2026-10-18
 380201,canada,Port Huron – Bluewater Bridge,standard,Wednesday,23,0,1,30,2026-10-18
@@ -1923,6 +1932,7 @@ L01901,canada,Madawaska,standard,Sunday,18,5,1,30,2026-10-18
 380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,15,60,1,30,2026-10-18
 380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,16,38,1,30,2026-10-18
 380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,17,37,1,30,2026-10-18
+380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,18,32,1,30,2026-10-18
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Wednesday,14,0,1,30,2026-10-18
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Wednesday,17,0,1,30,2026-10-18
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Wednesday,20,0,1,30,2026-10-18
@@ -2048,3 +2058,4 @@ L01901,canada,Madawaska,standard,Sunday,18,5,1,30,2026-10-18
 331001,canada,Sweetgrass,standard,Sunday,13,15,1,30,2026-10-18
 331001,canada,Sweetgrass,standard,Sunday,14,5,1,30,2026-10-18
 331001,canada,Sweetgrass,standard,Sunday,15,5,1,30,2026-10-18
+331001,canada,Sweetgrass,standard,Sunday,16,5,1,30,2026-10-18
