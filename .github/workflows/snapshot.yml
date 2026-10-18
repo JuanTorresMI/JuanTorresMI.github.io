@@ -1,4 +1,4 @@
-# Twice a day, copies the Worker's live data into the site (scripts/snapshot.py): /youtube/ and
+# Once or twice a day, copies the Worker's live data into the site (scripts/snapshot.py): /youtube/ and
 # /watching/ get real numbers in their HTML for crawlers and readers without JavaScript, and the
 # reefer, border, beef, pork and fed cattle boards (built from the copy alone, apart from the border's "right now"
 # columns) get fresh data, any new lane, crossing or cut pages and their CSVs.
@@ -6,14 +6,15 @@
 # own token doesn't trigger other workflows, but an explicit dispatch does.
 name: Snapshot live pages
 
-# Who starts it: the Worker (worker/src/refresh.js), by dispatch, at 09:47 and 21:47 UTC and when
-# someone presses "Update now" on a data board (at most once an hour). GitHub's own schedule below is
-# only the backup: it ran every one of its runs here 1.5 to 5 hours late (Oct 15-18, 2026) and can
-# drop one, so it steps aside when a run already happened in the last six hours.
+# Who starts it: the Worker (worker/src/refresh.js), by dispatch: every morning at 11:47 UTC, when it
+# stores a new beef or pork report (weekday afternoons), and when someone presses "Update now" on a
+# data board (at most once an hour). GitHub's own schedule below is only the backup: it ran every one
+# of its runs here 1.5 to 5 hours late (Oct 15-18, 2026) and can drop one, so it steps aside when a
+# run already happened in the last six hours.
 on:
   schedule:
-    - cron: "41 11 * * *"           # backup for the Worker's 09:47 UTC start
-    - cron: "41 23 * * *"           # backup for the Worker's 21:47 UTC start
+    - cron: "41 13 * * *"           # backup for the Worker's 11:47 UTC morning start
+    - cron: "41 23 * * 1-5"         # backup for the start when the afternoon reports come in
   workflow_dispatch:
 
 permissions:

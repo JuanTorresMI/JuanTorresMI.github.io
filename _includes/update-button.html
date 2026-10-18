@@ -16,13 +16,13 @@
   if (!ENDPOINT) return;
   const ES = {{ es | default: false | jsonify }};
   const T = ES ? {
-    idle: "Las páginas se actualizan dos veces al día. Este botón las actualiza ya, para todos (una vez por hora).",
+    idle: "Las páginas se actualizan cada mañana y cuando el USDA publica precios nuevos. Este botón las actualiza ya, para todos (una vez por hora).",
     wait: (ago, at) => `Última actualización iniciada ${ago}. La siguiente se puede pedir a las ${at}.`,
     started: "Actualización en marcha: los datos nuevos estarán en unos 5 minutos. Recarga la página entonces.",
     failed: "No se pudo iniciar la actualización. Inténtalo más tarde.",
     now: "hace un momento", min: (n) => `hace ${n} min`,
   } : {
-    idle: "The pages update twice a day. This updates them now, for everyone (once an hour).",
+    idle: "The pages update every morning and when USDA posts new prices. This updates them now, for everyone (once an hour).",
     wait: (ago, at) => `Last update started ${ago}. The next one can be asked for at ${at}.`,
     started: "Update started: the new data will be in the pages in about 5 minutes. Reload then.",
     failed: "Couldn't start the update. Try again later.",

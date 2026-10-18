@@ -27,10 +27,10 @@ npx.cmd wrangler deploy
 | `GET /refresh`, `POST /refresh` | Whether the pages can be updated yet; starts the site's snapshot workflow (one global hour of cooldown) | the "Update now" button on the data boards | `src/refresh.js` |
 | `GET /music`, `/music/visits`, `/music/guestbook` (+ `POST`, `DELETE /music/guestbook/<id>`) | Yokonjuan's catalog, visitor counter, guestbook | `/music/` | `src/music.js` |
 
-**Cron triggers** (`wrangler.toml`): at :17 and :47 every hour it reads CBP's border waits; on
-weekdays from 6 am to 8 pm Central (`lmrHours` in `src/index.js`) it also checks for a new boxed beef and pork report, the only hours USDA posts or corrects
-them; the :17 run also polls YouTube; the :47 runs at 09 and 21 UTC start the site's snapshot
-workflow (see "Updating the pages"). The fed cattle board
+**Cron triggers** (`wrangler.toml`): at :17 and :47 every hour it reads CBP's border waits;
+in USDA's windows (`lmrWindow` in `src/index.js`: weekdays 1:30 to 6 pm Central until the day's report is stored, and 6 to 8 am for corrections) it checks for a new boxed beef and pork report; a new one, and the :47 run at 11 UTC every day,
+start the site's snapshot workflow (see "Updating the pages"); the :17 run every three hours polls
+YouTube. The fed cattle board
 needs nothing from the Worker: `snapshot.py` reads USDA's datamart directly. The reefer rates need no cron:
 USDA keeps them, and the Worker asks on request.
 
@@ -206,7 +206,8 @@ $k = $null
 
 ## The YouTube page
 
-The same Worker feeds `/youtube/` on the site; the code is `src/youtube.js`. Once an hour a cron
+The same Worker feeds `/youtube/` on the site; the code is `src/youtube.js`. Every three hours (the :17
+run at 00, 03, 06 … UTC, `YOUTUBE_EVERY_H` in `src/index.js`) a cron
 trigger (`crons` in `wrangler.toml`) asks YouTube for the channel's public numbers and its latest
 uploads, and stores the answer in D1. The page only ever reads that stored snapshot.
 
@@ -247,7 +248,7 @@ Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/youtube" | ConvertTo-
 ```
 
 The very first request polls YouTube on the spot (nothing is stored yet); after that, the cron
-does the polling. To see the cron's own runs, `npx.cmd wrangler tail` around 17 past the hour.
+does the polling. To see the cron's own runs, `npx.cmd wrangler tail` around 17 past 00, 03, 06 … UTC.
 
 - `YouTube said: API key not valid` — the key was pasted wrong; `secret put` it again.
 - `YouTube said: ... has not been used in project ... or it is disabled` — enable YouTube Data API v3 for the key's project.
@@ -256,9 +257,9 @@ does the polling. To see the cron's own runs, `npx.cmd wrangler tail` around 17 
 ### What it costs
 
 Nothing. One poll is three API calls (`channels.list`, `playlistItems.list`, `videos.list`), one
-quota unit each, so 72 units a day out of the free 10,000. Uploads from the clip farm draw on a
-separate bucket, so this can't block them. On Cloudflare's side it is one cron run and two D1
-writes an hour; the page's requests are served from the edge cache for five minutes at a time.
+quota unit each, so 24 units a day out of the free 10,000 (72 when it polled hourly; a small
+channel's numbers barely move in an hour). Uploads from the clip farm draw on a separate bucket, so
+this can't block them. On Cloudflare's side it is two D1 writes every three hours; the page's requests are served from the edge cache for five minutes at a time.
 
 ### What the numbers mean
 
@@ -285,7 +286,7 @@ only holds the USDA key (which must never reach a browser or the repo) and asks 
 - `GET /reefer?week=2026-10-05` is any week, by the Monday it covers. Cached six hours.
 
 The site has no script for this page: the `Snapshot live pages` GitHub Action reads its committed
-CSV back twice a day and asks here only for the weeks it doesn't settle, normally the newest and
+CSV back at least once a day and asks here only for the weeks it doesn't settle, normally the newest and
 the four before it (USDA sometimes corrects a report). The CSV is the long-term record, filled once
 from USDA back to January 2020 (`REEFER_FILL=1 python3 scripts/snapshot.py reefer`).
 
@@ -330,7 +331,7 @@ Invoke-RestMethod "https://house-tv.5342543fsd.workers.dev/reefer?week=2025-06-0
 
 ### What it costs
 
-Nothing, and nothing stored. The snapshot makes about six requests a run, twice a day, and each one
+Nothing, and nothing stored. The snapshot makes about six requests a run, one or two runs a day, and each one
 is a USDA call (one week is about 700 rows, a few milliseconds to boil down) or an edge-cache hit.
 
 ## The border wait board
@@ -346,7 +347,7 @@ commercial lanes, is kept whole in `border_latest` for the live board.
 - `GET /border` — every commercial port right now. Cached five minutes at the edge; the board's
   script refreshes from it.
 - `GET /border/port?id=230404` — one port's last 30 days averaged by weekday and hour, plus its
-  last 7 days of readings. The twice-daily snapshot reads this once per port; visitors never do.
+  last 7 days of readings. The snapshot reads this once per port; visitors never do.
 
 ### Setting it up (once)
 
@@ -383,7 +384,7 @@ Nothing. CBP is asked 48 times a day. About 50 ports post about once an hour, so
 
 `/pork-prices/` works exactly like the beef board below, for USDA's National Daily Pork FOB Plant,
 Negotiated Sales, afternoon (LM_PK602, report 2498): `src/pork.js` keeps one row, `pork_latest`,
-the newest report, and the cron runs on weekdays from 6 am to 8 pm Central (`lmrHours` in `src/index.js`) call `porkTick` (a few-hundred-byte summary; the whole report,
+the newest report, and the cron runs in USDA's windows (`lmrWindow` in `src/index.js`: weekdays 1:30 to 6 pm Central until the day's report is stored, and 6 to 8 am for corrections) call `porkTick` (a few-hundred-byte summary; the whole report,
 about 150 KB, only when USDA has posted something new). `GET /pork` serves it to
 `pork-prices/live.js`. The history is USDA's, read by `scripts/snapshot.py`. The fed cattle board
 needs nothing from the Worker.
@@ -398,12 +399,12 @@ Livestock Mandatory Reporting datamart (`mpr.datamart.ams.usda.gov`). No key is 
 **This Worker keeps no beef history.** USDA keeps every report and serves any date range, so a
 second copy would only cost writes and storage: `scripts/snapshot.py` reads the history from the
 site's committed CSVs and asks USDA directly for the months they don't settle. The Worker keeps one
-row, `beef_latest`: the newest report. The cron runs (:17 and :47) on weekdays from 6 am to 8 pm Central (`lmrHours` in `src/index.js`) ask USDA for the newest report's
+row, `beef_latest`: the newest report. The cron runs (:17 and :47) in USDA's windows (`lmrWindow` in `src/index.js`: weekdays 1:30 to 6 pm Central until the day's report is stored, and 6 to 8 am for corrections) ask USDA for the newest report's
 summary, a few hundred bytes, and only when there is a report it hasn't stored (or a correction) fetch
 the whole thing with `allSections=true`, about 110 KB, and replace the row. The board's page script
 (`beef-prices/live.js`) reads `GET /beef` only when a page's copy is older than a report that should
-be out, so a report shows on the site within about half an hour of USDA posting it, hours before the
-evening rebuild.
+be out, so a report shows on the site within about half an hour of USDA posting it; storing it also
+starts the pages' rebuild (see "Updating the pages").
 
 ### Setting it up (once)
 
@@ -437,28 +438,40 @@ around :17 or :47 shows each run.
 
 ### What it costs
 
-Nothing. USDA is asked 28 times a weekday for a few hundred bytes (none at night or on weekends,
-when no report can appear), plus one full report on business days. Outside those hours `/beef` and
-`/pork` stay an hour at the edge instead of ten minutes, since the stored report can't change.
-That is one row written a business day. Visitors reach the Worker only when a page's copy is behind,
-which happens between USDA posting a report (mid-afternoon) and the evening rebuild.
+Nothing. USDA is asked about 8 times a weekday for a few hundred bytes (4 in the morning window,
+and in the afternoon only until the day's report is stored, usually 2 to 4; none at night or on
+weekends, when no report can appear), plus one full report on business days. That was 48 a day,
+then 28 a weekday. Outside the windows `/beef` and `/pork` stay an hour at the edge instead of ten
+minutes, since the stored report can't change. That is one row written a business day. Visitors
+reach the Worker only when a page's copy is behind, which happens between USDA posting a report and
+the rebuild it starts, about half an hour.
 
 ## Updating the pages (`/refresh`)
 
 The pages carry a copy of the data, written by the site's `Snapshot live pages` workflow. GitHub's
 own schedule for it ran every time 1.5 to 5 hours late (Oct 15-18, 2026) and can drop a run, so the
-Worker starts it instead (`src/refresh.js`), through GitHub's workflow dispatch API:
+Worker starts it instead (`src/refresh.js`), through GitHub's workflow dispatch API, at the times
+the data actually changes:
 
-- **Twice a day**, from the :47 cron runs at 09 and 21 UTC (`SNAPSHOT_HOURS_UTC`). Cloudflare's crons
-  run on the minute. GitHub's schedule (11:41 and 23:41 UTC) stays as the backup and does nothing
-  when a snapshot already ran in the six hours before it.
+- **When a new or corrected beef or pork report is stored** (`pagesTick` in `src/index.js`). In the
+  afternoon it waits until both of the day's reports are in (they come about ten minutes apart, and
+  one rebuild covers both) or the window ends at 6 pm Central; a morning correction goes at once. New
+  prices reach the pages about half an hour after USDA posts them.
+- **Every morning** at the :47 run at 11 UTC (`SNAPSHOT_HOUR_UTC`, 6:47 am Central in summer): the
+  border averages, the YouTube and TV copies, and the weekly fed cattle and reefer reports, which
+  `snapshot.py` reads from USDA itself. Weekends get only this one.
 - **On request**, from the "Update now" button under each data board's stamp
   (`_includes/update-button.html`). `POST /refresh` is accepted only from the site (`WRITE_ORIGINS`).
 
-Both share one cooldown: at most one start an hour, whoever asks (`REFRESH_COOLDOWN_MS`). The last
-start is the `refresh_at` row of `counters`, claimed with one conditional `UPDATE`, so two presses
-at once can't both start it; if GitHub refuses, the claim is given back. A start takes about five
-minutes to reach the pages (the snapshot, then the deploy).
+All of them share one cooldown: at most one start an hour, whoever asks (`REFRESH_COOLDOWN_MS`). The
+last start is the `refresh_at` row of `counters`, claimed with one conditional `UPDATE`, so two
+presses at once can't both start it; if GitHub refuses, the claim is given back. A report stored
+during the cooldown is kept as `refresh_pending` and started by the first run after it. A start
+takes about five minutes to reach the pages (the snapshot, then the deploy).
+
+GitHub's own schedule (13:41 UTC every day, 23:41 on weekdays) stays as the backup: it does nothing
+when a snapshot already ran in the six hours before it, so it only matters if the Worker can't start
+one (no token, an expired token, GitHub refusing).
 
 ### Setting it up (once)
 
@@ -478,8 +491,10 @@ the pages updating, and the Worker log says `GitHub refused`.
 
 ### What it costs
 
-Two D1 reads and at most one write per start; at most 24 starts a day by button plus two by cron,
-each one GitHub Actions run (free for a public repository) and one Pages deploy.
+A few D1 rows per cron run (the pending flag) and at most one write per start. Usually one start
+on a weekend day and two on a weekday (morning, and the afternoon reports), plus any presses of the
+button (24 a day at most); each is one GitHub Actions run (free for a public repository) and one
+Pages deploy.
 
 ## Staying inside the free plan
 
@@ -517,7 +532,7 @@ What keeps it there, so a later change doesn't undo it:
   make a run read more rows.
 - **Many rows go in one statement** (`json_each`), never one statement per row: the free plan
   allows 50 queries per run.
-- **Pages read the twice-daily copy, not the Worker**, wherever the data changes slowly (reefer,
+- **Pages read the daily copy, not the Worker**, wherever the data changes slowly (reefer,
   beef, the border averages). Visitors only reach the Worker for "right now".
 - **Don't keep what the source keeps.** USDA serves the whole truck rate and boxed beef history,
   and EIA the diesel history, so the Worker stores none of it (just the newest beef and pork

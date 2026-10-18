@@ -10,7 +10,8 @@
  *
  * As with beef (beef.js), USDA keeps the history and scripts/snapshot.py reads it from there, so the
  * Worker holds one row, the newest report, for the page script that shows it within half an hour.
- * The cron runs on weekdays, 6 am to 8 pm Central, call `porkTick`: a summary of a few hundred bytes, and the whole report only when
+ * The cron runs in USDA's windows (lmrWindow in index.js: weekdays 1:30-6 pm Central until the day's
+ * report is stored, and 6-8 am for corrections) call `porkTick`: a summary of a few hundred bytes, and the whole report only when
  * USDA has posted something new or corrected.
  */
 
@@ -61,17 +62,21 @@ const stored = async (env) => {
   return row ? JSON.parse(row.body) : null;
 };
 
-export async function porkTick(env) {
-  const head = ((await usda("/Summary", "lastReports=1"))[0] || {}).results || [];
-  if (!head.length) return;
-  const day = iso(head[0].report_date), published = head[0].published_date || null;
+/* Returns { changed, latest }: whether a new or corrected report was stored, and the day it covers.
+   With skipDay ("YYYY-MM-DD"), a stored report for that day ends it before asking USDA anything. */
+export async function porkTick(env, { skipDay } = {}) {
   const have = await stored(env);
-  if (have && have.latest === day && have.published === published) return;
+  if (skipDay && have && have.latest === skipDay) return { changed: false, latest: have.latest };
+  const head = ((await usda("/Summary", "lastReports=1"))[0] || {}).results || [];
+  if (!head.length) return { changed: false, latest: have && have.latest };
+  const day = iso(head[0].report_date), published = head[0].published_date || null;
+  if (have && have.latest === day && have.published === published) return { changed: false, latest: day };
   const report = parse(await usda("", `q=report_date=${encodeURIComponent(mdy(day))}&allSections=true`));
-  if (!report || !report.items.length) return;
+  if (!report || !report.items.length) return { changed: false, latest: have && have.latest };
   const body = { latest: report.day.day, published: report.day.published, day: report.day, items: report.items, stored: new Date().toISOString() };
   await env.DB.prepare(`INSERT INTO pork_latest (id, body, updated_at) VALUES (1, ?1, ?2)
     ON CONFLICT(id) DO UPDATE SET body = ?1, updated_at = ?2`).bind(JSON.stringify(body), body.stored).run();
+  return { changed: true, latest: body.latest };
 }
 
 export async function porkData(env) {

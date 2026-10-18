@@ -26,6 +26,21 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-18 — Worker timed to the reports
+
+- **Beef and pork checks only when USDA can post**: weekdays 1:30 to 6 pm Central, stopping once the
+  day's report is stored, and 6 to 8 am for corrections (`lmrWindow()` in `worker/src/index.js`). About
+  8 checks a weekday, down from 28.
+- **The pages rebuild when the reports arrive.** Storing a new or corrected report starts the snapshot
+  (`pagesTick()`); in the afternoon it waits for both beef and pork (one rebuild for both) or 6 pm,
+  and a report stored during the cooldown waits as `refresh_pending`. New prices reach the pages about
+  half an hour after USDA posts them, instead of hours.
+- **One fixed start a day**, 11:47 UTC, for the border averages, the YouTube and TV copies and the
+  weekly cattle and reefer reports; weekends get only that one. GitHub's backup schedule moved to
+  13:41 UTC daily and 23:41 on weekdays, still stepping aside when a snapshot ran in the last six hours.
+- **YouTube polled every three hours** instead of hourly (24 API units a day instead of 72); page
+  wording, project card and share picture updated.
+
 ## 2026-10-18 — The Worker starts the page updates; an "Update now" button
 
 - **Why the pages fell behind.** The `Snapshot live pages` workflow ran on GitHub's schedule, and
