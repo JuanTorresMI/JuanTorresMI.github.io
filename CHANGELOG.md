@@ -12,6 +12,11 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **Renew `GH_DISPATCH_TOKEN`** before it expires (set Oct 18, 2026; fine-grained, this repo only,
   Actions: read and write). Steps in worker/README.md, "Updating the pages". If it lapses, GitHub's
   backup schedule keeps the pages updating, hours late, and the button hides itself.
+- **First border buffer trim**: the Worker drops readings older than 14 days at 04:17 UTC daily, from
+  Oct 19 on. Everything it drops is already in `border-waits/border-truck-wait-readings-2026.csv`; worth a
+  glance at that file's row count after the first trim (it should only ever grow).
+- **CBP's averages next year**: `cbp-published-averages.csv` gains a new set each year (rows keyed by the
+  year they were read), so last year's official figures stay to compare against.
 - **Two Oct 16 posts** (YouTube, border) still describe the old timing ("once an hour", "twice a
   day"); Juan's call whether to update them.
 
