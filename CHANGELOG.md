@@ -35,6 +35,20 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-19 — The data boards as apps
+
+- **Every board in the app layout.** Beef, pork, fed cattle (English and Spanish), reefer rates, border
+  waits (both languages), Worker usage and the USDA hub now use `_layouts/tool.html` with `app_auto`:
+  each section with a heading becomes a rail entry (named from the board's jump links), shown one at a
+  time, with a link back to the hub. Without JavaScript the page is unchanged, so crawlers read it all.
+- **Friendlier type inside the app**: the boards' serif summaries, answer boxes and lane lookup take the
+  app's sans type, 1px rules and rounded corners; the stamps and tables keep their mono figures.
+- **Reefer sheet buttons** (Rates / Change / Trucks) use `data-sheet`, so the app shell doesn't take
+  them for its own views.
+- **Fix: reefer "Week of" dates.** The cattle job's `week_of()` in `snapshot.py` replaced the reefer
+  board's helper of the same name, so the board read "Week of 2026-10-052026-10-11". The cattle one is
+  now `cattle_week()`; the next snapshot writes the dates properly.
+
 ## 2026-10-19 — Project pages as apps
 
 - **A shared app layout** for the project pages people use (`_layouts/tool.html`, `assets/css/app.css`,

@@ -109,3 +109,10 @@ body.app-body { background: var(--ground); }
 .app-shell.is-live .rb-sec > h2 { border-top: 0; padding-top: 0; font: 700 clamp(24px, 3vw, 30px)/1.2 var(--sans); letter-spacing: -0.015em; }
 .app-shell.is-live .rb-btn, .app-shell.is-live .rb-chip, .app-shell.is-live .rb-views button { border-radius: 999px; }
 .app-shell.is-live .rb-t { border-radius: var(--app-r); overflow: hidden; }
+.app-shell.is-live .rb-big { font: 500 clamp(18px, 2vw, 21px)/1.55 var(--sans) !important; letter-spacing: -0.005em; }
+.app-shell.is-live .rb-answer h3, .app-shell.is-live .rb-judge .rb-say { font-family: var(--sans); font-weight: 600; letter-spacing: -0.01em; }
+.app-shell.is-live .rb-judge .rb-say { font-size: 21px; }
+.app-shell.is-live .rb-answer h3 { font-size: 26px; }
+.app-shell.is-live .rb-answer, .app-shell.is-live .rb-judge { border: 1px solid var(--rule); border-radius: var(--app-r); }
+.app-shell.is-live .rb-look select, .app-shell.is-live .rb-look input { border: 1px solid var(--rule); border-radius: 10px; }
+.app-shell.is-live .rb-look select:focus-visible, .app-shell.is-live .rb-look input:focus-visible { border-color: var(--accent); }
