@@ -8,7 +8,7 @@ body.app-body { background: var(--ground); }
 /* top bar */
 .app-top { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 12px; min-height: var(--app-top); padding: 8px 20px; background: var(--stock); border-bottom: 1px solid var(--rule); }
 .app-home { font: 500 14px var(--sans); color: var(--text-2); text-decoration: none; white-space: nowrap; }
-.app-name { font: 700 16px var(--sans); color: var(--ink); text-decoration: none; padding-left: 12px; border-left: 1px solid var(--rule); white-space: nowrap; }
+.app-name { font: 700 16px var(--sans); color: var(--ink); text-decoration: none; padding-left: 12px; border-left: 1px solid var(--rule); white-space: nowrap; min-width: 0; flex: 0 1 auto; overflow: hidden; text-overflow: ellipsis; }
 .app-home:hover, .app-projects:hover, .app-parent:hover { color: var(--accent); }
 .app-parent { font: 500 14px var(--sans); color: var(--text-2); text-decoration: none; padding-left: 12px; border-left: 1px solid var(--rule); white-space: nowrap; }
 .app-parent::before { content: "← "; }

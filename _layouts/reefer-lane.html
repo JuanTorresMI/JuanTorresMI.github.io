@@ -173,6 +173,8 @@ layout: default
   "description": {{ page.description | jsonify }},
   "url": {{ page.url | absolute_url | jsonify }},
   "temporalCoverage": "{{ l.first_iso }}/{{ l.last_iso }}",
+  "dateModified": {{ l.last_iso | jsonify }},
+  "keywords": [{{ l.short | append: " to " | append: l.dest | append: " reefer rate" | jsonify }}, "reefer truck rates", "produce freight rates", "USDA truck rate report"],
   "spatialCoverage": { "@type": "Place", "name": {{ l.origin | append: " to " | append: l.dest | jsonify }} },
   "variableMeasured": ["Spot rate per truckload, low and high (USD)", "Mostly rate (USD)", "Weekly change (%)", "Truck availability"],
   "isBasedOn": "https://mymarketnews.ams.usda.gov/viewReport/2375",

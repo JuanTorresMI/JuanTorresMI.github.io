@@ -231,6 +231,33 @@ layout: default
 </section>
 
 {% if p %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": {% if es %}{{ name | append: ": tiempos de espera de camiones de carga por día y hora (CBP)" | jsonify }}{% else %}{{ name | append: " commercial truck wait times by day and hour (CBP)" | jsonify }}{% endif %},
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "inLanguage": {{ page.lang | default: "en" | jsonify }},
+  "keywords": {% if es %}[{{ name | append: " tiempo de espera" | jsonify }}, "tiempos de espera en la frontera", "espera de camiones", "carriles FAST", "CBP"]{% else %}[{{ name | append: " wait time" | jsonify }}, "truck wait times", "border wait times", "commercial lanes", "FAST lane", "CBP"]{% endif %},
+  "temporalCoverage": "{{ p.first | slice: 0, 10 }}/{{ b.as_of_iso | slice: 0, 10 }}",
+  "spatialCoverage": { "@type": "Place", "name": {% if es %}{{ name | append: ", " | append: p.es.city | jsonify }}{% else %}{{ name | append: ", " | append: p.city | jsonify }}{% endif %} },
+  "variableMeasured": ["Commercial lane wait (minutes), standard and FAST, by weekday and local hour", "Lanes open"],
+  "isBasedOn": "https://bwt.cbp.gov/",
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "isPartOf": { "@type": "Dataset", "url": {{ "/border-waits/" | absolute_url | jsonify }} },
+  "creator": [
+    { "@type": "Organization", "name": "U.S. Customs and Border Protection", "url": "https://www.cbp.gov/" },
+    { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }} }
+  ],
+  "distribution": [
+    {%- for f in b.archive.files %}{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ f.url | absolute_url | jsonify }} },{% endfor %}
+    { "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ "/border-waits/border-truck-wait-times.csv" | absolute_url | jsonify }} }
+  ],
+  "dateModified": {{ b.as_of_iso | jsonify }}
+}
+</script>
 <script>window.BW = { endpoint: {{ site.worker_url | default: "" | jsonify }}, lang: {{ page.lang | jsonify }}, words: {{ t | jsonify }} };</script>
 <script src="/border-waits/live.js?v={{ site.time | date: '%s' }}" defer></script>
 {% endif %}

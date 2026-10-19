@@ -162,6 +162,8 @@ layout: default
   "url": {{ page.url | absolute_url | jsonify }},
   "inLanguage": {% if es %}"es-MX"{% else %}"en-US"{% endif %},
   "temporalCoverage": "{{ c.first_iso }}/{{ c.last_iso }}",
+  "dateModified": {{ c.last_iso | jsonify }},
+  "keywords": {% if es %}[{{ cname | jsonify }}, "precio de mayoreo de cerdo", "precio por corte de cerdo", "USDA LM_PK602"]{% else %}[{{ c.name | jsonify }}, "wholesale pork price", "pork cut price", "USDA LM_PK602"]{% endif %},
   "spatialCoverage": { "@type": "Place", "name": "United States" },
   "variableMeasured": ["Weighted average price (USD per cwt and per lb)", "Low and high sale (USD per cwt)", "Pounds sold"],
   "isBasedOn": "https://mymarketnews.ams.usda.gov/viewReport/2498",

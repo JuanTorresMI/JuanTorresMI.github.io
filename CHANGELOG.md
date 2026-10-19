@@ -35,6 +35,16 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-19 — Datasets on every item page, a phone fix
+
+- **Border crossing pages** now carry a schema.org `Dataset` (CBP's data, the crossing's place, the
+  readings' date range, the CSV downloads, `isPartOf` the board's), like the cut, region and lane pages.
+- **Every item page's Dataset** (beef and pork cuts, cattle regions, reefer lanes) gains `dateModified`
+  (its newest row) and `keywords`.
+- **The app layout's top bar** lets a long page name shrink with an ellipsis; the Spanish border board's
+  name ran 84 px past a phone's screen. That page also gets a shorter top-bar name (`app_name`).
+- The reefer board's "Week of" dates are right again on the live site (snapshot refreshed after the fix).
+
 ## 2026-10-19 — Review pass: the app pages and Plain Solver's profit goal
 
 - **Back goes back a section.** In the app layout and in Plain Solver, each change of section or step is
