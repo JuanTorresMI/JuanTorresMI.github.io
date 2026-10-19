@@ -171,6 +171,13 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
         <p class="ps-step-k">Step 4 of 4</p>
         <h2 class="ps-step-h" id="h-best">What makes one plan better?</h2>
         <p class="ps-step-lede">The one number to make as high or as low as possible, usually a profit or a cost.</p>
+        <div class="ps-addrow ps-goalkind" role="group" aria-label="What you're after">
+          <button class="ps-addbtn" type="button" data-goalkind="profit" aria-pressed="false"><strong>The most profit</strong><span>Money coming in minus money going out</span></button>
+          <button class="ps-addbtn" type="button" data-goalkind="cost" aria-pressed="false"><strong>The lowest cost</strong><span>Everything you spend, added up</span></button>
+          <button class="ps-addbtn" type="button" data-goalkind="custom" aria-pressed="false"><strong>Something else</strong><span>Write it as a sentence</span></button>
+        </div>
+        <div class="ps-money" id="money" hidden></div>
+        <div id="goal-custom" hidden>
         <div class="ps-form" id="qa-goal">
           <span class="ps-form-w">Make</span>
           <input class="ps-in ps-in-grow ps-phrase" type="text" id="qg-expr" placeholder="profit per chair times chairs to make plus …" aria-label="What to make high or low" autocomplete="off">
@@ -179,6 +186,7 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
         </div>
         <p class="ps-msg-inline" id="qg-msg" role="status"></p>
         <div class="ps-vocab" id="vocab-best" aria-label="Names you can use"></div>
+        </div>
         <div class="ps-cardlist" id="l-best"></div>
         <div class="ps-stepnav"><button class="ps-btn" type="button" data-go="rules">← Back</button><button class="ps-btn primary ps-btn-solve" type="button" id="b-solve3">Solve it →</button></div>
       </section>
@@ -377,7 +385,7 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
         <li><strong>What do you decide?</strong> “I decide <em>how many</em> <em>workers to hire</em> <em>for each store</em>.”</li>
         <li><strong>What do you know?</strong> “<em>Cost per hour</em> is <em>15</em> <em>$/hour</em>”, or a whole list pasted from a spreadsheet.</li>
         <li><strong>What has to be true?</strong> “<em>wood per chair times chairs to make plus wood per table times tables to make</em> must be at most <em>wood available</em>.”</li>
-        <li><strong>What makes one plan better?</strong> “Make <em>profit per chair times chairs to make plus profit per table times tables to make</em> as high as possible.”</li>
+        <li><strong>What makes one plan better?</strong> “Make <em>profit per chair times chairs to make plus profit per table times tables to make</em> as high as possible.” For a profit or a cost there's a shortcut: pick “The most profit” and list what comes in and what goes out, each a number times one of your decisions (a price times chairs to make), and the sentence is written for you.</li>
       </ol>
       <p>The blanks take the names you've already given things, typed the way you'd say them (<em>plus</em>, <em>minus</em>, <em>times</em>, <em>divided by</em>, “total of … across …”), with suggestions as you type. That's a whole model: press Solve. Every line becomes an ordinary sentence you can change from menus, and every expression has a pencil to retype it.</p>
       <h3>The sentences underneath</h3>

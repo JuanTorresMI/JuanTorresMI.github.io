@@ -504,6 +504,21 @@ body.ps-body { background: var(--ground); }
 .ps-addbtn:hover { border-style: solid; border-color: var(--ink); background: var(--stock); }
 .ps-addbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .ps-addbtn-strong { border-style: solid; border-color: var(--ink); }
+/* step 4: what you're after, and the goal as money in and money out */
+.ps-goalkind .ps-addbtn[aria-pressed="true"] { border: 2px solid var(--accent); padding: 13px 15px; background: var(--stock); }
+.ps-money { margin-top: 18px; display: grid; gap: 14px; }
+.ps-money-box { padding: 18px; border: 1px solid var(--rule); border-radius: var(--ps-r); background: var(--stock); }
+.ps-money-box.is-in { box-shadow: inset 3px 0 0 var(--accent); }
+.ps-money-h { margin: 0; font: 700 18px/1.3 var(--sans); color: var(--ink); }
+.ps-money-sub { margin: 4px 0 0; font: 14px/1.5 var(--sans); color: var(--text-2); }
+.ps-mlines { display: grid; gap: 10px; margin-top: 14px; }
+.ps-mline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ps .ps-mline .ps-in { flex: 1 1 200px; padding-top: 9px; padding-bottom: 9px; font-size: 15px; }
+.ps .ps-mline .ps-in-num { flex: 0 1 110px; }
+.ps-mline-x { font: 500 18px var(--sans); color: var(--muted); }
+.ps-mline-warn { flex: 1 1 100%; margin: 0; font: 13px/1.5 var(--sans); color: var(--ps-bad); }
+.ps-money-add { margin-top: 12px; }
+.ps-money-say { margin: 0; padding: 14px 18px; border-radius: var(--ps-r); background: var(--ground); border: 1px dashed var(--rule); font: 15px/1.6 var(--sans); color: var(--text); }
 .ps-cardlist { display: grid; gap: 10px; margin-top: 28px; }
 .ps-card2 { padding: 16px 18px; border: 1px solid var(--rule); border-radius: var(--ps-r); background: var(--stock); }
 .ps-card2.is-off { opacity: 0.55; }
@@ -564,6 +579,9 @@ body.ps-body { background: var(--ground); }
   .ps-stage { padding: 24px 16px 56px; }
   .ps-form { padding: 12px; }
   .ps-form > * { flex: 1 1 100%; }
+  .ps-mlines { gap: 0; }
+  .ps-mline { padding: 10px 0; border-bottom: 1px dashed var(--rule); }
+  .ps-mline:first-child { padding-top: 0; }
   .ps .ps-in, .ps .ps-in-num, .ps .ps-in-unit { width: 100%; }
   .ps-card2-head { flex-direction: column; }
   .ps-card2-act { justify-content: flex-start; }

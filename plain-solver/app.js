@@ -833,6 +833,7 @@
         cap(M.say(model, g.expr, I)), () => goalEl(), {}) : empty("No goal yet. Say what to make as high or as low as possible."));
       if (set) { $("#qg-sense").value = g.sense === "min" ? "min" : "max"; }
       renderVocab("#vocab-best");
+      renderMoney();
     }
   }
   // The names in the model as buttons: a click puts the name where you're typing.
@@ -955,6 +956,16 @@
     if (!$("#qg-expr").value.trim()) { msg.textContent = "Say what to make as high or as low as possible."; return; }
     if (G.error) { msg.textContent = G.error; return; }
     msg.textContent = "";
+    const better = !quickGoal.tree && !quickGoal.asWritten && precedenceFix(G.tree);
+    if (better) {
+      msg.replaceChildren(`As written, that's ${M.say(model, G.tree)}: the first number doesn't multiply anything you decide, so it can't change the plan. Did you mean ${M.say(model, better)}? `,
+        h("button.ps-cbtn", { type: "button", on: { click: () => { quickGoal.tree = better; quickGoal(); } } }, "Yes, use that"), " ",
+        h("button.ps-cbtn", { type: "button", on: { click: () => { quickGoal.asWritten = true; quickGoal(); } } }, "No, keep it as written"));
+      return;
+    }
+    if (quickGoal.tree) G.tree = quickGoal.tree;
+    quickGoal.tree = null; quickGoal.asWritten = false;
+    goalKind = "custom";
     const sense = $("#qg-sense").value;
     edit(() => {
       const g = model.goal;
@@ -964,6 +975,215 @@
     $("#qg-expr").value = "";
     flash(`The goal: make ${model.goal.label.toLowerCase()} as ${sense === "max" ? "high" : "low"} as possible.`);
   }
+  /* ---------- the goal as money: what comes in, what goes out ---------- */
+  // Most goals are a profit or a cost: an amount per unit times how many of something you decide.
+  // Two lists of such lines build it, kept as two results ("Money in", "Money out") so the answer
+  // shows each one, and the goal is in minus out (profit) or just out (cost). The lines are read
+  // back from those results, so nothing new goes in the model's JSON.
+  const MONEY_IN = "moneyIn", MONEY_OUT = "moneyOut";
+  let goalKind = null; // "profit" | "cost" | "custom", picked by the reader; otherwise read from the goal
+  const OUT_RE = /cost|expense|wage|salary|pay\b|fee|rent|spend|buy|purchase|fuel|overhead|penalt|freight|shipping|labou?r/i;
+  const IN_RE = /price|revenue|sell|sale|earn|income|profit|margin|value|return|reward|gain/i;
+  const STOP = new Set(["per", "of", "a", "an", "the", "to", "each", "for", "in", "on", "at", "by", "how", "many", "much", "unit", "units", "amount", "number", "make", "made", "produce", "build", "fixed"]);
+  const stems = (t) => new Set(String(t).toLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/)
+    .filter((w) => w && !STOP.has(w) && !OUT_RE.test(w) && !IN_RE.test(w)).map((w) => (w.length > 3 && w.endsWith("s") && !w.endsWith("ss") ? w.slice(0, -1) : w)));
+  // Every number that can be "so much per unit": single numbers, list columns, grids.
+  function amounts() {
+    const out = [];
+    for (const t of model.things) {
+      if (t.kind === "single") for (const p of t.properties || []) out.push({ id: t.id + "." + p.id, label: p.label, words: p.label, unit: p.unit || "", sets: [] });
+      if (t.kind === "table") for (const c of t.columns || []) if (!c.kind || c.kind === "number") out.push({ id: t.id + "." + c.id, label: `${c.label} (for each ${(t.one || t.label).toLowerCase()})`, words: `${c.label} ${t.one || ""} ${t.label}`, unit: c.unit || "", sets: [t.id] });
+      if (t.kind === "grid") out.push({ id: t.id, label: t.label, words: t.label, unit: t.unit || "", sets: t.over || [] });
+    }
+    return out;
+  }
+  const activeDecisions = () => model.decisions.filter((d) => !d.disabled);
+  function lineExpr(l) {
+    const I = ix();
+    const a = l.amt ? { ref: l.amt } : { const: Number(l.num) || 0 };
+    const body = l.dec ? { op: "mul", args: [a, { ref: l.dec }] } : a;
+    const sets = [...new Set([...(l.amt ? (M.refInfo(I, l.amt) || {}).sets || [] : []), ...(l.dec ? (M.refInfo(I, l.dec) || {}).sets || [] : [])])];
+    return sets.reduceRight((b, s) => ({ op: "sum", over: s, body: b }), body);
+  }
+  const addAll = (es) => (es.length ? es.reduce((acc, e) => (acc ? { op: "add", args: [acc, e] } : e), null) : { const: 0 });
+  // A result's expression back into lines, or null when it isn't made of them (someone edited it by hand).
+  function linesOf(e) {
+    if (!e || e.hole) return [];
+    const I = ix(), out = [];
+    const terms = (n) => (n && n.op === "add" ? [...terms(n.args[0]), ...terms(n.args[1])] : [n]);
+    for (let t of terms(e)) {
+      while (t && t.op === "sum") t = t.body;
+      if (!t) return null;
+      let a = t, d = null;
+      if (t.op === "mul") { [a, d] = t.args; if (!d || d.ref === undefined || d.at || (M.refInfo(I, d.ref) || {}).kind !== "decision") return null; }
+      if (a.ref !== undefined && !a.at && (M.refInfo(I, a.ref) || {}).kind !== "decision") out.push({ amt: a.ref, num: null, dec: d ? d.ref : "" });
+      else if (a.const !== undefined && (d || t.const !== undefined)) out.push({ amt: "", num: a.const, dec: d ? d.ref : "" });
+      else return null;
+    }
+    return out;
+  }
+  const resultOf = (id) => model.results.find((r) => r.id === id);
+  // Which kind of goal the model has now.
+  function goalKindNow() {
+    const g = model.goal;
+    if (!g || !g.expr || g.expr.hole) return null;
+    const refs = new Set();
+    const walk = (n) => { if (!n || typeof n !== "object") return; if (n.ref !== undefined) refs.add(n.ref); (n.args || []).forEach(walk); if (n.body) walk(n.body); };
+    walk(g.expr);
+    const inR = resultOf(MONEY_IN), outR = resultOf(MONEY_OUT);
+    if (g.sense === "max" && inR && refs.has(MONEY_IN) && linesOf(inR.expr) && (!outR || linesOf(outR.expr))) return "profit";
+    if (g.sense === "min" && outR && g.expr.ref === MONEY_OUT && linesOf(outR.expr)) return "cost";
+    return "custom";
+  }
+  // A first guess at the lines from the names people gave things: prices and profits come in, costs go
+  // out, and each is paired with the decision whose name (or list) it shares.
+  function guessLines() {
+    const decs = activeDecisions(), ins = [], outs = [];
+    const I = ix();
+    for (const a of amounts()) {
+      const isOut = OUT_RE.test(a.words), isIn = !isOut && IN_RE.test(a.words);
+      if (!isOut && !isIn) continue;
+      const aw = stems(a.words);
+      let best = null, bestScore = -1;
+      for (const d of decs) {
+        const ds = d.indexBy || [];
+        // A per-row number pairs only with a decision made for each of those rows.
+        if (a.sets.some((s) => !ds.includes(s))) continue;
+        let score = 0;
+        for (const w of stems(d.label + " " + ds.map((s) => M.setOne(I, s)).join(" "))) if (aw.has(w)) score += 2;
+        if (a.sets.length && a.sets.length === ds.length) score += 3;
+        if (/fixed|setup|set-up|opening|start/i.test(a.words) && d.type === "binary") score += 3;
+        if (score > bestScore) { best = d; bestScore = score; }
+      }
+      // Without a shared word, only pair when there's no doubt (one decision); a fixed cost stays on its own.
+      if (best && bestScore === 0 && decs.length > 1) best = null;
+      if (!best && a.sets.length) continue;
+      (isOut ? outs : ins).push({ amt: a.id, num: null, dec: best ? best.id : "" });
+    }
+    return { ins, outs };
+  }
+  function moneyUnit(lines) {
+    for (const l of lines) { const a = l.amt && M.refInfo(ix(), l.amt); const u = a && a.unit ? String(a.unit) : ""; const m = u.match(/^([^\d\s/]+)\s*(?:\/|per\b|$)/i); if (m && /[$€£¥]|usd|eur|mxn|dollar|peso/i.test(m[1])) return m[1].trim(); }
+    return "";
+  }
+  // Write the lines into the model: the two results and the goal.
+  function setMoney(kind, ins, outs) {
+    edit(() => {
+      const put = (id, label, lines) => {
+        let r = resultOf(id);
+        if (!lines.length) { if (r) model.results.splice(model.results.indexOf(r), 1); return; }
+        if (!r) { r = { id, label, unit: "", expr: null, indexBy: [] }; model.results.push(r); }
+        r.expr = addAll(lines.map(lineExpr)); r.unit = moneyUnit(lines); delete r.disabled;
+      };
+      put(MONEY_IN, "Money in", kind === "profit" ? ins : []);
+      put(MONEY_OUT, "Money out", outs);
+      const g = model.goal;
+      delete g.close;
+      if (kind === "profit") {
+        g.sense = "max"; g.label = "Profit";
+        g.expr = outs.length ? { op: "sub", args: [{ ref: MONEY_IN }, { ref: MONEY_OUT }] } : { ref: MONEY_IN };
+        if (!ins.length) g.expr = { hole: true };
+      } else {
+        g.sense = "min"; g.label = "Total cost";
+        g.expr = outs.length ? { ref: MONEY_OUT } : { hole: true };
+      }
+    });
+  }
+  function pickGoalKind(kind) {
+    goalKind = kind;
+    const now = goalKindNow();
+    if (kind !== "custom" && now !== kind) {
+      // Carry over lines already written; otherwise start from the guess.
+      const have = { ins: linesOf((resultOf(MONEY_IN) || {}).expr) || [], outs: linesOf((resultOf(MONEY_OUT) || {}).expr) || [] };
+      const g = have.ins.length || have.outs.length ? have : guessLines();
+      if (kind === "profit" && !g.ins.length) g.ins = [blankLine("in")];
+      if (!g.outs.length && kind === "cost") g.outs = [blankLine("out")];
+      setMoney(kind, g.ins, g.outs);
+      const said = kind === "profit" ? "The goal is now the most profit: money coming in minus money going out." : "The goal is now the lowest cost: everything going out, added up.";
+      flash(said + " Check the lines below.");
+    } else renderBuilder();
+    if (kind === "custom") setTimeout(() => $("#qg-expr").focus({ preventScroll: true }), 30);
+  }
+  // A new line: the first number that looks the part, times the first decision that fits it.
+  function blankLine(side) {
+    const A = amounts(), decs = activeDecisions();
+    const re = side === "in" ? IN_RE : OUT_RE;
+    const a = A.find((x) => re.test(x.words)) || A[0];
+    const d = a ? decs.find((x) => a.sets.every((s) => (x.indexBy || []).includes(s))) : decs[0];
+    return a ? { amt: a.id, num: null, dec: d ? d.id : "" } : { amt: "", num: 0, dec: decs[0] ? decs[0].id : "" };
+  }
+  function renderMoney() {
+    const box = $("#money");
+    const kind = goalKind || goalKindNow();
+    document.querySelectorAll("[data-goalkind]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.goalkind === kind)));
+    $("#goal-custom").hidden = kind !== "custom";
+    const money = kind === "profit" || kind === "cost";
+    box.hidden = !money;
+    if (!money) return;
+    if (goalKindNow() !== kind) { box.replaceChildren(h("p.ps-empty-note", {}, "The goal was changed by hand. Pick “The most profit” or “The lowest cost” again to rebuild it from lines.")); return; }
+    const ins = linesOf((resultOf(MONEY_IN) || {}).expr) || [], outs = linesOf((resultOf(MONEY_OUT) || {}).expr) || [];
+    const A = amounts(), decs = activeDecisions(), I = ix();
+    const save = () => setMoney(kind, ins, outs);
+    const lineEl = (l, list, i, side) => {
+      const amt = h("select.ps-in.ps-mline-amt", { "aria-label": side === "in" ? "What each one brings in" : "What each one costs" },
+        ...A.map((a) => opt(a.id, a.label + (a.unit ? ` (${a.unit})` : ""), a.id === l.amt)), opt("", "a number I'll type", !l.amt));
+      amt.addEventListener("change", () => { l.amt = amt.value; if (!l.amt && l.num === null) l.num = 0; save(); });
+      const num = l.amt ? null : h("input.ps-in.ps-in-num", { type: "text", inputmode: "decimal", value: String(l.num ?? 0), "aria-label": "Amount" });
+      if (num) num.addEventListener("change", () => { const v = parseNum(num.value); l.num = v === null ? 0 : v; save(); });
+      const dec = h("select.ps-in.ps-mline-dec", { "aria-label": "Times how many of" },
+        ...decs.map((d) => opt(d.id, d.label + ((d.indexBy || []).length ? ` (for each ${d.indexBy.map((s) => M.setOne(I, s).toLowerCase()).join(" and ")})` : ""), d.id === l.dec)),
+        opt("", side === "in" ? "nothing: a fixed amount" : "nothing: a fixed cost, paid once", !l.dec));
+      dec.addEventListener("change", () => { l.dec = dec.value; save(); });
+      const x = h("button.ps-cbtn.ps-cbtn-x", { type: "button", "aria-label": "Remove this line", title: "Remove", on: { click: () => { list.splice(i, 1); save(); } } }, "Remove");
+      // Warn when the number and the decision are kept for different lists (that sum means nothing).
+      const ai = l.amt && M.refInfo(I, l.amt), di = l.dec && M.refInfo(I, l.dec);
+      const clash = ai && di && ai.sets.length && di.sets.length && !ai.sets.every((s) => di.sets.includes(s)) && !di.sets.every((s) => ai.sets.includes(s));
+      return h("div.ps-mline", {}, amt, num, h("span.ps-mline-x", { "aria-hidden": "true" }, "×"), dec, x,
+        clash ? h("p.ps-mline-warn", {}, `${ai.label} is kept for each ${ai.sets.map((s) => M.setOne(I, s).toLowerCase()).join(" and ")}, but ${di.label} for each ${di.sets.map((s) => M.setOne(I, s).toLowerCase()).join(" and ")}. Pick numbers and decisions kept for the same list.`) : null);
+    };
+    const panel = (side, title, sub, list) => h("section.ps-money-box.is-" + side, {},
+      h("h3.ps-money-h", {}, title), h("p.ps-money-sub", {}, sub),
+      list.length ? h("div.ps-mlines", {}, ...list.map((l, i) => lineEl(l, list, i, side))) : h("p.ps-empty-note", {}, "No lines yet."),
+      h("button.ps-cbtn.ps-money-add", { type: "button", on: { click: () => { list.push(blankLine(side)); save(); } } }, side === "in" ? "+ Add money coming in" : "+ Add money going out"));
+    if (!A.length || !decs.length) {
+      box.replaceChildren(h("p.ps-empty-note", {}, !decs.length ? "First say what you decide (step 1), then come back: each line is a number times one of your decisions." : "First add what you know (step 2), like a price or a cost per unit, then come back."));
+      return;
+    }
+    const parts = [];
+    if (kind === "profit") parts.push(panel("in", "Money coming in", "What each one sells for or earns, times how many you decide on.", ins));
+    parts.push(panel("out", kind === "profit" ? "Money going out" : "What you spend", "What each one costs, times how many. A fixed cost can stand on its own.", outs));
+    const g = model.goal;
+    if (g.expr && !g.expr.hole) {
+      const say = (lines) => lines.map((l) => (l.amt ? M.refInfo(I, l.amt).label : fmt(l.num)) + (l.dec ? " × " + M.refInfo(I, l.dec).label : "")).join(" + ");
+      parts.push(h("p.ps-money-say", {}, h("strong", {}, kind === "profit" ? "Profit" : "Total cost"), " = ",
+        kind === "profit" ? `(${say(ins)})${outs.length ? ` − (${say(outs)})` : ""}` : say(outs), kind === "profit" ? ", as high as possible." : ", as low as possible."));
+    }
+    box.replaceChildren(...parts);
+  }
+  // "price minus cost times chairs" reads as price − (cost × chairs), which is rarely what's meant:
+  // a number that multiplies no decision doesn't change the answer. Offer the bracketed version.
+  function precedenceFix(tree) {
+    const I = ix();
+    const hasDec = (n) => { if (!n || typeof n !== "object") return false; if (n.ref !== undefined) { const r = M.refInfo(I, n.ref); if (r && (r.kind === "decision" || r.kind === "result")) return true; } return (n.args || []).some(hasDec) || hasDec(n.body); };
+    // The sum as signed terms: a + b − c·x − d → [+a, +b, −c·x, −d].
+    const terms = [];
+    const flat = (n, sign) => {
+      if (n && n.op === "add") { flat(n.args[0], sign); flat(n.args[1], sign); }
+      else if (n && n.op === "sub") { flat(n.args[0], sign); flat(n.args[1], -sign); }
+      else terms.push({ n, sign });
+    };
+    flat(tree, 1);
+    let hit = -1;
+    for (let i = 0; i + 1 < terms.length; i++) {
+      const A = terms[i], B = terms[i + 1];
+      if (A.sign > 0 && B.sign < 0 && !hasDec(A.n) && B.n && B.n.op === "mul" && !hasDec(B.n.args[0]) && hasDec(B.n.args[1])) { hit = i; break; }
+    }
+    if (hit < 0) return null;
+    const A = terms[hit], B = terms[hit + 1];
+    terms.splice(hit, 2, { n: { op: "mul", args: [{ op: "paren", args: [{ op: "sub", args: [A.n, B.n.args[0]] }] }, B.n.args[1]] }, sign: 1 });
+    return terms.reduce((acc, t) => (acc ? { op: t.sign > 0 ? "add" : "sub", args: [acc, t.n] } : t.sign > 0 ? t.n : { op: "neg", args: [t.n] }), null);
+  }
+
   // The quick lines' text boxes suggest names as you type, like the pencil does.
   function suggestOn(inp) {
     const list = h("ul.ps-suggest", { role: "listbox", hidden: true });
@@ -1162,7 +1382,9 @@
       if (a.status === "unbounded") {
         const names = (a.unbounded || []).map((id) => `“${(I.decisions[id] || {}).label || id}”`);
         const g = m.goal.label || "The goal";
-        return showError([`${g} can ${m.goal.sense === "max" ? "grow" : "fall"} forever. ${names.length ? `You're probably missing a limit on ${joinAnd(names)}.` : "Some decision is missing a limit."}`], "No limit");
+        return showError([`${g} can ${m.goal.sense === "max" ? "grow" : "fall"} forever. ${names.length ? `You're probably missing a limit on ${joinAnd(names)}.` : "Some decision is missing a limit."}`,
+          m.goal.sense === "max" ? "Nothing in the rules stops it: add one that says what holds you back, like how many you can sell, or how much time, material or money you have." : "Nothing in the rules stops it: add one that says what you have to do, like demand you have to meet.",
+          h("p", {}, h("button.ps-btn.primary", { type: "button", "data-go": "rules" }, "Add a rule →"))], "No limit");
       }
       if (a.status === "infeasible") return showError(diagnosisEls(a, m), "These rules can't all be true at once");
       return showError([a.message || "The solver stopped without an answer."], "No answer");
@@ -1582,6 +1804,7 @@
   function load(m, note) {
     snapshot();
     model = normalize(m);
+    goalKind = null;
     last = null; lastModel = null;
     $("#out").classList.remove("is-stale");
     $("#answer").hidden = true; $("#error").hidden = true; $("#exports").hidden = true; $("#whatif").hidden = true;
@@ -2022,6 +2245,7 @@ ${window.PSText.write(model)}`;
     $("#b-blocks2").addEventListener("click", () => openBlocks());
     $("#qr-add").addEventListener("click", quickRule);
     $("#qg-set").addEventListener("click", quickGoal);
+    document.querySelectorAll("[data-goalkind]").forEach((b) => b.addEventListener("click", () => pickGoalKind(b.dataset.goalkind)));
     for (const id of ["#qr-lhs", "#qr-rhs"]) $(id).addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); quickRule(); } });
     $("#qg-expr").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); quickGoal(); } });
     for (const id of ["#qr-lhs", "#qr-rhs", "#qg-expr"]) suggestOn($(id));

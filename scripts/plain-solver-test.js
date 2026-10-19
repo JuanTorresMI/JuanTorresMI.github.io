@@ -388,6 +388,25 @@ minimize "Total cost": Total_cost
     console.log(`bug 2 model: ${W2 * S2} variables, expand ${expandMs} ms, whole solve ${runMs} ms`);
   }
 
+  // Profit the way people type it: short names, "50 chairs", and a solve that maximizes it.
+  {
+    const pm = { schemaVersion: 1, things: [{ id: "n", label: "My numbers", kind: "single", properties: [
+      { id: "pc", label: "price of a chair", value: 50 }, { id: "cc", label: "cost per chair", value: 20 },
+      { id: "pt", label: "table price", value: 120 }, { id: "ct", label: "table cost", value: 70 }, { id: "wood", label: "wood available", value: 300 }] }],
+      decisions: [{ id: "chairs", label: "Chairs to make", type: "integer", lower: 0, indexBy: [] }, { id: "tables", label: "Tables to make", type: "integer", lower: 0, indexBy: [] }],
+      results: [], rules: [], goal: { label: "Profit", sense: "max", expr: { hole: true } }, options: { engine: "auto", timeLimitSec: 30, mipGap: 0.0001 } };
+    const say = (t) => { const r = M.readFormula(pm, t); return r.error ? "ERROR " + r.error : M.say(pm, r.tree); };
+    check("profit: a word that starts a decision's name", say("price of a chair times chairs") === "price of a chair × Chairs to make", say("price of a chair times chairs"));
+    check("profit: a number before a name multiplies it", say("50 chairs plus 120 tables") === "50 × Chairs to make plus 120 × Tables to make", say("50 chairs plus 120 tables"));
+    check("profit: a phrase inside another name isn't taken for it", /^ERROR/.test(say("$50 per chair")), say("$50 per chair"));
+    check("profit: a word in several names is ambiguous", /more than one/.test(say("cost times chairs")), say("cost times chairs"));
+    const g = M.readFormula(pm, "(price of a chair minus cost per chair) times chairs plus (table price minus table cost) times tables").tree;
+    const w = M.readFormula(pm, "10 chairs plus 20 tables").tree;
+    const pm2 = clone(pm); pm2.goal.expr = g; pm2.rules = [{ id: "w", label: "Wood", kind: "compare", lhs: w, op: "<=", rhs: { ref: "n.wood" }, forEach: [] }];
+    a = await S.run(pm2, env);
+    check("profit: maximized", a.ok && near(a.goal, 900), a.status + " " + a.goal);
+  }
+
   console.log(`${passes} passed, ${failures} failed`);
   process.exit(failures ? 1 : 0);
 })().catch((e) => { console.error(e); process.exit(1); });
