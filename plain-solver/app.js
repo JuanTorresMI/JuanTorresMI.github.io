@@ -1386,6 +1386,16 @@
     }
     return S;
   }
+  // The model as an Excel sheet with Solver set up in it (excel.js); with this page's answer in the
+  // decision cells when the answer is for the model as it is now.
+  function downloadExcel() {
+    const m = stripUi(model);
+    const ans = last && last.ok && lastModel === JSON.stringify(m) ? last : null;
+    const x = window.PSExcel.build(m, ans);
+    if (x.error) { flash(x.error); return; }
+    download(`${slug(m.title)}-solver.xlsx`, window.APXlsx.blob(x.sheets));
+    flash(`Downloaded. In Excel: Data → Solver → Solve (it's set to ${x.engine}). ${x.notes.join(" ")}`);
+  }
   function downloadReports() {
     if (!last || !last.ok) return;
     const m = JSON.parse(lastModel);
@@ -1888,6 +1898,8 @@ ${window.PSText.write(model)}`;
     $("#b-math").addEventListener("click", () => { showMath = !showMath; $("#b-math").setAttribute("aria-pressed", String(showMath)); $("#math").hidden = !showMath; if (showMath) renderMath(); });
     $("#b-tex").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("#math").dataset.tex || ""); flash("LaTeX copied."); } catch (e) { flash("Couldn't reach the clipboard."); } });
     $("#b-reports").addEventListener("click", downloadReports);
+    $("#b-excel").addEventListener("click", downloadExcel);
+    $("#b-excel2").addEventListener("click", downloadExcel);
     $("#b-print").addEventListener("click", printReports);
     $("#b-lp").addEventListener("click", () => last && last.lp && download(`${slug(model.title)}.lp`, new Blob([last.lp], { type: "text/plain" })));
     $("#wi-input").addEventListener("change", () => pickWhatIf($("#wi-input").value));

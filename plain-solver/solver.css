@@ -35,6 +35,7 @@ details[open] > summary.ps-block-head .ps-label::before { content: "▾ "; }
 .ps-links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 .ps-link { background: none; border: 0; padding: 0; font: 500 11px/1.5 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-2); cursor: pointer; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 4px; }
 .ps-link:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.ps-link.ps-link-strong { color: var(--ink); text-decoration-color: var(--ink); }
 .ps-link:disabled { color: var(--muted); cursor: default; text-decoration: none; opacity: 0.6; }
 .ps-link[aria-pressed="true"] { color: var(--ink); text-decoration-color: var(--ink); }
 .ps-btn { display: inline-flex; align-items: center; padding: 12px 18px; border: 1px solid var(--ink); border-radius: 0; background: transparent; color: var(--ink);

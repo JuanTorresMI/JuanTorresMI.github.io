@@ -35,6 +35,18 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-19 — Plain Solver: Excel + Solver
+
+- **“Excel + Solver”** downloads the model as one Excel sheet: data in yellow cells, decisions in blue (with
+  Plain Solver's answer in them when it has one), every result, rule and the goal as live formulas
+  (SUM and SUMPRODUCT where the cells line up), and Excel's Solver model already stored in the file, the way
+  Excel saves it (hidden `solver_*` names). Data → Solver → Solve; change the yellow cells and solve again.
+  The engine is chosen for Excel (Simplex LP, GRG Nonlinear or Evolutionary), since Excel can't make Plain
+  Solver's exact rewrites. In Excel itself, every template and a lanes network reach Plain Solver's answer,
+  both from the answer and from zeros (`scripts/plain-solver-excel-check.js` + `.ps1`).
+- `aggregate-planning/xlsx.js` can write sheet-scoped hidden names and has a style for Solver's cells; the
+  planner's workbook is unchanged.
+
 ## 2026-10-19 — Plain Solver: build your own, at any size
 
 - **Build your own solver is the front of the page**: four plain questions (what you decide, what you know,

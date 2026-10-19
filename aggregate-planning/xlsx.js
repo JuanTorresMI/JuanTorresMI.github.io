@@ -5,15 +5,16 @@
  *   APXlsx.blob([{ name, widths: [chars...], rows: [[cell, ...], ...] }, ...]) -> Blob
  *
  * A cell is null, a number, a string, or { v, f, s }: a value, a formula (no leading "="), and a
- * style from STYLES. Formulas are saved without results; the workbook asks to be recalculated
+ * style from STYLES. A sheet's `names` ([[name, value], ...]) become hidden names scoped to it, which is
+ * where Excel keeps a sheet's Solver model (Plain Solver writes them; the planner doesn't). Formulas are saved without results; the workbook asks to be recalculated
  * when it opens, so Excel, LibreOffice and Google Sheets all show the numbers.
  */
 (function (root) {
   "use strict";
 
   // Index = style id used in cells. [numFmtId, bold, fill]
-  const STYLES = { plain: 0, bold: 1, n2: 2, n0: 3, n0b: 4, head: 5, input: 6, n2b: 7 };
-  const XF = [[0, 0, 0], [0, 1, 0], [164, 0, 0], [3, 0, 0], [3, 1, 0], [0, 1, 1], [164, 0, 2], [164, 1, 0]];
+  const STYLES = { plain: 0, bold: 1, n2: 2, n0: 3, n0b: 4, head: 5, input: 6, n2b: 7, change: 8 };
+  const XF = [[0, 0, 0], [0, 1, 0], [164, 0, 0], [3, 0, 0], [3, 1, 0], [0, 1, 1], [164, 0, 2], [164, 1, 0], [164, 1, 3]];
 
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]))
     .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, "");
@@ -45,9 +46,10 @@
 <styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
 <numFmts count="1"><numFmt numFmtId="164" formatCode="#,##0.00"/></numFmts>
 <fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts>
-<fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>
+<fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>
 <fill><patternFill patternType="solid"><fgColor rgb="FFE8E6E0"/></patternFill></fill>
-<fill><patternFill patternType="solid"><fgColor rgb="FFFFF4CC"/></patternFill></fill></fills>
+<fill><patternFill patternType="solid"><fgColor rgb="FFFFF4CC"/></patternFill></fill>
+<fill><patternFill patternType="solid"><fgColor rgb="FFDCE8F2"/></patternFill></fill></fills>
 <borders count="1"><border/></borders>
 <cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
 <cellXfs count="${XF.length}">${XF.map(([n, b, f]) => `<xf numFmtId="${n}" fontId="${b}" fillId="${f ? f + 1 : 0}" borderId="0" xfId="0"${n ? ' applyNumberFormat="1"' : ""}${b ? ' applyFont="1"' : ""}${f ? ' applyFill="1"' : ""}/>`).join("")}</cellXfs>
@@ -63,7 +65,8 @@
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`]);
     out.push(["xl/workbook.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${
-      sheets.map((s, i) => `<sheet name="${esc(s.name)}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join("")}</sheets><calcPr calcId="191029" fullCalcOnLoad="1"/></workbook>`]);
+      sheets.map((s, i) => `<sheet name="${esc(s.name)}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join("")}</sheets>${
+      sheets.some((s) => s.names && s.names.length) ? "<definedNames>" + sheets.flatMap((s, i) => (s.names || []).map(([n, v]) => `<definedName name="${esc(n)}" localSheetId="${i}" hidden="1">${esc(v)}</definedName>`)).join("") + "</definedNames>" : ""}<calcPr calcId="191029" fullCalcOnLoad="1"/></workbook>`]);
     out.push(["xl/_rels/workbook.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${
       sheets.map((_, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`]);

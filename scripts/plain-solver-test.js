@@ -338,6 +338,36 @@ minimize "Total cost": Total_cost
   check("7 big solves", a.ok && a.status === "optimal" && a.size.vars === W * Sx, `${a.status} ${a.size && a.size.vars}`);
   console.log(`7 big model: ${a.size.vars} variables, ${a.size.rows} rules, ${Date.now() - t0} ms`);
 
+  // The Excel export: every template becomes a workbook with Excel's Solver model in it. (Whether
+  // Excel's Solver then gets the same answer is checked in Excel by plain-solver-excel-check.js.)
+  {
+    global.window = global;
+    require(path.resolve(__dirname, "..", "aggregate-planning", "xlsx.js"));
+    const XL = require(path.join(dir, "excel.js"));
+    for (const t of T.list) {
+      const x = XL.build(clone(t.model), null);
+      const names = x.sheets ? Object.fromEntries(x.sheets[0].names) : {};
+      const nCons = Number(names.solver_num);
+      const ok = !x.error && names.solver_opt && names.solver_adj && nCons > 0 && names[`solver_lhs${nCons}`] && names[`solver_rel${nCons}`] && names[`solver_rhs${nCons}`] && !names[`solver_lhs${nCons + 1}`];
+      check(`excel ${t.id} has a Solver model`, ok, x.error || JSON.stringify(names).slice(0, 200));
+      const want = t.id === "pricing" ? "GRG Nonlinear" : "Simplex LP";
+      check(`excel ${t.id} engine`, x.engine === want, x.engine);
+      const zip = Buffer.from(await window.APXlsx.blob(x.sheets).arrayBuffer());
+      check(`excel ${t.id} is a zip with the names`, zip.readUInt32LE(0) === 0x04034b50 && zip.includes(Buffer.from('definedName name="solver_opt" localSheetId="0" hidden="1"')), "");
+    }
+    // Plain Solver's answer goes into the decision cells.
+    a = await S.run(clone(staffing), env);
+    const x = XL.build(clone(staffing), a);
+    const blue = x.sheets[0].rows.flat().filter((c) => c && c.s === "change").map((c) => c.v);
+    check("excel starts from the answer", JSON.stringify(blue) === JSON.stringify([5, 400, 100, 0]), JSON.stringify(blue));
+    // Long totals spill into helper cells instead of going past Excel's formula limit.
+    const longOne = clone(big);
+    longOne.goal.expr = M.parse("sum(w, sum(s, cost * ship * 2))");
+    const xl2 = XL.build(longOne, null);
+    const formulas = xl2.sheets ? xl2.sheets[0].rows.flat().filter((c) => c && c.f).map((c) => c.f) : [];
+    check("excel long totals fit", !xl2.error && formulas.every((f) => f.length < 8192), xl2.error || Math.max(...formulas.map((f) => f.length)));
+  }
+
   // Review, Bug 2: a 100 × 2,000 transportation model (200,000 decisions) took 71 s, 31 of them
   // writing the model out. Target: under 10 s in all; expansion alone in a couple of seconds.
   {
