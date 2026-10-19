@@ -52,7 +52,7 @@
     const b = document.createElement(mode === "read" ? "a" : "button");
     b.className = "app-rail-btn";
     if (mode === "read") { if (!meta[v].first.id) meta[v].first.id = "s-" + v; b.href = "#" + meta[v].first.id; }
-    else { b.type = "button"; b.addEventListener("click", () => show(v)); }
+    else { b.type = "button"; b.addEventListener("click", () => show(v, { focus: true })); }
     b.innerHTML = (meta[v].n ? `<span class="app-rail-n">${meta[v].n}</span>` : "") + `<span class="app-rail-t"></span>`;
     b.querySelector(".app-rail-t").textContent = meta[v].title;
     buttons[v] = b;
@@ -84,15 +84,33 @@
     if (matchMedia("(max-width: 860px)").matches && buttons[v]) buttons[v].scrollIntoView({ inline: "center", block: "nearest" });
   }
   function show(v, opts) {
+    opts = opts || {};
     if (!meta[v]) v = views[0];
+    const from = current;
     current = v;
     if (mode === "views") {
       for (const el of parts) el.classList.toggle("app-off", el.dataset.view !== v);
       store.set(v);
-      if (!(opts && opts.stay)) window.scrollTo({ top: 0 });
+      // Each change of view is a step in the browser's history, so Back returns to the last view
+      // (the address stays the same; the view rides in the history entry's state).
+      try {
+        const st = Object.assign({}, history.state, { appView: v });
+        if (opts.initial || opts.fromHistory) { if (opts.initial) history.replaceState(st, ""); }
+        else if (from !== v) history.pushState(st, "");
+      } catch (e) { /* sandboxed */ }
+      if (!opts.stay) window.scrollTo({ top: 0 });
     }
     mark(v);
     document.dispatchEvent(new CustomEvent("app:view", { detail: { view: v } }));
+    // After the page has heard (some pages un-hide their own parts then).
+    if (mode === "views") {
+      // From the rail: put keyboard and screen-reader focus on the view's heading.
+      if (opts.focus) {
+        const f = meta[v].first;
+        const hd = f.matches("h1, h2, h3") ? f : f.querySelector("h1, h2, h3") || f;
+        if (hd) { if (!hd.hasAttribute("tabindex")) hd.setAttribute("tabindex", "-1"); hd.focus({ preventScroll: true }); }
+      }
+    }
   }
   // Links into a section open it (views) or scroll to it (read).
   document.addEventListener("click", (e) => {
@@ -107,7 +125,7 @@
     target.scrollIntoView({ block: "start" });
   });
   // Buttons anywhere can open a view: data-show="view".
-  document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest("[data-show]"); if (b) { e.preventDefault(); show(b.dataset.show); } });
+  document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest("[data-show]"); if (b) { e.preventDefault(); show(b.dataset.show, { focus: true }); } });
 
   if (mode === "read") {
     // The rail follows the section on screen.
@@ -125,7 +143,8 @@
     const hashEl = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
     const fromHash = hashEl && hashEl.closest("[data-view]");
     const start = fromHash ? fromHash.dataset.view : store.get() || shell.dataset.start || views[0];
-    show(meta[start] ? start : views[0], { stay: true });
+    show(meta[start] ? start : views[0], { stay: true, initial: true });
+    window.addEventListener("popstate", (e) => { const v = e.state && e.state.appView; if (v && meta[v] && v !== current) show(v, { fromHistory: true }); });
     if (fromHash) hashEl.scrollIntoView({ block: "start" });
   }
   window.AppShell = { show, current: () => current };

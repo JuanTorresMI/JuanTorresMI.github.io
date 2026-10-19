@@ -771,6 +771,12 @@
   let view = "start";
   function go(v, opts) {
     if (!VIEWS.includes(v)) v = "decide";
+    // Each step is an entry in the browser's history, so Back returns to the last step.
+    try {
+      const st = Object.assign({}, history.state, { psView: v });
+      if (opts && opts.initial) history.replaceState(st, "");
+      else if (!(opts && opts.fromHistory) && v !== view) history.pushState(st, "");
+    } catch (e) { /* sandboxed */ }
     view = v;
     for (const x of VIEWS) $("#v-" + x).hidden = x !== v;
     $("#app").classList.toggle("is-start", v === "start");
@@ -1010,11 +1016,13 @@
   function linesOf(e) {
     if (!e || e.hole) return [];
     const I = ix(), out = [];
+    const gone = (n) => n && n.ref !== undefined && !M.refInfo(I, n.ref);
     const terms = (n) => (n && n.op === "add" ? [...terms(n.args[0]), ...terms(n.args[1])] : [n]);
     for (let t of terms(e)) {
       while (t && t.op === "sum") t = t.body;
       if (!t) return null;
       let a = t, d = null;
+      if (gone(t) || (t.op === "mul" && (gone(t.args[0]) || gone(t.args[1])))) { out.gone = true; continue; }
       if (t.op === "mul") { [a, d] = t.args; if (!d || d.ref === undefined || d.at || (M.refInfo(I, d.ref) || {}).kind !== "decision") return null; }
       if (a.ref !== undefined && !a.at && (M.refInfo(I, a.ref) || {}).kind !== "decision") out.push({ amt: a.ref, num: null, dec: d ? d.ref : "" });
       else if (a.const !== undefined && (d || t.const !== undefined)) out.push({ amt: "", num: a.const, dec: d ? d.ref : "" });
@@ -1114,14 +1122,15 @@
   }
   function renderMoney() {
     const box = $("#money");
-    const kind = goalKind || goalKindNow();
+    const kind = goalKind === "custom" ? "custom" : goalKindNow();
     document.querySelectorAll("[data-goalkind]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.goalkind === kind)));
     $("#goal-custom").hidden = kind !== "custom";
     const money = kind === "profit" || kind === "cost";
     box.hidden = !money;
     if (!money) return;
-    if (goalKindNow() !== kind) { box.replaceChildren(h("p.ps-empty-note", {}, "The goal was changed by hand. Pick “The most profit” or “The lowest cost” again to rebuild it from lines.")); return; }
     const ins = linesOf((resultOf(MONEY_IN) || {}).expr) || [], outs = linesOf((resultOf(MONEY_OUT) || {}).expr) || [];
+    // A decision or number a line used was deleted: drop those lines (after this draw).
+    if (ins.gone || outs.gone) { setTimeout(() => setMoney(kind, ins, outs), 0); return; }
     const A = amounts(), decs = activeDecisions(), I = ix();
     const save = () => setMoney(kind, ins, outs);
     const lineEl = (l, list, i, side) => {
@@ -1131,7 +1140,7 @@
       const num = l.amt ? null : h("input.ps-in.ps-in-num", { type: "text", inputmode: "decimal", value: String(l.num ?? 0), "aria-label": "Amount" });
       if (num) num.addEventListener("change", () => { const v = parseNum(num.value); l.num = v === null ? 0 : v; save(); });
       const dec = h("select.ps-in.ps-mline-dec", { "aria-label": "Times how many of" },
-        ...decs.map((d) => opt(d.id, d.label + ((d.indexBy || []).length ? ` (for each ${d.indexBy.map((s) => M.setOne(I, s).toLowerCase()).join(" and ")})` : ""), d.id === l.dec)),
+        ...model.decisions.filter((d) => !d.disabled || d.id === l.dec).map((d) => opt(d.id, d.label + (d.disabled ? " (turned off)" : "") + ((d.indexBy || []).length ? ` (for each ${d.indexBy.map((s) => M.setOne(I, s).toLowerCase()).join(" and ")})` : ""), d.id === l.dec)),
         opt("", side === "in" ? "nothing: a fixed amount" : "nothing: a fixed cost, paid once", !l.dec));
       dec.addEventListener("change", () => { l.dec = dec.value; save(); });
       const x = h("button.ps-cbtn.ps-cbtn-x", { type: "button", "aria-label": "Remove this line", title: "Remove", on: { click: () => { list.splice(i, 1); save(); } } }, "Remove");
@@ -1796,7 +1805,7 @@
   async function share() {
     const code = await encode(model);
     const url = location.origin + location.pathname + "#m=" + code;
-    history.replaceState(null, "", "#m=" + code);
+    history.replaceState(history.state, "", "#m=" + code);
     try { await navigator.clipboard.writeText(url); flash(`Link copied. It carries the whole model (${Math.round(url.length / 1024 * 10) / 10} KB of address), nothing stored anywhere.`); }
     catch (e) { flash("The link is in the address bar: copy it from there."); }
   }
@@ -2335,7 +2344,8 @@ ${window.PSText.write(model)}`;
     renderAdvanced();
     changed(true);
     if (returning && !shared) { $("#resume").hidden = false; $("#resume-name").textContent = model.title || "your model"; }
-    go(shared ? "decide" : returning ? store.get(VIEWKEY) || "decide" : "start");
+    go(shared ? "decide" : returning ? store.get(VIEWKEY) || "decide" : "start", { initial: true });
+    window.addEventListener("popstate", (e) => { const v = e.state && e.state.psView; if (v && v !== view) go(v, { fromHistory: true }); });
     status("Ready. Press Solve when the model says what you want.");
     if (note) flash(note);
     ENG.warm();

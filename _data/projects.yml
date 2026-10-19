@@ -97,13 +97,15 @@
     routes. It picks the method and explains the answer in words. Linear and integer models go to HiGHS and come back proven best; squared
     goals go to its quadratic solver; anything nonlinear goes to a gradient search or an evolutionary one, and
     the page says which. When no plan fits, it names the rules that clash and by how much. It writes Excel
-    Solver's Answer, Sensitivity and Limits reports, the model in standard notation, and an LP file.
+    Solver's Answer, Sensitivity and Limits reports, the model in standard notation, and an LP file, and
+    downloads the model as an Excel sheet with Solver already set up. For the most profit or the lowest
+    cost, two lists of money in and money out, chosen from menus, write the goal.
   guide: /plain-solver/#guide
   metric: LP · MIP · QP · nonlinear · evolutionary · 10 templates · Excel-style reports
   stack: [JavaScript, HiGHS (WebAssembly), Linear and integer programming, Nonlinear optimization, Differential evolution]
   category: BusinessApplication
-  search: [build your own solver, optimization solver, online linear programming solver, network flow solver, Excel Solver alternative, integer programming, nonlinear optimization, sensitivity report, shadow prices, transportation problem, product mix, assignment problem]
-  features: ["Build your own solver from four fill-in-the-blank questions", "Formulas typed the way you'd say them", "Lists of links, filters and building blocks for large custom models", "Whole-workbook import and a text format an AI chat can write", "Automatic choice of linear, integer, quadratic, nonlinear or evolutionary engine", "Infeasibility diagnosis in plain words", "Shadow prices in both directions", "Answer, Sensitivity and Limits reports as .xlsx", "Paste or upload tables from spreadsheets", "Share links that carry the whole model"]
+  search: [build your own solver, optimization solver, online linear programming solver, network flow solver, Excel Solver alternative, integer programming, nonlinear optimization, sensitivity report, shadow prices, transportation problem, product mix, assignment problem, profit maximization, maximize profit calculator, cost minimization, Excel Solver template]
+  features: ["Build your own solver from four fill-in-the-blank questions", "Formulas typed the way you'd say them", "The most profit or the lowest cost from money in and money out, no formula", "Excel workbook with Solver already set up", "Lists of links, filters and building blocks for large custom models", "Whole-workbook import and a text format an AI chat can write", "Automatic choice of linear, integer, quadratic, nonlinear or evolutionary engine", "Infeasibility diagnosis in plain words", "Shadow prices in both directions", "Answer, Sensitivity and Limits reports as .xlsx", "Paste or upload tables from spreadsheets", "Share links that carry the whole model"]
   learning:
     type: Interactive tool
     level: Undergraduate
