@@ -35,6 +35,22 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-19 — Plain Solver: profit without writing a formula
+
+- **Step 4 asks what you're after**: "The most profit", "The lowest cost" or "Something else". Profit opens
+  two lists, *Money coming in* and *Money going out*, each line a number times one of your decisions
+  (or a fixed amount), chosen from menus. The first click fills them in from the names you gave things
+  (prices and profits come in, costs go out, each paired with the decision or list it shares a word
+  with). The lines are stored as two ordinary results, "Money in" and "Money out", so the answer shows
+  both and nothing new goes in the model's JSON; the goal is in minus out.
+- **The typed goal is more forgiving**: a word that starts a decision's name stands for it ("chairs"
+  for "Chairs to make"), a plural on its own means the one decision it names ("tables"), and a number
+  before a name multiplies it ("50 chairs"). A phrase only inside another name ("per chair") isn't taken.
+- **"Price minus cost times chairs"** reads as price − (cost × chairs), which maximizes nothing. The
+  goal box now says so and offers "(price minus cost) × chairs" with one click.
+- **No-limit answers** say what kind of rule is missing and link to the rules step.
+- Five new tests (168 in all).
+
 ## 2026-10-19 — The data boards as apps
 
 - **Every board in the app layout.** Beef, pork, fed cattle (English and Spanish), reefer rates, border

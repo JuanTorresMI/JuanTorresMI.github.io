@@ -297,6 +297,24 @@
       if (!list) return { error: `“${m[3].trim()}” isn't one of your lists.` };
       s = s.slice(0, m.index) + `${/^av/i.test(m[1]) ? "avg" : "sum"}(${list}, ${m[2]})` + s.slice(m.index + m[0].length);
     }
+    // A name by its exact words, or else by the start of one name ("chairs" for "chairs to make"),
+    // or else by words found in only one name.
+    const decs = index(model).decisions;
+    const lookup = (k, raw) => {
+      if (!k) return null;
+      if (P.names.has(k)) return P.names.get(k);
+      const starts = new Set(), inside = new Set();
+      const single = !k.includes(" ") && !/^(per|of|to|for|each|and|or|in|on|by)$/.test(k);
+      for (const [n, ids] of P.names) {
+        if (n.startsWith(k + " ")) for (const i of ids) starts.add(i);
+        if (single && (" " + n + " ").includes(" " + k + " ")) for (const i of ids) inside.add(i);
+      }
+      if (starts.size === 1 && (decs[[...starts][0]] || [...inside].every((i) => starts.has(i)))) return starts;
+      // A plural on its own ("tables") is a count: the one decision it names.
+      if (single && /[^s]s$/i.test(String(raw).trim())) { const d = [...starts, ...inside].filter((i) => decs[i]); if (new Set(d).size === 1) return new Set(d); }
+      if (inside.size) return inside;
+      return starts.size ? starts : null;
+    };
     // Swap every run of words for the id it names.
     const parts = s.split(/([+\-*/^(),])/);
     let unknown = null, ambiguous = null;
@@ -306,10 +324,14 @@
       if (/^(sum|avg)$/i.test(w) || P.lists.has(norm(w)) && /^[a-z]\w*$/.test(w) && index(model).sets[w]) return part;
       if (/^\$?\d[\d,]*(\.\d+)?%?$/.test(w)) { const v = Number(w.replace(/[$,%]/g, "")) / (w.endsWith("%") ? 100 : 1); return " " + v + " "; }
       if (index(model).sets[w]) return part;
-      const ids = P.names.get(norm(w));
+      // "50 chairs": a number before a name multiplies it.
+      const lead = w.match(/^(\$?\d[\d,]*(?:\.\d+)?%?)\s+([A-Za-z].*)$/);
+      const name = lead ? lead[2] : w;
+      const ids = lookup(norm(name), name);
       if (!ids) { unknown = unknown || w; return part; }
       if (ids.size > 1) { ambiguous = ambiguous || w; return part; }
-      return " " + [...ids][0] + " ";
+      const id = [...ids][0];
+      return lead ? ` ${Number(lead[1].replace(/[$,%]/g, "")) / (lead[1].endsWith("%") ? 100 : 1)} * ${id} ` : " " + id + " ";
     });
     if (unknown) return { error: `“${unknown}” isn't something in your model. Use the names you gave things (or pick from the menus).` };
     if (ambiguous) return { error: `“${ambiguous}” could mean more than one thing. Add the name of its group or list to say which.` };
