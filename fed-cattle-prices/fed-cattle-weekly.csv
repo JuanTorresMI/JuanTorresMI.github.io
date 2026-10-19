@@ -662,6 +662,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,eastern-cornbelt,cash,all,dressed_fob,total,131,63.70,953,1000,980,344,348,347.02
 2026-09-28,2026-09-21,2026-09-27,eastern-cornbelt,cash,all,dressed_fob,total,35,63.50,889,889,889,340,340,340
 2026-10-12,2026-10-05,2026-10-11,eastern-cornbelt,cash,all,dressed_fob,total,65,64.10,996,1024,1010,343,344,343.49
+2026-10-19,2026-10-12,2026-10-18,eastern-cornbelt,cash,all,dressed_fob,total,266,63.50,921,1016,964,345,349,347
 2020-01-06,2019-12-30,2020-01-05,eastern-cornbelt,cash,all,live_delivered,total,1109,63,1225,1550,1424,118,126.50,124.72
 2020-01-13,2020-01-06,2020-01-12,eastern-cornbelt,cash,all,live_delivered,total,607,62.90,1275,1550,1430,120,128,125.85
 2020-01-20,2020-01-13,2020-01-19,eastern-cornbelt,cash,all,live_delivered,total,305,63.10,1250,1525,1367,120,127,125.06
@@ -1006,6 +1007,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,eastern-cornbelt,cash,all,live_delivered,total,159,62.20,1460,1525,1483,222.50,225,223.33
 2026-10-05,2026-09-28,2026-10-04,eastern-cornbelt,cash,all,live_delivered,total,191,63.40,1300,1500,1446,218,224,222.89
 2026-10-12,2026-10-05,2026-10-11,eastern-cornbelt,cash,all,live_delivered,total,30,62,1700,1700,1700,217,217,217
+2026-10-19,2026-10-12,2026-10-18,eastern-cornbelt,cash,all,live_delivered,total,97,62.50,1435,1620,1508,217,224,221.37
 2020-01-06,2019-12-30,2020-01-05,eastern-cornbelt,cash,all,live_fob,total,2132,63.70,1225,1550,1403,117.50,127,123.46
 2020-01-13,2020-01-06,2020-01-12,eastern-cornbelt,cash,all,live_fob,total,1347,63.40,1150,1525,1398,119.50,127,124.53
 2020-01-20,2020-01-13,2020-01-19,eastern-cornbelt,cash,all,live_fob,total,1594,63.40,1200,1500,1330,116,127,124.31
@@ -1360,6 +1362,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,eastern-cornbelt,cash,all,live_fob,total,497,63.10,1200,1475,1355,215,222,218.71
 2026-10-05,2026-09-28,2026-10-04,eastern-cornbelt,cash,all,live_fob,total,3115,62.90,1200,1630,1436,216,223.50,220.47
 2026-10-12,2026-10-05,2026-10-11,eastern-cornbelt,cash,all,live_fob,total,2044,63,1250,1600,1459,216,222,219.48
+2026-10-19,2026-10-12,2026-10-18,eastern-cornbelt,cash,all,live_fob,total,3479,63.40,1200,1750,1450,216,225,222.25
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,all,dressed_delivered,total,23823,,738,1024,891,193,200,198.74
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,all,dressed_delivered,total,21366,,713,1027,915,196,200,199.67
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,all,dressed_delivered,total,20349,,729,1037,910,197,200,198.92
@@ -1714,6 +1717,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,all,dressed_delivered,total,14412,,815,1120,989,342,355,347.91
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,all,dressed_delivered,total,22496,,775,1097,995,345,352,346.31
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,all,dressed_delivered,total,16447,,819,1089,991,345,352,345.74
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,all,dressed_delivered,total,20883,,803,1121,994,345,360,352.21
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,all,dressed_fob,total,521,,828,997,953,197,198,197.40
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,all,dressed_fob,total,1343,,914,1003,955,197,199,198.35
 2020-01-27,2020-01-20,2020-01-26,five-area,cash,all,dressed_fob,total,919,,810,977,918,197,199,198.43
@@ -2056,6 +2060,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,all,dressed_fob,total,396,,1016,1016,1016,348,348,348
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,all,dressed_fob,total,2075,,837,1088,1019,345,347,346.50
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,all,dressed_fob,total,1403,,884,1048,992,343,347,344.95
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,all,dressed_fob,total,5100,,889,1088,1011,344,355,350.70
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,all,live_delivered,total,2316,,1275,1537,1412,122,127.50,125.19
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,all,live_delivered,total,3177,,1225,1500,1381,123,127,126.31
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,all,live_delivered,total,2995,,1275,1550,1437,121,127,125.49
@@ -2410,6 +2415,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,all,live_delivered,total,149,,1300,1525,1377,219,220,219.79
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,all,live_delivered,total,1182,,1250,1650,1554,220,226,223.83
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,all,live_delivered,total,526,,1350,1600,1427,218,221,219.88
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,all,live_delivered,total,999,,1350,1600,1456,221,226,222.66
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,all,live_fob,total,43546,,1180,1650,1427,121,127,124.14
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,all,live_fob,total,32036,,1140,1650,1421,122,127,124.39
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,all,live_fob,total,49797,,1125,1635,1395,121,127,124.01
@@ -2764,6 +2770,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,all,live_fob,total,15511,,1300,1675,1539,218,223,220.71
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,all,live_fob,total,34236,,1300,1720,1541,216,222,219.96
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,all,live_fob,total,28703,,1257,1730,1550,218,223,220.20
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,all,live_fob,total,36137,,1275,1730,1551,218,227.50,224.09
 2022-09-12,2022-09-05,2022-09-11,five-area,cash,heifer,dressed_delivered,0to35,66,,896,896,896,227,227,227
 2020-02-17,2020-02-10,2020-02-16,five-area,cash,heifer,dressed_delivered,35to65,44,,733,733,733,190,190,190
 2020-05-25,2020-05-18,2020-05-24,five-area,cash,heifer,dressed_delivered,35to65,154,,760,760,760,180,180,180
@@ -3071,6 +3078,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,five-area,cash,heifer,dressed_delivered,65to80,82,,799,799,799,350,350,350
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,heifer,dressed_delivered,65to80,113,,848,848,848,345,345,345
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,heifer,dressed_delivered,65to80,53,,871,871,871,345,345,345
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,heifer,dressed_delivered,65to80,349,,819,868,857,350,350,350
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,heifer,dressed_delivered,over80,5700,,769,914,825,195,200,198.89
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,heifer,dressed_delivered,over80,4113,,713,986,842,197,200,199.72
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,heifer,dressed_delivered,over80,4012,,729,915,840,198,200,198.57
@@ -3425,6 +3433,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,heifer,dressed_delivered,over80,2433,,815,960,889,345,350,348.04
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,heifer,dressed_delivered,over80,4444,,775,1040,899,345,352,346.68
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,heifer,dressed_delivered,over80,3879,,848,972,902,345,352,345.98
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,heifer,dressed_delivered,over80,2791,,803,1000,906,350,355,351.51
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,heifer,dressed_delivered,total,7597,,754,914,824,195,200,198.90
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,heifer,dressed_delivered,total,4791,,713,986,837,197,200,199.76
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,heifer,dressed_delivered,total,4283,,729,915,840,198,200,198.60
@@ -3779,6 +3788,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,heifer,dressed_delivered,total,2546,,815,960,888,345,350,347.91
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,heifer,dressed_delivered,total,4497,,775,1040,899,345,352,346.66
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,heifer,dressed_delivered,total,3879,,848,972,902,345,352,345.98
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,heifer,dressed_delivered,total,3140,,803,1000,901,350,355,351.35
 2020-05-04,2020-04-27,2020-05-03,five-area,cash,heifer,dressed_fob,65to80,36,,791,791,791,150,150,150
 2021-05-10,2021-05-03,2021-05-09,five-area,cash,heifer,dressed_fob,65to80,128,,794,794,794,186,186,186
 2021-05-24,2021-05-17,2021-05-23,five-area,cash,heifer,dressed_fob,65to80,457,,745,762,753,189,189,189
@@ -4000,6 +4010,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,five-area,cash,heifer,dressed_fob,over80,114,,905,905,905,350,350,350
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,heifer,dressed_fob,over80,192,,857,968,945,345,347,345.42
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,heifer,dressed_fob,over80,156,,889,959,905,345,345,345
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,heifer,dressed_fob,over80,1117,,889,914,902,350,354,350.13
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,heifer,dressed_fob,total,148,,889,889,889,197,197,197
 2020-01-27,2020-01-20,2020-01-26,five-area,cash,heifer,dressed_fob,total,162,,841,905,876,199,199,199
 2020-02-03,2020-01-27,2020-02-02,five-area,cash,heifer,dressed_fob,total,299,,880,896,889,194,194,194
@@ -4211,6 +4222,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,five-area,cash,heifer,dressed_fob,total,114,,905,905,905,350,350,350
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,heifer,dressed_fob,total,192,,857,968,945,345,347,345.42
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,heifer,dressed_fob,total,156,,889,959,905,345,345,345
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,heifer,dressed_fob,total,1117,,889,914,902,350,354,350.13
 2020-08-17,2020-08-10,2020-08-16,five-area,cash,heifer,live_delivered,35to65,120,,1250,1250,1250,103,103,103
 2020-09-14,2020-09-07,2020-09-13,five-area,cash,heifer,live_delivered,35to65,86,,1200,1200,1200,101,101,101
 2020-09-28,2020-09-21,2020-09-27,five-area,cash,heifer,live_delivered,35to65,80,,1400,1400,1400,104,104,104
@@ -4625,6 +4637,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,heifer,live_delivered,over80,80,,1325,1325,1325,220,220,220
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,heifer,live_delivered,over80,118,,1325,1425,1393,220,226,224.07
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,heifer,live_delivered,over80,42,,1350,1350,1350,220,220,220
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,heifer,live_delivered,over80,262,,1375,1425,1388,222,223,222.74
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,heifer,live_delivered,total,1188,,1350,1400,1378,125,127,125.07
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,heifer,live_delivered,total,1747,,1225,1375,1327,123,127,126.06
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,heifer,live_delivered,total,1084,,1350,1400,1365,124.50,126.10,124.85
@@ -4954,6 +4967,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,heifer,live_delivered,total,80,,1325,1325,1325,220,220,220
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,heifer,live_delivered,total,118,,1325,1425,1393,220,226,224.07
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,heifer,live_delivered,total,42,,1350,1350,1350,220,220,220
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,heifer,live_delivered,total,262,,1375,1425,1388,222,223,222.74
 2020-02-10,2020-02-03,2020-02-09,five-area,cash,heifer,live_fob,0to35,305,,1250,1250,1250,121,121,121
 2021-02-08,2021-02-01,2021-02-07,five-area,cash,heifer,live_fob,0to35,212,,1300,1300,1300,114,114,114
 2021-11-22,2021-11-15,2021-11-21,five-area,cash,heifer,live_fob,0to35,151,,1300,1300,1300,133,133,133
@@ -5954,6 +5968,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,heifer,live_fob,over80,3444,,1300,1500,1406,219,223,220.93
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,heifer,live_fob,over80,7301,,1325,1500,1416,218,222,220.69
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,heifer,live_fob,over80,5100,,1325,1525,1399,218,223,220.84
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,heifer,live_fob,over80,6398,,1275,1625,1400,220,227,224.43
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,heifer,live_fob,total,11542,,1180,1500,1334,122,125,124.01
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,heifer,live_fob,total,6450,,1140,1520,1301,124,126,124.36
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,heifer,live_fob,total,13761,,1125,1475,1299,122,127,124.03
@@ -6308,9 +6323,11 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,heifer,live_fob,total,3444,,1300,1500,1406,219,223,220.93
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,heifer,live_fob,total,7301,,1325,1500,1416,218,222,220.69
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,heifer,live_fob,total,5100,,1325,1525,1399,218,223,220.84
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,heifer,live_fob,total,6398,,1275,1625,1400,220,227,224.43
 2020-06-08,2020-06-01,2020-06-07,five-area,cash,mixed,dressed_delivered,0to35,242,,908,908,908,178,178,178
 2022-01-24,2022-01-17,2022-01-23,five-area,cash,mixed,dressed_delivered,0to35,40,,778,778,778,218,218,218
 2023-03-20,2023-03-13,2023-03-19,five-area,cash,mixed,dressed_delivered,0to35,30,,879,879,879,264,264,264
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,mixed,dressed_delivered,0to35,45,,851,851,851,350,350,350
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,mixed,dressed_delivered,35to65,40,,856,856,856,200,200,200
 2020-02-03,2020-01-27,2020-02-02,five-area,cash,mixed,dressed_delivered,35to65,14,,671,671,671,193,193,193
 2020-05-11,2020-05-04,2020-05-10,five-area,cash,mixed,dressed_delivered,35to65,78,,860,860,860,149,149,149
@@ -6655,6 +6672,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,mixed,dressed_delivered,65to80,37,,957,957,957,345,345,345
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,mixed,dressed_delivered,65to80,58,,835,835,835,345,345,345
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,mixed,dressed_delivered,65to80,197,,819,944,920,345,345,345
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,mixed,dressed_delivered,65to80,204,,808,881,848,350,350,350
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,mixed,dressed_delivered,over80,2561,,738,980,870,193,200,198.88
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,mixed,dressed_delivered,over80,2338,,759,1000,858,197,200,199.05
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,mixed,dressed_delivered,over80,3312,,763,967,856,197,200,198.93
@@ -7009,6 +7027,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,mixed,dressed_delivered,over80,942,,873,1056,952,342,352,347.78
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,mixed,dressed_delivered,over80,1553,,876,1056,950,345,350,345.88
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,mixed,dressed_delivered,over80,1051,,819,1056,948,345,352,345.84
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,mixed,dressed_delivered,over80,3052,,819,1085,941,347,355,351.81
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,mixed,dressed_delivered,total,3194,,738,980,864,193,200,198.95
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,mixed,dressed_delivered,total,2474,,759,1000,858,197,200,199.10
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,mixed,dressed_delivered,total,4190,,763,967,861,197,200,198.94
@@ -7363,6 +7382,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,mixed,dressed_delivered,total,979,,873,1056,952,342,352,347.67
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,mixed,dressed_delivered,total,1658,,835,1056,946,345,350,345.82
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,mixed,dressed_delivered,total,1248,,819,1056,943,345,352,345.70
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,mixed,dressed_delivered,total,3301,,808,1085,934,347,355,351.67
 2021-07-05,2021-06-28,2021-07-04,five-area,cash,mixed,dressed_fob,0to35,204,,851,984,916,200,200,200
 2025-11-10,2025-11-03,2025-11-09,five-area,cash,mixed,dressed_fob,35to65,29,,912,912,912,358,358,358
 2025-12-08,2025-12-01,2025-12-07,five-area,cash,mixed,dressed_fob,35to65,75,,853,853,853,340,340,340
@@ -7555,6 +7575,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-07,2026-08-31,2026-09-06,five-area,cash,mixed,dressed_fob,over80,1000,,893,975,972,343,343,343
 2026-09-21,2026-09-14,2026-09-20,five-area,cash,mixed,dressed_fob,over80,40,,866,866,866,346,346,346
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,mixed,dressed_fob,over80,106,,837,953,909,345,345,345
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,mixed,dressed_fob,over80,112,,929,953,937,344,354,350.79
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,mixed,dressed_fob,total,12,,828,828,828,198,198,198
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,mixed,dressed_fob,total,70,,921,921,921,197,197,197
 2020-01-27,2020-01-20,2020-01-26,five-area,cash,mixed,dressed_fob,total,218,,810,977,893,197,199,197.80
@@ -7736,6 +7757,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-07,2026-08-31,2026-09-06,five-area,cash,mixed,dressed_fob,total,1000,,893,975,972,343,343,343
 2026-09-21,2026-09-14,2026-09-20,five-area,cash,mixed,dressed_fob,total,40,,866,866,866,346,346,346
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,mixed,dressed_fob,total,106,,837,953,909,345,345,345
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,mixed,dressed_fob,total,112,,929,953,937,344,354,350.79
 2020-05-18,2020-05-11,2020-05-17,five-area,cash,mixed,live_delivered,35to65,78,,1300,1300,1300,120,120,120
 2020-06-01,2020-05-25,2020-05-31,five-area,cash,mixed,live_delivered,35to65,80,,1300,1300,1300,120,120,120
 2020-06-08,2020-06-01,2020-06-07,five-area,cash,mixed,live_delivered,35to65,74,,1325,1450,1388,114,114,114
@@ -8184,6 +8206,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,mixed,live_delivered,over80,69,,1300,1525,1436,219,220,219.55
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,mixed,live_delivered,over80,302,,1250,1550,1416,220,221.50,221.10
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,mixed,live_delivered,over80,110,,1350,1600,1439,218,219.50,218.86
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,mixed,live_delivered,over80,597,,1350,1600,1468,221,225,222.36
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,mixed,live_delivered,total,184,,1275,1425,1348,123,126,124.35
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,mixed,live_delivered,total,237,,1300,1475,1364,125,127,126.26
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,mixed,live_delivered,total,146,,1275,1450,1362,121,126,124.38
@@ -8533,6 +8556,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,mixed,live_delivered,total,69,,1300,1525,1436,219,220,219.55
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,mixed,live_delivered,total,302,,1250,1550,1416,220,221.50,221.10
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,mixed,live_delivered,total,110,,1350,1600,1439,218,219.50,218.86
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,mixed,live_delivered,total,597,,1350,1600,1468,221,225,222.36
 2020-01-27,2020-01-20,2020-01-26,five-area,cash,mixed,live_fob,0to35,50,,1115,1115,1115,124,124,124
 2021-04-05,2021-03-29,2021-04-04,five-area,cash,mixed,live_fob,0to35,59,,1350,1350,1350,117,117,117
 2022-03-14,2022-03-07,2022-03-13,five-area,cash,mixed,live_fob,0to35,45,,1210,1210,1210,137,137,137
@@ -9534,6 +9558,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,mixed,live_fob,over80,1594,,1300,1600,1485,218,223,220.46
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,mixed,live_fob,over80,5566,,1300,1650,1488,218,222,219.62
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,mixed,live_fob,over80,4042,,1288,1675,1473,218,223,219.67
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,mixed,live_fob,over80,4611,,1325,1600,1473,218,227.50,223.11
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,mixed,live_fob,total,6706,,1185,1550,1336,121,126,124.08
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,mixed,live_fob,total,4879,,1145,1525,1326,122,126,124.06
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,mixed,live_fob,total,9490,,1150,1520,1339,121,126,123.92
@@ -9888,6 +9913,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,mixed,live_fob,total,1661,,1300,1600,1489,218,223,220.52
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,mixed,live_fob,total,5566,,1300,1650,1488,218,222,219.62
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,mixed,live_fob,total,4042,,1288,1675,1473,218,223,219.67
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,mixed,live_fob,total,4611,,1325,1600,1473,218,227.50,223.11
 2020-05-11,2020-05-04,2020-05-10,five-area,cash,steer,dressed_delivered,0to35,80,,829,829,829,170,170,170
 2020-06-01,2020-05-25,2020-05-31,five-area,cash,steer,dressed_delivered,0to35,38,,924,924,924,185,185,185
 2020-06-15,2020-06-08,2020-06-14,five-area,cash,steer,dressed_delivered,0to35,40,,937,937,937,166,166,166
@@ -10334,6 +10360,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,five-area,cash,steer,dressed_delivered,65to80,724,,916,1046,992,350,350,350
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,steer,dressed_delivered,65to80,276,,902,1024,958,345,350,347.28
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,steer,dressed_delivered,65to80,68,,928,928,928,345,345,345
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,steer,dressed_delivered,65to80,622,,903,945,923,350,350,350
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,steer,dressed_delivered,over80,9469,,818,1024,948,195,200,198.70
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,steer,dressed_delivered,over80,10872,,806,1027,956,196,200,199.67
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,steer,dressed_delivered,over80,10735,,809,1037,957,198,200,199.05
@@ -10688,6 +10715,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,steer,dressed_delivered,over80,10611,,868,1120,1017,342,355,347.94
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,steer,dressed_delivered,over80,16273,,868,1097,1028,345,352,346.26
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,steer,dressed_delivered,over80,11320,,837,1089,1027,345,352,345.66
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,steer,dressed_delivered,over80,13820,,868,1121,1032,345,360,352.64
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,steer,dressed_delivered,total,13032,,818,1024,937,193,200,198.60
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,steer,dressed_delivered,total,14101,,806,1027,951,196,200,199.74
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,steer,dressed_delivered,total,11876,,809,1037,953,198,200,199.04
@@ -11042,6 +11070,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,steer,dressed_delivered,total,10887,,868,1120,1016,342,355,347.93
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,steer,dressed_delivered,total,16341,,868,1097,1027,345,352,346.26
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,steer,dressed_delivered,total,11320,,837,1089,1027,345,352,345.66
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,steer,dressed_delivered,total,14442,,868,1121,1028,345,360,352.52
 2020-08-24,2020-08-17,2020-08-23,five-area,cash,steer,dressed_fob,0to35,36,,896,896,896,168,168,168
 2026-04-06,2026-03-30,2026-04-05,five-area,cash,steer,dressed_fob,35to65,138,,895,946,921,380,389,384.43
 2021-01-11,2021-01-04,2021-01-10,five-area,cash,steer,dressed_fob,65to80,35,,854,854,854,173,173,173
@@ -11397,6 +11426,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,steer,dressed_fob,over80,396,,1016,1016,1016,348,348,348
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,steer,dressed_fob,over80,1777,,1016,1088,1034,345,347,346.71
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,steer,dressed_fob,over80,1247,,884,1048,1003,343,347,344.94
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,steer,dressed_fob,over80,3871,,953,1088,1045,349,355,350.87
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,steer,dressed_fob,total,361,,968,997,984,197,198,197.55
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,steer,dressed_fob,total,1273,,914,1003,957,197,199,198.42
 2020-01-27,2020-01-20,2020-01-26,five-area,cash,steer,dressed_fob,total,539,,889,969,941,198,199,198.51
@@ -11732,6 +11762,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,steer,dressed_fob,total,396,,1016,1016,1016,348,348,348
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,steer,dressed_fob,total,1777,,1016,1088,1034,345,347,346.71
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,steer,dressed_fob,total,1247,,884,1048,1003,343,347,344.94
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,steer,dressed_fob,total,3871,,953,1088,1045,349,355,350.87
 2020-05-04,2020-04-27,2020-05-03,five-area,cash,steer,live_delivered,35to65,246,,1250,1300,1266,95,95,95
 2020-05-11,2020-05-04,2020-05-10,five-area,cash,steer,live_delivered,35to65,260,,1375,1375,1375,95,95,95
 2020-05-25,2020-05-18,2020-05-24,five-area,cash,steer,live_delivered,35to65,80,,1300,1300,1300,115,115,115
@@ -12228,6 +12259,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-14,2026-09-07,2026-09-13,five-area,cash,steer,live_delivered,over80,325,,1525,1600,1565,219.50,225.50,222
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,steer,live_delivered,over80,762,,1500,1650,1634,220,226,224.88
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,steer,live_delivered,over80,374,,1400,1550,1432,220,221,220.16
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,steer,live_delivered,over80,140,,1500,1580,1533,223,226,223.75
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,steer,live_delivered,total,944,,1300,1537,1467,122,127.50,125.50
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,steer,live_delivered,total,1193,,1325,1500,1463,125.50,127,126.68
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,steer,live_delivered,total,1765,,1300,1550,1487,123,127,125.98
@@ -12577,6 +12609,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-14,2026-09-07,2026-09-13,five-area,cash,steer,live_delivered,total,325,,1525,1600,1565,219.50,225.50,222
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,steer,live_delivered,total,762,,1500,1650,1634,220,226,224.88
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,steer,live_delivered,total,374,,1400,1550,1432,220,221,220.16
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,steer,live_delivered,total,140,,1500,1580,1533,223,226,223.75
 2020-02-03,2020-01-27,2020-02-02,five-area,cash,steer,live_fob,0to35,43,,1300,1300,1300,122,122,122
 2020-03-16,2020-03-09,2020-03-15,five-area,cash,steer,live_fob,0to35,36,,1275,1275,1275,106,106,106
 2020-05-25,2020-05-18,2020-05-24,five-area,cash,steer,live_fob,0to35,287,,1150,1150,1150,120,120,120
@@ -13292,6 +13325,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-07,2026-08-31,2026-09-06,five-area,cash,steer,live_fob,65to80,111,,1380,1380,1380,223,223,223
 2026-09-21,2026-09-14,2026-09-20,five-area,cash,steer,live_fob,65to80,53,,1500,1500,1500,220,220,220
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,steer,live_fob,65to80,178,,1650,1650,1650,223,223,223
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,steer,live_fob,65to80,117,,1500,1500,1500,226,226,226
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,steer,live_fob,over80,18131,,1350,1625,1499,122,127,124.27
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,steer,live_fob,over80,10631,,1325,1650,1525,123,127,124.92
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,steer,live_fob,over80,15183,,1336,1635,1502,122.50,126.50,124.06
@@ -13646,6 +13680,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,steer,live_fob,over80,10406,,1325,1675,1590,218,223,220.67
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,steer,live_fob,over80,21369,,1375,1720,1598,216,222,219.80
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,steer,live_fob,over80,19383,,1257,1730,1606,218,223,220.11
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,steer,live_fob,over80,25011,,1310,1730,1604,220,227,224.18
 2020-01-06,2019-12-30,2020-01-05,five-area,cash,steer,live_fob,total,25298,,1250,1650,1494,122,127,124.21
 2020-01-13,2020-01-06,2020-01-12,five-area,cash,steer,live_fob,total,20707,,1250,1650,1481,123,127,124.47
 2020-01-20,2020-01-13,2020-01-19,five-area,cash,steer,live_fob,total,26546,,1220,1635,1465,122.50,126.50,124.03
@@ -14000,6 +14035,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,five-area,cash,steer,live_fob,total,10406,,1325,1675,1590,218,223,220.67
 2026-10-05,2026-09-28,2026-10-04,five-area,cash,steer,live_fob,total,21369,,1375,1720,1598,216,222,219.80
 2026-10-12,2026-10-05,2026-10-11,five-area,cash,steer,live_fob,total,19561,,1257,1730,1606,218,223,220.14
+2026-10-19,2026-10-12,2026-10-18,five-area,cash,steer,live_fob,total,25128,,1310,1730,1603,220,227,224.19
 2020-01-06,2019-12-30,2020-01-05,kansas,cash,all,dressed_delivered,total,264,63.20,891,925,915,199,199,199
 2020-01-13,2020-01-06,2020-01-12,kansas,cash,all,dressed_delivered,total,634,63.60,800,1027,938,199,200,199.68
 2020-01-20,2020-01-13,2020-01-19,kansas,cash,all,dressed_delivered,total,251,63.40,896,1011,951,198,199,198.60
@@ -27934,6 +27970,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,all,dressed_delivered,total,10323,64.20,847,1075,992,345,350,347.29
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,all,dressed_delivered,total,16968,64.10,775,1096,997,345,352,345.89
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,all,dressed_delivered,total,12562,64.10,819,1072,988,345,352,345.39
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,all,dressed_delivered,total,14009,63.90,807,1120,991,345,355,352
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,all,dressed_fob,total,509,63.50,889,997,956,197,198,197.39
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,all,dressed_fob,total,905,62.90,914,1003,951,199,199,199
 2020-01-27,2020-01-20,2020-01-26,nebraska,cash,all,dressed_fob,total,692,62.90,841,977,928,198,199,198.73
@@ -28227,6 +28264,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,nebraska,cash,all,dressed_fob,total,2106,63.50,905,1064,1001,350,351,350.10
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,all,dressed_fob,total,1546,63.50,857,1048,1020,345,347,346.80
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,all,dressed_fob,total,1017,63.40,889,1048,1000,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,all,dressed_fob,total,1408,64.10,905,1075,1018,350,355,351.81
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,all,live_delivered,total,1238,63,1380,1537,1403,124.50,125,124.97
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,all,live_delivered,total,998,63.20,1367,1478,1376,125.50,125.50,125.50
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,all,live_delivered,total,996,62.90,1360,1475,1378,124.50,124.50,124.50
@@ -28762,6 +28800,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,all,live_fob,total,6739,63.30,1300,1675,1530,220,223,221.72
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,all,live_fob,total,14110,63.20,1330,1700,1510,218,222,220.80
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,all,live_fob,total,10279,63.10,1257,1675,1519,218,223,221.61
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,all,live_fob,total,13567,63.10,1300,1730,1552,222,227.50,225.64
 2020-02-03,2020-01-27,2020-02-02,nebraska,cash,dairy,dressed_delivered,35to65,80,60,795,795,795,160,160,160
 2020-03-02,2020-02-24,2020-03-01,nebraska,cash,dairy,dressed_delivered,35to65,35,60,810,810,810,150,150,150
 2020-03-30,2020-03-23,2020-03-29,nebraska,cash,dairy,dressed_delivered,35to65,40,60,795,795,795,155,155,155
@@ -28885,6 +28924,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-08-31,2026-08-24,2026-08-30,nebraska,cash,dairy,dressed_delivered,65to80,185,60,930,930,930,330,330,330
 2026-09-14,2026-09-07,2026-09-13,nebraska,cash,dairy,dressed_delivered,65to80,60,60,870,870,870,335,335,335
 2026-09-21,2026-09-14,2026-09-20,nebraska,cash,dairy,dressed_delivered,65to80,17,59,855,855,856,320,320,320
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,dairy,dressed_delivered,65to80,38,60,900,900,900,340,340,340
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,dairy,dressed_delivered,over80,40,59,811,811,811,165,165,165
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,dairy,dressed_delivered,over80,80,59,811,811,811,165,165,165
 2020-02-10,2020-02-03,2020-02-09,nebraska,cash,dairy,dressed_delivered,over80,78,59,811,826,818,158,170,163.85
@@ -28998,6 +29038,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,dairy,dressed_delivered,over80,73,59.50,855,900,877,330,330,330
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,dairy,dressed_delivered,over80,74,60,915,915,915,330,330,330
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,dairy,dressed_delivered,over80,38,63,866,866,866,330,330,330
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,dairy,dressed_delivered,over80,74,60,900,900,900,340,340,340
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,dairy,dressed_delivered,total,85,59,811,811,811,164,165,164.47
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,dairy,dressed_delivered,total,204,59.10,781,822,808,164,173,168.25
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,dairy,dressed_delivered,total,80,59,811,811,811,165,165,165
@@ -29200,6 +29241,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,dairy,dressed_delivered,total,73,59.50,855,900,877,330,330,330
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,dairy,dressed_delivered,total,74,60,915,915,915,330,330,330
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,dairy,dressed_delivered,total,38,63,866,866,866,330,330,330
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,dairy,dressed_delivered,total,112,60,900,900,900,340,340,340
 2020-01-27,2020-01-20,2020-01-26,nebraska,cash,dairy,dressed_fob,over80,48,58.50,848,848,848,150,150,150
 2020-02-03,2020-01-27,2020-02-02,nebraska,cash,dairy,dressed_fob,over80,32,59.50,862,862,863,153,153,153
 2020-02-17,2020-02-10,2020-02-16,nebraska,cash,dairy,dressed_fob,over80,33,58,841,841,841,155,155,155
@@ -29538,6 +29580,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,nebraska,cash,heifer,dressed_delivered,65to80,82,63.90,798,798,799,350,350,350
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,heifer,dressed_delivered,65to80,113,62.80,847,847,848,345,345,345
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,heifer,dressed_delivered,65to80,53,64.50,870,870,871,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,heifer,dressed_delivered,65to80,349,62.60,819,868,857,350,350,350
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,heifer,dressed_delivered,over80,3741,62.40,768,913,824,198,200,199.23
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,heifer,dressed_delivered,over80,1888,62.60,713,942,865,200,200,200
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,heifer,dressed_delivered,over80,1186,62.60,728,904,841,198,200,199.07
@@ -29892,6 +29935,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,heifer,dressed_delivered,over80,1854,64.30,857,960,896,345,350,347.92
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,heifer,dressed_delivered,over80,3944,63.90,775,950,900,345,352,346.64
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,heifer,dressed_delivered,over80,3627,64,847,972,903,345,352,346.04
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,heifer,dressed_delivered,over80,2100,63.90,859,999,921,350,355,351.93
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,heifer,dressed_delivered,total,5638,62.50,754,913,823,198,200,199.13
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,heifer,dressed_delivered,total,2566,62.50,713,942,851,200,200,200
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,heifer,dressed_delivered,total,1457,62.60,728,904,839,198,200,199.06
@@ -30246,6 +30290,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,heifer,dressed_delivered,total,1967,64.20,847,960,893,345,350,347.75
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,heifer,dressed_delivered,total,3997,63.90,775,950,899,345,352,346.62
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,heifer,dressed_delivered,total,3627,64,847,972,903,345,352,346.04
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,heifer,dressed_delivered,total,2449,63.70,819,999,912,350,355,351.65
 2020-05-04,2020-04-27,2020-05-03,nebraska,cash,heifer,dressed_fob,65to80,36,62,790,790,791,150,150,150
 2025-06-09,2025-06-02,2025-06-08,nebraska,cash,heifer,dressed_fob,65to80,223,63,850,850,851,384,384,384
 2025-09-15,2025-09-08,2025-09-14,nebraska,cash,heifer,dressed_fob,65to80,264,64,800,848,822,378,378,378
@@ -30407,6 +30452,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,nebraska,cash,heifer,dressed_fob,over80,114,63.50,905,905,905,350,350,350
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,heifer,dressed_fob,over80,192,63.50,857,968,945,345,347,345.42
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,heifer,dressed_fob,over80,121,63.50,889,889,889,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,heifer,dressed_fob,over80,175,64.70,905,905,906,350,350,350
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,heifer,dressed_fob,total,148,63.50,889,889,889,197,197,197
 2020-01-27,2020-01-20,2020-01-26,nebraska,cash,heifer,dressed_fob,total,162,63.50,841,905,876,199,199,199
 2020-02-03,2020-01-27,2020-02-02,nebraska,cash,heifer,dressed_fob,total,299,64,880,896,889,194,194,194
@@ -30564,6 +30610,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,nebraska,cash,heifer,dressed_fob,total,114,63.50,905,905,905,350,350,350
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,heifer,dressed_fob,total,192,63.50,857,968,945,345,347,345.42
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,heifer,dressed_fob,total,121,63.50,889,889,889,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,heifer,dressed_fob,total,175,64.70,905,905,906,350,350,350
 2022-09-12,2022-09-05,2022-09-11,nebraska,cash,heifer,live_delivered,35to65,396,63.60,1350,1400,1376,139,139,139
 2020-03-23,2020-03-16,2020-03-22,nebraska,cash,heifer,live_delivered,65to80,450,62,1500,1500,1500,112,112,112
 2020-08-03,2020-07-27,2020-08-02,nebraska,cash,heifer,live_delivered,65to80,1386,63.50,1300,1300,1300,101,101,101
@@ -31355,6 +31402,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,heifer,live_fob,over80,1828,63.30,1300,1440,1396,220,222,221.26
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,heifer,live_fob,over80,5070,63.50,1330,1500,1412,219.50,222,221.27
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,heifer,live_fob,over80,2841,63.10,1350,1525,1419,220,223,222.04
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,heifer,live_fob,over80,3643,63,1300,1625,1408,222,227,225.54
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,heifer,live_fob,total,3433,62.70,1270,1430,1351,122,124,123.83
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,heifer,live_fob,total,662,62.50,1275,1425,1358,124,124,124
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,heifer,live_fob,total,3098,62.90,1300,1475,1380,122,124,123.79
@@ -31709,6 +31757,8 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,heifer,live_fob,total,1828,63.30,1300,1440,1396,220,222,221.26
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,heifer,live_fob,total,5070,63.50,1330,1500,1412,219.50,222,221.27
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,heifer,live_fob,total,2841,63.10,1350,1525,1419,220,223,222.04
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,heifer,live_fob,total,3643,63,1300,1625,1408,222,227,225.54
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,mixed,dressed_delivered,0to35,45,63,850,850,851,350,350,350
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,mixed,dressed_delivered,35to65,40,63.20,856,856,856,200,200,200
 2020-05-18,2020-05-11,2020-05-17,nebraska,cash,mixed,dressed_delivered,35to65,44,62.50,768,768,769,190,190,190
 2020-06-22,2020-06-15,2020-06-21,nebraska,cash,mixed,dressed_delivered,35to65,80,63,860,860,860,167,167,167
@@ -32029,6 +32079,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,mixed,dressed_delivered,65to80,37,63.80,957,957,957,345,345,345
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,mixed,dressed_delivered,65to80,58,63,834,834,835,345,345,345
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,mixed,dressed_delivered,65to80,197,64,819,943,920,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,mixed,dressed_delivered,65to80,204,64.80,807,880,848,350,350,350
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,mixed,dressed_delivered,over80,1544,62.50,790,976,881,198,200,199.54
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,mixed,dressed_delivered,over80,1015,62.70,759,910,862,199,200,199.93
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,mixed,dressed_delivered,over80,1111,63,762,967,857,198,200,199.22
@@ -32381,6 +32432,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,mixed,dressed_delivered,over80,517,63.80,873,1056,991,345,350,347.48
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,mixed,dressed_delivered,over80,834,63.70,911,1024,965,345,350,345.24
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,mixed,dressed_delivered,over80,590,63.80,850,1056,989,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,mixed,dressed_delivered,over80,1736,63.40,837,1084,958,347,355,350.80
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,mixed,dressed_delivered,total,2177,62.40,775,976,870,198,200,199.46
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,mixed,dressed_delivered,total,1090,62.70,759,910,861,199,200,199.93
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,mixed,dressed_delivered,total,1914,62.80,762,967,867,198,200,199.15
@@ -32735,6 +32787,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,mixed,dressed_delivered,total,554,63.80,873,1056,989,345,350,347.31
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,mixed,dressed_delivered,total,939,63.70,834,1024,956,345,350,345.21
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,mixed,dressed_delivered,total,787,63.80,819,1056,972,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,mixed,dressed_delivered,total,1985,63.50,807,1084,944,347,355,350.70
 2021-07-05,2021-06-28,2021-07-04,nebraska,cash,mixed,dressed_fob,0to35,136,63.30,850,984,917,200,200,200
 2025-11-10,2025-11-03,2025-11-09,nebraska,cash,mixed,dressed_fob,35to65,29,64,912,912,912,358,358,358
 2025-12-08,2025-12-01,2025-12-07,nebraska,cash,mixed,dressed_fob,35to65,75,64,853,853,853,340,340,340
@@ -33472,6 +33525,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,mixed,live_fob,over80,533,63.20,1400,1600,1526,220,223,222.21
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,mixed,live_fob,over80,2495,63,1350,1650,1464,219.50,222,220.27
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,mixed,live_fob,over80,1583,63,1288,1675,1475,218,223,220.54
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,mixed,live_fob,over80,914,63,1500,1575,1521,223,227.50,225.65
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,mixed,live_fob,total,445,62.40,1230,1500,1390,123,124,123.83
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,mixed,live_fob,total,734,62.80,1250,1500,1339,122,124,123.88
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,mixed,live_fob,total,1621,62.90,1230,1450,1337,124,124,124
@@ -33823,6 +33877,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,mixed,live_fob,total,600,63.10,1400,1600,1534,220,223,222.19
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,mixed,live_fob,total,2495,63,1350,1650,1464,219.50,222,220.27
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,mixed,live_fob,total,1583,63,1288,1675,1475,218,223,220.54
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,mixed,live_fob,total,914,63,1500,1575,1521,223,227.50,225.65
 2022-05-16,2022-05-09,2022-05-15,nebraska,cash,mixed_cow,dressed_delivered,35to65,161,60,900,900,900,220,220,220
 2022-10-03,2022-09-26,2022-10-02,nebraska,cash,mixed_cow,dressed_delivered,65to80,42,60,900,900,900,223,223,223
 2023-07-24,2023-07-17,2023-07-23,nebraska,cash,mixed_cow,dressed_delivered,over80,26,64,888,888,888,291,291,291
@@ -34263,6 +34318,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,nebraska,cash,steer,dressed_delivered,65to80,724,64.10,916,1046,992,350,350,350
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,steer,dressed_delivered,65to80,276,63.90,902,1024,958,345,350,347.28
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,steer,dressed_delivered,65to80,68,64,928,928,928,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,steer,dressed_delivered,65to80,622,63.80,903,945,923,350,350,350
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,steer,dressed_delivered,over80,5979,62.40,818,1024,942,198,200,199
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,steer,dressed_delivered,over80,6452,63,806,1024,956,199,200,199.91
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,steer,dressed_delivered,over80,7073,63,891,1024,966,198,200,199.24
@@ -34617,6 +34673,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,steer,dressed_delivered,over80,7526,64.20,868,1075,1019,345,350,347.17
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,steer,dressed_delivered,over80,11964,64.10,868,1096,1034,345,350,345.71
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,steer,dressed_delivered,over80,8148,64.20,837,1072,1027,345,350,345.14
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,steer,dressed_delivered,over80,8953,64,868,1120,1028,345,355,352.53
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,steer,dressed_delivered,total,9098,62.40,818,1024,931,193,200,198.77
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,steer,dressed_delivered,total,9383,62.90,806,1024,948,199,200,199.94
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,steer,dressed_delivered,total,8039,62.90,838,1024,960,198,200,199.21
@@ -34971,6 +35028,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,steer,dressed_delivered,total,7802,64.20,868,1075,1017,345,350,347.17
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,steer,dressed_delivered,total,12032,64.10,868,1096,1033,345,350,345.71
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,steer,dressed_delivered,total,8148,64.20,837,1072,1027,345,350,345.14
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,steer,dressed_delivered,total,9575,64,868,1120,1021,345,355,352.36
 2021-01-11,2021-01-04,2021-01-10,nebraska,cash,steer,dressed_fob,65to80,35,61,854,854,854,173,173,173
 2023-03-06,2023-02-27,2023-03-05,nebraska,cash,steer,dressed_fob,65to80,1224,62,945,945,946,267,267,267
 2024-11-18,2024-11-11,2024-11-17,nebraska,cash,steer,dressed_fob,65to80,120,62,992,992,992,288,288,288
@@ -35257,6 +35315,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,nebraska,cash,steer,dressed_fob,over80,1992,63.50,961,1064,1007,350,351,350.10
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,steer,dressed_fob,over80,1354,63.50,1016,1048,1031,347,347,347
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,steer,dressed_fob,over80,896,63.40,961,1048,1015,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,steer,dressed_fob,over80,1233,64,1000,1075,1034,350,355,352.07
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,steer,dressed_fob,total,361,63.50,968,997,984,197,198,197.55
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,steer,dressed_fob,total,905,62.90,914,1003,951,199,199,199
 2020-01-27,2020-01-20,2020-01-26,nebraska,cash,steer,dressed_fob,total,463,62.70,889,968,939,198,199,198.59
@@ -35534,6 +35593,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,nebraska,cash,steer,dressed_fob,total,1992,63.50,961,1064,1007,350,351,350.10
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,steer,dressed_fob,total,1354,63.50,1016,1048,1031,347,347,347
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,steer,dressed_fob,total,896,63.40,961,1048,1015,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,steer,dressed_fob,total,1233,64,1000,1075,1034,350,355,352.07
 2023-06-26,2023-06-19,2023-06-25,nebraska,cash,steer,live_delivered,35to65,351,63.10,1370,1370,1370,181,181,181
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,steer,live_delivered,65to80,156,63.60,1475,1475,1475,124.50,124.50,124.50
 2020-01-27,2020-01-20,2020-01-26,nebraska,cash,steer,live_delivered,65to80,312,62.70,1489,1489,1489,124.50,124.50,124.50
@@ -36136,6 +36196,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-07,2026-08-31,2026-09-06,nebraska,cash,steer,live_fob,65to80,111,63.80,1380,1380,1380,223,223,223
 2026-09-21,2026-09-14,2026-09-20,nebraska,cash,steer,live_fob,65to80,53,63.60,1500,1500,1500,220,220,220
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,steer,live_fob,65to80,178,63,1650,1650,1650,223,223,223
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,steer,live_fob,65to80,117,62.80,1500,1500,1500,226,226,226
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,steer,live_fob,over80,6450,62.60,1350,1600,1515,122,124.50,123.80
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,steer,live_fob,over80,2723,62.40,1500,1600,1558,124,125,124.10
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,steer,live_fob,over80,5674,62.70,1365,1620,1499,123.50,124,123.98
@@ -36490,6 +36551,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,steer,live_fob,over80,4311,63.30,1325,1675,1586,220,223,221.85
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,steer,live_fob,over80,6545,63.10,1470,1700,1604,218,222,220.64
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,steer,live_fob,over80,5677,63.20,1257,1650,1576,218,223,221.66
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,steer,live_fob,over80,8893,63.20,1350,1730,1615,222,227,225.68
 2020-01-06,2019-12-30,2020-01-05,nebraska,cash,steer,live_fob,total,7206,62.50,1350,1600,1517,122,124.50,123.86
 2020-01-13,2020-01-06,2020-01-12,nebraska,cash,steer,live_fob,total,3243,62.20,1375,1600,1550,124,125,124.08
 2020-01-20,2020-01-13,2020-01-19,nebraska,cash,steer,live_fob,total,6890,62.80,1365,1620,1486,123.50,124,123.98
@@ -36844,6 +36906,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,cash,steer,live_fob,total,4311,63.30,1325,1675,1586,220,223,221.85
 2026-10-05,2026-09-28,2026-10-04,nebraska,cash,steer,live_fob,total,6545,63.10,1470,1700,1604,218,222,220.64
 2026-10-12,2026-10-05,2026-10-11,nebraska,cash,steer,live_fob,total,5855,63.20,1257,1650,1579,218,223,221.70
+2026-10-19,2026-10-12,2026-10-18,nebraska,cash,steer,live_fob,total,9010,63.20,1350,1730,1614,222,227,225.69
 2020-01-06,2019-12-30,2020-01-05,nebraska,grid,all,dressed_delivered,total,3859,62.50,750,1024,874,198,200,199.09
 2020-01-13,2020-01-06,2020-01-12,nebraska,grid,all,dressed_delivered,total,2681,62.30,759,967,846,196,200,199.88
 2020-01-20,2020-01-13,2020-01-19,nebraska,grid,all,dressed_delivered,total,2322,62.90,788,960,863,197,200,198.97
@@ -37198,6 +37261,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,grid,all,dressed_delivered,total,4145,64.30,772,1056,936,345,350,346.98
 2026-10-05,2026-09-28,2026-10-04,nebraska,grid,all,dressed_delivered,total,3843,64.10,832,1048,928,345,350,345.80
 2026-10-12,2026-10-05,2026-10-11,nebraska,grid,all,dressed_delivered,total,3184,64.10,800,1023,925,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,grid,all,dressed_delivered,total,4445,64.10,800,1045,957,345,350,349.12
 2020-04-13,2020-04-06,2020-04-12,nebraska,grid,all,dressed_fob,total,40,62.30,809,809,810,168,168,168
 2020-05-11,2020-05-04,2020-05-10,nebraska,grid,all,dressed_fob,total,3098,64,802,939,873,153,181.50,179.23
 2020-08-03,2020-07-27,2020-08-02,nebraska,grid,all,dressed_fob,total,40,63.40,938,938,938,160,160,160
@@ -38087,6 +38151,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-05-25,2026-05-18,2026-05-24,nebraska,grid,dairy,dressed_fob,over80,200,58,841,841,841,395,395,395
 2026-06-01,2026-05-25,2026-05-31,nebraska,grid,dairy,dressed_fob,over80,34,58,841,841,841,395,395,395
 2026-08-31,2026-08-24,2026-08-30,nebraska,grid,dairy,dressed_fob,over80,32,58,841,841,841,344,344,344
+2026-10-19,2026-10-12,2026-10-18,nebraska,grid,dairy,dressed_fob,over80,87,58,841,841,841,333,333,333
 2020-11-23,2020-11-16,2020-11-22,nebraska,grid,dairy,dressed_fob,total,20,60,855,855,855,152,152,152
 2021-02-01,2021-01-25,2021-01-31,nebraska,grid,dairy,dressed_fob,total,34,58,844,844,845,157,157,157
 2021-05-24,2021-05-17,2021-05-23,nebraska,grid,dairy,dressed_fob,total,17,59,885,885,885,167,167,167
@@ -38157,6 +38222,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-05-25,2026-05-18,2026-05-24,nebraska,grid,dairy,dressed_fob,total,200,58,841,841,841,395,395,395
 2026-06-01,2026-05-25,2026-05-31,nebraska,grid,dairy,dressed_fob,total,34,58,841,841,841,395,395,395
 2026-08-31,2026-08-24,2026-08-30,nebraska,grid,dairy,dressed_fob,total,32,58,841,841,841,344,344,344
+2026-10-19,2026-10-12,2026-10-18,nebraska,grid,dairy,dressed_fob,total,87,58,841,841,841,333,333,333
 2020-02-03,2020-01-27,2020-02-02,nebraska,grid,dairy,live_fob,65to80,40,58,1300,1300,1300,102,102,102
 2020-02-03,2020-01-27,2020-02-02,nebraska,grid,dairy,live_fob,total,40,58,1300,1300,1300,102,102,102
 2020-03-16,2020-03-09,2020-03-15,nebraska,grid,heifer,dressed_delivered,35to65,317,62,852,852,853,176,176,176
@@ -38711,6 +38777,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,grid,heifer,dressed_delivered,over80,1896,64.50,864,1003,907,345,350,345.98
 2026-10-05,2026-09-28,2026-10-04,nebraska,grid,heifer,dressed_delivered,over80,2018,64.40,832,976,903,345,350,345.41
 2026-10-12,2026-10-05,2026-10-11,nebraska,grid,heifer,dressed_delivered,over80,1471,64,800,932,880,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,grid,heifer,dressed_delivered,over80,1488,64.40,800,951,897,345,350,347.60
 2020-01-06,2019-12-30,2020-01-05,nebraska,grid,heifer,dressed_delivered,total,1988,62.70,813,942,851,198,200,199.02
 2020-01-13,2020-01-06,2020-01-12,nebraska,grid,heifer,dressed_delivered,total,1085,62.40,761,882,826,199,200,199.98
 2020-01-20,2020-01-13,2020-01-19,nebraska,grid,heifer,dressed_delivered,total,1626,62.90,790,903,848,199,199,199
@@ -39061,6 +39128,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,grid,heifer,dressed_delivered,total,2014,64.50,772,1003,899,345,350,345.92
 2026-10-05,2026-09-28,2026-10-04,nebraska,grid,heifer,dressed_delivered,total,2243,64.40,832,976,897,345,350,345.37
 2026-10-12,2026-10-05,2026-10-11,nebraska,grid,heifer,dressed_delivered,total,1471,64,800,932,880,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,grid,heifer,dressed_delivered,total,1488,64.40,800,951,897,345,350,347.60
 2020-04-13,2020-04-06,2020-04-12,nebraska,grid,heifer,dressed_fob,over80,40,62.30,809,809,810,168,168,168
 2020-05-11,2020-05-04,2020-05-10,nebraska,grid,heifer,dressed_fob,over80,1647,64.10,802,937,853,153,181.50,177.47
 2020-08-10,2020-08-03,2020-08-09,nebraska,grid,heifer,dressed_fob,over80,149,63.20,862,862,863,163,163,163
@@ -39701,6 +39769,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-08-17,2026-08-10,2026-08-16,nebraska,grid,mixed,dressed_delivered,65to80,76,63,844,844,844,360,360,360
 2026-08-31,2026-08-24,2026-08-30,nebraska,grid,mixed,dressed_delivered,65to80,40,64.50,874,874,874,343,343,343
 2026-09-28,2026-09-21,2026-09-27,nebraska,grid,mixed,dressed_delivered,65to80,84,62.80,871,871,872,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,grid,mixed,dressed_delivered,65to80,35,61.20,831,831,831,350,350,350
 2020-01-06,2019-12-30,2020-01-05,nebraska,grid,mixed,dressed_delivered,over80,568,62.10,810,907,881,198,200,199.40
 2020-01-13,2020-01-06,2020-01-12,nebraska,grid,mixed,dressed_delivered,over80,702,62.40,759,904,813,196,200,199.67
 2020-01-20,2020-01-13,2020-01-19,nebraska,grid,mixed,dressed_delivered,over80,138,62.90,794,867,842,197,199,198.36
@@ -40053,6 +40122,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,grid,mixed,dressed_delivered,over80,546,63.40,850,967,910,345,345,345
 2026-10-05,2026-09-28,2026-10-04,nebraska,grid,mixed,dressed_delivered,over80,764,63.60,837,1020,937,345,350,345.45
 2026-10-12,2026-10-05,2026-10-11,nebraska,grid,mixed,dressed_delivered,over80,739,63.90,873,973,920,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,grid,mixed,dressed_delivered,over80,1223,63.70,832,1031,949,350,350,350
 2020-01-06,2019-12-30,2020-01-05,nebraska,grid,mixed,dressed_delivered,total,851,61.90,750,930,855,198,200,199.60
 2020-01-13,2020-01-06,2020-01-12,nebraska,grid,mixed,dressed_delivered,total,744,62.50,759,904,816,196,200,199.69
 2020-01-20,2020-01-13,2020-01-19,nebraska,grid,mixed,dressed_delivered,total,178,62.60,794,867,843,197,199,198.51
@@ -40406,6 +40476,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,grid,mixed,dressed_delivered,total,630,63.30,850,967,905,345,345,345
 2026-10-05,2026-09-28,2026-10-04,nebraska,grid,mixed,dressed_delivered,total,764,63.60,837,1020,937,345,350,345.45
 2026-10-12,2026-10-05,2026-10-11,nebraska,grid,mixed,dressed_delivered,total,739,63.90,873,973,920,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,grid,mixed,dressed_delivered,total,1258,63.70,831,1031,946,350,350,350
 2020-05-11,2020-05-04,2020-05-10,nebraska,grid,mixed,dressed_fob,over80,194,63.70,834,882,856,181.50,181.50,181.50
 2020-12-07,2020-11-30,2020-12-06,nebraska,grid,mixed,dressed_fob,over80,150,63,882,882,882,175,175,175
 2021-05-10,2021-05-03,2021-05-09,nebraska,grid,mixed,dressed_fob,over80,120,63,863,863,863,189,189,189
@@ -41604,6 +41675,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,grid,steer,dressed_delivered,over80,1501,64.60,894,1056,999,345,350,349.23
 2026-10-05,2026-09-28,2026-10-04,nebraska,grid,steer,dressed_delivered,over80,836,63.90,932,1048,1000,345,350,347.27
 2026-10-12,2026-10-05,2026-10-11,nebraska,grid,steer,dressed_delivered,over80,656,64.20,937,1003,988,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,grid,steer,dressed_delivered,over80,1699,64.20,949,1045,1018,348,350,349.79
 2020-01-06,2019-12-30,2020-01-05,nebraska,grid,steer,dressed_delivered,total,1020,62.50,799,1024,933,198,199,198.77
 2020-01-13,2020-01-06,2020-01-12,nebraska,grid,steer,dressed_delivered,total,852,62.20,806,967,896,199,200,199.92
 2020-01-20,2020-01-13,2020-01-19,nebraska,grid,steer,dressed_delivered,total,518,63.10,788,960,917,199,200,199.05
@@ -41958,6 +42030,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,nebraska,grid,steer,dressed_delivered,total,1501,64.60,894,1056,999,345,350,349.23
 2026-10-05,2026-09-28,2026-10-04,nebraska,grid,steer,dressed_delivered,total,836,63.90,932,1048,1000,345,350,347.27
 2026-10-12,2026-10-05,2026-10-11,nebraska,grid,steer,dressed_delivered,total,974,64.30,937,1023,997,345,345,345
+2026-10-19,2026-10-12,2026-10-18,nebraska,grid,steer,dressed_delivered,total,1699,64.20,949,1045,1018,348,350,349.79
 2022-07-18,2022-07-11,2022-07-17,nebraska,grid,steer,dressed_fob,65to80,113,63,919,919,920,230,230,230
 2020-05-11,2020-05-04,2020-05-10,nebraska,grid,steer,dressed_fob,over80,1257,63.90,861,939,902,181.10,181.50,181.19
 2020-08-03,2020-07-27,2020-08-02,nebraska,grid,steer,dressed_fob,over80,40,63.40,938,938,938,160,160,160
@@ -43021,6 +43094,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-21,2026-09-14,2026-09-20,northeast,cash,all,dressed_fob,total,33,62,780,780,780,350,350,350
 2026-09-28,2026-09-21,2026-09-27,northeast,cash,all,dressed_fob,total,35,62,780,780,780,350,350,350
 2026-10-12,2026-10-05,2026-10-11,northeast,cash,all,dressed_fob,total,66,62,780,780,780,340,340,340
+2026-10-19,2026-10-12,2026-10-18,northeast,cash,all,dressed_fob,total,36,62,780,780,780,343,343,343
 2020-01-06,2019-12-30,2020-01-05,northeast,cash,all,live_delivered,total,40,62,1350,1350,1350,122,122,122
 2020-01-13,2020-01-06,2020-01-12,northeast,cash,all,live_delivered,total,111,63.20,1350,1350,1350,126,126,126
 2020-01-20,2020-01-13,2020-01-19,northeast,cash,all,live_delivered,total,40,63,1375,1375,1375,123,123,123
@@ -43345,6 +43419,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,northeast,cash,all,live_delivered,total,101,62.60,1300,1575,1448,215,222,218.65
 2026-10-05,2026-09-28,2026-10-04,northeast,cash,all,live_delivered,total,321,62.70,1300,1575,1419,218,226.75,223.91
 2026-10-12,2026-10-05,2026-10-11,northeast,cash,all,live_delivered,total,131,61.70,1325,1450,1425,214,217,216.40
+2026-10-19,2026-10-12,2026-10-18,northeast,cash,all,live_delivered,total,37,62.50,1486,1486,1486,217,217,217
 2020-01-06,2019-12-30,2020-01-05,northeast,cash,all,live_fob,total,437,63,1225,1475,1348,117,123,119.90
 2020-01-13,2020-01-06,2020-01-12,northeast,cash,all,live_fob,total,166,63.10,1400,1450,1417,119,122,120.37
 2020-01-20,2020-01-13,2020-01-19,northeast,cash,all,live_fob,total,469,62.90,1175,1475,1311,117.75,124.50,121.77
@@ -43696,6 +43771,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,northeast,cash,all,live_fob,total,373,63,1250,1573,1424,208,223,216.71
 2026-10-05,2026-09-28,2026-10-04,northeast,cash,all,live_fob,total,642,63.10,1300,1600,1401,210,222,218.12
 2026-10-12,2026-10-05,2026-10-11,northeast,cash,all,live_fob,total,439,63.50,1275,1575,1405,215,220.50,218.71
+2026-10-19,2026-10-12,2026-10-18,northeast,cash,all,live_fob,total,812,62.70,1325,1575,1424,207,223,218.87
 2020-01-06,2019-12-30,2020-01-05,northern-plains,cash,all,dressed_delivered,total,5488,61.70,769,978,883,196,200,198.90
 2020-01-13,2020-01-06,2020-01-12,northern-plains,cash,all,dressed_delivered,total,4971,61.80,748,992,879,198,200,199.49
 2020-01-20,2020-01-13,2020-01-19,northern-plains,cash,all,dressed_delivered,total,5732,61.80,801,992,899,198,200,198.86
@@ -44050,6 +44126,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,northern-plains,cash,all,dressed_delivered,total,623,62.70,937,1024,980,343,355,345.71
 2026-10-05,2026-09-28,2026-10-04,northern-plains,cash,all,dressed_delivered,total,1937,63,880,1064,979,345,345,345
 2026-10-12,2026-10-05,2026-10-11,northern-plains,cash,all,dressed_delivered,total,2045,63.30,882,1088,1015,345,350,345.18
+2026-10-19,2026-10-12,2026-10-18,northern-plains,cash,all,dressed_delivered,total,2765,62.80,866,1078,990,350,355,350.46
 2020-02-10,2020-02-03,2020-02-09,northern-plains,cash,all,dressed_fob,total,218,63.30,898,937,924,192,192.50,192.16
 2020-02-17,2020-02-10,2020-02-16,northern-plains,cash,all,dressed_fob,total,84,62.30,887,887,887,189,189,189
 2020-02-24,2020-02-17,2020-02-23,northern-plains,cash,all,dressed_fob,total,170,63.50,984,984,984,189,189,189
@@ -44127,6 +44204,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2024-10-07,2024-09-30,2024-10-06,northern-plains,cash,all,dressed_fob,total,252,61.30,919,919,919,296,296,296
 2024-10-14,2024-10-07,2024-10-13,northern-plains,cash,all,dressed_fob,total,420,61.50,953,953,953,296,296,296
 2026-10-12,2026-10-05,2026-10-11,northern-plains,cash,all,dressed_fob,total,66,62,961,961,961,345,345,345
+2026-10-19,2026-10-12,2026-10-18,northern-plains,cash,all,dressed_fob,total,80,63.50,1016,1016,1016,350,350,350
 2020-01-06,2019-12-30,2020-01-05,northern-plains,cash,all,live_delivered,total,855,63,1400,1500,1494,125,126,125.94
 2020-01-20,2020-01-13,2020-01-19,northern-plains,cash,all,live_delivered,total,112,62.50,1400,1500,1430,125,125,125
 2020-01-27,2020-01-20,2020-01-26,northern-plains,cash,all,live_delivered,total,36,62.50,1500,1500,1500,124.50,124.50,124.50
@@ -44594,6 +44672,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,northern-plains,cash,all,live_fob,total,4128,63.20,1400,1675,1568,218,220,219.41
 2026-10-05,2026-09-28,2026-10-04,northern-plains,cash,all,live_fob,total,4517,63.10,1365,1675,1548,217,221,219.01
 2026-10-12,2026-10-05,2026-10-11,northern-plains,cash,all,live_fob,total,4932,63,1330,1725,1565,216,223,220.37
+2026-10-19,2026-10-12,2026-10-18,northern-plains,cash,all,live_fob,total,6362,63.20,1350,1725,1538,220,227,224.72
 2020-05-11,2020-05-04,2020-05-10,texas-oklahoma,cash,all,dressed_delivered,total,78,63.50,860,860,860,149,149,149
 2020-05-25,2020-05-18,2020-05-24,texas-oklahoma,cash,all,dressed_delivered,total,80,63.50,850,850,850,180,180,180
 2020-07-06,2020-06-29,2020-07-05,texas-oklahoma,cash,all,dressed_delivered,total,160,63.50,825,825,825,144,144,144
@@ -54160,6 +54239,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,western-cornbelt,cash,all,dressed_delivered,total,4089,63.80,815,1120,981,342,355,349.47
 2026-10-05,2026-09-28,2026-10-04,western-cornbelt,cash,all,dressed_delivered,total,5528,63.60,835,1064,989,345,352,347.57
 2026-10-12,2026-10-05,2026-10-11,western-cornbelt,cash,all,dressed_delivered,total,3925,63.80,819,1089,1002,345,352,346.84
+2026-10-19,2026-10-12,2026-10-18,western-cornbelt,cash,all,dressed_delivered,total,6967,63.80,803,1121,999,350,360,352.61
 2020-01-06,2019-12-30,2020-01-05,western-cornbelt,cash,all,dressed_fob,total,12,62.50,828,828,828,198,198,198
 2020-01-20,2020-01-13,2020-01-19,western-cornbelt,cash,all,dressed_fob,total,438,63.30,921,977,965,197,197,197
 2020-01-27,2020-01-20,2020-01-26,western-cornbelt,cash,all,dressed_fob,total,227,61.90,810,953,889,197,198,197.51
@@ -54467,6 +54547,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,western-cornbelt,cash,all,dressed_fob,total,396,63.50,1016,1016,1016,348,348,348
 2026-10-05,2026-09-28,2026-10-04,western-cornbelt,cash,all,dressed_fob,total,529,63.40,837,1088,1016,345,347,345.62
 2026-10-12,2026-10-05,2026-10-11,western-cornbelt,cash,all,dressed_fob,total,386,63.50,884,984,971,343,347,344.80
+2026-10-19,2026-10-12,2026-10-18,western-cornbelt,cash,all,dressed_fob,total,3692,63.70,889,1088,1009,344,354,350.28
 2020-01-06,2019-12-30,2020-01-05,western-cornbelt,cash,all,live_delivered,total,1078,63.30,1275,1500,1422,122,127.50,125.44
 2020-01-13,2020-01-06,2020-01-12,western-cornbelt,cash,all,live_delivered,total,2179,63.10,1225,1500,1384,123,127,126.68
 2020-01-20,2020-01-13,2020-01-19,western-cornbelt,cash,all,live_delivered,total,1999,63,1275,1550,1466,121,127,125.98
@@ -54818,6 +54899,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,western-cornbelt,cash,all,live_delivered,total,149,63.40,1300,1525,1377,219,220,219.79
 2026-10-05,2026-09-28,2026-10-04,western-cornbelt,cash,all,live_delivered,total,482,63.20,1250,1625,1452,220,221.50,220.69
 2026-10-12,2026-10-05,2026-10-11,western-cornbelt,cash,all,live_delivered,total,526,63.70,1350,1600,1427,218,221,219.88
+2026-10-19,2026-10-12,2026-10-18,western-cornbelt,cash,all,live_delivered,total,999,63.60,1350,1600,1456,221,226,222.66
 2020-01-06,2019-12-30,2020-01-05,western-cornbelt,cash,all,live_fob,total,14124,63,1250,1575,1458,121,127,124.54
 2020-01-13,2020-01-06,2020-01-12,western-cornbelt,cash,all,live_fob,total,10317,63.10,1250,1600,1468,123,127,125.21
 2020-01-20,2020-01-13,2020-01-19,western-cornbelt,cash,all,live_fob,total,10221,63.10,1225,1600,1469,121,127,124.32
@@ -55172,6 +55254,7 @@ report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct
 2026-09-28,2026-09-21,2026-09-27,western-cornbelt,cash,all,live_fob,total,8772,63.30,1300,1650,1545,218,223,219.94
 2026-10-05,2026-09-28,2026-10-04,western-cornbelt,cash,all,live_fob,total,20348,63.30,1275,1720,1561,216,222,219.38
 2026-10-12,2026-10-05,2026-10-11,western-cornbelt,cash,all,live_fob,total,18634,63.30,1325,1730,1566,218,221,219.42
+2026-10-19,2026-10-12,2026-10-18,western-cornbelt,cash,all,live_fob,total,22925,63.20,1265,1700,1546,218,225,223.17
 2020-12-14,2020-12-07,2020-12-13,western-states,cash,all,dressed_delivered,total,40,62.50,938,938,938,174,174,174
 2021-01-18,2021-01-11,2021-01-17,western-states,cash,all,dressed_delivered,total,42,62,837,837,837,172,172,172
 2023-08-28,2023-08-21,2023-08-27,western-states,cash,all,dressed_delivered,total,37,62,806,806,806,285,285,285

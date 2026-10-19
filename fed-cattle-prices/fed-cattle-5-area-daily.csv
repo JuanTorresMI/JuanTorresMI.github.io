@@ -1433,6 +1433,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,all,dressed_delivered,total,13491,,819,1089,990,345,350,345.55
 2026-10-12,all,dressed_delivered,total,2579,,914,1064,1015,345,352,346.17
 2026-10-16,all,dressed_delivered,total,3448,,832,1095,977,345,355,352.81
+2026-10-19,all,dressed_delivered,total,17435,,803,1121,997,350,360,352.09
 2020-01-06,all,dressed_fob,total,521,,828,997,953,197,198,197.40
 2020-01-17,all,dressed_fob,total,1063,,939,1003,965,197,199,198.31
 2020-01-20,all,dressed_fob,total,280,,914,921,916,197,199,198.50
@@ -2084,6 +2085,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-12,all,dressed_fob,total,536,,884,1016,965,343,347,345.25
 2026-10-14,all,dressed_fob,total,36,,953,953,953,344,344,344
 2026-10-16,all,dressed_fob,total,4029,,894,1088,1018,349,350,349.98
+2026-10-19,all,dressed_fob,total,1035,,889,1048,990,350,355,353.74
 2020-01-03,all,live_delivered,total,398,,1350,1500,1429,124,126.65,125.82
 2020-01-06,all,live_delivered,total,1918,,1275,1537,1408,122,127.50,125.06
 2020-01-09,all,live_delivered,total,32,,1330,1330,1330,123,123,123
@@ -3197,6 +3199,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,all,live_delivered,total,110,,1350,1600,1439,218,219.50,218.86
 2026-10-12,all,live_delivered,total,102,,1350,1550,1468,220,221,220.59
 2026-10-16,all,live_delivered,total,926,,1350,1600,1454,221,223,222.43
+2026-10-19,all,live_delivered,total,73,,1475,1500,1487,225,226,225.48
 2020-01-02,all,live_fob,total,1579,,1350,1525,1424,125,125,125
 2020-01-03,all,live_fob,total,2892,,1250,1575,1490,122,125,124.82
 2020-01-06,all,live_fob,total,39075,,1180,1650,1423,121,127,124.05
@@ -4733,6 +4736,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,all,live_fob,total,8414,,1325,1730,1547,218,220,218.98
 2026-10-12,all,live_fob,total,20213,,1257,1725,1552,218,223,220.71
 2026-10-16,all,live_fob,total,4883,,1275,1680,1555,218,223,221.77
+2026-10-19,all,live_fob,total,31254,,1300,1730,1550,220,227.50,224.46
 2022-09-08,heifer,dressed_delivered,0to35,66,,896,896,896,227,227,227
 2020-02-14,heifer,dressed_delivered,35to65,44,,733,733,733,190,190,190
 2020-05-22,heifer,dressed_delivered,35to65,154,,760,760,760,180,180,180
@@ -5166,6 +5170,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-09-28,heifer,dressed_delivered,65to80,113,,848,848,848,345,345,345
 2026-10-02,heifer,dressed_delivered,65to80,53,,871,871,871,345,345,345
 2026-10-16,heifer,dressed_delivered,65to80,71,,868,868,868,350,350,350
+2026-10-19,heifer,dressed_delivered,65to80,278,,819,868,854,350,350,350
 2020-01-02,heifer,dressed_delivered,over80,80,,870,870,870,195,195,195
 2020-01-03,heifer,dressed_delivered,over80,155,,781,834,817,198,198,198
 2020-01-06,heifer,dressed_delivered,over80,5383,,769,914,825,198,200,199.03
@@ -6193,6 +6198,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,heifer,dressed_delivered,over80,3412,,848,968,901,345,350,345.60
 2026-10-12,heifer,dressed_delivered,over80,130,,972,972,972,345,345,345
 2026-10-16,heifer,dressed_delivered,over80,250,,832,882,865,350,355,352.50
+2026-10-19,heifer,dressed_delivered,over80,2541,,803,1000,910,350,355,351.42
 2020-01-02,heifer,dressed_delivered,total,80,,870,870,870,195,195,195
 2020-01-03,heifer,dressed_delivered,total,290,,781,863,838,198,198,198
 2020-01-06,heifer,dressed_delivered,total,7145,,754,914,823,198,200,199.02
@@ -7244,6 +7250,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,heifer,dressed_delivered,total,3412,,848,968,901,345,350,345.60
 2026-10-12,heifer,dressed_delivered,total,130,,972,972,972,345,345,345
 2026-10-16,heifer,dressed_delivered,total,321,,832,882,866,350,355,351.95
+2026-10-19,heifer,dressed_delivered,total,2819,,803,1000,905,350,355,351.28
 2020-05-01,heifer,dressed_fob,65to80,36,,791,791,791,150,150,150
 2021-05-05,heifer,dressed_fob,65to80,128,,794,794,794,186,186,186
 2021-05-19,heifer,dressed_fob,65to80,457,,745,762,753,189,189,189
@@ -7528,6 +7535,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,heifer,dressed_fob,over80,35,,959,959,959,345,345,345
 2026-10-12,heifer,dressed_fob,over80,121,,889,889,889,345,345,345
 2026-10-16,heifer,dressed_fob,over80,1080,,894,914,902,350,350,350
+2026-10-19,heifer,dressed_fob,over80,37,,889,889,889,354,354,354
 2020-01-06,heifer,dressed_fob,total,148,,889,889,889,197,197,197
 2020-01-23,heifer,dressed_fob,total,74,,841,841,841,199,199,199
 2020-01-24,heifer,dressed_fob,total,88,,905,905,905,199,199,199
@@ -7804,6 +7812,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,heifer,dressed_fob,total,35,,959,959,959,345,345,345
 2026-10-12,heifer,dressed_fob,total,121,,889,889,889,345,345,345
 2026-10-16,heifer,dressed_fob,total,1080,,894,914,902,350,350,350
+2026-10-19,heifer,dressed_fob,total,37,,889,889,889,354,354,354
 2020-08-13,heifer,live_delivered,35to65,120,,1250,1250,1250,103,103,103
 2020-09-10,heifer,live_delivered,35to65,86,,1200,1200,1200,101,101,101
 2020-09-28,heifer,live_delivered,35to65,80,,1400,1400,1400,104,104,104
@@ -11617,6 +11626,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,heifer,live_fob,over80,1447,,1325,1500,1376,218,220,219.07
 2026-10-12,heifer,live_fob,over80,3577,,1350,1525,1407,220,223,221.62
 2026-10-16,heifer,live_fob,over80,417,,1275,1325,1295,220,222,220.91
+2026-10-19,heifer,live_fob,over80,5981,,1300,1625,1407,221,227,224.67
 2020-01-02,heifer,live_fob,total,115,,1400,1400,1400,125,125,125
 2020-01-03,heifer,live_fob,total,545,,1250,1400,1297,125,125,125
 2020-01-06,heifer,live_fob,total,10882,,1180,1500,1336,122,125,123.95
@@ -12928,6 +12938,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,heifer,live_fob,total,1447,,1325,1500,1376,218,220,219.07
 2026-10-12,heifer,live_fob,total,3577,,1350,1525,1407,220,223,221.62
 2026-10-16,heifer,live_fob,total,417,,1275,1325,1295,220,222,220.91
+2026-10-19,heifer,live_fob,total,5981,,1300,1625,1407,221,227,224.67
 2020-06-03,mixed,dressed_delivered,0to35,242,,908,908,908,178,178,178
 2022-01-20,mixed,dressed_delivered,0to35,40,,778,778,778,218,218,218
 2023-03-16,mixed,dressed_delivered,0to35,30,,879,879,879,264,264,264
@@ -13464,6 +13475,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-02,mixed,dressed_delivered,65to80,58,,835,835,835,345,345,345
 2026-10-09,mixed,dressed_delivered,65to80,38,,819,819,819,345,345,345
 2026-10-12,mixed,dressed_delivered,65to80,159,,944,944,944,345,345,345
+2026-10-19,mixed,dressed_delivered,65to80,204,,808,881,848,350,350,350
 2020-01-03,mixed,dressed_delivered,over80,320,,822,905,871,195,198,197.56
 2020-01-06,mixed,dressed_delivered,over80,2205,,738,980,870,193,200,199.13
 2020-01-07,mixed,dressed_delivered,over80,76,,882,882,882,197,197,197
@@ -14727,6 +14739,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,mixed,dressed_delivered,over80,861,,819,1056,954,345,347,345.09
 2026-10-12,mixed,dressed_delivered,over80,150,,914,928,917,345,352,350.32
 2026-10-16,mixed,dressed_delivered,over80,1140,,866,1055,948,347,355,352.55
+2026-10-19,mixed,dressed_delivered,over80,1912,,819,1085,938,350,355,351.37
 2020-01-03,mixed,dressed_delivered,total,320,,822,905,871,195,198,197.56
 2020-01-06,mixed,dressed_delivered,total,2838,,738,980,864,193,200,199.16
 2020-01-07,mixed,dressed_delivered,total,76,,882,882,882,197,197,197
@@ -16005,6 +16018,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,mixed,dressed_delivered,total,899,,819,1056,948,345,347,345.09
 2026-10-12,mixed,dressed_delivered,total,309,,914,944,931,345,352,347.58
 2026-10-16,mixed,dressed_delivered,total,1185,,851,1055,944,347,355,352.45
+2026-10-19,mixed,dressed_delivered,total,2116,,808,1085,929,350,355,351.23
 2021-06-30,mixed,dressed_fob,0to35,204,,851,984,916,200,200,200
 2025-11-06,mixed,dressed_fob,35to65,29,,912,912,912,358,358,358
 2025-12-05,mixed,dressed_fob,35to65,75,,853,853,853,340,340,340
@@ -16224,6 +16238,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-02,mixed,dressed_fob,over80,66,,953,953,953,345,345,345
 2026-10-05,mixed,dressed_fob,over80,40,,837,837,837,345,345,345
 2026-10-14,mixed,dressed_fob,over80,36,,953,953,953,344,344,344
+2026-10-19,mixed,dressed_fob,over80,76,,929,929,929,354,354,354
 2020-01-06,mixed,dressed_fob,total,12,,828,828,828,198,198,198
 2020-01-20,mixed,dressed_fob,total,70,,921,921,921,197,197,197
 2020-01-24,mixed,dressed_fob,total,218,,810,977,893,197,199,197.80
@@ -16435,6 +16450,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-02,mixed,dressed_fob,total,66,,953,953,953,345,345,345
 2026-10-05,mixed,dressed_fob,total,40,,837,837,837,345,345,345
 2026-10-14,mixed,dressed_fob,total,36,,953,953,953,344,344,344
+2026-10-19,mixed,dressed_fob,total,76,,929,929,929,354,354,354
 2023-11-17,mixed,live_delivered,0to35,65,,1450,1450,1450,260,260,260
 2020-05-18,mixed,live_delivered,35to65,78,,1300,1300,1300,120,120,120
 2020-05-29,mixed,live_delivered,35to65,80,,1300,1300,1300,120,120,120
@@ -17406,6 +17422,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-05,mixed,live_delivered,over80,35,,1400,1400,1400,221,221,221
 2026-10-09,mixed,live_delivered,over80,110,,1350,1600,1439,218,219.50,218.86
 2026-10-16,mixed,live_delivered,over80,559,,1350,1600,1468,221,223,222.18
+2026-10-19,mixed,live_delivered,over80,38,,1475,1475,1475,225,225,225
 2020-01-03,mixed,live_delivered,total,37,,1425,1425,1425,125,125,125
 2020-01-06,mixed,live_delivered,total,147,,1275,1425,1329,123,126,124.19
 2020-01-13,mixed,live_delivered,total,237,,1300,1475,1364,125,127,126.26
@@ -18291,6 +18308,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-05,mixed,live_delivered,total,35,,1400,1400,1400,221,221,221
 2026-10-09,mixed,live_delivered,total,110,,1350,1600,1439,218,219.50,218.86
 2026-10-16,mixed,live_delivered,total,559,,1350,1600,1468,221,223,222.18
+2026-10-19,mixed,live_delivered,total,38,,1475,1475,1475,225,225,225
 2020-01-23,mixed,live_fob,0to35,50,,1115,1115,1115,124,124,124
 2021-04-02,mixed,live_fob,0to35,59,,1350,1350,1350,117,117,117
 2022-03-09,mixed,live_fob,0to35,45,,1210,1210,1210,137,137,137
@@ -20752,6 +20770,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,mixed,live_fob,over80,1683,,1350,1675,1469,218,220,218.49
 2026-10-12,mixed,live_fob,over80,2359,,1288,1575,1475,218,223,220.51
 2026-10-16,mixed,live_fob,over80,995,,1350,1600,1495,218,222,220.01
+2026-10-19,mixed,live_fob,over80,3616,,1325,1600,1467,221,227.50,223.97
 2020-01-02,mixed,live_fob,total,189,,1350,1400,1360,125,125,125
 2020-01-03,mixed,live_fob,total,117,,1400,1400,1400,125,125,125
 2020-01-06,mixed,live_fob,total,6400,,1185,1550,1335,121,126,124.04
@@ -22049,6 +22068,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,mixed,live_fob,total,1683,,1350,1675,1469,218,220,218.49
 2026-10-12,mixed,live_fob,total,2359,,1288,1575,1475,218,223,220.51
 2026-10-16,mixed,live_fob,total,995,,1350,1600,1495,218,222,220.01
+2026-10-19,mixed,live_fob,total,3616,,1325,1600,1467,221,227.50,223.97
 2020-05-06,steer,dressed_delivered,0to35,80,,829,829,829,170,170,170
 2020-05-28,steer,dressed_delivered,0to35,38,,924,924,924,185,185,185
 2020-06-10,steer,dressed_delivered,0to35,40,,937,937,937,166,166,166
@@ -22806,6 +22826,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-09-23,steer,dressed_delivered,65to80,126,,1024,1024,1024,350,350,350
 2026-09-28,steer,dressed_delivered,65to80,150,,902,902,902,345,345,345
 2026-10-02,steer,dressed_delivered,65to80,68,,928,928,928,345,345,345
+2026-10-19,steer,dressed_delivered,65to80,622,,903,945,923,350,350,350
 2020-01-02,steer,dressed_delivered,over80,38,,940,940,940,195,195,195
 2020-01-03,steer,dressed_delivered,over80,1636,,906,1015,971,198,198,198
 2020-01-06,steer,dressed_delivered,over80,7717,,818,1024,943,198,200,198.90
@@ -24046,6 +24067,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,steer,dressed_delivered,over80,9180,,837,1089,1026,345,350,345.57
 2026-10-12,steer,dressed_delivered,over80,2140,,914,1064,1030,345,352,346.04
 2026-10-16,steer,dressed_delivered,over80,1942,,945,1095,1015,345,355,353.17
+2026-10-19,steer,dressed_delivered,over80,11878,,868,1121,1035,350,360,352.55
 2020-01-02,steer,dressed_delivered,total,38,,940,940,940,195,195,195
 2020-01-03,steer,dressed_delivered,total,2285,,832,1015,939,193,198,197.14
 2020-01-06,steer,dressed_delivered,total,10631,,818,1024,936,198,200,198.95
@@ -25298,6 +25320,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,steer,dressed_delivered,total,9180,,837,1089,1026,345,350,345.57
 2026-10-12,steer,dressed_delivered,total,2140,,914,1064,1030,345,352,346.04
 2026-10-16,steer,dressed_delivered,total,1942,,945,1095,1015,345,355,353.17
+2026-10-19,steer,dressed_delivered,total,12500,,868,1121,1030,350,360,352.42
 2020-08-19,steer,dressed_fob,0to35,36,,896,896,896,168,168,168
 2026-04-02,steer,dressed_fob,35to65,70,,946,946,946,380,380,380
 2026-04-03,steer,dressed_fob,35to65,68,,895,895,895,389,389,389
@@ -25896,6 +25919,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,steer,dressed_fob,over80,832,,961,1048,1011,343,345,344.75
 2026-10-12,steer,dressed_fob,over80,415,,884,1016,987,343,347,345.32
 2026-10-16,steer,dressed_fob,over80,2949,,1011,1088,1060,349,350,349.98
+2026-10-19,steer,dressed_fob,over80,922,,953,1048,999,350,355,353.71
 2020-01-06,steer,dressed_fob,total,361,,968,997,984,197,198,197.55
 2020-01-17,steer,dressed_fob,total,1063,,939,1003,965,197,199,198.31
 2020-01-20,steer,dressed_fob,total,210,,914,914,914,199,199,199
@@ -26477,6 +26501,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,steer,dressed_fob,total,832,,961,1048,1011,343,345,344.75
 2026-10-12,steer,dressed_fob,total,415,,884,1016,987,343,347,345.32
 2026-10-16,steer,dressed_fob,total,2949,,1011,1088,1060,349,350,349.98
+2026-10-19,steer,dressed_fob,total,922,,953,1048,999,350,355,353.71
 2020-05-04,steer,live_delivered,35to65,246,,1250,1300,1266,95,95,95
 2020-05-11,steer,live_delivered,35to65,260,,1375,1375,1375,95,95,95
 2020-05-25,steer,live_delivered,35to65,80,,1300,1300,1300,115,115,115
@@ -27417,6 +27442,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-08,steer,live_delivered,over80,314,,1400,1425,1409,220,220,220
 2026-10-12,steer,live_delivered,over80,60,,1550,1550,1550,221,221,221
 2026-10-16,steer,live_delivered,over80,105,,1525,1580,1543,223,223,223
+2026-10-19,steer,live_delivered,over80,35,,1500,1500,1500,226,226,226
 2020-01-03,steer,live_delivered,total,283,,1400,1500,1452,124,126.65,126.15
 2020-01-06,steer,live_delivered,total,661,,1300,1537,1473,122,127.50,125.23
 2020-01-13,steer,live_delivered,total,1193,,1325,1500,1463,125.50,127,126.68
@@ -28224,6 +28250,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-08,steer,live_delivered,total,314,,1400,1425,1409,220,220,220
 2026-10-12,steer,live_delivered,total,60,,1550,1550,1550,221,221,221
 2026-10-16,steer,live_delivered,total,105,,1525,1580,1543,223,223,223
+2026-10-19,steer,live_delivered,total,35,,1500,1500,1500,226,226,226
 2020-01-31,steer,live_fob,0to35,43,,1300,1300,1300,122,122,122
 2020-03-12,steer,live_fob,0to35,36,,1275,1275,1275,106,106,106
 2020-05-21,steer,live_fob,0to35,287,,1150,1150,1150,120,120,120
@@ -29844,6 +29871,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-09-07,steer,live_fob,65to80,111,,1380,1380,1380,223,223,223
 2026-09-18,steer,live_fob,65to80,53,,1500,1500,1500,220,220,220
 2026-10-12,steer,live_fob,65to80,178,,1650,1650,1650,223,223,223
+2026-10-19,steer,live_fob,65to80,117,,1500,1500,1500,226,226,226
 2020-01-02,steer,live_fob,over80,1275,,1350,1525,1436,125,125,125
 2020-01-03,steer,live_fob,over80,2230,,1450,1575,1542,122,125,124.76
 2020-01-06,steer,live_fob,over80,14626,,1350,1625,1498,122,127,124.14
@@ -31228,6 +31256,7 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,steer,live_fob,over80,5284,,1450,1730,1619,218,220,219.10
 2026-10-12,steer,live_fob,over80,14099,,1257,1725,1601,218,223,220.49
 2026-10-16,steer,live_fob,over80,3471,,1500,1680,1603,220,223,222.37
+2026-10-19,steer,live_fob,over80,21540,,1310,1730,1604,220,227,224.47
 2020-01-02,steer,live_fob,total,1275,,1350,1525,1436,125,125,125
 2020-01-03,steer,live_fob,total,2230,,1450,1575,1542,122,125,124.76
 2020-01-06,steer,live_fob,total,21793,,1250,1650,1492,122,127,124.10
@@ -32662,3 +32691,4 @@ date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_lo
 2026-10-09,steer,live_fob,total,5284,,1450,1730,1619,218,220,219.10
 2026-10-12,steer,live_fob,total,14277,,1257,1725,1601,218,223,220.52
 2026-10-16,steer,live_fob,total,3471,,1500,1680,1603,220,223,222.37
+2026-10-19,steer,live_fob,total,21657,,1310,1730,1603,220,227,224.48
