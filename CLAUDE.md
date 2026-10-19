@@ -288,6 +288,13 @@ crawlers see.
 - The PDF résumé (`assets/Juan Torres Resume.pdf`, with its `.docx` source beside it) is a separate
   document from `_data/resume.yml`; update both together. The data file is written in the site's
   plain first-person voice, not the PDF's résumé phrasing, and leaves out the phone number.
+- The data boards' CSVs are **published addresses**: the Kaggle datasets pull them by URL on a schedule
+  (README, "Published data addresses"), and anyone's code may too. Never rename, move or delete one, and
+  never rename or reorder its columns; a new column goes at the end, and then gets its description on
+  Kaggle. `check.py`'s `PUBLISHED` list holds every one with its header and fails the build if one goes
+  missing or changes shape. Each January the boards start new `-YYYY.csv` files: add them to `YEARS` /
+  `PUBLISHED` and to the Kaggle datasets. A custom domain would keep these working only through GitHub's
+  redirect from `juantorresmi.github.io`, so keep that redirect.
 - Text files are LF everywhere (`.gitattributes`, `.editorconfig`), Windows checkouts included.
 
 ## Secrets

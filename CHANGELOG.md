@@ -15,6 +15,8 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **First border buffer trim**: the Worker drops readings older than 14 days at 04:17 UTC daily, from
   Oct 19 on. Everything it drops is already in `border-waits/border-truck-wait-readings-2026.csv`; worth a
   glance at that file's row count after the first trim (it should only ever grow).
+- **January 1, 2027: new yearly CSVs.** The beef, pork and border boards start `-2027.csv` files. Add
+  them to `YEARS` / `PUBLISHED` in `scripts/check.py` and as new URLs on the three Kaggle datasets.
 - **CBP's averages next year**: `cbp-published-averages.csv` gains a new set each year (rows keyed by the
   year they were read), so last year's official figures stay to compare against.
 - **Two Oct 16 posts** (YouTube, border) still describe the old timing ("once an hour", "twice a
@@ -34,6 +36,12 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **More USDA boards** (Juan wants all of them): next are hogs (LM_HG217/218), lamb (LM_XL502) and cow
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
+
+## 2026-10-19 — Fixed addresses for the data downloads
+
+- The boards' CSVs now feed Kaggle datasets that pull them by URL on a schedule, so their addresses and
+  column order are fixed. README ("Published data addresses") lists them; `check.py` fails the build if
+  one goes missing or its columns are renamed or reordered (new columns may only be added at the end).
 
 ## 2026-10-19 — No layout shift on the app pages
 
