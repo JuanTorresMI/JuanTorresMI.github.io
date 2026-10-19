@@ -57,6 +57,14 @@ const check = (name, ok, detail) => { if (ok) passes++; else { failures++; conso
     await page.fill("#qr-rhs", "wood available");
     await page.click("#qr-add");
     await page.click('#v-rules .ps-stepnav [data-go="best"]');
+    // The one-click profit: the lines come from the names ("profit per chair" × "chairs to make").
+    await page.click('[data-goalkind="profit"]');
+    await page.click("#b-solve3");
+    await solved();
+    check(`${at} most profit from menus`, (await page.textContent("#a-goal")) === "$3,600", await page.textContent("#a-goal"));
+    await page.click('.ps-railbtn[data-go="best"]');
+    // The same goal typed as a sentence.
+    await page.click('[data-goalkind="custom"]');
     await page.fill("#qg-expr", "profit per chair × chairs to make + profit per table × tables to make");
     await page.selectOption("#qg-sense", "max");
     await page.click("#qg-set");
