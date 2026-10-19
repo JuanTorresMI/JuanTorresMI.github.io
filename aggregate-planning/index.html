@@ -1,5 +1,7 @@
 ---
-layout: app
+layout: tool
+app_start: answers
+app_done: "Compare the plans"
 project: aggregate-planning
 title: "Aggregate Planning Calculator, with the Math Step by Step"
 seo_title: "Aggregate Planning Calculator with Step-by-Step Math"
@@ -20,8 +22,8 @@ image_alt: "Aggregate Planner: level, band and chase plans, with the math step b
 {% endcomment %}
 <link rel="stylesheet" href="/aggregate-planning/planner.css?v={{ site.time | date: '%s' }}">
 
-<div class="ap frame">
-  <header class="ap-head">
+<div class="ap ap-in-app">
+  <header class="ap-head" data-view="answers" data-title="Compare the plans" data-rail-group="Results" data-order="1">
     <p class="ap-label">Tool</p>
     <h1>Aggregate Planner <span class="ap-h1-sub">An aggregate planning calculator and study tool</span></h1>
     <p class="ap-lede">Set up the way textbook cases are. Enter a year of demand, your workforce, and what labor, inventory and stockouts cost. The planner solves the level, band and chase plans side by side with <a href="https://highs.dev/">HiGHS</a>, a free, open-source optimization solver, and answers the usual questions: what each plan costs, how much to make each month, how high inventory gets, and how much you save by being flexible. Switch to Study to see how it got there. HiGHS runs right in your browser, so nothing you type leaves it.</p>
@@ -31,7 +33,7 @@ image_alt: "Aggregate Planner: level, band and chase plans, with the math step b
 
   <div class="ap-grid" id="tool" hidden>
     <form class="ap-inputs" id="inputs" novalidate aria-label="Plan inputs">
-      <section class="ap-group" aria-labelledby="g-demand">
+      <section class="ap-group" aria-labelledby="g-demand" data-view="demand" data-title="Demand" data-n="1" data-rail-group="Your numbers" data-order="10">
         <h2 class="ap-label" id="g-demand">Demand</h2>
         <div class="ap-fields">
           <label class="ap-field"><span class="ap-name">Months</span><input id="f-months" type="number" min="1" max="24" step="1" inputmode="numeric"></label>
@@ -50,7 +52,7 @@ image_alt: "Aggregate Planner: level, band and chase plans, with the math step b
         </details>
       </section>
 
-      <section class="ap-group" aria-labelledby="g-policy">
+      <section class="ap-group" aria-labelledby="g-policy" data-view="workforce" data-title="Workforce &amp; policies" data-n="2" data-order="11">
         <h2 class="ap-label" id="g-policy">The three policies</h2>
         <p class="ap-hint ap-hint-top"><strong>Level</strong> keeps the starting teams all year. <strong>Band</strong> lets the workforce move between the limits below. <strong>Chase</strong> hires and lays off freely. All three are solved every time.</p>
         <div class="ap-fields" id="band-fields"></div>
@@ -58,10 +60,10 @@ image_alt: "Aggregate Planner: level, band and chase plans, with the math step b
         <p class="ap-hint">Hire, lay off and staff in whole teams. Off, the plan may use fractions of a team, which is what a spreadsheet Solver run without integer constraints gives: a looser, slightly cheaper answer.</p>
       </section>
 
-      <section class="ap-group" aria-labelledby="g-labor"><h2 class="ap-label" id="g-labor">Labor</h2><div class="ap-fields" id="fields-labor"></div></section>
-      <section class="ap-group" aria-labelledby="g-inv"><h2 class="ap-label" id="g-inv">Inventory &amp; stockouts</h2><div class="ap-fields" id="fields-inv"></div></section>
-      <section class="ap-group" aria-labelledby="g-mat"><h2 class="ap-label" id="g-mat">Material &amp; subcontracting</h2><div class="ap-fields" id="fields-mat"></div></section>
-      <section class="ap-group" aria-labelledby="g-ends">
+      <section class="ap-group" aria-labelledby="g-labor" data-view="costs" data-title="Costs" data-n="3" data-order="12"><h2 class="ap-label" id="g-labor">Labor</h2><div class="ap-fields" id="fields-labor"></div></section>
+      <section class="ap-group" aria-labelledby="g-inv" data-view="costs"><h2 class="ap-label" id="g-inv">Inventory &amp; stockouts</h2><div class="ap-fields" id="fields-inv"></div></section>
+      <section class="ap-group" aria-labelledby="g-mat" data-view="costs"><h2 class="ap-label" id="g-mat">Material &amp; subcontracting</h2><div class="ap-fields" id="fields-mat"></div></section>
+      <section class="ap-group" aria-labelledby="g-ends" data-view="ends" data-title="Start &amp; end" data-n="4" data-order="13">
         <h2 class="ap-label" id="g-ends">Start &amp; end conditions</h2>
         <div class="ap-fields" id="fields-ends"></div>
         <label class="ap-check"><input type="checkbox" id="f-noEndBacklog"><span>No stockouts in the last month</span></label>
@@ -83,7 +85,7 @@ image_alt: "Aggregate Planner: level, band and chase plans, with the math step b
       <div class="ap-msg is-error" id="error" role="alert" hidden></div>
 
       <div id="out">
-        <section class="ap-block ap-block-first" id="answers" aria-labelledby="h-answers">
+        <section class="ap-block ap-block-first" id="answers" aria-labelledby="h-answers" data-view="answers">
           <header class="ap-block-head"><h2 class="ap-label" id="h-answers">Answers · three policies, same inputs</h2>
             <span class="ap-links"><button class="ap-link" type="button" id="b-xlsx">Download spreadsheet</button><button class="ap-link" type="button" id="b-share">Copy share link</button></span></header>
           <div class="ap-scroll" tabindex="0" role="region" aria-labelledby="h-answers"><table class="ap-table ap-answers" id="t-answers"></table></div>
@@ -92,7 +94,7 @@ image_alt: "Aggregate Planner: level, band and chase plans, with the math step b
           <div class="ap-chart ap-chart-compare"><canvas id="c-compare" role="img" aria-label="Ending inventory by month under each policy. The plan tables have the same numbers."></canvas></div>
         </section>
 
-        <section class="ap-block" id="detail" aria-labelledby="h-detail">
+        <section class="ap-block" id="detail" aria-labelledby="h-detail" data-view="detail" data-title="Month by month" data-order="2">
           <header class="ap-block-head"><h2 class="ap-label" id="h-detail">The plan in detail</h2><span class="ap-note" id="unit-note"></span></header>
           <div class="ap-seg" role="radiogroup" aria-label="Policy to show">
             <label><input type="radio" name="policy" value="level"><span>Level</span></label>
@@ -119,7 +121,7 @@ image_alt: "Aggregate Planner: level, band and chase plans, with the math step b
         </section>
       </div>
 
-      <section class="ap-block ap-block-first" id="study" role="tabpanel" aria-labelledby="h-study" hidden>
+      <section class="ap-block ap-block-first" id="study" role="tabpanel" aria-labelledby="h-study" hidden data-view="study" data-title="Study: how it's solved" data-order="3">
         <header class="ap-block-head"><h2 class="ap-label" id="h-study">Study · how the plan was worked out</h2><span class="ap-note" id="study-note"></span></header>
         <p class="ap-hint ap-hint-top">The same plan from the Answers tab, broken down step by step with your numbers: how the inputs turn into the model, the rules every month follows, how the solver searched for the answer, and why the plan looks the way it does.</p>
         <div class="ap-seg" role="radiogroup" aria-label="Policy to study">
@@ -140,7 +142,7 @@ image_alt: "Aggregate Planner: level, band and chase plans, with the math step b
     </div>
   </div>
 
-  <article class="ap-explain" aria-labelledby="about">
+  <article class="ap-explain" aria-labelledby="about" data-view="guide" data-title="About aggregate planning" data-rail-group="Learn" data-order="20">
     <header class="ap-block-head"><h2 class="ap-label" id="about">Aggregate planning, explained</h2></header>
     <div class="ap-prose">
       <h3>What aggregate planning is</h3>
@@ -196,6 +198,35 @@ image_alt: "Aggregate Planner: level, band and chase plans, with the math step b
   </article>
 </div>
 
+<div data-app-tools>
+  <button class="app-btn" type="button" data-click="b-reset">Start over with the sample</button>
+  <button class="app-btn" type="button" data-click="b-share">Copy share link</button>
+  <button class="app-btn primary" type="button" data-click="b-xlsx">Download spreadsheet</button>
+</div>
+<div class="ap-side" data-app-side>
+  <p class="app-side-h">Your three plans</p>
+  <div id="ap-side-plans" aria-live="polite"><p class="app-note">Solving…</p></div>
+  <p class="app-note" id="ap-side-status"></p>
+  <button class="app-btn primary block" type="button" data-show="answers">Compare the plans</button>
+  <p class="app-note ap-side-tip">Every number you change re-solves all three plans on the spot. Steps 1 to 4 on the left hold the numbers.</p>
+</div>
+<script>
+  // The shell's views and the planner's own two modes: Study is one, everything else is Answers.
+  document.addEventListener("app:view", (e) => {
+    const v = e.detail.view, tab = document.getElementById(v === "study" ? "tab-study" : "tab-answers");
+    if ((v === "study" || v === "answers" || v === "detail") && tab.getAttribute("aria-selected") !== "true") tab.click();
+  });
+  // Buttons elsewhere on the page that press one of the planner's own.
+  document.addEventListener("click", (e) => { const b = e.target.closest("[data-click]"); if (b) document.getElementById(b.dataset.click).click(); });
+  // The side panel: the three plans' costs after every solve.
+  document.addEventListener("ap:solved", (e) => {
+    const d = e.detail, box = document.getElementById("ap-side-plans");
+    document.getElementById("ap-side-status").textContent = d.status || "";
+    if (d.error) { box.innerHTML = '<p class="app-note">No plan for these numbers. See the message on the page.</p>'; return; }
+    const best = d.plans.filter((p) => p.ok).sort((a, b) => a.total - b.total)[0];
+    box.innerHTML = d.plans.map((p) => `<div class="app-stat${best && p.policy === best.policy ? " is-best" : ""}"><span class="app-stat-k">${p.name}${best && p.policy === best.policy ? " · cheapest" : ""}</span><span class="app-stat-v">${p.ok ? p.text : "No plan"}</span>${p.saving ? `<span class="app-stat-s">saves ${p.saving} vs. level</span>` : ""}</div>`).join("");
+  });
+</script>
 <script src="/aggregate-planning/lib/chart.umd.min.js" defer></script>
 <script src="/aggregate-planning/model.js?v={{ site.time | date: '%s' }}" defer></script>
 <script src="/aggregate-planning/xlsx.js?v={{ site.time | date: '%s' }}" defer></script>

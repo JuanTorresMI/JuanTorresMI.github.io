@@ -35,6 +35,16 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-19 — Project pages as apps
+
+- **A shared app layout** for the project pages people use (`_layouts/tool.html`, `assets/css/app.css`,
+  `assets/js/app-shell.js`): a top bar with the tool's own buttons, a rail of the page's sections shown one
+  at a time (or, for long reads, a contents list that follows you), a side panel, and every section still in
+  the page for readers without JavaScript and for search engines.
+- **Aggregate Planner** in it: opens on the answers, with the three plans' costs live in the side panel;
+  the inputs are four numbered steps (Demand, Workforce & policies, Costs, Start & end) with Back / Next;
+  Month by month, Study and the guide are sections of their own. Same model and numbers.
+
 ## 2026-10-19 — Plain Solver: its own app, one step at a time
 
 - **A full-screen app layout** (`_layouts/solver.html`), replacing the long builder page: a top bar (home,

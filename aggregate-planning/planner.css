@@ -281,3 +281,44 @@
   .ap-scroll { overflow: visible; }
   .ap-table { font-size: 9pt; }
 }
+
+/* ---------- in the app layout (_layouts/tool.html) ----------
+   One section at a time from the rail; the inputs re-solve as you type, so the Optimize row and the
+   Answers / Study tabs give way to the rail and the side panel. Friendlier type and shapes, same tokens. */
+.ap.ap-in-app { padding-bottom: 0; }
+.ap-in-app .ap-head { padding: 0 0 8px; max-width: 52em; }
+.ap-in-app .ap-head h1 { font: 700 clamp(30px, 4vw, 44px)/1.08 var(--sans); letter-spacing: -0.025em; margin-top: 8px; }
+.ap-in-app .ap-h1-sub { font: 500 16px/1.4 var(--sans); letter-spacing: 0; text-transform: none; margin-top: 8px; }
+.ap-in-app .ap-lede { font-size: 16px; margin-top: 14px !important; max-width: 46em; }
+.ap-in-app .ap-head > .ap-label { color: var(--accent); }
+.ap-in-app .ap-grid { display: block; border-top: 0; }
+.ap-in-app .ap-inputs { padding-top: 0; }
+.ap-in-app .ap-group { padding: 24px; margin-bottom: 16px; border: 1px solid var(--rule); border-radius: 14px; background: var(--stock); }
+.ap-in-app .ap-group > .ap-label { font: 700 26px/1.2 var(--sans); letter-spacing: -0.015em; text-transform: none; color: var(--ink); margin-bottom: 18px; }
+.ap-in-app .ap-fields { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px 20px; }
+.ap-in-app .ap-name { font-size: 14px; color: var(--text); }
+.ap-in-app input[type="number"], .ap-in-app input[type="text"], .ap-in-app textarea, .ap-in-app select { border-radius: 10px; padding: 10px 12px; font: 16px var(--sans); font-variant-numeric: tabular-nums; background-color: var(--ground); }
+.ap-in-app .ap-demand { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+.ap-in-app .ap-demand span { font: 12px var(--sans); }
+.ap-in-app .ap-demand input { padding: 8px 10px !important; font-size: 15px !important; }
+.ap-in-app .ap-actions, .ap-in-app .ap-mode { display: none; }
+.ap-in-app .ap-results { padding-top: 0; margin-top: 0; border-top: 0; }
+.ap-in-app .ap-status { border: 0; }
+.ap-in-app .ap-block { margin-top: 28px; }
+.ap-in-app .ap-block-first { margin-top: 20px !important; }
+.ap-in-app .ap-block-head { border-top: 0; padding-top: 0; }
+.ap-in-app .ap-block-head > .ap-label { font: 700 26px/1.2 var(--sans); letter-spacing: -0.015em; text-transform: none; color: var(--ink); }
+.ap-in-app .ap-block-head .ap-links { display: none; }
+.ap-in-app .ap-sub-block .ap-links { display: flex; }
+.ap-in-app .ap-btn { border-radius: 999px; text-transform: none; letter-spacing: 0; font: 600 14px var(--sans); padding: 10px 18px; }
+.ap-in-app .ap-seg { border-radius: 999px; overflow: hidden; max-width: 420px; }
+.ap-in-app .ap-seg span { font: 600 14px var(--sans); letter-spacing: 0; text-transform: none; }
+.ap-in-app .ap-msg { border-radius: 12px; }
+.ap-in-app .ap-cards { border: 1px solid var(--rule); border-radius: 14px; background: var(--stock); padding: 0 16px; }
+.ap-in-app .ap-explain { margin-top: 0; }
+.ap-in-app .ap-tip-text { border-radius: 8px; }
+.ap-side .app-stat-v { font-size: 20px; }
+.ap-side-tip { margin-top: 14px !important; }
+.ap-side .app-btn.block { margin-top: 16px; }
+
+.ap-in-app .ap-results > .ap-status { display: none; }

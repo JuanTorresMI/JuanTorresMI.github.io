@@ -18,6 +18,7 @@ how the live data flows, the workflows and scripts.
 | `_layouts/default.html` | Ordinary pages: content inside `<main class="page frame">` |
 | `_layouts/post.html` | Writing. Adds date, reading time, tags, previous / next |
 | `_layouts/app.html` | Full-width project pages: nav, project bar, the page's own markup, footer |
+| `_layouts/tool.html`, `assets/css/app.css`, `assets/js/app-shell.js` | The app layout for project pages people use: a top bar, a rail of the page's sections (one at a time in `app_mode: views`, a contents list in `app_mode: read`), an optional side panel. Pages mark parts with `data-view` / `data-title` (and `data-n`, `data-order`, `data-rail-group`), `data-app-side`, `data-app-tools`; the layout's comment documents them. Nothing is hidden without JavaScript |
 | `_layouts/reefer-lane.html`, `border-crossing.html`, `beef-cut.html`, `pork-cut.html`, `cattle-region.html` | One generated page per reefer lane / border crossing / beef cut / pork cut / cattle region, each in English and Spanish where the board has both (see "Live data pages") |
 | `_layouts/artist.html`, `music/`, `_data/music.yml` | Yokonjuan's page (`/music/`); see "The music page" |
 | `_layouts/redirect.html`, `redirects/` | Old addresses that moved |
@@ -77,9 +78,11 @@ dates and figures. Spacing steps are multiples of 8.
 - Keep `.label` (11px, 0.16em tracking, uppercase) and `.data` (mono, 12px) for the small type.
 - The business card, the résumé card, the featured project and the writing letter share one
   "raised stock" shadow in `style.css`; a new raised surface joins that rule.
-- Plain Solver is the one deliberate exception to the stationery look: Juan asked for it to be as
-  friendly as possible, so it has its own app layout (`_layouts/solver.html`), Inter throughout, rounded
-  cards and fields and pill buttons. It keeps the site's color tokens (and so dark mode) and links home.
+- The project pages people use are the deliberate exception to the stationery look: Juan asked for them
+  to be as friendly as possible. Plain Solver has its own app layout (`_layouts/solver.html`); the others
+  use `_layouts/tool.html`. Both: Inter throughout, rounded cards and fields, pill buttons, the site's
+  color tokens (and so dark mode and night stock), a link home. A page's own stylesheet adapts its insides
+  under its root class (the planner's `.ap-in-app` block, for example).
 - Pages are not all one layout. Each belongs to a family and takes that family's form while
   keeping the tokens, fonts, square corners and nav. Put the family label (`.family`, or
   `.rb-family` on the boards) above each page title, and give a project its `family` in

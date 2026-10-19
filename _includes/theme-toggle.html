@@ -1,0 +1,21 @@
+{%- comment %} The light / dark switch, for layouts without the site nav (the nav has its own copy). {% endcomment -%}
+<button class="theme-btn" type="button" id="themeBtn" aria-label="Switch to dark theme" title="Light / dark">
+  <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1"/><path d="M8 1a7 7 0 0 1 0 14z" fill="currentColor"/></svg>
+</button>
+<script>
+  (() => {
+    const btn = document.getElementById("themeBtn");
+    const root = document.documentElement;
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const current = () => root.getAttribute("data-theme") || (mq.matches ? "dark" : "light");
+    const describe = () => { const to = current() === "dark" ? "light" : "dark"; btn.setAttribute("aria-label", `Switch to ${to} theme`); btn.title = `Switch to ${to} theme`; };
+    btn.addEventListener("click", () => {
+      const next = current() === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("jt-theme", next); } catch (e) {}
+      describe();
+    });
+    mq.addEventListener("change", describe);
+    describe();
+  })();
+</script>

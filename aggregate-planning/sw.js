@@ -3,11 +3,11 @@
  * fails. Scope is /aggregate-planning/, but it also keeps the site stylesheet and fonts the
  * page needs. Bump VERSION to drop old copies.
  */
-const VERSION = "ap-v3";
+const VERSION = "ap-v4";
 const CORE = [
   "/aggregate-planning/", "/aggregate-planning/planner.css", "/aggregate-planning/app.js", "/aggregate-planning/model.js", "/aggregate-planning/xlsx.js", "/aggregate-planning/study.js",
   "/aggregate-planning/solver.js", "/aggregate-planning/solver-worker.js", "/aggregate-planning/lib/highs.js",
-  "/aggregate-planning/lib/highs.wasm", "/aggregate-planning/lib/chart.umd.min.js", "/assets/css/style.css",
+  "/aggregate-planning/lib/highs.wasm", "/aggregate-planning/lib/chart.umd.min.js", "/assets/css/style.css", "/assets/css/app.css", "/assets/js/app-shell.js",
   "/assets/fonts/inter.woff2", "/assets/fonts/cormorant-garamond.woff2", "/assets/fonts/ibm-plex-mono-400.woff2",
   "/assets/fonts/ibm-plex-mono-500.woff2",
 ];
