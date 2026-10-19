@@ -2315,7 +2315,7 @@ def cattle_archive():
     return weekly, daily
 
 
-def week_of(report_date):
+def cattle_week(report_date):
     """A weekly report dated Monday covers the week before it, Monday to Sunday."""
     d = iso_day(report_date)
     return (d - timedelta(days=7)).date().isoformat(), (d - timedelta(days=1)).date().isoformat()
@@ -2371,8 +2371,8 @@ def cattle():
     lbs = lambda v: "" if v is None else f"{v:,.0f} lb"
     pct = lambda v: "" if v is None else f"{v:.1f}%"
     hd = lambda v: "" if v is None else fmt(int(v))
-    wk_label = lambda d: f"week of {d_full(week_of(d)[0])}"          # read mid-sentence: "(week of Oct 5, 2026)"
-    wk_label_es = lambda d: f"semana del {d_full_es(week_of(d)[0])}"
+    wk_label = lambda d: f"week of {d_full(cattle_week(d)[0])}"          # read mid-sentence: "(week of Oct 5, 2026)"
+    wk_label_es = lambda d: f"semana del {d_full_es(cattle_week(d)[0])}"
 
     # USDA's own notes on the week (the "trend" paragraph), where a report has one.
     notes = {}
@@ -2471,8 +2471,8 @@ def cattle():
               "main_short_es": {"live_fob": "en pie, LAB corral", "dressed_delivered": "en canal, entregado en la planta"}[main_basis],
               "live": fl, "dressed": fd, "main": fl if main_basis == "live_fob" else fd, "current": main[-1][0] == latest_week,
               "bases": bases, "detail": detail, "has_detail": rid != 2481, "grid_base": grid_base,
-              "weeks_year": weeks_year, "first_iso": main[0][0], "since": d_full(week_of(min(r[0] for r in (live + dressed)))[0]),
-              "since_es": d_full_es(week_of(min(r[0] for r in (live + dressed)))[0]), "last_iso": max(r[0] for r in (live + dressed)),
+              "weeks_year": weeks_year, "first_iso": main[0][0], "since": d_full(cattle_week(min(r[0] for r in (live + dressed)))[0]),
+              "since_es": d_full_es(cattle_week(min(r[0] for r in (live + dressed)))[0]), "last_iso": max(r[0] for r in (live + dressed)),
               "weeks_all": fmt(len({r[0] for r in live + dressed})),
               "chart_live": mchart([("line", "Live", live)]), "chart_dressed": mchart([("line2", "Dressed", dressed)]),
               "rows": grid_rows, "grid": year_grid(mavg, grid_fmt), "season": seasons(mavg, latest_week), "note": notes.get(slug),
@@ -2517,7 +2517,7 @@ def cattle():
     ld = next((r for r in dl[::-1]), None); dd = next((r for r in ddr[::-1]), None)
     weekday = lambda iso: f"{iso_day(iso):%A}, {iso_day(iso):%B} {iso_day(iso).day}"
     weekday_es = lambda iso: f"{['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'][iso_day(iso).weekday()]} {iso_day(iso).day} de {MONTHS_ES_FULL[iso_day(iso).month - 1]}"
-    wk0, wk1 = week_of(latest_week)
+    wk0, wk1 = cattle_week(latest_week)
     span_en = f"{iso_day(wk0):%b} {iso_day(wk0).day} to {d_full(wk1)}" if wk0[:4] == wk1[:4] else f"{d_full(wk0)} to {d_full(wk1)}"
     span_es = f"{iso_day(wk0).day} {MONTHS_ES[iso_day(wk0).month - 1]} al {d_full_es(wk1)}" if wk0[:4] == wk1[:4] else f"{d_full_es(wk0)} al {d_full_es(wk1)}"
     summ = [f"In the week of {span_en}, packers paid {fsl['cwt']} per hundredweight for live steers in the 5-area market"
@@ -2548,7 +2548,7 @@ def cattle():
         wr.writerow(["report_date", "week_start", "week_end", "region", "purchase", "class", "basis", "grade"] + CW)
         for k in sorted(W):
             for r in W[k]:
-                a, b = week_of(r[0]); wr.writerow([r[0], a, b, *k] + [num(v) for v in r[1:]])
+                a, b = cattle_week(r[0]); wr.writerow([r[0], a, b, *k] + [num(v) for v in r[1:]])
     with open(CATTLE_DAILY_CSV, "w", encoding="utf-8", newline="") as fh:
         wr = csv.writer(fh, lineterminator="\n")
         wr.writerow(["date", "class", "basis", "grade"] + CW)
@@ -2610,7 +2610,7 @@ def cattle():
     return {"generated": datetime.now(timezone.utc).isoformat(timespec="seconds"), "latest_week": latest_week, "week": wk_label(latest_week), "week_es": wk_label_es(latest_week),
             "week_start": d_full(wk0), "week_end": d_full(wk1), "week_start_es": d_full_es(wk0), "week_end_es": d_full_es(wk1),
             "latest_day": latest_day, "day": d_label(latest_day) if latest_day else "", "day_es": d_label_es(latest_day) if latest_day else "",
-            "first": d_full(week_of(sl[0][0])[0]), "first_es": d_full_es(week_of(sl[0][0])[0]), "first_iso": sl[0][0], "weeks": fmt(len(sl)),
+            "first": d_full(cattle_week(sl[0][0])[0]), "first_es": d_full_es(cattle_week(sl[0][0])[0]), "first_iso": sl[0][0], "weeks": fmt(len(sl)),
             "stamp": {"live": fsl["cwt"], "live_chg": fsl["change"], "dressed": fsd["cwt"], "dressed_chg": fsd["change"], "head": fmt(tot) if tot else "",
                       "day_live": cwt(ld[8]) if ld else "", "day_dressed": cwt(dd[8]) if dd else "", "day": d_label(ld[0]) if ld else "", "day_es": d_label_es(ld[0]) if ld else ""},
             "summary": " ".join(summ), "summary_es": " ".join(summ_es), "steer_live": fsl, "steer_dressed": fsd,

@@ -1,5 +1,7 @@
 ---
-layout: default
+layout: tool
+app_auto: true
+app_wrap: page
 title: Reefer truck rates
 seo_title: "Reefer Truck Rates This Week · Produce Lanes (USDA)"
 permalink: /reefer-rates/
@@ -200,9 +202,9 @@ last_modified_at: 2026-10-15
   <h2 id="board-h">The full reefer rate sheet</h2>
   <p>Every shipping area (down the side) by every city (across the top) for the week of {{ r.week }}. Rates are in thousands of dollars, so 3.8–4.4 means $3,800 to $4,400 a load. A shaded cell moved 5% or more since last week. Click any rate for that lane’s page.</p>
   <div class="rb-views" role="group" aria-label="Show in the sheet">
-    <button type="button" data-view="k" aria-pressed="true">Rates</button>
-    <button type="button" data-view="change" aria-pressed="false">Change from last week</button>
-    <button type="button" data-view="trucks" aria-pressed="false">Trucks</button>
+    <button type="button" data-sheet="k" aria-pressed="true">Rates</button>
+    <button type="button" data-sheet="change" aria-pressed="false">Change from last week</button>
+    <button type="button" data-sheet="trucks" aria-pressed="false">Trucks</button>
   </div>
   <p class="rb-scroll-hint">On a small screen, swipe the sheet sideways to see every city; the area names stay put.</p>
   <div class="rb-scroll">
@@ -353,8 +355,8 @@ last_modified_at: 2026-10-15
   const views = [...document.querySelectorAll(".rb-views button")];
   views.forEach((b) => b.addEventListener("click", () => {
     views.forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-    sheet.classList.toggle("rb-words", b.dataset.view === "trucks");
-    cells.forEach((td) => { const el = td.firstElementChild; if (el) el.textContent = td.dataset[b.dataset.view]; });
+    sheet.classList.toggle("rb-words", b.dataset.sheet === "trucks");
+    cells.forEach((td) => { const el = td.firstElementChild; if (el) el.textContent = td.dataset[b.dataset.sheet]; });
   }));
 })();
 </script>
