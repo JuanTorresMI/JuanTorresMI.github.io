@@ -60,14 +60,14 @@
 
   // What each rule's limit is worth: duals read straight off an LP, or off the LP left when a MIP's
   // whole-number decisions are held where the solver put them (marked approximate).
-  async function sensitivity(env, E, k, x, opts) {
-    let Lm = k.Lm, approx = false;
+  async function sensitivity(env, E, k, x, opts, main) {
+    let Lm = k.Lm, approx = false, r = main;
     if (k.cls === "mip") {
       approx = true;
       Lm = { ...Lm, vars: Lm.vars.map((v, i) => (v.type === "continuous" ? v : { ...v, type: "continuous", lo: Math.round(x[i]), hi: Math.round(x[i]) })) };
+      [r] = await solveLP(env, M.writeLP(Lm, { bare: true }).lp, { ...opts, output_flag: false }, false);
     }
-    const { lp } = M.writeLP(Lm, { bare: true });
-    const [r] = await solveLP(env, lp, { ...opts, output_flag: false }, false);
+    // An LP's own solve already carries its duals; only a MIP needs the fixed re-solve.
     if (r.Status !== "Optimal" || !r.Rows.length || r.Rows[0].Dual === undefined) return null;
     const rows = E.rows.map((row, j) => { const R = r.Rows[j]; return R ? R.Dual : 0; });
     const reduced = E.vars.map((v, i) => { const c = r.Columns["v" + (i + 1)]; return c ? c.Dual : 0; });
@@ -143,13 +143,17 @@
   function limits(k, x, goalValue) {
     if (k.Lm.aux.length) return null;
     const Lm = k.Lm;
+    // Each decision's own rows, found once (scanning every row for every decision is
+    // rows × decisions: minutes on a 200,000-variable model).
+    const rowsOf = Lm.vars.map(() => []);
+    const act = new Map();
+    for (const r of Lm.rows) { let t = 0; for (const [i, c] of r.t) { rowsOf[i].push(r); t += c * x[i]; } act.set(r, t); }
     return Lm.vars.map((v, j) => {
       let lo = v.lo, hi = v.hi;
-      for (const r of Lm.rows) {
+      for (const r of rowsOf[j]) {
         const a = r.t.get(j);
         if (!a) continue;
-        let rest = 0;
-        for (const [i, c] of r.t) if (i !== j) rest += c * x[i];
+        const rest = act.get(r) - a * x[j];
         const b = (r.rhs - rest) / a;
         if (r.op === "=") { lo = Math.max(lo, b); hi = Math.min(hi, b); }
         else if ((r.op === "<=") === (a > 0)) hi = Math.min(hi, b); else lo = Math.max(lo, b);
@@ -233,7 +237,7 @@
         const timed = st !== "Optimal";
         if (timed) { const g = logGap(lines || []); out.gap = g.gap; out.bound = g.bound; }
         let sens = null;
-        try { sens = await sensitivity(env, E, k, primal(r, k.Lm), opts); } catch (e) { sens = null; }
+        try { sens = await sensitivity(env, E, k, primal(r, k.Lm), opts, r); } catch (e) { sens = null; }
         return { ok: true, status: timed ? "timeout" : "optimal", ...out, ...rep, sensitivity: sens, limits: limits(k, primal(r, k.Lm), rep.goal), ms: Date.now() - t0 };
       }
       if (/time limit/i.test(st)) return { ok: false, status: "timeout", ...out, message: "The time limit ran out before any plan was found that meets every rule." };
@@ -270,7 +274,8 @@
       const r = EN.nlp(P, { multistart, timeLimitSec: opts.time_limit });
       if (!r.feasible) return { ok: false, status: "infeasible", ...base, local: true, ...report(E, r.x, {}), message: `No answer was found that meets every rule${multistart ? ` from ${r.starts} starting points` : ""}. The rules may conflict, or the search may have missed the feasible region; try turning on multistart in Advanced.` };
       if (Math.abs(r.f) > 1e12) return { ok: false, status: "unbounded", ...base, unbounded: E.vars.filter((v) => Math.abs(r.x[v.i]) > 1e9).map((v) => v.decision) };
-      base.notes.push(multistart ? `Searched from ${r.starts} starting points and kept the best.` : "Searched from one starting point. Turn on multistart in Advanced to try several.");
+      if (r.stuck) base.notes.push("The answer is exactly where the search started, which can mean the slope there was flat rather than that it's the best. Turn on multistart in Advanced to search from several points.");
+      else base.notes.push(multistart ? `Searched from ${r.starts} starting points and kept the best.` : "Searched from one starting point. Turn on multistart in Advanced to try several.");
       return { ok: true, status: "local", ...base, ...report(E, r.x, {}), ms: Date.now() - t0 };
     }
 
@@ -280,7 +285,7 @@
     if (r.stopped) base.notes.push("Stopped by hand: this is the best answer found so far.");
     if (!r.feasible) return { ok: false, status: "infeasible", ...base, local: true, ...report(E, r.x, {}), message: "Evolution didn't find an answer that meets every rule. The rules may conflict; try loosening one, or give it more time in Advanced." };
     base.notes.push(`${r.generations} generations.`);
-    return { ok: true, status: "evolutionary", ...base, ...report(E, r.x, {}), ms: Date.now() - t0 };
+    return { ok: true, status: "evolutionary", ...base, ...report(E, EN.tidy(P, r.x), {}), ms: Date.now() - t0 };
   }
 
   const api = { run, ENGINE };

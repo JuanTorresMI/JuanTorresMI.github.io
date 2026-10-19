@@ -83,9 +83,12 @@
         return L;
       };
       x = spg(fg, x, lo, hi, opt.maxIter || 3000, 1e-11).x;
+      // Done when the rules hold and their multipliers have settled. For an "at most" rule that is
+      // |max(g, −μ/ρ)|: a point strictly inside a rule whose multiplier is still above zero isn't
+      // converged yet (stopping there left max x·y with x + y ≤ 10 at 24.86 instead of 25).
       let v = 0;
       P.eq.forEach((h, j) => { const hv = M.evaluate(h, x); lam[j] += rho * hv; v = Math.max(v, Math.abs(hv)); });
-      P.ineq.forEach((g, j) => { const gv = M.evaluate(g, x); mu[j] = Math.max(0, mu[j] + rho * gv); v = Math.max(v, gv); });
+      P.ineq.forEach((g, j) => { const gv = M.evaluate(g, x); v = Math.max(v, Math.abs(Math.max(gv, -mu[j] / rho))); mu[j] = Math.max(0, mu[j] + rho * gv); });
       if (v <= tolV && outer > 0) break;
       if (v > 0.25 * prevV) rho = Math.min(rho * 10, 1e10);
       prevV = v;
@@ -113,13 +116,14 @@
         return a + rand() * (b - a);
       });
       const r = nlpFrom(P, x0, opt);
+      if (s === 0) r.stuck = r.x.every((v, i) => Math.abs(v - x0[i]) <= 1e-9 * (1 + Math.abs(x0[i])));
       tried++;
       const tol = 1e-6 * (1 + Math.abs(r.f));
       const ok = r.viol <= 1e-6;
       if (!best || (ok && !best.ok) || (ok === best.ok && (ok ? r.f < best.f - tol : r.viol < best.viol))) best = { ...r, ok };
       if (Date.now() - t0 > limit) break;
     }
-    return { x: best.x, f: best.f, viol: best.viol, feasible: best.ok, starts: tried };
+    return { x: best.x, f: best.f, viol: best.viol, feasible: best.ok, starts: tried, stuck: tried === 1 && !!best.stuck };
   }
 
   /* ---------- anything: differential evolution ---------- */
@@ -188,7 +192,15 @@
     return { x: cur.x, f: cur.f, viol: violation(P, cur.x), feasible: cur.v === 0, generations: Math.min(gen, G), stopped };
   }
 
-  const api = { nlp, de, violation };
+  // Evolution lands near round numbers, not on them (479.999996 for 480): snap each value to a whole
+  // number, or else to 7 significant digits, wherever the snapped point is no worse and still fits.
+  function tidy(P, x) {
+    const snap = x.map((v) => { const r = Math.round(v); if (Math.abs(v - r) <= 1e-5 * Math.max(1, Math.abs(v))) return r; return Number(v.toPrecision(7)); });
+    const f0 = M.evaluate(P.f, x), f1 = M.evaluate(P.f, snap);
+    return violation(P, snap) <= Math.max(1e-6, violation(P, x)) && f1 <= f0 + 1e-9 * (1 + Math.abs(f0)) ? snap : x;
+  }
+
+  const api = { nlp, de, violation, tidy };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.PSEngines = api;
 })(typeof self !== "undefined" ? self : this);

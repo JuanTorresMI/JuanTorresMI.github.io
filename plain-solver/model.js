@@ -65,7 +65,11 @@
     if (ix.named[id]) return { kind: "result", item: ix.named[id], sets: ix.named[id].indexBy || [], label: ix.named[id].label, unit: ix.named[id].unit };
     return null;
   }
-  const keysOf = (ix, s) => (ix.sets[s] ? ix.sets[s].rows.map((r) => String(r.key)) : []);
+  // A list's row names, and where each one sits, worked out once per model (big lists are read often).
+  const keysOf = (ix, s) => { ix._keys = ix._keys || {}; return ix._keys[s] || (ix._keys[s] = ix.sets[s] ? ix.sets[s].rows.map((r) => String(r.key)) : []); };
+  const keyPos = (ix, s) => { ix._pos = ix._pos || {}; return ix._pos[s] || (ix._pos[s] = new Map(keysOf(ix, s).map((k, i) => [k, i]))); };
+  const colOf = (ix, ref) => { const p = ix.props[ref]; return p && p.kind === "col" ? p.col : null; };
+  const isNumCol = (c) => !c.kind || c.kind === "number";
   const setLabel = (ix, s) => (ix.sets[s] ? ix.sets[s].label : s);
   const setOne = (ix, s) => (ix.sets[s] ? ix.sets[s].one || ix.sets[s].label : s);
 
@@ -78,9 +82,14 @@
     const peek = (t) => { ws(); return s.startsWith(t, i); };
     const eat = (t) => { if (!peek(t)) throw new Error(`Expected "${t}" at ${i} in: ${s}`); i += t.length; };
     const ident = () => { ws(); const m = /^[A-Za-z_][\w.#]*/.exec(s.slice(i)); if (!m) throw new Error(`Expected a name at ${i} in: ${s}`); i += m[0].length; return m[0]; };
-    function expr() {
+    const kw = (w) => { ws(); const m = new RegExp("^" + w + "\\b").exec(s.slice(i)); if (m) i += w.length; return !!m; };
+    // Conditions: or of ands of (not) comparisons. "=" and "==" both mean equals.
+    function expr() { let a = conj(); while (kw("or")) a = { op: "or", args: [a, conj()] }; return a; }
+    function conj() { let a = neg(); while (kw("and")) a = { op: "and", args: [a, neg()] }; return a; }
+    function neg() { return kw("not") ? { op: "not", args: [neg()] } : cmp(); }
+    function cmp() {
       const a = sum();
-      for (const [t, op] of [[">=", "ge"], ["<=", "le"], ["==", "eq"], [">", "gt"], ["<", "lt"]]) if (peek(t)) { eat(t); return { op, args: [a, sum()] }; }
+      for (const [t, op] of [[">=", "ge"], ["<=", "le"], ["==", "eq"], ["!=", "ne"], ["<>", "ne"], ["=", "eq"], [">", "gt"], ["<", "lt"]]) if (peek(t)) { eat(t); return { op, args: [a, sum()] }; }
       return a;
     }
     function sum() {
@@ -102,11 +111,13 @@
       const num = /^\d+(\.\d+)?([eE][-+]?\d+)?/.exec(s.slice(i));
       if (num) { i += num[0].length; return { const: Number(num[0]) }; }
       if (peek("(")) { eat("("); const e = expr(); eat(")"); return { op: "paren", args: [e] }; }
+      if (peek('"')) { const end = s.indexOf('"', i + 1); if (end < 0) throw new Error(`Unclosed quote in: ${s}`); const t = s.slice(i + 1, end); i = end + 1; return { text: t }; }
       const name = ident();
+      if (name.startsWith("this.")) return { key: name.slice(5) };
       if (peek("(")) {
         eat("(");
-        if (name === "sum" || name === "avg") { const over = ident(); eat(","); const body = expr(); eat(")"); return { op: name, over, body }; }
-        if (name === "count") { const over = ident(); eat(")"); return { op: "count", over }; }
+        if (name === "sum" || name === "avg") { const over = ident(); const where = kw("where") ? expr() : null; eat(","); const body = expr(); eat(")"); return { op: name, over, ...(where ? { where } : {}), body }; }
+        if (name === "count") { const over = ident(); const where = kw("where") ? expr() : null; eat(")"); return { op: "count", over, ...(where ? { where } : {}) }; }
         if (name === "lookup") { const k = ident().split("."), v = ident().split("."); eat(","); const x = expr(); eat(")"); return { op: "lookup", table: k[0], key: k[1], value: v[1], args: [x] }; }
         if (!FUNCS[name]) throw new Error(`Unknown function ${name}`);
         const args = [expr()];
@@ -126,7 +137,9 @@
         for (const part of inner.split(",")) {
           const p = part.trim();
           const eq = p.indexOf("=");
-          if (eq > 0) node.at[p.slice(0, eq).trim()] = p.slice(eq + 1).trim();
+          const via = /^([\w]+)\s+via\s+([\w.]+)$/.exec(p);
+          if (via) node.at[via[1]] = { via: via[2] };
+          else if (eq > 0) node.at[p.slice(0, eq).trim()] = p.slice(eq + 1).trim();
           else { const m = /^([\w]+)\s*([-+])\s*(\d+)$/.exec(p); if (!m) throw new Error(`Bad index ${p}`); node.at[m[1]] = { shift: (m[2] === "-" ? -1 : 1) * Number(m[3]) }; }
         }
       }
@@ -141,8 +154,8 @@
   /* ---------- typed formulas: names people can type ---------- */
   // Every reference gets a name from its label, spaces as underscores: Units_made, Workers.units_per_hour,
   // Stores.Demand. A name that clashes, or has no letters to spare, falls back to its id.
+  const toName = (s) => { let n = String(s || "").trim().replace(/[^A-Za-z0-9]+/g, "_").replace(/^_+|_+$/g, ""); if (!n || /^\d/.test(n)) n = "_" + n; return n; };
   function names(model) {
-    const toName = (s) => { let n = String(s || "").trim().replace(/[^A-Za-z0-9]+/g, "_").replace(/^_+|_+$/g, ""); if (!n || /^\d/.test(n)) n = "_" + n; return n; };
     const byId = {}, used = new Set();
     const claim = (id, n) => { if (!n || n === "_" || used.has(n.toLowerCase())) n = id; used.add(n.toLowerCase()); byId[id] = n; };
     for (const t of model.things || []) claim(t.id, toName(t.label));
@@ -166,10 +179,12 @@
       // [text, precedence]: 4 atom, 3 power, 2 product, 1 sum, 0 comparison
       if (!x || x.hole) return ["?", 4];
       if (x.const !== undefined) return [x.const === null ? "?" : String(x.const), x.const < 0 ? 1 : 4];
+      if (x.text !== undefined) return ['"' + x.text + '"', 4];
+      if (x.key !== undefined && !x.op) return ["this." + nm(x.key), 4];
       if (x.ref !== undefined) {
         let s = nm(x.ref);
         if (x.at && Object.keys(x.at).length) {
-          const parts = Object.entries(x.at).map(([set, a]) => (typeof a === "string" ? `${nm(set)}=${a}` : `${nm(set)}${a.shift < 0 ? "-" : "+"}${Math.abs(a.shift)}`));
+          const parts = Object.entries(x.at).map(([set, a]) => (typeof a === "string" ? `${nm(set)}=${a}` : a.via ? `${nm(set)} via ${nm(a.via)}` : `${nm(set)}${a.shift < 0 ? "-" : "+"}${Math.abs(a.shift)}`));
           s += "[" + parts.join(", ") + (x.otherwise ? " or " + formula(model, x.otherwise, N) : "") + "]";
         }
         return [s, 4];
@@ -183,10 +198,13 @@
         case "neg": return ["-" + F(a[0], 3), 2];
         case "pow": return [F(a[0], 4) + "^" + F(a[1], 4), 3];
         case "paren": return ["(" + formula(model, a[0], N) + ")", 4];
-        case "sum": case "avg": return [`${x.op}(${[].concat(x.over).map(nm).join(", ")}, ${formula(model, x.body, N)})`, 4];
-        case "count": return [`count(${[].concat(x.over).map(nm).join(", ")})`, 4];
+        case "sum": case "avg": return [`${x.op}(${[].concat(x.over).map(nm).join(", ")}${x.where ? " where " + formula(model, x.where, N) : ""}, ${formula(model, x.body, N)})`, 4];
+        case "count": return [`count(${[].concat(x.over).map(nm).join(", ")}${x.where ? " where " + formula(model, x.where, N) : ""})`, 4];
+        case "and": return [F(a[0], -1) + " and " + F(a[1], -1), -1];
+        case "or": return [F(a[0], -2) + " or " + F(a[1], -1), -2];
+        case "not": return ["not " + F(a[0], 0), -1];
         case "lookup": return [`lookup(${nm(x.table)}.${col(x.table, x.key)}, ${nm(x.table)}.${col(x.table, x.value)}, ${formula(model, a[0], N)})`, 4];
-        case "ge": case "le": case "gt": case "lt": case "eq": return [F(a[0], 1) + " " + { ge: ">=", le: "<=", gt: ">", lt: "<", eq: "==" }[x.op] + " " + F(a[1], 1), 0];
+        case "ge": case "le": case "gt": case "lt": case "eq": case "ne": return [F(a[0], 1) + " " + { ge: ">=", le: "<=", gt: ">", lt: "<", eq: "=", ne: "!=" }[x.op] + " " + F(a[1], 1), 0];
         default: return [`${x.op}(${a.map((y) => formula(model, y, N)).join(", ")})`, 4];
       }
     }
@@ -209,7 +227,12 @@
         n.ref = r;
         if (n.at) {
           const at = {};
-          for (const [k, v] of Object.entries(n.at)) { const s = id(k); if (!s || !ix.sets[s]) { error = `“${k}” isn't a list.`; return; } at[s] = v; }
+          for (const [k, v] of Object.entries(n.at)) {
+            const s = id(k);
+            if (!s || !ix.sets[s]) { error = `“${k}” isn't a list.`; return; }
+            if (v && v.via) { const c = id(v.via); if (!c || !colOf(ix, c)) { error = `“${v.via}” isn't a column.`; return; } at[s] = { via: c }; }
+            else at[s] = v;
+          }
           n.at = at;
         }
         fix(n.otherwise);
@@ -219,6 +242,12 @@
         if (!s || !ix.sets[s]) { error = `“${n.over}” isn't a list.`; return; }
         n.over = s;
       }
+      if (n.key !== undefined && !n.op) {
+        const s = id(n.key);
+        if (!s || !ix.sets[s]) { error = `“${n.key}” isn't a list.`; return; }
+        n.key = s;
+      }
+      fix(n.where);
       if (n.op === "lookup") {
         const t = id(n.table);
         if (!t || !ix.sets[t]) { error = `“${n.table}” isn't a list.`; return; }
@@ -311,8 +340,18 @@
       const keys = keysOf(ix, s);
       if (!ix.sets[s]) fail(`“${label}” is listed by ${s}, which no longer exists.`);
       if (typeof at === "string") {
-        const r = keys.indexOf(at);
-        if (r < 0) fail(`“${at}” isn't one of the ${setLabel(ix, s)} any more.`);
+        const r = keyPos(ix, s).get(at);
+        if (r === undefined) fail(`“${at}” isn't one of the ${setLabel(ix, s)} any more.`);
+        return r;
+      }
+      if (at && at.via) {
+        // Follow a link column: the row of s named in the current row of another list.
+        const [t, c] = at.via.split("."), tb = ix.sets[t], col = colOf(ix, at.via);
+        if (!tb || !col) fail(`“${label}” follows a link that no longer exists.`);
+        if (env[t] === undefined) fail(`“${label}” follows each ${setOne(ix, t)}'s ${col.label}, so it has to sit inside “for each ${setOne(ix, t)}” or a total across ${tb.label}.`);
+        const v = String(tb.rows[env[t]][c] ?? "");
+        const r = keyPos(ix, s).get(v);
+        if (r === undefined) fail(`“${v}” in ${tb.label}' ${col.label} (row ${tb.rows[env[t]].key}) isn't one of the ${setLabel(ix, s)}.`);
         return r;
       }
       if (env[s] === undefined) fail(`“${label}” is different for each ${setOne(ix, s)}. Say which one: use it inside “for each ${setOne(ix, s)}” or “total of … across ${setLabel(ix, s)}”, or pick a row.`);
@@ -331,7 +370,9 @@
       const keys = info.sets.map((s, k) => keysOf(ix, s)[idx[k]]);
       switch (info.kind) {
         case "prop": return value(info.prop.value, `“${info.thing.label}: ${info.prop.label}”`);
-        case "col": return value(info.thing.rows[idx[0]][info.col.id], `“${info.col.label}” for ${keys[0]}`);
+        case "col":
+          if (!isNumCol(info.col)) fail(`“${info.col.label}” holds names, not numbers. Use it in a “where”, or to follow a link to another list.`);
+          return value(info.thing.rows[idx[0]][info.col.id], `“${info.col.label}” for ${keys[0]}`);
         case "grid": { const row = (info.item.values || {})[keys[0]] || {}; return value(row[keys[1]], `“${info.label}” for ${keys.join(" and ")}`); }
         case "decision": {
           if (info.item.disabled) { addNote(`“${info.label}” is turned off, so it counts as 0 wherever it's used.`); return C(0); }
@@ -356,8 +397,98 @@
         }
       }
     }
+    // Data only (no decisions), for "where" filters: numbers, names and true/false.
+    function dv(n, env) {
+      if (!n || n.hole) fail("This filter has an empty spot.");
+      if (n.const !== undefined) return Number(n.const);
+      if (n.text !== undefined) return String(n.text);
+      if (n.key !== undefined && !n.op) {
+        if (!ix.sets[n.key]) fail("A filter mentions a list that no longer exists.");
+        if (env[n.key] === undefined) fail(`“this ${setOne(ix, n.key).toLowerCase()}” only makes sense inside “for each ${setOne(ix, n.key)}” or a total across ${setLabel(ix, n.key)}.`);
+        return keysOf(ix, n.key)[env[n.key]];
+      }
+      if (n.ref !== undefined) {
+        const info = refInfo(ix, n.ref);
+        if (!info) fail("A filter uses something that no longer exists.");
+        if (info.kind === "decision" || info.kind === "result") fail("A “where” can only use your data, not decisions or results (those aren't known until the solve).");
+        const idx = [];
+        for (const s of info.sets) { const r = rowOf(n, s, env, info.label); if (r === OUT) return n.otherwise ? dv(n.otherwise, env) : 0; idx.push(r); }
+        if (info.kind === "prop") return Number(info.prop.value);
+        if (info.kind === "col") { const v = info.thing.rows[idx[0]][info.col.id]; return isNumCol(info.col) ? Number(v) : String(v ?? ""); }
+        const ks = info.sets.map((s, k) => keysOf(ix, s)[idx[k]]);
+        return Number(((info.item.values || {})[ks[0]] || {})[ks[1]]);
+      }
+      const a = n.args || [];
+      const num2 = (x, y) => x !== "" && y !== "" && Number.isFinite(Number(x)) && Number.isFinite(Number(y));
+      switch (n.op) {
+        case "paren": return dv(a[0], env);
+        case "and": return truthy(dv(a[0], env)) && truthy(dv(a[1], env));
+        case "or": return truthy(dv(a[0], env)) || truthy(dv(a[1], env));
+        case "not": return !truthy(dv(a[0], env));
+        case "eq": case "ne": case "ge": case "le": case "gt": case "lt": {
+          const x = dv(a[0], env), y = dv(a[1], env);
+          let c;
+          if (num2(x, y)) { const d = Number(x) - Number(y); c = Math.abs(d) <= 1e-9 * Math.max(1, Math.abs(Number(y))) ? 0 : Math.sign(d); }
+          else c = String(x) === String(y) ? 0 : String(x) < String(y) ? -1 : 1;
+          return { eq: c === 0, ne: c !== 0, ge: c >= 0, le: c <= 0, gt: c > 0, lt: c < 0 }[n.op];
+        }
+        case "add": return Number(dv(a[0], env)) + Number(dv(a[1], env));
+        case "sub": return Number(dv(a[0], env)) - Number(dv(a[1], env));
+        case "mul": return Number(dv(a[0], env)) * Number(dv(a[1], env));
+        case "div": return Number(dv(a[0], env)) / Number(dv(a[1], env));
+        case "neg": return -Number(dv(a[0], env));
+      }
+      fail("A filter can only compare data: equals, is not, at least, at most, more than, less than, and, or, not.");
+    }
+    const truthy = (v) => (typeof v === "string" ? v !== "" : !!v);
+    // Rows of a list grouped by one column's value, built once, so "where Route's From is this
+    // Warehouse" over a big list looks its rows up instead of scanning them all for every warehouse.
+    const groups = new Map();
+    function groupOf(set, col) {
+      const k = set + "." + col;
+      if (!groups.has(k)) {
+        const m = new Map(), num = isNumCol(colOf(ix, k));
+        ix.sets[set].rows.forEach((r, i) => { const v = num ? String(Number(r[col])) : String(r[col] ?? ""); if (!m.has(v)) m.set(v, []); m.get(v).push(i); });
+        groups.set(k, m);
+      }
+      return groups.get(k);
+    }
+    const mentions = (n, set) => !!n && typeof n === "object" && ((n.key === set && !n.op) || (n.ref !== undefined && (refInfo(ix, n.ref) || { sets: [] }).sets.includes(set) && !(n.at && typeof n.at[set] === "string")) || (n.args || []).some((x) => mentions(x, set)));
+    // The rows of one list that pass a filter (all of them without one).
+    function rowsWhere(set, where, env) {
+      const all = () => keysOf(ix, set).map((_, i) => i);
+      if (!where) return all();
+      let cand = null;
+      const conj = [];
+      (function flat(w) { if (w && w.op === "and") w.args.forEach(flat); else conj.push(w); })(where);
+      for (const c of conj) {
+        if (cand || !c || c.op !== "eq") continue;
+        for (const [l, r] of [[c.args[0], c.args[1]], [c.args[1], c.args[0]]]) {
+          if (l && l.ref && !l.at && l.ref.startsWith(set + ".") && colOf(ix, l.ref) && !mentions(r, set)) {
+            const col = colOf(ix, l.ref), v = dv(r, env);
+            cand = groupOf(set, col.id).get(isNumCol(col) ? String(Number(v)) : String(v)) || [];
+            break;
+          }
+        }
+      }
+      return (cand || all()).filter((i) => truthy(dv(where, { ...env, [set]: i })));
+    }
+    // Every combination of rows for several lists, with an optional filter over all of them.
+    function combosWhere(sets, where, env) {
+      if (sets.length === 1) return rowsWhere(sets[0], where, env).map((i) => [i]);
+      const out = [];
+      for (const c of combos(ix, sets)) {
+        if (!where) { out.push(c); continue; }
+        const e2 = { ...env };
+        sets.forEach((s, k) => (e2[s] = c[k]));
+        if (truthy(dv(where, e2))) out.push(c);
+      }
+      return out;
+    }
+
     function ex(n, env) {
       if (!n || n.hole) fail("This sentence has an empty spot.");
+      if (n.text !== undefined || (n.key !== undefined && !n.op)) fail("Names (like “this warehouse”) can only be compared in a “where”, not used as numbers.");
       if (n.const !== undefined) { if (n.const === null || !Number.isFinite(Number(n.const))) fail("A number here is missing."); return C(Number(n.const)); }
       if (n.ref !== undefined) return exRef(n, env);
       const a = n.args || [];
@@ -367,11 +498,15 @@
           const sets = [].concat(n.over || []);
           for (const s of sets) if (!ix.sets[s]) fail("A “total of” here is across a list that no longer exists.");
           const terms = [];
-          for (const c of combos(ix, sets)) { const e2 = { ...env }; sets.forEach((s, k) => (e2[s] = c[k])); terms.push(ex(n.body, e2)); }
+          for (const c of combosWhere(sets, n.where, env)) { const e2 = { ...env }; sets.forEach((s, k) => (e2[s] = c[k])); terms.push(ex(n.body, e2)); }
           if (n.op === "avg") { if (!terms.length) fail(`There's nothing in ${setLabel(ix, sets[0])} to average.`); return mul(C(1 / terms.length), add(terms)); }
           return add(terms);
         }
-        case "count": return C([].concat(n.over || []).reduce((p, s) => p * keysOf(ix, s).length, 1));
+        case "count": {
+          const sets = [].concat(n.over || []);
+          for (const s of sets) if (!ix.sets[s]) fail("A “number of” here counts a list that no longer exists.");
+          return C(n.where ? combosWhere(sets, n.where, env).length : sets.reduce((p, s) => p * keysOf(ix, s).length, 1));
+        }
         case "lookup": {
           const t = ix.sets[n.table];
           if (!t) fail("A “look up” here uses a table that no longer exists.");
@@ -426,6 +561,20 @@
       return t.c;
     }
 
+    // A link column has to name rows of the list it links to.
+    for (const t of model.things || []) {
+      if (t.kind !== "table") continue;
+      for (const c of t.columns || []) {
+        if (c.kind !== "link") continue;
+        attempt(t.id, () => {
+          if (!ix.sets[c.links]) fail(`“${c.label}” in ${t.label} links to a list that no longer exists.`);
+          const pos = keyPos(ix, c.links);
+          const bad = t.rows.find((r) => !pos.has(String(r[c.id] ?? "")));
+          if (bad) fail(`“${bad[c.id] ?? ""}” in ${t.label}' ${c.label} (row ${bad.key}) isn't one of the ${setLabel(ix, c.links)}.`);
+        });
+      }
+    }
+
     // Variables, one per decision per combination of its rows.
     for (const d of model.decisions || []) {
       if (d.disabled) continue;
@@ -463,7 +612,7 @@
         if (kind === "compare") {
           const sets = r.forEach || [];
           for (const s of sets) if (!ix.sets[s]) fail(`“${r.label}” is for each row of a list that no longer exists.`);
-          for (const c of combos(ix, sets)) {
+          for (const c of combosWhere(sets, sets.length ? r.where : null, {})) {
             const env = {};
             sets.forEach((s, k) => (env[s] = c[k]));
             const keys = c.map((x, k) => keysOf(ix, sets[k])[x]);
@@ -900,6 +1049,7 @@
     switch (n.op) {
       case "paren": case "neg": case "abs": return unitsOf(ix, a[0], warn);
       case "sum": case "avg": return unitsOf(ix, n.body, warn);
+      case "and": case "or": case "not": case "eq": case "ne": return null;
       case "add": case "sub": case "max": case "min": {
         const us = a.map((x) => unitsOf(ix, x, warn));
         if (us[0] && us[1] && !shares(us[0], us[1])) warn(us[0], us[1]);
@@ -923,6 +1073,7 @@
     if (n.ref !== undefined) { out.add(n.ref); if (n.otherwise) refsIn(n.otherwise, out); }
     if (n.args) n.args.forEach((a) => refsIn(a, out));
     if (n.body) refsIn(n.body, out);
+    if (n.where) refsIn(n.where, out);
     return out;
   }
   function uses(model, item) {
@@ -986,6 +1137,8 @@
     const S = (x) => say(model, x, ix);
     if (!n || n.hole) return "…";
     if (n.const !== undefined) return fmt(n.const, n.unit);
+    if (n.text !== undefined) return `“${n.text}”`;
+    if (n.key !== undefined && !n.op) return `this ${setOne(ix, n.key).toLowerCase()}`;
     if (n.ref !== undefined) {
       const info = refInfo(ix, n.ref);
       if (!info) return "(missing)";
@@ -994,6 +1147,7 @@
         const at = n.at && n.at[s];
         if (typeof at === "string") return at;
         if (at && at.shift) return `${at.shift < 0 ? "the previous" : "the next"} ${setOne(ix, s).toLowerCase()}'s`;
+        if (at && at.via) { const [t] = at.via.split("."), c = colOf(ix, at.via); return `the ${setOne(ix, t).toLowerCase()}'s ${c ? c.label : "link"}'s`; }
         return null;
       });
       const pinned = ats.filter((a) => a && !a.endsWith("'s"));
@@ -1008,9 +1162,13 @@
       case "div": return `${S(a[0])} ÷ ${S(a[1])}`;
       case "neg": return `minus ${S(a[0])}`;
       case "paren": return `(${S(a[0])})`;
-      case "sum": return `the total of ${S(n.body)} across ${joinAnd([].concat(n.over).map((s) => setLabel(ix, s)))}`;
+      case "sum": return `the total of ${S(n.body)} across ${joinAnd([].concat(n.over).map((s) => setLabel(ix, s)))}${n.where ? " where " + S(n.where) : ""}`;
       case "avg": return `the average of ${S(n.body)} across ${joinAnd([].concat(n.over).map((s) => setLabel(ix, s)))}`;
-      case "count": return `the number of ${joinAnd([].concat(n.over).map((s) => setLabel(ix, s)))}`;
+      case "count": return `the number of ${joinAnd([].concat(n.over).map((s) => setLabel(ix, s)))}${n.where ? " where " + S(n.where) : ""}`;
+      case "and": return `${S(a[0])} and ${S(a[1])}`;
+      case "or": return `${S(a[0])} or ${S(a[1])}`;
+      case "not": return `not (${S(a[0])})`;
+      case "ne": return `${S(a[0])} isn't ${S(a[1])}`;
       case "pow": return a[1] && a[1].const === 2 ? `${S(a[0])} squared` : `${S(a[0])} to the power of ${S(a[1])}`;
       case "sqrt": return `the square root of ${S(a[0])}`;
       case "abs": return `the size of ${S(a[0])}, ignoring its sign`;
@@ -1215,7 +1373,7 @@
   }
 
   const api = { SCHEMA, index, refInfo, keysOf, setLabel, setOne, parse, expand, linearize, classify, writeLP, elastic, compileToLP,
-    numeric, evaluate, gradient, names, formula, parseNamed, parseUnit, unitText, validate, uses, describe, say, sayRule, math, fmt, isC };
+    numeric, evaluate, gradient, names, toName, formula, parseNamed, parseUnit, unitText, validate, uses, describe, say, sayRule, math, fmt, isC };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.PSModel = api;
 })(typeof self !== "undefined" ? self : this);
