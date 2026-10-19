@@ -18,7 +18,9 @@
 (function () {
   "use strict";
   const shell = document.getElementById("app-shell");
-  if (!shell) return;
+  // The page is laid out: show it (the layout hid it so nothing would move after the first paint).
+  const ready = () => document.documentElement.classList.remove("app-pending");
+  if (!shell) return ready();
   const mode = shell.dataset.mode === "read" ? "read" : "views";
   const KEY = "app-view:" + location.pathname;
   const store = { get() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }, set(v) { try { localStorage.setItem(KEY, v); } catch (e) { /* private mode */ } } };
@@ -31,7 +33,7 @@
     if (!meta[v]) { meta[v] = { title: el.dataset.title || v, n: el.dataset.n || "", group: el.dataset.railGroup || "", order: el.dataset.order ? Number(el.dataset.order) : Infinity, first: el, last: el }; views.push(v); }
     else { if (el.dataset.title) meta[v].title = el.dataset.title; if (el.dataset.n) meta[v].n = el.dataset.n; if (el.dataset.railGroup) meta[v].group = el.dataset.railGroup; if (el.dataset.order) meta[v].order = Number(el.dataset.order); meta[v].last = el; }
   }
-  if (!views.length) return;
+  if (!views.length) return ready();
   views.sort((a, b) => (meta[a].order === meta[b].order ? 0 : meta[a].order - meta[b].order));
   shell.classList.add("is-live");
 
@@ -148,6 +150,7 @@
     if (fromHash) hashEl.scrollIntoView({ block: "start" });
   }
   window.AppShell = { show, current: () => current };
+  ready();
 
   function autoViews() {
     const stage = document.getElementById("app-stage");

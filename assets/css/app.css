@@ -19,6 +19,9 @@ body.app-body { background: var(--ground); }
 .app-top .theme-btn svg { width: 14px; height: 14px; }
 .app-top .theme-btn:hover { border-color: var(--ink); }
 
+/* until app-shell.js has laid the page out (see _layouts/tool.html) */
+.app-pending .app-shell, .app-pending .app-shell ~ * { visibility: hidden; }
+
 /* the shell: rail | stage | side */
 .app-shell { display: grid; grid-template-columns: minmax(0, 1fr); min-height: calc(100vh - var(--app-top)); }
 .app-shell.is-live { grid-template-columns: 232px minmax(0, 1fr); }

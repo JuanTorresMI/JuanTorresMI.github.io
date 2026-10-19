@@ -35,6 +35,19 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-19 — No layout shift on the app pages
+
+- **Layout shift (CLS, a ranking signal)** on every page in the app layout measured 0.17–1.6: the page
+  painted as one column, then the script added the rail and hid the other views. The layout now keeps
+  the page invisible under its top bar until `app-shell.js` has laid it out (a 3 s timer shows it
+  anyway if the script never runs; without JavaScript nothing is hidden). Now 0–0.07 on every app page
+  at desktop and phone widths, under Google's 0.1 "good".
+- **The planner's answers table** fills in after the solve; its usual height is held while it's empty,
+  so the chart below doesn't jump (CLS 1.6 → 0.015).
+- The music page's cover image loads first (`fetchpriority`); the TV page's posters carry their size.
+- A site-wide audit of all 805 pages (titles, descriptions, duplicates, canonicals, sitemap, headings,
+  social tags, structured data, link text) found nothing else.
+
 ## 2026-10-19 — Plain Solver search pass, cleanup
 
 - **Plain Solver**: search title leads with what it does ("Build Your Own Solver: Free Optimization in
