@@ -73,6 +73,15 @@
     level: Undergraduate
     audience: Students of operations and supply chain management
     teaches: ["Aggregate production planning", "Level, chase and band workforce strategies", "Formulating a linear program", "Branch and bound", "Shadow prices"]
+  features:
+    - Aggregate production planning for up to 24 months
+    - Level, chase and band workforce strategies, compared side by side
+    - Hiring, layoff, overtime, inventory, backlog and subcontracting costs
+    - Exact mixed-integer solution with HiGHS in the browser
+    - Study mode that works through the model, branch and bound and shadow prices step by step
+    - Excel workbook export with live formulas in the textbook Solver layout
+    - CSV export and shareable links
+  keywords: [aggregate, planner, planning, highs]
 
 - slug: plain-solver
   family: Work
@@ -99,15 +108,7 @@
     level: Undergraduate
     audience: Students of operations research, supply chain and business analytics
     teaches: ["Formulating optimization models", "Linear and integer programming", "Shadow prices and sensitivity", "Infeasibility", "Nonlinear and evolutionary search"]
-  features:
-    - Aggregate production planning for up to 24 months
-    - Level, chase and band workforce strategies, compared side by side
-    - Hiring, layoff, overtime, inventory, backlog and subcontracting costs
-    - Exact mixed-integer solution with HiGHS in the browser
-    - Study mode that works through the model, branch and bound and shadow prices step by step
-    - Excel workbook export with live formulas in the textbook Solver layout
-    - CSV export and shareable links
-  keywords: [aggregate, planner, planning, highs]
+  keywords: [plain-solver, plain solver]
 
 - slug: reefer-rates
   family: Work

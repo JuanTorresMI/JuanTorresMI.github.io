@@ -191,6 +191,7 @@ image_alt: "Aggregate Planner: level, band and chase plans, with the math step b
       <h3>Solved exactly, in your browser</h3>
       <p>The planner writes the model out and hands it to <a href="https://highs.dev/">HiGHS</a>, an open-source optimization solver compiled to WebAssembly. It searches until it can prove no cheaper plan exists, so the answer is the true optimum, not a spreadsheet heuristic or a close guess.</p>
       <p>Everything runs on this page, and the numbers you enter stay in your browser. The share link carries them in the part of the address after the “#”, which browsers never send to a server. The source is <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/aggregate-planning">on GitHub</a>: <code>model.js</code> holds the whole model.</p>
+      <p>For optimization problems that aren't aggregate planning (staffing, transportation, product mix, scheduling, anything you'd set up in Excel Solver), <a href="/plain-solver/">Plain Solver</a> builds the model from plain-English sentences and solves it with the same engine.</p>
     </div>
   </article>
 </div>

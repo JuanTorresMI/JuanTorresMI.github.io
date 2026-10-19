@@ -60,9 +60,9 @@
     if (redraw) renderBuilder();
     soft();
   }
-  const soft = debounce(() => { renderChecks(); renderPreview(); renderQuestionsState(); markStale(); if (showMath) renderMath(); }, 120);
-  function undo() { if (!past.length) return; future.push(JSON.stringify(model)); model = JSON.parse(past.pop()); changed(true); renderQuestions(); }
-  function redo() { if (!future.length) return; past.push(JSON.stringify(model)); model = JSON.parse(future.pop()); changed(true); renderQuestions(); }
+  const soft = debounce(() => { renderChecks(); renderPreview(); markStale(); if (showMath) renderMath(); }, 120);
+  function undo() { if (!past.length) return; future.push(JSON.stringify(model)); model = JSON.parse(past.pop()); changed(true); }
+  function redo() { if (!future.length) return; past.push(JSON.stringify(model)); model = JSON.parse(future.pop()); changed(true); }
 
   // Typing: remember the model when a field is entered, and keep that as an undo step if it changed.
   let typingFrom = null;
@@ -70,7 +70,8 @@
   document.addEventListener("change", (e) => {
     if (!typingFrom || !/INPUT|TEXTAREA/.test(e.target.tagName)) return;
     const now = JSON.stringify(model);
-    if (now !== typingFrom) { past.push(typingFrom); future = []; }
+    // An edit() in this field's own change handler may already have kept the same step.
+    if (now !== typingFrom && past[past.length - 1] !== typingFrom) { past.push(typingFrom); future = []; }
     typingFrom = now;
   });
 
@@ -697,7 +698,6 @@
     const e = document.querySelector(`.ps [data-k="${CSS.escape("pv:" + t.id + "." + p.id)}"]`);
     if (e && e !== document.activeElement) e.value = p.value === null ? "" : String(p.value);
   }
-  function renderQuestionsState() { /* the questions edit the same model; nothing else to sync */ }
 
   /* ---------- solving ---------- */
   function markStale() {
@@ -781,6 +781,7 @@
     $("#a-goal-k").textContent = m.goal.label || "Goal";
     $("#a-goal").textContent = fmt(a.goal, gu);
     $("#a-goal-s").textContent = a.status === "optimal" ? how : statusLine;
+    $("#a-sentence").textContent = headlineSentence(a, m, gu);
     $("#a-head").replaceChildren(...headline(a, m));
     $("#a-engine").textContent = a.line;
     $("#a-notes").replaceChildren(...(a.notes || []).map((n) => h("li", {}, n)));
@@ -802,6 +803,19 @@
     setupWhatIf();
   }
   function joinAnd(xs) { return xs.length <= 1 ? xs.join("") : xs.slice(0, -1).join(", ") + " and " + xs[xs.length - 1]; }
+  // The answer as one sentence: every decision, then the goal.
+  function headlineSentence(a, m, gu) {
+    const bits = [];
+    for (const d of m.decisions) {
+      if (d.disabled || !a.decisions[d.id]) continue;
+      const es = a.decisions[d.id];
+      if (es.length === 1 && !es[0].keys.length) bits.push(d.type === "binary" ? `${d.label}: ${es[0].value > 0.5 ? "yes" : "no"}` : `${d.label}: ${fmt(es[0].value, d.unit)}`);
+      else if (d.type === "binary") { const yes = es.filter((e) => e.value > 0.5); bits.push(`${d.label}: ${yes.length && yes.length <= 4 ? yes.map((e) => e.keys.join(" → ")).join(", ") : `${yes.length} of ${es.length}`}`); }
+      else bits.push(`${d.label}: ${fmt(es.reduce((s, e) => s + e.value, 0), d.unit)} in all`);
+      if (bits.length === 6) break;
+    }
+    return `${bits.join("; ")}. ${m.goal.label}: ${fmt(a.goal, gu)}.`;
+  }
   function headline(a, m) {
     const parts = [];
     for (const d of m.decisions) {
@@ -892,6 +906,7 @@
   function renderLimiting(a, m) {
     const box = $("#a-limit"), s = a.sensitivity;
     const wrap = $("#a-limit-wrap");
+    if (s && !s.up.length) s.up = s.down = a.rows.map((r, j) => (r.binding ? s.rows[j] : undefined));
     if (!s || !s.up.length) {
       wrap.hidden = a.cls !== "nlp" && a.cls !== "nonsmooth" && a.cls !== "qp";
       box.replaceChildren(h("li", {}, a.cls === "qp" ? "Shadow prices aren't shown for quadratic goals yet." : "Shadow prices only make sense for linear models. For this one, try the what-if slider instead: it re-solves as you drag."));
@@ -1166,7 +1181,6 @@
     status("Ready. Press Solve when the model says what you want.");
     renderAdvanced();
     changed(true);
-    renderQuestions();
     $("#builder-wrap").open = !blanks().length;
     if (note) flash(note);
   }
@@ -1298,7 +1312,7 @@
   }
   let imp = null;
   function openImport(target, upload) {
-    imp = { target: target || null, grid: null, xlsx: null };
+    imp = { target: target || null, grid: null, xlsx: null, units: {} };
     const d = $("#d-import");
     $("#di-text").value = "";
     $("#di-file").value = "";
@@ -1318,7 +1332,18 @@
     const as = $("#di-as").value;
     const shown = g.slice(0, 8).map((r) => r.slice(0, 8));
     $("#di-preview").replaceChildren(g.length ? h("table.ps-table.ps-mini", {}, shown.map((r, i) => h("tr", {}, r.map((c, j) => (i === 0 || j === 0 ? h("th", {}, c) : h("td", {}, c)))))) : "",
+      g.length ? unitFields(g, as) : "",
       g.length ? h("p.ps-hint", {}, as === "grid" ? `A grid: ${g.length - 1} rows × ${(g[0] || []).length - 1} columns of numbers. The first row and first column are the names.` : `A list of ${g.length - 1} rows. The first column is each row's name; the first row names the columns.`) : "");
+  }
+  // The spec asks for the units to be confirmed at import: one per column, or one for a grid.
+  function unitFields(g, as) {
+    imp.units = imp.units || {};
+    const heads = as === "grid" ? ["the numbers"] : g[0].slice(1).map((c, j) => c || `Column ${j + 1}`);
+    return h("div.ps-fields", {}, heads.slice(0, 12).map((c, j) => {
+      const inp = h("input", { type: "text", value: imp.units[j] || "", placeholder: "unit, like $ or hours", "aria-label": `Unit for ${c}` });
+      inp.addEventListener("input", () => { imp.units[j] = inp.value; });
+      return h("label.ps-field", {}, h("span.ps-name", {}, `Unit for ${c}`), inp);
+    }));
   }
   function finishImport() {
     const g = imp.grid;
@@ -1340,12 +1365,13 @@
         let t = imp.target;
         const A = t ? t.over[0] : findOrMake(rowKeys, "Rows of " + name), B = t ? t.over[1] : findOrMake(colKeys, "Columns of " + name);
         if (!t) { t = { id: uid(name), label: name, kind: "grid", over: [A, B], unit: "", values: {} }; model.things.push(t); }
+        if (imp.units && imp.units[0]) t.unit = imp.units[0];
         t.values = {};
         rowKeys.forEach((a, i) => { t.values[a] = {}; colKeys.forEach((b, j) => { t.values[a][b] = num(g[i + 1][j + 1]); }); });
       } else {
         let t = imp.target;
         const head = g[0];
-        const cols = head.slice(1).map((label, j) => ({ id: "c" + (j + 1), label: String(label || `Column ${j + 1}`), unit: "" }));
+        const cols = head.slice(1).map((label, j) => ({ id: "c" + (j + 1), label: String(label || `Column ${j + 1}`), unit: (imp.units && imp.units[j]) || "" }));
         if (!t) { t = { id: uid(name), label: name, one: name.replace(/s$/, ""), kind: "table", columns: [], rows: [] }; model.things.push(t); }
         const taken = new Set(["key"]);
         t.columns = cols.map((c) => { const id = uid(c.label, taken); taken.add(id); return { ...c, id }; });
@@ -1407,7 +1433,7 @@
     $("#wi-input").addEventListener("change", () => pickWhatIf($("#wi-input").value));
     $("#wi-range").addEventListener("input", () => { const v = Number($("#wi-range").value); $("#wi-val").textContent = fmt(v, wi.unit); $("#wi-out").textContent = "…"; wiSolve(v); });
     $("#wi-curve").addEventListener("click", drawCurve);
-    $("#wi-keep").addEventListener("click", () => { if (!wi) return; const v = Number($("#wi-range").value); edit((mm) => setInput(mm, wi.id, v)); renderQuestions(); solve(); });
+    $("#wi-keep").addEventListener("click", () => { if (!wi) return; const v = Number($("#wi-range").value); edit((mm) => setInput(mm, wi.id, v)); solve(); });
     // Adding sentences.
     document.querySelectorAll("[data-add]").forEach((b) => b.addEventListener("click", () => add(b.dataset.add)));
     $("#b-paste").addEventListener("click", () => openImport(null));
@@ -1450,7 +1476,6 @@
     model = normalize(start);
     renderAdvanced();
     changed(true);
-    renderQuestions();
     $("#builder-wrap").open = !blanks().length;
     status("Ready. Press Solve when the model says what you want.");
     if (note) flash(note);

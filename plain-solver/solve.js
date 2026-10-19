@@ -215,6 +215,7 @@
     const ints = E.vars.filter((v) => v.type !== "continuous").length;
     const size = { vars: E.vars.length, rows: E.rows.length, ints };
     const base = { cls: k.cls, engine: ENGINE[k.cls] ? ENGINE[k.cls].name : "", line: ENGINE[k.cls] ? ENGINE[k.cls].line : "", notes: (k.Lm ? k.Lm.notes : []).concat(E.notes.map((n) => n.text)), size };
+    if (E.vars.length > 20000 || ints > 2000) base.notes.push(`This is a big one for a browser: ${E.vars.length.toLocaleString("en-US")} decisions (${ints.toLocaleString("en-US")} whole-number) and ${E.rows.length.toLocaleString("en-US")} rules. It still runs here; if it hits the time limit, you get the best plan found and how far from the best it could be. A longer limit is in Advanced.`);
     if (k.hint === "bound") base.notes.push("A yes-or-no decision multiplies an amount with no upper limit. Give that amount a limit and the model can be solved exactly as a linear one.");
     if (k.forced) base.notes.push("The engine was chosen by hand in Advanced.");
     if (k.cls === "nonsmooth" && k.ints && !k.forced && k.worst < 2) base.notes.push("Whole-number decisions in a nonlinear model go to the evolutionary engine, which rounds them as it searches.");

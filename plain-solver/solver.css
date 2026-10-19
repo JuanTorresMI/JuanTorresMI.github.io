@@ -201,6 +201,7 @@ details[open] > summary.ps-block-head .ps-label::before { content: "▾ "; }
 .ps-head-card { margin-top: 16px; padding: 24px; background: var(--stock); border: 1px solid var(--rule); }
 .ps-head-card .ps-label { color: var(--ink); }
 .ps-big { font-family: var(--serif); font-weight: 500; font-size: clamp(36px, 4vw, 52px); line-height: 1.05; color: var(--ink); margin-top: 8px !important; overflow-wrap: anywhere; }
+.ps-sentence { margin-top: 16px !important; font: italic 500 19px/1.4 var(--serif); color: var(--ink); }
 .ps-hl { list-style: none; margin: 16px 0 0; padding: 0; border-top: 1px solid var(--rule); }
 .ps-hl li { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--rule); }
 .ps-hl-k { flex: 1 1 12em; font-size: 14px; color: var(--text-2); }
@@ -276,6 +277,9 @@ details[open] > summary.ps-block-head .ps-label::before { content: "▾ "; }
 .ps-prose strong { font-weight: 600; color: var(--ink); }
 .ps-prose a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--rule); }
 .ps-prose a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.ps-faq { margin: 0 0 1.1em; }
+.ps-faq dt { font-weight: 600; color: var(--ink); font-size: 17px; line-height: 1.5; margin-top: 16px; }
+.ps-faq dd { margin: 4px 0 0; font-size: 17px; line-height: 1.7; }
 .ps-list { padding-left: 20px; margin: 0 0 1.1em; }
 .ps-list li + li { margin-top: 8px; }
 .ps-sec .ps-list { padding-left: 0; margin: 0; }

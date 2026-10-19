@@ -35,6 +35,17 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-19 — Plain Solver: fixes and search
+
+- **Fix: `projects.yml`**: adding Plain Solver split the Aggregate Planner's entry, so the planner lost its
+  JSON-LD feature list and Project-log keywords and Plain Solver's page listed the planner's features. Both
+  entries are whole again.
+- The answer now opens with one sentence (every decision, then the goal), as the spec asks; large LPs show
+  their shadow prices from the duals; a model over 20,000 decisions says plainly that it's big for a browser;
+  imported tables ask for each column's unit; Undo after a typed formula takes one press, not two.
+- Search: the guide gains a “Questions people ask” section (free Excel Solver alternative, problem size,
+  shadow prices, infeasible, nonlinear) and links to the Aggregate Planner; the planner's guide links back.
+
 ## 2026-10-18 — Plain Solver
 
 - **New project, `/plain-solver/`**: a general optimization solver set up in plain-English sentences, built
