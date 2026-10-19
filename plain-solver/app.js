@@ -742,14 +742,19 @@
     const active = document.activeElement && document.activeElement.dataset && document.activeElement.dataset.k;
     const sel = active && document.activeElement.selectionStart;
     const lists = { things: $("#s-things"), decisions: $("#s-decisions"), results: $("#s-results"), rules: $("#s-rules") };
-    lists.things.replaceChildren(...model.things.map(thingEl));
-    lists.decisions.replaceChildren(...model.decisions.map(decisionEl));
-    lists.results.replaceChildren(...model.results.map(resultEl));
-    lists.rules.replaceChildren(...model.rules.map(ruleEl));
+    const detail = view === "detail";
+    lists.things.replaceChildren(...(detail ? model.things.map(thingEl) : []));
+    lists.decisions.replaceChildren(...(detail ? model.decisions.map(decisionEl) : []));
+    lists.results.replaceChildren(...(detail ? model.results.map(resultEl) : []));
+    lists.rules.replaceChildren(...(detail ? model.rules.map(ruleEl) : []));
+    $("#s-goal").replaceChildren(...(detail ? [goalEl()] : []));
     renderDatalists();
     renderSteps();
-    $("#s-goal").replaceChildren(goalEl());
-    renderQuestions();
+    renderCards();
+    renderSummary();
+    renderPreview();
+    renderChecks();
+    if (view === "questions") renderQuestions(); else $("#q-list").replaceChildren();
     $("#m-title").value = model.title || "";
     for (const [k, el] of Object.entries(lists)) el.closest("section").classList.toggle("is-empty", !model[k].length);
     if (active) {
@@ -758,6 +763,121 @@
     }
     $("#b-undo").disabled = !past.length;
     $("#b-redo").disabled = !future.length;
+  }
+
+  /* ---------- views: one screen at a time ---------- */
+  const VIEWS = ["start", "questions", "decide", "know", "rules", "best", "answer", "detail", "settings"];
+  const VIEWKEY = "plain-solver:view:v1";
+  let view = "start";
+  function go(v, opts) {
+    if (!VIEWS.includes(v)) v = "decide";
+    view = v;
+    for (const x of VIEWS) $("#v-" + x).hidden = x !== v;
+    $("#app").classList.toggle("is-start", v === "start");
+    document.querySelectorAll(".ps-railbtn").forEach((b) => { if (b.dataset.go === v) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+    // On a phone the steps are a strip that scrolls sideways: keep the current one in view.
+    const cur = document.querySelector('.ps-railbtn[aria-current]');
+    if (cur && matchMedia("(max-width: 760px)").matches) cur.scrollIntoView({ inline: "center", block: "nearest" });
+    if (v !== "start") store.set(VIEWKEY, v);
+    $("#menu").open = false;
+    renderBuilder();
+    if (!(opts && opts.stay)) window.scrollTo({ top: 0, behavior: "auto" });
+    const first = { decide: "#qd-name", know: "#qk-name", rules: "#qr-lhs", best: "#qg-expr" }[v];
+    if (opts && opts.focus && first) setTimeout(() => $(first).focus({ preventScroll: true }), 50);
+  }
+
+  // Each step lists what it holds as cards: plain English, with Edit (the full sentence), On/Off, Delete.
+  const openEdits = new Set();
+  const TYPE_SAY = { integer: "how many (a whole number)", continuous: "how much (any amount)", binary: "yes or no" };
+  function card(id, title, sub, editor, opts) {
+    opts = opts || {};
+    const open = openEdits.has(id) || opts.alwaysOpen;
+    const acts = h("div.ps-card2-act", {},
+      opts.alwaysOpen ? null : h("button.ps-cbtn", { type: "button", "aria-expanded": String(open), on: { click: () => { if (open) openEdits.delete(id); else openEdits.add(id); renderBuilder(); } } }, open ? "Done" : "Edit"),
+      opts.toggle ? h("button.ps-cbtn" + (opts.toggle.off ? ".is-off" : ""), { type: "button", "aria-pressed": String(!opts.toggle.off), title: opts.toggle.off ? "Turned off: left out of the solve" : "Leave it out of the solve", on: { click: opts.toggle.click } }, opts.toggle.off ? "Off" : "On") : null,
+      opts.remove ? h("button.ps-cbtn.ps-cbtn-x", { type: "button", "aria-label": `Delete ${title}`, title: "Delete", on: { click: opts.remove } }, "Delete") : null);
+    return h("div.ps-card2" + (opts.toggle && opts.toggle.off ? ".is-off" : "") + (open ? ".is-open" : ""), { "data-id": id },
+      h("div.ps-card2-head", {}, h("div.ps-card2-main", {}, h("p.ps-card2-t", {}, title), sub ? h("p.ps-card2-s", {}, sub) : null), acts),
+      open && editor ? h("div.ps-card2-edit", {}, editor()) : null);
+  }
+  const empty = (t) => h("p.ps-empty-note", {}, t);
+  const cap = (t) => (t ? t[0].toUpperCase() + t.slice(1) : t);
+  function limitsSaid(d) {
+    const parts = [];
+    if (d.lower === null) parts.push("can go negative");
+    else if (typeof d.lower === "number" && d.lower !== 0) parts.push("at least " + fmt(d.lower));
+    else if (d.lower && typeof d.lower === "object") parts.push("at least " + M.say(model, d.lower));
+    if (typeof d.upper === "number") parts.push("at most " + fmt(d.upper));
+    else if (d.upper && typeof d.upper === "object") parts.push("at most " + M.say(model, d.upper));
+    return parts;
+  }
+  function renderCards() {
+    const I = ix();
+    if (view === "decide") {
+      $("#l-decide").replaceChildren(...(model.decisions.length ? model.decisions.map((d, i) => card(d.id, d.label,
+        [TYPE_SAY[d.type || "continuous"], (d.indexBy || []).length ? "one for each " + d.indexBy.map((x) => M.setOne(I, x).toLowerCase()).join(" and each ") : "", ...(d.type === "binary" ? [] : limitsSaid(d)), d.unit ? "in " + d.unit : ""].filter(Boolean).join(" · "),
+        () => decisionEl(d, i), { toggle: { off: d.disabled, click: () => edit(() => { d.disabled = !d.disabled; }) }, remove: () => edit(() => { model.decisions.splice(i, 1); }) })) : [empty("Nothing yet. Add the first thing the solver should decide, above.")]));
+    }
+    if (view === "know") {
+      $("#l-know").replaceChildren(...(model.things.length ? model.things.map((t, i) => h("div.ps-card2.is-open.ps-card2-data", { "data-id": t.id }, thingEl(t, i))) : [empty("Nothing yet. Add a number above, or bring in a list from a spreadsheet.")]));
+    }
+    if (view === "rules") {
+      $("#l-rules").replaceChildren(...(model.rules.length ? model.rules.map((r, i) => card(r.id, r.label, cap(M.sayRule(model, r, I)) + (r.where && (r.forEach || []).length ? ", where " + M.say(model, r.where, I) : ""),
+        () => ruleEl(r, i), { toggle: { off: r.disabled, click: () => edit(() => { r.disabled = !r.disabled; }) }, remove: () => edit(() => { model.rules.splice(i, 1); }) })) : [empty("No rules yet. Most problems have at least one: a limit you can't go over, or something you have to meet.")]));
+      renderVocab("#vocab-rules");
+    }
+    if (view === "best") {
+      const g = model.goal;
+      const set = g && g.expr && !g.expr.hole;
+      $("#l-best").replaceChildren(set ? card("goal", `${g.sense === "max" ? "Make it as high as possible" : g.sense === "min" ? "Make it as low as possible" : g.close ? "Get as close as possible to " + fmt(g.targetValue) : "Make it equal " + fmt(g.targetValue)}: ${g.label}`,
+        cap(M.say(model, g.expr, I)), () => goalEl(), {}) : empty("No goal yet. Say what to make as high or as low as possible."));
+      if (set) { $("#qg-sense").value = g.sense === "min" ? "min" : "max"; }
+      renderVocab("#vocab-best");
+    }
+  }
+  // The names in the model as buttons: a click puts the name where you're typing.
+  let lastPhrase = null;
+  document.addEventListener("focusin", (e) => { if (e.target.classList && e.target.classList.contains("ps-phrase")) lastPhrase = e.target; });
+  function renderVocab(sel) {
+    const box = $(sel);
+    const names = plainNames().filter((n) => n !== "total of … across …");
+    const lists = tables().map((t) => t.label);
+    if (!names.length) { box.replaceChildren(h("span.ps-vocab-k", {}, "Names you can use appear here once you've added decisions and data.")); return; }
+    const chip = (text, insert) => h("button.ps-vchip", { type: "button", on: { mousedown: (e) => e.preventDefault(), click: () => insertPhrase(insert || text, sel) } }, text);
+    box.replaceChildren(h("span.ps-vocab-k", {}, "Names you can use:"), ...names.map((n) => chip(n)),
+      ...["plus", "minus", "times", "divided by"].map((w) => h("button.ps-vchip.ps-vchip-op", { type: "button", on: { mousedown: (e) => e.preventDefault(), click: () => insertPhrase(w, sel) } }, w)),
+      ...lists.map((l) => chip(`total of … across ${l}`, `total of  across ${l}`)));
+  }
+  function insertPhrase(text, sel) {
+    let inp = lastPhrase && lastPhrase.closest(".ps-view") === $(sel).closest(".ps-view") ? lastPhrase : $(sel).closest(".ps-view").querySelector(".ps-phrase");
+    const v = inp.value, a = inp.selectionStart ?? v.length, b = inp.selectionEnd ?? v.length;
+    const before = v.slice(0, a), after = v.slice(b);
+    const pad = (before && !/\s$/.test(before) ? " " : "") + text + (after && !/^\s/.test(after) ? " " : " ");
+    inp.value = before + pad + after;
+    // "total of  across X": leave the cursor in the gap for what to total.
+    const gap = text.indexOf("  across ");
+    const pos = gap >= 0 ? before.length + (pad.indexOf(text)) + gap + 1 : before.length + pad.length;
+    inp.focus();
+    inp.setSelectionRange(pos, pos);
+    inp.dispatchEvent(new Event("input"));
+  }
+  // The side panel: the whole model in plain English, each part a link to its step.
+  function renderSummary() {
+    const I = ix(), g = model.goal;
+    const part = (step, title, items, none) => h("div.ps-sum-part", {},
+      h("button.ps-sum-h", { type: "button", "data-go": step }, title),
+      items.length ? h("ul", {}, items.slice(0, 8).map((t) => h("li", {}, t)), items.length > 8 ? h("li.ps-muted", {}, `and ${items.length - 8} more`) : null) : h("p.ps-sum-none", {}, none));
+    const know = [];
+    for (const t of model.things) {
+      if (t.kind === "single") for (const p of t.properties || []) know.push(`${p.label}: ${fmt(p.value, p.unit)}`);
+      else if (t.kind === "table") know.push(`${t.label}: a list of ${t.rows.length}${(t.columns || []).length ? " (" + t.columns.map((c) => c.label.toLowerCase()).join(", ") + ")" : ""}`);
+      else know.push(`${t.label}: a grid`);
+    }
+    $("#summary").replaceChildren(
+      part("decide", "You decide", model.decisions.filter((d) => !d.disabled).map((d) => `${{ integer: "how many", continuous: "how much", binary: "whether to" }[d.type || "continuous"]} ${d.label.toLowerCase()}${(d.indexBy || []).length ? " for each " + d.indexBy.map((x) => M.setOne(I, x).toLowerCase()).join(" and ") : ""}`), "Nothing yet"),
+      part("know", "You know", know, "Nothing yet"),
+      part("rules", "Rules", model.rules.filter((r) => !r.disabled).map((r) => cap(M.sayRule(model, r, I))), "None yet"),
+      part("best", "Best means", g && g.expr && !g.expr.hole ? [`${g.label.toLowerCase()} as ${g.sense === "max" ? "high" : g.sense === "min" ? "low" : "close to " + fmt(g.targetValue)} as possible`] : [], "Not set yet"));
   }
 
   /* ---------- the four steps ---------- */
@@ -769,7 +889,15 @@
       rules: model.rules.some((r) => !r.disabled),
       best: !!(g && g.expr && !g.expr.hole),
     };
-    document.querySelectorAll("#steps li").forEach((li) => { const ok = done[li.dataset.step]; li.classList.toggle("is-done", ok); li.querySelector("a").setAttribute("aria-label", `${li.textContent.trim()}: ${ok ? "done" : "to do"}`); });
+    const counts = { decide: model.decisions.filter((d) => !d.disabled).length, know: model.things.reduce((s, t) => s + (t.kind === "single" ? (t.properties || []).length : 1), 0), rules: model.rules.filter((r) => !r.disabled).length, best: done.best ? 1 : 0 };
+    for (const k of ["decide", "know", "rules", "best"]) {
+      const b = document.querySelector(`.ps-railbtn[data-go="${k}"]`);
+      b.classList.toggle("is-done", done[k]);
+      $("#c-" + k).textContent = k === "best" ? (done.best ? "✓" : "") : counts[k] ? String(counts[k]) : "";
+    }
+    const solvedNow = !!(last && last.ok && lastModel === JSON.stringify(stripUi(model)));
+    document.querySelector('.ps-railbtn[data-go="answer"]').classList.toggle("is-done", solvedNow);
+    $("#c-answer").textContent = solvedNow ? "✓" : "";
     for (const id of ["#qd-each", "#qr-each"]) {
       const each = $(id), cur = each.value;
       each.replaceChildren(opt("", id === "#qd-each" ? "(just one)" : "(once)", !cur), ...tables().map((t) => opt(t.id, `for each ${(t.one || t.label).toLowerCase()}`, t.id === cur)));
@@ -861,10 +989,10 @@
       else if (e.key === "Escape") list.hidden = true;
     });
   }
-  function startBlank(note) {
+  function startBlank(note, where) {
     fromTemplate = null;
     load(blankModel(), note || "A blank model. Undo goes back to what you had.");
-    $("#builder-wrap").open = true;
+    go(where || "decide", { focus: true });
   }
 
   /* ---------- adding things ---------- */
@@ -883,6 +1011,8 @@
     if (kind === "grid" && tables().length < 1) { flash("A grid needs a list first: add a list (or two) of things, then a grid of numbers for each pair."); return; }
     let id;
     edit(() => { id = ADD[kind](); });
+    openEdits.add(id);
+    renderBuilder();
     const e = document.querySelector(`.ps-s[data-id="${CSS.escape(id)}"] input, .ps-s[data-id="${CSS.escape(id)}"] select`);
     if (e) { e.focus(); if (e.select) e.select(); }
   }
@@ -898,6 +1028,13 @@
   function renderChecks(full) {
     let cards;
     const n = sizeOf(model);
+    const todo = [];
+    if (!model.decisions.some((d) => !d.disabled)) todo.push(["decide", "Next: say what the solver decides (step 1)."]);
+    if (!model.goal || !model.goal.expr || model.goal.expr.hole) todo.push(["best", "Then: say what makes one plan better (step 4)."]);
+    if (todo.length && !full) {
+      $("#checks").replaceChildren(...todo.map(([step, t]) => h("li.ps-card.is-todo", {}, h("span.ps-card-k", {}, "To do"), h("button.ps-todo", { type: "button", "data-go": step }, t))));
+      return [];
+    }
     if (n > BIG_CHECKS && !full) cards = [{ level: "note", text: `This model has about ${n.toLocaleString("en-US")} decisions, so the full checks run when you solve, to keep typing quick.` }];
     else try { cards = M.validate(model); } catch (e) { cards = [{ level: "error", text: "Something in the model couldn't be read: " + e.message }]; }
     const box = $("#checks");
@@ -910,7 +1047,7 @@
     return cards;
   }
   function jump(id) {
-    $("#builder-wrap").open = true;
+    if (view !== "detail") go("detail");
     const e = document.querySelector(`.ps-s[data-id="${CSS.escape(id)}"]`);
     if (!e) return;
     e.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -962,6 +1099,7 @@
   const status = (t) => { $("#status").textContent = t; };
   let solving = false;
   async function solve() {
+    if (view !== "answer") go("answer");
     // A phone has far less memory than a laptop; a model this size can take a gigabyte to solve.
     const n = sizeOf(model);
     const small = (navigator.deviceMemory && navigator.deviceMemory <= 4) || Math.min(screen.width, screen.height) < 600;
@@ -1019,7 +1157,8 @@
     const I = M.index(m);
     if (!a.ok) {
       status(a.status === "infeasible" ? "No plan meets every rule." : a.status === "unbounded" ? "The goal has no limit." : a.status === "model" ? "The model isn't finished." : "No answer.");
-      if (a.status === "model") return showError((a.errors || []).map((e) => e.text), "Not ready to solve");
+      $("#answer-empty").hidden = true;
+    if (a.status === "model") return showError((a.errors || []).map((e) => e.text), "Not ready to solve");
       if (a.status === "unbounded") {
         const names = (a.unbounded || []).map((id) => `“${(I.decisions[id] || {}).label || id}”`);
         const g = m.goal.label || "The goal";
@@ -1029,6 +1168,8 @@
       return showError([a.message || "The solver stopped without an answer."], "No answer");
     }
     $("#answer").hidden = false;
+    $("#answer-empty").hidden = true;
+    renderSteps();
     const gu = unitOfGoal(m);
     const statusLine = a.status === "timeout" ? `Best found in ${m.options.timeLimitSec} s${a.gap !== null && a.gap !== undefined ? `, within ${(a.gap * 100).toFixed(a.gap < 0.01 ? 2 : 1)}% of the best possible` : ", not proven best"}` : STATUS[a.status];
     status(`${statusLine} · ${a.engine} · ${Math.round(ms)} ms`);
@@ -1447,7 +1588,7 @@
     status("Ready. Press Solve when the model says what you want.");
     renderAdvanced();
     changed(true);
-    $("#builder-wrap").open = !blanks().length;
+    $("#answer-empty").hidden = false;
     if (note) flash(note);
   }
 
@@ -1455,7 +1596,7 @@
   function mine() { try { return JSON.parse(store.get(MINE) || "[]"); } catch (e) { return []; } }
   function renderTemplates() {
     const card = (t, own) => h("li.ps-tpl", {},
-      h("button.ps-tpl-b", { type: "button", on: { click: () => { fromTemplate = t.id; load(clone(t.model), `Loaded “${t.title}”. Undo goes back to what you had.`); $("#workspace").scrollIntoView({ behavior: "smooth" }); } } },
+      h("button.ps-tpl-b", { type: "button", on: { click: () => { fromTemplate = t.id; load(clone(t.model), `Loaded the “${t.title}” example. Undo goes back to what you had.`); go(blanks().length ? "questions" : "decide"); } } },
         h("span.ps-tpl-tags", {}, own ? "Yours" : t.tags), h("span.ps-tpl-t", {}, t.title), h("span.ps-tpl-d", {}, t.blurb || "")),
       own ? h("button.ps-tool.ps-tpl-x", { type: "button", "aria-label": `Delete your template ${t.title}`, title: "Delete this template", on: { click: () => { store.set(MINE, JSON.stringify(mine().filter((x) => x.id !== t.id))); renderTemplates(); } } }, "✕") : null);
     $("#tpls").replaceChildren(...TPL.list.map((t) => card(t)), ...mine().map((t) => card(t, true)));
@@ -1778,6 +1919,7 @@ ${window.PSText.write(model)}`;
     }
     $("#d-text").close();
     load(r.model, "Read the model from text. Undo goes back to what you had.");
+    go("decide");
   }
 
   /* ---------- a whole workbook at once ---------- */
@@ -1861,12 +2003,13 @@ ${window.PSText.write(model)}`;
     $("#b-undo").addEventListener("click", undo);
     $("#b-redo").addEventListener("click", redo);
     $("#b-blank").addEventListener("click", () => startBlank());
-    $("#b-build").addEventListener("click", () => {
-      startBlank("A blank page. Start with step 1: what do you decide? Undo goes back to what you had.");
-      $("#workspace").scrollIntoView({ behavior: "smooth" });
-      setTimeout(() => $("#qd-name").focus({ preventScroll: true }), 300);
-    });
-    $("#b-start-import").addEventListener("click", () => { startBlank("A blank model, ready for your spreadsheet."); openImport(null, true); });
+    $("#b-build").addEventListener("click", () => startBlank("A blank model. Start with step 1: what do you decide?"));
+    $("#b-start-import").addEventListener("click", () => { startBlank("A blank model, ready for your spreadsheet.", "know"); openImport(null, true); });
+    for (const id of ["#b-solve2", "#b-solve3", "#b-solve4"]) $(id).addEventListener("click", solve);
+    // Anything with data-go moves to that screen (the rail, Next/Back, the menu, the summary).
+    document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest("[data-go]"); if (b && b.closest(".ps")) { e.preventDefault(); go(b.dataset.go); } });
+    document.querySelectorAll("[data-ex-decide]").forEach((b) => b.addEventListener("click", () => { const [t, n] = b.dataset.exDecide.split("|"); $("#qd-type").value = t; $("#qd-name").value = n; $("#qd-name").focus(); }));
+    $("#b-resume").addEventListener("click", () => go(store.get(VIEWKEY) || "decide"));
     $("#b-start-text").addEventListener("click", () => {
       startBlank();
       openText();
@@ -1895,7 +2038,7 @@ ${window.PSText.write(model)}`;
     $("#ds-ok").addEventListener("click", (e) => { e.preventDefault(); saveTemplate(); });
     $("#ds-cancel").addEventListener("click", () => $("#d-save").close());
     $("#m-title").addEventListener("input", () => { model.title = $("#m-title").value; changed(false); });
-    $("#b-math").addEventListener("click", () => { showMath = !showMath; $("#b-math").setAttribute("aria-pressed", String(showMath)); $("#math").hidden = !showMath; if (showMath) renderMath(); });
+    $("#b-math").addEventListener("click", () => { if (!showMath) go("answer"); showMath = !showMath; $("#b-math").setAttribute("aria-pressed", String(showMath)); $("#math").hidden = !showMath; if (showMath) renderMath(); });
     $("#b-tex").addEventListener("click", async () => { try { await navigator.clipboard.writeText($("#math").dataset.tex || ""); flash("LaTeX copied."); } catch (e) { flash("Couldn't reach the clipboard."); } });
     $("#b-reports").addEventListener("click", downloadReports);
     $("#b-excel").addEventListener("click", downloadExcel);
@@ -1961,12 +2104,14 @@ ${window.PSText.write(model)}`;
     let start = null, note = null;
     const hash = /[#&]m=([^&]+)/.exec(location.hash);
     if (hash) { try { start = await decode(hash[1]); note = "Opened the shared model. It's yours to change: nothing is sent back."; } catch (e) { note = "That share link couldn't be read."; } }
+    const shared = !!start;
     if (!start) { try { start = JSON.parse(store.get(KEY) || "null"); } catch (e) { start = null; } }
-    if (!start) { start = clone(TPL.list[0].model); fromTemplate = TPL.list[0].id; }
-    model = normalize(start);
+    const returning = !!start && ((start.decisions || []).length || (start.things || []).length);
+    model = normalize(start || blankModel());
     renderAdvanced();
     changed(true);
-    $("#builder-wrap").open = !blanks().length;
+    if (returning && !shared) { $("#resume").hidden = false; $("#resume-name").textContent = model.title || "your model"; }
+    go(shared ? "decide" : returning ? store.get(VIEWKEY) || "decide" : "start");
     status("Ready. Press Solve when the model says what you want.");
     if (note) flash(note);
     ENG.warm();

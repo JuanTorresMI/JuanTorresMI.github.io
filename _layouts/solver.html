@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+<head>
+{% include head.html %}
+</head>
+{%- comment %} Plain Solver's own layout: a full-screen app with its own top bar (it links home), the
+  page's guide below it, and the site footer. The site's head and tokens still apply. {% endcomment %}
+<body class="ps-body">
+  <a class="skip" href="#stage">Skip to the solver</a>
+  <div id="main">
+    {{ content }}
+  </div>
+  {% include footer.html %}
+</body>
+</html>

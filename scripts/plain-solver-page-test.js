@@ -31,37 +31,42 @@ const check = (name, ok, detail) => { if (ok) passes++; else { failures++; conso
     const page = await browser.newPage({ viewport: { width, height: 900 } });
     const errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
-    const fresh = async () => { await page.goto(url); await page.evaluate(() => localStorage.clear()); await page.reload(); await page.waitForSelector("#app:not([hidden])"); };
+    const fresh = async () => { await page.goto(url); await page.evaluate(() => localStorage.clear()); await page.reload(); await page.waitForSelector("#v-start:not([hidden]) #b-build"); };
+    const menu = async (id) => { await page.click("#menu > summary"); await page.click(id); };
     const solved = () => page.waitForFunction(() => !document.querySelector("#b-solve").disabled && !/Solving/.test(document.querySelector("#status").textContent), null, { timeout: 60000 });
     const at = `${width}px`;
 
-    // 1. The staffing example: solve and see $13,250.
+    // 1. The staffing example, from the start screen: answer its questions, solve, see $13,250.
     await fresh();
+    await page.locator("#tpls .ps-tpl-b", { hasText: "Staffing" }).click();
     await page.click("#q-solve");
     await solved();
     check(`${at} staffing answer`, (await page.textContent("#a-goal")) === "$13,250", await page.textContent("#a-goal"));
     check(`${at} no sideways scroll`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "");
 
     // 2. Build your own from a blank page, using only the fill-in lines.
-    await page.click("#b-build");
-    await page.waitForTimeout(600);
+    await menu("#b-blank");
     for (const n of ["chairs to make", "tables to make"]) { await page.fill("#qd-name", n); await page.click("#qd-add"); }
+    await page.click('#v-decide .ps-stepnav [data-go="know"]');
     for (const [n, v, u] of [["profit per chair", "45", "$"], ["profit per table", "80", "$"], ["wood available", "400", ""], ["wood per chair", "5", ""], ["wood per table", "20", ""]]) {
       await page.fill("#qk-name", n); await page.fill("#qk-value", v); await page.fill("#qk-unit", u); await page.click("#qk-add");
     }
+    await page.click('#v-know .ps-stepnav [data-go="rules"]');
     await page.fill("#qr-lhs", "wood per chair times chairs to make plus wood per table times tables to make");
     await page.selectOption("#qr-op", "<=");
     await page.fill("#qr-rhs", "wood available");
     await page.click("#qr-add");
+    await page.click('#v-rules .ps-stepnav [data-go="best"]');
     await page.fill("#qg-expr", "profit per chair × chairs to make + profit per table × tables to make");
     await page.selectOption("#qg-sense", "max");
     await page.click("#qg-set");
-    await page.click("#b-solve");
+    await page.click("#b-solve3");
     await solved();
+    check(`${at} steps marked done`, (await page.locator(".ps-railbtn.is-done").count()) === 5, String(await page.locator(".ps-railbtn.is-done").count()));
     check(`${at} built from blank`, (await page.textContent("#a-sentence")) === "Chairs to make: 80; Tables to make: 0. Total profit: $3,600.", await page.textContent("#a-sentence"));
 
     // 3. The model as text, written by hand, and a filter.
-    await page.click("#b-text");
+    await menu("#b-text");
     await page.fill("#dt-text", `title: Lanes
 list Plants (one Plant)
   columns: Capacity, Cost
@@ -97,7 +102,7 @@ minimize "Cost": sum(Lanes, (Lanes.Freight + Plants.Cost[Plants via Lanes.From])
     await page.setInputFiles("#di-file", { name: "net.xlsx", mimeType: "application/octet-stream", buffer: Buffer.from(bytes) });
     await page.waitForSelector("#di-all:not([hidden])");
     await page.click("#di-all");
-    await page.click("#b-blocks");
+    await menu("#b-blocks");
     await page.locator("#db-list .ps-tpl-b", { hasText: "Flow through a network" }).click();
     for (const [key, text] of [["arcs", "Arcs"], ["from", "From"], ["to", "To"], ["nodes", "Nodes"], ["net", "Net"], ["cost", "Cost"]]) {
       const v = await page.evaluate(([key, text]) => [...document.querySelector(`#db-madlib [data-k="blank:${key}"]`).options].find((o) => o.textContent === text).value, [key, text]);
