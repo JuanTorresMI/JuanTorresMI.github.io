@@ -84,10 +84,10 @@ them against.
 | `_config.yml` | Name, tagline, description, social links, default share picture, Worker URL, collections, build excludes |
 | `_data/` | `projects.yml`, `resume.yml`, `music.yml`, the border, reefer, beef and pork reference lists (`pork_cuts.json` grows on its own as USDA adds items), and `live/` (the snapshots, written by `snapshot.py`, never edited by hand) |
 | `_includes/` | `head.html` (titles, meta tags, structured data, for every page), the nav, footer and project bar, the border heat map |
-| `_layouts/` | `default` (ordinary pages), `post`, `app` (full-width projects), `reefer-lane`, `border-crossing`, `beef-cut`, `pork-cut`, `cattle-region`, `artist` (the music page), `redirect` |
+| `_layouts/` | `default` (ordinary pages), `post`, `app` (full-width projects), `tool` (the app layout: a top bar, a rail of the page's sections shown one at a time, an optional side panel; the planner, Craft Ledger and every data board use it, with `assets/css/app.css` and `assets/js/app-shell.js`), `solver` (Plain Solver's own app layout), `reefer-lane`, `border-crossing`, `beef-cut`, `pork-cut`, `cattle-region`, `artist` (the music page), `redirect` |
 | `_posts/` | Writing published on this site (`/blog/<slug>/`) |
 | `_reefer_lanes/`, `_border_crossings/`, `_border_crossings_es/`, `_beef_cuts/`, `_beef_cuts_es/`, `_pork_cuts/`, `_pork_cuts_es/`, `_cattle_regions/`, `_cattle_regions_es/` | Front-matter stubs, one per generated page, written by `snapshot.py` |
-| `assets/` | `css/style.css` (the one stylesheet), self-hosted fonts, share pictures (`og/`), icons, the résumé PDF and its `.docx` source |
+| `assets/` | `css/style.css` (the site's stylesheet; `css/app.css` and `js/app-shell.js` are the app layout's), self-hosted fonts, share pictures (`og/`), icons, the résumé PDF and its `.docx` source |
 | `fruit-fly-dispatcher/`, `craft-ledger.html`, `aggregate-planning/`, `plain-solver/` | The browser projects |
 | `reefer-rates/`, `border-waits/`, `es/`, `beef-prices/`, `pork-prices/`, `fed-cattle-prices/`, `usda-market-prices/` | The data boards' index pages and their CSV downloads. The beef, pork and cattle boards are one include each (`_includes/beef-board.html`, `pork-board.html`, `cattle-board.html`), rendered in English or Spanish |
 | `music/` | The music page, its stylesheet, script, icon and share picture |
@@ -143,7 +143,11 @@ Every page goes through `_includes/head.html`, which writes its title, descripti
 address, Open Graph and Twitter tags and schema.org structured data: a `Person`, `WebSite` and
 `ProfilePage` on the home page, a `BlogPosting` for each post (linked to the project it writes
 up), a `WebApplication` for each project, a `Dataset` for each data board and each beef cut, pork
-cut and cattle region, a `DataCatalog` for the USDA hub, and breadcrumbs on every other page. The
+cut, cattle region, reefer lane and border crossing (with `dateModified` and keywords), a
+`DataCatalog` for the USDA hub, an `FAQPage` and a `HowTo` on Plain Solver (generated from its visible
+guide) and an `FAQPage` on Craft Ledger, and breadcrumbs on every other page. In the app layout every
+section is in the HTML and only hidden by script, so crawlers and readers without JavaScript get all
+of it. The
 sitemap and feed are written by hand, so no plugin is needed, and each sitemap date is only ever a
 real change. The border pages and every USDA board and item page exist in English and Spanish and
 point at each other with hreflang (each Spanish page sets `lang: es` and a `translation`). Search Console and Bing verify through `_config.yml`; IndexNow's key file
