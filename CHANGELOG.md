@@ -35,6 +35,14 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-19 — Plain Solver search pass, cleanup
+
+- **Plain Solver**: search title leads with the name ("Plain Solver: Build Your Own Optimization Solver,
+  Free"); the description names the Excel Solver alternative and the profit and cost menus. A `HowTo`
+  is generated from the guide's four questions, beside the FAQ, and the guide ends with links to the
+  Aggregate Planner, its write-up, the Fruit Fly Dispatcher and every project.
+- **Cleanup**: every branch already merged into `main` was deleted on GitHub.
+
 ## 2026-10-19 — Datasets on every item page, a phone fix
 
 - **Border crossing pages** now carry a schema.org `Dataset` (CBP's data, the crossing's place, the
