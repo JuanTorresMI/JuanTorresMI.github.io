@@ -9,6 +9,10 @@
  * that view. The view is remembered per page (in the browser), never in the address, since some
  * tools keep their own state after the "#". Pages hear about changes through the "app:view" event.
  *   window.AppShell.show(id), .current()
+ * Automatic views (app_auto: true, for the data boards): when the page marks nothing, every top-level
+ * section with an id and a heading becomes a view, named from the page's own "jump to" links (or its
+ * heading). What comes before the first section (a board's header with today's numbers) stays on
+ * every view; a section that is hidden, or has no heading, joins the view before it.
  * Without JavaScript nothing is hidden.
  */
 (function () {
@@ -18,6 +22,7 @@
   const mode = shell.dataset.mode === "read" ? "read" : "views";
   const KEY = "app-view:" + location.pathname;
   const store = { get() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }, set(v) { try { localStorage.setItem(KEY, v); } catch (e) { /* private mode */ } } };
+  if (shell.dataset.auto === "true" && !document.querySelector("[data-view]")) autoViews();
   const parts = [...document.querySelectorAll("[data-view]")];
   const views = [];
   const meta = {};
@@ -124,4 +129,21 @@
     if (fromHash) hashEl.scrollIntoView({ block: "start" });
   }
   window.AppShell = { show, current: () => current };
+
+  function autoViews() {
+    const stage = document.getElementById("app-stage");
+    const jump = {};
+    for (const a of stage.querySelectorAll(".rb-jump a[href^='#']")) jump[a.getAttribute("href").slice(1)] = a.textContent.trim();
+    const all = [...stage.querySelectorAll("section[id]")];
+    const top = all.filter((s) => !all.some((o) => o !== s && o.contains(s)));
+    let prev = null;
+    for (const s of top) {
+      const h = s.querySelector("h2");
+      if (!s.hidden && h) {
+        s.dataset.view = s.id;
+        s.dataset.title = jump[s.id] || h.textContent.replace(/\s+/g, " ").trim();
+        prev = s.id;
+      } else if (prev) s.dataset.view = prev;
+    }
+  }
 })();

@@ -9,7 +9,9 @@ body.app-body { background: var(--ground); }
 .app-top { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 12px; min-height: var(--app-top); padding: 8px 20px; background: var(--stock); border-bottom: 1px solid var(--rule); }
 .app-home { font: 500 14px var(--sans); color: var(--text-2); text-decoration: none; white-space: nowrap; }
 .app-name { font: 700 16px var(--sans); color: var(--ink); text-decoration: none; padding-left: 12px; border-left: 1px solid var(--rule); white-space: nowrap; }
-.app-home:hover, .app-projects:hover { color: var(--accent); }
+.app-home:hover, .app-projects:hover, .app-parent:hover { color: var(--accent); }
+.app-parent { font: 500 14px var(--sans); color: var(--text-2); text-decoration: none; padding-left: 12px; border-left: 1px solid var(--rule); white-space: nowrap; }
+.app-parent::before { content: "← "; }
 .app-kind { font: 600 11px var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
 .app-tools { margin-left: auto; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; align-items: center; min-width: 0; }
 .app-projects { font: 500 14px var(--sans); color: var(--text-2); text-decoration: none; white-space: nowrap; }
@@ -68,7 +70,7 @@ body.app-body { background: var(--ground); }
 }
 @media (max-width: 860px) {
   .app-top { position: static; flex-wrap: wrap; padding: 8px 12px; gap: 8px; }
-  .app-home, .app-kind { display: none; }
+  .app-home, .app-kind, .app-parent { display: none; }
   .app-name { padding-left: 0; border-left: 0; }
   .app-tools { order: 5; flex: 1 1 100%; justify-content: flex-start; }
   .app-shell.is-live, .app-shell.is-live.has-side { grid-template-columns: minmax(0, 1fr); }
@@ -95,3 +97,15 @@ body.app-body { background: var(--ground); }
 .app-steps li + li { margin-top: 6px; }
 .app-steps a, .app-side a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
 .app-steps a:hover, .app-side a:hover { color: var(--accent); }
+
+/* the data boards (.rb) inside the app layout: the rail replaces their jump links */
+.app-shell.is-live .rb { padding-top: 0; }
+.app-shell.is-live .rb-jump { display: none; }
+.app-shell.is-live .rb h1 { font: 700 clamp(30px, 4vw, 42px)/1.1 var(--sans); letter-spacing: -0.025em; }
+.app-shell.is-live .rb-head { border-bottom: 1px solid var(--rule); padding-bottom: 18px; }
+.app-shell.is-live .rb-sub { font-size: 15px; }
+.app-shell.is-live .rb-stamp { border-radius: var(--app-r); overflow: hidden; }
+.app-shell.is-live .rb-sec { margin-top: 28px; }
+.app-shell.is-live .rb-sec > h2 { border-top: 0; padding-top: 0; font: 700 clamp(24px, 3vw, 30px)/1.2 var(--sans); letter-spacing: -0.015em; }
+.app-shell.is-live .rb-btn, .app-shell.is-live .rb-chip, .app-shell.is-live .rb-views button { border-radius: 999px; }
+.app-shell.is-live .rb-t { border-radius: var(--app-r); overflow: hidden; }

@@ -14,23 +14,27 @@
                                          group of rail entries with a heading; data-n puts a number on it.
     data-app-side                        a panel for the right-hand column (views mode)
     data-app-tools                       buttons moved into the top bar
-  Front matter: project (for the name), app_mode, app_start (the view a first visit opens on).
+  Front matter: project (for the name) or app_name, app_mode, app_start (the view a first visit opens
+  on), app_done (the last step's Next label), app_auto (views from the page's own sections, for the
+  boards), app_wrap (a class around the page, "page" for ordinary-page components), parent (a link back).
   Without JavaScript nothing is hidden, so readers and search engines get every section.
 {% endcomment -%}
 {%- assign project = nil -%}{%- if page.project -%}{%- for p in site.data.projects -%}{%- if p.slug == page.project -%}{%- assign project = p -%}{%- endif -%}{%- endfor -%}{%- endif -%}
 <body class="app-body{% if page.stock == 'night' %} stock-night{% endif %}">
-  <a class="skip" href="#app-stage">Skip to content</a>
+  {%- assign es = false -%}{%- if page.lang == "es" -%}{%- assign es = true -%}{%- endif %}
+  <a class="skip" href="#app-stage">{% if es %}Saltar al contenido{% else %}Skip to content{% endif %}</a>
   <header class="app-top">
-    <a class="app-home" href="/" aria-label="Juan Torres, home">Juan Torres</a>
+    <a class="app-home" href="/" aria-label="Juan Torres, {% if es %}inicio{% else %}home{% endif %}">Juan Torres</a>
+    {%- if page.parent %}<a class="app-parent" href="{{ page.parent.url }}">{{ page.parent.title }}</a>{% endif %}
     <a class="app-name" href="{{ page.url }}">{{ page.app_name | default: project.title | default: page.title }}</a>
     {% if project.kind %}<span class="app-kind">{{ project.kind }}</span>{% endif %}
     <span class="app-tools" id="app-tools"></span>
-    <a class="app-projects" href="/projects/">All projects</a>
+    <a class="app-projects" href="/projects/">{% if es %}Todos los proyectos{% else %}All projects{% endif %}</a>
     {% include theme-toggle.html %}
   </header>
-  <div class="app-shell" id="app-shell" data-mode="{{ page.app_mode | default: 'views' }}" data-start="{{ page.app_start }}" data-done-label="{{ page.app_done }}">
-    <nav class="app-rail" id="app-rail" aria-label="Sections"></nav>
-    <main class="app-stage" id="app-stage" tabindex="-1">
+  <div class="app-shell" id="app-shell" data-mode="{{ page.app_mode | default: 'views' }}" data-start="{{ page.app_start }}" data-done-label="{{ page.app_done }}" data-auto="{{ page.app_auto | default: false }}">
+    <nav class="app-rail" id="app-rail" aria-label="{% if es %}Secciones{% else %}Sections{% endif %}"></nav>
+    <main class="app-stage{% if page.app_wrap %} {{ page.app_wrap }}{% endif %}" id="app-stage" tabindex="-1">
       {{ content }}
     </main>
     <aside class="app-side" id="app-side" hidden></aside>
