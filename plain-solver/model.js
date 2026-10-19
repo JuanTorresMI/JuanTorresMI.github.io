@@ -1434,10 +1434,14 @@
     return neg + s + (u === "%" ? "%" : " " + u);
   }
 
+  // How nonlinear the model is as written, before any rewrite: 0 linear, 1 smooth, 2 jumps or corners.
+  // (The Excel export uses it: Excel's Solver can't make Plain Solver's exact linear rewrites.)
+  const worstKind = (E) => E.rows.reduce((w, r) => Math.max(w, kindOf(r.expr)[0]), E.goal ? kindOf(E.goal.tree)[0] : 0);
+
   // An expression's unit as text ("$" for $/chair × chairs), or "" when it has none or it's unclear.
   function unitOf(model, n) { const u = unitsOf(index(model), n, () => {}); return u ? unitText(u) : ""; }
 
-  const api = { SCHEMA, unitOf, index, refInfo, keysOf, setLabel, setOne, parse, expand, linearize, classify, writeLP, elastic, compileToLP,
+  const api = { SCHEMA, unitOf, worstKind, index, refInfo, keysOf, setLabel, setOne, parse, expand, linearize, classify, writeLP, elastic, compileToLP,
     numeric, evaluate, gradient, names, toName, formula, parseNamed, parsePlain, readFormula, parseUnit, unitText, validate, uses, describe, say, sayRule, math, fmt, isC };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.PSModel = api;
