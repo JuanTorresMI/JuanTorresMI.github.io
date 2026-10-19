@@ -35,6 +35,20 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-19 — Plain Solver: its own app, one step at a time
+
+- **A full-screen app layout** (`_layouts/solver.html`), replacing the long builder page: a top bar (home,
+  the model's name, Undo, More, Solve), a step rail (What you decide · What you know · What has to be true ·
+  What makes it best · The answer), one screen per step, and the model in plain English beside it with the
+  Solve button. Phone: the rail becomes a strip and the summary moves under the step.
+- **A start screen** that asks how to begin: from scratch, a spreadsheet, text (or an AI), a saved file, or
+  an example. Returning visitors go straight back to their model.
+- **Each step** has one fill-in line with examples to click, and lists what it holds as plain-English
+  cards with Edit, On/Off and Delete. Rules and goals have the model's names as chips: click them to write
+  the rule. Until the basics are in, the checks are a to-do list that links to the step that's missing.
+- The detailed sentence editor stays, as “Edit every detail”. Same color tokens; Inter for everything,
+  rounded cards, pill buttons (CLAUDE.md notes the exception).
+
 ## 2026-10-19 — Plain Solver: Excel + Solver
 
 - **“Excel + Solver”** downloads the model as one Excel sheet: data in yellow cells, decisions in blue (with

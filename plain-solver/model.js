@@ -1264,7 +1264,7 @@
     const g = model.goal;
     if (!ds.length) return "Start by saying what the solver gets to decide.";
     let want;
-    if (!g || !g.expr) want = "works best (you haven't said what “best” means yet)";
+    if (!g || !g.expr || g.expr.hole) want = "works best (step 4 says what “best” means)";
     else if (g.sense === "max") want = `gives the highest ${g.label.toLowerCase()}`;
     else if (g.sense === "target") want = `brings ${g.label.toLowerCase()} ${g.close ? "as close as possible to" : "to exactly"} ${fmt(g.targetValue)}`;
     else want = `gives the lowest ${g.label.toLowerCase()}`;

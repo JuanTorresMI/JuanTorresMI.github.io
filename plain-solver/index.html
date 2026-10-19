@@ -1,5 +1,5 @@
 ---
-layout: app
+layout: solver
 project: plain-solver
 title: "Plain Solver: Build Your Own Solver in Plain English"
 seo_title: "Build Your Own Optimization Solver, Free, in Plain English"
@@ -16,150 +16,180 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
     engine-worker.js   runs solve.js in a Web Worker, with HiGHS from ../aggregate-planning/lib
     engine.js          the page's side of the worker
     templates.js       the starting models, in the same JSON the builder makes
-    app.js             the sentence builder, results, what-if, reports, sharing, imports
+    blocks.js, text.js building blocks and combining models; the model as text
+    excel.js           the model as an Excel sheet with Excel's Solver set up in it
+    app.js             the four-step builder, the detailed editor, results, what-if, reports, sharing, imports
+  Its layout is _layouts/solver.html: a full-screen app with its own top bar, not the project layout.
   The .xlsx writer is the Aggregate Planner's (../aggregate-planning/xlsx.js).
   Tests: node scripts/plain-solver-test.js
 {% endcomment %}
 <link rel="stylesheet" href="/plain-solver/solver.css?v={{ site.time | date: '%s' }}">
 
-<div class="ps frame">
-  <header class="ps-head">
-    <p class="ps-family">Work · Plain Solver</p>
-    <h1>Build your own solver <span class="ps-h1-sub">Optimization in plain English, like filling in the blanks</span></h1>
-    <p class="ps-lede">Say what you decide, what you know, what has to be true, and what makes one plan better. Each is a sentence with blanks to fill, and the blanks are your own words, numbers and spreadsheets. Plain Solver builds the model, picks the right way to solve it, and tells you what to do and why. It handles anything from a two-line homework problem to a supply chain with thousands of routes. It does what Excel Solver does without a single cell formula, and it's free, in your browser, with nothing to install.</p>
+<div class="ps" id="ps">
+  <header class="ps-top">
+    <a class="ps-top-home" href="/" aria-label="Juan Torres, home">Juan Torres</a>
+    <a class="ps-top-app" href="/plain-solver/">Plain Solver</a>
+    <label class="ps-top-title"><span class="ps-hide">Model name</span><input type="text" id="m-title" autocomplete="off" aria-label="Model name" placeholder="Name your model"></label>
+    <span class="ps-top-tools">
+      <button class="ps-tbtn" type="button" id="b-undo" title="Undo (Ctrl+Z)">Undo</button>
+      <button class="ps-tbtn" type="button" id="b-redo" title="Redo (Ctrl+Y)">Redo</button>
+      <details class="ps-menu" id="menu">
+        <summary class="ps-tbtn">More</summary>
+        <div class="ps-menu-list" role="menu">
+          <button type="button" role="menuitem" id="b-blank">New model</button>
+          <button type="button" role="menuitem" data-go="start">Examples and other ways to start</button>
+          <hr>
+          <button type="button" role="menuitem" id="b-excel">Download for Excel, with Solver set up</button>
+          <button type="button" role="menuitem" id="b-share">Copy a share link</button>
+          <button type="button" role="menuitem" id="b-json">Download the model (.json)</button>
+          <button type="button" role="menuitem" id="b-save-tpl">Save as my template</button>
+          <hr>
+          <button type="button" role="menuitem" id="b-blocks">Add a building block</button>
+          <button type="button" role="menuitem" id="b-combine">Combine with another model</button>
+          <button type="button" role="menuitem" id="b-text">Edit the whole model as text</button>
+          <button type="button" role="menuitem" data-go="detail">Edit every detail</button>
+          <button type="button" role="menuitem" id="b-math" aria-pressed="false">Show the math</button>
+          <button type="button" role="menuitem" data-go="settings">Settings</button>
+        </div>
+      </details>
+    </span>
+    <button class="ps-solve" type="button" id="b-solve" title="Solve (Ctrl+Enter)">Solve</button>
   </header>
-
+  <p class="ps-flash" id="flash" role="status" aria-live="polite" hidden></p>
   <noscript><p class="ps-msg">Plain Solver needs JavaScript to build and solve models. The guide below reads fine without it.</p></noscript>
 
-  <div id="app" hidden>
-    <section class="ps-start" aria-labelledby="h-start">
-      <div class="ps-hero">
-        <div class="ps-hero-main">
-          <h2 class="ps-hero-h" id="h-start">Start with a blank page</h2>
-          <ol class="ps-hero-steps">
-            <li><strong>What do you decide?</strong> How many to hire, how much to ship, which sites to open.</li>
-            <li><strong>What do you know?</strong> Costs, limits, demand. Type them, or paste a spreadsheet.</li>
-            <li><strong>What has to be true?</strong> Meet demand, stay in budget, one shift each.</li>
-            <li><strong>What makes one plan better?</strong> The lowest cost, the most profit, a number to hit.</li>
-          </ol>
-          <button class="ps-btn primary ps-btn-big" type="button" id="b-build">Build your own solver</button>
-        </div>
-        <ul class="ps-hero-ways">
-          <li><button class="ps-way" type="button" id="b-start-import"><span class="ps-way-t">Start from your spreadsheet</span><span class="ps-way-d">Bring in a whole workbook: every sheet becomes a list or a grid, ready to use in sentences.</span></button></li>
-          <li><button class="ps-way" type="button" id="b-start-text"><span class="ps-way-t">Describe it in text, or have an AI write it</span><span class="ps-way-d">Write the whole model at once, or copy the format guide to a chat and paste back its answer.</span></button></li>
-          <li><button class="ps-way" type="button" id="b-open"><span class="ps-way-t">Open a saved model</span><span class="ps-way-d">A .json file downloaded from here.</span></button><input type="file" id="f-json" accept=".json,application/json" hidden></li>
-        </ul>
+  <div class="ps-shell is-start" id="app">
+    <nav class="ps-rail" aria-label="Steps">
+      <ol class="ps-rail-steps">
+        <li><button type="button" class="ps-railbtn" data-go="decide"><span class="ps-rail-n">1</span><span class="ps-rail-t">What you decide</span><span class="ps-rail-c" id="c-decide"></span></button></li>
+        <li><button type="button" class="ps-railbtn" data-go="know"><span class="ps-rail-n">2</span><span class="ps-rail-t">What you know</span><span class="ps-rail-c" id="c-know"></span></button></li>
+        <li><button type="button" class="ps-railbtn" data-go="rules"><span class="ps-rail-n">3</span><span class="ps-rail-t">What has to be true</span><span class="ps-rail-c" id="c-rules"></span></button></li>
+        <li><button type="button" class="ps-railbtn" data-go="best"><span class="ps-rail-n">4</span><span class="ps-rail-t">What makes it best</span><span class="ps-rail-c" id="c-best"></span></button></li>
+        <li><button type="button" class="ps-railbtn ps-railbtn-answer" data-go="answer"><span class="ps-rail-n">★</span><span class="ps-rail-t">The answer</span><span class="ps-rail-c" id="c-answer"></span></button></li>
+      </ol>
+      <div class="ps-rail-more">
+        <button type="button" data-go="detail">Edit every detail</button>
+        <button type="button" data-go="start">Examples</button>
       </div>
-      <header class="ps-block-head ps-examples-head"><h2 class="ps-label">Or start from an example</h2><span class="ps-note">Each one is made of the same sentences, so you can change any part</span></header>
-      <ul class="ps-tpls" id="tpls"></ul>
-    </section>
+    </nav>
 
-    <div class="ps-bar" id="workspace">
-      <label class="ps-title"><span class="ps-hide">Model name</span><input type="text" id="m-title" autocomplete="off" aria-label="Model name"></label>
-      <span class="ps-bar-tools">
-        <button class="ps-link" type="button" id="b-blank">New</button>
-        <button class="ps-link" type="button" id="b-undo" title="Undo (Ctrl+Z)">Undo</button>
-        <button class="ps-link" type="button" id="b-redo" title="Redo (Ctrl+Y)">Redo</button>
-        <button class="ps-link" type="button" id="b-math" aria-pressed="false">Show the math</button>
-        <button class="ps-link" type="button" id="b-save-tpl">Save as my template</button>
-        <button class="ps-link ps-link-strong" type="button" id="b-excel" title="A workbook with your data, live formulas and Excel's Solver already set up">Excel + Solver</button>
-        <button class="ps-link" type="button" id="b-json">Download .json</button>
-        <button class="ps-link" type="button" id="b-share">Copy share link</button>
-      </span>
-      <button class="ps-btn primary" type="button" id="b-solve" title="Solve (Ctrl+Enter)">Solve</button>
-    </div>
-    <p class="ps-flash" id="flash" role="status" aria-live="polite" hidden></p>
-
-    <div class="ps-grid">
-      <div class="ps-left">
-        <section class="ps-questions" id="questions" aria-labelledby="h-q" hidden>
-          <header class="ps-block-head"><h2 class="ps-label" id="h-q">A few questions</h2><span class="ps-note">The sample answers are filled in. Change any of them.</span></header>
-          <div id="q-list"></div>
-          <div class="ps-actions"><button class="ps-btn primary" type="button" id="q-solve">Solve</button></div>
-        </section>
-
-        <details class="ps-builder" id="builder-wrap" open>
-          <summary class="ps-block-head"><span class="ps-label">Your solver, step by step</span><span class="ps-note">Open to change any part</span></summary>
-          <ol class="ps-steps" id="steps" aria-label="Steps">
-            <li data-step="decide"><a href="#sec-decide">Decide</a></li>
-            <li data-step="know"><a href="#sec-know">Know</a></li>
-            <li data-step="rules"><a href="#sec-rules">Rules</a></li>
-            <li data-step="best"><a href="#sec-best">Best</a></li>
-          </ol>
-          <p class="ps-preview" id="preview" aria-live="polite"></p>
-          <ul class="ps-cards" id="checks" aria-label="Checks"></ul>
-          <p class="ps-faster">Faster: <button class="ps-link" type="button" id="b-blocks">Use a building block</button><button class="ps-link" type="button" id="b-combine">Combine with another model</button><button class="ps-link" type="button" id="b-text">Edit it all as text</button></p>
-
-          <section class="ps-sec" id="sec-decide" aria-labelledby="h-decisions">
-            <h3 class="ps-sec-h" id="h-decisions"><span class="ps-num">1</span> What do you decide? <span>the numbers the solver gets to pick</span></h3>
-            <div class="ps-list" id="s-decisions"></div>
-            <p class="ps-quick" id="qa-decide"><span class="ps-word">I decide</span>
-              <select class="ps-chip" id="qd-type" aria-label="Kind of decision"><option value="integer">how many</option><option value="continuous">how much</option><option value="binary">whether to</option></select>
-              <input class="ps-chip ps-name" type="text" id="qd-name" placeholder="workers to hire" aria-label="What you decide" size="18">
-              <select class="ps-chip" id="qd-each" aria-label="For each"><option value="">(just one)</option></select>
-              <button class="ps-btn" type="button" id="qd-add">Add</button></p>
-          </section>
-          <section class="ps-sec" id="sec-know" aria-labelledby="h-things">
-            <h3 class="ps-sec-h" id="h-things"><span class="ps-num">2</span> What do you know? <span>costs, limits, demand; one number, or whole lists</span></h3>
-            <div class="ps-list" id="s-things"></div>
-            <p class="ps-quick" id="qa-know">
-              <input class="ps-chip ps-name" type="text" id="qk-name" placeholder="cost per hour" aria-label="What it is" size="16">
-              <span class="ps-word">is</span>
-              <input class="ps-chip ps-num" type="text" inputmode="decimal" id="qk-value" placeholder="15" aria-label="Number" size="6">
-              <input class="ps-chip ps-unit" type="text" id="qk-unit" placeholder="$/hour" aria-label="Unit" size="8">
-              <button class="ps-btn" type="button" id="qk-add">Add</button></p>
-            <p class="ps-adds"><button class="ps-add" type="button" data-add="table">+ A list (stores, products, months…)</button><button class="ps-add" type="button" data-add="grid">+ A grid (one number for each pair)</button><button class="ps-add" type="button" id="b-paste">Paste from a spreadsheet</button><button class="ps-add" type="button" id="b-upload">Bring in a spreadsheet or workbook</button><button class="ps-add" type="button" data-add="single">+ A group of numbers</button></p>
-          </section>
-          <section class="ps-sec ps-sec-optional" aria-labelledby="h-results">
-            <h3 class="ps-sec-h" id="h-results"><span class="ps-num">+</span> Name something you'll reuse <span>optional: “Units made = workers × hours”, then use “Units made” anywhere</span></h3>
-            <div class="ps-list" id="s-results"></div>
-            <p class="ps-adds"><button class="ps-add" type="button" data-add="result">+ A named result</button></p>
-          </section>
-          <section class="ps-sec" id="sec-rules" aria-labelledby="h-rules">
-            <h3 class="ps-sec-h" id="h-rules"><span class="ps-num">3</span> What has to be true? <span>the rules every answer has to respect</span></h3>
-            <div class="ps-list" id="s-rules"></div>
-            <p class="ps-quick" id="qa-rule">
-              <input class="ps-chip ps-name ps-phrase" type="text" id="qr-lhs" placeholder="wood per chair times chairs to make" aria-label="What the rule is about" autocomplete="off">
-              <select class="ps-chip" id="qr-op" aria-label="Comparison"><option value="<=">must be at most</option><option value=">=">must be at least</option><option value="=">must equal</option></select>
-              <input class="ps-chip ps-name ps-phrase" type="text" id="qr-rhs" placeholder="wood available" aria-label="What it's compared with" autocomplete="off">
-              <select class="ps-chip" id="qr-each" aria-label="For each"><option value="">(once)</option></select>
-              <button class="ps-btn" type="button" id="qr-add">Add</button></p>
-            <p class="ps-msg-inline" id="qr-msg" role="status"></p>
-            <p class="ps-hint ps-hint-quick">Type it the way you'd say it, using the names you gave things: <em>plus</em>, <em>minus</em>, <em>times</em>, <em>divided by</em>, and “total of … across …” for a list. Or build it from menus:</p>
-            <p class="ps-adds"><button class="ps-add ps-add-strong" type="button" id="b-blocks2">Use a building block</button><button class="ps-add" type="button" data-add="rule">+ A rule</button><button class="ps-add" type="button" data-add="limit">+ A limit</button><button class="ps-add" type="button" data-add="pick">+ Choose some of a list</button><button class="ps-add" type="button" data-add="different">+ Each gets a different one</button></p>
-          </section>
-          <section class="ps-sec" id="sec-best" aria-labelledby="h-goal">
-            <h3 class="ps-sec-h" id="h-goal"><span class="ps-num">4</span> What makes one plan better? <span>the goal</span></h3>
-            <div class="ps-list" id="s-goal"></div>
-            <p class="ps-quick" id="qa-goal"><span class="ps-word">Make</span>
-              <input class="ps-chip ps-name ps-phrase" type="text" id="qg-expr" placeholder="profit per chair times chairs to make plus …" aria-label="What to make high or low" autocomplete="off">
-              <select class="ps-chip" id="qg-sense" aria-label="Which way"><option value="max">as high as possible</option><option value="min">as low as possible</option></select>
-              <button class="ps-btn" type="button" id="qg-set">Set the goal</button></p>
-            <p class="ps-msg-inline" id="qg-msg" role="status"></p>
-          </section>
-        </details>
-
-        <details class="ps-adv" id="advanced">
-          <summary class="ps-block-head"><span class="ps-label">Advanced</span><span class="ps-note">Engine, time limit, tolerance</span></summary>
-          <div class="ps-fields">
-            <label class="ps-field"><span class="ps-name">Engine</span>
-              <select id="o-engine"><option value="auto">Pick automatically</option><option value="linear">Linear / integer (HiGHS)</option><option value="nonlinear">Nonlinear (gradient search)</option><option value="evolutionary">Evolutionary</option></select></label>
-            <label class="ps-field"><span class="ps-name">Time limit, seconds</span><input type="number" id="o-time" min="1" max="600" step="1"></label>
-            <label class="ps-field"><span class="ps-name">Integer optimality gap, %</span><input type="number" id="o-gap" min="0" max="50" step="0.01"></label>
-            <label class="ps-field"><span class="ps-name">Multistart (nonlinear)</span>
-              <select id="o-multi"><option value="auto">Automatic (on for 20 decisions or fewer)</option><option value="on">On</option><option value="off">Off</option></select></label>
+    <main class="ps-stage" id="stage" tabindex="-1">
+      <!-- Start -->
+      <section class="ps-view" id="v-start" aria-labelledby="h-start">
+        <div class="ps-welcome">
+          <p class="ps-kicker">Plain Solver · free, in your browser</p>
+          <h1 id="h-start">Build your own solver</h1>
+          <p class="ps-welcome-lede">Answer four plain questions: what you decide, what you know, what has to be true, and what makes one plan better than another. Plain Solver finds the best plan and explains it in words. It works for homework, small business and supply chains with thousands of routes, with no formulas and nothing to install.</p>
+          <div class="ps-paths">
+            <button class="ps-path ps-path-main" type="button" id="b-build"><span class="ps-path-t">Start from scratch</span><span class="ps-path-d">Four questions, one at a time. A couple of minutes.</span><span class="ps-path-go" aria-hidden="true">Start →</span></button>
+            <button class="ps-path" type="button" id="b-start-import"><span class="ps-path-t">Bring a spreadsheet</span><span class="ps-path-d">Every sheet becomes a list you can use.</span></button>
+            <button class="ps-path" type="button" id="b-start-text"><span class="ps-path-t">Describe it in text</span><span class="ps-path-d">Or have an AI chat write it for you.</span></button>
+            <button class="ps-path" type="button" id="b-open"><span class="ps-path-t">Open a saved model</span><span class="ps-path-d">A .json file you downloaded here.</span></button>
+            <input type="file" id="f-json" accept=".json,application/json" hidden>
           </div>
-          <label class="ps-check"><input type="checkbox" id="o-typed"> Type formulas instead of picking from menus (power mode)</label>
-          <p class="ps-hint">In power mode every expression is a formula: names are labels with underscores (<code>Units_made</code>, <code>Workers.units_per_hour</code>), suggested as you type; <code>sum(Stores, Units_to_ship)</code> totals across a list, <code>Inventory[Months-1 or 0]</code> is last month's value, and <code>^</code>, <code>sqrt</code>, <code>abs</code>, <code>max</code>, <code>min</code>, <code>if</code>, <code>lookup</code> work as in a spreadsheet. The sentence version shows under each one.</p>
-          <p class="ps-hint">“Pick automatically” sends linear models to HiGHS (guaranteed best), rewrites what it can as linear, and only falls back to the nonlinear or evolutionary engine when it must. Decisions can't go below zero unless their sentence says “can go negative”.</p>
-        </details>
-      </div>
+          <p class="ps-resume" id="resume" hidden><button class="ps-link" type="button" id="b-resume">Pick up where you left off: <span id="resume-name"></span></button></p>
+        </div>
+        <h2 class="ps-h2">Or start from an example</h2>
+        <p class="ps-sub">Each one is made of the same four steps, so you can change any part of it.</p>
+        <ul class="ps-tpls" id="tpls"></ul>
+      </section>
 
-      <div class="ps-results" id="results">
-        <p class="ps-status" id="status" role="status" aria-live="polite">Loading…</p>
+      <!-- An example's questions -->
+      <section class="ps-view" id="v-questions" aria-labelledby="h-q" hidden>
+        <p class="ps-step-k">Example</p>
+        <h2 class="ps-step-h" id="h-q">A few questions</h2>
+        <p class="ps-step-lede">The sample answers are filled in. Change any of them, then solve. To see or change how the example is built, open the steps on the left.</p>
+        <div id="questions"><div id="q-list"></div></div>
+        <div class="ps-stepnav"><button class="ps-btn" type="button" data-go="decide">See how it's built</button><button class="ps-btn primary" type="button" id="q-solve">Solve</button></div>
+      </section>
+
+      <!-- 1. Decide -->
+      <section class="ps-view" id="v-decide" aria-labelledby="h-decide" hidden>
+        <p class="ps-step-k">Step 1 of 4</p>
+        <h2 class="ps-step-h" id="h-decide">What do you decide?</h2>
+        <p class="ps-step-lede">These are the numbers the solver picks for you. Name each one in a few words.</p>
+        <div class="ps-form" id="qa-decide">
+          <span class="ps-form-w">I decide</span>
+          <select class="ps-in" id="qd-type" aria-label="Kind of decision"><option value="integer">how many</option><option value="continuous">how much</option><option value="binary">whether to</option></select>
+          <input class="ps-in ps-in-grow" type="text" id="qd-name" placeholder="workers to hire" aria-label="What you decide" autocomplete="off">
+          <select class="ps-in" id="qd-each" aria-label="For each"><option value="">just one</option></select>
+          <button class="ps-btn primary" type="button" id="qd-add">Add</button>
+        </div>
+        <p class="ps-examples"><span>Try:</span><button type="button" class="ps-ex" data-ex-decide="integer|workers to hire">how many workers to hire</button><button type="button" class="ps-ex" data-ex-decide="continuous|tons to ship">how much to ship</button><button type="button" class="ps-ex" data-ex-decide="binary|open the new store">whether to open the new store</button><button type="button" class="ps-ex" data-ex-decide="continuous|hours of overtime">how many hours of overtime</button></p>
+        <div class="ps-cardlist" id="l-decide"></div>
+        <div class="ps-stepnav"><span></span><button class="ps-btn primary" type="button" data-go="know">Next: what you know →</button></div>
+      </section>
+
+      <!-- 2. Know -->
+      <section class="ps-view" id="v-know" aria-labelledby="h-know" hidden>
+        <p class="ps-step-k">Step 2 of 4</p>
+        <h2 class="ps-step-h" id="h-know">What do you know?</h2>
+        <p class="ps-step-lede">The facts: costs, limits, how much is needed. One number at a time, or whole lists (stores, products, months) from a spreadsheet.</p>
+        <div class="ps-form" id="qa-know">
+          <input class="ps-in ps-in-grow" type="text" id="qk-name" placeholder="cost per hour" aria-label="What it is" autocomplete="off">
+          <span class="ps-form-w">is</span>
+          <input class="ps-in ps-in-num" type="text" inputmode="decimal" id="qk-value" placeholder="15" aria-label="Number">
+          <input class="ps-in ps-in-unit" type="text" id="qk-unit" placeholder="$/hour" aria-label="Unit (optional)">
+          <button class="ps-btn primary" type="button" id="qk-add">Add</button>
+        </div>
+        <div class="ps-addrow">
+          <button class="ps-addbtn" type="button" id="b-paste"><strong>Paste a list</strong><span>from Excel or Google Sheets</span></button>
+          <button class="ps-addbtn" type="button" id="b-upload"><strong>Bring in a file</strong><span>.xlsx (every sheet) or .csv</span></button>
+          <button class="ps-addbtn" type="button" data-add="table"><strong>Type a list</strong><span>stores, products, months…</span></button>
+          <button class="ps-addbtn" type="button" data-add="grid"><strong>A grid</strong><span>a number for each pair, like costs from each warehouse to each store</span></button>
+        </div>
+        <div class="ps-cardlist" id="l-know"></div>
+        <div class="ps-stepnav"><button class="ps-btn" type="button" data-go="decide">← Back</button><button class="ps-btn primary" type="button" data-go="rules">Next: what has to be true →</button></div>
+      </section>
+
+      <!-- 3. Rules -->
+      <section class="ps-view" id="v-rules" aria-labelledby="h-rules" hidden>
+        <p class="ps-step-k">Step 3 of 4</p>
+        <h2 class="ps-step-h" id="h-rules">What has to be true?</h2>
+        <p class="ps-step-lede">The rules every plan must follow. Write each one the way you'd say it, using the names you've given things.</p>
+        <div class="ps-form ps-form-rule" id="qa-rule">
+          <input class="ps-in ps-in-grow ps-phrase" type="text" id="qr-lhs" placeholder="wood per chair times chairs to make" aria-label="What the rule is about" autocomplete="off">
+          <select class="ps-in" id="qr-op" aria-label="Comparison"><option value="<=">must be at most</option><option value=">=">must be at least</option><option value="=">must equal</option></select>
+          <input class="ps-in ps-in-grow ps-phrase" type="text" id="qr-rhs" placeholder="wood available" aria-label="What it's compared with" autocomplete="off">
+          <select class="ps-in" id="qr-each" aria-label="For each"><option value="">once</option></select>
+          <button class="ps-btn primary" type="button" id="qr-add">Add rule</button>
+        </div>
+        <p class="ps-msg-inline" id="qr-msg" role="status"></p>
+        <div class="ps-vocab" id="vocab-rules" aria-label="Names you can use"></div>
+        <p class="ps-hint">Join names with <em>plus</em>, <em>minus</em>, <em>times</em>, <em>divided by</em>; add up a list with “total of … across …”. Click a name above to put it where you're typing.</p>
+        <div class="ps-addrow">
+          <button class="ps-addbtn ps-addbtn-strong" type="button" id="b-blocks2"><strong>Use a building block</strong><span>Shipping, networks, fixed costs, stock, assignments: fill in one sentence</span></button>
+          <button class="ps-addbtn" type="button" data-add="pick"><strong>Choose some of a list</strong><span>“open at most 2 of the sites”</span></button>
+          <button class="ps-addbtn" type="button" data-add="different"><strong>Each gets a different one</strong><span>“each person gets a different shift”</span></button>
+        </div>
+        <div class="ps-cardlist" id="l-rules"></div>
+        <div class="ps-stepnav"><button class="ps-btn" type="button" data-go="know">← Back</button><button class="ps-btn primary" type="button" data-go="best">Next: what makes it best →</button></div>
+      </section>
+
+      <!-- 4. Best -->
+      <section class="ps-view" id="v-best" aria-labelledby="h-best" hidden>
+        <p class="ps-step-k">Step 4 of 4</p>
+        <h2 class="ps-step-h" id="h-best">What makes one plan better?</h2>
+        <p class="ps-step-lede">The one number to make as high or as low as possible, usually a profit or a cost.</p>
+        <div class="ps-form" id="qa-goal">
+          <span class="ps-form-w">Make</span>
+          <input class="ps-in ps-in-grow ps-phrase" type="text" id="qg-expr" placeholder="profit per chair times chairs to make plus …" aria-label="What to make high or low" autocomplete="off">
+          <select class="ps-in" id="qg-sense" aria-label="Which way"><option value="max">as high as possible</option><option value="min">as low as possible</option></select>
+          <button class="ps-btn primary" type="button" id="qg-set">Set the goal</button>
+        </div>
+        <p class="ps-msg-inline" id="qg-msg" role="status"></p>
+        <div class="ps-vocab" id="vocab-best" aria-label="Names you can use"></div>
+        <div class="ps-cardlist" id="l-best"></div>
+        <div class="ps-stepnav"><button class="ps-btn" type="button" data-go="rules">← Back</button><button class="ps-btn primary ps-btn-solve" type="button" id="b-solve3">Solve it →</button></div>
+      </section>
+
+      <!-- The answer -->
+      <section class="ps-view" id="v-answer" aria-labelledby="h-answer" hidden>
+        <p class="ps-step-k">The answer</p>
+        <h2 class="ps-step-h" id="h-answer">The best plan</h2>
+        <div class="ps-empty" id="answer-empty"><p>Press Solve to find the best plan for your model.</p><button class="ps-btn primary ps-btn-solve" type="button" id="b-solve4">Solve</button></div>
         <div class="ps-progress" id="progress" hidden><progress id="prog-bar" max="1" value="0" aria-label="Evolutionary search progress"></progress><span id="prog-text" class="ps-note"></span><button class="ps-btn" type="button" id="b-stop">Stop</button></div>
         <div class="ps-msg" id="error" role="alert" hidden></div>
-
         <div id="out">
           <div id="answer" hidden>
             <section class="ps-head-card">
@@ -171,25 +201,34 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
               <p class="ps-engine" id="a-engine"></p>
               <ul class="ps-notes" id="a-notes"></ul>
             </section>
-
+            <section class="ps-block ps-exports" id="exports" aria-labelledby="h-exp" hidden>
+              <h3 class="ps-block-t" id="h-exp">Take it with you</h3>
+              <div class="ps-addrow">
+                <button class="ps-addbtn ps-addbtn-strong" type="button" id="b-excel2"><strong>Excel, with Solver set up</strong><span>Your data, formulas and this answer; Data → Solver → Solve</span></button>
+                <button class="ps-addbtn" type="button" id="b-reports"><strong>Answer, Sensitivity &amp; Limits reports</strong><span>.xlsx, like Excel Solver's</span></button>
+                <button class="ps-addbtn" type="button" id="b-print"><strong>Print the reports</strong><span>or save them as a PDF</span></button>
+                <button class="ps-addbtn" type="button" id="b-lp"><strong>LP file</strong><span>for other solvers</span></button>
+              </div>
+            </section>
             <section class="ps-block" aria-labelledby="h-dec">
-              <header class="ps-block-head"><h2 class="ps-label" id="h-dec">The decisions</h2></header>
+              <h3 class="ps-block-t" id="h-dec">The decisions</h3>
               <div id="a-decisions"></div>
             </section>
             <section class="ps-block" id="a-named-wrap" aria-labelledby="h-named">
-              <header class="ps-block-head"><h2 class="ps-label" id="h-named">What it works out to</h2></header>
+              <h3 class="ps-block-t" id="h-named">What it works out to</h3>
               <div class="ps-scroll" tabindex="0" role="region" aria-labelledby="h-named"><table class="ps-table"><tbody id="a-named"></tbody></table></div>
             </section>
             <section class="ps-block" aria-labelledby="h-why">
-              <header class="ps-block-head"><h2 class="ps-label" id="h-why">Why</h2></header>
+              <h3 class="ps-block-t" id="h-why">Why</h3>
               <ul class="ps-why" id="a-why"></ul>
             </section>
             <section class="ps-block" id="a-limit-wrap" aria-labelledby="h-limit">
-              <header class="ps-block-head"><h2 class="ps-label" id="h-limit">What's limiting you</h2></header>
+              <h3 class="ps-block-t" id="h-limit">What's limiting you</h3>
               <ul class="ps-why" id="a-limit"></ul>
             </section>
             <section class="ps-block" id="whatif" aria-labelledby="h-wi" hidden>
-              <header class="ps-block-head"><h2 class="ps-label" id="h-wi">What if</h2><span class="ps-note">Drag a number and watch the answer move</span></header>
+              <h3 class="ps-block-t" id="h-wi">What if?</h3>
+              <p class="ps-hint">Pick a number and drag it: the answer re-solves as you go.</p>
               <label class="ps-field"><span class="ps-name">Number to change</span><select id="wi-input"></select></label>
               <div id="wi-body" hidden>
                 <div class="ps-wi"><input type="range" id="wi-range" aria-label="New value"><output id="wi-val" class="ps-wi-val"></output></div>
@@ -199,22 +238,64 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
               </div>
             </section>
             <section class="ps-block" aria-labelledby="h-rows">
-              <header class="ps-block-head"><h2 class="ps-label" id="h-rows">Every rule, checked</h2></header>
+              <h3 class="ps-block-t" id="h-rows">Every rule, checked</h3>
               <div class="ps-scroll" tabindex="0" role="region" aria-labelledby="h-rows"><table class="ps-table ps-rows" id="a-rules"></table></div>
             </section>
           </div>
-          <section class="ps-block" id="exports" aria-labelledby="h-exp" hidden>
-            <header class="ps-block-head"><h2 class="ps-label" id="h-exp">Reports</h2></header>
-            <p class="ps-links ps-wrap"><button class="ps-link ps-link-strong" type="button" id="b-excel2">Solver-ready Excel workbook</button><button class="ps-link" type="button" id="b-reports">Answer, Sensitivity &amp; Limits (.xlsx)</button><button class="ps-link" type="button" id="b-print">Print the reports</button><button class="ps-link" type="button" id="b-lp">The model as an LP file</button></p>
-          </section>
         </div>
-
         <section class="ps-block ps-math" id="math" aria-labelledby="h-math" hidden>
-          <header class="ps-block-head"><h2 class="ps-label" id="h-math">The math</h2><span class="ps-links"><button class="ps-link" type="button" id="b-tex">Copy as LaTeX</button></span></header>
+          <h3 class="ps-block-t" id="h-math">The math</h3>
+          <p class="ps-links"><button class="ps-link" type="button" id="b-tex">Copy as LaTeX</button></p>
           <div id="math-body"></div>
         </section>
-      </div>
-    </div>
+      </section>
+
+      <!-- Every detail: the full sentence editor -->
+      <section class="ps-view" id="v-detail" aria-labelledby="h-detail" hidden>
+        <p class="ps-step-k">For power users</p>
+        <h2 class="ps-step-h" id="h-detail">Every detail</h2>
+        <p class="ps-step-lede">The whole model as sentences, with every option: limits on decisions, “for each”, filters, named results, typed formulas. The four steps edit the same model.</p>
+        <div id="builder-wrap">
+          <section class="ps-sec" aria-labelledby="h-decisions"><h3 class="ps-sec-h" id="h-decisions">What you decide</h3><div class="ps-list" id="s-decisions"></div>
+            <p class="ps-adds"><button class="ps-add" type="button" data-add="decision">+ A decision</button></p></section>
+          <section class="ps-sec" aria-labelledby="h-things"><h3 class="ps-sec-h" id="h-things">What you know</h3><div class="ps-list" id="s-things"></div>
+            <p class="ps-adds"><button class="ps-add" type="button" data-add="single">+ A group of numbers</button><button class="ps-add" type="button" data-add="table">+ A list</button><button class="ps-add" type="button" data-add="grid">+ A grid</button></p></section>
+          <section class="ps-sec" aria-labelledby="h-results"><h3 class="ps-sec-h" id="h-results">Named results <span>“Units made = workers × hours”, then use “Units made” anywhere</span></h3><div class="ps-list" id="s-results"></div>
+            <p class="ps-adds"><button class="ps-add" type="button" data-add="result">+ A named result</button></p></section>
+          <section class="ps-sec" aria-labelledby="h-rules2"><h3 class="ps-sec-h" id="h-rules2">What has to be true</h3><div class="ps-list" id="s-rules"></div>
+            <p class="ps-adds"><button class="ps-add" type="button" data-add="rule">+ A rule</button><button class="ps-add" type="button" data-add="limit">+ A limit</button><button class="ps-add" type="button" data-add="pick">+ Choose some of a list</button><button class="ps-add" type="button" data-add="different">+ Each gets a different one</button></p></section>
+          <section class="ps-sec" aria-labelledby="h-goal"><h3 class="ps-sec-h" id="h-goal">The goal</h3><div class="ps-list" id="s-goal"></div></section>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section class="ps-view" id="v-settings" aria-labelledby="h-settings" hidden>
+        <p class="ps-step-k">Settings</p>
+        <h2 class="ps-step-h" id="h-settings">How it solves</h2>
+        <div class="ps-fields" id="advanced">
+          <label class="ps-field"><span class="ps-name">Method</span>
+            <select id="o-engine"><option value="auto">Pick automatically</option><option value="linear">Linear / integer (HiGHS)</option><option value="nonlinear">Nonlinear (gradient search)</option><option value="evolutionary">Evolutionary</option></select></label>
+          <label class="ps-field"><span class="ps-name">Time limit, seconds</span><input type="number" id="o-time" min="1" max="600" step="1"></label>
+          <label class="ps-field"><span class="ps-name">Integer optimality gap, %</span><input type="number" id="o-gap" min="0" max="50" step="0.01"></label>
+          <label class="ps-field"><span class="ps-name">Multistart (nonlinear)</span>
+            <select id="o-multi"><option value="auto">Automatic (on for 20 decisions or fewer)</option><option value="on">On</option><option value="off">Off</option></select></label>
+        </div>
+        <label class="ps-check"><input type="checkbox" id="o-typed"> In “Every detail”, type formulas instead of picking from menus</label>
+        <p class="ps-hint">“Pick automatically” sends linear models to HiGHS (guaranteed best), rewrites what it can as linear, and only falls back to the nonlinear or evolutionary method when it must. Decisions can't go below zero unless they say “can go negative”.</p>
+      </section>
+    </main>
+
+    <aside class="ps-side" id="side" aria-labelledby="h-side">
+      <details class="ps-side-box" id="side-box" open>
+        <summary><h2 id="h-side">Your model</h2></summary>
+        <p class="ps-preview" id="preview" aria-live="polite"></p>
+        <div class="ps-summary" id="summary"></div>
+        <ul class="ps-cards" id="checks" aria-label="Checks"></ul>
+      </details>
+      <button class="ps-btn primary ps-btn-solve ps-btn-block" type="button" id="b-solve2">Solve</button>
+      <p class="ps-status" id="status" role="status" aria-live="polite">Loading…</p>
+    </aside>
+  </div>
 
     <dialog class="ps-dialog" id="d-import" aria-labelledby="h-imp">
       <form method="dialog">
@@ -284,9 +365,8 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
       </form>
     </dialog>
     <div id="print" aria-hidden="true"></div>
-  </div>
 
-  <article class="ps-explain" id="guide" aria-labelledby="about">
+  <article class="ps-explain frame" id="guide" aria-labelledby="about">
     <header class="ps-block-head"><h2 class="ps-label" id="about">Build your own solver: a free online optimization solver in plain English</h2></header>
     <div class="ps-prose">
       <h3>What an optimization solver does</h3>
