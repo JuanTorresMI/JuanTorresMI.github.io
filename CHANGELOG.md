@@ -29,8 +29,8 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **Colorado and Western States cattle pages** appear automatically once each has 8 priced weeks in a
   year (Colorado's last cash price was Dec 2022, the Western States' Sep 2025).
 - **Plain Solver write-up**: per CLAUDE.md a new project gets a post, written from Juan's answers
-  (why he built it, what surprised him). Not written yet. Also still open from the spec: the server tier
-  for very large models, the typed-formula power mode, and allowable ranges in the Sensitivity Report.
+  (why he built it, what surprised him). Not written yet. Also still open from the spec: the optional
+  server tier for very large models (the 50 × 500 test solves in the browser in about 2 s).
 - **More USDA boards** (Juan wants all of them): next are hogs (LM_HG217/218), lamb (LM_XL502) and cow
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
@@ -46,7 +46,12 @@ Things waiting on a decision or on Juan, so they aren't lost:
   corner one more and one fewer differ. Ten templates, quick questions, what-if slider and curve, the math
   in notation and LaTeX, Excel-style Answer/Sensitivity/Limits reports, LP and JSON downloads, paste and
   .csv/.xlsx import, share links in the hash, saved templates in the browser.
-- `scripts/plain-solver-test.js` runs the spec's acceptance tests (77 checks, including a 50 × 500
+- **Power mode** (Advanced): every expression as a typed formula, names suggested as you type, the sentence
+  version underneath; it parses to the same model (all 71 template formulas round-trip to identical LPs).
+- **Allowable increase and decrease** in the Sensitivity Report, for every cost and every limit, found by
+  re-solving (they match the textbook values on the spec's product-mix test); models up to 80 rules and
+  decisions.
+- `scripts/plain-solver-test.js` runs the spec's acceptance tests (94 checks, including a 50 × 500
   transportation model, about 2 s); the `Check the site` workflow now runs it too.
 
 ## 2026-10-18 — Every permanent record in the repository; the database only runs the site

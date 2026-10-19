@@ -71,6 +71,16 @@ const val = (ans, id, keys) => { const e = ans.decisions[id].find((d) => (keys |
   check("2 objective", near(a.goal, 36), a.goal);
   check("2 dual b (max)", near(a.sensitivity.rows[1], 1.5), a.sensitivity.rows[1]);
   check("2 dual c (max)", near(a.sensitivity.rows[2], 1), a.sensitivity.rows[2]);
+  // Allowable ranges, as Excel's Sensitivity Report gives them for this LP.
+  const R = a.sensitivity.ranges, unlimited = (v) => v === Infinity;
+  check("2 ranges exist", !!R, "");
+  if (R) {
+    check("2 cost x1 range", near(R.cost[0].inc, 4.5, 1e-5) && near(R.cost[0].dec, 3, 1e-5), JSON.stringify(R.cost[0]));
+    check("2 cost x2 range", unlimited(R.cost[1].inc) && near(R.cost[1].dec, 3, 1e-5), JSON.stringify(R.cost[1]));
+    check("2 rhs a range", unlimited(R.rhs[0].inc) && near(R.rhs[0].dec, 2, 1e-5), JSON.stringify(R.rhs[0]));
+    check("2 rhs b range", near(R.rhs[1].inc, 6, 1e-5) && near(R.rhs[1].dec, 6, 1e-5), JSON.stringify(R.rhs[1]));
+    check("2 rhs c range", near(R.rhs[2].inc, 6, 1e-5) && near(R.rhs[2].dec, 6, 1e-5), JSON.stringify(R.rhs[2]));
+  }
   check("2 limits", a.limits && near(a.limits[0].hi, 2) && near(a.limits[1].hi, 6), JSON.stringify(a.limits));
 
   // Test 3: infeasible, diagnosed in words.
@@ -122,6 +132,24 @@ const val = (ans, id, keys) => { const e = ans.decisions[id].find((d) => (keys |
     check(`6 ${t.id} solves`, ans.ok && ["optimal", "local"].includes(ans.status), `${ans.status} ${ans.message || ""} ${JSON.stringify(ans.errors || "")}`);
     if (process.env.VERBOSE) console.log(t.id, ans.cls, ans.status, M.fmt(ans.goal), ans.ms + "ms");
   }
+  // Typed formulas: every template expression written out by name and read back gives the same model.
+  for (const t of T.list) {
+    const m = clone(t.model);
+    let bad = null;
+    const re = (e) => {
+      if (!e || typeof e !== "object") return e;
+      const s = M.formula(m, e), p = M.parseNamed(m, s);
+      if (p.error || M.formula(m, p.tree) !== s) { bad = s + " → " + (p.error || M.formula(m, p.tree)); return e; }
+      return p.tree;
+    };
+    for (const r of m.results) r.expr = re(r.expr);
+    for (const r of m.rules) { r.lhs = re(r.lhs); r.rhs = re(r.rhs); r.rhs2 = re(r.rhs2); r.count = re(r.count); }
+    for (const d of m.decisions) { d.lower = re(d.lower); d.upper = re(d.upper); }
+    m.goal.expr = re(m.goal.expr);
+    check(`typed ${t.id} round trip`, !bad && M.compileToLP(m).lp === M.compileToLP(clone(t.model)).lp, bad || "LP differs");
+  }
+  check("typed: unknown name", /isn't a name/.test(M.parseNamed(staffing, "Workers_to_hire + nope").error || ""), "");
+
   // Specific template answers worth pinning down.
   a = await S.run(clone(T.get("pricing").model), env);
   check("6 pricing peak", near(val(a, "price"), 31, 1e-5) && near(a.goal, 7220, 1e-5), `${val(a, "price")} ${a.goal}`);

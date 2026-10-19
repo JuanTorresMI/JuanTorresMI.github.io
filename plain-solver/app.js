@@ -201,7 +201,60 @@
     if (n.body) { const inner = []; collectSets(n.body, inner); const over = [].concat(n.over || []); for (const s of inner) if (!over.includes(s) && !out.includes(s)) out.push(s); }
   }
 
+  // Power mode: the expression as a typed formula, with names suggested as you type and the
+  // sentence version underneath. It parses to the same tree the menus build.
+  let typed = store.get("plain-solver:typed") === "1";
+  const FN_WORDS = ["sum(", "avg(", "count(", "sqrt(", "abs(", "max(", "min(", "if(", "lookup(", "exp(", "log("];
+  function typedEl(ast, ctx, set) {
+    const N = M.names(model);
+    const text = M.formula(model, ast, N);
+    const inp = h("input.ps-chip.ps-formula", { type: "text", value: text, spellcheck: "false", autocomplete: "off", "aria-label": "Formula", "aria-autocomplete": "list", "data-k": ctx.key + ":f" });
+    const say = h("span.ps-say", {}, ast && !ast.hole ? M.say(model, ast) : "Type a formula, like Units_made + Units_short");
+    const list = h("ul.ps-suggest", { role: "listbox", hidden: true });
+    const all = Object.entries(N.byId).filter(([id]) => !id.includes("#col#")).map(([, n]) => n).concat(FN_WORDS);
+    let matches = [], sel = -1;
+    const word = () => (/[\w.]*$/.exec(inp.value.slice(0, inp.selectionStart)) || [""])[0];
+    const mark = () => [...list.children].forEach((li, i) => li.setAttribute("aria-selected", String(i === sel)));
+    const check = () => {
+      const p = M.parseNamed(model, inp.value, N);
+      inp.setAttribute("aria-invalid", p.error ? "true" : "false");
+      say.textContent = p.error || M.say(model, p.tree);
+      say.classList.toggle("is-bad", !!p.error);
+      return p;
+    };
+    const accept = (i) => {
+      const w = word(), pos = inp.selectionStart;
+      inp.value = inp.value.slice(0, pos - w.length) + matches[i] + inp.value.slice(pos);
+      const c = pos - w.length + matches[i].length;
+      inp.setSelectionRange(c, c);
+      list.hidden = true;
+      check();
+    };
+    const show = () => {
+      const w = word().toLowerCase();
+      matches = w ? all.filter((n) => n.toLowerCase().includes(w) && n.toLowerCase() !== w).sort((a, b) => a.toLowerCase().indexOf(w) - b.toLowerCase().indexOf(w)).slice(0, 8) : [];
+      sel = matches.length ? 0 : -1;
+      list.replaceChildren(...matches.map((n, i) => h("li", { role: "option", on: { mousedown: (e) => { e.preventDefault(); accept(i); } } }, n)));
+      list.hidden = !matches.length;
+      mark();
+    };
+    inp.addEventListener("input", () => { check(); show(); });
+    inp.addEventListener("keydown", (e) => {
+      if (!list.hidden && matches.length) {
+        if (e.key === "ArrowDown") { sel = (sel + 1) % matches.length; mark(); e.preventDefault(); return; }
+        if (e.key === "ArrowUp") { sel = (sel - 1 + matches.length) % matches.length; mark(); e.preventDefault(); return; }
+        if ((e.key === "Tab" || e.key === "Enter") && sel >= 0) { e.preventDefault(); accept(sel); return; }
+        if (e.key === "Escape") { list.hidden = true; return; }
+      }
+      if (e.key === "Enter") inp.blur();
+    });
+    inp.addEventListener("blur", () => { list.hidden = true; });
+    inp.addEventListener("change", () => { const p = check(); if (!p.error) edit(() => set(p.tree)); });
+    return h("span.ps-typed", {}, inp, list, say);
+  }
+
   function exprEl(ast, ctx, set) {
+    if (typed) return typedEl(ast, ctx, (nn) => set(nn));
     const ts = toTokens(ast);
     const wrap = h("span.ps-expr");
     const commit = (nts) => edit(() => set(fromTokens(nts)));
@@ -1043,13 +1096,14 @@
     if (a.sensitivity) {
       const s = a.sensitivity, sen = title("Sensitivity Report");
       if (s.approx) sen.push([`Approximate: whole-number decisions held at their values (${s.fixed.map((id) => (m.decisions.find((d) => d.id === id) || {}).label).join(", ")}); a MIP has no exact duals.`], []);
-      sen.push([{ v: "Variable", s: "head" }, { v: "Final value", s: "head" }, { v: "Reduced cost", s: "head" }, { v: "Objective coefficient", s: "head" }]);
-      vars.forEach((v, i) => { if (v) sen.push([v.label, { v: a.x[i], s: "n2" }, { v: s.reduced[i], s: "n2" }, { v: s.cost[i], s: "n2" }]); });
+      const R = s.ranges, rng = (v) => (v === undefined || v === null ? "" : v === Infinity ? "1E+30" : { v, s: "n2" });
+      sen.push([{ v: "Variable", s: "head" }, { v: "Final value", s: "head" }, { v: "Reduced cost", s: "head" }, { v: "Objective coefficient", s: "head" }, { v: "Allowable increase", s: "head" }, { v: "Allowable decrease", s: "head" }]);
+      vars.forEach((v, i) => { if (v) sen.push([v.label, { v: a.x[i], s: "n2" }, { v: s.reduced[i], s: "n2" }, { v: s.cost[i], s: "n2" }, rng(R && R.cost[i] && R.cost[i].inc), rng(R && R.cost[i] && R.cost[i].dec)]); });
       sen.push([]);
-      sen.push([{ v: "Constraint", s: "head" }, { v: "Final value", s: "head" }, { v: "Shadow price", s: "head" }, { v: "Goal change, 1 unit more", s: "head" }, { v: "Goal change, 1 unit less", s: "head" }, { v: "Constraint R.H. side", s: "head" }]);
-      a.rows.forEach((r, j) => sen.push([r.label + (r.keys.length ? " · " + r.keys.join(", ") : ""), { v: r.lhs, s: "n2" }, { v: s.rows[j], s: "n2" }, s.up[j] === undefined ? "" : s.up[j] === null ? "infeasible" : { v: s.up[j], s: "n2" }, s.down[j] === undefined ? "" : s.down[j] === null ? "infeasible" : { v: -s.down[j], s: "n2" }, { v: r.rhs, s: "n2" }]));
-      sen.push([], ["Shadow price is HiGHS's dual value: the change in the goal per unit added to the right-hand side. At a corner it holds in one direction only; the two columns after it come from re-solving with the limit moved a little each way. Allowable increase and decrease ranges aren't computed."]);
-      S.push({ name: "Sensitivity Report", widths: [40, 14, 14, 22, 22, 18], rows: sen });
+      sen.push([{ v: "Constraint", s: "head" }, { v: "Final value", s: "head" }, { v: "Shadow price", s: "head" }, { v: "Goal change, 1 unit more", s: "head" }, { v: "Goal change, 1 unit less", s: "head" }, { v: "Constraint R.H. side", s: "head" }, { v: "Allowable increase", s: "head" }, { v: "Allowable decrease", s: "head" }]);
+      a.rows.forEach((r, j) => sen.push([r.label + (r.keys.length ? " · " + r.keys.join(", ") : ""), { v: r.lhs, s: "n2" }, { v: s.rows[j], s: "n2" }, s.up[j] === undefined ? "" : s.up[j] === null ? "infeasible" : { v: s.up[j], s: "n2" }, s.down[j] === undefined ? "" : s.down[j] === null ? "infeasible" : { v: -s.down[j], s: "n2" }, { v: r.rhs, s: "n2" }, rng(R && R.rhs[j] && R.rhs[j].inc), rng(R && R.rhs[j] && R.rhs[j].dec)]));
+      sen.push([], ["Shadow price is HiGHS's dual value: the change in the goal per unit added to the right-hand side. At a corner it holds in one direction only; the two columns after it come from re-solving with the limit moved a little each way. Allowable increase and decrease: how far one number can move, the others held, before the price (or, for a cost, the answer) changes; 1E+30 means no limit. Found by re-solving; computed for models with up to 80 rules and decisions."]);
+      S.push({ name: "Sensitivity Report", widths: [40, 14, 14, 22, 22, 18, 18, 18], rows: sen });
     }
     if (a.limits) {
       const lim = title("Limits Report");
@@ -1317,6 +1371,8 @@
     $("#o-time").addEventListener("change", set((o) => { o.timeLimitSec = Math.max(1, Math.min(600, Number($("#o-time").value) || 30)); }));
     $("#o-gap").addEventListener("change", set((o) => { o.mipGap = Math.max(0, Math.min(50, Number($("#o-gap").value) || 0)) / 100; }));
     $("#o-multi").addEventListener("change", set((o) => { const v = $("#o-multi").value; if (v === "auto") delete o.multistart; else o.multistart = v === "on"; }));
+    $("#o-typed").checked = typed;
+    $("#o-typed").addEventListener("change", () => { typed = $("#o-typed").checked; store.set("plain-solver:typed", typed ? "1" : "0"); renderBuilder(); });
   }
 
   /* ---------- start ---------- */

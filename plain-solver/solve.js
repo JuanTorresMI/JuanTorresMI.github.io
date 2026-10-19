@@ -96,7 +96,47 @@
         down[j] = b === null ? null : (obj0 - b) / d;
       }
     }
-    return { rows, up, down, reduced, cost, approx, fixed: [...new Set(fixed)] };
+    const ranges = E.rows.length + E.vars.length <= 80 && !Lm.aux.length ? await ranging(env, Lm, opts, r.ObjectiveValue, up, down, primal(r, Lm)) : null;
+    return { rows, up, down, reduced, cost, approx, fixed: [...new Set(fixed)], ranges };
+  }
+
+  // Excel's allowable increase and decrease. The goal is piecewise linear in any one right-hand side
+  // or cost, so the range is how far that number can move while the goal stays on the same line:
+  // for a right-hand side, the line with the one-sided price; for a cost, the line the current
+  // answer gives (it stays the best answer). Found by doubling the step, then halving the gap.
+  async function ranging(env, Lm, opts, obj0, up, down, x) {
+    const solveWith = async (L) => {
+      const [s] = await solveLP(env, M.writeLP(L, { bare: true }).lp, { ...opts, output_flag: false }, false);
+      return s.Status === "Optimal" ? s.ObjectiveValue : null;
+    };
+    async function reach(test, scale) {
+      // Largest t ≥ 0 with test(t) true, given test(0) is; Infinity past 1e9.
+      let ok = 0, t = 1e-3 * Math.max(1, Math.abs(scale));
+      while (await test(t)) { ok = t; t *= 4; if (t > 1e9 * Math.max(1, Math.abs(scale))) return Infinity; }
+      let bad = t;
+      for (let k = 0; k < 40 && bad - ok > 1e-7 * Math.max(1, ok); k++) { const mid = (ok + bad) / 2; if (await test(mid)) ok = mid; else bad = mid; }
+      return ok;
+    }
+    const same = (a, b) => a !== null && Math.abs(a - b) <= 1e-7 * Math.max(1, Math.abs(obj0), Math.abs(b));
+    const rhs = [];
+    for (let j = 0; j < up.length; j++) {
+      if (up[j] === undefined) { rhs.push(null); continue; }
+      const b = Lm.rows[j].rhs;
+      const at = (delta) => { const rows = Lm.rows.slice(); rows[j] = { ...rows[j], rhs: b + delta }; return solveWith({ ...Lm, rows }); };
+      const inc = up[j] === null ? 0 : await reach(async (t) => same(await at(t), obj0 + up[j] * t), b);
+      const dec = down[j] === null ? 0 : await reach(async (t) => same(await at(-t), obj0 - down[j] * t), b);
+      rhs.push({ inc, dec });
+    }
+    const cost = [];
+    for (let i = 0; i < Lm.vars.length; i++) {
+      const c = Lm.obj.t.get(i) || 0;
+      const at = (delta) => { const t = new Map(Lm.obj.t); t.set(i, c + delta); return solveWith({ ...Lm, obj: { k: Lm.obj.k, t } }); };
+      // With the cost moved by d, the current answer's goal moves by d·x; it stays best while the optimum does too.
+      const inc = await reach(async (t) => same(await at(t), obj0 + t * x[i]), c);
+      const dec = await reach(async (t) => same(await at(-t), obj0 - t * x[i]), c);
+      cost.push({ inc, dec });
+    }
+    return { rhs, cost };
   }
 
   // Excel's Limits Report: each decision moved alone, the others held, as far as the rules allow.

@@ -138,6 +138,101 @@
     return out;
   }
 
+  /* ---------- typed formulas: names people can type ---------- */
+  // Every reference gets a name from its label, spaces as underscores: Units_made, Workers.units_per_hour,
+  // Stores.Demand. A name that clashes, or has no letters to spare, falls back to its id.
+  function names(model) {
+    const toName = (s) => { let n = String(s || "").trim().replace(/[^A-Za-z0-9]+/g, "_").replace(/^_+|_+$/g, ""); if (!n || /^\d/.test(n)) n = "_" + n; return n; };
+    const byId = {}, used = new Set();
+    const claim = (id, n) => { if (!n || n === "_" || used.has(n.toLowerCase())) n = id; used.add(n.toLowerCase()); byId[id] = n; };
+    for (const t of model.things || []) claim(t.id, toName(t.label));
+    for (const t of model.things || []) {
+      if (t.kind === "single") for (const p of t.properties || []) byId[t.id + "." + p.id] = byId[t.id] + "." + toName(p.label);
+      if (t.kind === "table") for (const c of t.columns || []) byId[t.id + "." + c.id] = byId[t.id] + "." + toName(c.label);
+      if (t.kind === "table") for (const c of t.columns || []) byId[t.id + "#col#" + c.id] = toName(c.label);
+    }
+    for (const d of model.decisions || []) claim(d.id, toName(d.label));
+    for (const r of model.results || []) claim(r.id, toName(r.label));
+    const toId = {};
+    for (const [id, n] of Object.entries(byId)) if (!id.includes("#col#")) toId[n.toLowerCase()] = id;
+    return { byId, toId };
+  }
+  function formula(model, n, N) {
+    N = N || names(model);
+    const F = (x, p) => { const [s, q] = fm(x); return q < p ? "(" + s + ")" : s; };
+    const nm = (id) => N.byId[id] || id;
+    const col = (t, c) => N.byId[t + "#col#" + c] || c;
+    function fm(x) {
+      // [text, precedence]: 4 atom, 3 power, 2 product, 1 sum, 0 comparison
+      if (!x || x.hole) return ["?", 4];
+      if (x.const !== undefined) return [x.const === null ? "?" : String(x.const), x.const < 0 ? 1 : 4];
+      if (x.ref !== undefined) {
+        let s = nm(x.ref);
+        if (x.at && Object.keys(x.at).length) {
+          const parts = Object.entries(x.at).map(([set, a]) => (typeof a === "string" ? `${nm(set)}=${a}` : `${nm(set)}${a.shift < 0 ? "-" : "+"}${Math.abs(a.shift)}`));
+          s += "[" + parts.join(", ") + (x.otherwise ? " or " + formula(model, x.otherwise, N) : "") + "]";
+        }
+        return [s, 4];
+      }
+      const a = x.args || [];
+      switch (x.op) {
+        case "add": return [F(a[0], 1) + " + " + F(a[1], 2), 1];
+        case "sub": return [F(a[0], 1) + " - " + F(a[1], 2), 1];
+        case "mul": return [F(a[0], 2) + " * " + F(a[1], 3), 2];
+        case "div": return [F(a[0], 2) + " / " + F(a[1], 3), 2];
+        case "neg": return ["-" + F(a[0], 3), 2];
+        case "pow": return [F(a[0], 4) + "^" + F(a[1], 4), 3];
+        case "paren": return ["(" + formula(model, a[0], N) + ")", 4];
+        case "sum": case "avg": return [`${x.op}(${[].concat(x.over).map(nm).join(", ")}, ${formula(model, x.body, N)})`, 4];
+        case "count": return [`count(${[].concat(x.over).map(nm).join(", ")})`, 4];
+        case "lookup": return [`lookup(${nm(x.table)}.${col(x.table, x.key)}, ${nm(x.table)}.${col(x.table, x.value)}, ${formula(model, a[0], N)})`, 4];
+        case "ge": case "le": case "gt": case "lt": case "eq": return [F(a[0], 1) + " " + { ge: ">=", le: "<=", gt: ">", lt: "<", eq: "==" }[x.op] + " " + F(a[1], 1), 0];
+        default: return [`${x.op}(${a.map((y) => formula(model, y, N)).join(", ")})`, 4];
+      }
+    }
+    return fm(n)[0];
+  }
+  // A typed formula -> an expression tree with ids, or { error }.
+  function parseNamed(model, text, N) {
+    N = N || names(model);
+    let tree;
+    try { tree = parse(text); } catch (e) { return { error: e.message.replace(/ in: .*$/, "") }; }
+    const ix = index(model);
+    const id = (n) => N.toId[String(n).toLowerCase()] || (refInfo(ix, n) || ix.sets[n] ? n : null);
+    const colId = (tableId, name) => { const t = ix.sets[tableId]; const c = t && (t.columns || []).find((c) => names(model).byId[tableId + "#col#" + c.id].toLowerCase() === String(name).toLowerCase() || c.id === name); return c ? c.id : null; };
+    let error = null;
+    const fix = (n) => {
+      if (!n || typeof n !== "object" || error) return;
+      if (n.ref !== undefined) {
+        const r = id(n.ref);
+        if (!r || !refInfo(ix, r)) { error = `“${n.ref}” isn't a name here.`; return; }
+        n.ref = r;
+        if (n.at) {
+          const at = {};
+          for (const [k, v] of Object.entries(n.at)) { const s = id(k); if (!s || !ix.sets[s]) { error = `“${k}” isn't a list.`; return; } at[s] = v; }
+          n.at = at;
+        }
+        fix(n.otherwise);
+      }
+      if (n.over !== undefined) {
+        const s = id(n.over);
+        if (!s || !ix.sets[s]) { error = `“${n.over}” isn't a list.`; return; }
+        n.over = s;
+      }
+      if (n.op === "lookup") {
+        const t = id(n.table);
+        if (!t || !ix.sets[t]) { error = `“${n.table}” isn't a list.`; return; }
+        // parse() split "Table.Column" at the first dot; the column names come back here.
+        n.key = colId(t, n.key); n.value = colId(t, n.value); n.table = t;
+        if (!n.key || !n.value) { error = "The look-up names a column that isn't in that list."; return; }
+      }
+      (n.args || []).forEach(fix);
+      fix(n.body);
+    };
+    fix(tree);
+    return error ? { error } : { tree };
+  }
+
   /* ---------- scalar trees ---------- */
   // { c } a constant · { v } a variable number · { op, a: [...] } · lookup carries keys and vals.
   const C = (c) => ({ c });
@@ -1120,7 +1215,7 @@
   }
 
   const api = { SCHEMA, index, refInfo, keysOf, setLabel, setOne, parse, expand, linearize, classify, writeLP, elastic, compileToLP,
-    numeric, evaluate, gradient, parseUnit, unitText, validate, uses, describe, say, sayRule, math, fmt, isC };
+    numeric, evaluate, gradient, names, formula, parseNamed, parseUnit, unitText, validate, uses, describe, say, sayRule, math, fmt, isC };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.PSModel = api;
 })(typeof self !== "undefined" ? self : this);
