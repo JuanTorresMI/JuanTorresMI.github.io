@@ -1,9 +1,9 @@
 ---
 layout: app
 project: plain-solver
-title: "Plain Solver: an Excel Solver Alternative in Plain English"
-seo_title: "Free Online Optimization Solver in Plain English"
-description: "A free online optimization solver: build linear, integer and nonlinear models from plain-English sentences, solve them in your browser, get Excel-style reports."
+title: "Plain Solver: Build Your Own Solver in Plain English"
+seo_title: "Build Your Own Optimization Solver, Free, in Plain English"
+description: "Build your own optimization solver by filling in plain-English sentences: linear, integer and nonlinear models of any size, solved free in your browser."
 image: /assets/og/plain-solver.png
 image_alt: "Plain Solver: optimization models in plain English, solved in the browser. A tool by Juan Torres."
 ---
@@ -24,23 +24,40 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
 
 <div class="ps frame">
   <header class="ps-head">
-    <p class="ps-family">Work · Optimization</p>
-    <h1>Plain Solver <span class="ps-h1-sub">An optimization solver you set up in plain English</span></h1>
-    <p class="ps-lede">Say what you have, what you get to decide, the rules, and what “best” means, one sentence at a time. Plain Solver turns the sentences into a model, picks the right method to solve it, and explains the answer in words: what to do, what it costs, and which rule is holding you back. It covers what Excel Solver does (linear, whole-number, nonlinear and evolutionary problems, with the Answer, Sensitivity and Limits reports) without a single cell formula. Everything runs in your browser.</p>
+    <p class="ps-family">Work · Plain Solver</p>
+    <h1>Build your own solver <span class="ps-h1-sub">Optimization in plain English, like filling in the blanks</span></h1>
+    <p class="ps-lede">Say what you decide, what you know, what has to be true, and what makes one plan better. Each is a sentence with blanks to fill, and the blanks are your own words, numbers and spreadsheets. Plain Solver builds the model, picks the right way to solve it, and tells you what to do and why. It handles anything from a two-line homework problem to a supply chain with thousands of routes. It does what Excel Solver does without a single cell formula, and it's free, in your browser, with nothing to install.</p>
   </header>
 
   <noscript><p class="ps-msg">Plain Solver needs JavaScript to build and solve models. The guide below reads fine without it.</p></noscript>
 
   <div id="app" hidden>
     <section class="ps-start" aria-labelledby="h-start">
-      <header class="ps-block-head"><h2 class="ps-label" id="h-start">Start from a template</h2>
-        <span class="ps-links"><button class="ps-link" type="button" id="b-blank">Blank model</button><button class="ps-link" type="button" id="b-open">Open a file</button><input type="file" id="f-json" accept=".json,application/json" hidden></span></header>
+      <div class="ps-hero">
+        <div class="ps-hero-main">
+          <h2 class="ps-hero-h" id="h-start">Start with a blank page</h2>
+          <ol class="ps-hero-steps">
+            <li><strong>What do you decide?</strong> How many to hire, how much to ship, which sites to open.</li>
+            <li><strong>What do you know?</strong> Costs, limits, demand. Type them, or paste a spreadsheet.</li>
+            <li><strong>What has to be true?</strong> Meet demand, stay in budget, one shift each.</li>
+            <li><strong>What makes one plan better?</strong> The lowest cost, the most profit, a number to hit.</li>
+          </ol>
+          <button class="ps-btn primary ps-btn-big" type="button" id="b-build">Build your own solver</button>
+        </div>
+        <ul class="ps-hero-ways">
+          <li><button class="ps-way" type="button" id="b-start-import"><span class="ps-way-t">Start from your spreadsheet</span><span class="ps-way-d">Bring in a whole workbook: every sheet becomes a list or a grid, ready to use in sentences.</span></button></li>
+          <li><button class="ps-way" type="button" id="b-start-text"><span class="ps-way-t">Describe it in text, or have an AI write it</span><span class="ps-way-d">Write the whole model at once, or copy the format guide to a chat and paste back its answer.</span></button></li>
+          <li><button class="ps-way" type="button" id="b-open"><span class="ps-way-t">Open a saved model</span><span class="ps-way-d">A .json file downloaded from here.</span></button><input type="file" id="f-json" accept=".json,application/json" hidden></li>
+        </ul>
+      </div>
+      <header class="ps-block-head ps-examples-head"><h2 class="ps-label">Or start from an example</h2><span class="ps-note">Each one is made of the same sentences, so you can change any part</span></header>
       <ul class="ps-tpls" id="tpls"></ul>
     </section>
 
     <div class="ps-bar" id="workspace">
       <label class="ps-title"><span class="ps-hide">Model name</span><input type="text" id="m-title" autocomplete="off" aria-label="Model name"></label>
       <span class="ps-bar-tools">
+        <button class="ps-link" type="button" id="b-blank">New</button>
         <button class="ps-link" type="button" id="b-undo" title="Undo (Ctrl+Z)">Undo</button>
         <button class="ps-link" type="button" id="b-redo" title="Redo (Ctrl+Y)">Redo</button>
         <button class="ps-link" type="button" id="b-math" aria-pressed="false">Show the math</button>
@@ -61,33 +78,63 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
         </section>
 
         <details class="ps-builder" id="builder-wrap" open>
-          <summary class="ps-block-head"><span class="ps-label">The model, sentence by sentence</span><span class="ps-note">Open to change any part</span></summary>
+          <summary class="ps-block-head"><span class="ps-label">Your solver, step by step</span><span class="ps-note">Open to change any part</span></summary>
+          <ol class="ps-steps" id="steps" aria-label="Steps">
+            <li data-step="decide"><a href="#sec-decide">Decide</a></li>
+            <li data-step="know"><a href="#sec-know">Know</a></li>
+            <li data-step="rules"><a href="#sec-rules">Rules</a></li>
+            <li data-step="best"><a href="#sec-best">Best</a></li>
+          </ol>
           <p class="ps-preview" id="preview" aria-live="polite"></p>
           <ul class="ps-cards" id="checks" aria-label="Checks"></ul>
+          <p class="ps-faster">Faster: <button class="ps-link" type="button" id="b-blocks">Use a building block</button><button class="ps-link" type="button" id="b-combine">Combine with another model</button><button class="ps-link" type="button" id="b-text">Edit it all as text</button></p>
 
-          <section class="ps-sec" aria-labelledby="h-things">
-            <h3 class="ps-sec-h" id="h-things">What you have <span>numbers, lists and grids of data</span></h3>
-            <div class="ps-list" id="s-things"></div>
-            <p class="ps-adds"><button class="ps-add" type="button" data-add="single">+ A thing with numbers</button><button class="ps-add" type="button" data-add="table">+ A list</button><button class="ps-add" type="button" data-add="grid">+ A grid (two lists)</button><button class="ps-add" type="button" id="b-paste">Paste from a spreadsheet</button><button class="ps-add" type="button" id="b-upload">Upload .csv or .xlsx</button></p>
-          </section>
-          <section class="ps-sec" aria-labelledby="h-decisions">
-            <h3 class="ps-sec-h" id="h-decisions">What you decide <span>the numbers the solver picks</span></h3>
+          <section class="ps-sec" id="sec-decide" aria-labelledby="h-decisions">
+            <h3 class="ps-sec-h" id="h-decisions"><span class="ps-num">1</span> What do you decide? <span>the numbers the solver gets to pick</span></h3>
             <div class="ps-list" id="s-decisions"></div>
-            <p class="ps-adds"><button class="ps-add" type="button" data-add="decision">+ A decision</button></p>
+            <p class="ps-quick" id="qa-decide"><span class="ps-word">I decide</span>
+              <select class="ps-chip" id="qd-type" aria-label="Kind of decision"><option value="integer">how many</option><option value="continuous">how much</option><option value="binary">whether to</option></select>
+              <input class="ps-chip ps-name" type="text" id="qd-name" placeholder="workers to hire" aria-label="What you decide" size="18">
+              <select class="ps-chip" id="qd-each" aria-label="For each"><option value="">(just one)</option></select>
+              <button class="ps-btn" type="button" id="qd-add">Add</button></p>
           </section>
-          <section class="ps-sec" aria-labelledby="h-results">
-            <h3 class="ps-sec-h" id="h-results">What you work out <span>named results, usable in later sentences</span></h3>
+          <section class="ps-sec" id="sec-know" aria-labelledby="h-things">
+            <h3 class="ps-sec-h" id="h-things"><span class="ps-num">2</span> What do you know? <span>costs, limits, demand; one number, or whole lists</span></h3>
+            <div class="ps-list" id="s-things"></div>
+            <p class="ps-quick" id="qa-know">
+              <input class="ps-chip ps-name" type="text" id="qk-name" placeholder="cost per hour" aria-label="What it is" size="16">
+              <span class="ps-word">is</span>
+              <input class="ps-chip ps-num" type="text" inputmode="decimal" id="qk-value" placeholder="15" aria-label="Number" size="6">
+              <input class="ps-chip ps-unit" type="text" id="qk-unit" placeholder="$/hour" aria-label="Unit" size="8">
+              <button class="ps-btn" type="button" id="qk-add">Add</button></p>
+            <p class="ps-adds"><button class="ps-add" type="button" data-add="table">+ A list (stores, products, months…)</button><button class="ps-add" type="button" data-add="grid">+ A grid (one number for each pair)</button><button class="ps-add" type="button" id="b-paste">Paste from a spreadsheet</button><button class="ps-add" type="button" id="b-upload">Bring in a spreadsheet or workbook</button><button class="ps-add" type="button" data-add="single">+ A group of numbers</button></p>
+          </section>
+          <section class="ps-sec ps-sec-optional" aria-labelledby="h-results">
+            <h3 class="ps-sec-h" id="h-results"><span class="ps-num">+</span> Name something you'll reuse <span>optional: “Units made = workers × hours”, then use “Units made” anywhere</span></h3>
             <div class="ps-list" id="s-results"></div>
-            <p class="ps-adds"><button class="ps-add" type="button" data-add="result">+ A result</button></p>
+            <p class="ps-adds"><button class="ps-add" type="button" data-add="result">+ A named result</button></p>
           </section>
-          <section class="ps-sec" aria-labelledby="h-rules">
-            <h3 class="ps-sec-h" id="h-rules">The rules <span>what every answer has to respect</span></h3>
+          <section class="ps-sec" id="sec-rules" aria-labelledby="h-rules">
+            <h3 class="ps-sec-h" id="h-rules"><span class="ps-num">3</span> What has to be true? <span>the rules every answer has to respect</span></h3>
             <div class="ps-list" id="s-rules"></div>
-            <p class="ps-adds"><button class="ps-add" type="button" data-add="rule">+ A rule</button><button class="ps-add" type="button" data-add="limit">+ A limit</button><button class="ps-add" type="button" data-add="pick">+ Choose some of a list</button><button class="ps-add" type="button" data-add="different">+ Each gets a different one</button></p>
+            <p class="ps-quick" id="qa-rule">
+              <input class="ps-chip ps-name ps-phrase" type="text" id="qr-lhs" placeholder="wood per chair times chairs to make" aria-label="What the rule is about" autocomplete="off">
+              <select class="ps-chip" id="qr-op" aria-label="Comparison"><option value="<=">must be at most</option><option value=">=">must be at least</option><option value="=">must equal</option></select>
+              <input class="ps-chip ps-name ps-phrase" type="text" id="qr-rhs" placeholder="wood available" aria-label="What it's compared with" autocomplete="off">
+              <select class="ps-chip" id="qr-each" aria-label="For each"><option value="">(once)</option></select>
+              <button class="ps-btn" type="button" id="qr-add">Add</button></p>
+            <p class="ps-msg-inline" id="qr-msg" role="status"></p>
+            <p class="ps-hint ps-hint-quick">Type it the way you'd say it, using the names you gave things: <em>plus</em>, <em>minus</em>, <em>times</em>, <em>divided by</em>, and “total of … across …” for a list. Or build it from menus:</p>
+            <p class="ps-adds"><button class="ps-add ps-add-strong" type="button" id="b-blocks2">Use a building block</button><button class="ps-add" type="button" data-add="rule">+ A rule</button><button class="ps-add" type="button" data-add="limit">+ A limit</button><button class="ps-add" type="button" data-add="pick">+ Choose some of a list</button><button class="ps-add" type="button" data-add="different">+ Each gets a different one</button></p>
           </section>
-          <section class="ps-sec" aria-labelledby="h-goal">
-            <h3 class="ps-sec-h" id="h-goal">The goal <span>what “best” means</span></h3>
+          <section class="ps-sec" id="sec-best" aria-labelledby="h-goal">
+            <h3 class="ps-sec-h" id="h-goal"><span class="ps-num">4</span> What makes one plan better? <span>the goal</span></h3>
             <div class="ps-list" id="s-goal"></div>
+            <p class="ps-quick" id="qa-goal"><span class="ps-word">Make</span>
+              <input class="ps-chip ps-name ps-phrase" type="text" id="qg-expr" placeholder="profit per chair times chairs to make plus …" aria-label="What to make high or low" autocomplete="off">
+              <select class="ps-chip" id="qg-sense" aria-label="Which way"><option value="max">as high as possible</option><option value="min">as low as possible</option></select>
+              <button class="ps-btn" type="button" id="qg-set">Set the goal</button></p>
+            <p class="ps-msg-inline" id="qg-msg" role="status"></p>
           </section>
         </details>
 
@@ -185,7 +232,7 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
           <label class="ps-field"><span class="ps-name">Use it as</span><select id="di-as"><option value="table">A list (each column a different number)</option><option value="grid">A grid (one number per row × column)</option></select></label>
         </div>
         <div id="di-preview"></div>
-        <div class="ps-actions"><button class="ps-btn primary" id="di-ok" value="ok">Bring it in</button><button class="ps-btn" type="button" id="di-cancel">Cancel</button></div>
+        <div class="ps-actions"><button class="ps-btn primary" id="di-ok" value="ok">Bring it in</button><button class="ps-btn" id="di-all" type="button" hidden>Bring in every sheet</button><button class="ps-btn" type="button" id="di-cancel">Cancel</button></div>
       </form>
     </dialog>
 
@@ -199,16 +246,61 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
         <div class="ps-actions"><button class="ps-btn primary" id="ds-ok" value="ok">Save</button><button class="ps-btn" type="button" id="ds-cancel">Cancel</button></div>
       </form>
     </dialog>
+    <dialog class="ps-dialog ps-dialog-wide" id="d-blocks" aria-labelledby="h-blocks">
+      <form method="dialog">
+        <h2 class="ps-label" id="h-blocks">Building blocks</h2>
+        <p class="ps-hint">Each block is one sentence with blanks. Fill them with your own lists and columns, and it writes the decisions, rules and costs for you, at any size. You can change anything it writes afterwards.</p>
+        <p class="ps-hint" id="db-none">Blocks work on your lists. Add one first (paste from a spreadsheet, or “+ A list”), then come back.</p>
+        <div class="ps-blocks">
+          <ul class="ps-block-list" id="db-list"></ul>
+          <div class="ps-madlib-wrap" id="db-fill" hidden>
+            <p class="ps-label" id="db-title"></p>
+            <p class="ps-madlib" id="db-madlib"></p>
+            <p class="ps-msg-inline" id="db-msg" role="status"></p>
+          </div>
+        </div>
+        <div class="ps-actions"><button class="ps-btn primary" id="db-add" value="ok">Add it</button><button class="ps-btn" type="button" id="db-cancel">Close</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="ps-dialog ps-dialog-wide" id="d-combine" aria-labelledby="h-combine">
+      <form method="dialog">
+        <h2 class="ps-label" id="h-combine">Combine with another model</h2>
+        <p class="ps-hint">Its lists, decisions, rules and goal are added to this model (anything with the same name is renamed), and its goal is added to this one. Say production planning plus shipping, solved together.</p>
+        <ul class="ps-block-list" id="dc-list"></ul>
+        <label class="ps-field"><span class="ps-name">Or a model file (.json)</span><input type="file" id="dc-file" accept=".json,application/json"></label>
+        <div class="ps-actions"><button class="ps-btn" type="button" id="dc-cancel">Close</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="ps-dialog ps-dialog-wide" id="d-text" aria-labelledby="h-text">
+      <form method="dialog">
+        <h2 class="ps-label" id="h-text">The whole model as text</h2>
+        <p class="ps-hint">One line per sentence. Edit it, paste a model in, or copy the format guide into an AI chat with a description of your problem and paste back its answer.</p>
+        <textarea id="dt-text" rows="22" spellcheck="false" aria-label="The model as text"></textarea>
+        <p class="ps-msg-inline" id="dt-msg" role="status"></p>
+        <div class="ps-actions"><button class="ps-btn primary" id="dt-apply" value="ok">Use this model</button><button class="ps-btn" type="button" id="dt-ai">Copy the format guide for an AI</button><button class="ps-btn" type="button" id="dt-copy">Copy</button><button class="ps-btn" type="button" id="dt-cancel">Close</button></div>
+      </form>
+    </dialog>
     <div id="print" aria-hidden="true"></div>
   </div>
 
   <article class="ps-explain" id="guide" aria-labelledby="about">
-    <header class="ps-block-head"><h2 class="ps-label" id="about">A free online optimization solver: an Excel Solver alternative in plain English</h2></header>
+    <header class="ps-block-head"><h2 class="ps-label" id="about">Build your own solver: a free online optimization solver in plain English</h2></header>
     <div class="ps-prose">
       <h3>What an optimization solver does</h3>
       <p>Plenty of everyday decisions have the same shape. There are some things you control (how many people to schedule, how much to ship on each route, which sites to open), some rules the answer has to respect (demand has to be met, a truck holds only so much, a person works one shift), and one number you want as low or as high as possible, usually a cost or a profit. An optimization solver searches every combination the rules allow and returns the best one. Excel Solver is the best-known tool for this, but it asks you to lay the problem out in cells and write each rule as a formula. Plain Solver is a free online linear programming solver (and integer, quadratic and nonlinear) that asks for the same information as sentences.</p>
-      <h3>Setting up a model in sentences</h3>
-      <p>A model here has five kinds of sentences, and each one is built from menus, so it can't be written wrong.</p>
+      <h3>Build your own solver in four questions</h3>
+      <p>“Build your own solver” starts from a blank page and four plain questions, each with a line you fill in like a madlib:</p>
+      <ol class="ps-list">
+        <li><strong>What do you decide?</strong> “I decide <em>how many</em> <em>workers to hire</em> <em>for each store</em>.”</li>
+        <li><strong>What do you know?</strong> “<em>Cost per hour</em> is <em>15</em> <em>$/hour</em>”, or a whole list pasted from a spreadsheet.</li>
+        <li><strong>What has to be true?</strong> “<em>wood per chair times chairs to make plus wood per table times tables to make</em> must be at most <em>wood available</em>.”</li>
+        <li><strong>What makes one plan better?</strong> “Make <em>profit per chair times chairs to make plus profit per table times tables to make</em> as high as possible.”</li>
+      </ol>
+      <p>The blanks take the names you've already given things, typed the way you'd say them (<em>plus</em>, <em>minus</em>, <em>times</em>, <em>divided by</em>, “total of … across …”), with suggestions as you type. That's a whole model: press Solve. Every line becomes an ordinary sentence you can change from menus, and every expression has a pencil to retype it.</p>
+      <h3>The sentences underneath</h3>
+      <p>A model here has five kinds of sentences, each one built from menus, so it can't be written wrong.</p>
       <ul class="ps-list">
         <li><strong>What you have</strong>: the facts. A single thing with numbers (“Workers: units per hour = 10”), a list (stores and each one's demand), or a grid with one number for every pair from two lists (the freight cost from each warehouse to each store). Lists and grids can be pasted straight from a spreadsheet or uploaded as .csv or .xlsx.</li>
         <li><strong>What you decide</strong>: the numbers the solver gets to choose. Each is any amount, a whole number, or yes-or-no, with optional limits, and can be one per row of a list: “decide how much to ship from each warehouse to each store”.</li>
@@ -216,7 +308,15 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
         <li><strong>The rules</strong>: “Units made plus shortage must be at least demand”, “for each store, the total shipped to it must be at least its demand”, “choose at most 2 of the sites”, “each person gets a different shift”.</li>
         <li><strong>The goal</strong>: make a result as low as possible, as high as possible, equal to a number, or as close as possible to one.</li>
       </ul>
-      <p>If you'd rather type, turn on power mode in Advanced: every expression becomes a formula such as <code>Workers.units_per_hour * (Regular_hours + Overtime_hours)</code>, with names suggested as you type and the sentence version shown underneath.</p>
+      <h3>Giant, fully custom models</h3>
+      <p>Real problems are bigger than a template, and most of their data is a list of connections: routes from one place to another, lanes, arcs, assignments. A list column can hold names of another list's rows (a lane's From is a plant), so a model can follow those links: “for each plant, the total shipped on lanes <em>where the lane's From is this plant</em> is at most its capacity”, or a lane's cost plus the handling cost <em>of the plant it leaves from</em>. That covers networks of any shape, multi-step supply chains and anything with three or more dimensions, without a giant mostly-empty grid. A network with 2,000 places and 20,000 routes solves in a few seconds; a 100 × 2,000 transportation model (200,000 decisions), in about five.</p>
+      <ul class="ps-list">
+        <li><strong>Building blocks</strong> write a whole pattern from one fill-in sentence: flow through a network, shipping from sources to destinations, open-or-close with a fixed cost, stock carried from one period to the next, mixing to meet requirements, assigning each one to exactly one, picking the best set of items. Fill the blanks with your own lists and columns; the decisions, rules and costs appear as sentences you can edit.</li>
+        <li><strong>A whole workbook</strong> comes in at once: every sheet becomes a list (or a grid, when its first row and column both name rows of lists), and a column whose entries all name rows of another sheet becomes a link to it.</li>
+        <li><strong>Models combine</strong>: add the staffing model to the shipping model and they're solved together, goals added.</li>
+        <li><strong>The whole model as text</strong>, one line per sentence, for writing a large model in one go. “Copy the format guide for an AI” puts the format and your current model on the clipboard, so a chat assistant can write a model from a description of your problem; paste its answer back in.</li>
+      </ul>
+      <p>If you'd rather type everything, turn on power mode in Advanced: every expression becomes a formula such as <code>Workers.units_per_hour * (Regular_hours + Overtime_hours)</code>, with names suggested as you type and the sentence version shown underneath.</p>
       <p>A plain-English summary of the whole model sits above the sentences and changes as you edit, and the checks underneath it catch the usual mistakes before you solve: a decision nothing uses, a result that depends on itself, a rule that adds dollars to hours.</p>
       <h3>Which method solves it</h3>
       <p>The page reads the model and picks the method, and tells you which one it used and what that means for the answer:</p>
@@ -257,6 +357,8 @@ image_alt: "Plain Solver: optimization models in plain English, solved in the br
 
 <script src="/plain-solver/model.js?v={{ site.time | date: '%s' }}" defer></script>
 <script src="/plain-solver/templates.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/plain-solver/blocks.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/plain-solver/text.js?v={{ site.time | date: '%s' }}" defer></script>
 <script src="/aggregate-planning/xlsx.js?v={{ site.time | date: '%s' }}" defer></script>
 <script src="/plain-solver/engine.js?v={{ site.time | date: '%s' }}" defer></script>
 <script src="/plain-solver/app.js?v={{ site.time | date: '%s' }}" defer></script>

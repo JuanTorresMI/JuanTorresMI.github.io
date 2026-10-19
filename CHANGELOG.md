@@ -35,6 +35,25 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-19 — Plain Solver: build your own, at any size
+
+- **Build your own solver is the front of the page**: four plain questions (what you decide, what you know,
+  what has to be true, what makes one plan better), each with a fill-in line; the examples come second.
+  Rules and goals can be typed the way people say them (“wood per chair times chairs to make plus …”), with
+  the names already in the model suggested as you type; every expression has a pencil to retype it.
+- **Large custom models**: list columns can name rows of another list (links), totals, counts and rules can
+  filter rows (“where the lane's From is this plant”), and a value can follow a link. Building blocks
+  write whole patterns from one sentence (network flow, shipping, fixed costs, carry-over, blending,
+  assignment, selection); models combine; a whole workbook imports at once with links detected; the model
+  reads and writes as text, with a format guide to give an AI chat.
+- **The review's fixes**: the nonlinear engine stopped early on “at most” rules (max x·y with x + y ≤ 10
+  gave 24.86, now 25); writing a big model out rebuilt every list's names per reference, and the Limits
+  Report scanned every rule per decision (100 × 2,000 transportation: 71 s, now about 5 s). An answer
+  stuck at its starting point says to try multistart; evolutionary answers are tidied (480, not 479.999996);
+  very large models skip the per-keystroke checks and ask before solving on a phone.
+- Tests: 131 solver checks (including the review's cases and a 2,000-node, 20,000-route network) and a new
+  page test, `scripts/plain-solver-page-test.js` (12 checks at 390 px and desktop).
+
 ## 2026-10-19 — Plain Solver: fixes and search
 
 - **Fix: `projects.yml`**: adding Plain Solver split the Aggregate Planner's entry, so the planner lost its

@@ -262,6 +262,68 @@
     return error ? { error } : { tree };
   }
 
+  /* ---------- formulas the way people say them ---------- */
+  // "wood per chair times chairs to make plus 20", "total of cost × units to ship across routes":
+  // the names people gave things, with spaces, and operators as words or symbols. Each run of words
+  // between operators has to match one name (ignoring case, "the" and plurals); numbers are numbers.
+  // Falls back to the underscore form (parseNamed) when that reads it and this doesn't.
+  const norm = (s) => String(s).toLowerCase().replace(/[^a-z0-9$%.\s]/g, " ").split(/\s+/).filter((w) => w && w !== "the" && w !== "a" && w !== "an")
+    .map((w) => (w.length > 3 && w.endsWith("s") && !w.endsWith("ss") ? w.slice(0, -1) : w)).join(" ");
+  function plainIndex(model) {
+    const ix = index(model), out = new Map();
+    const add = (key, id) => { const k = norm(key); if (!k) return; if (!out.has(k)) out.set(k, new Set()); out.get(k).add(id); };
+    for (const t of model.things || []) {
+      if (t.kind === "single") for (const p of t.properties || []) { add(p.label, t.id + "." + p.id); add(t.label + " " + p.label, t.id + "." + p.id); }
+      if (t.kind === "table") for (const c of t.columns || []) if (!c.kind || c.kind === "number") { add(c.label, t.id + "." + c.id); add((t.one || t.label) + " " + c.label, t.id + "." + c.id); add(t.label + " " + c.label, t.id + "." + c.id); }
+      if (t.kind === "grid") add(t.label, t.id);
+    }
+    for (const d of model.decisions || []) add(d.label, d.id);
+    for (const r of model.results || []) add(r.label, r.id);
+    const lists = new Map();
+    for (const t of model.things || []) if (t.kind === "table") { lists.set(norm(t.label), t.id); lists.set(norm(t.one || t.label), t.id); lists.set(norm("each " + (t.one || t.label)), t.id); }
+    return { ix, names: out, lists };
+  }
+  function parsePlain(model, text) {
+    const P = plainIndex(model);
+    let s = " " + String(text) + " ";
+    s = s.replace(/×/g, "*").replace(/÷/g, "/").replace(/−/g, "-")
+      .replace(/\s+divided by\s+/gi, " / ").replace(/\s+times\s+/gi, " * ").replace(/\s+plus\s+/gi, " + ").replace(/\s+minus\s+/gi, " - ")
+      .replace(/\s+squared\b/gi, "^2").replace(/\s+to the power of\s+/gi, "^");
+    // "total of X across Stores" / "sum of X over Stores" / "average of X across Stores"
+    let guard = 0, m;
+    const tot = /\b(total|sum|average)\s+of\s+(.+?)\s+(?:across|over|for each|for every|for all)\s+([A-Za-z][\w ]*?)(?=\s*(?:$|[)+\-*/,^]|\s(?:and|plus|minus)\b))/i;
+    while ((m = tot.exec(s)) && guard++ < 20) {
+      const list = P.lists.get(norm(m[3]));
+      if (!list) return { error: `“${m[3].trim()}” isn't one of your lists.` };
+      s = s.slice(0, m.index) + `${/^av/i.test(m[1]) ? "avg" : "sum"}(${list}, ${m[2]})` + s.slice(m.index + m[0].length);
+    }
+    // Swap every run of words for the id it names.
+    const parts = s.split(/([+\-*/^(),])/);
+    let unknown = null, ambiguous = null;
+    const out = parts.map((part) => {
+      if (/^[+\-*/^(),]$/.test(part) || !part.trim()) return part;
+      const w = part.trim();
+      if (/^(sum|avg)$/i.test(w) || P.lists.has(norm(w)) && /^[a-z]\w*$/.test(w) && index(model).sets[w]) return part;
+      if (/^\$?\d[\d,]*(\.\d+)?%?$/.test(w)) { const v = Number(w.replace(/[$,%]/g, "")) / (w.endsWith("%") ? 100 : 1); return " " + v + " "; }
+      if (index(model).sets[w]) return part;
+      const ids = P.names.get(norm(w));
+      if (!ids) { unknown = unknown || w; return part; }
+      if (ids.size > 1) { ambiguous = ambiguous || w; return part; }
+      return " " + [...ids][0] + " ";
+    });
+    if (unknown) return { error: `“${unknown}” isn't something in your model. Use the names you gave things (or pick from the menus).` };
+    if (ambiguous) return { error: `“${ambiguous}” could mean more than one thing. Add the name of its group or list to say which.` };
+    try { return { tree: parse(out.join("")) }; }
+    catch (e) { return { error: "That doesn't read as a formula yet. Use plus, minus, times, divided by (or + − × ÷) between the names and numbers." }; }
+  }
+  // Reads either way of writing: the way people say it, or the underscore names of power mode.
+  function readFormula(model, text, N) {
+    const a = parsePlain(model, text);
+    if (!a.error) return a;
+    const b = parseNamed(model, text, N);
+    return b.error ? a : b;
+  }
+
   /* ---------- scalar trees ---------- */
   // { c } a constant · { v } a variable number · { op, a: [...] } · lookup carries keys and vals.
   const C = (c) => ({ c });
@@ -1372,8 +1434,11 @@
     return neg + s + (u === "%" ? "%" : " " + u);
   }
 
-  const api = { SCHEMA, index, refInfo, keysOf, setLabel, setOne, parse, expand, linearize, classify, writeLP, elastic, compileToLP,
-    numeric, evaluate, gradient, names, toName, formula, parseNamed, parseUnit, unitText, validate, uses, describe, say, sayRule, math, fmt, isC };
+  // An expression's unit as text ("$" for $/chair × chairs), or "" when it has none or it's unclear.
+  function unitOf(model, n) { const u = unitsOf(index(model), n, () => {}); return u ? unitText(u) : ""; }
+
+  const api = { SCHEMA, unitOf, index, refInfo, keysOf, setLabel, setOne, parse, expand, linearize, classify, writeLP, elastic, compileToLP,
+    numeric, evaluate, gradient, names, toName, formula, parseNamed, parsePlain, readFormula, parseUnit, unitText, validate, uses, describe, say, sayRule, math, fmt, isC };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.PSModel = api;
 })(typeof self !== "undefined" ? self : this);

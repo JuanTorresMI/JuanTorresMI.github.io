@@ -153,16 +153,19 @@
   // What a value slot can hold here: data, decisions and results, with tables' columns only where
   // a row is known ("for each" or "total of" around it), or else with a row picked.
   function catalog(ctx) {
-    const I = ix(), groups = { Data: [], Decisions: [], Results: [] };
+    // One menu group per thing or list, so a chip shows just the name ("profit per chair").
+    const groups = {}, grids = [];
     for (const t of model.things) {
-      if (t.kind === "single") for (const p of t.properties || []) groups.Data.push(["ref:" + t.id + "." + p.id, `${t.label}: ${p.label}`]);
-      if (t.kind === "table") for (const c of (t.columns || []).filter((c) => !c.kind || c.kind === "number")) groups.Data.push(["ref:" + t.id + "." + c.id, `${c.label} (${ctx.bound.includes(t.id) ? "this " + (t.one || t.label).toLowerCase() : "pick a " + (t.one || t.label).toLowerCase()})`]);
-      if (t.kind === "grid") groups.Data.push(["ref:" + t.id, t.label]);
+      if (t.kind === "single") groups[t.label] = (t.properties || []).map((p) => ["ref:" + t.id + "." + p.id, p.label]);
+      if (t.kind === "table") groups[t.label] = (t.columns || []).filter((c) => !c.kind || c.kind === "number").map((c) => ["ref:" + t.id + "." + c.id, `${c.label} (${ctx.bound.includes(t.id) ? "this " + (t.one || t.label).toLowerCase() : anA((t.one || t.label).toLowerCase(), "pick")})`]);
+      if (t.kind === "grid") grids.push(["ref:" + t.id, t.label]);
     }
-    for (const d of model.decisions) groups.Decisions.push(["ref:" + d.id, d.label + (d.disabled ? " (off)" : "")]);
-    for (const r of model.results) if (r.id !== ctx.self) groups.Results.push(["ref:" + r.id, r.label]);
+    if (grids.length) groups.Grids = grids;
+    groups.Decisions = model.decisions.map((d) => ["ref:" + d.id, d.label + (d.disabled ? " (off)" : "")]);
+    groups.Results = model.results.filter((r) => r.id !== ctx.self).map((r) => ["ref:" + r.id, r.label]);
     return groups;
   }
+  const anA = (w, verb) => `${verb} ${/^[aeiou]/i.test(w) ? "an" : "a"} ${w}`;
   function kindSelect(cur, ctx, onPick, label, removable) {
     const s = h("select.ps-chip.ps-pick", { "aria-label": label || "Choose what goes here", "data-k": ctx.key + ":k" });
     if (cur === "hole") s.append(opt("", "choose…", true));
@@ -212,18 +215,43 @@
   // sentence version underneath. It parses to the same tree the menus build.
   let typed = store.get("plain-solver:typed") === "1";
   const FN_WORDS = ["sum(", "avg(", "count(", "sqrt(", "abs(", "max(", "min(", "if(", "lookup(", "exp(", "log("];
-  function typedEl(ast, ctx, set) {
+  // The words of a formula as people would say them, when that reads back to the same thing.
+  function plainText(ast) {
+    if (!ast || ast.hole) return "";
+    const said = M.say(model, ast).replace(/^the /, "");
+    const back = M.parsePlain(model, said);
+    return !back.error && M.formula(model, back.tree) === M.formula(model, ast) ? said : M.formula(model, ast);
+  }
+  function plainNames() {
+    const out = new Set();
+    for (const t of model.things) {
+      if (t.kind === "single") for (const p of t.properties || []) out.add(p.label);
+      if (t.kind === "table") { out.add(t.label); for (const c of t.columns || []) if (!c.kind || c.kind === "number") out.add(c.label); }
+      if (t.kind === "grid") out.add(t.label);
+    }
+    for (const d of model.decisions) out.add(d.label.toLowerCase());
+    for (const r of model.results) out.add(r.label.toLowerCase());
+    return [...out].concat(["total of … across …"]);
+  }
+  const typing = new Set(); // expressions switched to typing by their pencil
+  function typedEl(ast, ctx, set, plain) {
     const N = M.names(model);
-    const text = M.formula(model, ast, N);
+    const text = plain ? plainText(ast) : M.formula(model, ast, N);
     const inp = h("input.ps-chip.ps-formula", { type: "text", value: text, spellcheck: "false", autocomplete: "off", "aria-label": "Formula", "aria-autocomplete": "list", "data-k": ctx.key + ":f" });
-    const say = h("span.ps-say", {}, ast && !ast.hole ? M.say(model, ast) : "Type a formula, like Units_made + Units_short");
+    const say = h("span.ps-say", {}, ast && !ast.hole ? M.say(model, ast) : plain ? "Type it the way you'd say it: wood per chair times chairs to make" : "Type a formula, like Units_made + Units_short");
     const list = h("ul.ps-suggest", { role: "listbox", hidden: true });
-    const all = Object.entries(N.byId).filter(([id]) => !id.includes("#col#")).map(([, n]) => n).concat(FN_WORDS);
+    const all = plain ? plainNames() : Object.entries(N.byId).filter(([id]) => !id.includes("#col#")).map(([, n]) => n).concat(FN_WORDS);
     let matches = [], sel = -1;
-    const word = () => (/[\w.]*$/.exec(inp.value.slice(0, inp.selectionStart)) || [""])[0];
+    // The words being typed: in plain mode everything since the last operator, so names with spaces match.
+    const word = () => {
+      const before = inp.value.slice(0, inp.selectionStart);
+      if (!plain) return (/[\w.]*$/.exec(before) || [""])[0];
+      const cut = before.split(/[+\-*/(),×÷^−]|\b(?:plus|minus|times|divided by|across|over|of)\b/i).pop();
+      return cut.replace(/^\s+/, "");
+    };
     const mark = () => [...list.children].forEach((li, i) => li.setAttribute("aria-selected", String(i === sel)));
     const check = () => {
-      const p = M.parseNamed(model, inp.value, N);
+      const p = M.readFormula(model, inp.value, N);
       inp.setAttribute("aria-invalid", p.error ? "true" : "false");
       say.textContent = p.error || M.say(model, p.tree);
       say.classList.toggle("is-bad", !!p.error);
@@ -256,12 +284,14 @@
       if (e.key === "Enter") inp.blur();
     });
     inp.addEventListener("blur", () => { list.hidden = true; });
-    inp.addEventListener("change", () => { const p = check(); if (!p.error) edit(() => set(p.tree)); });
-    return h("span.ps-typed", {}, inp, list, say);
+    inp.addEventListener("change", () => { const p = check(); if (!p.error && inp.value.trim()) { typing.delete(ctx.key); edit(() => set(p.tree)); } });
+    const back = plain ? h("button.ps-tool", { type: "button", title: "Back to the menus", "aria-label": "Back to the menus", on: { click: () => { typing.delete(ctx.key); renderBuilder(); } } }, "≡") : null;
+    return h("span.ps-typed" + (plain ? ".is-plain" : ""), {}, h("span.ps-typed-row", {}, inp, back), list, say);
   }
 
   function exprEl(ast, ctx, set) {
     if (typed) return typedEl(ast, ctx, (nn) => set(nn));
+    if (typing.has(ctx.key)) return typedEl(ast, ctx, (nn) => set(nn), true);
     const ts = toTokens(ast);
     const wrap = h("span.ps-expr");
     const commit = (nts) => edit(() => set(fromTokens(nts)));
@@ -282,7 +312,8 @@
     });
     const more = h("select.ps-chip.ps-more", { "aria-label": "Add to this", title: "Add to this", "data-k": ctx.key + ":more" }, opt("", "+", true), Object.entries(OPWORD).map(([v, l]) => opt(v, l)));
     more.addEventListener("change", () => { if (!more.value) return; commit([...ts, { t: "o", op: more.value }, { t: "v", n: { const: more.value === "mul" || more.value === "div" ? 1 : 0 } }]); });
-    wrap.append(more);
+    const pencil = h("button.ps-tool.ps-pencil", { type: "button", title: "Type it instead", "aria-label": "Type this instead of picking from menus", "data-k": ctx.key + ":type", on: { click: () => { typing.add(ctx.key); renderBuilder(); const e = document.querySelector(`.ps [data-k="${CSS.escape(ctx.key + ":f")}"]`); if (e) { e.focus(); e.select(); } } } }, "✎");
+    wrap.append(more, pencil);
     return wrap;
   }
 
@@ -693,7 +724,12 @@
     const g = model.goal;
     const sense = h("select.ps-chip.ps-op", { "aria-label": "What you want", "data-k": "goal:sense" },
       opt("min", "as low as possible", g.sense === "min" || !g.sense), opt("max", "as high as possible", g.sense === "max"), opt("target", "equal to", g.sense === "target" && !g.close), opt("close", "as close as possible to", g.sense === "target" && g.close));
-    sense.addEventListener("change", () => edit(() => { if (sense.value === "close" || sense.value === "target") { g.sense = "target"; g.close = sense.value === "close"; if (g.targetValue === undefined) g.targetValue = 0; } else { g.sense = sense.value; delete g.close; } }));
+    sense.addEventListener("change", () => edit(() => {
+      if (sense.value === "close" || sense.value === "target") { g.sense = "target"; g.close = sense.value === "close"; if (g.targetValue === undefined) g.targetValue = 0; }
+      else { g.sense = sense.value; delete g.close; }
+      if (g.sense === "max" && g.label === "Total cost") g.label = "Total profit";
+      if (g.sense === "min" && g.label === "Total profit") g.label = "Total cost";
+    }));
     let target = null;
     if (g.sense === "target") {
       target = h("input.ps-chip.ps-num", { type: "text", inputmode: "decimal", value: String(g.targetValue ?? 0), size: 6, "aria-label": "Target", "data-k": "goal:t" });
@@ -711,6 +747,7 @@
     lists.results.replaceChildren(...model.results.map(resultEl));
     lists.rules.replaceChildren(...model.rules.map(ruleEl));
     renderDatalists();
+    renderSteps();
     $("#s-goal").replaceChildren(goalEl());
     renderQuestions();
     $("#m-title").value = model.title || "";
@@ -721,6 +758,113 @@
     }
     $("#b-undo").disabled = !past.length;
     $("#b-redo").disabled = !future.length;
+  }
+
+  /* ---------- the four steps ---------- */
+  function renderSteps() {
+    const g = model.goal;
+    const done = {
+      decide: model.decisions.some((d) => !d.disabled),
+      know: model.things.length > 0,
+      rules: model.rules.some((r) => !r.disabled),
+      best: !!(g && g.expr && !g.expr.hole),
+    };
+    document.querySelectorAll("#steps li").forEach((li) => { const ok = done[li.dataset.step]; li.classList.toggle("is-done", ok); li.querySelector("a").setAttribute("aria-label", `${li.textContent.trim()}: ${ok ? "done" : "to do"}`); });
+    for (const id of ["#qd-each", "#qr-each"]) {
+      const each = $(id), cur = each.value;
+      each.replaceChildren(opt("", id === "#qd-each" ? "(just one)" : "(once)", !cur), ...tables().map((t) => opt(t.id, `for each ${(t.one || t.label).toLowerCase()}`, t.id === cur)));
+    }
+  }
+  // "I decide how many workers to hire (for each store)": one line, one decision.
+  function quickDecide() {
+    const name = $("#qd-name").value.trim();
+    if (!name) { $("#qd-name").focus(); return; }
+    const type = $("#qd-type").value, each = $("#qd-each").value;
+    const label = name[0].toUpperCase() + name.slice(1);
+    edit(() => model.decisions.push({ id: uid(label), label, unit: "", type, lower: 0, upper: null, indexBy: each ? [each] : [] }));
+    $("#qd-name").value = "";
+    $("#qd-name").focus();
+    flash(`Added the decision “${label}”${type === "binary" ? " (yes or no)" : type === "integer" ? " (a whole number)" : ""}.`);
+  }
+  // "cost per hour is 15 $/hour": one line, one number, kept in a group called "My numbers".
+  function quickKnow() {
+    const name = $("#qk-name").value.trim(), v = parseNum($("#qk-value").value);
+    if (!name) { $("#qk-name").focus(); return; }
+    if (v === null) { $("#qk-value").focus(); $("#qk-value").setAttribute("aria-invalid", "true"); return; }
+    $("#qk-value").setAttribute("aria-invalid", "false");
+    edit(() => {
+      let t = model.things.find((x) => x.kind === "single" && x.label === "My numbers");
+      if (!t) { t = { id: uid("my numbers"), label: "My numbers", kind: "single", properties: [] }; model.things.unshift(t); }
+      t.properties.push({ id: uid(name, new Set(t.properties.map((x) => x.id))), label: name, value: v, unit: $("#qk-unit").value.trim() });
+    });
+    for (const id of ["#qk-name", "#qk-value", "#qk-unit"]) $(id).value = "";
+    $("#qk-name").focus();
+  }
+  // "[…] must be at most […] (for each …)": a whole rule from two typed phrases.
+  function quickRule() {
+    const msg = $("#qr-msg"), each = $("#qr-each").value;
+    const L = M.readFormula(model, $("#qr-lhs").value), R = M.readFormula(model, $("#qr-rhs").value);
+    const bad = !$("#qr-lhs").value.trim() ? "Say what the rule is about, on the left." : L.error ? "Left side: " + L.error : !$("#qr-rhs").value.trim() ? "Say what it's compared with, on the right." : R.error ? "Right side: " + R.error : "";
+    if (bad) { msg.textContent = bad; return; }
+    msg.textContent = "";
+    const op = $("#qr-op").value;
+    // Named after what it protects: "No more than wood available", "At least demand".
+    const rhsSaid = M.say(model, R.tree).replace(/^the /, ""), lhsSaid = M.say(model, L.tree).replace(/^the /, "");
+    const short = (t) => t.length <= 40;
+    const label = short(rhsSaid) && !(R.tree.const !== undefined && short(lhsSaid))
+      ? { "<=": "No more than ", ">=": "At least ", "=": "Exactly " }[op] + rhsSaid
+      : short(lhsSaid) ? `${lhsSaid[0].toUpperCase() + lhsSaid.slice(1)} ${{ "<=": "at most", ">=": "at least", "=": "exactly" }[op]} ${M.say(model, R.tree)}`
+      : "Rule " + (model.rules.length + 1);
+    edit(() => model.rules.push({ id: uid("rule"), label, kind: "compare", lhs: L.tree, op, rhs: R.tree, forEach: each ? [each] : [] }));
+    for (const id of ["#qr-lhs", "#qr-rhs"]) $(id).value = "";
+    $("#qr-lhs").focus();
+    flash(`Added the rule “${label}”.`);
+  }
+  // "Make […] as high as possible".
+  function quickGoal() {
+    const msg = $("#qg-msg");
+    const G = M.readFormula(model, $("#qg-expr").value);
+    if (!$("#qg-expr").value.trim()) { msg.textContent = "Say what to make as high or as low as possible."; return; }
+    if (G.error) { msg.textContent = G.error; return; }
+    msg.textContent = "";
+    const sense = $("#qg-sense").value;
+    edit(() => {
+      const g = model.goal;
+      g.expr = G.tree; g.sense = sense; delete g.close;
+      g.label = G.tree.ref && M.refInfo(ix(), G.tree.ref) ? M.refInfo(ix(), G.tree.ref).label : sense === "max" ? "Total profit" : "Total cost";
+    });
+    $("#qg-expr").value = "";
+    flash(`The goal: make ${model.goal.label.toLowerCase()} as ${sense === "max" ? "high" : "low"} as possible.`);
+  }
+  // The quick lines' text boxes suggest names as you type, like the pencil does.
+  function suggestOn(inp) {
+    const list = h("ul.ps-suggest", { role: "listbox", hidden: true });
+    inp.parentNode.style.position = "relative";
+    inp.after(list);
+    let matches = [], sel = -1;
+    const word = () => inp.value.slice(0, inp.selectionStart).split(/[+\-*/(),×÷^−]|\b(?:plus|minus|times|divided by|across|over|of)\b/i).pop().replace(/^\s+/, "");
+    const show = () => {
+      const w = word().toLowerCase();
+      matches = w ? plainNames().filter((n) => n.toLowerCase().includes(w) && n.toLowerCase() !== w).slice(0, 8) : [];
+      sel = matches.length ? 0 : -1;
+      list.style.left = inp.offsetLeft + "px"; list.style.top = inp.offsetTop + inp.offsetHeight + "px"; list.style.minWidth = inp.offsetWidth + "px";
+      list.replaceChildren(...matches.map((n, i) => h("li", { role: "option", "aria-selected": String(i === sel), on: { mousedown: (e) => { e.preventDefault(); accept(i); } } }, n)));
+      list.hidden = !matches.length;
+    };
+    const accept = (i) => { const w = word(), pos = inp.selectionStart; inp.value = inp.value.slice(0, pos - w.length) + matches[i] + inp.value.slice(pos); const c = pos - w.length + matches[i].length; inp.setSelectionRange(c, c); list.hidden = true; };
+    inp.addEventListener("input", show);
+    inp.addEventListener("blur", () => { list.hidden = true; });
+    inp.addEventListener("keydown", (e) => {
+      if (list.hidden || !matches.length) return;
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") { sel = (sel + (e.key === "ArrowDown" ? 1 : matches.length - 1)) % matches.length; [...list.children].forEach((li, i) => li.setAttribute("aria-selected", String(i === sel))); e.preventDefault(); }
+      else if (e.key === "Tab" && sel >= 0) { e.preventDefault(); accept(sel); }
+      else if (e.key === "Escape") list.hidden = true;
+    });
+  }
+  function startBlank(note) {
+    fromTemplate = null;
+    load(blankModel(), note || "A blank model. Undo goes back to what you had.");
+    $("#builder-wrap").open = true;
   }
 
   /* ---------- adding things ---------- */
@@ -744,9 +888,18 @@
   }
 
   /* ---------- checks and the plain-English preview ---------- */
-  function renderChecks() {
+  function sizeOf(m) {
+    const I = M.index(m);
+    let n = 0;
+    for (const d of m.decisions) if (!d.disabled) n += (d.indexBy || []).reduce((p, s) => p * M.keysOf(I, s).length, 1);
+    return n;
+  }
+  const BIG_CHECKS = 40000, BIG_PHONE = 100000;
+  function renderChecks(full) {
     let cards;
-    try { cards = M.validate(model); } catch (e) { cards = [{ level: "error", text: "Something in the model couldn't be read: " + e.message }]; }
+    const n = sizeOf(model);
+    if (n > BIG_CHECKS && !full) cards = [{ level: "note", text: `This model has about ${n.toLocaleString("en-US")} decisions, so the full checks run when you solve, to keep typing quick.` }];
+    else try { cards = M.validate(model); } catch (e) { cards = [{ level: "error", text: "Something in the model couldn't be read: " + e.message }]; }
     const box = $("#checks");
     box.replaceChildren(...cards.slice(0, 12).map((c) => h("li.ps-card.is-" + c.level, {}, h("span.ps-card-k", {}, c.level === "error" ? "Fix" : c.level === "warn" ? "Check" : "Note"),
       h("span", {}, c.text), c.where ? h("button.ps-link", { type: "button", on: { click: () => jump(c.where) } }, "Show") : null)));
@@ -809,7 +962,11 @@
   const status = (t) => { $("#status").textContent = t; };
   let solving = false;
   async function solve() {
-    const cards = renderChecks();
+    // A phone has far less memory than a laptop; a model this size can take a gigabyte to solve.
+    const n = sizeOf(model);
+    const small = (navigator.deviceMemory && navigator.deviceMemory <= 4) || Math.min(screen.width, screen.height) < 600;
+    if (n > BIG_PHONE && small && !window.confirm(`This model has about ${n.toLocaleString("en-US")} decisions. Solving it can need a gigabyte of memory, which may be too much for this device. Solve anyway?`)) return;
+    const cards = renderChecks(true);
     const errs = cards.filter((c) => c.level === "error");
     if (errs.length) { status("Fix the cards marked “Fix” first."); showError(errs.map((e) => e.text), "Not ready to solve"); return; }
     solving = true;
@@ -839,7 +996,7 @@
     // The goal's unit: the unit of the result it names, or of a result with the goal's name.
     const I = M.index(m), g = m.goal;
     if (g.expr && g.expr.ref) { const i = M.refInfo(I, g.expr.ref); if (i && i.unit) return i.unit; }
-    return (m.results.find((r) => r.label === g.label) || {}).unit || "";
+    return (m.results.find((r) => r.label === g.label) || {}).unit || (g.expr ? M.unitOf(m, g.expr) : "");
   }
   function showError(lines, title) {
     const e = $("#error");
@@ -1544,7 +1701,8 @@
     const taken = new Set();
     for (const t of m.things) taken.add(t.id);
     for (const k of ["decisions", "results", "rules"]) for (const x of m[k]) taken.add(x.id);
-    try { res = window.PSBlocks.build(m, blk.block, blk.answers, (label) => uid(label, taken) && (() => { const id = uid(label, taken); taken.add(id); return id; })()); }
+    const fresh = (label) => { const id = uid(label, taken); taken.add(id); return id; };
+    try { res = window.PSBlocks.build(m, blk.block, blk.answers, fresh); }
     catch (e) { res = { error: "That didn't fit together: " + e.message }; }
     if (res.error) { $("#db-msg").textContent = res.error; return; }
     snapshot();
@@ -1692,7 +1850,28 @@ ${window.PSText.write(model)}`;
     $("#b-stop").addEventListener("click", () => ENG.stop());
     $("#b-undo").addEventListener("click", undo);
     $("#b-redo").addEventListener("click", redo);
-    $("#b-blank").addEventListener("click", () => { fromTemplate = null; load(blankModel(), "A blank model. Undo goes back to what you had."); });
+    $("#b-blank").addEventListener("click", () => startBlank());
+    $("#b-build").addEventListener("click", () => {
+      startBlank("A blank page. Start with step 1: what do you decide? Undo goes back to what you had.");
+      $("#workspace").scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => $("#qd-name").focus({ preventScroll: true }), 300);
+    });
+    $("#b-start-import").addEventListener("click", () => { startBlank("A blank model, ready for your spreadsheet."); openImport(null, true); });
+    $("#b-start-text").addEventListener("click", () => {
+      startBlank();
+      openText();
+      $("#dt-text").value = "title: My model\n\n# Write one line per sentence, or copy the format guide into an AI chat with a description of your problem.\n";
+    });
+    $("#qd-add").addEventListener("click", quickDecide);
+    $("#qd-name").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); quickDecide(); } });
+    $("#qk-add").addEventListener("click", quickKnow);
+    for (const id of ["#qk-name", "#qk-value", "#qk-unit"]) $(id).addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); quickKnow(); } });
+    $("#b-blocks2").addEventListener("click", () => openBlocks());
+    $("#qr-add").addEventListener("click", quickRule);
+    $("#qg-set").addEventListener("click", quickGoal);
+    for (const id of ["#qr-lhs", "#qr-rhs"]) $(id).addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); quickRule(); } });
+    $("#qg-expr").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); quickGoal(); } });
+    for (const id of ["#qr-lhs", "#qr-rhs", "#qg-expr"]) suggestOn($(id));
     $("#b-share").addEventListener("click", share);
     $("#b-json").addEventListener("click", () => download(`${slug(model.title)}.json`, new Blob([JSON.stringify(stripUi(model), null, 2)], { type: "application/json" })));
     $("#b-open").addEventListener("click", () => $("#f-json").click());
