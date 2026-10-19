@@ -3,6 +3,10 @@
 <head>
 {% include head.html %}
 <link rel="stylesheet" href="/assets/css/app.css?v={{ site.time | date: '%s' }}">
+{%- comment %} The page waits, invisible under the top bar, until app-shell.js has built the rail and
+  hidden the other views, so nothing moves after the first paint (layout shift is a ranking signal).
+  If the script never runs, the timer shows the page anyway; without JavaScript this never happens. {% endcomment %}
+<script>document.documentElement.classList.add("app-pending");setTimeout(function(){document.documentElement.classList.remove("app-pending")},3000);</script>
 </head>
 {%- comment %}
   The project pages' app layout (Plain Solver has its own). A top bar (home, the tool's name, its

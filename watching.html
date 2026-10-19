@@ -28,7 +28,7 @@ stock: night
   <div class="np" id="np">
   {%- if tv.last -%}
     {%- capture card -%}
-      {%- if tv.last.poster %}<img class="art np-art" src="{{ tv.last.poster | escape }}" alt="" loading="lazy">{% else %}<span class="art np-art fallback" aria-hidden="true">{{ tv.last.initials | escape }}</span>{% endif %}
+      {%- if tv.last.poster %}<img class="art np-art" src="{{ tv.last.poster | escape }}" alt="" width="200" height="300" loading="lazy">{% else %}<span class="art np-art fallback" aria-hidden="true">{{ tv.last.initials | escape }}</span>{% endif %}
       <div class="np-body">
         <p class="np-who label"><span class="live off" aria-hidden="true"></span>Last on</p>
         <h3 class="np-title">{{ tv.last.title | escape }}</h3>
@@ -70,7 +70,7 @@ stock: night
   <div class="deck" id="deck">
   {%- for x in tv.deck -%}
     {%- capture inner -%}
-      {%- if x.poster %}<img class="art deck-art" src="{{ x.poster | escape }}" alt="" loading="lazy">{% else %}<span class="art deck-art fallback" aria-hidden="true">{{ x.initials | escape }}</span>{% endif -%}
+      {%- if x.poster %}<img class="art deck-art" src="{{ x.poster | escape }}" alt="" width="200" height="300" loading="lazy">{% else %}<span class="art deck-art fallback" aria-hidden="true">{{ x.initials | escape }}</span>{% endif -%}
       <span class="deck-t">{{ x.title | escape }}</span>
     {%- endcapture -%}
     {%- if x.link %}<a class="deck-item" href="{{ x.link | escape }}">{{ inner }}</a>{% else %}<div class="deck-item">{{ inner }}</div>{% endif -%}
@@ -107,7 +107,7 @@ stock: night
   }
   const runtime = (min) => (min >= 1440 ? (min / 1440).toFixed(1) + " days" : Math.round(min / 60) + " h");
   const art = (src, title, cls) => (src
-    ? `<img class="art ${cls}" src="${esc(src)}" alt="" loading="lazy">`
+    ? `<img class="art ${cls}" src="${esc(src)}" alt="" width="200" height="300" loading="lazy">`
     : `<span class="art ${cls} fallback" aria-hidden="true">${esc(String(title || "?").trim().slice(0, 2).toUpperCase())}</span>`);
   const wrap = (link, cls, inner) => (link ? `<a class="${cls}" href="${esc(link)}">${inner}</a>` : `<div class="${cls}">${inner}</div>`);
 

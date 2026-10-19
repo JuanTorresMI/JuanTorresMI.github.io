@@ -144,6 +144,9 @@
 .ap-chart-main { height: 320px; }
 .ap-chart-teams { height: 140px; margin-top: 8px; }
 .ap-chart-compare { height: 220px; margin-top: 8px; }
+/* The answers table fills in once the solver has run; hold its usual height so the chart below doesn't jump. */
+.ap-scroll:has(> #t-answers:empty) { min-height: 745px; }
+@media (max-width: 640px) { .ap-scroll:has(> #t-answers:empty) { min-height: 809px; } }
 @media (max-width: 640px) { .ap-chart-main { height: 260px; } }
 
 .ap-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
