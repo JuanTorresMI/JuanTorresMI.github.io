@@ -73,6 +73,32 @@
     level: Undergraduate
     audience: Students of operations and supply chain management
     teaches: ["Aggregate production planning", "Level, chase and band workforce strategies", "Formulating a linear program", "Branch and bound", "Shadow prices"]
+
+- slug: plain-solver
+  family: Work
+  title: Plain Solver
+  url: /plain-solver/
+  kind: Tool
+  status: Live
+  short: An optimization solver you set up in plain English. It does what Excel Solver does, with sentences instead of cell formulas.
+  summary: >-
+    A general optimization solver for the browser. You describe a problem one sentence at a time (what you
+    have, what you decide, the rules, and what “best” means), and it builds the model, picks the method and
+    explains the answer in words. Linear and integer models go to HiGHS and come back proven best; squared
+    goals go to its quadratic solver; anything nonlinear goes to a gradient search or an evolutionary one, and
+    the page says which. When no plan fits, it names the rules that clash and by how much. It writes Excel
+    Solver's Answer, Sensitivity and Limits reports, the model in standard notation, and an LP file.
+  guide: /plain-solver/#guide
+  metric: LP · MIP · QP · nonlinear · evolutionary · 10 templates · Excel-style reports
+  stack: [JavaScript, HiGHS (WebAssembly), Linear and integer programming, Nonlinear optimization, Differential evolution]
+  category: BusinessApplication
+  search: [optimization solver, online linear programming solver, Excel Solver alternative, integer programming, nonlinear optimization, sensitivity report, shadow prices, transportation problem, product mix, assignment problem]
+  features: ["Models built from plain-English sentences", "Automatic choice of linear, integer, quadratic, nonlinear or evolutionary engine", "Infeasibility diagnosis in plain words", "Shadow prices in both directions", "Answer, Sensitivity and Limits reports as .xlsx", "Paste or upload tables from spreadsheets", "Share links that carry the whole model"]
+  learning:
+    type: Interactive tool
+    level: Undergraduate
+    audience: Students of operations research, supply chain and business analytics
+    teaches: ["Formulating optimization models", "Linear and integer programming", "Shadow prices and sensitivity", "Infeasibility", "Nonlinear and evolutionary search"]
   features:
     - Aggregate production planning for up to 24 months
     - Level, chase and band workforce strategies, compared side by side

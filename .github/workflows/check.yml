@@ -28,6 +28,8 @@ jobs:
           destination: ./_site
       - name: Check the build
         run: python3 scripts/check.py _site
+      - name: Plain Solver's acceptance tests
+        run: node scripts/plain-solver-test.js
       # The built site, to download and look at (screenshots.js) on a machine without Jekyll:
       # gh run download <run id> -n site -D _site
       - name: Keep the build

@@ -26,6 +26,7 @@ on purpose. This README is the overview.
 | `/fruit-fly-dispatcher/` | A fruit fly's brain routing deliveries against Google OR-Tools | Work | `fruit-fly-dispatcher/` (run files load on demand) |
 | `/craft-ledger.html` | Minecraft crafting profit calculator, with a guide below it | Gamer | One self-contained file; prices stay in the browser |
 | `/aggregate-planning/` | Aggregate production planning optimizer and study tool | Work | `aggregate-planning/` (HiGHS solver in a Web Worker) |
+| `/plain-solver/` | General optimization solver built from plain-English sentences (an Excel Solver alternative) | Work | `plain-solver/` (HiGHS plus its own nonlinear and evolutionary engines, in a Web Worker) |
 | `/reefer-rates/`, `/reefer-rates/<lane>/` | USDA's weekly reefer truck rates, a page per lane | Work | `_data/live/reefer.json` |
 | `/border-waits/`, `/border-waits/<crossing>/` | CBP truck waits at the land border, now and by hour | Work | `_data/live/border.json`, plus the Worker for "right now" |
 | `/es/tiempos-de-espera/`, `…/<cruce>/` | The same for the Mexico crossings, in Spanish | Work | `_data/live/border.json` |
@@ -87,7 +88,7 @@ them against.
 | `_posts/` | Writing published on this site (`/blog/<slug>/`) |
 | `_reefer_lanes/`, `_border_crossings/`, `_border_crossings_es/`, `_beef_cuts/`, `_beef_cuts_es/`, `_pork_cuts/`, `_pork_cuts_es/`, `_cattle_regions/`, `_cattle_regions_es/` | Front-matter stubs, one per generated page, written by `snapshot.py` |
 | `assets/` | `css/style.css` (the one stylesheet), self-hosted fonts, share pictures (`og/`), icons, the résumé PDF and its `.docx` source |
-| `fruit-fly-dispatcher/`, `craft-ledger.html`, `aggregate-planning/` | The three browser projects |
+| `fruit-fly-dispatcher/`, `craft-ledger.html`, `aggregate-planning/`, `plain-solver/` | The browser projects |
 | `reefer-rates/`, `border-waits/`, `es/`, `beef-prices/`, `pork-prices/`, `fed-cattle-prices/`, `usda-market-prices/` | The data boards' index pages and their CSV downloads. The beef, pork and cattle boards are one include each (`_includes/beef-board.html`, `pork-board.html`, `cattle-board.html`), rendered in English or Spanish |
 | `music/` | The music page, its stylesheet, script, icon and share picture |
 | `worker/` | The Cloudflare Worker; see [worker/README.md](worker/README.md) |
