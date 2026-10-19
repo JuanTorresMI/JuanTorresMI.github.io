@@ -1,0 +1,244 @@
+---
+layout: app
+project: plain-solver
+title: "Plain Solver: an Excel Solver Alternative in Plain English"
+seo_title: "Free Online Optimization Solver in Plain English"
+description: "A free online optimization solver: build linear, integer and nonlinear models from plain-English sentences, solve them in your browser, get Excel-style reports."
+image: /assets/og/plain-solver.png
+image_alt: "Plain Solver: optimization models in plain English, solved in the browser. A tool by Juan Torres."
+---
+{% comment %}
+  Plain Solver. The page is the markup; the rest sits beside it:
+    solver.css         this page's styles, all scoped under .ps
+    model.js           the model format and everything that compiles it (no DOM; runs in Node too)
+    engines.js         the nonlinear and evolutionary engines (no DOM)
+    solve.js           one solve start to finish: routing, HiGHS, diagnosis, sensitivity, limits
+    engine-worker.js   runs solve.js in a Web Worker, with HiGHS from ../aggregate-planning/lib
+    engine.js          the page's side of the worker
+    templates.js       the starting models, in the same JSON the builder makes
+    app.js             the sentence builder, results, what-if, reports, sharing, imports
+  The .xlsx writer is the Aggregate Planner's (../aggregate-planning/xlsx.js).
+  Tests: node scripts/plain-solver-test.js
+{% endcomment %}
+<link rel="stylesheet" href="/plain-solver/solver.css?v={{ site.time | date: '%s' }}">
+
+<div class="ps frame">
+  <header class="ps-head">
+    <p class="ps-family">Work · Optimization</p>
+    <h1>Plain Solver <span class="ps-h1-sub">An optimization solver you set up in plain English</span></h1>
+    <p class="ps-lede">Say what you have, what you get to decide, the rules, and what “best” means, one sentence at a time. Plain Solver turns the sentences into a model, picks the right method to solve it, and explains the answer in words: what to do, what it costs, and which rule is holding you back. It covers what Excel Solver does (linear, whole-number, nonlinear and evolutionary problems, with the Answer, Sensitivity and Limits reports) without a single cell formula. Everything runs in your browser.</p>
+  </header>
+
+  <noscript><p class="ps-msg">Plain Solver needs JavaScript to build and solve models. The guide below reads fine without it.</p></noscript>
+
+  <div id="app" hidden>
+    <section class="ps-start" aria-labelledby="h-start">
+      <header class="ps-block-head"><h2 class="ps-label" id="h-start">Start from a template</h2>
+        <span class="ps-links"><button class="ps-link" type="button" id="b-blank">Blank model</button><button class="ps-link" type="button" id="b-open">Open a file</button><input type="file" id="f-json" accept=".json,application/json" hidden></span></header>
+      <ul class="ps-tpls" id="tpls"></ul>
+    </section>
+
+    <div class="ps-bar" id="workspace">
+      <label class="ps-title"><span class="ps-hide">Model name</span><input type="text" id="m-title" autocomplete="off" aria-label="Model name"></label>
+      <span class="ps-bar-tools">
+        <button class="ps-link" type="button" id="b-undo" title="Undo (Ctrl+Z)">Undo</button>
+        <button class="ps-link" type="button" id="b-redo" title="Redo (Ctrl+Y)">Redo</button>
+        <button class="ps-link" type="button" id="b-math" aria-pressed="false">Show the math</button>
+        <button class="ps-link" type="button" id="b-save-tpl">Save as my template</button>
+        <button class="ps-link" type="button" id="b-json">Download .json</button>
+        <button class="ps-link" type="button" id="b-share">Copy share link</button>
+      </span>
+      <button class="ps-btn primary" type="button" id="b-solve" title="Solve (Ctrl+Enter)">Solve</button>
+    </div>
+    <p class="ps-flash" id="flash" role="status" aria-live="polite" hidden></p>
+
+    <div class="ps-grid">
+      <div class="ps-left">
+        <section class="ps-questions" id="questions" aria-labelledby="h-q" hidden>
+          <header class="ps-block-head"><h2 class="ps-label" id="h-q">A few questions</h2><span class="ps-note">The sample answers are filled in. Change any of them.</span></header>
+          <div id="q-list"></div>
+          <div class="ps-actions"><button class="ps-btn primary" type="button" id="q-solve">Solve</button></div>
+        </section>
+
+        <details class="ps-builder" id="builder-wrap" open>
+          <summary class="ps-block-head"><span class="ps-label">The model, sentence by sentence</span><span class="ps-note">Open to change any part</span></summary>
+          <p class="ps-preview" id="preview" aria-live="polite"></p>
+          <ul class="ps-cards" id="checks" aria-label="Checks"></ul>
+
+          <section class="ps-sec" aria-labelledby="h-things">
+            <h3 class="ps-sec-h" id="h-things">What you have <span>numbers, lists and grids of data</span></h3>
+            <div class="ps-list" id="s-things"></div>
+            <p class="ps-adds"><button class="ps-add" type="button" data-add="single">+ A thing with numbers</button><button class="ps-add" type="button" data-add="table">+ A list</button><button class="ps-add" type="button" data-add="grid">+ A grid (two lists)</button><button class="ps-add" type="button" id="b-paste">Paste from a spreadsheet</button><button class="ps-add" type="button" id="b-upload">Upload .csv or .xlsx</button></p>
+          </section>
+          <section class="ps-sec" aria-labelledby="h-decisions">
+            <h3 class="ps-sec-h" id="h-decisions">What you decide <span>the numbers the solver picks</span></h3>
+            <div class="ps-list" id="s-decisions"></div>
+            <p class="ps-adds"><button class="ps-add" type="button" data-add="decision">+ A decision</button></p>
+          </section>
+          <section class="ps-sec" aria-labelledby="h-results">
+            <h3 class="ps-sec-h" id="h-results">What you work out <span>named results, usable in later sentences</span></h3>
+            <div class="ps-list" id="s-results"></div>
+            <p class="ps-adds"><button class="ps-add" type="button" data-add="result">+ A result</button></p>
+          </section>
+          <section class="ps-sec" aria-labelledby="h-rules">
+            <h3 class="ps-sec-h" id="h-rules">The rules <span>what every answer has to respect</span></h3>
+            <div class="ps-list" id="s-rules"></div>
+            <p class="ps-adds"><button class="ps-add" type="button" data-add="rule">+ A rule</button><button class="ps-add" type="button" data-add="limit">+ A limit</button><button class="ps-add" type="button" data-add="pick">+ Choose some of a list</button><button class="ps-add" type="button" data-add="different">+ Each gets a different one</button></p>
+          </section>
+          <section class="ps-sec" aria-labelledby="h-goal">
+            <h3 class="ps-sec-h" id="h-goal">The goal <span>what “best” means</span></h3>
+            <div class="ps-list" id="s-goal"></div>
+          </section>
+        </details>
+
+        <details class="ps-adv" id="advanced">
+          <summary class="ps-block-head"><span class="ps-label">Advanced</span><span class="ps-note">Engine, time limit, tolerance</span></summary>
+          <div class="ps-fields">
+            <label class="ps-field"><span class="ps-name">Engine</span>
+              <select id="o-engine"><option value="auto">Pick automatically</option><option value="linear">Linear / integer (HiGHS)</option><option value="nonlinear">Nonlinear (gradient search)</option><option value="evolutionary">Evolutionary</option></select></label>
+            <label class="ps-field"><span class="ps-name">Time limit, seconds</span><input type="number" id="o-time" min="1" max="600" step="1"></label>
+            <label class="ps-field"><span class="ps-name">Integer optimality gap, %</span><input type="number" id="o-gap" min="0" max="50" step="0.01"></label>
+            <label class="ps-field"><span class="ps-name">Multistart (nonlinear)</span>
+              <select id="o-multi"><option value="auto">Automatic (on for 20 decisions or fewer)</option><option value="on">On</option><option value="off">Off</option></select></label>
+          </div>
+          <p class="ps-hint">“Pick automatically” sends linear models to HiGHS (guaranteed best), rewrites what it can as linear, and only falls back to the nonlinear or evolutionary engine when it must. Decisions can't go below zero unless their sentence says “can go negative”.</p>
+        </details>
+      </div>
+
+      <div class="ps-results" id="results">
+        <p class="ps-status" id="status" role="status" aria-live="polite">Loading…</p>
+        <div class="ps-progress" id="progress" hidden><progress id="prog-bar" max="1" value="0"></progress><span id="prog-text" class="ps-note"></span><button class="ps-btn" type="button" id="b-stop">Stop</button></div>
+        <div class="ps-msg" id="error" role="alert" hidden></div>
+
+        <div id="out">
+          <div id="answer" hidden>
+            <section class="ps-head-card">
+              <p class="ps-label" id="a-goal-k"></p>
+              <p class="ps-big" id="a-goal"></p>
+              <p class="ps-note" id="a-goal-s"></p>
+              <ul class="ps-hl" id="a-head"></ul>
+              <p class="ps-engine" id="a-engine"></p>
+              <ul class="ps-notes" id="a-notes"></ul>
+            </section>
+
+            <section class="ps-block" aria-labelledby="h-dec">
+              <header class="ps-block-head"><h2 class="ps-label" id="h-dec">The decisions</h2></header>
+              <div id="a-decisions"></div>
+            </section>
+            <section class="ps-block" id="a-named-wrap" aria-labelledby="h-named">
+              <header class="ps-block-head"><h2 class="ps-label" id="h-named">What it works out to</h2></header>
+              <div class="ps-scroll" tabindex="0" role="region" aria-labelledby="h-named"><table class="ps-table"><tbody id="a-named"></tbody></table></div>
+            </section>
+            <section class="ps-block" aria-labelledby="h-why">
+              <header class="ps-block-head"><h2 class="ps-label" id="h-why">Why</h2></header>
+              <ul class="ps-why" id="a-why"></ul>
+            </section>
+            <section class="ps-block" id="a-limit-wrap" aria-labelledby="h-limit">
+              <header class="ps-block-head"><h2 class="ps-label" id="h-limit">What's limiting you</h2></header>
+              <ul class="ps-why" id="a-limit"></ul>
+            </section>
+            <section class="ps-block" id="whatif" aria-labelledby="h-wi" hidden>
+              <header class="ps-block-head"><h2 class="ps-label" id="h-wi">What if</h2><span class="ps-note">Drag a number and watch the answer move</span></header>
+              <label class="ps-field"><span class="ps-name">Number to change</span><select id="wi-input"></select></label>
+              <div id="wi-body" hidden>
+                <div class="ps-wi"><input type="range" id="wi-range" aria-label="New value"><output id="wi-val" class="ps-wi-val"></output></div>
+                <p class="ps-wi-out" id="wi-out" aria-live="polite"></p>
+                <p class="ps-links"><button class="ps-link" type="button" id="wi-curve">Draw how the goal changes</button><button class="ps-link" type="button" id="wi-keep">Keep this value</button></p>
+                <div id="wi-chart"></div>
+              </div>
+            </section>
+            <section class="ps-block" aria-labelledby="h-rows">
+              <header class="ps-block-head"><h2 class="ps-label" id="h-rows">Every rule, checked</h2></header>
+              <div class="ps-scroll" tabindex="0" role="region" aria-labelledby="h-rows"><table class="ps-table ps-rows" id="a-rules"></table></div>
+            </section>
+          </div>
+          <section class="ps-block" id="exports" aria-labelledby="h-exp" hidden>
+            <header class="ps-block-head"><h2 class="ps-label" id="h-exp">Reports</h2></header>
+            <p class="ps-links ps-wrap"><button class="ps-link" type="button" id="b-reports">Answer, Sensitivity &amp; Limits (.xlsx)</button><button class="ps-link" type="button" id="b-print">Print the reports</button><button class="ps-link" type="button" id="b-lp">The model as an LP file</button></p>
+          </section>
+        </div>
+
+        <section class="ps-block ps-math" id="math" aria-labelledby="h-math" hidden>
+          <header class="ps-block-head"><h2 class="ps-label" id="h-math">The math</h2><span class="ps-links"><button class="ps-link" type="button" id="b-tex">Copy as LaTeX</button></span></header>
+          <div id="math-body"></div>
+        </section>
+      </div>
+    </div>
+
+    <dialog class="ps-dialog" id="d-import" aria-labelledby="h-imp">
+      <form method="dialog">
+        <h2 class="ps-label" id="h-imp">Bring in a table</h2>
+        <div id="di-paste">
+          <label class="ps-field"><span class="ps-name">Paste cells from Excel or Google Sheets (or CSV text). First row: column names. First column: row names.</span>
+            <textarea id="di-text" rows="7" spellcheck="false"></textarea></label>
+        </div>
+        <label class="ps-field"><span class="ps-name">Or a file</span><input type="file" id="di-file" accept=".csv,.tsv,.txt,.xlsx"></label>
+        <div class="ps-fields" id="di-sheet-wrap" hidden>
+          <label class="ps-field"><span class="ps-name">Sheet</span><select id="di-sheet"></select></label>
+          <label class="ps-field"><span class="ps-name">Range (optional, like A1:D20)</span><input type="text" id="di-range" autocomplete="off"></label>
+        </div>
+        <div class="ps-fields">
+          <label class="ps-field"><span class="ps-name">Name</span><input type="text" id="di-name" autocomplete="off"></label>
+          <label class="ps-field"><span class="ps-name">Use it as</span><select id="di-as"><option value="table">A list (each column a different number)</option><option value="grid">A grid (one number per row × column)</option></select></label>
+        </div>
+        <div id="di-preview"></div>
+        <div class="ps-actions"><button class="ps-btn primary" id="di-ok" value="ok">Bring it in</button><button class="ps-btn" type="button" id="di-cancel">Cancel</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="ps-dialog" id="d-save" aria-labelledby="h-save">
+      <form method="dialog">
+        <h2 class="ps-label" id="h-save">Save as my template</h2>
+        <label class="ps-field"><span class="ps-name">Name</span><input type="text" id="ds-name" autocomplete="off"></label>
+        <p class="ps-hint">Tick the numbers the template should ask for. It's kept in this browser only.</p>
+        <ul class="ps-save-list" id="ds-list"></ul>
+        <label class="ps-check"><input type="checkbox" id="ds-blank"> Clear the ticked numbers, so they start empty</label>
+        <div class="ps-actions"><button class="ps-btn primary" id="ds-ok" value="ok">Save</button><button class="ps-btn" type="button" id="ds-cancel">Cancel</button></div>
+      </form>
+    </dialog>
+    <div id="print" aria-hidden="true"></div>
+  </div>
+
+  <article class="ps-explain" id="guide" aria-labelledby="about">
+    <header class="ps-block-head"><h2 class="ps-label" id="about">A free online optimization solver: an Excel Solver alternative in plain English</h2></header>
+    <div class="ps-prose">
+      <h3>What an optimization solver does</h3>
+      <p>Plenty of everyday decisions have the same shape. There are some things you control (how many people to schedule, how much to ship on each route, which sites to open), some rules the answer has to respect (demand has to be met, a truck holds only so much, a person works one shift), and one number you want as low or as high as possible, usually a cost or a profit. An optimization solver searches every combination the rules allow and returns the best one. Excel Solver is the best-known tool for this, but it asks you to lay the problem out in cells and write each rule as a formula. Plain Solver asks for the same information as sentences.</p>
+      <h3>Setting up a model in sentences</h3>
+      <p>A model here has five kinds of sentences, and each one is built from menus, so it can't be written wrong.</p>
+      <ul class="ps-list">
+        <li><strong>What you have</strong>: the facts. A single thing with numbers (“Workers: units per hour = 10”), a list (stores and each one's demand), or a grid with one number for every pair from two lists (the freight cost from each warehouse to each store). Lists and grids can be pasted straight from a spreadsheet or uploaded as .csv or .xlsx.</li>
+        <li><strong>What you decide</strong>: the numbers the solver gets to choose. Each is any amount, a whole number, or yes-or-no, with optional limits, and can be one per row of a list: “decide how much to ship from each warehouse to each store”.</li>
+        <li><strong>What you work out</strong>: named results such as “Units made = units per hour × hours worked”. Once named, a result can be used in any later sentence, which is how long models stay readable.</li>
+        <li><strong>The rules</strong>: “Units made plus shortage must be at least demand”, “for each store, the total shipped to it must be at least its demand”, “choose at most 2 of the sites”, “each person gets a different shift”.</li>
+        <li><strong>The goal</strong>: make a result as low as possible, as high as possible, equal to a number, or as close as possible to one.</li>
+      </ul>
+      <p>A plain-English summary of the whole model sits above the sentences and changes as you edit, and the checks underneath it catch the usual mistakes before you solve: a decision nothing uses, a result that depends on itself, a rule that adds dollars to hours.</p>
+      <h3>Which method solves it</h3>
+      <p>The page reads the model and picks the method, and tells you which one it used and what that means for the answer:</p>
+      <ul class="ps-list">
+        <li><strong>Linear models</strong> (every rule and the goal are sums of decisions times numbers) go to <a href="https://highs.dev/">HiGHS</a>, an open-source solver, using the simplex method. The answer is guaranteed to be the best possible. This is Excel's “Simplex LP”.</li>
+        <li><strong>Whole-number and yes-or-no decisions</strong> make it a mixed-integer program, which HiGHS solves by branch and bound, again to a proven best answer (or, if the time limit runs out, the best found and how far from the best it could be).</li>
+        <li><strong>Squared terms in the goal</strong>, when the shape is a bowl, go to HiGHS's quadratic solver, still guaranteed.</li>
+        <li><strong>Smooth nonlinear models</strong> (decisions multiplied together, powers, square roots) go to a gradient search with an augmented Lagrangian, restarted from several points. This is the job Excel's “GRG Nonlinear” does, and like it, the answer is very good but not guaranteed to be the single best.</li>
+        <li><strong>Models with jumps or corners</strong> (if-then on a decision, look-ups, larger-of or smaller-of where they can't be rewritten) go to an evolutionary search, Excel's “Evolutionary” option, with a progress bar and a Stop button.</li>
+      </ul>
+      <p>Before falling back to a nonlinear method, the page rewrites what it can as an exact linear model: an absolute value or a “larger of” in a goal that pushes it down, and a yes-or-no decision multiplying an amount with known limits (the usual “big-M” trick for fixed costs). When it does, it says so.</p>
+      <h3>Reading the answer</h3>
+      <p>The answer starts with the goal's value and what to do, then shows every decision (lists and grids as tables, with zeros greyed), what each named result works out to, which rules are used to the full, and what's limiting you: how much the goal would change if a tight rule allowed one more unit, or one fewer. Those are shadow prices, and at a corner of the problem the two directions can differ, so both are shown. For integer models they're computed with the whole-number decisions held where the solver put them, and labeled as approximate. A what-if slider re-solves as you drag any number, and can draw the goal against that number across a range.</p>
+      <p>If no plan meets every rule, the page doesn't stop at “infeasible”. It re-solves a version where every rule may bend at a price, finds the least bending, and reports which rules had to give and by how much (“Meet demand: short by 2,500 units”), with the rules pushing against them and one-click fixes. If the goal can improve forever, it names the decisions that are missing a limit.</p>
+      <h3>Reports for homework and write-ups</h3>
+      <p>“Show the math” writes the model in standard notation (sets, data, decision variables, objective and constraints), ready to copy as LaTeX. The reports download as an .xlsx workbook laid out like Excel Solver's: the Answer Report (the objective, every variable cell, every constraint with its status and slack), the Sensitivity Report (reduced costs, shadow prices and the one-sided prices) and the Limits Report (how far each decision can move on its own). The model itself downloads as an LP file that any LP solver reads, or as a .json file you can open here again.</p>
+      <h3>Templates</h3>
+      <p>Ten models are ready to start from, each made with the same sentences you can edit: staffing (hire, overtime or lost sales), product mix, transportation, six-month aggregate production planning with level and chase policies, shift assignment, blending, facility location with fixed costs, truck loading, budget allocation, and pricing against a demand curve. Picking one asks a few plain questions, with sample answers filled in. Save any model as your own template and it will ask your questions next time. All the numbers in the templates are made-up samples.</p>
+      <h3>Private by design</h3>
+      <p>Everything runs on this page: the solver is WebAssembly in your browser, and nothing you type is sent anywhere. The model is kept in your browser between visits. A share link carries the whole model, compressed, in the part of the address after the “#”, which browsers never send to a server. The source is <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/plain-solver">on GitHub</a>.</p>
+    </div>
+  </article>
+</div>
+
+<script src="/plain-solver/model.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/plain-solver/templates.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/aggregate-planning/xlsx.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/plain-solver/engine.js?v={{ site.time | date: '%s' }}" defer></script>
+<script src="/plain-solver/app.js?v={{ site.time | date: '%s' }}" defer></script>

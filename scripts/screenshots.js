@@ -13,7 +13,7 @@ const [siteDir = "_site", outDir = "screenshots"] = process.argv.slice(2);
 // One page of every kind: each family, each layout, one generated page per collection.
 const PAGES = [
   "/", "/projects/", "/resume/", "/blog/", "/blog/fruit-fly-vs-or-tools/", "/404.html",
-  "/fruit-fly-dispatcher/", "/craft-ledger.html", "/aggregate-planning/",
+  "/fruit-fly-dispatcher/", "/craft-ledger.html", "/aggregate-planning/", "/plain-solver/",
   "/reefer-rates/", "/reefer-rates/south-texas-to-chicago/",
   "/border-waits/", "/border-waits/laredo-world-trade-bridge/", "/es/tiempos-de-espera/", "/es/tiempos-de-espera/laredo-puente-comercio-mundial/",
   "/beef-prices/", "/beef-prices/ribeye-boneless-heavy-112a/", "/beef-prices/rib-primal/", "/beef-prices/ground-beef-81/",

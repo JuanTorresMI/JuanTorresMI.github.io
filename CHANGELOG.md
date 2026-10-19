@@ -28,9 +28,26 @@ Things waiting on a decision or on Juan, so they aren't lost:
   A free key (eia.gov/opendata) set with `wrangler secret put EIA_API_KEY` makes diesel dependable.
 - **Colorado and Western States cattle pages** appear automatically once each has 8 priced weeks in a
   year (Colorado's last cash price was Dec 2022, the Western States' Sep 2025).
+- **Plain Solver write-up**: per CLAUDE.md a new project gets a post, written from Juan's answers
+  (why he built it, what surprised him). Not written yet. Also still open from the spec: the server tier
+  for very large models, the typed-formula power mode, and allowable ranges in the Sensitivity Report.
 - **More USDA boards** (Juan wants all of them): next are hogs (LM_HG217/218), lamb (LM_XL502) and cow
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
+
+## 2026-10-18 — Plain Solver
+
+- **New project, `/plain-solver/`**: a general optimization solver set up in plain-English sentences, built
+  from the handoff spec (milestones 1–9; the optional server tier and typed-formula mode aren't built). Linear
+  and integer models go to HiGHS (the planner's copy), convex quadratic goals to HiGHS's QP solver, smooth
+  nonlinear ones to a new augmented-Lagrangian gradient search with multistart, and the rest to differential
+  evolution; abs, larger-of and yes-or-no × amount are rewritten as exact linear models first. Infeasible
+  models are diagnosed by an elastic re-solve; shadow prices are shown both ways (re-solved), since at a
+  corner one more and one fewer differ. Ten templates, quick questions, what-if slider and curve, the math
+  in notation and LaTeX, Excel-style Answer/Sensitivity/Limits reports, LP and JSON downloads, paste and
+  .csv/.xlsx import, share links in the hash, saved templates in the browser.
+- `scripts/plain-solver-test.js` runs the spec's acceptance tests (77 checks, including a 50 × 500
+  transportation model, about 2 s); the `Check the site` workflow now runs it too.
 
 ## 2026-10-18 — Every permanent record in the repository; the database only runs the site
 

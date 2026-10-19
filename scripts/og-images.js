@@ -32,6 +32,8 @@ const CARDS = {
     sub: "Which Minecraft crafts actually make money · 2,770 items", bottom: ["juantorresmi.github.io/craft-ledger.html", "Local-first web app"] },
   "aggregate-planning": { top: ["Juan Torres", "Tool"], name: "Aggregate Planner",
     sub: "Level, band & chase plans · The math, step by step", bottom: ["juantorresmi.github.io/aggregate-planning", "HiGHS · in the browser"] },
+  "plain-solver": { top: ["Juan Torres", "Tool"], name: "Plain Solver",
+    sub: "Optimization in plain English · Linear, integer, nonlinear", bottom: ["juantorresmi.github.io/plain-solver", "HiGHS · in the browser"] },
   "reefer-rates": { top: ["Juan Torres", "Data"], name: "Reefer truck rates",
     sub: "USDA’s weekly produce truck rates, lane by lane, with the history", bottom: ["juantorresmi.github.io/reefer-rates", "USDA AMS · Cloudflare Worker"] },
   "border-waits": { top: ["Juan Torres", "Data"], name: "Border truck waits",
