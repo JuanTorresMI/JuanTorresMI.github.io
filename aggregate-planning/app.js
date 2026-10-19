@@ -153,7 +153,7 @@
       $("f-" + f.k).setAttribute("aria-invalid", String(v === null ? false : !(v >= 0)));
     }
   }
-  function saveHash(s) { try { history.replaceState(null, "", location.pathname + location.search + toHash(s)); } catch (e) {} }
+  function saveHash(s) { try { history.replaceState(history.state, "", location.pathname + location.search + toHash(s)); } catch (e) {} }
 
   /* ---------- solving: all three policies, every time ---------- */
   let seq = 0, timer = 0, last = null, mode = "answers";

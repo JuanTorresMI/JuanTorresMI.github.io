@@ -35,6 +35,23 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-19 — Review pass: the app pages and Plain Solver's profit goal
+
+- **Back goes back a section.** In the app layout and in Plain Solver, each change of section or step is
+  an entry in the browser's history (same address, the view in the entry's state), so Back on a phone
+  returns to the last section instead of leaving the page. The planner's, the beef tools' and Plain
+  Solver's own address updates keep that state.
+- **Focus follows the rail**: picking a section moves keyboard and screen-reader focus to its heading
+  (after the page has shown its own parts, which the ledger and planner do on `app:view`).
+- **Print** shows every section in its own layout (the hiding is screen-only) and leaves out the
+  Back / Next rows.
+- **Plain Solver's money lists**: undo after picking a goal no longer says it "was changed by hand";
+  a decision that's turned off still shows in its line; deleting a decision or number drops the lines
+  that used it.
+- **Search**: Plain Solver's guide answers "How do I maximize profit?" and "Can I use the model in
+  Excel?", and its questions are marked up as an FAQPage, generated from the visible text. Its
+  features and search terms in `projects.yml` include the profit goal and the Excel workbook.
+
 ## 2026-10-19 — Plain Solver: profit without writing a formula
 
 - **Step 4 asks what you're after**: "The most profit", "The lowest cost" or "Something else". Profit opens

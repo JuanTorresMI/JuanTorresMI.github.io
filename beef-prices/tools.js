@@ -86,7 +86,7 @@
       note.innerHTML = !terms.length ? "" : (n ? T.match(n, shown) : T.none(shown)) + ` <button type="button" class="rb-chip" id="bf-clear">${T.all}</button>`;
       const url = new URL(location.href);
       if (terms.length) url.searchParams.set("q", q.value.trim()); else url.searchParams.delete("q");
-      history.replaceState(null, "", url);
+      history.replaceState(history.state, "", url);
     };
     note.addEventListener("click", (e) => { if (e.target.id === "bf-clear") { q.value = ""; run(); q.focus(); } });
     q.addEventListener("input", run);
