@@ -1,5 +1,6 @@
 ---
-layout: app
+layout: tool
+app_start: ops
 project: craft-ledger
 title: "Craft Ledger: Minecraft crafting profit calculator"
 seo_title: "Minecraft Crafting Profit Calculator · Craft Ledger"
@@ -16,8 +17,9 @@ stock: night
 ---
 {% comment %}
   Craft Ledger. One file: the styles, the markup, the recipe data (the JSON in #mcdata) and the
-  script. It sits inside the site's app layout, which supplies the head, the nav, the project
-  bar and the footer, and it draws on the site's color tokens so it follows the light/dark
+  script. It sits inside the site's tool layout (_layouts/tool.html), which supplies the head, the
+  top bar, the rail of sections and the footer; the ledger's four tabs are the rail's sections, its
+  settings sit in the side panel and Export / Import in the top bar, and it draws on the site's color tokens so it follows the light/dark
   theme. Everything of its own is scoped under .cl. Liquid is switched off from here down
   because the script is full of braces; it comes back on at the bottom for the guide, which is
   ordinary site markup.
@@ -302,7 +304,47 @@ stock: night
 .cl .btn,.cl .search,.cl select.sel,.cl .setting input,.cl .setting select.fuelsel{border-width:2px}
 .cl .btn,.cl .setting label,.cl thead th{font-family:var(--mono)}
 .cl header{border-bottom-width:2px}
+/* ---------- in the tool layout: friendlier type and shapes, same night colors ---------- */
+.app-body .cl header nav{display:none}
+.app-body .cl header{border-bottom:0;padding:0 0 18px}
+.app-body .cl .hbar{padding:0;gap:12px}
+.app-body .cl .brand h1{font:700 clamp(30px,4vw,42px)/1.1 var(--sans);letter-spacing:-.02em}
+.app-body .cl .brand h1 span{font:inherit}
+.app-body .cl .cl-lede{margin:10px 0 0;font:16px/1.55 var(--sans);color:var(--text-2);max-width:44em}
+.app-body .cl main{padding:0}
+.app-body .cl .btn{border-radius:999px;font:600 13px/1 var(--sans);letter-spacing:0;text-transform:none;padding:9px 15px;border-width:1px}
+.app-body .cl .btn.on{border-width:1px}
+.app-body .cl .search,.app-body .cl select.sel,.app-body .cl .setting input{border-radius:10px;border-width:1px;font-size:15px}
+.app-body .cl .wrap{border-radius:14px;border-width:1px;overflow:hidden}
+.app-body .cl .tools{gap:8px}
+.app-body .cl .setting label{font:500 13px var(--sans);letter-spacing:0;text-transform:none}
+.app-body .cl thead th{font:600 12px var(--sans);letter-spacing:.02em;text-transform:none}
+.app-body .cl .chip,.app-body .cl .tag{border-radius:6px}
+.app-body #guide.page{max-width:none;padding:0}
+.cl-side .app-field{margin-top:12px}
+.cl-side .fuelnote{margin-top:6px}
+.cl-side .app-side-h + .app-btn{margin-top:12px}
+.cl-side .synced{display:block;margin-top:8px;font:12px var(--sans);color:var(--muted)}
 </style>
+<div data-app-tools>
+  <button class="app-btn" type="button" id="imp">Import</button>
+  <button class="app-btn" type="button" id="exp">Export</button>
+</div>
+<div class="cl-side" data-app-side>
+  <p class="app-side-h">Your server</p>
+  <label class="app-field"><span>Sales fee (%)</span><input id="fee" type="number" step="0.1" value="0" inputmode="decimal"></label>
+  <label class="app-field"><span>Fuel for smelting</span><select id="fuel"></select></label>
+  <span class="app-note fuelnote" id="fuelnote"></span>
+  <p class="app-side-h cl-side-gap">Live prices</p>
+  <button class="app-btn block" type="button" id="link">Link a scanner file</button>
+  <span class="synced" id="synced"></span>
+  <p class="app-side-h cl-side-gap">How to use it</p>
+  <ol class="app-steps">
+    <li>In <a href="#prices">My prices</a>, enter what you buy and sell at on your server.</li>
+    <li><a href="#ops">Opportunities</a> ranks every recipe you can now price by what it pays.</li>
+    <li>Click a row for the cost breakdown and a batch calculator.</li>
+  </ol>
+</div>
 <div class="cl">
 <header>
   <div class="hbar">
@@ -311,14 +353,8 @@ stock: night
       <span class="clfam">Gamer</span>
       <span class="vtag" id="vtag"></span>
     </div>
-    <div class="setting"><label for="fee">Fee</label><input id="fee" type="number" step="0.1" value="0" inputmode="decimal"></div>
-    <div class="setting"><label for="fuel">Fuel</label><select class="sel fuelsel" id="fuel"></select>
-      <span class="fuelnote" id="fuelnote"></span></div>
-    <button class="btn" id="link">Link scanner</button>
-    <span class="synced" id="synced"></span>
-    <button class="btn" id="exp">Export</button>
-    <button class="btn" id="imp">Import</button>
   </div>
+  <p class="cl-lede">Which Minecraft crafts actually make money at your server's prices. Enter what you buy and sell at, and every vanilla recipe is ranked by what it really pays.</p>
   <nav>
     <button data-tab="ops" class="on">Opportunities</button>
     <button data-tab="prices">My prices</button>
@@ -328,7 +364,7 @@ stock: night
 </header>
 
 <main>
-  <section id="ops">
+  <section id="ops" data-view="ops" data-title="Opportunities" data-rail-group="The ledger">
     <div class="tools">
       <input class="search" id="opsearch" placeholder="Filter by item name...">
       <button class="btn on" data-kind="all">All</button>
@@ -348,7 +384,7 @@ stock: night
     <div id="opsout"></div>
   </section>
 
-  <section id="prices" hidden>
+  <section id="prices" hidden data-view="prices" data-title="My prices">
     <div class="tools">
       <div style="position:relative;flex:1;min-width:220px">
         <input class="search" id="addsearch" placeholder="Search 2,770 items to add a price..." autocomplete="off">
@@ -369,7 +405,7 @@ stock: night
     <div id="pricesout"></div>
   </section>
 
-  <section id="coverage" hidden>
+  <section id="coverage" hidden data-view="coverage" data-title="Coverage">
     <div class="stats" id="covstats"></div>
     <h2 class="covh">What to price next</h2>
     <p class="hint" style="margin:0 0 10px">Items you have not priced that no recipe can reach either. The number is
@@ -386,7 +422,7 @@ stock: night
     <div id="covout"></div>
   </section>
 
-  <section id="about" hidden>
+  <section id="about" hidden data-view="about" data-title="How it works">
     <div class="doc">
       <p class="lead">A costing tool for crafting in a player market. Enter what the market charges for the
       things you trade, and it works out what every recipe actually costs you to make and what you clear on it.</p>
@@ -1267,10 +1303,12 @@ function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.
 const TABS=['ops','prices','coverage','about'];
 function showTab(name){
   if(name==='coverage') renderCoverage();
-  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.tab===name));
+  document.querySelectorAll('.cl nav button').forEach(x=>x.classList.toggle('on',x.dataset.tab===name));
   TABS.forEach(t=>document.getElementById(t).hidden = t!==name);
 }
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+document.querySelectorAll('.cl nav button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+// The app layout's rail picks the tab.
+document.addEventListener('app:view', e=>{ if(TABS.includes(e.detail.view)) showTab(e.detail.view); });
 document.querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>{
   kindF=b.dataset.kind;
   document.querySelectorAll('[data-kind]').forEach(x=>x.classList.toggle('on',x===b));
@@ -1379,7 +1417,7 @@ const had=load();
 if(!FUELS[S.fuelItem] && S.fuelItem!=='none') S.fuelItem='coal';
 document.getElementById('fee').value=S.fee; fuelSel.value=S.fuelItem;
 solve(); renderFuelNote(); renderOps(); renderPrices();
-if(!had){ showTab('about'); toast('Loaded 13 example prices. Replace them with your server’s'); }
+if(!had){ toast('Showing 13 example prices. Replace them with your server’s in My prices'); }
 // The browser jumps to a link's #section before the tables above it are drawn, so the guide
 // moves down after the jump. Jump again now that the page has its real height.
 if(location.hash){ const t=document.getElementById(location.hash.slice(1)); if(t) t.scrollIntoView(); }
@@ -1392,7 +1430,7 @@ if(location.hash){ const t=document.getElementById(location.hash.slice(1)); if(t
   components (scoped under .page), so it follows the site design rather than the ledger's. It used to
   be its own page at /minecraft-crafting-profit-calculator/, which now redirects here.
 {% endcomment %}
-<div class="page frame" id="guide">
+<div class="page frame" id="guide" data-view="guide" data-title="Guide and questions" data-rail-group="Learn">
   <section class="sec" id="what">
     <header class="sec-head"><h2>Which Minecraft crafts actually make money</h2></header>
     <div class="row">
@@ -1488,7 +1526,7 @@ if(location.hash){ const t=document.getElementById(location.hash.slice(1)); if(t
         <div class="body"><h3 class="entry-title">Something is wrong or missing</h3><p class="entry-text">Email me at <a class="link" href="mailto:{{ site.email }}">{{ site.email }}</a> with the item and the price you entered, and I will look at it.</p></div>
       </div>
     </div>
-    <div class="row"><div class="body"><div class="actions"><a class="btn primary" href="#main">Back to the ledger</a><a class="btn" href="/projects/">More projects</a></div></div></div>
+    <div class="row"><div class="body"><div class="actions"><a class="btn primary" href="#ops">Back to the ledger</a><a class="btn" href="/projects/">More projects</a></div></div></div>
   </section>
 
   <script type="application/ld+json">

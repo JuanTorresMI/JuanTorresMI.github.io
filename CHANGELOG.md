@@ -44,6 +44,9 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **Aggregate Planner** in it: opens on the answers, with the three plans' costs live in the side panel;
   the inputs are four numbered steps (Demand, Workforce & policies, Costs, Start & end) with Back / Next;
   Month by month, Study and the guide are sections of their own. Same model and numbers.
+- **Craft Ledger** in it: its four tabs are the rail; Import / Export in the top bar; the sales fee, fuel
+  and scanner link in the side panel with a three-step how-to; a first visit opens on the ranked recipes
+  (with the example prices) instead of the instructions. Night colors kept.
 
 ## 2026-10-19 — Plain Solver: its own app, one step at a time
 

@@ -85,3 +85,13 @@ body.app-body { background: var(--ground); }
   .app-shell[data-mode="views"] .app-off { display: block !important; }
   .app-shell.is-live { display: block; }
 }
+
+/* side panel parts */
+.app-side .app-side-h:not(:first-child) { margin-top: 24px; }
+.app-field { display: grid; gap: 5px; font: 500 13px var(--sans); color: var(--text-2); }
+.app-field input, .app-field select { width: 100%; min-width: 0; padding: 9px 12px; border: 1px solid var(--rule); border-radius: var(--app-r-sm); background: var(--ground); color: var(--ink); font: 15px var(--sans); }
+.app-field input:focus-visible, .app-field select:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+.app-steps { margin: 10px 0 0; padding-left: 20px; font: 14px/1.5 var(--sans); color: var(--text); }
+.app-steps li + li { margin-top: 6px; }
+.app-steps a, .app-side a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+.app-steps a:hover, .app-side a:hover { color: var(--accent); }
