@@ -178,6 +178,8 @@ layout: default
   "url": {{ page.url | absolute_url | jsonify }},
   "inLanguage": {% if es %}"es-MX"{% else %}"en-US"{% endif %},
   "temporalCoverage": "{{ c.first_iso }}/{{ c.last_iso }}",
+  "dateModified": {{ c.last_iso | jsonify }},
+  "keywords": {% if es %}[{{ "ganado gordo " | append: c.es | jsonify }}, "precio del ganado gordo", "novillos", "USDA"]{% else %}[{{ c.name | append: " fed cattle" | jsonify }}, "fed cattle prices", "cash cattle prices", "steer prices", "USDA"]{% endif %},
   "spatialCoverage": { "@type": "Place", "name": {% if es %}{{ c.states_es | jsonify }}{% else %}{{ c.states | jsonify }}{% endif %} },
   "variableMeasured": ["Weighted average price, live and dressed (USD per cwt)", "Head count", "Average weight (lb)", "Dressing percentage"],
   "isBasedOn": {{ c.report_url | jsonify }},
