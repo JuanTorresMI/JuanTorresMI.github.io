@@ -183,6 +183,7 @@
     $("study").hidden = true; $("study").classList.remove("is-stale");
     $("status").textContent = "";
     if (DEBUG) $("debug").hidden = true;
+    document.dispatchEvent(new CustomEvent("ap:solved", { detail: { error: message } }));
   }
 
   function render(s, results) {
@@ -200,6 +201,11 @@
     drawCompare(by);
     renderDetail();
     if (mode === "study") study();
+    // For anything else on the page that shows the three plans (the app layout's side panel).
+    document.dispatchEvent(new CustomEvent("ap:solved", { detail: { status: $("status").textContent, plans: M.POLICIES.map((pol) => {
+      const r = by[pol], v = saving(by, pol), ok = !!(r && r.ok);
+      return { policy: pol, name: NAMES[pol], ok, total: ok ? r.plan.total : null, text: ok ? money(r.plan.total) : "", saving: v && v.d > 0 ? `${money(v.d)} (${f1.format(v.pct)}%)` : "" };
+    }) } }));
   }
 
   /* ---------- modes: the answers, or the same plan taken apart ---------- */

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+<head>
+{% include head.html %}
+<link rel="stylesheet" href="/assets/css/app.css?v={{ site.time | date: '%s' }}">
+</head>
+{%- comment %}
+  The project pages' app layout (Plain Solver has its own). A top bar (home, the tool's name, its
+  tools, all projects, light/dark), a rail of the page's sections, and the page in the middle.
+  The page marks its parts; assets/js/app-shell.js does the rest:
+    data-view="id" data-title="Label"   a section, shown one at a time (app_mode: views, the default)
+                                         or all at once with the rail as a contents list (app_mode: read).
+                                         Several elements can share one view. data-rail-group starts a
+                                         group of rail entries with a heading; data-n puts a number on it.
+    data-app-side                        a panel for the right-hand column (views mode)
+    data-app-tools                       buttons moved into the top bar
+  Front matter: project (for the name) or app_name, app_mode, app_start (the view a first visit opens
+  on), app_done (the last step's Next label), app_auto (views from the page's own sections, for the
+  boards), app_wrap (a class around the page, "page" for ordinary-page components), parent (a link back).
+  Without JavaScript nothing is hidden, so readers and search engines get every section.
+{% endcomment -%}
+{%- assign project = nil -%}{%- if page.project -%}{%- for p in site.data.projects -%}{%- if p.slug == page.project -%}{%- assign project = p -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+<body class="app-body{% if page.stock == 'night' %} stock-night{% endif %}">
+  {%- assign es = false -%}{%- if page.lang == "es" -%}{%- assign es = true -%}{%- endif %}
+  <a class="skip" href="#app-stage">{% if es %}Saltar al contenido{% else %}Skip to content{% endif %}</a>
+  <header class="app-top">
+    <a class="app-home" href="/" aria-label="Juan Torres, {% if es %}inicio{% else %}home{% endif %}">Juan Torres</a>
+    {%- if page.parent %}<a class="app-parent" href="{{ page.parent.url }}">{{ page.parent.title }}</a>{% endif %}
+    <a class="app-name" href="{{ page.url }}">{{ page.app_name | default: project.title | default: page.title }}</a>
+    {% if project.kind %}<span class="app-kind">{{ project.kind }}</span>{% endif %}
+    <span class="app-tools" id="app-tools"></span>
+    <a class="app-projects" href="/projects/">{% if es %}Todos los proyectos{% else %}All projects{% endif %}</a>
+    {% include theme-toggle.html %}
+  </header>
+  <div class="app-shell" id="app-shell" data-mode="{{ page.app_mode | default: 'views' }}" data-start="{{ page.app_start }}" data-done-label="{{ page.app_done }}" data-auto="{{ page.app_auto | default: false }}">
+    <nav class="app-rail" id="app-rail" aria-label="{% if es %}Secciones{% else %}Sections{% endif %}"></nav>
+    <main class="app-stage{% if page.app_wrap %} {{ page.app_wrap }}{% endif %}" id="app-stage" tabindex="-1">
+      {{ content }}
+    </main>
+    <aside class="app-side" id="app-side" hidden></aside>
+  </div>
+  {% include footer.html %}
+  <script src="/assets/js/app-shell.js?v={{ site.time | date: '%s' }}" defer></script>
+</body>
+</html>
