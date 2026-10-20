@@ -778,15 +778,19 @@ a.yt-row:hover .t { color: var(--accent); }
 .pj h1 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(48px, 7vw, 80px); line-height: 0.98; color: var(--ink); }
 .pj-lede { margin: 20px 0 0 !important; max-width: 36em; font-size: 18px; line-height: 1.6; color: var(--text-2); }
 .pj-filter { display: flex; flex-wrap: wrap; border: 1px solid var(--ink); }
-.pj-filter[hidden] { display: none; }
-.pj-filter button { height: 44px; padding: 0 16px; border: 0; border-left: 1px solid var(--ink); background: transparent; color: var(--ink); font: 500 11px/1 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; }
-.pj-filter button:first-child { border-left: 0; }
-.pj-filter button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
-.pj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-top: 40px; }
+.pj-filter a { display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-left: 1px solid var(--ink); color: var(--ink); font: 500 11px/1.3 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; }
+.pj-filter a:first-child { border-left: 0; }
+.pj-filter a:hover, .pj-filter a:focus-visible { background: var(--ink); color: var(--on-ink); }
+/* One section per group (projects.yml `group`): a heading and a line, then its cards. */
+.pj-group { margin-top: 72px; scroll-margin-top: 24px; }
+.pj-group-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 32px; padding-top: 16px; border-top: 1px solid var(--ink); }
+.pj-group-head h2 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(32px, 4vw, 40px); line-height: 1.1; color: var(--ink); }
+.pj-group-head p { margin: 0; max-width: 34em; font-size: 15px; line-height: 1.55; color: var(--text-2); }
+.pj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 24px; }
 .pj-card { display: flex; flex-direction: column; background: var(--stock); color: var(--text); border-top: 2px solid var(--ink); }
 .pj-card.stock-night { border-top-color: var(--accent); outline: 1px solid var(--rule); outline-offset: -1px; }
 .pj-card[hidden] { display: none; }
-.pj-lead { grid-column: 1 / -1; border-top: 0; }
+.pj-lead { margin-top: 40px; border-top: 0; }
 .pj-link { flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 24px; text-decoration: none; }
 .pj-lead .pj-link { padding: clamp(24px, 4vw, 48px); }
 .pj-top { display: flex; justify-content: space-between; gap: 16px; font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
@@ -795,7 +799,7 @@ a.yt-row:hover .t { color: var(--accent); }
 .pj-body { display: flex; flex-direction: column; gap: 20px; flex: 1; }
 .pj-lead .pj-body { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: center; }
 .pj-text { display: flex; flex-direction: column; gap: 12px; }
-.pj-title { font-family: var(--serif); font-weight: 500; font-size: 32px; line-height: 1.05; color: var(--ink); transition: color 0.15s; }
+.pj-title { font-family: var(--serif); font-weight: 500; font-size: 28px; line-height: 1.1; color: var(--ink); transition: color 0.15s; text-wrap: balance; }
 .pj-lead .pj-title { font-size: clamp(40px, 5vw, 56px); }
 .pj-link:hover .pj-title { color: var(--accent); }
 .pj-short { font-size: 15px; line-height: 1.55; color: var(--text); }
@@ -805,7 +809,8 @@ a.yt-row:hover .t { color: var(--accent); }
 .pj-more { align-self: flex-start; margin: 0 24px 24px; font-size: 13px; color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--rule); }
 .pj-lead .pj-more { margin: 0 clamp(24px, 4vw, 48px) clamp(24px, 4vw, 40px); }
 .pj-more:hover { color: var(--accent); text-decoration-color: var(--accent); }
-@media (max-width: 860px) { .pj { padding-top: 32px; } .pj-lead .pj-body { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 860px) { .pj { padding-top: 32px; } .pj-lead .pj-body { grid-template-columns: minmax(0, 1fr); } .pj-group { margin-top: 56px; } }
+@media (max-width: 520px) { .pj-filter { display: grid; grid-template-columns: 1fr 1fr; width: 100%; } .pj-filter a { border-left: 0; border-top: 1px solid var(--ink); padding: 10px 12px; } .pj-filter a:nth-child(-n+2) { border-top: 0; } .pj-filter a:nth-child(even) { border-left: 1px solid var(--ink); } }
 @media (max-width: 400px) { .pj-grid { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---------- Writing (/blog/) ----------

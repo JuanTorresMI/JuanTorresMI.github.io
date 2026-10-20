@@ -37,6 +37,20 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-20 — The projects page, grouped and renamed
+
+- **Names**: each project's name now matches its page's own title and the words people search for:
+  Reefer Truck Rates (was Reefer Rate Board), Border Truck Wait Times (was Border Wait Board), Border
+  Wait Times for Cars and Pedestrians, YouTube Channel Stats, Cloudflare Worker Usage. The two border
+  share pictures say the same.
+- **Order and groups**: `projects.yml` has a `group` per project, and `/projects/` lists them in four
+  sections, each with its own heading: Tools and simulations, USDA market prices (the hub first, then
+  beef, pork, cattle, reefer), Border wait times, Behind the site. The home page and the project bar
+  follow the same order.
+- **Display**: the Work/Gamer filter (a script) is now plain jump links to the groups, which work
+  without JavaScript and give crawlers the headings. Cards drop the share picture, which only repeated
+  the card's title; the featured card keeps it.
+
 ## 2026-10-20 — The car and pedestrian border board, in English and Spanish
 
 - **`/border-waits/cars/`**: every land crossing's car lines (standard, SENTRI or NEXUS, Ready Lane) and
