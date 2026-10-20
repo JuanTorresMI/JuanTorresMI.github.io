@@ -15,9 +15,6 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **First border buffer trim**: the Worker drops readings older than 14 days at 04:17 UTC daily, from
   Oct 19 on. Everything it drops is already in `border-waits/border-truck-wait-readings-2026.csv`; worth a
   glance at that file's row count after the first trim (it should only ever grow).
-- **Deploy the Worker for the car and pedestrian lanes** (Oct 20, 2026): the `border_people` table, then
-  `npx.cmd wrangler deploy` from `worker/` (worker/README.md, the border section). Until then
-  `scripts/border-people-backfill.mjs` can be re-run to fill the gap from the independent archive.
 - **January 1, 2027: new yearly CSVs.** The beef, pork and border boards start `-2027.csv` files. Add
   them to `YEARS` / `PUBLISHED` in `scripts/check.py` and as new URLs on the three Kaggle datasets.
 - **CBP's averages next year**: `cbp-published-averages.csv` gains a new set each year (rows keyed by the
@@ -49,7 +46,8 @@ trucks (D1 `border_people`, trimmed to 14 days), and `snapshot.py` keeps them in
 from the independent archive of the feed the truck history came from), the 30-day averages by crossing,
 lane, weekday and hour, and every month of CBP's own published averages for these lanes. All three are
 published addresses (`check.py`). No pages yet: the board, its Spanish twin and the Kaggle dataset are next.
-Free plan: one more statement per tick, ~0.5 ms CPU, ~1,700 rows written a day.
+Free plan: one more statement per tick, ~0.5 ms CPU, ~1,700 rows written a day. The Worker with
+`border_people` was deployed the same day; its first tick (20:17 UTC) stored 54 readings.
 
 ## 2026-10-20 — The beef board's search result leads with today's cutout
 
