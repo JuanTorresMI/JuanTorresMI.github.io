@@ -3,17 +3,28 @@ layout: default
 title: Projects
 seo_title: "Projects · Juan Torres · Simulations, Planners and Live Data"
 permalink: /projects/
-description: Projects by Juan Torres that run in the browser, from a fruit-fly delivery simulation and a production planner to live reefer rates and border waits.
+description: Projects by Juan Torres that run in the browser: planners and simulations, live USDA market prices, and border wait times for trucks, cars and pedestrians.
 image: /assets/og/projects.png
 image_alt: "Things I’ve built, by Juan Torres: a fly-brained delivery truck, a production planner, weekly reefer rates and a Minecraft price ledger."
 ---
 {%- comment -%}
-  A "professional" page (see the families in CLAUDE.md): a catalog. Each card wears its
-  project's own stock: Work projects on day stock, Gamer projects on night stock (the same
-  .stock-night tokens, scoped to the card), so the catalog previews where a click goes.
-  Card art is the project's share picture: `art` in projects.yml, else assets/og/<slug>.png. Styles: .pj in style.css.
+  A "professional" page (see the families in CLAUDE.md): a catalog. The first project in
+  projects.yml is the featured card; the rest are listed under their `group`, in the order below,
+  each group a section with its own heading and a jump link at the top (no script needed). Each
+  card wears its project's own stock: Work projects on day stock, Gamer projects on night stock
+  (the same .stock-night tokens, scoped to the card), so the catalog previews where a click goes.
+  The featured card shows its share picture (`art` in projects.yml, else assets/og/<slug>.png).
+  Styles: .pj in style.css.
 {%- endcomment -%}
-{%- assign families = site.data.projects | map: "family" | uniq -%}
+{%- assign all = site.data.projects -%}
+{%- assign lead = all | first -%}
+{%- capture groups -%}
+tools|Tools and simulations|Planners, solvers and simulations that run in your browser, for school, work and games.
+usda|USDA market prices|USDA’s market reports turned into readable pages in English and Spanish, with every number free to download.
+border|Border wait times|CBP’s land border waits for trucks, cars and pedestrians, right now and by hour of the week.
+site|Behind the site|The live numbers this site keeps about itself.
+{%- endcapture -%}
+{%- assign groups = groups | strip | newline_to_br | split: "<br />" -%}
 <div class="pj">
 <header class="pj-head">
   <div>
@@ -21,50 +32,56 @@ image_alt: "Things I’ve built, by Juan Torres: a fly-brained delivery truck, a
     <h1>Things I’ve built</h1>
     <p class="pj-lede">Mostly ideas from class, or from games I play, that I wanted to try for real. Each one runs right here on the site.</p>
   </div>
-  <div class="pj-filter" role="group" aria-label="Show projects by family" hidden>
-    <button type="button" data-family="" aria-pressed="true">All · {{ site.data.projects.size }}</button>
-    {%- for f in families %}{% assign n = site.data.projects | where: "family", f | size %}
-    <button type="button" data-family="{{ f }}" aria-pressed="false">{{ f }} · {{ n }}</button>
+  <nav class="pj-filter" aria-label="Project groups">
+    {%- for g in groups %}{% assign gp = g | strip | split: "|" %}{% assign n = all | where: "group", gp[0] | size %}{% if gp[0] == lead.group %}{% assign n = n | minus: 1 %}{% endif %}
+    <a href="#{{ gp[0] }}">{{ gp[1] }} · {{ n }}</a>
     {%- endfor %}
-  </div>
+  </nav>
 </header>
 
-<div class="pj-grid">
-  {%- for p in site.data.projects %}
-  <article class="pj-card{% if forloop.first %} pj-lead{% endif %}{% if p.family == "Gamer" %} stock-night{% endif %}" data-family="{{ p.family }}">
-    <a class="pj-link" href="{{ p.url }}">
-      <span class="pj-top"><span>No. {{ forloop.index | prepend: "0" | slice: -2, 2 }}{% if forloop.first %} · Featured{% endif %}</span><span class="pj-fam">{{ p.family }} · {{ p.kind }}</span></span>
-      <span class="pj-body">
+<article class="pj-card pj-lead{% if lead.family == "Gamer" %} stock-night{% endif %}">
+  <a class="pj-link" href="{{ lead.url }}">
+    <span class="pj-top"><span>Featured</span><span class="pj-fam">{{ lead.family }} · {{ lead.kind }}</span></span>
+    <span class="pj-body">
+      <span class="pj-text">
+        <span class="pj-title">{{ lead.title }}</span>
+        <span class="pj-short">{{ lead.summary }}</span>
+        <span class="pj-metric">{{ lead.metric }}</span>
+      </span>
+      {%- if lead.art %}{% assign art = lead.art %}{% else %}{% assign art = "/assets/og/" | append: lead.slug | append: ".png" %}{% endif %}
+      <img class="pj-art" src="{{ art }}" alt="" width="1200" height="630">
+    </span>
+  </a>
+  {%- if lead.writeup %}<a class="pj-more" href="{{ lead.writeup }}">How I built it →</a>{% elsif lead.guide %}<a class="pj-more" href="{{ lead.guide }}">Read the guide →</a>{% endif %}
+</article>
+
+{%- for g in groups %}{% assign gp = g | strip | split: "|" %}
+{%- assign list = all | where: "group", gp[0] %}
+{%- if list.size > 0 %}
+<section class="pj-group" id="{{ gp[0] }}" aria-labelledby="{{ gp[0] }}-h">
+  <header class="pj-group-head">
+    <h2 id="{{ gp[0] }}-h">{{ gp[1] }}</h2>
+    <p>{{ gp[2] }}</p>
+  </header>
+  <div class="pj-grid">
+    {%- for p in list %}{% if p.slug != lead.slug %}
+    <article class="pj-card{% if p.family == "Gamer" %} stock-night{% endif %}">
+      <a class="pj-link" href="{{ p.url }}">
+        <span class="pj-top"><span>{{ p.kind }}</span><span class="pj-fam">{{ p.family }}</span></span>
         <span class="pj-text">
           <span class="pj-title">{{ p.title }}</span>
-          <span class="pj-short">{% if forloop.first %}{{ p.summary }}{% else %}{{ p.short }}{% endif %}</span>
+          <span class="pj-short">{{ p.short }}</span>
           <span class="pj-metric">{{ p.metric }}</span>
         </span>
-        {%- if p.art %}{% assign art = p.art %}{% else %}{% assign art = "/assets/og/" | append: p.slug | append: ".png" %}{% endif %}
-        <img class="pj-art" src="{{ art }}" alt="" loading="lazy" width="1200" height="630">
-      </span>
-    </a>
-    {%- if p.writeup %}<a class="pj-more" href="{{ p.writeup }}">How I built it →</a>{% elsif p.guide %}<a class="pj-more" href="{{ p.guide }}">Read the guide →</a>{% endif %}
-  </article>
-  {%- endfor %}
+      </a>
+      {%- if p.writeup %}<a class="pj-more" href="{{ p.writeup }}">How I built it →</a>{% elsif p.guide %}<a class="pj-more" href="{{ p.guide }}">Read the guide →</a>{% endif %}
+    </article>
+    {%- endif %}{% endfor %}
+  </div>
+</section>
+{%- endif %}
+{%- endfor %}
 </div>
-</div>
-
-<script>
-/* Family filter. Every card shows without JavaScript; this only hides the others. */
-(() => {
-  const bar = document.querySelector(".pj-filter");
-  if (!bar) return;
-  bar.hidden = false;
-  const cards = [...document.querySelectorAll(".pj-card")];
-  bar.addEventListener("click", (e) => {
-    const b = e.target.closest("button");
-    if (!b) return;
-    bar.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-    cards.forEach((c) => { c.hidden = !!b.dataset.family && c.dataset.family !== b.dataset.family; });
-  });
-})();
-</script>
 
 <section class="sec" id="log">
   <header class="sec-head"><h2>Project log</h2><a class="label" href="{{ site.social.github }}">GitHub ↗</a></header>
