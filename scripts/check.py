@@ -11,7 +11,8 @@ Fails (exit 1) on:
   - an internal link, asset, canonical or hreflang that points at nothing, an hreflang pair that
     doesn't point both ways, or an <img> without alt text;
   - a sitemap entry with no page behind it, or a sitemap / feed / manifest that does not parse;
-  - a documentation file published as a page, or a Worker-backed page missing its snapshot.
+  - a documentation file published as a page, or a Worker-backed page missing its snapshot;
+  - a published CSV (PUBLISHED below) missing from the build, or with its columns renamed or reordered.
 Warns on: a description outside the length search engines show, two indexable pages sharing a
 title or a description, and an indexable page without exactly one <h1>.
 Needs only the standard library.
@@ -154,6 +155,32 @@ for page, placeholder in (("youtube/index.html", "Asking YouTube…"), ("watchin
     f = os.path.join(site, page)
     if os.path.isfile(f) and placeholder in open(f, encoding="utf-8").read():
         err("/" + page, "has no snapshot in its HTML; run scripts/snapshot.py")
+
+# CSVs other people's code pulls by their address: the Kaggle datasets fetch these on a schedule.
+# Never rename, move or delete one, and never rename or reorder its columns; a new column goes at
+# the end (then add its description on Kaggle). A new year's file is added here and on Kaggle.
+YEARS = range(2020, 2027)
+BEEF_CUTS = "date,section,usda_description,name,imps,fat_limitation,primal,grade,low,high,weighted_average,weighted_average_per_lb,trades,pounds"
+PORK_CUTS = "date,section,usda_description,name,low,high,weighted_average,weighted_average_per_lb,pounds"
+PUBLISHED = {
+    "beef-prices/boxed-beef-cutout-daily.csv": "date,choice_cutout,select_cutout,choice_select_spread,choice_loads,select_loads,trimmings_loads,coarse_ground_loads,rib_choice,rib_select,chuck_choice,chuck_select,round_choice,round_select,loin_choice,loin_select,brisket_choice,brisket_select,plate_choice,plate_select,flank_choice,flank_select",
+    **{f"beef-prices/boxed-beef-cut-prices-{y}.csv": BEEF_CUTS for y in YEARS},
+    "pork-prices/pork-cutout-daily.csv": "date,carcass,loin,butt,picnic,rib,ham,belly,total_loads,cut_loads,trim_and_process_loads",
+    **{f"pork-prices/pork-cut-prices-{y}.csv": PORK_CUTS for y in YEARS},
+    "pork-prices/pork-cut-names.csv": "usda_description,section,name,nombre,page,pagina",
+    "fed-cattle-prices/fed-cattle-weekly.csv": "report_date,week_start,week_end,region,purchase,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_low,price_high,weighted_average",
+    "fed-cattle-prices/fed-cattle-5-area-daily.csv": "date,class,basis,grade,head,dress_pct,weight_low,weight_high,weight_avg,price_low,price_high,weighted_average",
+    "reefer-rates/usda-reefer-truck-rates.csv": "week_of,origin_district,destination,low_usd,high_usd,mostly_low_usd,mostly_high_usd,change_pct,truck_availability",
+    "border-waits/border-truck-wait-readings-2026.csv": "port_number,posted_local,standard_wait_min,standard_lanes_open,fast_wait_min,fast_lanes_open,source",
+    "border-waits/border-truck-wait-times.csv": "port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,window_days,as_of",
+    "border-waits/cbp-published-averages.csv": "port_number,month,weekday,hour_local,standard_avg_min,fast_avg_min,retrieved",
+}
+for path, header in PUBLISHED.items():
+    f = os.path.join(site, path)
+    if not os.path.isfile(f): err("/" + path, "is a published data address (Kaggle pulls it) and is missing from the build"); continue
+    first = open(f, encoding="utf-8-sig").readline().strip()
+    if first != header and not first.startswith(header + ","):
+        err("/" + path, "columns renamed or reordered; published CSVs only gain columns at the end")
 
 for w in warnings: print("warn ", w)
 for e in errors: print("ERROR", e)

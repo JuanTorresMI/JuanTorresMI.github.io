@@ -69,6 +69,21 @@ are copied from the Worker's short buffers into CSVs here (`border-waits/`, `you
 which are the permanent record; CBP's published averages are kept beside the border readings to check
 them against.
 
+### Published data addresses
+
+These CSVs are pulled by URL, on a schedule, by the site's Kaggle datasets (and by anyone else's code).
+**They never change:** no renaming, moving or deleting a file, and no renaming or reordering columns; new
+columns go at the end. `scripts/check.py` (`PUBLISHED`) fails the build if one is missing or its header
+changes. Each January adds a new `-YYYY.csv` beside last year's (add it to `PUBLISHED` and to Kaggle).
+
+| Kaggle dataset | URLs (all `https://juantorresmi.github.io/…`) |
+| --- | --- |
+| USDA Boxed Beef Prices by Cut | `beef-prices/boxed-beef-cutout-daily.csv`, `beef-prices/boxed-beef-cut-prices-2020.csv` … `-2026.csv` |
+| USDA Pork Cutout and Pork Cut Prices | `pork-prices/pork-cutout-daily.csv`, `pork-prices/pork-cut-prices-2020.csv` … `-2026.csv`, `pork-prices/pork-cut-names.csv` |
+| USDA Fed Cattle Cash Prices | `fed-cattle-prices/fed-cattle-weekly.csv`, `fed-cattle-prices/fed-cattle-5-area-daily.csv` |
+| USDA Refrigerated Truck Rates by Lane | `reefer-rates/usda-reefer-truck-rates.csv` |
+| US Border Truck Wait Times (CBP) | `border-waits/border-truck-wait-readings-2026.csv`, `border-waits/border-truck-wait-times.csv`, `border-waits/cbp-published-averages.csv` |
+
 ### Workflows (`.github/workflows/`)
 
 | Workflow | When | What it does |
