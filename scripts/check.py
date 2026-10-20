@@ -145,6 +145,8 @@ for page, placeholder in (("youtube/index.html", "Asking YouTube…"), ("watchin
                           ("worker-usage/index.html", "Asking Cloudflare…"),
                           ("reefer-rates/index.html", "The first report hasn’t been collected yet"),
                           ("border-waits/index.html", "The first readings haven’t been collected yet"),
+                          ("border-waits/cars/index.html", "The first readings haven’t been collected yet"),
+                          ("es/tiempos-de-espera/autos/index.html", "Todavía no hay lecturas"),
                           ("beef-prices/index.html", "The first report hasn’t been collected yet"),
                           ("pork-prices/index.html", "The first report hasn’t been collected yet"),
                           ("fed-cattle-prices/index.html", "The first report hasn’t been collected yet"),

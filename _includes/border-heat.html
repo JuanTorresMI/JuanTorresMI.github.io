@@ -1,9 +1,11 @@
 {%- comment -%}
-  One weekday-by-hour heat map of truck waits (standard lanes), for _layouts/border-crossing.html.
+  One weekday-by-hour heat map of waits, for _layouts/border-crossing.html (trucks, standard lanes) and
+  _layouts/border-people.html (one car or pedestrian lane; include.levels gives its wider steps).
   include.grid: [{ h, cells: [{ v, lvl } × 7] }], from scripts/snapshot.py (ours or CBP's year-ago month).
   include.t: the page's words (_data/border_text.yml); include.es: true on the Spanish pages.
 {%- endcomment -%}
 {%- assign t = include.t -%}
+{%- assign levels = include.levels | default: t.levels -%}
 <div class="rb-scroll">
   <table class="bw-heat">
     <thead><tr><th scope="col" class="bw-corner">{% if include.es %}Hora{% else %}Hour{% endif %}</th>{% for d in t.short %}<th scope="col"><abbr title="{{ t.days[forloop.index0] }}">{{ d }}</abbr></th>{% endfor %}</tr></thead>
@@ -15,5 +17,5 @@
   </table>
 </div>
 <ul class="bw-key" aria-label="{% if include.es %}Clave{% else %}Key{% endif %}">
-  {%- for l in t.levels %}<li><span class="bw-l{{ forloop.index0 }}" aria-hidden="true"></span>{{ l }}</li>{% endfor %}
+  {%- for l in levels %}<li><span class="bw-l{{ forloop.index0 }}" aria-hidden="true"></span>{{ l }}</li>{% endfor %}
 </ul>

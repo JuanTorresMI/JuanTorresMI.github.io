@@ -507,6 +507,7 @@ html { scroll-behavior: smooth; }
   .rb-stack td { display: flex; justify-content: space-between; gap: 16px; padding: 3px 12px; border: 0; white-space: normal !important; text-align: right; }
   .rb-stack td::before { content: attr(data-label); flex: none; font: 600 14px var(--sans); color: var(--muted); text-align: left; }
   .rb-stack td.rb-barcol { display: none; }
+  .bw .rb-stack td.bw-nolane { display: none; }   /* a lane the crossing doesn't have: no empty line on its card */
 }
 
 /* lane pages: the same sheet, one lane at a time */

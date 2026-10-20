@@ -37,6 +37,30 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-20 — The car and pedestrian border board, in English and Spanish
+
+- **`/border-waits/cars/`**: every land crossing's car lines (standard, SENTRI or NEXUS, Ready Lane) and
+  pedestrian lines right now, the crossings with the longest usual lines by car and on foot, and the
+  downloads. **`/es/tiempos-de-espera/autos/`** is the same for the Mexican border, in Spanish.
+- **A page per major crossing** (35: San Ysidro, PedWest, CBX, Otay Mesa, Tecate, both Calexicos, San Luis,
+  both Nogales, Douglas, four El Paso bridges, two Laredo bridges, Hidalgo, Anzalduas, three Brownsville
+  bridges, Eagle Pass, Del Rio and ten on the Canadian border), and a Spanish twin for each of the 25 on
+  the Mexican border, named the way people do there (garita, puente). Each has every lane's wait now,
+  heat maps of the usual wait by day and hour by car and on foot, "when to cross" (the truck pages'
+  `plan.js`), nearby crossings and questions. Slugs are in `_data/border_people_crossings.json`; never change one.
+- **Data**: the `border_people` job in `snapshot.py` now also writes `_data/live/border_people.json`
+  (each lane's 30-day average, best and worst hour and, for the pages, heat maps; CBP's published month
+  until a lane has 48 readings) and the stubs in `_border_people/`, `_border_people_es/`.
+- **"Right now" costs the Worker nothing**: `border-waits/people.js` reads CBP's feed straight from the
+  reader's browser (CBP allows any site, about 9 KB gzipped). No Worker change; its CPU p99 was already
+  over the free plan's 10 ms.
+- Share picture `assets/og/border-waits-cars.png`; the truck boards link to the new ones.
+- **Worker fix, readings posted ahead of the hour**: some ports post the coming hour early (San Ysidro
+  showed "At 2:00 pm PDT" at 1:28 PM). `posted()` in `worker/src/border.js` took anything more than 15
+  minutes past the feed's clock as yesterday's, so the :17 tick could file such a reading a day early
+  (trucks and people; `INSERT OR IGNORE` hid most, but a gap hour could get a misdated row). The window
+  is now 60 minutes (`POSTED_AHEAD`). Rows already kept are left as they are.
+
 ## 2026-10-20 — Car and pedestrian border waits, archived
 
 CBP's feed has every port's car lanes (standard, SENTRI / NEXUS, Ready) and pedestrian lanes (standard,
