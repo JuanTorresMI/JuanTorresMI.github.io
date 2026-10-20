@@ -1,13 +1,13 @@
 {
- "generated": "2026-10-20T20:20:16.475Z",
+ "generated": "2026-10-20T23:49:46.314Z",
  "checked": "Oct 20, 2026",
  "last": {
-  "title": "Ted",
+  "title": "The Conjuring 2",
   "sub": "",
-  "poster": "https://images.metahub.space/poster/small/tt14824792/img",
-  "link": "https://www.imdb.com/title/tt14824792/",
-  "initials": "TE",
-  "meta": "0% through · 32 min left · stopped Oct 19, 2026"
+  "poster": "https://images.metahub.space/poster/small/tt3065204/img",
+  "link": "https://www.imdb.com/title/tt3065204/",
+  "initials": "TH",
+  "meta": "10% through · 120 min left · stopped Oct 20, 2026"
  },
  "tiles": [
   {
@@ -15,7 +15,7 @@
    "l": "shows"
   },
   {
-   "n": "21",
+   "n": "23",
    "l": "films"
   },
   {
@@ -27,17 +27,34 @@
    "l": "of runtime"
   }
  ],
- "count": "5 titles this week",
+ "count": "7 titles this week",
  "days": [
   {
-   "day": "Mon, Oct 19",
+   "day": "Tue, Oct 20",
    "items": [
+    {
+     "kind": "Film",
+     "title": "The Conjuring 2",
+     "link": "https://www.imdb.com/title/tt3065204/",
+     "meta": ""
+    },
+    {
+     "kind": "Film",
+     "title": "The Conjuring",
+     "link": "https://www.imdb.com/title/tt1457767/",
+     "meta": ""
+    },
     {
      "kind": "TV",
      "title": "Ted",
      "link": "https://www.imdb.com/title/tt14824792/",
      "meta": ""
-    },
+    }
+   ]
+  },
+  {
+   "day": "Mon, Oct 19",
+   "items": [
     {
      "kind": "Film",
      "title": "Obsession",
@@ -178,28 +195,6 @@
      "kind": "Film",
      "title": "Captain America: The First Avenger",
      "link": "https://www.imdb.com/title/tt0458339/",
-     "meta": ""
-    }
-   ]
-  },
-  {
-   "day": "Mon, Sep 28",
-   "items": [
-    {
-     "kind": "Film",
-     "title": "It Ends",
-     "link": "https://www.imdb.com/title/tt35519455/",
-     "meta": ""
-    }
-   ]
-  },
-  {
-   "day": "Sun, Sep 27",
-   "items": [
-    {
-     "kind": "Film",
-     "title": "Mayday",
-     "link": "https://www.imdb.com/title/tt28014327/",
      "meta": ""
     }
    ]
