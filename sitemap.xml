@@ -44,6 +44,15 @@ sitemap: false
   </url>
 {%- endfor -%}
 {%- assign crossings = site.border_crossings | concat: site.border_crossings_es | where_exp: "c", "c.sitemap != false" -%}
+{%- assign people = site.border_people | concat: site.border_people_es | where_exp: "c", "c.sitemap != false" -%}
+{%- for c in people %}
+  <url>
+    <loc>{{ c.url | absolute_url | xml_escape }}</loc>
+    {%- if site.data.live.border_people.as_of_iso %}
+    <lastmod>{{ site.data.live.border_people.as_of_iso | date_to_xmlschema }}</lastmod>
+    {%- endif %}
+  </url>
+{%- endfor -%}
 {%- for c in crossings %}
   <url>
     <loc>{{ c.url | absolute_url | xml_escape }}</loc>

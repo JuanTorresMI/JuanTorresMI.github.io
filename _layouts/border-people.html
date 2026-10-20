@@ -1,0 +1,285 @@
+---
+layout: default
+---
+{%- comment -%}
+  One border crossing's car and pedestrian lines: /border-waits/cars/<slug>/ in English,
+  /es/tiempos-de-espera/autos/<slug>/ in Spanish (Mexico crossings only), in the truck pages' rate-sheet
+  style (.rb .bw). The page files in _border_people*/ are only front matter (port, title, description,
+  translation), written by scripts/snapshot.py from _data/border_people_crossings.json; everything
+  shown comes from site.data.live.border_people.ports[page.port]:
+    lanes        the lanes the crossing has (car_standard, car_sentri, car_ready, pedestrian_standard, pedestrian_ready)
+    car, ped     its main car and walking lane (the one with the most readings), or nil
+    now[lane]    the wait as the snapshot read it; border-waits/people.js refreshes it from CBP
+    d[lane]      the last 30 days (avg, best, worst; grid and by_hour for the main lanes), once a lane has 48 readings
+    ly[lane]     the same from CBP's published averages for this month last year
+    usual[lane]  { avg, src: "ours" | "cbp" }
+  SENTRI is NEXUS at the Canadian crossings: lane names replace the word with p.sentri.
+{%- endcomment -%}
+{%- assign b = site.data.live.border_people -%}
+{%- assign p = b.ports[page.port] -%}
+{%- assign t = site.data.border_text[page.lang] -%}
+{%- if page.lang == "es" -%}{%- assign es = true -%}{%- assign name = p.es.short | default: page.title -%}{%- assign home = "/es/tiempos-de-espera/autos/" -%}
+{%- else -%}{%- assign es = false -%}{%- assign name = p.name | default: page.title -%}{%- assign home = "/border-waits/cars/" -%}{%- endif -%}
+<div class="rb bw">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family"><a class="rb-lane-back" href="{{ home }}">{% if es %}Trabajo · Espera en la frontera{% else %}Work · Border waits{% endif %}</a></p>
+    <h1>{% if es %}{{ name }}: tiempo de espera{% else %}{{ name }} border wait times{% endif %}</h1>
+    {%- if p %}
+    {%- if es %}
+    <p class="rb-lede">Cuánto está la fila para entrar a Estados Unidos por {{ name }}, de {{ p.es.across }} a {{ p.es.city }}, {% if p.car %}en auto{% endif %}{% if p.car and p.ped %} y {% endif %}{% if p.ped %}a pie{% endif %}, según los tiempos que publica la Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP), y a qué hora suele haber menos fila.{% if p.name %} En Estados Unidos se le conoce como {{ p.name }}.{% endif %}</p>
+    {%- else %}
+    <p class="rb-lede">How long the line is to enter the United States at {{ name }}, from {{ p.across }} into {{ p.city }}, {% if p.car %}by car{% endif %}{% if p.car and p.ped %} and {% endif %}{% if p.ped %}on foot{% endif %}, as U.S. Customs and Border Protection posts it, and the hours it’s usually shortest.{% if p.es %} In Mexico it’s called {{ p.es.short }}.{% endif %}</p>
+    {%- endif %}
+    {%- if page.translation and page.translations_live %}
+    <p class="bw-lang">{% if es %}<a href="{{ page.translation }}" hreflang="en" lang="en">In English →</a>{% else %}<a href="{{ page.translation }}" hreflang="es" lang="es">En español →</a>{% endif %}</p>
+    {%- endif %}
+    {%- else %}
+    <p class="rb-lede">{% if es %}Este cruce no aparece en la copia más reciente de los datos. El <a href="{{ home }}">tablero</a> tiene todos los cruces.{% else %}This crossing isn’t in the latest copy of the data. The <a href="{{ home }}">board</a> has every crossing.{% endif %}</p>
+    {%- endif %}
+  </div>
+  {%- if p %}
+  <dl class="rb-stamp bw-now" data-port="{{ page.port }}">
+    {%- for k in p.lanes %}
+    <div><dt>{{ t.lanes[k] | replace: "SENTRI", p.sentri }}</dt><dd data-now="{{ k }}">{% if es %}{{ p.now[k].es }}{% else %}{{ p.now[k].en }}{% endif %}</dd></div>
+    {%- endfor %}
+    <div><dt>{% if es %}Publicado por CBP{% else %}Posted by CBP{% endif %}</dt><dd data-now="posted">{% if es %}{{ p.posted_es | default: "—" }}{% else %}{{ p.posted_en | default: "—" }}{% endif %}{% if p.stale %} <span class="bw-stale">{% if es %}lectura atrasada{% else %}old reading{% endif %}</span>{% endif %}</dd></div>
+  </dl>
+  {%- endif %}
+</header>
+
+{% if p %}
+{%- assign cd = p.d[p.car] -%}{%- assign cl = p.ly[p.car] -%}
+{%- assign pd = p.d[p.ped] -%}{%- assign pl = p.ly[p.ped] -%}
+{%- if cd.best -%}{%- assign csrc = cd -%}{%- elsif cl.best -%}{%- assign csrc = cl -%}{%- else -%}{%- assign csrc = nil -%}{%- endif -%}
+{%- if pd.best -%}{%- assign psrc = pd -%}{%- elsif pl.best -%}{%- assign psrc = pl -%}{%- else -%}{%- assign psrc = nil -%}{%- endif -%}
+{%- assign carname = t.lanes[p.car] | replace: "SENTRI", p.sentri -%}
+{%- assign pedname = t.lanes[p.ped] -%}
+{%- assign carlane = t.lane_only[p.car] | replace: "SENTRI", p.sentri -%}
+<p class="rb-note bw-copy" id="bw-copy">{% if es %}Copia del {{ b.as_of_es }}. Con JavaScript activado, la espera de arriba se actualiza desde CBP al abrir la página.{% else %}Copied {{ b.as_of_en }}. With JavaScript on, the waits above refresh from CBP when the page opens.{% endif %}</p>
+<p class="rb-note">
+  {%- if es -%}
+  {% if p.hours contains "24" %}Abierto las 24 horas.{% elsif p.hours_es != "" %}Horario: de {{ p.hours_es }}, hora local.{% endif %}{% if p.max_car %} Hasta {{ p.max_car }} carriles para autos.{% endif %}{% if p.max_ped %} Hasta {{ p.max_ped }} carriles peatonales.{% endif %} Número de cruce de CBP: {{ p.port }}.
+  {%- else -%}
+  {% if p.hours contains "24" %}Open 24 hours.{% elsif p.hours != "" %}Open {{ p.hours | replace: "-", " to " }}, local time.{% endif %}{% if p.max_car %} Up to {{ p.max_car }} car lanes.{% endif %}{% if p.max_ped %} Up to {{ p.max_ped }} pedestrian lanes.{% endif %} CBP port number {{ p.port }}.
+  {%- endif -%}
+</p>
+{%- if p.notice != "" %}<p class="rb-note">{% if es %}Aviso de CBP (en inglés){% else %}CBP’s notice{% endif %}: {{ p.notice }}</p>{% endif %}
+
+<div class="rb-judge">
+  <p class="rb-tag">{% if es %}La mejor y la peor hora para cruzar{% else %}Best and worst times to cross{% endif %}{% if csrc == cl and cl %} · {% if es %}{{ b.month_es }} del año pasado, según CBP{% else %}{{ b.month_en }} last year, from CBP{% endif %}{% endif %}</p>
+  {%- if csrc %}
+  {%- if es %}
+  <p class="rb-say">En auto ({{ carlane }}), lo más rápido suele ser los {{ t.days_plural[csrc.best.dow] }} a las {{ t.hours[csrc.best.hour] }} ({% if csrc.best.v == 0 %}sin demora{% else %}{{ csrc.best.v }} min en promedio{% endif %}); lo más lento, los {{ t.days_plural[csrc.worst.dow] }} a las {{ t.hours[csrc.worst.hour] }} ({{ csrc.worst.v }} min en promedio).</p>
+  {%- else %}
+  <p class="rb-say">By car ({{ carlane }}), usually quickest on {{ t.days[csrc.best.dow] }} at {{ t.hours[csrc.best.hour] }} ({% if csrc.best.v == 0 %}no wait{% else %}{{ csrc.best.v }} min on average{% endif %}); usually slowest on {{ t.days[csrc.worst.dow] }} at {{ t.hours[csrc.worst.hour] }} ({{ csrc.worst.v }} min on average).</p>
+  {%- endif %}
+  {%- elsif cd.flat or cl.flat %}
+  <p class="rb-say">{% if es %}En auto normalmente no hay fila a ninguna hora.{% else %}By car, usually no wait at any hour.{% endif %}</p>
+  {%- elsif p.car %}
+  <p class="rb-say">{% if es %}Todavía no hay suficientes lecturas para decirlo.{% else %}Not enough readings yet to say.{% endif %}</p>
+  {%- endif %}
+  {%- if psrc %}
+  <p class="rb-say">{% if es %}A pie, lo más rápido suele ser los {{ t.days_plural[psrc.best.dow] }} a las {{ t.hours[psrc.best.hour] }} ({% if psrc.best.v == 0 %}sin demora{% else %}{{ psrc.best.v }} min{% endif %}); lo más lento, los {{ t.days_plural[psrc.worst.dow] }} a las {{ t.hours[psrc.worst.hour] }} ({{ psrc.worst.v }} min).{% else %}On foot, usually quickest on {{ t.days[psrc.best.dow] }} at {{ t.hours[psrc.best.hour] }} ({% if psrc.best.v == 0 %}no wait{% else %}{{ psrc.best.v }} min{% endif %}); usually slowest on {{ t.days[psrc.worst.dow] }} at {{ t.hours[psrc.worst.hour] }} ({{ psrc.worst.v }} min).{% endif %}</p>
+  {%- elsif pd.flat or pl.flat %}
+  <p class="rb-say">{% if es %}A pie normalmente no hay fila a ninguna hora.{% else %}On foot, usually no wait at any hour.{% endif %}</p>
+  {%- endif %}
+</div>
+
+<section class="rb-block">
+  <h2>{% if es %}Cada carril{% else %}Every lane{% endif %} <span>{% if es %}Ahora y lo habitual{% else %}Now and usually{% endif %}</span></h2>
+  <div class="rb-scroll">
+    <table class="rb-table bw-lanes" data-port="{{ page.port }}">
+      <thead><tr><th scope="col">{% if es %}Carril{% else %}Lane{% endif %}</th><th scope="col">{% if es %}Ahora{% else %}Now{% endif %}</th><th scope="col">{% if es %}Abiertos{% else %}Open{% endif %}</th><th scope="col">{% if es %}Habitual{% else %}Usual{% endif %}</th><th scope="col">{% if es %}Lecturas, 30 días{% else %}Readings, 30 days{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for k in p.lanes %}{% assign u = p.usual[k] %}
+        <tr><th scope="row">{{ t.lanes[k] | replace: "SENTRI", p.sentri }}</th><td data-now="{{ k }}">{% if es %}{{ p.now[k].es }}{% else %}{{ p.now[k].en }}{% endif %}</td><td data-now="{{ k }}_lanes">{{ p.now[k].lanes | default: "—" }}</td><td>{% if u.avg != nil %}{{ u.avg }} min{% if u.src == "cbp" %} <span class="bw-alias">CBP</span>{% endif %}{% else %}—{% endif %}</td><td>{{ p.readings[k] }}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="rb-note">{% if es %}“Habitual” es el promedio de los últimos 30 días; donde dice CBP, es el promedio que la propia CBP publica para {{ b.month_es }}, con datos del año anterior, porque aquí aún no hay suficientes lecturas. SENTRI es el programa de viajeros confiables de CBP; el Ready Lane es para quienes llevan un documento con chip RFID (pasaporte en tarjeta, visa láser, licencia mejorada).{% else %}“Usual” is the average over the last 30 days; where it says CBP, it’s CBP’s own published average for {{ b.month_en }}, from the year before, because there aren’t enough readings here yet. {{ p.sentri }} is CBP’s trusted-traveler lane; the Ready Lane is for travelers carrying an RFID-enabled document (a passport card, a border crossing card, an enhanced driver’s license).{% endif %}{% if es %} Primera lectura: {{ p.first_es }}.{% else %} First reading on record: {{ p.first_en }}.{% endif %}</p>
+</section>
+
+{%- for which in (1..2) %}
+{%- if which == 1 %}{% assign lane = p.car %}{% assign ours = cd %}{% assign cbp = cl %}{% assign lname = carname %}{% else %}{% assign lane = p.ped %}{% assign ours = pd %}{% assign cbp = pl %}{% assign lname = pedname %}{% endif %}
+{%- if lane %}
+{%- if ours.grid.size > 0 %}
+<section class="rb-block">
+  <h2>{% if which == 1 %}{% if es %}En auto: espera habitual por día y hora{% else %}By car: usual wait by day and hour{% endif %}{% else %}{% if es %}A pie: espera habitual por día y hora{% else %}On foot: usual wait by day and hour{% endif %}{% endif %} <span>{{ lname }}, {% if es %}últimos 30 días, minutos{% else %}last 30 days, minutes{% endif %}</span></h2>
+  {% include border-heat.html grid=ours.grid t=t es=es levels=t.people_levels %}
+  <p class="rb-note">{% if es %}Un punto es una hora sin lecturas: el carril estaba cerrado o CBP no publicó una espera. Un carril cerrado cuenta como dato desconocido, no como cero.{% else %}A dot is an hour with no readings: the lane was closed or CBP posted no wait. A closed lane counts as unknown, not as zero, so it never makes a crossing look faster than it is.{% endif %}{% if ours.avg != nil %}{% if es %} Promedio de los últimos 30 días: {{ ours.avg }} min, de {{ ours.readings }} lecturas.{% else %} Average over the last 30 days: {{ ours.avg }} min, from {{ ours.readings }} readings.{% endif %}{% endif %}</p>
+</section>
+{%- elsif cbp.grid.size > 0 %}
+<section class="rb-block">
+  <h2>{% if which == 1 %}{% if es %}En auto: {{ b.month_es }} del año pasado{% else %}By car: {{ b.month_en }} last year{% endif %}{% else %}{% if es %}A pie: {{ b.month_es }} del año pasado{% else %}On foot: {{ b.month_en }} last year{% endif %}{% endif %} <span>{{ lname }}, {% if es %}promedios de CBP, minutos{% else %}CBP’s averages, minutes{% endif %}</span></h2>
+  {% include border-heat.html grid=cbp.grid t=t es=es levels=t.people_levels %}
+  <p class="rb-note">{% if es %}Son los promedios que la propia CBP publica para {{ b.month_es }}, con datos del año anterior. Los de este sitio aparecerán aquí cuando haya unos días de lecturas.{% else %}These are CBP’s own averages for {{ b.month_en }}, based on the year before. This site’s own averages appear here once a few days of readings are collected.{% endif %}</p>
+</section>
+{%- endif %}
+{%- endif %}
+{%- endfor %}
+
+{%- if cd.grid.size > 0 %}{% assign plan = cd.grid %}{% assign plan_src = "ours" %}{% elsif cl.grid.size > 0 %}{% assign plan = cl.grid %}{% assign plan_src = "cbp" %}{% else %}{% assign plan = nil %}{% endif %}
+{%- if plan %}
+<section class="rb-block bf-tools" id="plan" hidden>
+  <h2>{% if es %}¿A qué hora cruzar en auto?{% else %}When to cross by car{% endif %} <span>{% if plan_src == "ours" %}{% if es %}Según los últimos 30 días{% else %}From the last 30 days{% endif %}{% else %}{% if es %}Según los promedios de CBP de {{ b.month_es }} del año pasado{% else %}From CBP’s averages for {{ b.month_en }} last year{% endif %}{% endif %}</span></h2>
+  <form class="rb-look" onsubmit="return false">
+    <label>{% if es %}Día{% else %}Day{% endif %} <select id="pl-day">{% for d in t.days %}<option value="{{ forloop.index0 }}">{{ d | capitalize }}</option>{% endfor %}</select></label>
+    <label>{% if es %}Desde{% else %}From{% endif %} <select id="pl-from">{% for h in t.hours %}<option value="{{ forloop.index0 }}"{% if forloop.index0 == 6 %} selected{% endif %}>{{ h }}</option>{% endfor %}</select></label>
+    <label>{% if es %}Hasta{% else %}Until{% endif %} <select id="pl-to">{% for h in t.hours %}<option value="{{ forloop.index0 }}"{% if forloop.index0 == 22 %} selected{% endif %}>{{ h }}</option>{% endfor %}</select></label>
+  </form>
+  <div class="rb-answer" id="pl-out" aria-live="polite"></div>
+  <div id="pl-near" aria-live="polite"></div>
+  <script type="application/json" id="pl-data">{ "grid": {{ plan | jsonify }}, "hours": {{ t.hours | jsonify }}, "days": {{ t.days_plural | jsonify }}, "es": {% if es %}true{% else %}false{% endif %},
+    "near": [{% for k in p.nearby %}{% assign n = b.ports[k] %}{% assign ng = nil %}{% if n.d[n.car].grid.size > 0 %}{% assign ng = n.d[n.car].grid %}{% elsif n.ly[n.car].grid.size > 0 %}{% assign ng = n.ly[n.car].grid %}{% endif %}{% if ng %}{% if es and n.es %}{% assign nurl = "/es/tiempos-de-espera/autos/" | append: n.es.slug | append: "/" %}{% assign nname = n.es.short %}{% elsif n.slug %}{% assign nurl = "/border-waits/cars/" | append: n.slug | append: "/" %}{% assign nname = n.name %}{% else %}{% assign nurl = "" %}{% assign nname = n.name %}{% endif %}{"name": {{ nname | jsonify }}, "url": {{ nurl | jsonify }}, "grid": {{ ng | jsonify }}},{% endif %}{% endfor %}null] }</script>
+</section>
+<script src="/border-waits/plan.js?v={{ site.time | date: '%s' }}" defer></script>
+{%- endif %}
+
+{%- if p.nearby.size > 0 %}
+<section class="rb-block">
+  <h2>{% if es %}Cruces cercanos ahora mismo{% else %}Nearby crossings right now{% endif %} <span>{% if es %}Si este está saturado{% else %}If this one is backed up{% endif %}</span></h2>
+  <div class="rb-scroll">
+    <table class="rb-table bw-near">
+      <thead><tr><th scope="col">{% if es %}Cruce{% else %}Crossing{% endif %}</th><th scope="col">{% if es %}En auto{% else %}By car{% endif %}</th><th scope="col">{% if es %}A pie{% else %}On foot{% endif %}</th><th scope="col">{% if es %}Publicado{% else %}Posted{% endif %}</th></tr></thead>
+      <tbody>
+      {%- for k in p.nearby %}{% assign n = b.ports[k] %}
+        {%- if es and n.es %}{% assign nname = n.es.short %}{% assign nurl = n.es.slug | prepend: "/es/tiempos-de-espera/autos/" | append: "/" %}
+        {%- else %}{% assign nname = n.name %}{% assign nurl = nil %}{% if n.slug %}{% assign nurl = n.slug | prepend: "/border-waits/cars/" | append: "/" %}{% endif %}{% endif %}
+        <tr data-port="{{ k }}"><th scope="row">{% if nurl %}<a href="{{ nurl }}"{% if es and n.es == nil %} hreflang="en"{% endif %}>{{ nname }}</a>{% else %}{{ nname }}{% endif %}</th>
+          <td{% if n.car %} data-now="{{ n.car }}"{% endif %}>{% if n.car %}{% if es %}{{ n.now[n.car].es }}{% else %}{{ n.now[n.car].en }}{% endif %}{% else %}—{% endif %}</td>
+          <td{% if n.ped %} data-now="{{ n.ped }}"{% endif %}>{% if n.ped %}{% if es %}{{ n.now[n.ped].es }}{% else %}{{ n.now[n.ped].en }}{% endif %}{% else %}—{% endif %}</td>
+          <td data-now="posted">{% if es %}{{ n.posted_es | default: "—" }}{% else %}{{ n.posted_en | default: "—" }}{% endif %}{% if n.stale %} <span class="bw-stale">{% if es %}atrasada{% else %}old{% endif %}</span>{% endif %}</td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="rb-note">{% if es %}En auto y a pie: el carril principal de cada cruce, casi siempre los carriles generales.{% else %}By car and on foot: each crossing’s main lane, nearly always the standard lanes.{% endif %}</p>
+</section>
+{%- endif %}
+
+<div class="rb-cols">
+  {%- if cd.by_hour.size > 0 %}{% assign bh = cd.by_hour %}{% assign bh_ours = true %}{% else %}{% assign bh = cl.by_hour %}{% assign bh_ours = false %}{% endif %}
+  {%- if bh.size > 0 %}
+  <section class="rb-block bw-hours">
+    <h2>{% if es %}En auto, por hora del día{% else %}By car, by hour of day{% endif %} <span>{% if bh_ours %}{% if es %}Todos los días, últimos 30 días{% else %}All days, last 30 days{% endif %}{% else %}{% if es %}{{ b.month_es | capitalize }} del año pasado, CBP{% else %}{{ b.month_en }} last year, CBP{% endif %}{% endif %}</span></h2>
+    <table class="rb-table">
+      <thead><tr><th scope="col">{% if es %}Hora{% else %}Hour{% endif %}</th><th scope="col">{% if es %}Promedio{% else %}Average{% endif %}</th><th scope="col" class="rb-barcol"><span class="bw-sr">{% if es %}Gráfica{% else %}Bar{% endif %}</span></th></tr></thead>
+      <tbody>
+      {%- for h in bh %}
+        <tr><th scope="row">{{ t.hours[h.h] }}</th><td>{{ h.v }} min</td><td class="rb-barcol"><span class="rb-bar" aria-hidden="true"><span style="width: {{ h.w }}%"></span></span></td></tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </section>
+  {%- endif %}
+
+  {%- if p.chart %}{% assign chartname = t.lanes[p.chart_lane] | replace: "SENTRI", p.sentri %}
+  <section class="rb-block bw-week">
+    <h2>{% if es %}Los últimos 7 días{% else %}The last 7 days{% endif %} <span>{{ chartname }} · {% if es %}del {{ p.chart.start_es }} al {{ p.chart.end_es }}{% else %}{{ p.chart.start_en }} to {{ p.chart.end_en }}{% endif %}</span></h2>
+    <figure class="rb-chart">
+      <svg viewBox="0 0 {{ p.chart.w }} {{ p.chart.h }}" preserveAspectRatio="none" role="img" aria-label="{% if es %}Espera en {{ chartname | downcase }} cada vez que CBP publicó una lectura en los últimos 7 días, de 0 a {{ p.chart.top }} minutos.{% else %}Wait in the {{ chartname }} lane at every reading CBP posted in the last 7 days, on a scale of 0 to {{ p.chart.top }} minutes.{% endif %}">
+        <path class="line" d="{{ p.chart.line }}"/>
+      </svg>
+      <figcaption><span>{{ p.chart.top }} min</span><span>0</span></figcaption>
+    </figure>
+    <p class="rb-note">{% if es %}Los huecos son horas en que el carril estaba cerrado o no hubo lectura.{% else %}Gaps are hours the lane was closed or posted nothing.{% endif %}</p>
+  </section>
+  {%- endif %}
+</div>
+
+<section class="rb-block bw-faq">
+  <h2>{% if es %}Preguntas frecuentes{% else %}Common questions{% endif %} <span>{{ name }}</span></h2>
+  {%- assign sd = p.d.car_standard -%}{%- assign sx = p.d.car_sentri -%}{%- assign rd = p.d.car_ready -%}
+  {%- if es %}
+  <h3>¿Cómo está la fila en {{ name }} ahorita?</h3>
+  <p>{% if p.car and p.now[p.car].v != nil %}En la última lectura de CBP ({{ p.posted_es }}), en auto ({{ carlane }}) {% if p.now[p.car].v == 0 %}no había fila{% else %}la espera era de {{ p.now[p.car].v }} min{% endif %}{% if p.ped and p.now[p.ped].v != nil %}, y a pie {% if p.now[p.ped].v == 0 %}no había fila{% else %}de {{ p.now[p.ped].v }} min{% endif %}{% endif %}.{% elsif p.ped and p.now[p.ped].v != nil %}En la última lectura de CBP ({{ p.posted_es }}), a pie {% if p.now[p.ped].v == 0 %}no había fila{% else %}la espera era de {{ p.now[p.ped].v }} min{% endif %}.{% else %}CBP no publicó una espera en su última lectura.{% endif %} El recuadro de arriba se actualiza desde CBP al abrir la página.</p>
+  <h3>¿Cuál es la mejor hora para cruzar?</h3>
+  <p>{% if csrc %}{% if csrc == cd %}En los últimos 30 días{% else %}Según los promedios de CBP para {{ b.month_es }} del año pasado{% endif %}, en auto la espera más corta suele ser los {{ t.days_plural[csrc.best.dow] }} a las {{ t.hours[csrc.best.hour] }} y la más larga, los {{ t.days_plural[csrc.worst.dow] }} a las {{ t.hours[csrc.worst.hour] }}.{% if psrc %} A pie, la más corta suele ser los {{ t.days_plural[psrc.best.dow] }} a las {{ t.hours[psrc.best.hour] }}.{% endif %} La tabla de arriba muestra cada hora.{% elsif psrc %}A pie, la espera más corta suele ser los {{ t.days_plural[psrc.best.dow] }} a las {{ t.hours[psrc.best.hour] }} y la más larga, los {{ t.days_plural[psrc.worst.dow] }} a las {{ t.hours[psrc.worst.hour] }}.{% else %}Todavía no hay suficientes lecturas para decirlo.{% endif %}</p>
+  {%- if sd and sx %}
+  <h3>¿Cuánto se ahorra con SENTRI?</h3>
+  <p>En los últimos 30 días, la fila de SENTRI promedió {{ sx.avg }} min, frente a {{ sd.avg }} min en los carriles generales{% if rd %} y {{ rd.avg }} min en el Ready Lane{% endif %}.</p>
+  {%- elsif sd and rd %}
+  <h3>¿Conviene el Ready Lane?</h3>
+  <p>En los últimos 30 días, el Ready Lane promedió {{ rd.avg }} min, frente a {{ sd.avg }} min en los carriles generales. Es para quienes llevan un documento con chip RFID, todos los pasajeros del auto.</p>
+  {%- endif %}
+  {%- if p.hours != "" %}
+  <h3>¿Cuál es el horario?</h3>
+  <p>{% if p.hours contains "24" %}Abre las 24 horas.{% else %}De {{ p.hours_es }}, hora local.{% endif %}</p>
+  {%- endif %}
+  {%- else %}
+  <h3>How long is the wait at {{ name }} right now?</h3>
+  <p>{% if p.car and p.now[p.car].v != nil %}At CBP’s last reading ({{ p.posted_en }}), the line by car ({{ carlane }}) {% if p.now[p.car].v == 0 %}had no wait{% else %}was {{ p.now[p.car].v }} min{% endif %}{% if p.ped and p.now[p.ped].v != nil %}, and on foot {% if p.now[p.ped].v == 0 %}there was no wait{% else %}{{ p.now[p.ped].v }} min{% endif %}{% endif %}.{% elsif p.ped and p.now[p.ped].v != nil %}At CBP’s last reading ({{ p.posted_en }}), the line on foot {% if p.now[p.ped].v == 0 %}had no wait{% else %}was {{ p.now[p.ped].v }} min{% endif %}.{% else %}CBP posted no wait at its last reading.{% endif %} The box at the top refreshes from CBP when you open this page.</p>
+  <h3>What’s the best time to cross?</h3>
+  <p>{% if csrc %}{% if csrc == cd %}Over the last 30 days{% else %}By CBP’s averages for {{ b.month_en }} last year{% endif %}, the car line has usually been shortest on {{ t.days[csrc.best.dow] }} at {{ t.hours[csrc.best.hour] }} and longest on {{ t.days[csrc.worst.dow] }} at {{ t.hours[csrc.worst.hour] }}.{% if psrc %} On foot it’s usually shortest on {{ t.days[psrc.best.dow] }} at {{ t.hours[psrc.best.hour] }}.{% endif %} The heat map above shows every hour.{% elsif psrc %}On foot, the line has usually been shortest on {{ t.days[psrc.best.dow] }} at {{ t.hours[psrc.best.hour] }} and longest on {{ t.days[psrc.worst.dow] }} at {{ t.hours[psrc.worst.hour] }}.{% else %}Not enough readings yet to say.{% endif %}</p>
+  {%- if sd and sx %}
+  <h3>How much time does {{ p.sentri }} save?</h3>
+  <p>Over the last 30 days the {{ p.sentri }} line averaged {{ sx.avg }} min, against {{ sd.avg }} min in the standard lanes{% if rd %} and {{ rd.avg }} min in the Ready Lane{% endif %}.</p>
+  {%- elsif sd and rd %}
+  <h3>Is the Ready Lane faster?</h3>
+  <p>Over the last 30 days the Ready Lane averaged {{ rd.avg }} min, against {{ sd.avg }} min in the standard lanes. It’s for cars where every traveler carries an RFID-enabled document.</p>
+  {%- endif %}
+  {%- if p.hours != "" %}
+  <h3>When is it open?</h3>
+  <p>{% if p.hours contains "24" %}24 hours a day.{% else %}{{ p.hours | replace: "-", " to " }}, local time.{% endif %}</p>
+  {%- endif %}
+  {%- endif %}
+  <p class="rb-note">{% if es %}Para camiones de carga, la <a href="/es/tiempos-de-espera/">espera en los carriles comerciales</a> tiene su propio tablero.{% else %}For trucks, the <a href="/border-waits/">commercial lane waits</a> have a board of their own.{% endif %}</p>
+</section>
+{% endif %}
+</div>
+
+<section class="sec">
+  <header class="sec-head"><h2>{% if es %}Sobre estos números{% else %}About these numbers{% endif %}</h2>{% if b.ports %}<span class="label">{% if es %}Copiado el {{ b.as_of_es }}{% else %}Copied {{ b.as_of_en }}{% endif %}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+      {%- if es %}
+      <p>Los agentes de cada cruce publican la espera de cada carril aproximadamente cada hora en el sistema <a href="https://bwt.cbp.gov/">Border Wait Times</a> de CBP. Un pequeño servicio en Cloudflare lo consulta cada media hora y guarda cada lectura una sola vez; de ese registro salen los promedios de los últimos 30 días. Los promedios del año anterior son los que publica la propia CBP.</p>
+      <p>Las horas son la hora local del cruce. Un carril cerrado o una actualización pendiente no se cuentan como cero, sino como dato desconocido. La <a href="/es/tiempos-de-espera/autos/">lista de garitas y puentes</a> muestra todos ahora mismo; el <a href="/border-waits/cars/" hreflang="en">tablero en inglés</a> explica cómo funciona todo, y los datos se pueden <a href="/border-waits/border-car-pedestrian-wait-times.csv">descargar en CSV</a>.{% if page.translation %} <a href="{{ page.translation }}" hreflang="en" lang="en">This page in English</a>.{% endif %}</p>
+      <p>Fuente: Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP); las lecturas del 13 de septiembre al 20 de octubre de 2026, según las guardó <a href="https://github.com/gptcbp/border-crossing-data">gptcbp/border-crossing-data</a>. Los datos son públicos; cualquier error al presentarlos es mío.</p>
+      {%- else %}
+      <p>Officers at each port of entry post every lane’s wait about once an hour to CBP’s <a href="https://bwt.cbp.gov/">Border Wait Times</a> system. A small Cloudflare Worker reads it every half hour and keeps each reading once; the last-30-days averages come from that record. The averages from the year before are CBP’s own.</p>
+      <p>Times are the crossing’s local time. A closed lane or a pending reading counts as unknown, never as zero. The <a href="/border-waits/cars/">board</a> has every crossing right now and how it all works, and the data is a <a href="/border-waits/border-car-pedestrian-wait-times.csv">CSV download</a>.{% if page.translation and page.translations_live %} <a href="{{ page.translation }}" hreflang="es" lang="es">Esta página en español</a>.{% endif %}</p>
+      <p>Source: U.S. Customs and Border Protection; readings from September 13 to October 20, 2026 as saved by <a href="https://github.com/gptcbp/border-crossing-data">gptcbp/border-crossing-data</a>. The numbers are public; any mistakes in presenting them are mine.</p>
+      {%- endif %}
+      {%- if es %}{% assign others = site.border_people_es | sort: "title" %}{% else %}{% assign others = site.border_people | sort: "title" %}{% endif %}
+      <h3>{% if es %}Otros cruces{% else %}Other crossings{% endif %}</h3>
+      <ul class="rb-index">
+        {%- for o in others %}{% if o.port != page.port %}<li><a href="{{ o.url }}">{% assign op = b.ports[o.port] %}{% if es %}{{ op.es.short | default: o.title }}{% else %}{{ op.name | default: o.title }}{% endif %}</a></li>{% endif %}{% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% if p %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": {% if es %}{{ name | append: ": tiempos de espera en auto y a pie por día y hora (CBP)" | jsonify }}{% else %}{{ name | append: " border wait times for cars and pedestrians, by day and hour (CBP)" | jsonify }}{% endif %},
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "inLanguage": {{ page.lang | default: "en" | jsonify }},
+  "keywords": {% if es %}[{{ name | append: " tiempo de espera" | jsonify }}, "tiempos de espera en la frontera", "fila en la garita", "SENTRI", "Ready Lane", "CBP"]{% else %}[{{ name | append: " wait time" | jsonify }}, "border wait times", "border crossing wait times", {{ p.sentri | append: " wait time" | jsonify }}, "Ready Lane", "pedestrian wait", "CBP"]{% endif %},
+  "temporalCoverage": "{{ p.first | slice: 0, 10 }}/{{ b.as_of_iso }}",
+  "spatialCoverage": { "@type": "Place", "name": {% if es %}{{ name | append: ", " | append: p.es.city | jsonify }}{% else %}{{ name | append: ", " | append: p.city | jsonify }}{% endif %} },
+  "variableMeasured": ["Wait (minutes) in each car and pedestrian lane, by weekday and local hour", "Lanes open"],
+  "isBasedOn": "https://bwt.cbp.gov/",
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "isPartOf": { "@id": "{{ home | absolute_url }}#dataset" },
+  "creator": [
+    { "@type": "Organization", "name": "U.S. Customs and Border Protection", "url": "https://www.cbp.gov/" },
+    { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }} }
+  ],
+  "distribution": [
+    {%- for f in b.files %}{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ f.url | absolute_url | jsonify }} },{% endfor %}
+    { "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ "/border-waits/border-car-pedestrian-wait-times.csv" | absolute_url | jsonify }} }
+  ],
+  "dateModified": {{ b.as_of_iso | jsonify }}
+}
+</script>
+<script>window.BW = { lang: {{ page.lang | jsonify }}, words: {{ t | jsonify }} };</script>
+<script src="/border-waits/people.js?v={{ site.time | date: '%s' }}" defer></script>
+{% endif %}

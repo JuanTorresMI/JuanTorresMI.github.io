@@ -270,8 +270,8 @@ def wait(lane):
     return {"v": None, "en": en, "es": es, "lanes": lane.get("lanes")}
 
 
-def level(v):
-    return None if v is None else sum(1 for t in LEVELS if v >= t)
+def level(v, levels=LEVELS):
+    return None if v is None else sum(1 for t in levels if v >= t)
 
 
 def wait_chart(recent, w=640, h=160, pad=8):
@@ -300,7 +300,7 @@ def weighted(cells, v, n):
     return round(sum(c[v] * c[n] for c in cells if c[v] is not None) / total) if total else None
 
 
-def summarize(profile):
+def summarize(profile, levels=LEVELS):
     """A [dow, hour, std_avg, std_n, fast_avg, fast_n] profile -> the heat map, the averages by hour,
     the best and worst hour, and the overall averages (each hour weighted by its readings)."""
     cells = {(r[0], r[1]): r for r in profile}
@@ -311,7 +311,7 @@ def summarize(profile):
         for dw in range(7):
             c = cells.get((dw, h))
             v = None if c is None or c[2] is None else round(c[2])
-            row.append({"v": v, "lvl": level(v)})
+            row.append({"v": v, "lvl": level(v, levels)})
         grid.append({"h": h, "cells": row})
     known = [c for c in profile if c[2] is not None]
     sure = [c for c in known if c[3] >= SURE] or known
@@ -674,21 +674,60 @@ FEED_LANES = [("passenger_vehicle_lanes", "standard_lanes"), ("passenger_vehicle
               ("pedestrian_lanes", "standard_lanes"), ("pedestrian_lanes", "ready_lanes")]
 
 
+def feed_clock(s):
+    """'At 10:00 am CDT', 'At Noon EDT' -> minutes after local midnight (the Worker's clock())."""
+    m = re.search(r"At\s+(Noon|Midnight|(\d{1,2}):(\d{2})\s*([ap])\.?m\.?)", s or "", re.I)
+    if not m: return None
+    if m[1].lower() == "noon": return 12 * 60
+    if m[1].lower() == "midnight": return 0
+    return (int(m[2]) % 12 + (12 if m[4].lower() == "p" else 0)) * 60 + int(m[3])
+
+
+def feed_posted(day, time, minutes, ahead=15):
+    """The feed's local date ('10/1/2026', not padded) and clock, and the posted minutes -> the local
+    moment it was posted, as the Worker's posted() works it out: a posted time later than the feed's
+    own clock (by more than `ahead` minutes) was yesterday's."""
+    d = re.match(r"^(\d{1,2})/(\d{1,2})/(\d{4})$", str(day or "").strip())
+    t = re.match(r"^(\d{1,2}):(\d{2})", str(time or "").strip())
+    if not d or not t or minutes is None: return None
+    base = datetime(int(d[3]), int(d[1]), int(d[2]))
+    if minutes > int(t[1]) * 60 + int(t[2]) + ahead: base -= timedelta(days=1)
+    return base + timedelta(minutes=minutes)
+
+
 def cbp_feed_ports():
-    """CBP's feed -> {port: {border, name}} for every port with car or pedestrian lanes."""
+    """CBP's feed -> {port: {border, name, lanes, now...}} for every port with car or pedestrian lanes."""
     req = urllib.request.Request(f"{CBP_BWT}/waittimes", headers={"User-Agent": "site-snapshot (github.com/JuanTorresMI)", "Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=30) as r:
         feed = json.loads(r.read().decode("utf-8"))
     has = lambda x, g: str((x.get(g) or {}).get("maximum_lanes") or "").strip().isdigit() and int(x[g]["maximum_lanes"]) > 0
+    keys = [k for k, _, _ in PEOPLE_LANES]
     out = {}
     for x in feed:
         if not (has(x, "passenger_vehicle_lanes") or has(x, "pedestrian_lanes")): continue
         name, crossing = str(x.get("port_name") or "").strip(), str(x.get("crossing_name") or "").strip()
+        raw = {k: (x.get(g) or {}).get(l) or {} for (g, l), k in zip(FEED_LANES, keys)}
+        now = {}
+        for k, l in raw.items():
+            st, dm, lo = (str(l.get(f) or "").strip() for f in ("operational_status", "delay_minutes", "lanes_open"))
+            now[k] = {"delay": int(dm) if st.lower() in ("delay", "no delay") and dm.isdigit() else None, "status": st,
+                      "lanes": int(lo) if lo.isdigit() else None, "update": str(l.get("update_time") or "").strip()}
+        update = next((l["update"] for l in now.values() if l["update"]), "")
+        # Some ports post the coming hour early (San Ysidro says "At 2:00 pm" at 1:28): up to an hour ahead is today.
+        at = feed_posted(x.get("date"), x.get("time"), feed_clock(update), ahead=60) if x.get("port_status") == "Open" else None
+        t = re.match(r"^(\d{1,2}):(\d{2})", str(x.get("time") or ""))
+        clock = feed_posted(x.get("date"), x.get("time"), int(t[1]) * 60 + int(t[2]) if t else None)
+        skew = 60 if str(x["port_number"]).startswith("26") else 0       # Arizona: the feed's clock keeps daylight time, the state doesn't
         out[str(x["port_number"])] = {"border": "mexico" if "mex" in str(x.get("border", "")).lower() else "canada",
                                      "name": name + (f" – {crossing}" if crossing and name.lower() not in crossing.lower() else ""),
                                      # The lanes it has: CBP lists a lane a port doesn't have as "N/A"
-                                     "lanes": {k for (g, l), k in zip(FEED_LANES, (k for k, _, _ in PEOPLE_LANES))
-                                               if has(x, g) and str(((x.get(g) or {}).get(l) or {}).get("operational_status") or "N/A").strip() != "N/A"}}
+                                     "lanes": {k for (g, _), k in zip(FEED_LANES, keys) if has(x, g) and (raw[k].get("operational_status") or "N/A").strip() != "N/A"},
+                                     "now": now, "update": update, "posted_at": at.strftime("%Y-%m-%d %H:%M") if at else None,
+                                     "age": max(0, round((clock - at).total_seconds() / 60) - skew) if at and clock else None,
+                                     "hours": str(x.get("hours") or "").strip(), "open": x.get("port_status") == "Open",
+                                     "max_car": int(x["passenger_vehicle_lanes"]["maximum_lanes"]) if has(x, "passenger_vehicle_lanes") else None,
+                                     "max_ped": int(x["pedestrian_lanes"]["maximum_lanes"]) if has(x, "pedestrian_lanes") else None,
+                                     "notice": str(x.get("construction_notice") or "").strip()}
     return out
 
 
@@ -747,10 +786,147 @@ def border_people(base):
             w.writerow([port, p["border"], p["name"], mode, lane, DAYS_EN[dw], h, avg(xs), len(xs), PROFILE_DAYS, stamp])
     try: cbp_people_archive(cbp_ids(), ports, now.date())
     except Exception as e: print(f"border people: couldn't keep CBP's averages ({e})", file=sys.stderr)
+    try: return people_pages(rows, ports, cells, now)
+    except Exception as e:                       # the archive and CSVs above are kept even if the pages' copy fails
+        print(f"border people: no page data ({e})", file=sys.stderr); raise
+
+
+# The car and pedestrian board (/border-waits/cars/), a page per major crossing (/border-waits/cars/<slug>/)
+# and a Spanish page for each Mexico crossing (/es/tiempos-de-espera/autos/<slug>/), all from the archive
+# above and CBP's feed as this run read it. The pages' script reads CBP's feed itself for "right now"
+# (CBP serves it to any site), so the Worker does nothing for these pages.
+PEOPLE_DIR = os.path.join(ROOT, "_border_people")
+PEOPLE_ES_DIR = os.path.join(ROOT, "_border_people_es")
+PEOPLE_LEVELS = (10, 30, 60, 90)             # minutes: car lines run longer than truck lines, so the steps are wider
+CAR_LANES, PED_LANES = ("car_standard", "car_sentri", "car_ready"), ("pedestrian_standard", "pedestrian_ready")
+
+
+def people_crossings():
+    d = json.load(open(os.path.join(ROOT, "_data", "border_people_crossings.json"), encoding="utf-8"))
+    return {c["port"]: c for c in d["crossings"]}, d.get("names", {})
+
+
+def cbp_people_month(month, year):
+    """CBP's published averages for one month, from the file cbp_people_archive keeps:
+    {(port, lane): [[dow, hour, avg, 1, None, 0], ...]}, the profile summarize() reads."""
+    out = {}
+    if not os.path.exists(CBP_PEOPLE_CSV): return out
+    with open(CBP_PEOPLE_CSV, encoding="utf-8", newline="") as fh:
+        for r in csv.DictReader(fh):
+            if int(r["month"]) != month or r["retrieved"][:4] != str(year) or r["weekday"] == "": continue
+            for _, k in CBP_PEOPLE_KEYS:
+                v = r[k + "_avg_min"]
+                if v != "": out.setdefault((r["port_number"], k), []).append([int(r["weekday"]), int(r["hour_local"]), int(v), 1, None, 0])
+    return out
+
+
+def people_pages(rows, ports, cells, now):
+    named, renamed = people_crossings()
+    keys = [k for k, _, _ in PEOPLE_LANES]
+    month = now.month
+    ly_all = cbp_people_month(month, now.year)
+    by_port = {}
+    for (port, at), v in sorted(rows.items(), key=lambda kv: kv[0][1]): by_port.setdefault(port, []).append((at, v))
+    since = (now.astimezone(timezone.utc) - timedelta(days=PROFILE_DAYS)).strftime("%Y-%m-%d")
+    week = (now.astimezone(timezone.utc) - timedelta(days=RECENT_DAYS + 1)).strftime("%Y-%m-%d")
+    # Only the pages' main lanes carry the heat map and the hours; the board needs the summary.
+    keep = lambda d, full: d if full else {k: d[k] for k in ("avg", "best", "worst", "flat") if k in d}
+    out = {}
+    for port in sorted(set(ports) | set(by_port)):
+        f, c, items = ports.get(port), named.get(port, {}), by_port.get(port, [])
+        page = bool(c)
+        n = {k: sum(1 for at, v in items if at >= since and v[2 * i] is not None) for i, k in enumerate(keys)}
+        # A port CBP lists but that never posts a car or pedestrian wait (a few listings are placeholders),
+        # or one gone from the feed, is left to the CSVs unless it has a page.
+        if not page and (not f or max(n.values()) < ENOUGH): continue
+        lanes = [k for k in keys if (f and k in f["lanes"]) or n[k] >= ENOUGH]
+        if not lanes: continue
+        # The lane most people use: the car lane with the most readings, and the same for walking.
+        main = lambda group: max((k for k in group if k in lanes), key=lambda k: (n[k], -keys.index(k)), default=None)
+        car, ped = main(CAR_LANES), main(PED_LANES)
+        d, ly = {}, {}
+        for k in lanes:
+            i = keys.index(k)
+            if n[k] >= ENOUGH:
+                profile = [[dw, h, math.floor(sum(xs) / len(xs) * 10 + 0.5) / 10, len(xs), None, 0]
+                           for (p2, j, dw, h), xs in sorted(cells.items()) if p2 == port and j == i]
+                o = summarize(profile, PEOPLE_LEVELS); o.pop("fast_avg", None)
+                d[k] = {**keep(o, page and k in (car, ped)), "readings": n[k]}
+            if ly_all.get((port, k)):
+                o = summarize(ly_all[(port, k)], PEOPLE_LEVELS); o.pop("fast_avg", None)
+                ly[k] = keep(o, page and k in (car, ped))
+        cbp_name = renamed.get(port) or (f["name"] if f else port)
+        x = {"port": port, "border": (f or {}).get("border") or ("mexico" if c.get("es") else "canada"),
+             "name": c.get("name") or cbp_name, "cbp": cbp_name, "slug": c.get("slug"), "city": c.get("city", ""), "across": c.get("across", ""),
+             "es": c.get("es"), "lanes": lanes, "car": car, "ped": ped, "readings": n, "d": d, "ly": ly,
+             "sentri": "NEXUS" if ((f or {}).get("border") or "") == "canada" or (not f and not c.get("es")) else "SENTRI",
+             "hours": (f or {}).get("hours", ""), "hours_es": hours_es((f or {}).get("hours", "")), "open": bool(f and f["open"]),
+             "max_car": (f or {}).get("max_car"), "max_ped": (f or {}).get("max_ped"), "notice": (f or {}).get("notice", ""),
+             "now": {k: wait(f["now"][k]) if f else wait({}) for k in lanes},
+             "stale": bool(f and f["age"] is not None and f["age"] >= STALE_MIN), "first": items[0][0] if items else ""}
+        x["posted_en"], x["posted_es"] = posted_label(f and f["posted_at"], f and f["update"])
+        first = local_time(x["first"]) if x["first"] else None
+        x["first_en"], x["first_es"] = (full_date(first), fecha(first)) if first else ("", "")
+        # Each lane's usual wait: ours once the lane has ENOUGH readings, CBP's for this month last year until then.
+        x["usual"] = {k: ({"avg": d[k]["avg"], "src": "ours"} if k in d else {"avg": ly[k]["avg"], "src": "cbp"} if k in ly else {"avg": None, "src": None})
+                      for k in lanes}
+        if page:
+            lead = car or ped
+            x["chart"] = wait_chart([(at, v[2 * keys.index(lead)]) for at, v in items if at >= week])
+            x["chart_lane"] = lead
+        out[port] = x
+    # Nearby: the other ports in the same CBP district, the same city first, the ones with pages before the rest.
+    for k, v in out.items():
+        near = sorted((o for o in out.values() if o["port"] != k and o["port"][:2] == k[:2] and o["border"] == v["border"]),
+                      key=lambda o: (o["port"][:4] != k[:4], o["slug"] is None, o["name"]))
+        v["nearby"] = [o["port"] for o in near][:8]
+    for port in named:
+        if port not in out: print(f"border people: {port} is in border_people_crossings.json but has no lanes on record", file=sys.stderr)
+
+    order = lambda b: [v["port"] for v in sorted((v for v in out.values() if v["border"] == b), key=lambda v: v["name"])]
+    usual = lambda v, lane: (v["usual"].get(lane) or {}).get("avg") if lane else None
+    busiest = sorted((v for v in out.values() if usual(v, v["car"]) is not None), key=lambda v: (-usual(v, v["car"]), v["name"]))[:10]
+    walking = sorted((v for v in out.values() if usual(v, v["ped"]) is not None), key=lambda v: (-usual(v, v["ped"]), v["name"]))[:6]
+
+    # Page stubs for the named crossings: new ones only, never deleted.
+    for c in named.values():
+        pages = [(PEOPLE_DIR, c["slug"], {"port": c["port"],
+                  "title": f"{c['name']} border wait times",
+                  "description": fit(f"How long the line is at {c['name']} right now, for cars, SENTRI, Ready Lane and pedestrians, and the usual wait at each hour of the week, from CBP.",
+                                     f"The {c['name']} border wait right now, for cars and pedestrians, and the usual wait at each hour of the week, from CBP.", limit=160),
+                  "seo_title": fit(f"{c['name']} Border Wait Times Now & by Hour", f"{c['name']} Border Wait Times", f"{c['name']} Wait Times"),
+                  **({"translation": f"/es/tiempos-de-espera/autos/{c['es']['slug']}/"} if c.get("es") else {})})]
+        if c.get("es"):
+            e = c["es"]
+            pages.append((PEOPLE_ES_DIR, e["slug"], {"port": c["port"],
+                          "title": f"{e['short']}: tiempo de espera",
+                          "description": fit(f"Cuánto está la fila en {e['short']} ahora, para autos, SENTRI, Ready Lane y peatones, y la espera habitual por día y hora, según CBP.",
+                                             f"La espera en {e['short']} ahora, en auto y a pie, y la habitual por día y hora, según CBP.", limit=160),
+                          "seo_title": fit(f"{e['short']}: tiempo de espera hoy y por hora", f"{e['short']}: tiempo de espera hoy", f"{e['short']}: tiempo de espera"),
+                          "translation": f"/border-waits/cars/{c['slug']}/"}))
+        for folder, slug, fm in pages:
+            os.makedirs(folder, exist_ok=True)
+            path = os.path.join(folder, slug + ".md")
+            if os.path.exists(path): continue
+            with open(path, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write("---\n" + "".join(f"{k}: {json.dumps(v, ensure_ascii=False)}\n" for k, v in fm.items()) + "---\n")
+
     years = {}
     for _, at in rows: years[at[:4]] = years.get(at[:4], 0) + 1
     firsts = [at for _, at in rows]
-    return {"generated": now.isoformat(timespec="seconds"), "readings": fmt(len(rows)), "ports": len({p for p, _ in rows}),
+    first = local_time(min(firsts)) if firsts else None
+    stamp = now.date().isoformat()
+    reporting = [v for v in out.values() if any(v["now"][k]["v"] is not None for k in v["lanes"])]
+    longest = max((v for v in reporting if v["car"] and v["now"][v["car"]]["v"] is not None), key=lambda v: v["now"][v["car"]]["v"], default=None)
+    return {"generated": now.isoformat(timespec="seconds"), "as_of_iso": stamp,
+            "as_of_en": f"{full_date(now)}, {now.hour % 12 or 12}:{now.minute:02d} {'AM' if now.hour < 12 else 'PM'} Michigan time",
+            "as_of_es": f"{fecha(now)}, {now.hour}:{now.minute:02d} (hora de Michigan)",
+            "since_en": full_date(first) if first else "", "since_es": fecha(first) if first else "", "since_iso": first.date().isoformat() if first else stamp,
+            "month_en": MONTHS[month - 1], "month_es": MONTHS_ES_FULL[month - 1],
+            "readings": fmt(len(rows)), "ports": out, "total": len(out), "reporting": len(reporting),
+            "longest": longest["port"] if longest and longest["now"][longest["car"]]["v"] else None,
+            "mexico": order("mexico"), "canada": order("canada"),
+            "busiest": [v["port"] for v in busiest], "walking": [v["port"] for v in walking],
             "first": min(firsts) if firsts else "", "newest": max(firsts) if firsts else "",
             "files": [{"year": y, "rows": fmt(n), "url": f"/border-waits/border-car-pedestrian-wait-readings-{y}.csv"} for y, n in sorted(years.items(), reverse=True)]}
 

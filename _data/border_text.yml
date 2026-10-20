@@ -14,6 +14,12 @@ en:
   pending: Pending
   old: old reading
   live: Live from CBP, checked
+  # The car and pedestrian pages (/border-waits/cars/). SENTRI is NEXUS at the Canadian crossings:
+  # the pages replace the word with the port's own (`sentri` in border_people.json).
+  people_levels: ["Under 10 min", "10–29 min", "30–59 min", "60–89 min", "90 min or more"]
+  lanes: {car_standard: "Cars, standard lanes", car_sentri: "Cars, SENTRI", car_ready: "Cars, Ready Lane", pedestrian_standard: "Walking, standard lanes", pedestrian_ready: "Walking, Ready Lane"}
+  cols: {car_standard: "Cars", car_sentri: "SENTRI", car_ready: "Ready Lane", pedestrian_standard: "Walking", pedestrian_ready: "Walking, Ready"}
+  lane_only: {car_standard: "standard lanes", car_sentri: "SENTRI", car_ready: "Ready Lane", pedestrian_standard: "standard lanes", pedestrian_ready: "Ready Lane"}
 es:
   days: [lunes, martes, miércoles, jueves, viernes, sábado, domingo]
   short: [lun, mar, mié, jue, vie, sáb, dom]
@@ -26,3 +32,7 @@ es:
   pending: Pendiente
   old: lectura atrasada
   live: En vivo desde CBP, consultado el
+  people_levels: ["Menos de 10 min", "10–29 min", "30–59 min", "60–89 min", "90 min o más"]
+  lanes: {car_standard: "Autos, carriles generales", car_sentri: "Autos, SENTRI", car_ready: "Autos, Ready Lane", pedestrian_standard: "Peatones, carriles generales", pedestrian_ready: "Peatones, Ready Lane"}
+  cols: {car_standard: "Autos", car_sentri: "SENTRI", car_ready: "Ready Lane", pedestrian_standard: "Peatones", pedestrian_ready: "Peatones, Ready"}
+  lane_only: {car_standard: "carriles generales", car_sentri: "SENTRI", car_ready: "Ready Lane", pedestrian_standard: "carriles generales", pedestrian_ready: "Ready Lane"}
