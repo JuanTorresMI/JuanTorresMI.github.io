@@ -80,10 +80,12 @@
   "isAccessibleForFree": true,
   "license": "https://www.usa.gov/government-works",
   "dataset": [
-    { "@type": "Dataset", "name": {% if es %}"Carne de res en caja"{% else %}"Boxed beef cutout and cut prices"{% endif %}, "url": {{ "/beef-prices/" | prepend: site.url | jsonify }} },
-    { "@type": "Dataset", "name": {% if es %}"Cerdo"{% else %}"Pork cutout and cut prices"{% endif %}, "url": {{ "/pork-prices/" | prepend: site.url | jsonify }} },
-    { "@type": "Dataset", "name": {% if es %}"Ganado gordo"{% else %}"Fed cattle prices"{% endif %}, "url": {{ "/fed-cattle-prices/" | prepend: site.url | jsonify }} },
-    { "@type": "Dataset", "name": {% if es %}"Tarifas de camiones refrigerados"{% else %}"Reefer truck rates"{% endif %}, "url": {{ "/reefer-rates/" | prepend: site.url | jsonify }} }
+    {%- if es %}{% assign boards = "/es/precios-de-carne-de-res/,/es/precios-de-cerdo/,/es/precios-de-ganado-gordo/,/reefer-rates/" | split: "," %}{% else %}{% assign boards = "/beef-prices/,/pork-prices/,/fed-cattle-prices/,/reefer-rates/" | split: "," %}{% endif %}
+    {%- assign names = "Boxed beef cutout and cut prices|Pork cutout and cut prices|Fed cattle prices|Reefer truck rates" | split: "|" %}
+    {%- if es %}{% assign names = "Carne de res en caja|Cerdo|Ganado gordo|Tarifas de camiones refrigerados" | split: "|" %}{% endif %}
+    {%- for u in boards %}{% assign bp = site.pages | where: "url", u | first %}
+    { "@type": "Dataset", "@id": "{{ u | absolute_url }}#dataset", "name": {{ names[forloop.index0] | jsonify }}, "description": {{ bp.description | jsonify }}, "url": {{ u | absolute_url | jsonify }}, "license": "https://www.usa.gov/government-works", "isAccessibleForFree": true, "creator": [{ "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" }, { "@id": "{{ site.url }}/#person" }] }{% unless forloop.last %},{% endunless %}
+    {%- endfor %}
   ]
 }
 </script>

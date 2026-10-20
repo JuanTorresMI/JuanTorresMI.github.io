@@ -233,6 +233,7 @@
 {
   "@context": "https://schema.org",
   "@type": "Dataset",
+  "@id": "{{ page.url | absolute_url }}#dataset",
   "name": {% if es %}"Precio semanal del ganado gordo del USDA, de 5 áreas y por región"{% else %}"Weekly USDA fed cattle prices, 5-area and by region"{% endif %},
   "description": {{ page.description | jsonify }},
   "url": {{ page.url | absolute_url | jsonify }},

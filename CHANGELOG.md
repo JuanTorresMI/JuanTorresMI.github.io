@@ -37,6 +37,22 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-20 — The beef board's search result leads with today's cutout
+
+Search Console: the beef board sits around position 10 for "usda boxed beef prices today" and similar,
+with ~900 impressions a week and no clicks. Its search title now says those words ("USDA Boxed Beef Prices
+Today · Choice and Select Cutout"), and its meta description (English and Spanish) opens with the latest
+report's date and Choice and Select values from the snapshot (`live_description: beef`, `head.html`), so the
+result shows the price itself. The page's static `description` stays for the Dataset JSON-LD and as the
+fallback. Worth rechecking clicks in two or three weeks.
+
+## 2026-10-20 — Dataset descriptions in the structured data
+
+Search Console flagged the four datasets the USDA hub lists ("Missing field description"): they carried
+only a name and a URL. Each now has its board's own description, the license, the creators (USDA AMS
+and me) and an `@id`. The cut, region and crossing pages' `isPartOf` was the same kind of bare Dataset, so they now point at the board's `@id`
+instead. `check.py` fails on any Dataset without a name, description, license or creator.
+
 ## 2026-10-19 — Fixed addresses for the data downloads
 
 - The boards' CSVs now feed Kaggle datasets that pull them by URL on a schedule, so their addresses and

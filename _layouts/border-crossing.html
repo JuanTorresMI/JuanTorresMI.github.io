@@ -246,7 +246,7 @@ layout: default
   "isBasedOn": "https://bwt.cbp.gov/",
   "isAccessibleForFree": true,
   "license": "https://www.usa.gov/government-works",
-  "isPartOf": { "@type": "Dataset", "url": {{ "/border-waits/" | absolute_url | jsonify }} },
+  "isPartOf": { "@id": "{{ "/border-waits/" | absolute_url }}#dataset" },
   "creator": [
     { "@type": "Organization", "name": "U.S. Customs and Border Protection", "url": "https://www.cbp.gov/" },
     { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }} }
