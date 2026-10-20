@@ -15,6 +15,14 @@
 {%- assign desc = page.description -%}
 {%- if desc == nil and is_post -%}{%- assign desc = page.excerpt | strip_html | normalize_whitespace | truncate: 160 -%}{%- endif -%}
 {%- assign desc = desc | default: site.description -%}
+{%- comment %} A data board may set `live_description: beef` to lead its search snippet with the day's
+  numbers from its snapshot (people search "boxed beef prices today"). Without them, `description` stands. {% endcomment -%}
+{%- if page.live_description == "beef" -%}{%- assign ld = site.data.live.beef -%}
+  {%- if ld.stamp.choice != "" and ld.stamp.select != "" -%}
+    {%- if page.lang == "es" -%}{%- capture desc %}Cutout de res en caja del USDA al {{ ld.date_es }}: Choice {{ ld.stamp.choice }} y Select {{ ld.stamp.select }} por quintal. Y el precio de mayoreo de cada corte, con historial y CSV gratis.{% endcapture -%}
+    {%- else -%}{%- capture desc %}USDA boxed beef cutout for {{ ld.date }}: Choice {{ ld.stamp.choice }}, Select {{ ld.stamp.select }} per cwt. Plus the wholesale price of every beef cut, daily history and free CSVs.{% endcapture -%}{%- endif -%}
+  {%- endif -%}
+{%- endif -%}
 {%- assign image = page.image | default: site.image -%}
 {%- assign image_alt = page.image_alt | default: site.image_alt -%}
 {%- comment %} Language: a page may set `lang: es`. A page with a reviewed translation names it in

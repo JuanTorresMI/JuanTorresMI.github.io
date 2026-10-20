@@ -35,6 +35,15 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-20 — The beef board's search result leads with today's cutout
+
+Search Console: the beef board sits around position 10 for "usda boxed beef prices today" and similar,
+with ~900 impressions a week and no clicks. Its search title now says those words ("USDA Boxed Beef Prices
+Today · Choice and Select Cutout"), and its meta description (English and Spanish) opens with the latest
+report's date and Choice and Select values from the snapshot (`live_description: beef`, `head.html`), so the
+result shows the price itself. The page's static `description` stays for the Dataset JSON-LD and as the
+fallback. Worth rechecking clicks in two or three weeks.
+
 ## 2026-10-20 — Dataset descriptions in the structured data
 
 Search Console flagged the four datasets the USDA hub lists ("Missing field description"): they carried
