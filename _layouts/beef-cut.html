@@ -180,7 +180,7 @@ layout: default
   "spatialCoverage": { "@type": "Place", "name": "United States" },
   "variableMeasured": ["Weighted average price (USD per cwt and per lb)", "Low and high sale (USD per cwt)", "Trades", "Pounds sold"],
   "isBasedOn": "https://mymarketnews.ams.usda.gov/viewReport/2453",
-  "isPartOf": { "@type": "Dataset", "url": {{ base | absolute_url | jsonify }} },
+  "isPartOf": { "@id": "{{ base | absolute_url }}#dataset" },
   "isAccessibleForFree": true,
   "license": "https://www.usa.gov/government-works",
   "creator": [{ "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" }, { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }} }],
