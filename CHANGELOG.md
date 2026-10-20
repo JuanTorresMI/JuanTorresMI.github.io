@@ -33,9 +33,23 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **Plain Solver write-up**: per CLAUDE.md a new project gets a post, written from Juan's answers
   (why he built it, what surprised him). Not written yet. Also still open from the spec: the optional
   server tier for very large models (the 50 × 500 test solves in the browser in about 2 s).
+- **Kaggle for the open datasets** (Oct 20, 2026): each of the twelve in `data/` gets one Kaggle dataset
+  pulling its files by URL once the first run has filled them (`/data/` lists them), with a Spanish
+  section in the description; then set its `kaggle` in `_data/datasets.json`.
 - **More USDA boards** (Juan wants all of them): next are hogs (LM_HG217/218), lamb (LM_XL502) and cow
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
+
+## 2026-10-20 — Open data: twelve more USDA datasets and a catalog page
+
+`/data/` lists every CSV the site publishes, the boards' and twelve new datasets, with a DataCatalog in
+its JSON-LD (each Dataset with its files as downloads). The new ones are USDA datamart reports kept as
+published, one CSV per table from 2020: daily hog prices by region and slaughtered barrows and gilts,
+sows and boars, the cutter cow cutout and cow beef cuts, beef trimmings, the comprehensive boxed beef and
+pork cutouts, slaughter cows and bulls, the fed cattle comprehensive, cattle premiums and discounts, export
+pork, lamb (cutout, boxed cuts, comprehensive) and dairy (NDPSR products, class and advanced prices).
+`scripts/datasets.py` fills and updates them from the snapshot workflow, after the boards. No pages
+per dataset yet; those, and each on Kaggle, come next. Linked from the footer and every USDA board.
 
 ## 2026-10-20 — Car and pedestrian border waits, archived
 

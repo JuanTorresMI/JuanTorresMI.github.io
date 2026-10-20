@@ -1,0 +1,95 @@
+---
+layout: default
+title: Open data
+seo_title: "Free USDA and Border Datasets (CSV) · Meat, Livestock, Dairy, Freight · Juan Torres"
+permalink: /data/
+description: "Free CSV datasets kept up to date from USDA and CBP: hog, cattle, beef, pork, lamb and dairy prices, reefer truck rates and border wait times, every file listed."
+image: /assets/og/usda-market-prices.png
+image_alt: "Open data by Juan Torres: USDA market reports and CBP border waits as free CSV files."
+---
+{%- comment -%}
+  The catalog of every published CSV (a "work" page). The boards' files are listed from
+  _data/datasets.json (boards); the open datasets from the same file (datasets) and their row counts
+  and dates from _data/live/datasets.json, which scripts/datasets.py writes. The JSON-LD is a
+  DataCatalog with one Dataset per entry, each with its CSVs as distribution.
+{%- endcomment -%}
+{%- assign conf = site.data.datasets -%}
+{%- assign live = site.data.live.datasets -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "DataCatalog",
+  "@id": "{{ page.url | absolute_url }}#catalog",
+  "name": "Open data by Juan Torres",
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "creator": { "@id": "{{ site.url }}/#person" },
+  "inLanguage": "en",
+  "dataset": [
+    {%- for b in conf.boards %}
+    { "@type": "Dataset", "name": {{ b.title | jsonify }}, "description": {{ b.description | jsonify }}, "url": {{ b.page | absolute_url | jsonify }},
+      "license": "https://www.usa.gov/government-works", "isAccessibleForFree": true,
+      "creator": [{ "@id": "{{ site.url }}/#person" }]{% if b.kaggle != "" %}, "sameAs": {{ b.kaggle | jsonify }}{% endif %},
+      "distribution": [{% for f in b.files %}{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ f | absolute_url | jsonify }} }{% unless forloop.last %},{% endunless %}{% endfor %}] },
+    {%- endfor %}
+    {%- for d in conf.datasets %}
+    {%- assign l = live.datasets | where: "slug", d.slug | first %}
+    { "@type": "Dataset", "@id": "{{ page.url | absolute_url }}#{{ d.slug }}", "name": {{ d.title | jsonify }}, "alternateName": {{ d.title_es | jsonify }},
+      "description": {{ d.description | append: " " | append: d.description_es | jsonify }}, "url": "{{ page.url | absolute_url }}#{{ d.slug }}",
+      "keywords": {{ d.keywords | jsonify }}, "license": "https://www.usa.gov/government-works", "isAccessibleForFree": true,
+      "creator": [{ "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" }, { "@id": "{{ site.url }}/#person" }]
+      {%- if l %}, "temporalCoverage": "{{ l.first }}/{{ l.newest }}", "dateModified": "{{ l.newest }}",
+      "distribution": [{% for f in l.files %}{ "@type": "DataDownload", "name": "{{ f.file }}.csv", "encodingFormat": "text/csv", "contentUrl": {{ f.url | absolute_url | jsonify }} }{% unless forloop.last %},{% endunless %}{% endfor %}]{% endif %}{% if d.kaggle != "" %}, "sameAs": {{ d.kaggle | jsonify }}{% endif %} }{% unless forloop.last %},{% endunless %}
+    {%- endfor %}
+  ]
+}
+</script>
+<div class="dc">
+<header>
+  <p class="family">Work · Open data</p>
+  <h1>Free datasets, kept up to date</h1>
+  <p class="lede">Every CSV this site publishes, in one place. Each file has a fixed address and gains new rows every weekday, so code and notebooks can read it straight from here. The data is the US government's (USDA AMS and CBP), public domain; please credit them.{% if live %} The open datasets below hold {{ live.rows_fmt }} rows in {{ live.files }} files.{% endif %}</p>
+  <p class="lede" lang="es">En español: todos los archivos CSV del sitio, gratis y actualizados cada día hábil. Los datos son del USDA y de CBP, de dominio público. <a href="/es/precios-usda/">Precios del USDA en español</a>.</p>
+</header>
+
+<section class="sec">
+  <header class="sec-head"><h2>From the boards</h2><span class="label">{{ conf.boards.size }} datasets</span></header>
+  <div class="entries">
+  {%- for b in conf.boards %}
+    <div class="entry row">
+      <span class="key data">{% if b.kaggle != "" %}<a href="{{ b.kaggle }}" rel="noopener">Kaggle ↗</a>{% endif %}</span>
+      <span class="body"><span class="entry-head"><a class="entry-title" href="{{ b.page }}">{{ b.title }}</a></span>
+      <span class="entry-text">{{ b.description }}</span>
+      <span class="dc-files">{% for f in b.files %}<a class="data" href="{{ f }}">{{ f | split: "/" | last }}</a>{% endfor %}</span></span>
+    </div>
+  {%- endfor %}
+  </div>
+</section>
+
+{%- for d in conf.datasets %}
+{%- assign l = live.datasets | where: "slug", d.slug | first %}
+<section class="sec" id="{{ d.slug }}">
+  <header class="sec-head"><h2>{{ d.title }}</h2><span class="label">{{ d.frequency }}{% if l %} · {{ l.first }} to {{ l.newest }}{% endif %}</span></header>
+  <p class="dc-text">{{ d.description }} <span class="dc-unit">{{ d.unit }}.</span></p>
+  <p class="dc-text dc-es" lang="es"><strong>{{ d.title_es }}.</strong> {{ d.description_es }}</p>
+  {%- if l %}
+  <div class="dc-scroll"><table class="dc-table">
+    <thead><tr><th scope="col">File</th><th scope="col">Rows</th><th scope="col">From</th><th scope="col">Newest</th><th scope="col">Size</th><th scope="col">USDA report</th></tr></thead>
+    <tbody>
+    {%- for f in l.files %}
+      <tr><th scope="row"><a href="{{ f.url }}">{{ f.file }}.csv</a></th><td>{{ f.rows_fmt }}</td><td>{{ f.first }}</td><td>{{ f.newest }}</td><td>{{ f.size }}</td><td><a href="https://mpr.datamart.ams.usda.gov/services/v1.1/reports/{{ f.report }}?lastReports=1&amp;allSections=true" rel="noopener">{{ f.code }}</a></td></tr>
+    {%- endfor %}
+    </tbody>
+  </table></div>
+  {%- else %}
+  <p class="dc-text label">The files are being filled from 2020 and appear here after the next update.</p>
+  {%- endif %}
+  {%- if d.kaggle != "" %}<p class="dc-text"><a href="{{ d.kaggle }}" rel="noopener">On Kaggle ↗</a></p>{% endif %}
+</section>
+{%- endfor %}
+
+<section class="sec">
+  <header class="sec-head"><h2>Using the files</h2></header>
+  <p class="dc-text">Each table is USDA's as published, one row per report line, with dates as YYYY-MM-DD and no thousands separators. Recent reports are refetched for 45 days, so corrections land. Columns never change order; a column USDA adds later goes at the end. Read one in Python with <code>pd.read_csv("{{ site.url }}/data/usda-hog-prices/hog-prices-by-region.csv")</code>.</p>
+</section>
+</div>

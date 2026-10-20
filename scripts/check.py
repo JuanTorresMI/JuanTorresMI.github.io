@@ -178,6 +178,11 @@ PUBLISHED = {
     "border-waits/border-car-pedestrian-wait-times.csv": "port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readings,window_days,as_of",
     "border-waits/cbp-published-car-pedestrian-averages.csv": "port_number,month,weekday,hour_local,car_standard_avg_min,car_sentri_avg_min,car_ready_avg_min,pedestrian_standard_avg_min,pedestrian_ready_avg_min,retrieved",
 }
+# The open datasets in data/ (scripts/datasets.py): every file the last run recorded, with its columns.
+_ds = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "_data", "live", "datasets.json")
+if os.path.isfile(_ds):
+    for _d in json.load(open(_ds, encoding="utf-8")).get("datasets", []):
+        for _f in _d["files"]: PUBLISHED[_f["url"].lstrip("/")] = ",".join(_f["columns"])
 for path, header in PUBLISHED.items():
     f = os.path.join(site, path)
     if not os.path.isfile(f): err("/" + path, "is a published data address (Kaggle pulls it) and is missing from the build"); continue
