@@ -1,0 +1,120 @@
+{%- comment -%}
+  /data/ and /es/datos/: the catalog of every published CSV (a "work" page), `include data-catalog.html es=…`.
+  The boards' files come from _data/datasets.json (boards), and their Datasets are the boards' own
+  (`<board>#dataset`, referenced by @id rather than described twice). The open datasets come from the same
+  file (datasets), with rows, dates and columns from _data/live/datasets.json (scripts/datasets.py); each is a
+  full Dataset here, with the English page's address as its @id on both pages, for Google Dataset Search.
+{%- endcomment -%}
+{%- assign es = include.es -%}
+{%- assign conf = site.data.datasets -%}
+{%- assign live = site.data.live.datasets -%}
+{%- assign cat_id = "/data/" | absolute_url | append: "#catalog" -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "DataCatalog",
+  "@id": "{{ cat_id }}",
+  "name": {% if es %}"Datos abiertos de Juan Torres"{% else %}"Open data by Juan Torres"{% endif %},
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "inLanguage": "{% if es %}es{% else %}en{% endif %}",
+  "creator": { "@id": "{{ site.url }}/#person" },
+  "publisher": { "@id": "{{ site.url }}/#person" },
+  "license": "https://www.usa.gov/government-works",
+  "dataset": [
+    {%- for b in conf.boards %}
+    { "@id": "{{ b.page | absolute_url }}#dataset" },
+    {%- endfor %}
+    {%- for d in conf.datasets %}
+    {%- assign l = live.datasets | where: "slug", d.slug | first %}
+    { "@type": "Dataset", "@id": "{{ '/data/' | absolute_url }}#{{ d.slug }}",
+      "name": {% if es %}{{ d.title_es | jsonify }}{% else %}{{ d.title | jsonify }}{% endif %},
+      "alternateName": {% if es %}{{ d.title | jsonify }}{% else %}{{ d.title_es | jsonify }}{% endif %},
+      "description": {% if es %}{{ d.description_es | append: " " | append: d.description | jsonify }}{% else %}{{ d.description | append: " " | append: d.description_es | jsonify }}{% endif %},
+      "url": "{{ page.url | absolute_url }}#{{ d.slug }}",
+      "keywords": {{ d.keywords | jsonify }},
+      "license": "https://www.usa.gov/government-works", "isAccessibleForFree": true,
+      "creator": [{ "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" }, { "@id": "{{ site.url }}/#person" }],
+      "publisher": { "@id": "{{ site.url }}/#person" },
+      "includedInDataCatalog": { "@id": "{{ cat_id }}" },
+      {%- assign reps = d.tables | map: "report" | uniq %}
+      "isBasedOn": [{% for r in reps %}"https://mpr.datamart.ams.usda.gov/services/v1.1/reports/{{ r }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+      "measurementTechnique": "USDA AMS Livestock Mandatory Reporting and dairy market reports, archived as published",
+      "spatialCoverage": { "@type": "Place", "name": "United States" },
+      "temporalCoverage": "{% if l %}{{ l.first }}/{{ l.newest }}{% else %}2020-01-01/..{% endif %}"
+      {%- if l %},
+      "dateModified": "{{ l.newest }}",
+      {%- assign cols = "" %}{% for f in l.files %}{% assign fc = f.columns | join: "," %}{% assign cols = cols | append: "," | append: fc %}{% endfor %}{% assign cols = cols | remove_first: "," | split: "," | uniq %}
+      "variableMeasured": {{ cols | jsonify }},
+      "distribution": [{% for f in l.files %}{ "@type": "DataDownload", "name": "{{ f.file }}.csv", "encodingFormat": "text/csv", "contentUrl": {{ f.url | absolute_url | jsonify }} }{% unless forloop.last %},{% endunless %}{% endfor %}]{% endif %}{% if d.kaggle != "" %},
+      "sameAs": {{ d.kaggle | jsonify }}{% endif %} }{% unless forloop.last %},{% endunless %}
+    {%- endfor %}
+  ]
+}
+</script>
+<div class="dc">
+<header>
+  <p class="family">{% if es %}Trabajo · Datos abiertos{% else %}Work · Open data{% endif %}</p>
+  <h1>{% if es %}Datos gratis del USDA y la frontera, en CSV{% else %}Free USDA and border datasets, in CSV{% endif %}</h1>
+  {%- if es %}
+  <p class="lede">Todos los archivos CSV que publica este sitio, en un solo lugar: precios de cerdo, ganado, carne de res, cordero y lácteos, fletes refrigerados y tiempos de espera en la frontera. Cada archivo tiene una dirección fija y suma filas cada día hábil, así que se puede leer directo desde aquí en Python, R o Excel.{% if live and live.rows > 0 %} Los datos abiertos de abajo suman {{ live.rows_fmt }} filas en {{ live.files }} archivos.{% endif %} Los datos son del gobierno de EE. UU. (USDA AMS y CBP), de dominio público; cítalos.</p>
+  {%- else %}
+  <p class="lede">Every CSV this site publishes, in one place: hog, cattle, beef, pork, lamb and dairy prices, reefer truck rates and border wait times. Each file has a fixed address and gains rows every weekday, so Python, R or Excel can read it straight from here.{% if live and live.rows > 0 %} The open datasets below hold {{ live.rows_fmt }} rows in {{ live.files }} files.{% endif %} The data is the US government's (USDA AMS and CBP), public domain; please credit them.</p>
+  {%- endif %}
+  <nav class="dc-files" aria-label="{% if es %}Conjuntos de datos{% else %}Datasets{% endif %}">
+    {%- for d in conf.datasets %}<a href="#{{ d.slug }}">{% if es %}{{ d.title_es }}{% else %}{{ d.title }}{% endif %}</a>{% endfor %}
+  </nav>
+</header>
+
+<section class="sec" id="boards">
+  <header class="sec-head"><h2>{% if es %}De los tableros{% else %}From the boards{% endif %}</h2><span class="label">{{ conf.boards.size }} {% if es %}conjuntos{% else %}datasets{% endif %}</span></header>
+  <div class="entries">
+  {%- for b in conf.boards %}
+    {%- if es and b.page_es != "" %}{% assign bp = b.page_es %}{% else %}{% assign bp = b.page %}{% endif %}
+    <div class="entry row">
+      <span class="key data">{% if b.kaggle != "" %}<a href="{{ b.kaggle }}" rel="noopener">Kaggle ↗</a>{% endif %}</span>
+      <span class="body"><span class="entry-head"><a class="entry-title" href="{{ bp }}"{% if es and b.page_es == "" %} hreflang="en"{% endif %}>{% if es %}{{ b.title_es }}{% else %}{{ b.title }}{% endif %}</a></span>
+      <span class="entry-text">{% if es %}{{ b.description_es }}{% else %}{{ b.description }}{% endif %}</span>
+      <span class="dc-files">{% for f in b.files %}<a class="data" href="{{ f }}">{{ f | split: "/" | last }}</a>{% endfor %}</span></span>
+    </div>
+  {%- endfor %}
+  </div>
+</section>
+
+{%- for d in conf.datasets %}
+{%- assign l = live.datasets | where: "slug", d.slug | first %}
+<section class="sec" id="{{ d.slug }}">
+  <header class="sec-head"><h2>{% if es %}{{ d.title_es }}{% else %}{{ d.title }}{% endif %}</h2><span class="label">{{ d.frequency }}{% if l %} · {{ l.first }} – {{ l.newest }}{% endif %}</span></header>
+  {%- if es %}
+  <p class="dc-text">{{ d.description_es }}</p>
+  <p class="dc-text dc-es" lang="en"><strong>{{ d.title }}.</strong> {{ d.description }} <span class="dc-unit">{{ d.unit }}.</span></p>
+  {%- else %}
+  <p class="dc-text">{{ d.description }} <span class="dc-unit">{{ d.unit }}.</span></p>
+  <p class="dc-text dc-es" lang="es"><strong>{{ d.title_es }}.</strong> {{ d.description_es }}</p>
+  {%- endif %}
+  {%- if l %}
+  <div class="dc-scroll"><table class="dc-table">
+    <thead><tr>{% if es %}<th scope="col">Archivo</th><th scope="col">Filas</th><th scope="col">Desde</th><th scope="col">Último</th><th scope="col">Tamaño</th><th scope="col">Reporte del USDA</th>{% else %}<th scope="col">File</th><th scope="col">Rows</th><th scope="col">From</th><th scope="col">Newest</th><th scope="col">Size</th><th scope="col">USDA report</th>{% endif %}</tr></thead>
+    <tbody>
+    {%- for f in l.files %}
+      <tr><th scope="row"><a href="{{ f.url }}">{{ f.file }}.csv</a></th><td>{{ f.rows_fmt }}</td><td>{{ f.first }}</td><td>{{ f.newest }}</td><td>{{ f.size }}</td><td><a href="https://mpr.datamart.ams.usda.gov/services/v1.1/reports/{{ f.report }}?lastReports=1&amp;allSections=true" rel="noopener">{{ f.code }}</a></td></tr>
+    {%- endfor %}
+    </tbody>
+  </table></div>
+  {%- else %}
+  <p class="dc-text label">{% if es %}Los archivos se están llenando desde 2020 y aparecen aquí tras la próxima actualización.{% else %}The files are being filled from 2020 and appear here after the next update.{% endif %}</p>
+  {%- endif %}
+  {%- if d.kaggle != "" %}<p class="dc-text"><a href="{{ d.kaggle }}" rel="noopener">{% if es %}En Kaggle{% else %}On Kaggle{% endif %} ↗</a></p>{% endif %}
+</section>
+{%- endfor %}
+
+<section class="sec" id="using">
+  <header class="sec-head"><h2>{% if es %}Cómo usar los archivos{% else %}Using the files{% endif %}</h2></header>
+  {%- if es %}
+  <p class="dc-text">Cada tabla es la del USDA tal como se publicó, una fila por línea del reporte, con fechas AAAA-MM-DD y sin separadores de miles. Los reportes recientes se vuelven a leer durante 45 días, así que las correcciones llegan. Las columnas nunca cambian de orden; una columna nueva va al final. En Python: <code>pd.read_csv("{{ site.url }}/data/usda-hog-prices/hog-prices-by-region.csv")</code>.</p>
+  {%- else %}
+  <p class="dc-text">Each table is USDA's as published, one row per report line, with dates as YYYY-MM-DD and no thousands separators. Recent reports are refetched for 45 days, so corrections land. Columns never change order; a column USDA adds later goes at the end. In Python: <code>pd.read_csv("{{ site.url }}/data/usda-hog-prices/hog-prices-by-region.csv")</code>.</p>
+  {%- endif %}
+  <p class="dc-text">{% if es %}Los tableros con gráficas y una página por corte o cruce:{% else %}The boards, with charts and a page per cut or crossing:{% endif %} <a href="{% if es %}/es/precios-usda/{% else %}/usda-market-prices/{% endif %}">{% if es %}precios del USDA{% else %}USDA market prices{% endif %}</a> · <a href="{% if es %}/es/tiempos-de-espera/{% else %}/border-waits/{% endif %}">{% if es %}tiempos de espera en la frontera{% else %}border wait times{% endif %}</a>.</p>
+</section>
+</div>

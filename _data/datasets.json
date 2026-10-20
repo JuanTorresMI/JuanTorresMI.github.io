@@ -567,7 +567,10 @@
     "/beef-prices/boxed-beef-cutout-daily.csv",
     "/beef-prices/boxed-beef-cut-prices-2026.csv"
    ],
-   "description": "The daily boxed beef cutout, Choice and Select primals, and the price of every beef cut (LM_XB403), from 2020, one file per year."
+   "description": "The daily boxed beef cutout, Choice and Select primals, and the price of every beef cut (LM_XB403), from 2020, one file per year.",
+   "title_es": "Precios de la carne de res en caja del USDA por corte",
+   "page_es": "/es/precios-de-carne-de-res/",
+   "description_es": "El cutout diario de res en caja, los primales Choice y Select y el precio de cada corte (LM_XB403), desde 2020, un archivo por año."
   },
   {
    "title": "USDA Pork Cutout and Pork Cut Prices",
@@ -578,7 +581,10 @@
     "/pork-prices/pork-cut-prices-2026.csv",
     "/pork-prices/pork-cut-names.csv"
    ],
-   "description": "The daily pork cutout and primals and every pork cut's price (LM_PK602), from 2020, one file per year."
+   "description": "The daily pork cutout and primals and every pork cut's price (LM_PK602), from 2020, one file per year.",
+   "title_es": "Precios del cerdo del USDA: canal y cortes",
+   "page_es": "/es/precios-de-cerdo/",
+   "description_es": "El valor diario de la canal de cerdo, los primales y el precio de cada corte (LM_PK602), desde 2020, un archivo por año."
   },
   {
    "title": "USDA Fed Cattle Cash Prices, 5-Area and Regional",
@@ -588,7 +594,10 @@
     "/fed-cattle-prices/fed-cattle-weekly.csv",
     "/fed-cattle-prices/fed-cattle-5-area-daily.csv"
    ],
-   "description": "Weekly negotiated cash prices for fed steers and heifers in ten regions and the 5-area daily, from 2020."
+   "description": "Weekly negotiated cash prices for fed steers and heifers in ten regions and the 5-area daily, from 2020.",
+   "title_es": "Precios del ganado gordo del USDA, 5 áreas y por región",
+   "page_es": "/es/precios-de-ganado-gordo/",
+   "description_es": "Precios semanales negociados en efectivo de novillos y vaquillas en diez regiones y el diario de 5 áreas, desde 2020."
   },
   {
    "title": "USDA Refrigerated Truck Rates by Lane",
@@ -597,7 +606,10 @@
    "files": [
     "/reefer-rates/usda-reefer-truck-rates.csv"
    ],
-   "description": "Weekly reefer truck rates for produce, from every shipping district to each destination city (USDA report 2375)."
+   "description": "Weekly reefer truck rates for produce, from every shipping district to each destination city (USDA report 2375).",
+   "title_es": "Tarifas de camiones refrigerados del USDA por ruta",
+   "page_es": "",
+   "description_es": "Tarifas semanales de camiones refrigerados para frutas y verduras, de cada distrito de embarque a cada ciudad de destino (reporte 2375 del USDA)."
   },
   {
    "title": "US Border Truck Wait Times (CBP)",
@@ -608,7 +620,10 @@
     "/border-waits/border-truck-wait-times.csv",
     "/border-waits/cbp-published-averages.csv"
    ],
-   "description": "Commercial truck lane waits at every US land port, read every 30 minutes since Sep 13, 2026, with averages by hour and CBP's own."
+   "description": "Commercial truck lane waits at every US land port, read every 30 minutes since Sep 13, 2026, with averages by hour and CBP's own.",
+   "title_es": "Tiempos de espera de camiones en la frontera (CBP)",
+   "page_es": "/es/tiempos-de-espera/",
+   "description_es": "Esperas en los carriles comerciales de cada puerto terrestre de EE. UU., leídas cada 30 minutos desde el 13 de septiembre de 2026, con promedios por hora y los de CBP."
   },
   {
    "title": "US Border Car and Pedestrian Wait Times (CBP)",
@@ -619,7 +634,10 @@
     "/border-waits/border-car-pedestrian-wait-times.csv",
     "/border-waits/cbp-published-car-pedestrian-averages.csv"
    ],
-   "description": "Car (standard, SENTRI / NEXUS, Ready) and pedestrian lane waits at ~70 US land ports, every reading since Sep 13, 2026."
+   "description": "Car (standard, SENTRI / NEXUS, Ready) and pedestrian lane waits at ~70 US land ports, every reading since Sep 13, 2026.",
+   "title_es": "Tiempos de espera de autos y peatones en la frontera (CBP)",
+   "page_es": "/es/tiempos-de-espera/autos/",
+   "description_es": "Esperas de autos (general, SENTRI / NEXUS, Ready) y peatones en ~70 puertos terrestres de EE. UU., cada lectura desde el 13 de septiembre de 2026."
   }
  ]
 }
