@@ -43,7 +43,7 @@ USDA keeps them, and the Worker asks on request.
 
 **Storage**: one D1 database, `yokonjuan` (binding `DB`), whose tables are all in `schema.sql`:
 `counters` and `guestbook` (music), `youtube_latest` and `youtube_daily` (last 40 days), `border_waits`
-(last 14 days) and `border_latest`, `beef_latest`, `pork_latest` and `usage_latest`. The reefer board stores
+and `border_people` (last 14 days each) and `border_latest`, `beef_latest`, `pork_latest` and `usage_latest`. The reefer board stores
 nothing. **None of it is the permanent record**: every history the site keeps lives in the repository as
 CSV (the border readings, CBP's published averages, the YouTube days, the Worker's usage, and the USDA
 boards), written by `scripts/snapshot.py`; the database holds only what the Worker needs to run the site
@@ -370,6 +370,17 @@ feed, trimmed to the ports with commercial lanes, is kept whole in `border_lates
 - `GET /border/readings?since=2026-10-16` — every reading in the buffer posted on or after that
   local date, and the oldest one still held (so the snapshot can tell if it ever fell behind). Never
   cached; the snapshot reads it once a run, visitors never do.
+- `GET /border/people/readings?since=2026-10-16` — the same for the car lanes (standard, SENTRI / NEXUS,
+  Ready) and pedestrian lanes (standard, Ready).
+
+**Cars and pedestrians** (from Oct 20, 2026): the same feed read has every port's car and pedestrian
+lanes, ~70 ports with a reading each hour. `toPeople` turns them into one row per port per posted
+reading in `border_people`, in the same batch as the truck readings (one more statement a tick, about
+0.5 ms more CPU, ~1,700 rows written a day), trimmed by the same daily prune. Nothing live reads them:
+`snapshot.py` copies them into `border-waits/border-car-pedestrian-wait-readings-YYYY.csv` and computes
+`border-car-pedestrian-wait-times.csv` (30 days by crossing, lane, weekday and hour) from the files; CBP's
+own averages for these lanes go to `cbp-published-car-pedestrian-averages.csv`, read from CBP directly.
+Sep 13 to Oct 20 came from the same independent archive as the trucks (`scripts/border-people-backfill.mjs`).
 
 ### Setting it up (once)
 
@@ -378,7 +389,8 @@ npx.cmd wrangler d1 execute yokonjuan --remote --file=schema.sql
 npx.cmd wrangler deploy
 ```
 
-`schema.sql` only adds `border_waits` and `border_latest`.
+`schema.sql` only adds `border_waits`, `border_people` and `border_latest`. If `--file` fails with an
+authentication error, run the one table as a command (see "Setting it up" under the YouTube page).
 
 ### Check it
 

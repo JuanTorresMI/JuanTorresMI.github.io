@@ -4,6 +4,8 @@
  *
  *   GET /border             { updated, ports: [{ port, border, name, crossing, hours, status, max, std, fast, notice, posted_at, age }] }
  *   GET /border/readings?since=YYYY-MM-DD   { since, oldest, buffer_days, readings: [[port, at, std, std_lanes, fast, fast_lanes]] }
+ *   GET /border/people/readings?since=...   the same for cars and pedestrians: [[port, at, car std, lanes, car SENTRI, lanes,
+ *                                            car Ready, lanes, walk std, lanes, walk Ready, lanes]]
  *
  * The source is CBP's public Border Wait Times feed (bwt.cbp.gov/api/waittimes), no key needed.
  * CBP keeps no past readings (its "historical" API is last year's monthly averages by weekday and
@@ -11,7 +13,10 @@
  * from an independent hourly archive of the same feed, scripts/border-backfill.mjs). The permanent
  * archive is the site's: the snapshot copies the readings into border-waits/*.csv, and this keeps
  * only the last BORDER_BUFFER_DAYS.
- * It lists ~85 ports; about 50 have commercial lanes, and only those are kept. Each port's officers
+ * It lists ~85 ports; about 50 have commercial lanes, and those make the truck board. The same feed
+ * has the car lanes (standard, SENTRI / NEXUS, Ready) and pedestrian lanes (standard, Ready) at ~80
+ * ports; those readings go to border_people the same way (toPeople), for the site's archive only:
+ * no live board reads them, so they cost one more statement per tick and nothing else. Each port's officers
  * post a reading roughly once an hour ("At 10:00 am CDT"), standard and FAST lanes together.
  *
  * Both cron ticks (:17 and :47) read the feed. A reading is stored once, keyed on the port and the
@@ -103,10 +108,30 @@ export function toPorts(feed) {
   return out;
 }
 
+/* The feed -> one reading per port of its car and pedestrian lanes, for the archive:
+   [port, at, dow, hour, car std, lanes, car SENTRI, lanes, car Ready, lanes, walk std, lanes, walk Ready, lanes].
+   The officers post every lane at once; the time is the first lane's that has one. */
+const PEOPLE_LANES = [["passenger_vehicle_lanes", "standard_lanes"], ["passenger_vehicle_lanes", "NEXUS_SENTRI_lanes"],
+  ["passenger_vehicle_lanes", "ready_lanes"], ["pedestrian_lanes", "standard_lanes"], ["pedestrian_lanes", "ready_lanes"]];
+const PEOPLE_COLUMNS = Array.from({ length: 14 }, (_, i) => `json_extract(value, '$[${i}]')`).join(", ");
+export function toPeople(feed) {
+  const out = [];
+  for (const x of Array.isArray(feed) ? feed : []) {
+    if (!x || x.port_status !== "Open") continue;
+    if (!num((x.passenger_vehicle_lanes || {}).maximum_lanes) && !num((x.pedestrian_lanes || {}).maximum_lanes)) continue;
+    const lanes = PEOPLE_LANES.map(([g, k]) => lane((x[g] || {})[k]));
+    if (lanes.every((l) => l.delay == null)) continue;
+    const r = posted(x.date, x.time, clock((lanes.find((l) => l.update) || {}).update));
+    if (r) out.push([String(x.port_number), r.at, r.dow, r.hour, ...lanes.flatMap((l) => [l.delay, l.lanes])]);
+  }
+  return out;
+}
+
 export async function borderTick(env) {
   const r = await fetch(CBP, { headers: { "User-Agent": "juantorresmi.github.io border board" } });
   if (!r.ok) throw new Error("CBP said: status " + r.status);
-  const ports = toPorts(await r.json());
+  const feed = await r.json();
+  const ports = toPorts(feed), people = toPeople(feed);
   if (!ports.length) throw new Error("CBP sent no ports");
 
   const readings = ports
@@ -121,8 +146,11 @@ export async function borderTick(env) {
     SELECT json_extract(value, '$[0]'), json_extract(value, '$[1]'), json_extract(value, '$[2]'), json_extract(value, '$[3]'),
       json_extract(value, '$[4]'), json_extract(value, '$[5]'), json_extract(value, '$[6]'), json_extract(value, '$[7]')
     FROM json_each(?1)`).bind(JSON.stringify(readings)));
+  if (people.length) stmts.push(env.DB.prepare(`INSERT OR IGNORE INTO border_people (port, at, dow, hour, car_std, car_std_lanes,
+      car_sentri, car_sentri_lanes, car_ready, car_ready_lanes, walk_std, walk_std_lanes, walk_ready, walk_ready_lanes)
+    SELECT ${PEOPLE_COLUMNS} FROM json_each(?1)`).bind(JSON.stringify(people)));
   await env.DB.batch(stmts);
-  return { ports: ports.length, readings: readings.length };
+  return { ports: ports.length, readings: readings.length, people: people.length };
 }
 
 /* GET /border: what the last tick saw. */
@@ -148,10 +176,26 @@ export async function borderReadings(env, since) {
   };
 }
 
+/* GET /border/people/readings?since=YYYY-MM-DD: the same for the car and pedestrian lanes. */
+export async function borderPeopleReadings(env, since) {
+  const [rows, oldest] = await env.DB.batch([
+    env.DB.prepare(`SELECT port, at, car_std, car_std_lanes, car_sentri, car_sentri_lanes, car_ready, car_ready_lanes,
+      walk_std, walk_std_lanes, walk_ready, walk_ready_lanes FROM border_people WHERE at >= ?1 ORDER BY at, port`).bind(since),
+    env.DB.prepare("SELECT MIN(at) AS at FROM border_people"),
+  ]);
+  return {
+    since, oldest: (oldest.results[0] || {}).at || null, buffer_days: BORDER_BUFFER_DAYS,
+    readings: rows.results.map((r) => [r.port, r.at, r.car_std, r.car_std_lanes, r.car_sentri, r.car_sentri_lanes, r.car_ready,
+      r.car_ready_lanes, r.walk_std, r.walk_std_lanes, r.walk_ready, r.walk_ready_lanes]),
+    updated: new Date().toISOString(),
+  };
+}
+
 /* Once a day: drop readings older than the buffer. By then the snapshot (at least daily) has copied
    them to the site's archive many times over; the buffer only has to outlast a run of failed snapshots. */
 export async function borderPrune(env, now = new Date()) {
   const cut = new Date(now.getTime() - BORDER_BUFFER_DAYS * 86400000).toISOString().slice(0, 10);
-  const r = await env.DB.prepare("DELETE FROM border_waits WHERE at < ?1").bind(cut).run();
-  return { cut, deleted: r.meta.changes };
+  const [a, b] = await env.DB.batch([env.DB.prepare("DELETE FROM border_waits WHERE at < ?1").bind(cut),
+    env.DB.prepare("DELETE FROM border_people WHERE at < ?1").bind(cut)]);
+  return { cut, deleted: a.meta.changes, people_deleted: b.meta.changes };
 }

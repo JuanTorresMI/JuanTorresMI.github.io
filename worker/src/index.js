@@ -7,6 +7,7 @@
  *   GET /youtube   the channel: { channel, stats, recent, history, updated } (see youtube.js)
  *   GET /reefer, /reefer?week=YYYY-MM-DD   USDA reefer truck rates, any week, asked of USDA (see reefer.js)
  *   GET /border, /border/readings?since=D   truck waits at the land border now; the readings buffer (see border.js)
+ *   GET /border/people/readings?since=D     the car and pedestrian lanes' readings buffer, for the site's archive
  *   GET /beef      USDA's newest boxed beef report: the cutout and every cut's price (see beef.js)
  *   GET /pork      USDA's newest pork report: the carcass cutout, primals and every cut (see pork.js)
  *   GET, POST /refresh   start the site's snapshot workflow, at most once an hour (see refresh.js)
@@ -23,7 +24,7 @@
 import { catalog, CATALOG_MAX_AGE, visits, guestbook, sign, unsign, Refused } from "./music.js";
 import { poll, snapshot, YOUTUBE_MAX_AGE } from "./youtube.js";
 import { reeferWeek, REEFER_MAX_AGE, REEFER_WEEK_MAX_AGE } from "./reefer.js";
-import { borderTick, borderNow, borderReadings, borderPrune, BORDER_MAX_AGE } from "./border.js";
+import { borderTick, borderNow, borderReadings, borderPeopleReadings, borderPrune, BORDER_MAX_AGE } from "./border.js";
 import { beefTick, beefData, BEEF_MAX_AGE } from "./beef.js";
 import { porkTick, porkData, PORK_MAX_AGE } from "./pork.js";
 import { refreshState, startSnapshot, snapshotDue, setPending, isPending } from "./refresh.js";
@@ -52,7 +53,7 @@ export default {
     if (request.method !== "GET") return json({ error: "GET only" }, 405, cors);
     if (route === "/youtube") return youtubeRoute(env, ctx, url, cors);
     if (route === "/reefer") return reeferRoute(env, ctx, url, cors);
-    if (route === "/border" || route === "/border/readings") return borderRoute(env, ctx, route, url, cors);
+    if (route === "/border" || route === "/border/readings" || route === "/border/people/readings") return borderRoute(env, ctx, route, url, cors);
     if (route === "/beef") return latestRoute(env, ctx, url, cors, "beef", beefData, BEEF_MAX_AGE);
     if (route === "/pork") return latestRoute(env, ctx, url, cors, "pork", porkData, PORK_MAX_AGE);
     if (route === "/usage") return usageRoute(env, ctx, url, cors);
@@ -273,11 +274,11 @@ async function reeferRoute(env, ctx, url, cors) {
 /* ---------------------------------------------------------- the border wait board ---- */
 
 async function borderRoute(env, ctx, route, url, cors) {
-  const since = route === "/border/readings" ? String(url.searchParams.get("since") || "") : null;
+  const since = route.endsWith("/readings") ? String(url.searchParams.get("since") || "") : null;
   if (since !== null && !/^\d{4}-\d{2}-\d{2}$/.test(since)) return json({ error: "Give a date, like ?since=2026-10-01" }, 400, cors);
   // The buffer is the snapshot's alone and changes every half hour: never kept at the edge.
   if (since !== null) {
-    try { return json(await borderReadings(env, since), 200, { ...cors, "Cache-Control": "no-store" }); }
+    try { return json(await (route === "/border/readings" ? borderReadings : borderPeopleReadings)(env, since), 200, { ...cors, "Cache-Control": "no-store" }); }
     catch (e) { console.error("border readings:", e && e.message ? e.message : e); return json({ error: e.message || String(e) }, 502, cors); }
   }
   const cache = caches.default, cacheKey = new Request(url.origin + "/__cache" + route);

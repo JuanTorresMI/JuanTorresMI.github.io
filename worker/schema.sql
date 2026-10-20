@@ -48,6 +48,23 @@ CREATE TABLE IF NOT EXISTS border_waits (
   PRIMARY KEY (port, at)
 ) WITHOUT ROWID;
 
+-- The same feed's car and pedestrian lanes (src/border.js, toPeople), one row per port per posted
+-- reading, for the site's archive (border-waits/border-car-pedestrian-wait-readings-YYYY.csv). The same
+-- 14-day buffer and rules: NULL is unknown. Lanes: standard, SENTRI / NEXUS and Ready for cars,
+-- standard and Ready on foot.
+CREATE TABLE IF NOT EXISTS border_people (
+  port             TEXT NOT NULL,
+  at               TEXT NOT NULL,
+  dow              INTEGER NOT NULL,
+  hour             INTEGER NOT NULL,
+  car_std          INTEGER, car_std_lanes    INTEGER,
+  car_sentri       INTEGER, car_sentri_lanes INTEGER,
+  car_ready        INTEGER, car_ready_lanes  INTEGER,
+  walk_std         INTEGER, walk_std_lanes   INTEGER,
+  walk_ready       INTEGER, walk_ready_lanes INTEGER,
+  PRIMARY KEY (port, at)
+) WITHOUT ROWID;
+
 CREATE TABLE IF NOT EXISTS border_latest (
   id         INTEGER PRIMARY KEY CHECK (id = 1),   -- one row: the board as the last poll saw it
   body       TEXT NOT NULL,                        -- the JSON GET /border serves

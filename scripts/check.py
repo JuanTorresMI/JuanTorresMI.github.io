@@ -174,6 +174,9 @@ PUBLISHED = {
     "border-waits/border-truck-wait-readings-2026.csv": "port_number,posted_local,standard_wait_min,standard_lanes_open,fast_wait_min,fast_lanes_open,source",
     "border-waits/border-truck-wait-times.csv": "port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,window_days,as_of",
     "border-waits/cbp-published-averages.csv": "port_number,month,weekday,hour_local,standard_avg_min,fast_avg_min,retrieved",
+    "border-waits/border-car-pedestrian-wait-readings-2026.csv": "port_number,posted_local,car_standard_wait_min,car_standard_lanes_open,car_sentri_wait_min,car_sentri_lanes_open,car_ready_wait_min,car_ready_lanes_open,pedestrian_standard_wait_min,pedestrian_standard_lanes_open,pedestrian_ready_wait_min,pedestrian_ready_lanes_open,source",
+    "border-waits/border-car-pedestrian-wait-times.csv": "port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readings,window_days,as_of",
+    "border-waits/cbp-published-car-pedestrian-averages.csv": "port_number,month,weekday,hour_local,car_standard_avg_min,car_sentri_avg_min,car_ready_avg_min,pedestrian_standard_avg_min,pedestrian_ready_avg_min,retrieved",
 }
 for path, header in PUBLISHED.items():
     f = os.path.join(site, path)
