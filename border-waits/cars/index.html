@@ -1,0 +1,174 @@
+---
+layout: tool
+app_auto: true
+app_wrap: page
+title: Border wait times for cars and pedestrians
+app_name: Border waits, cars and walking
+seo_title: "Border Wait Times Now: Cars, SENTRI, Pedestrians · Mexico, Canada"
+permalink: /border-waits/cars/
+description: How long the line is at every U.S. land border crossing right now, by car, SENTRI or NEXUS, Ready Lane and on foot, and the usual wait at each hour of the week, from CBP.
+image: /assets/og/border-waits-cars.png
+image_alt: "Border wait times for cars and pedestrians, by Juan Torres. CBP's car, SENTRI, Ready Lane and pedestrian waits, now and by hour."
+translation: /es/tiempos-de-espera/autos/
+translations_live: true
+---
+{%- comment -%}
+  The car and pedestrian twin of /border-waits/ (a "work" page, the reefer board's rate-sheet style,
+  .rb .bw in style.css). Drawn from site.data.live.border_people, the copy scripts/snapshot.py makes of
+  the readings archive (border-waits/border-car-pedestrian-wait-readings-*.csv) and CBP's feed as the
+  snapshot read it. border-waits/people.js refreshes the "right now" cells straight from CBP's feed;
+  everything else is the copy. Crossing pages: _layouts/border-people.html.
+{%- endcomment -%}
+{%- assign b = site.data.live.border_people -%}
+{%- assign t = site.data.border_text.en -%}
+{%- assign cols = "car_standard,car_sentri,car_ready,pedestrian_standard,pedestrian_ready" | split: "," -%}
+<div class="rb bw">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family">Work · Border waits</p>
+    <h1>Border wait times for cars and pedestrians</h1>
+    <p class="rb-sub">How long the line is to enter the United States at every land border crossing with Mexico and Canada, by car, in the SENTRI or NEXUS lanes, in the Ready Lane and on foot, as U.S. Customs and Border Protection posts it, and how long it usually is at each hour of the week. CBP only shows the wait right now; the history here is kept from every reading.</p>
+    <p class="bw-lang"><a href="/es/tiempos-de-espera/autos/" hreflang="es" lang="es">En español: las garitas y puentes con México →</a> · <a href="/border-waits/">Truck waits →</a></p>
+  </div>
+  {%- if b.ports %}
+  <dl class="rb-stamp">
+    <div><dt>As of</dt><dd id="bw-asof">{{ b.as_of_en }}</dd></div>
+    <div><dt>Crossings reporting</dt><dd id="bw-reporting">{{ b.reporting }} of {{ b.total }}</dd></div>
+    {%- if b.longest %}{% assign l = b.ports[b.longest] %}<div><dt>Longest car line</dt><dd id="bw-longest">{{ l.now[l.car].en }} <span>{{ l.name }}</span></dd></div>{% endif %}
+  </dl>
+  {%- endif %}
+</header>
+
+{% if b.ports %}
+<nav class="rb-jump" aria-label="Sections on this page">
+  <a href="#mexico">Mexican border</a>
+  <a href="#canada">Canadian border</a>
+  <a href="#busiest">Longest usual lines</a>
+  <a href="#crossings">Crossing pages</a>
+  <a href="#how-it-works">How it works</a>
+</nav>
+<p class="rb-note bw-copy" id="bw-copy">Copied {{ b.as_of_en }}. With JavaScript on, the waits below refresh from CBP when the page opens. “Posted” is the port’s local time.</p>
+<p class="bw-quick"><span>Go straight to:</span>{% assign quick = site.border_people | sort: "title" %}{% for d in quick %}{% assign p = b.ports[d.port] %} <a href="{{ d.url }}">{{ p.name | default: d.title }}</a>{% endfor %}</p>
+
+{%- assign groups = "mexico,canada" | split: "," %}
+{%- for g in groups %}
+<section class="rb-sec" id="{{ g }}" aria-labelledby="{{ g }}-h">
+  <h2 id="{{ g }}-h">{% if g == "mexico" %}Mexican border{% else %}Canadian border{% endif %}: the wait right now</h2>
+  <p>{% if g == "mexico" %}Entering the U.S. from Mexico. SENTRI is CBP’s trusted-traveler lane; the Ready Lane is for travelers whose documents have an RFID chip (a passport card, a border crossing card, an enhanced license).{% else %}Entering the U.S. from Canada. NEXUS is the trusted-traveler lane; the Ready Lane is for RFID documents.{% endif %} “Closed” and “Pending” mean CBP posted no wait for that lane; a blank means the crossing has no such lane. The averages leave closed hours out rather than counting them as zero.</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack bw-board">
+      <thead><tr><th scope="col">Crossing</th>{% for k in cols %}<th scope="col">{% if g == "canada" %}{{ t.cols[k] | replace: "SENTRI", "NEXUS" }}{% else %}{{ t.cols[k] }}{% endif %}</th>{% endfor %}<th scope="col">Usual by car</th><th scope="col">Posted</th></tr></thead>
+      <tbody>
+      {%- for k in b[g] %}{% assign p = b.ports[k] %}
+        <tr data-port="{{ k }}"{% if p.car %} data-hot="{{ p.car }}"{% endif %}{% if p.car %}{% assign cv = p.now[p.car].v %}{% if cv != nil %}{% if cv >= 60 %} class="rb-hot"{% endif %}{% endif %}{% endif %}>
+          <th scope="row">{% if p.slug %}<a href="/border-waits/cars/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}</th>
+          {%- for c in cols %}{% assign w = p.now[c] %}
+          <td data-label="{{ t.lanes[c] | replace: 'SENTRI', p.sentri }}"{% if w %} data-now="{{ c }}"{% endif %}>{% if w %}{{ w.en }}{% endif %}</td>
+          {%- endfor %}
+          {%- assign u = p.usual[p.car] %}
+          <td data-label="Usual by car">{% if u.avg != nil %}{{ u.avg }} min{% if u.src == "cbp" %} <span class="bw-alias">CBP</span>{% endif %}{% else %}—{% endif %}</td>
+          <td data-label="Posted" data-now="posted">{{ p.posted_en | default: "—" }}{% if p.stale %} <span class="bw-stale">old reading</span>{% endif %}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{%- endfor %}
+
+<section class="rb-sec" id="busiest" aria-labelledby="busiest-h">
+  <h2 id="busiest-h">Where the lines are usually longest</h2>
+  <p>The crossings with the longest average wait in their main car lanes over the last 30 days, and the hours that are usually worst and best at each. “Main” is the car lane with the most readings, usually the standard lanes.</p>
+  <table class="rb-t rb-stack">
+    <thead><tr><th scope="col">Crossing</th><th scope="col">Average by car</th><th scope="col">Usually worst</th><th scope="col">Usually best</th></tr></thead>
+    <tbody>
+    {%- for k in b.busiest %}{% assign p = b.ports[k] %}{% assign u = p.d[p.car] | default: p.ly[p.car] %}
+      <tr><th scope="row">{% if p.slug %}<a href="/border-waits/cars/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %} <span class="bw-alias">{{ t.lanes[p.car] | replace: "SENTRI", p.sentri }}</span></th><td data-label="Average by car">{{ u.avg }} min</td><td data-label="Usually worst">{% if u.worst %}{{ t.short[u.worst.dow] }} {{ t.hours[u.worst.hour] }}, {{ u.worst.v }} min{% else %}—{% endif %}</td><td data-label="Usually best">{% if u.best %}{{ t.short[u.best.dow] }} {{ t.hours[u.best.hour] }}, {{ u.best.v }} min{% else %}—{% endif %}</td></tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- if b.walking.size > 0 %}
+  <h3 class="bf-h3">On foot <span>Longest average pedestrian wait, last 30 days</span></h3>
+  <table class="rb-t rb-stack">
+    <thead><tr><th scope="col">Crossing</th><th scope="col">Average on foot</th><th scope="col">Usually worst</th><th scope="col">Usually best</th></tr></thead>
+    <tbody>
+    {%- for k in b.walking %}{% assign p = b.ports[k] %}{% assign u = p.d[p.ped] | default: p.ly[p.ped] %}
+      <tr><th scope="row">{% if p.slug %}<a href="/border-waits/cars/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}</th><td data-label="Average on foot">{{ u.avg }} min</td><td data-label="Usually worst">{% if u.worst %}{{ t.short[u.worst.dow] }} {{ t.hours[u.worst.hour] }}, {{ u.worst.v }} min{% else %}—{% endif %}</td><td data-label="Usually best">{% if u.best %}{{ t.short[u.best.dow] }} {{ t.hours[u.best.hour] }}, {{ u.best.v }} min{% else %}—{% endif %}</td></tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="crossings" aria-labelledby="crossings-h">
+  <h2 id="crossings-h">Crossing pages</h2>
+  <p>The busiest crossings each have a page: every lane’s wait right now, a heat map of the usual wait by day and hour for cars and on foot, the best time to cross, and the last week of readings.</p>
+  <ul class="rb-index">
+    {%- assign pages = site.border_people | sort: "title" %}
+    {%- for d in pages %}{% assign p = b.ports[d.port] %}<li><a href="{{ d.url }}">{{ p.name | default: d.title }}</a></li>{% endfor %}
+  </ul>
+  <h3 lang="es">En español</h3>
+  <ul class="rb-index" lang="es">
+    <li><a href="/es/tiempos-de-espera/autos/" hreflang="es">Todas las garitas y puentes con México</a></li>
+    {%- assign es_pages = site.border_people_es | sort: "title" %}
+    {%- for d in es_pages %}{% assign p = b.ports[d.port] %}<li><a href="{{ d.url }}" hreflang="es">{{ p.es.short | default: d.title }}</a></li>{% endfor %}
+  </ul>
+  <h3>Download the data</h3>
+  <p>Every reading the board has, kept for good ({{ b.readings }} so far): one file per year, each reading with the time the port posted it, the wait and lanes open in each of the five lanes, and whether this site’s Worker caught it (<code>worker</code>) or it came from the archive that filled in the weeks before (<code>archive</code>). Beside it, the 30-day averages by crossing, lane, weekday and hour, and every month of averages CBP has published for these lanes.</p>
+  <p>{% for f in b.files %}<a class="rb-btn" href="{{ f.url }}" download>Every reading, {{ f.year }} (CSV)</a> {% endfor %}<a class="rb-btn" href="/border-waits/border-car-pedestrian-wait-times.csv" download>The 30-day averages (CSV)</a> <a class="rb-btn" href="/border-waits/cbp-published-car-pedestrian-averages.csv" download>CBP’s published averages (CSV)</a></p>
+</section>
+{% else %}
+<p class="rb-empty">The first readings haven’t been collected yet.</p>
+{% endif %}
+</div>
+
+<section class="sec" id="how-it-works">
+  <header class="sec-head"><h2>How it works</h2>{% if b.ports %}<span class="label">Copied {{ b.as_of_en }}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+      <p>At every land port, CBP officers post how long each line is, about once an hour, to the agency’s <a href="https://bwt.cbp.gov/">Border Wait Times</a> site: the car lanes (standard, SENTRI or NEXUS, and Ready Lane) and the pedestrian lanes (standard and Ready Lane). It’s the best public number there is, but it’s only ever the number right now. This board keeps every reading, so it can say what a crossing is usually like on a Friday at 6 PM.</p>
+      <ol>
+        <li><strong>A Cloudflare Worker reads CBP every half hour.</strong> The same small Worker behind the <a href="/border-waits/">truck wait board</a> reads CBP’s public feed (no key needed) and keeps each port’s car and pedestrian readings once, with the time the port posted them, in the port’s own clock.</li>
+        <li><strong>Each reading is kept for good.</strong> The Worker holds the last two weeks; every time the site is rebuilt they’re added to its permanent archive, CSV files in this site’s repository (below). Nothing is kept anywhere else.</li>
+        <li><strong>The record reaches back before the Worker.</strong> CBP keeps no past readings. The Worker began keeping these lanes on October 20, 2026; the readings from September 13 to then come from an independent public archive that saved CBP’s whole feed about once an hour (<a href="https://github.com/gptcbp/border-crossing-data">gptcbp/border-crossing-data</a>), read with the same code. That archive missed some hours, so those weeks rest on fewer readings.</li>
+        <li><strong>Unknown is not zero.</strong> When lanes are closed or the update is pending, CBP posts no wait. Those are stored as blanks, not as zero minutes, and averages skip them. A lane a crossing doesn’t have is left blank too.</li>
+        <li><strong>The averages are the last 30 days.</strong> For each crossing, each lane, each day of the week and each hour, the pages show the average posted wait, once a lane has at least two days of readings. Until then they show CBP’s own published averages for {{ b.month_en | default: "this month" }}, from the year before, labeled as CBP’s.</li>
+        <li><strong>The pages are rebuilt at least once a day,</strong> so every number is in the HTML. The “right now” columns also refresh from CBP’s feed when the page opens: your browser asks CBP directly.</li>
+      </ol>
+      <p>How to read it: <strong>Cars</strong> is the general lanes for passenger vehicles. <strong>SENTRI</strong> (on the Mexican border) and <strong>NEXUS</strong> (on the Canadian) are CBP’s trusted-traveler programs, with lanes of their own. The <strong>Ready Lane</strong> is for travelers whose every passenger carries an RFID-enabled document. <strong>Walking</strong> is the pedestrian line. The wait is CBP’s, rounded the way CBP rounds it; “no wait” is CBP’s “no delay”.</p>
+      <p>Source: U.S. Customs and Border Protection, Border Wait Times; readings from September 13 to October 20, 2026 as saved by <a href="https://github.com/gptcbp/border-crossing-data">gptcbp/border-crossing-data</a>. The numbers are public; any mistakes in presenting them are mine. The Worker’s code is in the <a href="https://github.com/JuanTorresMI/JuanTorresMI.github.io/tree/main/worker">worker folder</a> of this site’s repository.</p>
+    </div>
+  </div>
+</section>
+
+{% if b.ports %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "@id": "{{ page.url | absolute_url }}#dataset",
+  "name": "Car and pedestrian wait times at U.S. land border crossings, by lane, day and hour",
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "keywords": ["border wait times", "San Ysidro wait time", "border crossing wait times", "SENTRI wait time", "Ready Lane", "pedestrian border wait", "CBP border wait times", "NEXUS"],
+  "temporalCoverage": "{{ b.since_iso }}/{{ b.as_of_iso }}",
+  "spatialCoverage": { "@type": "Place", "name": "U.S. land ports of entry on the Mexican and Canadian borders" },
+  "variableMeasured": ["Wait (minutes) in the car lanes (standard, SENTRI or NEXUS, Ready Lane) and pedestrian lanes (standard, Ready Lane), by weekday and local hour", "Lanes open", "Number of readings"],
+  "isBasedOn": "https://bwt.cbp.gov/",
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "creator": [
+    { "@type": "Organization", "name": "U.S. Customs and Border Protection", "url": "https://www.cbp.gov/" },
+    { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
+  ],
+  "distribution": [
+    {%- for f in b.files %}{ "@type": "DataDownload", "name": {{ f.year | prepend: "Every reading, " | jsonify }}, "encodingFormat": "text/csv", "contentUrl": {{ f.url | absolute_url | jsonify }} },{% endfor %}
+    { "@type": "DataDownload", "name": "The 30-day averages", "encodingFormat": "text/csv", "contentUrl": {{ "/border-waits/border-car-pedestrian-wait-times.csv" | absolute_url | jsonify }} },
+    { "@type": "DataDownload", "name": "CBP's published averages", "encodingFormat": "text/csv", "contentUrl": {{ "/border-waits/cbp-published-car-pedestrian-averages.csv" | absolute_url | jsonify }} }
+  ],
+  "dateModified": {{ b.as_of_iso | jsonify }}
+}
+</script>
+<script>window.BW = { lang: "en", words: {{ t | jsonify }} };</script>
+<script src="/border-waits/people.js?v={{ site.time | date: '%s' }}" defer></script>
+{% endif %}

@@ -157,6 +157,27 @@
   search: [border wait times, truck border wait times, commercial border crossing wait, CBP border wait times, Laredo bridge wait times, Otay Mesa commercial wait time]
   keywords: [border, wait times, cbp]
 
+- slug: border-waits-cars
+  family: Work
+  title: Border Waits for Cars and Pedestrians
+  url: /border-waits/cars/
+  guide: /border-waits/cars/#how-it-works
+  kind: Data
+  status: Live
+  short: How long the line is at every U.S. land border crossing right now, by car, SENTRI or NEXUS, Ready Lane and on foot, and how long it usually is at each hour of the week.
+  summary: >-
+    The same CBP feed as the truck board also posts the car lanes (standard, SENTRI or NEXUS, Ready
+    Lane) and the pedestrian lanes at about 70 crossings, and keeps none of it. The Worker keeps every
+    reading, with closed lanes stored as unknown rather than zero, and the site builds from that record
+    a board of every crossing, a page per major crossing with heat maps of the usual wait by car and on
+    foot, Spanish pages for the garitas and bridges on the Mexican border, and the whole archive as CSVs.
+    The "right now" numbers come straight from CBP in the reader's browser, so the pages cost the Worker nothing.
+  metric: Every 30 minutes · about 70 crossings · 5 lanes · English and Spanish · CSV download
+  stack: [JavaScript, Python, Cloudflare Workers, D1 (SQLite), CBP Border Wait Times, GitHub Actions]
+  category: WebApplication
+  search: [border wait times, San Ysidro wait time, Tijuana border wait time, SENTRI wait time, pedestrian border wait time, El Paso bridge wait times, tiempo de espera garita]
+  keywords: [border, wait times, cbp, pedestrian, sentri]
+
 - slug: beef-prices
   family: Work
   title: Boxed Beef Prices

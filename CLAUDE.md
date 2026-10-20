@@ -146,8 +146,14 @@ that grows without a trim and a CSV that keeps it.
   The same feed's **car and pedestrian lanes** are archived too (D1 `border_people`, 14 days, the
   `border_people` job in `snapshot.py`): `border-car-pedestrian-wait-readings-YYYY.csv` (from Sep 13, the
   early part from the same independent archive), their 30-day averages, and CBP's published averages for
-  them (CBP lists a lane a port doesn't have as "N/A" and averages it as 0; that's kept blank). No page
-  shows them yet.
+  them (CBP lists a lane a port doesn't have as "N/A" and averages it as 0; that's kept blank). They make
+  the **car and pedestrian board** (`/border-waits/cars/`, a page per major crossing, and a Spanish page
+  under `/es/tiempos-de-espera/autos/` for each Mexico crossing): `_data/live/border_people.json`, the stubs
+  in `_border_people/` and `_border_people_es/` (never deleted), crossings and slugs in
+  `_data/border_people_crossings.json` (never change a slug once live), `_layouts/border-people.html`.
+  Its "right now" is `border-waits/people.js`, which reads CBP's feed straight from the browser (CBP allows
+  any origin), so these pages cost the Worker nothing; keep it that way while the Worker's CPU is tight.
+  SENTRI is NEXUS on the Canadian border: lane names swap the word for the port's `sentri`.
 - **The beef board (`/beef-prices/`, one page per cut, primal and ground beef item)**: built
   from `_data/live/beef.json`. The source is USDA's LM_XB403 report (boxed beef cutout and cuts,
   negotiated sales, afternoon), from the LMR datamart, which needs no key and serves any date range,

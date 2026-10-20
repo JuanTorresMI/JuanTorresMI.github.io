@@ -30,6 +30,8 @@ on purpose. This README is the overview.
 | `/reefer-rates/`, `/reefer-rates/<lane>/` | USDA's weekly reefer truck rates, a page per lane | Work | `_data/live/reefer.json` |
 | `/border-waits/`, `/border-waits/<crossing>/` | CBP truck waits at the land border, now and by hour | Work | `_data/live/border.json`, plus the Worker for "right now" |
 | `/es/tiempos-de-espera/`, `…/<cruce>/` | The same for the Mexico crossings, in Spanish | Work | `_data/live/border.json` |
+| `/border-waits/cars/`, `/border-waits/cars/<crossing>/` | CBP car (standard, SENTRI / NEXUS, Ready Lane) and pedestrian waits, now and by hour | Work | `_data/live/border_people.json`, plus CBP's feed read by the browser for "right now" |
+| `/es/tiempos-de-espera/autos/`, `…/<garita>/` | The same for the Mexico crossings, in Spanish | Work | `_data/live/border_people.json` |
 | `/beef-prices/`, `/beef-prices/<cut>/` | USDA's daily boxed beef cutout and the price of every cut, a page per cut | Work | `_data/live/beef.json` (history from USDA's own archive), plus the Worker for a report posted since the last rebuild |
 | `/pork-prices/`, `/pork-prices/<cut>/` | USDA's daily pork cutout, the six primals and every pork cut, a page per cut | Work | `_data/live/pork.json` (from USDA's archive), plus the Worker's `/pork` for a report posted since the last rebuild |
 | `/fed-cattle-prices/`, `/fed-cattle-prices/<region>/` | What packers pay for fed cattle each week, 5-area and by region, live and dressed | Work | `_data/live/cattle.json` (from USDA's archive; no Worker) |
@@ -102,7 +104,7 @@ changes. Each January adds a new `-YYYY.csv` beside last year's (add it to `PUBL
 | `_includes/` | `head.html` (titles, meta tags, structured data, for every page), the nav, footer and project bar, the border heat map |
 | `_layouts/` | `default` (ordinary pages), `post`, `app` (full-width projects), `tool` (the app layout: a top bar, a rail of the page's sections shown one at a time, an optional side panel; the planner, Craft Ledger and every data board use it, with `assets/css/app.css` and `assets/js/app-shell.js`), `solver` (Plain Solver's own app layout), `reefer-lane`, `border-crossing`, `beef-cut`, `pork-cut`, `cattle-region`, `artist` (the music page), `redirect` |
 | `_posts/` | Writing published on this site (`/blog/<slug>/`) |
-| `_reefer_lanes/`, `_border_crossings/`, `_border_crossings_es/`, `_beef_cuts/`, `_beef_cuts_es/`, `_pork_cuts/`, `_pork_cuts_es/`, `_cattle_regions/`, `_cattle_regions_es/` | Front-matter stubs, one per generated page, written by `snapshot.py` |
+| `_reefer_lanes/`, `_border_crossings/`, `_border_crossings_es/`, `_border_people/`, `_border_people_es/`, `_beef_cuts/`, `_beef_cuts_es/`, `_pork_cuts/`, `_pork_cuts_es/`, `_cattle_regions/`, `_cattle_regions_es/` | Front-matter stubs, one per generated page, written by `snapshot.py` |
 | `assets/` | `css/style.css` (the site's stylesheet; `css/app.css` and `js/app-shell.js` are the app layout's), self-hosted fonts, share pictures (`og/`), icons, the résumé PDF and its `.docx` source |
 | `fruit-fly-dispatcher/`, `craft-ledger.html`, `aggregate-planning/`, `plain-solver/` | The browser projects |
 | `reefer-rates/`, `border-waits/`, `es/`, `beef-prices/`, `pork-prices/`, `fed-cattle-prices/`, `usda-market-prices/` | The data boards' index pages and their CSV downloads. The beef, pork and cattle boards are one include each (`_includes/beef-board.html`, `pork-board.html`, `cattle-board.html`), rendered in English or Spanish |

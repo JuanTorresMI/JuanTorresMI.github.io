@@ -44,6 +44,10 @@ defaults:
     values: { layout: border-crossing, lang: en, translations_live: true, parent: { title: Border truck wait times, url: /border-waits/ }, image: /assets/og/border-waits.png, image_alt: "Border truck wait times, by Juan Torres. CBP's commercial lane waits, now and by hour." }
   - scope: { path: "", type: border_crossings_es }
     values: { layout: border-crossing, lang: es, translations_live: true, parent: { title: Tiempos de espera en la frontera, url: /es/tiempos-de-espera/ }, image: /assets/og/border-waits.png, image_alt: "Tiempos de espera para camiones en la frontera, por Juan Torres." }
+  - scope: { path: "", type: border_people }
+    values: { layout: border-people, lang: en, translations_live: true, parent: { title: Border wait times for cars and pedestrians, url: /border-waits/cars/ }, image: /assets/og/border-waits-cars.png, image_alt: "Border wait times for cars and pedestrians, by Juan Torres. CBP's car, SENTRI, Ready Lane and pedestrian waits, now and by hour." }
+  - scope: { path: "", type: border_people_es }
+    values: { layout: border-people, lang: es, translations_live: true, parent: { title: Tiempos de espera en autos y a pie, url: /es/tiempos-de-espera/autos/ }, image: /assets/og/border-waits-cars.png, image_alt: "Tiempos de espera en la frontera para autos y peatones, por Juan Torres." }
   # The USDA boards' item pages, in English and Spanish, paired with hreflang through each stub's
   # `translation` (scripts/snapshot.py writes both stubs together).
   - scope: { path: "", type: beef_cuts }
@@ -74,6 +78,15 @@ collections:
   border_crossings_es:
     output: true
     permalink: /es/tiempos-de-espera/:name/
+  # The same for cars and pedestrians: a page per major crossing (/border-waits/cars/<slug>/) and a
+  # Spanish one per Mexico crossing, from _data/border_people_crossings.json; the data is
+  # _data/live/border_people.json.
+  border_people:
+    output: true
+    permalink: /border-waits/cars/:name/
+  border_people_es:
+    output: true
+    permalink: /es/tiempos-de-espera/autos/:name/
   # One page per beef cut, primal and ground beef item (/beef-prices/<slug>/). Front matter only,
   # written by scripts/snapshot.py; names and slugs from _data/beef_cuts.json, the data is
   # _data/live/beef.json.

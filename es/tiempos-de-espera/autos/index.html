@@ -1,0 +1,155 @@
+---
+layout: tool
+app_auto: true
+app_wrap: page
+lang: es
+title: Tiempos de espera en la frontera, en auto y a pie
+app_name: Espera en la frontera, autos y peatones
+seo_title: "Tiempo de espera en las garitas hoy: autos, SENTRI y peatones"
+permalink: /es/tiempos-de-espera/autos/
+description: Cuánto está la fila hoy en cada garita y puente de México a Estados Unidos, en auto, SENTRI, Ready Lane y a pie, y a qué hora suele haber menos fila, con datos de CBP.
+translation: /border-waits/cars/
+translations_live: true
+image: /assets/og/border-waits-cars.png
+image_alt: "Tiempos de espera en la frontera para autos y peatones, por Juan Torres."
+---
+{%- comment -%}
+  The Spanish counterpart of /border-waits/cars/, for the Mexican border only: every crossing's car
+  and pedestrian lines right now, with links to the Spanish crossing pages (_border_people_es/). Same
+  data (site.data.live.border_people) and the same refresh script; paired by hreflang through
+  `translation`. Words follow CBP's own Spanish ("carriles generales", "sin demora"), and the names
+  people use on the Mexican side ("garita", "puente", "la fila").
+{%- endcomment -%}
+{%- assign b = site.data.live.border_people -%}
+{%- assign t = site.data.border_text.es -%}
+{%- assign cols = "car_standard,car_sentri,car_ready,pedestrian_standard,pedestrian_ready" | split: "," -%}
+<div class="rb bw">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family">Trabajo · Espera en la frontera</p>
+    <h1>Tiempos de espera en la frontera, en auto y a pie</h1>
+    <p class="rb-sub">Cuánto está la fila para entrar a Estados Unidos en cada garita y puente de la frontera con México: en auto por los carriles generales, SENTRI o Ready Lane, y a pie, según los tiempos que publica la Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP), y a qué hora suele haber menos fila. CBP solo muestra la espera del momento; este sitio guarda cada lectura.</p>
+    <p class="bw-lang"><a href="/border-waits/cars/" hreflang="en" lang="en">In English: every crossing, Mexico and Canada →</a> · <a href="/es/tiempos-de-espera/">Espera de camiones →</a></p>
+  </div>
+  {%- if b.ports %}
+  <dl class="rb-stamp">
+    <div><dt>Actualizado</dt><dd id="bw-asof">{{ b.as_of_es }}</dd></div>
+    <div><dt>Garitas y puentes</dt><dd>{{ b.mexico.size }}</dd></div>
+  </dl>
+  {%- endif %}
+</header>
+
+{% if b.ports %}
+<p class="rb-note bw-copy" id="bw-copy">Copia del {{ b.as_of_es }}. Con JavaScript activado, las esperas de abajo se actualizan desde CBP al abrir la página. “Publicado” es la hora local del cruce.</p>
+<p class="bw-quick"><span>Ir directo a:</span>{% assign quick = site.border_people_es | sort: "title" %}{% for d in quick %}{% assign p = b.ports[d.port] %} <a href="{{ d.url }}">{{ p.es.short | default: d.title }}</a>{% endfor %}</p>
+
+<section class="rb-sec" id="ahora" aria-labelledby="ahora-h">
+  <h2 id="ahora-h">La fila ahora mismo</h2>
+  <p>Para entrar a Estados Unidos desde México. SENTRI es el programa de viajeros confiables de CBP; el Ready Lane es para quienes llevan un documento con chip RFID (pasaporte en tarjeta, visa láser, licencia mejorada). “Cerrado” y “Pendiente” quieren decir que CBP no publicó una espera para ese carril; no se cuentan como cero. Un espacio en blanco quiere decir que el cruce no tiene ese carril.</p>
+  <div class="rb-scroll">
+    <table class="rb-t rb-stack bw-board">
+      <thead><tr><th scope="col">Cruce</th>{% for k in cols %}<th scope="col">{{ t.cols[k] }}</th>{% endfor %}<th scope="col">Habitual en auto</th><th scope="col">Publicado</th></tr></thead>
+      <tbody>
+      {%- for k in b.mexico %}{% assign p = b.ports[k] %}
+        <tr data-port="{{ k }}"{% if p.car %} data-hot="{{ p.car }}"{% endif %}{% if p.car %}{% assign cv = p.now[p.car].v %}{% if cv != nil %}{% if cv >= 60 %} class="rb-hot"{% endif %}{% endif %}{% endif %}>
+          <th scope="row">{% if p.es %}<a href="/es/tiempos-de-espera/autos/{{ p.es.slug }}/">{{ p.es.short }}</a> <span class="bw-alias">{{ p.es.across | split: "," | first }}</span>{% else %}{{ p.name }}{% endif %}</th>
+          {%- for c in cols %}{% assign w = p.now[c] %}
+          <td data-label="{{ t.lanes[c] }}"{% if w %} data-now="{{ c }}"{% endif %}>{% if w %}{{ w.es }}{% endif %}</td>
+          {%- endfor %}
+          {%- assign u = p.usual[p.car] %}
+          <td data-label="Habitual en auto">{% if u.avg != nil %}{{ u.avg }} min{% if u.src == "cbp" %} <span class="bw-alias">CBP</span>{% endif %}{% else %}—{% endif %}</td>
+          <td data-label="Publicado" data-now="posted">{{ p.posted_es | default: "—" }}{% if p.stale %} <span class="bw-stale">lectura atrasada</span>{% endif %}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="rb-sec" id="mas-fila" aria-labelledby="mas-fila-h">
+  <h2 id="mas-fila-h">Dónde suele haber más fila</h2>
+  <p>Los cruces con la espera promedio más larga en auto en los últimos 30 días, y las horas en que suele ser peor y mejor.</p>
+  <table class="rb-t rb-stack">
+    <thead><tr><th scope="col">Cruce</th><th scope="col">Promedio en auto</th><th scope="col">Suele ser peor</th><th scope="col">Suele ser mejor</th></tr></thead>
+    <tbody>
+    {%- for k in b.busiest %}{% assign p = b.ports[k] %}{% if p.border == "mexico" %}{% assign u = p.d[p.car] | default: p.ly[p.car] %}
+      <tr><th scope="row">{% if p.es %}<a href="/es/tiempos-de-espera/autos/{{ p.es.slug }}/">{{ p.es.short }}</a>{% else %}{{ p.name }}{% endif %} <span class="bw-alias">{{ t.lanes[p.car] }}</span></th><td data-label="Promedio en auto">{{ u.avg }} min</td><td data-label="Suele ser peor">{% if u.worst %}{{ t.short[u.worst.dow] }} {{ t.hours[u.worst.hour] }}, {{ u.worst.v }} min{% else %}—{% endif %}</td><td data-label="Suele ser mejor">{% if u.best %}{{ t.short[u.best.dow] }} {{ t.hours[u.best.hour] }}, {{ u.best.v }} min{% else %}—{% endif %}</td></tr>
+    {%- endif %}{% endfor %}
+    </tbody>
+  </table>
+  {%- if b.walking.size > 0 %}
+  <h3 class="bf-h3">A pie <span>La espera peatonal promedio más larga, últimos 30 días</span></h3>
+  <table class="rb-t rb-stack">
+    <thead><tr><th scope="col">Cruce</th><th scope="col">Promedio a pie</th><th scope="col">Suele ser peor</th><th scope="col">Suele ser mejor</th></tr></thead>
+    <tbody>
+    {%- for k in b.walking %}{% assign p = b.ports[k] %}{% if p.border == "mexico" %}{% assign u = p.d[p.ped] | default: p.ly[p.ped] %}
+      <tr><th scope="row">{% if p.es %}<a href="/es/tiempos-de-espera/autos/{{ p.es.slug }}/">{{ p.es.short }}</a>{% else %}{{ p.name }}{% endif %}</th><td data-label="Promedio a pie">{{ u.avg }} min</td><td data-label="Suele ser peor">{% if u.worst %}{{ t.short[u.worst.dow] }} {{ t.hours[u.worst.hour] }}, {{ u.worst.v }} min{% else %}—{% endif %}</td><td data-label="Suele ser mejor">{% if u.best %}{{ t.short[u.best.dow] }} {{ t.hours[u.best.hour] }}, {{ u.best.v }} min{% else %}—{% endif %}</td></tr>
+    {%- endif %}{% endfor %}
+    </tbody>
+  </table>
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="cruces" aria-labelledby="cruces-h">
+  <h2 id="cruces-h">Página de cada garita y puente</h2>
+  <p>Los cruces con más tráfico tienen su propia página: la espera de cada carril ahora, una tabla de la espera habitual por día y hora en auto y a pie, la mejor hora para cruzar y los cruces cercanos.</p>
+  <ul class="rb-index">
+    {%- for d in quick %}{% assign p = b.ports[d.port] %}<li><a href="{{ d.url }}">{{ p.es.short | default: d.title }}</a> <span class="bw-alias">{{ p.es.across }} – {{ p.es.city }}</span></li>{% endfor %}
+  </ul>
+  <h3>Descargar los datos</h3>
+  <p>Cada lectura, guardada para siempre ({{ b.readings }} hasta ahora), los promedios de 30 días por cruce, carril, día y hora, y los promedios que publica CBP. Los archivos están en inglés.</p>
+  <p>{% for f in b.files %}<a class="rb-btn" href="{{ f.url }}" download>Cada lectura, {{ f.year }} (CSV)</a> {% endfor %}<a class="rb-btn" href="/border-waits/border-car-pedestrian-wait-times.csv" download>Promedios de 30 días (CSV)</a> <a class="rb-btn" href="/border-waits/cbp-published-car-pedestrian-averages.csv" download>Promedios publicados por CBP (CSV)</a></p>
+</section>
+{% else %}
+<p class="rb-empty">Todavía no hay lecturas.</p>
+{% endif %}
+</div>
+
+<section class="sec" id="como-funciona">
+  <header class="sec-head"><h2>Cómo funciona</h2>{% if b.ports %}<span class="label">Copiado el {{ b.as_of_es }}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+      <p>En cada garita y puente, los agentes de CBP publican aproximadamente cada hora cuánto está la fila en cada carril, en el sistema <a href="https://bwt.cbp.gov/">Border Wait Times</a>: para vehículos de pasajeros (carriles generales, SENTRI y Ready Lane) y para peatones (carriles generales y Ready Lane). Es el mejor dato público que hay, pero solo dice cómo está ahora.</p>
+      <ol>
+        <li><strong>Un pequeño servicio en Cloudflare consulta a CBP cada media hora</strong> y guarda cada lectura una sola vez, en la hora local del cruce. CBP no guarda lecturas pasadas; las del 13 de septiembre al 20 de octubre de 2026, antes de que empezara este registro, vienen de un archivo público independiente que guardó el sistema de CBP cada hora (<a href="https://github.com/gptcbp/border-crossing-data">gptcbp/border-crossing-data</a>).</li>
+        <li><strong>Lo desconocido no es cero.</strong> Si un carril está cerrado o la actualización está pendiente, se guarda como dato desconocido; contarlo como cero haría ver más rápido un cruce que cierra seguido.</li>
+        <li><strong>Los promedios son de los últimos 30 días,</strong> por cruce, carril, día de la semana y hora. Donde todavía no hay suficientes lecturas, se muestran los promedios que publica la propia CBP para {{ b.month_es | default: "este mes" }}, con datos del año anterior.</li>
+        <li><strong>La espera de ahora se actualiza al abrir la página:</strong> su navegador la consulta directamente a CBP.</li>
+      </ol>
+      <p>Fuente: Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP); las lecturas del 13 de septiembre al 20 de octubre de 2026, según las guardó <a href="https://github.com/gptcbp/border-crossing-data">gptcbp/border-crossing-data</a>. Los datos son públicos; cualquier error al presentarlos es mío. El <a href="/border-waits/cars/" hreflang="en" lang="en">tablero completo, en inglés</a>, incluye la frontera con Canadá.</p>
+    </div>
+  </div>
+</section>
+
+{% if b.ports %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "@id": "{{ page.url | absolute_url }}#dataset",
+  "name": "Tiempos de espera en auto y a pie en la frontera de México con Estados Unidos, por carril, día y hora",
+  "description": {{ page.description | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "inLanguage": "es",
+  "keywords": ["tiempo de espera garita", "garita de San Ysidro", "fila en la garita", "tiempos de espera en la frontera", "SENTRI", "Ready Lane", "CBP"],
+  "temporalCoverage": "{{ b.since_iso }}/{{ b.as_of_iso }}",
+  "spatialCoverage": { "@type": "Place", "name": "Garitas y puentes de la frontera de México con Estados Unidos" },
+  "variableMeasured": ["Espera (minutos) en los carriles de autos y peatones, por día y hora local", "Carriles abiertos"],
+  "isBasedOn": "https://bwt.cbp.gov/",
+  "isAccessibleForFree": true,
+  "license": "https://www.usa.gov/government-works",
+  "isPartOf": { "@id": "{{ "/border-waits/cars/" | absolute_url }}#dataset" },
+  "creator": [
+    { "@type": "Organization", "name": "U.S. Customs and Border Protection", "url": "https://www.cbp.gov/" },
+    { "@type": "Person", "@id": "{{ site.url }}/#person", "name": {{ site.author | jsonify }}, "url": "{{ site.url }}/" }
+  ],
+  "distribution": [
+    {%- for f in b.files %}{ "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ f.url | absolute_url | jsonify }} },{% endfor %}
+    { "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": {{ "/border-waits/border-car-pedestrian-wait-times.csv" | absolute_url | jsonify }} }
+  ],
+  "dateModified": {{ b.as_of_iso | jsonify }}
+}
+</script>
+<script>window.BW = { lang: "es", words: {{ t | jsonify }} };</script>
+<script src="/border-waits/people.js?v={{ site.time | date: '%s' }}" defer></script>
+{% endif %}

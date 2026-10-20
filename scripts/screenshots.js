@@ -16,6 +16,7 @@ const PAGES = [
   "/fruit-fly-dispatcher/", "/craft-ledger.html", "/aggregate-planning/", "/plain-solver/",
   "/reefer-rates/", "/reefer-rates/south-texas-to-chicago/",
   "/border-waits/", "/border-waits/laredo-world-trade-bridge/", "/es/tiempos-de-espera/", "/es/tiempos-de-espera/laredo-puente-comercio-mundial/",
+  "/border-waits/cars/", "/border-waits/cars/san-ysidro/", "/border-waits/cars/detroit-ambassador-bridge/", "/es/tiempos-de-espera/autos/", "/es/tiempos-de-espera/autos/garita-de-san-ysidro/",
   "/beef-prices/", "/beef-prices/ribeye-boneless-heavy-112a/", "/beef-prices/rib-primal/", "/beef-prices/ground-beef-81/",
   "/es/precios-de-carne-de-res/", "/es/precios-de-carne-de-res/rib-eye-sin-hueso-pesado-112a/",
   "/pork-prices/", "/pork-prices/pork-tenderloin/", "/pork-prices/pork-belly-primal/", "/es/precios-de-cerdo/", "/es/precios-de-cerdo/filete-de-cerdo/",

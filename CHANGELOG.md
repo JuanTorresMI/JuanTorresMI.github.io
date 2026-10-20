@@ -19,6 +19,11 @@ Things waiting on a decision or on Juan, so they aren't lost:
   them to `YEARS` / `PUBLISHED` in `scripts/check.py` and as new URLs on the three Kaggle datasets.
 - **CBP's averages next year**: `cbp-published-averages.csv` gains a new set each year (rows keyed by the
   year they were read), so last year's official figures stay to compare against.
+- **Readings posted ahead of the hour.** Some ports post the coming hour early (San Ysidro showed "At
+  2:00 pm PDT" at 1:28 PM). The Worker's `posted()` treats a time more than 15 minutes past the feed's
+  clock as yesterday's, so the :17 tick can file such a reading a day early; `INSERT OR IGNORE` hides
+  most of it, but a gap hour can get a misdated row (trucks and people both). Widening that to 60
+  minutes in `worker/src/border.js` is a small Worker deploy; the snapshot's display already uses 60.
 - **Two Oct 16 posts** (YouTube, border) still describe the old timing ("once an hour", "twice a
   day"); Juan's call whether to update them.
 
@@ -36,6 +41,25 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **More USDA boards** (Juan wants all of them): next are hogs (LM_HG217/218), lamb (LM_XL502) and cow
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
+
+## 2026-10-20 — The car and pedestrian border board, in English and Spanish
+
+- **`/border-waits/cars/`**: every land crossing's car lines (standard, SENTRI or NEXUS, Ready Lane) and
+  pedestrian lines right now, the crossings with the longest usual lines by car and on foot, and the
+  downloads. **`/es/tiempos-de-espera/autos/`** is the same for the Mexican border, in Spanish.
+- **A page per major crossing** (35: San Ysidro, PedWest, CBX, Otay Mesa, Tecate, both Calexicos, San Luis,
+  both Nogales, Douglas, four El Paso bridges, two Laredo bridges, Hidalgo, Anzalduas, three Brownsville
+  bridges, Eagle Pass, Del Rio and ten on the Canadian border), and a Spanish twin for each of the 25 on
+  the Mexican border, named the way people do there (garita, puente). Each has every lane's wait now,
+  heat maps of the usual wait by day and hour by car and on foot, "when to cross" (the truck pages'
+  `plan.js`), nearby crossings and questions. Slugs are in `_data/border_people_crossings.json`; never change one.
+- **Data**: the `border_people` job in `snapshot.py` now also writes `_data/live/border_people.json`
+  (each lane's 30-day average, best and worst hour and, for the pages, heat maps; CBP's published month
+  until a lane has 48 readings) and the stubs in `_border_people/`, `_border_people_es/`.
+- **"Right now" costs the Worker nothing**: `border-waits/people.js` reads CBP's feed straight from the
+  reader's browser (CBP allows any site, about 9 KB gzipped). No Worker change; its CPU p99 was already
+  over the free plan's 10 ms.
+- Share picture `assets/og/border-waits-cars.png`; the truck boards link to the new ones.
 
 ## 2026-10-20 — Car and pedestrian border waits, archived
 
