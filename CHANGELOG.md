@@ -19,11 +19,6 @@ Things waiting on a decision or on Juan, so they aren't lost:
   them to `YEARS` / `PUBLISHED` in `scripts/check.py` and as new URLs on the three Kaggle datasets.
 - **CBP's averages next year**: `cbp-published-averages.csv` gains a new set each year (rows keyed by the
   year they were read), so last year's official figures stay to compare against.
-- **Readings posted ahead of the hour.** Some ports post the coming hour early (San Ysidro showed "At
-  2:00 pm PDT" at 1:28 PM). The Worker's `posted()` treats a time more than 15 minutes past the feed's
-  clock as yesterday's, so the :17 tick can file such a reading a day early; `INSERT OR IGNORE` hides
-  most of it, but a gap hour can get a misdated row (trucks and people both). Widening that to 60
-  minutes in `worker/src/border.js` is a small Worker deploy; the snapshot's display already uses 60.
 - **Two Oct 16 posts** (YouTube, border) still describe the old timing ("once an hour", "twice a
   day"); Juan's call whether to update them.
 
@@ -60,6 +55,11 @@ Things waiting on a decision or on Juan, so they aren't lost:
   reader's browser (CBP allows any site, about 9 KB gzipped). No Worker change; its CPU p99 was already
   over the free plan's 10 ms.
 - Share picture `assets/og/border-waits-cars.png`; the truck boards link to the new ones.
+- **Worker fix, readings posted ahead of the hour**: some ports post the coming hour early (San Ysidro
+  showed "At 2:00 pm PDT" at 1:28 PM). `posted()` in `worker/src/border.js` took anything more than 15
+  minutes past the feed's clock as yesterday's, so the :17 tick could file such a reading a day early
+  (trucks and people; `INSERT OR IGNORE` hid most, but a gap hour could get a misdated row). The window
+  is now 60 minutes (`POSTED_AHEAD`). Rows already kept are left as they are.
 
 ## 2026-10-20 — Car and pedestrian border waits, archived
 

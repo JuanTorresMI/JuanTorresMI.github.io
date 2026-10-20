@@ -35,6 +35,7 @@ export const BORDER_MAX_AGE = 300;          // the live board: five minutes at t
 // this only holds the readings it hasn't been sure to copy yet (two weeks of failed snapshots).
 export const BORDER_BUFFER_DAYS = 14;
 
+const POSTED_AHEAD = 60;                    // minutes a posted time may run ahead of the feed's clock and still be today's
 const num = (v) => (v == null || v === "" || !/^\d+$/.test(String(v).trim()) ? null : Number(v));
 const pad = (n) => String(n).padStart(2, "0");
 
@@ -62,13 +63,15 @@ const minutesOf = (time) => { const t = /^(\d{1,2}):(\d{2})/.exec(String(time ||
 
 /* The port's local date ("M/D/YYYY": CBP doesn't pad, "10/1/2026") and time ("HH:MM:SS") of the feed, plus the posted clock
    time -> "YYYY-MM-DD HH:MM", the local moment the reading was posted. A posted time later than
-   the feed's own clock was yesterday's (a port that last posted at 11 PM). */
+   the feed's own clock by more than an hour was yesterday's (a port that last posted at 11 PM). Up to
+   an hour ahead is today's: some ports post the coming hour early (San Ysidro says "At 2:00 pm" at
+   1:28), and with a 15-minute window the :17 tick filed those a day early. */
 function posted(date, time, minutes) {
   const d = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(String(date || "").trim());
   const t = /^(\d{1,2}):(\d{2})/.exec(String(time || "").trim());
   if (!d || !t || minutes == null) return null;
   let day = Date.UTC(Number(d[3]), Number(d[1]) - 1, Number(d[2]));
-  if (minutes > Number(t[1]) * 60 + Number(t[2]) + 15) day -= 86400000;
+  if (minutes > Number(t[1]) * 60 + Number(t[2]) + POSTED_AHEAD) day -= 86400000;
   const when = new Date(day + minutes * 60000);
   return {
     at: `${when.getUTCFullYear()}-${pad(when.getUTCMonth() + 1)}-${pad(when.getUTCDate())} ${pad(when.getUTCHours())}:${pad(when.getUTCMinutes())}`,
