@@ -1,0 +1,643 @@
+{
+ "_about": "The open datasets in data/ (scripts/datasets.py keeps them; /data/ lists them). Each is one USDA AMS datamart report, or a few that belong together, archived as published: one CSV per table, every column USDA gives, from 2020. A table merges report sections of the same shape and then has a `section` column. Never rename a dataset slug or a table file once live: they are published addresses (Kaggle pulls them).",
+ "datasets": [
+  {
+   "slug": "usda-hog-prices",
+   "title": "USDA Daily Hog Prices (Barrows and Gilts, by Region)",
+   "title_es": "Precios diarios de cerdo en pie del USDA (por región)",
+   "frequency": "Daily",
+   "unit": "Dollars per hundredweight, carcass basis",
+   "description": "Negotiated and formula prices paid for market hogs (barrows and gilts), from USDA's mandatory price reports: the national afternoon report by region and the prior-day slaughtered swine report with carcass measurements.",
+   "description_es": "Precios negociados y por fórmula pagados por cerdos para abasto (machos castrados y hembras), de los reportes obligatorios del USDA: el reporte nacional de la tarde por región y el reporte de cerdos sacrificados el día anterior con medidas de canal.",
+   "keywords": [
+    "hog prices",
+    "lean hogs",
+    "swine",
+    "pork",
+    "USDA",
+    "livestock"
+   ],
+   "tables": [
+    {
+     "file": "hog-prices-by-region",
+     "report": 2675,
+     "code": "LM_HG203",
+     "date_field": "report_date",
+     "sections": [
+      "National Volume and Price Data",
+      "Iowa/Minnesota Volume and Price Data",
+      "Western Cornbelt Volume and Price Data",
+      "Eastern Cornbelt Volume and Price Data"
+     ]
+    },
+    {
+     "file": "hog-volume-by-purchase-type",
+     "report": 2675,
+     "code": "LM_HG203",
+     "date_field": "report_date",
+     "sections": [
+      "Current Volume by Purchase Type"
+     ]
+    },
+    {
+     "file": "slaughtered-barrows-gilts",
+     "report": 2511,
+     "code": "LM_HG201",
+     "date_field": "report_date",
+     "sections": [
+      "Barrows/Gilts"
+     ]
+    },
+    {
+     "file": "hog-carcass-measurements",
+     "report": 2511,
+     "code": "LM_HG201",
+     "date_field": "report_date",
+     "sections": [
+      "Carcass Measurements"
+     ]
+    },
+    {
+     "file": "scheduled-swine-14-day",
+     "report": 2511,
+     "code": "LM_HG201",
+     "date_field": "report_date",
+     "sections": [
+      "14-Day Scheduled Swine"
+     ]
+    }
+   ],
+   "kaggle": ""
+  },
+  {
+   "slug": "usda-sow-boar-prices",
+   "title": "USDA Daily Sow and Boar Prices",
+   "title_es": "Precios diarios de cerdas y verracos del USDA",
+   "frequency": "Daily",
+   "unit": "Dollars per hundredweight, live basis",
+   "description": "Prices paid for cull sows and boars by weight range and region, from USDA's daily direct prior-day sow and boar report.",
+   "description_es": "Precios pagados por cerdas y verracos de desecho por rango de peso y región, del reporte diario del USDA.",
+   "keywords": [
+    "sow prices",
+    "cull sows",
+    "swine",
+    "USDA",
+    "livestock"
+   ],
+   "tables": [
+    {
+     "file": "sow-boar-prices-by-region",
+     "report": 3452,
+     "code": "LM_HG234",
+     "date_field": "report_date",
+     "sections": [
+      "National Volume and Price Data",
+      "Iowa/Minnesota Volume and Price Data",
+      "Western Cornbelt Volume and Price Data",
+      "Eastern Cornbelt Volume and Price Data"
+     ]
+    }
+   ],
+   "kaggle": ""
+  },
+  {
+   "slug": "usda-cow-beef-cutout",
+   "title": "USDA Cutter Cow Beef Cutout and Cow Beef Prices",
+   "title_es": "Cutout de carne de vaca de desecho del USDA",
+   "frequency": "Daily (5-day rolling)",
+   "unit": "Dollars per hundredweight",
+   "description": "The cutter cow cutout value and the boxed cow beef cuts behind it (boner/breaker, cutter/canner, 100% lean, fresh and frozen), as a 5-day rolling average of negotiated sales.",
+   "description_es": "El valor del cutout de vaca de desecho y los cortes de carne de vaca en caja (boner/breaker, cutter/canner, 100% magro, frescos y congelados), promedio móvil de 5 días de ventas negociadas.",
+   "keywords": [
+    "cow beef",
+    "cull cows",
+    "beef prices",
+    "cutout",
+    "USDA"
+   ],
+   "tables": [
+    {
+     "file": "cow-cutout-value",
+     "report": 2455,
+     "code": "LM_XB405",
+     "date_field": "report_date",
+     "sections": [
+      "Current Cutout Value/Change"
+     ]
+    },
+    {
+     "file": "cow-cutout-items",
+     "report": 2455,
+     "code": "LM_XB405",
+     "date_field": "report_date",
+     "sections": [
+      "Items"
+     ]
+    },
+    {
+     "file": "cow-beef-cuts",
+     "report": 2455,
+     "code": "LM_XB405",
+     "date_field": "report_date",
+     "sections": [
+      "BONER/BREAKER",
+      "CUTTER/CANNER",
+      "100% LEAN",
+      "B/B and C/C",
+      "FROZEN BONER/BREAKER",
+      "FROZEN CUTTER/CANNER",
+      "FROZEN B/B and C/C"
+     ]
+    },
+    {
+     "file": "cow-cutout-volume",
+     "report": 2455,
+     "code": "LM_XB405",
+     "date_field": "report_date",
+     "sections": [
+      "Current Volume"
+     ]
+    }
+   ],
+   "kaggle": ""
+  },
+  {
+   "slug": "usda-beef-trimmings-prices",
+   "title": "USDA Boneless Processing Beef and Beef Trimmings Prices",
+   "title_es": "Precios de recortes de res y carne de res para proceso del USDA",
+   "frequency": "Daily",
+   "unit": "Dollars per hundredweight",
+   "description": "Daily negotiated prices for boneless processing beef and fresh beef trimmings (50s, 65s, 75s, 81s, 85s, 90s lean and more), national and Central US, the raw material of ground beef.",
+   "description_es": "Precios diarios negociados de carne de res sin hueso para proceso y recortes frescos (50, 65, 75, 81, 85, 90 % magro y más), nacional y del centro de EE. UU.: la materia prima de la carne molida.",
+   "keywords": [
+    "beef trimmings",
+    "ground beef",
+    "lean beef",
+    "beef prices",
+    "USDA"
+   ],
+   "tables": [
+    {
+     "file": "beef-trimmings",
+     "report": 2451,
+     "code": "LM_XB401",
+     "date_field": "report_date",
+     "sections": [
+      "National",
+      "Central"
+     ]
+    },
+    {
+     "file": "beef-trimmings-volume",
+     "report": 2451,
+     "code": "LM_XB401",
+     "date_field": "report_date",
+     "sections": [
+      "Current Volume"
+     ]
+    }
+   ],
+   "kaggle": ""
+  },
+  {
+   "slug": "usda-comprehensive-boxed-beef-cutout",
+   "title": "USDA Weekly Comprehensive Boxed Beef Cutout (All Sales)",
+   "title_es": "Cutout semanal integral de carne de res en caja del USDA",
+   "frequency": "Weekly",
+   "unit": "Dollars per hundredweight",
+   "description": "The weekly boxed beef cutout over every kind of sale (negotiated, formula, forward, export), by quality subset, with cut and trim prices and the mix of sales and delivery periods.",
+   "description_es": "El cutout semanal de carne de res en caja con todo tipo de venta (negociada, fórmula, a plazo, exportación), por calidad, con precios de cortes y recortes.",
+   "keywords": [
+    "boxed beef",
+    "beef cutout",
+    "beef prices",
+    "USDA",
+    "wholesale beef"
+   ],
+   "tables": [
+    {
+     "file": "comprehensive-cutout-by-quality",
+     "report": 2465,
+     "code": "LM_XB463",
+     "date_field": "report_date",
+     "sections": [
+      "Subset Quality"
+     ]
+    },
+    {
+     "file": "comprehensive-cuts",
+     "report": 2465,
+     "code": "LM_XB463",
+     "date_field": "report_date",
+     "sections": [
+      "Cuts"
+     ]
+    },
+    {
+     "file": "comprehensive-trim",
+     "report": 2465,
+     "code": "LM_XB463",
+     "date_field": "report_date",
+     "sections": [
+      "Trim"
+     ]
+    }
+   ],
+   "kaggle": ""
+  },
+  {
+   "slug": "usda-slaughter-cow-bull-prices",
+   "title": "USDA Daily Slaughter Cow and Bull Prices",
+   "title_es": "Precios diarios de vacas y toros para abasto del USDA",
+   "frequency": "Daily",
+   "unit": "Dollars per hundredweight",
+   "description": "Negotiated prices paid for slaughter cows and bulls by class (breaking, boning, lean), weight range and selling basis, national and by region.",
+   "description_es": "Precios negociados pagados por vacas y toros para abasto por clase, rango de peso y forma de venta, nacional y por región.",
+   "keywords": [
+    "cull cows",
+    "slaughter cows",
+    "bulls",
+    "cattle prices",
+    "USDA"
+   ],
+   "tables": [
+    {
+     "file": "cow-bull-prices-national",
+     "report": 2467,
+     "code": "LM_CT103",
+     "date_field": "report_date_end",
+     "sections": [
+      "National"
+     ]
+    },
+    {
+     "file": "cow-bull-prices-regional",
+     "report": 2467,
+     "code": "LM_CT103",
+     "date_field": "report_date_end",
+     "sections": [
+      "Regional"
+     ]
+    }
+   ],
+   "kaggle": ""
+  },
+  {
+   "slug": "usda-fed-cattle-comprehensive",
+   "title": "USDA Weekly Fed Cattle Comprehensive Report",
+   "title_es": "Reporte semanal integral de ganado gordo del USDA",
+   "frequency": "Weekly",
+   "unit": "Dollars per hundredweight",
+   "description": "Every fed steer and heifer purchase in a week, cash, formula, forward contract and grid: net prices by purchase type, percent Choice, dressed weights, and the beef-type minus dairy-type spread.",
+   "description_es": "Todas las compras semanales de novillos y vaquillas para abasto (efectivo, fórmula, contrato y parrilla): precios netos por tipo de compra, porcentaje Choice, pesos en canal.",
+   "keywords": [
+    "fed cattle",
+    "cattle prices",
+    "steers",
+    "heifers",
+    "USDA"
+   ],
+   "tables": [
+    {
+     "file": "fed-cattle-comprehensive-summary",
+     "report": 2700,
+     "code": "LSWFEDCC",
+     "date_field": "report_date",
+     "sections": [
+      "Weekly Fed Cattle Comprehensive"
+     ]
+    },
+    {
+     "file": "fed-cattle-weighted-average",
+     "report": 2700,
+     "code": "LSWFEDCC",
+     "date_field": "report_date",
+     "sections": [
+      "Weighted Average"
+     ]
+    },
+    {
+     "file": "fed-cattle-percent-choice",
+     "report": 2700,
+     "code": "LSWFEDCC",
+     "date_field": "report_date",
+     "sections": [
+      "Percent Choice Breakdown"
+     ]
+    },
+    {
+     "file": "beef-minus-dairy-type",
+     "report": 2700,
+     "code": "LSWFEDCC",
+     "date_field": "report_date",
+     "sections": [
+      "Beef Type minus Dairy"
+     ]
+    }
+   ],
+   "kaggle": ""
+  },
+  {
+   "slug": "usda-cattle-premiums-discounts",
+   "title": "USDA Weekly Slaughter Cattle Premiums and Discounts",
+   "title_es": "Premios y castigos semanales del ganado para abasto del USDA",
+   "frequency": "Weekly",
+   "unit": "Dollars per hundredweight",
+   "description": "The grid premiums and discounts packers pay on fed cattle: quality grade, yield grade, carcass weight and other factors, as low, high and average.",
+   "description_es": "Los premios y castigos de la parrilla que pagan los empacadores por el ganado gordo: grado de calidad, rendimiento, peso de canal y otros.",
+   "keywords": [
+    "cattle grid",
+    "premiums",
+    "discounts",
+    "fed cattle",
+    "USDA"
+   ],
+   "tables": [
+    {
+     "file": "premiums-discounts",
+     "report": 2482,
+     "code": "LM_CT155",
+     "date_field": "report_date",
+     "sections": [
+      "Detail"
+     ]
+    }
+   ],
+   "kaggle": ""
+  },
+  {
+   "slug": "usda-export-pork-prices",
+   "title": "USDA Weekly Export Pork Prices",
+   "title_es": "Precios semanales de cerdo de exportación del USDA",
+   "frequency": "Weekly",
+   "unit": "Dollars per hundredweight",
+   "description": "Prices and volumes of pork cuts sold for export, FOB plant, by primal: loins, butts, picnics, hams, bellies, ribs, trim and variety meats.",
+   "description_es": "Precios y volúmenes de cortes de cerdo vendidos para exportación, LAB planta, por primal.",
+   "keywords": [
+    "pork exports",
+    "pork prices",
+    "trade",
+    "USDA"
+   ],
+   "tables": [
+    {
+     "file": "export-pork-cuts",
+     "report": 2508,
+     "code": "LM_PK640",
+     "date_field": "report_date",
+     "sections": [
+      "Loin Cuts",
+      "Butt Cuts",
+      "Picnic Cuts",
+      "Ham Cuts",
+      "Belly Cuts",
+      "Sparerib Cuts",
+      "Jowl Cuts",
+      "Trim Cuts",
+      "Variety Cuts",
+      "Added Ingredients Cuts",
+      "Export Break, 4/5 rib",
+      "Carcass"
+     ]
+    },
+    {
+     "file": "export-pork-primal-pounds",
+     "report": 2508,
+     "code": "LM_PK640",
+     "date_field": "report_date",
+     "sections": [
+      "Primal Volumes"
+     ]
+    }
+   ],
+   "kaggle": ""
+  },
+  {
+   "slug": "usda-weekly-comprehensive-pork-cutout",
+   "title": "USDA Weekly Comprehensive Pork Cutout (All Sales)",
+   "title_es": "Cutout semanal integral de cerdo del USDA",
+   "frequency": "Weekly",
+   "unit": "Dollars per hundredweight",
+   "description": "The weekly pork cutout and primal values over every kind of sale (negotiated, formula, forward, export), with volumes by primal.",
+   "description_es": "El cutout semanal de cerdo y los valores de los primales con todo tipo de venta, con volúmenes por primal.",
+   "keywords": [
+    "pork cutout",
+    "pork prices",
+    "USDA",
+    "wholesale pork"
+   ],
+   "tables": [
+    {
+     "file": "comprehensive-pork-cutout",
+     "report": 2680,
+     "code": "LSDLM_PK680",
+     "date_field": "report_date",
+     "sections": [
+      "Weekly Average Cutout and Primal Values"
+     ]
+    },
+    {
+     "file": "comprehensive-pork-primal-pounds",
+     "report": 2680,
+     "code": "LSDLM_PK680",
+     "date_field": "report_date",
+     "sections": [
+      "Primal Volumes"
+     ]
+    }
+   ],
+   "kaggle": ""
+  },
+  {
+   "slug": "usda-lamb-prices",
+   "title": "USDA Lamb Carcass Cutout and Lamb Cut Prices",
+   "title_es": "Cutout de canal de cordero y precios de cortes del USDA",
+   "frequency": "Daily and weekly",
+   "unit": "Dollars per hundredweight",
+   "description": "The estimated lamb carcass cutout with every cut's price, boxed lamb cut prices (5-day rolling, fresh and frozen), and the weekly comprehensive lamb carcass prices by grade and weight.",
+   "description_es": "El cutout estimado de canal de cordero con el precio de cada corte, precios de cortes de cordero en caja y los precios semanales de canal por grado y peso.",
+   "keywords": [
+    "lamb prices",
+    "lamb cutout",
+    "sheep",
+    "USDA",
+    "meat prices"
+   ],
+   "tables": [
+    {
+     "file": "lamb-cutout-cuts",
+     "report": 2649,
+     "code": "LM_XL502",
+     "date_field": "report_date",
+     "sections": [
+      "DETAIL"
+     ]
+    },
+    {
+     "file": "lamb-carcass-value",
+     "report": 2649,
+     "code": "LM_XL502",
+     "date_field": "report_date",
+     "sections": [
+      "GROSS CARCASS VALUE"
+     ]
+    },
+    {
+     "file": "boxed-lamb-cuts",
+     "report": 2648,
+     "code": "LM_XL500",
+     "date_field": "report_date",
+     "sections": [
+      "Detail"
+     ]
+    },
+    {
+     "file": "comprehensive-lamb-carcass",
+     "report": 2651,
+     "code": "LM_XL555",
+     "date_field": "report_date",
+     "sections": [
+      "CHOICE AND PRIME, YG 1-4",
+      "CHOICE AND PRIME, YG 5",
+      "CERTIFIED FRESH AMERICAN LAMB",
+      "UNGRADED"
+     ]
+    }
+   ],
+   "kaggle": ""
+  },
+  {
+   "slug": "usda-dairy-product-prices",
+   "title": "USDA Dairy Product Prices and Milk Class Prices (Cheese, Butter, Whey, Nonfat Dry Milk)",
+   "title_es": "Precios de productos lácteos y precios de clase de la leche del USDA",
+   "frequency": "Weekly and monthly",
+   "unit": "Dollars per pound; milk class prices in dollars per hundredweight",
+   "description": "The National Dairy Products Sales Report (weekly prices and sales of butter, 40 lb block and 500 lb barrel cheddar, dry whey and nonfat dry milk) and the Federal Milk Marketing Order class and component prices and advanced prices built from them.",
+   "description_es": "El reporte nacional de ventas de productos lácteos (precios y ventas semanales de mantequilla, queso cheddar en bloque y barril, suero seco y leche descremada en polvo) y los precios de clase y avanzados de la leche.",
+   "keywords": [
+    "dairy prices",
+    "cheese prices",
+    "butter prices",
+    "milk prices",
+    "Class III",
+    "USDA"
+   ],
+   "tables": [
+    {
+     "file": "dairy-products-sales",
+     "report": 2993,
+     "code": "DYWDAIRYPRODUCTSSALES",
+     "date_field": "week_ending_date",
+     "sections": [
+      "Butter Prices and Sales",
+      "40 Pound Block Cheddar Cheese Prices and Sales",
+      "500 Pound Barrel Cheddar Cheese Prices, Sales, and Moisture Content",
+      "Dry Whey Prices and Sales",
+      "Nonfat Dry Milk Prices and Sales"
+     ]
+    },
+    {
+     "file": "milk-class-prices",
+     "report": 2991,
+     "code": "DYMCLASSPRICES",
+     "date_field": "week_ending_date",
+     "sections": [
+      "Detail"
+     ]
+    },
+    {
+     "file": "milk-advanced-prices",
+     "report": 2989,
+     "code": "DYMADVANCEDPRICES",
+     "date_field": "week_ending_date",
+     "sections": [
+      "Detail"
+     ]
+    }
+   ],
+   "kaggle": ""
+  }
+ ],
+ "boards": [
+  {
+   "title": "USDA Boxed Beef Prices by Cut",
+   "page": "/beef-prices/",
+   "kaggle": "https://www.kaggle.com/datasets/juantorres0001/usda-boxed-beef-prices-by-cut-20202026",
+   "files": [
+    "/beef-prices/boxed-beef-cutout-daily.csv",
+    "/beef-prices/boxed-beef-cut-prices-2026.csv"
+   ],
+   "description": "The daily boxed beef cutout, Choice and Select primals, and the price of every beef cut (LM_XB403), from 2020, one file per year.",
+   "title_es": "Precios de la carne de res en caja del USDA por corte",
+   "page_es": "/es/precios-de-carne-de-res/",
+   "description_es": "El cutout diario de res en caja, los primales Choice y Select y el precio de cada corte (LM_XB403), desde 2020, un archivo por año."
+  },
+  {
+   "title": "USDA Pork Cutout and Pork Cut Prices",
+   "page": "/pork-prices/",
+   "kaggle": "https://www.kaggle.com/datasets/juantorres0001/usda-pork-cutout-and-pork-cut-prices-20202026",
+   "files": [
+    "/pork-prices/pork-cutout-daily.csv",
+    "/pork-prices/pork-cut-prices-2026.csv",
+    "/pork-prices/pork-cut-names.csv"
+   ],
+   "description": "The daily pork cutout and primals and every pork cut's price (LM_PK602), from 2020, one file per year.",
+   "title_es": "Precios del cerdo del USDA: canal y cortes",
+   "page_es": "/es/precios-de-cerdo/",
+   "description_es": "El valor diario de la canal de cerdo, los primales y el precio de cada corte (LM_PK602), desde 2020, un archivo por año."
+  },
+  {
+   "title": "USDA Fed Cattle Cash Prices, 5-Area and Regional",
+   "page": "/fed-cattle-prices/",
+   "kaggle": "https://www.kaggle.com/datasets/juantorres0001/usda-fed-cattle-cash-prices-5-area-and-regional",
+   "files": [
+    "/fed-cattle-prices/fed-cattle-weekly.csv",
+    "/fed-cattle-prices/fed-cattle-5-area-daily.csv"
+   ],
+   "description": "Weekly negotiated cash prices for fed steers and heifers in ten regions and the 5-area daily, from 2020.",
+   "title_es": "Precios del ganado gordo del USDA, 5 áreas y por región",
+   "page_es": "/es/precios-de-ganado-gordo/",
+   "description_es": "Precios semanales negociados en efectivo de novillos y vaquillas en diez regiones y el diario de 5 áreas, desde 2020."
+  },
+  {
+   "title": "USDA Refrigerated Truck Rates by Lane",
+   "page": "/reefer-rates/",
+   "kaggle": "https://www.kaggle.com/datasets/juantorres0001/usda-refrigerated-truck-rates-by-lane-20212026",
+   "files": [
+    "/reefer-rates/usda-reefer-truck-rates.csv"
+   ],
+   "description": "Weekly reefer truck rates for produce, from every shipping district to each destination city (USDA report 2375).",
+   "title_es": "Tarifas de camiones refrigerados del USDA por ruta",
+   "page_es": "",
+   "description_es": "Tarifas semanales de camiones refrigerados para frutas y verduras, de cada distrito de embarque a cada ciudad de destino (reporte 2375 del USDA)."
+  },
+  {
+   "title": "US Border Truck Wait Times (CBP)",
+   "page": "/border-waits/",
+   "kaggle": "https://www.kaggle.com/datasets/juantorres0001/us-border-truck-wait-times-cbp-every-30-minutes",
+   "files": [
+    "/border-waits/border-truck-wait-readings-2026.csv",
+    "/border-waits/border-truck-wait-times.csv",
+    "/border-waits/cbp-published-averages.csv"
+   ],
+   "description": "Commercial truck lane waits at every US land port, read every 30 minutes since Sep 13, 2026, with averages by hour and CBP's own.",
+   "title_es": "Tiempos de espera de camiones en la frontera (CBP)",
+   "page_es": "/es/tiempos-de-espera/",
+   "description_es": "Esperas en los carriles comerciales de cada puerto terrestre de EE. UU., leídas cada 30 minutos desde el 13 de septiembre de 2026, con promedios por hora y los de CBP."
+  },
+  {
+   "title": "US Border Car and Pedestrian Wait Times (CBP)",
+   "page": "/border-waits/cars/",
+   "kaggle": "",
+   "files": [
+    "/border-waits/border-car-pedestrian-wait-readings-2026.csv",
+    "/border-waits/border-car-pedestrian-wait-times.csv",
+    "/border-waits/cbp-published-car-pedestrian-averages.csv"
+   ],
+   "description": "Car (standard, SENTRI / NEXUS, Ready) and pedestrian lane waits at ~70 US land ports, every reading since Sep 13, 2026.",
+   "title_es": "Tiempos de espera de autos y peatones en la frontera (CBP)",
+   "page_es": "/es/tiempos-de-espera/autos/",
+   "description_es": "Esperas de autos (general, SENTRI / NEXUS, Ready) y peatones en ~70 puertos terrestres de EE. UU., cada lectura desde el 13 de septiembre de 2026."
+  }
+ ]
+}

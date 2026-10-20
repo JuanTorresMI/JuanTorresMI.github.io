@@ -11,6 +11,7 @@
     <li>{% if include.here == "pork" %}<strong>{% if es %}Cerdo{% else %}Pork{% endif %}</strong>{% else %}<a href="{% if es %}/es/precios-de-cerdo/{% else %}/pork-prices/{% endif %}">{% if es %}Cerdo: la canal, los primales y cada corte{% else %}Pork: the cutout, the primals and every cut{% endif %}</a>{% endif %}</li>
     <li>{% if include.here == "cattle" %}<strong>{% if es %}Ganado gordo{% else %}Fed cattle{% endif %}</strong>{% else %}<a href="{% if es %}/es/precios-de-ganado-gordo/{% else %}/fed-cattle-prices/{% endif %}">{% if es %}Ganado gordo: lo que pagan los empacadores, por región{% else %}Fed cattle: what packers pay, region by region{% endif %}</a>{% endif %}</li>
     <li>{% if include.here == "reefer" %}<strong>{% if es %}Camiones refrigerados{% else %}Reefer trucks{% endif %}</strong>{% else %}<a href="/reefer-rates/"{% if es %} hreflang="en"{% endif %}>{% if es %}Tarifas de camiones refrigerados, ruta por ruta (en inglés){% else %}Reefer truck rates: produce freight, lane by lane{% endif %}</a>{% endif %}</li>
+    <li><a href="{% if es %}/es/datos/{% else %}/data/{% endif %}">{% if es %}Todos los datos en CSV gratis: cerdo, vaca, cordero, lácteos y más{% else %}Every free CSV: hogs, cows, lamb, dairy and more{% endif %}</a></li>
     {%- unless include.here == "hub" %}
     <li><a href="{% if es %}/es/precios-usda/{% else %}/usda-market-prices/{% endif %}">{% if es %}Todos los tableros del USDA y cómo se construyen{% else %}All the USDA boards, and how they’re built{% endif %}</a></li>
     {%- endunless %}

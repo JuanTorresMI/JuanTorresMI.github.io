@@ -46,6 +46,11 @@ jobs:
       - name: Ask the Worker
         if: steps.skip.outputs.skip != 'true'
         run: python3 scripts/snapshot.py
+      - name: Keep the open datasets
+        # data/ (scripts/datasets.py): after the boards, so a slow or blocked datamart never holds them up.
+        if: steps.skip.outputs.skip != 'true'
+        continue-on-error: true
+        run: python3 scripts/datasets.py
       - name: Commit if changed
         id: commit
         if: steps.skip.outputs.skip != 'true'
@@ -53,7 +58,7 @@ jobs:
           git add _data/live
           # These only exist once there is reefer, border, beef, pork or cattle data (lane pages need 4 weeks of
           # it), and a git add of a path with nothing in it fails the job.
-          for p in reefer-rates/usda-reefer-truck-rates.csv _reefer_lanes/*.md border-waits/*.csv _border_crossings/*.md _border_crossings_es/*.md _border_people/*.md _border_people_es/*.md beef-prices/*.csv beef-prices/latest.json _beef_cuts/*.md _beef_cuts_es/*.md pork-prices/*.csv pork-prices/latest.json _pork_cuts/*.md _pork_cuts_es/*.md _data/pork_cuts.json fed-cattle-prices/*.csv fed-cattle-prices/latest.json _cattle_regions/*.md _cattle_regions_es/*.md worker-usage/*.csv youtube/*.csv; do
+          for p in reefer-rates/usda-reefer-truck-rates.csv _reefer_lanes/*.md border-waits/*.csv _border_crossings/*.md _border_crossings_es/*.md _border_people/*.md _border_people_es/*.md beef-prices/*.csv beef-prices/latest.json _beef_cuts/*.md _beef_cuts_es/*.md pork-prices/*.csv pork-prices/latest.json _pork_cuts/*.md _pork_cuts_es/*.md _data/pork_cuts.json fed-cattle-prices/*.csv fed-cattle-prices/latest.json data _cattle_regions/*.md _cattle_regions_es/*.md worker-usage/*.csv youtube/*.csv; do
             if [ -e "$p" ]; then git add "$p"; fi
           done
           if git diff --cached --quiet; then
