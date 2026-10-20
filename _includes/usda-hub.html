@@ -84,7 +84,7 @@
     {%- assign names = "Boxed beef cutout and cut prices|Pork cutout and cut prices|Fed cattle prices|Reefer truck rates" | split: "|" %}
     {%- if es %}{% assign names = "Carne de res en caja|Cerdo|Ganado gordo|Tarifas de camiones refrigerados" | split: "|" %}{% endif %}
     {%- for u in boards %}{% assign bp = site.pages | where: "url", u | first %}
-    { "@type": "Dataset", "@id": "{{ u | absolute_url }}#dataset", "name": {{ names[forloop.index0] | jsonify }}, "description": {{ bp.description | jsonify }}, "url": {{ u | absolute_url | jsonify }} }{% unless forloop.last %},{% endunless %}
+    { "@type": "Dataset", "@id": "{{ u | absolute_url }}#dataset", "name": {{ names[forloop.index0] | jsonify }}, "description": {{ bp.description | jsonify }}, "url": {{ u | absolute_url | jsonify }}, "license": "https://www.usa.gov/government-works", "isAccessibleForFree": true, "creator": [{ "@type": "Organization", "name": "USDA Agricultural Marketing Service", "url": "https://www.ams.usda.gov/" }, { "@id": "{{ site.url }}/#person" }] }{% unless forloop.last %},{% endunless %}
     {%- endfor %}
   ]
 }

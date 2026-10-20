@@ -4,7 +4,8 @@
     python3 scripts/check.py _site
 
 Fails (exit 1) on:
-  - unrendered Liquid, or JSON-LD that does not parse, or a Dataset in it without a name or description
+  - unrendered Liquid, or JSON-LD that does not parse, or a Dataset in it without a name, description,
+    license or creator
     (Google rejects those; a reference to another page's Dataset is just its "@id");
   - a page without a title, description, canonical or share image;
   - an internal link, asset, canonical or hreflang that points at nothing, an hreflang pair that
@@ -82,8 +83,9 @@ for f in sorted(files):
             n = stack.pop()
             if isinstance(n, list): stack.extend(n)
             elif isinstance(n, dict):
-                if n.get("@type") == "Dataset" and not (n.get("name") and n.get("description")):
-                    err(rel, f"a Dataset in the JSON-LD has no name or description: {n.get('url') or n.get('@id')}")
+                if n.get("@type") == "Dataset":
+                    missing = [k for k in ("name", "description", "license", "creator") if not n.get(k)]
+                    if missing: err(rel, f"a Dataset in the JSON-LD has no {', '.join(missing)}: {n.get('url') or n.get('@id')}")
                 stack.extend(n.values())
     p = Page(); p.feed(s)
     title = html.unescape(p.title or "").strip()
