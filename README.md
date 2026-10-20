@@ -83,6 +83,7 @@ changes. Each January adds a new `-YYYY.csv` beside last year's (add it to `PUBL
 | USDA Fed Cattle Cash Prices | `fed-cattle-prices/fed-cattle-weekly.csv`, `fed-cattle-prices/fed-cattle-5-area-daily.csv` |
 | USDA Refrigerated Truck Rates by Lane | `reefer-rates/usda-reefer-truck-rates.csv` |
 | US Border Truck Wait Times (CBP) | `border-waits/border-truck-wait-readings-2026.csv`, `border-waits/border-truck-wait-times.csv`, `border-waits/cbp-published-averages.csv` |
+| US Border Car and Pedestrian Wait Times (CBP), not on Kaggle yet | `border-waits/border-car-pedestrian-wait-readings-2026.csv`, `border-waits/border-car-pedestrian-wait-times.csv`, `border-waits/cbp-published-car-pedestrian-averages.csv` |
 
 ### Workflows (`.github/workflows/`)
 
@@ -140,6 +141,7 @@ manifest, and warns about duplicate titles or descriptions.
 | `lastmod.py` | By the deploy and check workflows | Dates every page from git for the sitemap (`_data/lastmod.json`, never committed) |
 | `indexnow.py` | By the deploy workflow | Tells IndexNow engines which pages changed since the last deploy |
 | `border-backfill.mjs` | Once, by hand (done Oct 18, 2026) | Filled the border history from Sep 13 to Oct 14 from an independent archive of CBP's feed, through the Worker's own parser |
+| `border-people-backfill.mjs` | By hand (done Oct 20, 2026; safe to re-run) | The same for the car and pedestrian lanes, written straight into `border-waits/border-car-pedestrian-wait-readings-YYYY.csv` |
 
 ```sh
 # screenshots and share pictures need Playwright and its Chromium:

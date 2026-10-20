@@ -143,6 +143,11 @@ that grows without a trim and a CSV that keeps it.
   `snapshot.py` pulls CBP's published averages (`bwt.cbp.gov/api/historicalwaittimes`; weekday 0 is Monday),
   keeps every month of them in `border-waits/cbp-published-averages.csv`, and shows the current month's
   until the board has its own. Data is CBP's Border Wait Times: credit it.
+  The same feed's **car and pedestrian lanes** are archived too (D1 `border_people`, 14 days, the
+  `border_people` job in `snapshot.py`): `border-car-pedestrian-wait-readings-YYYY.csv` (from Sep 13, the
+  early part from the same independent archive), their 30-day averages, and CBP's published averages for
+  them (CBP lists a lane a port doesn't have as "N/A" and averages it as 0; that's kept blank). No page
+  shows them yet.
 - **The beef board (`/beef-prices/`, one page per cut, primal and ground beef item)**: built
   from `_data/live/beef.json`. The source is USDA's LM_XB403 report (boxed beef cutout and cuts,
   negotiated sales, afternoon), from the LMR datamart, which needs no key and serves any date range,
@@ -173,6 +178,9 @@ that grows without a trim and a CSV that keeps it.
   region's newest row (the six LM_CT154 regions share one request). A weekly report dated Monday
   covers the week before; a daily report covers the business day before it. A region gets a page
   after 8 weeks with a price in a year; a week with too few trades has no price, never zero.
+- **Kaggle and Spanish**: each source is one Kaggle dataset pulling the published CSVs, with an English
+  description and a Spanish section in the same description. No separate Spanish datasets or Spanish
+  copies of a CSV: a duplicate splits the votes and reads as spam. Spanish belongs on the site's pages.
 - **Spanish for the USDA boards**: every beef, pork and cattle page has a Spanish twin under
   `/es/precios-de-carne-de-res/`, `/es/precios-de-cerdo/` and `/es/precios-de-ganado-gordo/`, paired by
   each stub's `translation` (`snapshot.py` writes both stubs). The snapshots carry the formatted Spanish
