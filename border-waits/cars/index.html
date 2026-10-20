@@ -6,7 +6,7 @@ title: Border wait times for cars and pedestrians
 app_name: Border waits, cars and walking
 seo_title: "Border Wait Times Now: Cars, SENTRI, Pedestrians · Mexico, Canada"
 permalink: /border-waits/cars/
-description: How long the line is at every U.S. land border crossing right now, by car, SENTRI or NEXUS, Ready Lane and on foot, and the usual wait at each hour of the week, from CBP.
+description: The line at every U.S. land border crossing right now, by car, SENTRI, NEXUS, Ready Lane and on foot, and the usual wait at each hour of the week, from CBP.
 image: /assets/og/border-waits-cars.png
 image_alt: "Border wait times for cars and pedestrians, by Juan Torres. CBP's car, SENTRI, Ready Lane and pedestrian waits, now and by hour."
 translation: /es/tiempos-de-espera/autos/
@@ -63,7 +63,7 @@ translations_live: true
         <tr data-port="{{ k }}"{% if p.car %} data-hot="{{ p.car }}"{% endif %}{% if p.car %}{% assign cv = p.now[p.car].v %}{% if cv != nil %}{% if cv >= 60 %} class="rb-hot"{% endif %}{% endif %}{% endif %}>
           <th scope="row">{% if p.slug %}<a href="/border-waits/cars/{{ p.slug }}/">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}</th>
           {%- for c in cols %}{% assign w = p.now[c] %}
-          <td data-label="{{ t.lanes[c] | replace: 'SENTRI', p.sentri }}"{% if w %} data-now="{{ c }}"{% endif %}>{% if w %}{{ w.en }}{% endif %}</td>
+          <td data-label="{{ t.lanes[c] | replace: 'SENTRI', p.sentri }}"{% if w %} data-now="{{ c }}"{% else %} class="bw-nolane"{% endif %}>{% if w %}{{ w.en }}{% endif %}</td>
           {%- endfor %}
           {%- assign u = p.usual[p.car] %}
           <td data-label="Usual by car">{% if u.avg != nil %}{{ u.avg }} min{% if u.src == "cbp" %} <span class="bw-alias">CBP</span>{% endif %}{% else %}—{% endif %}</td>

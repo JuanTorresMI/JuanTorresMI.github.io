@@ -1,14 +1,14 @@
 {
- "generated": "2026-10-20T20:41:06+00:00",
+ "generated": "2026-10-20T20:54:47+00:00",
  "as_of_iso": "2026-10-20",
- "as_of_en": "Oct 20, 2026, 8:41 PM Michigan time",
- "as_of_es": "20 oct 2026, 20:41 (hora de Michigan)",
+ "as_of_en": "Oct 20, 2026, 8:54 PM Michigan time",
+ "as_of_es": "20 oct 2026, 20:54 (hora de Michigan)",
  "since_en": "Sep 13, 2026",
  "since_es": "13 sep 2026",
  "since_iso": "2026-09-13",
  "month_en": "October",
  "month_es": "octubre",
- "readings": "28,182",
+ "readings": "28,191",
  "ports": {
   "010401": {
    "port": "010401",
@@ -64,6 +64,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -158,6 +159,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -247,6 +249,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -326,6 +329,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "8 am-4 pm",
    "hours_es": "8:00 a 16:00",
    "open": true,
@@ -413,6 +417,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -500,6 +505,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -516,8 +522,8 @@
    },
    "stale": false,
    "first": "2026-09-14 08:00",
-   "posted_en": "Oct 20, 4:00 PM EDT",
-   "posted_es": "20 oct, 16:00 EDT",
+   "posted_en": "Oct 20, 5:00 PM EDT",
+   "posted_es": "20 oct, 17:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -577,6 +583,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -593,8 +600,8 @@
    },
    "stale": false,
    "first": "2026-09-14 08:00",
-   "posted_en": "Oct 20, 4:00 PM EDT",
-   "posted_es": "20 oct, 16:00 EDT",
+   "posted_en": "Oct 20, 5:00 PM EDT",
+   "posted_es": "20 oct, 17:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -677,6 +684,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -764,6 +772,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -811,7 +820,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 305,
+    "car_standard": 306,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -823,7 +832,7 @@
      "best": null,
      "worst": null,
      "flat": true,
-     "readings": 305
+     "readings": 306
     }
    },
    "ly": {
@@ -842,6 +851,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -856,10 +866,10 @@
      "lanes": 4
     }
    },
-   "stale": false,
+   "stale": true,
    "first": "2026-09-14 03:00",
-   "posted_en": "Oct 20, 5:00 PM EDT",
-   "posted_es": "20 oct, 17:00 EDT",
+   "posted_en": "Oct 19, 6:00 PM EDT",
+   "posted_es": "19 oct, 18:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -958,6 +968,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -2908,6 +2919,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -2978,8 +2990,8 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 556,
-    "car_sentri": 408,
+    "car_standard": 557,
+    "car_sentri": 409,
     "car_ready": 0,
     "pedestrian_standard": 0,
     "pedestrian_ready": 0
@@ -3523,7 +3535,7 @@
          "lvl": 0
         },
         {
-         "v": 4,
+         "v": 3,
          "lvl": 0
         },
         {
@@ -3914,7 +3926,7 @@
       "hour": 0,
       "v": 41
      },
-     "readings": 556
+     "readings": 557
     },
     "car_sentri": {
      "avg": 2,
@@ -3929,7 +3941,7 @@
       "v": 16
      },
      "flat": false,
-     "readings": 408
+     "readings": 409
     }
    },
    "ly": {
@@ -4884,6 +4896,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -4912,8 +4925,8 @@
    },
    "stale": false,
    "first": "2026-09-14 22:17",
-   "posted_en": "Oct 20, 4:27 PM EDT",
-   "posted_es": "20 oct, 16:27 EDT",
+   "posted_en": "Oct 20, 4:37 PM EDT",
+   "posted_es": "20 oct, 16:37 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -4933,7 +4946,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M21.0,138.0 M40.2,148.5 M60.0,148.5 M78.6,127.4 M93.4,145.0 M107.9,127.4L116.3,145.0 M138.6,145.0 M160.9,81.8 M178.9,148.5 M193.7,106.3 M205.5,134.4 M226.7,148.5 M245.7,113.4 M264.9,130.9 M279.1,120.4L287.8,123.9 M305.8,120.4 M324.3,148.5 M340.4,88.8 M353.4,8.0L361.5,106.3L372.0,123.9L382.5,123.9 M400.5,120.4 M419.7,148.5 M432.0,74.7 M445.7,78.2L455.6,71.2L464.9,134.4L472.9,113.4 M496.4,138.0 M525.5,120.4 M545.3,130.9 M557.7,141.5 M579.4,134.4 M599.8,152.0 M620.4,123.9 M632.0,109.9",
+    "line": "M19.1,138.0 M38.3,148.5 M58.1,148.5 M76.7,127.4 M91.6,145.0 M106.0,127.4L114.5,145.0 M136.8,145.0 M159.0,81.8 M177.0,148.5 M191.9,106.3 M203.6,134.4 M224.9,148.5 M243.9,113.4 M263.0,130.9 M277.3,120.4L286.0,123.9 M303.9,120.4 M322.5,148.5 M338.6,88.8 M351.6,8.0L359.6,106.3L370.1,123.9L380.7,123.9 M398.6,120.4 M417.8,148.5 M430.2,74.7 M443.8,78.2L453.7,71.2L463.0,134.4L471.0,113.4 M494.6,138.0 M523.7,120.4 M543.5,130.9 M555.9,141.5 M577.5,134.4 M598.0,152.0 M618.6,123.9 M630.1,109.9L632.0,148.5",
     "top": 41,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -4962,7 +4975,7 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 558,
+    "car_standard": 559,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -5507,8 +5520,8 @@
          "lvl": 0
         },
         {
-         "v": 10,
-         "lvl": 1
+         "v": 8,
+         "lvl": 0
         },
         {
          "v": 16,
@@ -5898,7 +5911,7 @@
       "hour": 14,
       "v": 30
      },
-     "readings": 558
+     "readings": 559
     }
    },
    "ly": {
@@ -7755,6 +7768,7 @@
      "worst": null
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -7763,10 +7777,10 @@
    "notice": "A Ready Lane is available from 3-7pm Monday through Thursday.",
    "now": {
     "car_standard": {
-     "v": 4,
-     "en": "4 min",
-     "es": "4 min",
-     "lanes": 3
+     "v": 2,
+     "en": "2 min",
+     "es": "2 min",
+     "lanes": 4
     },
     "pedestrian_standard": {
      "v": null,
@@ -7777,8 +7791,8 @@
    },
    "stale": false,
    "first": "2026-09-14 22:17",
-   "posted_en": "Oct 20, 4:27 PM EDT",
-   "posted_es": "20 oct, 16:27 EDT",
+   "posted_en": "Oct 20, 4:37 PM EDT",
+   "posted_es": "20 oct, 16:37 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -7794,7 +7808,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M21.0,138.9 M40.2,152.0 M60.0,147.6 M78.6,77.8 M93.4,8.0 M107.9,143.3L116.3,134.5 M138.6,143.3 M160.9,112.7 M178.9,134.5 M193.7,121.5 M205.5,108.4 M226.7,152.0 M245.7,86.5 M264.9,95.3 M279.1,138.9L287.8,64.7 M305.8,86.5 M324.3,143.3 M340.4,82.2 M353.4,16.7L361.5,104.0L372.0,117.1L382.5,134.5 M400.5,138.9 M419.7,147.6 M432.0,21.1 M445.7,95.3L455.6,95.3L464.9,147.6L472.9,117.1 M496.4,152.0 M525.5,73.5 M545.3,134.5 M557.7,143.3 M579.4,152.0 M599.8,147.6 M620.4,143.3 M632.0,117.1",
+    "line": "M19.1,138.9 M38.3,152.0 M58.1,147.6 M76.7,77.8 M91.6,8.0 M106.0,143.3L114.5,134.5 M136.8,143.3 M159.0,112.7 M177.0,134.5 M191.9,121.5 M203.6,108.4 M224.9,152.0 M243.9,86.5 M263.0,95.3 M277.3,138.9L286.0,64.7 M303.9,86.5 M322.5,143.3 M338.6,82.2 M351.6,16.7L359.6,104.0L370.1,117.1L380.7,134.5 M398.6,138.9 M417.8,147.6 M430.2,21.1 M443.8,95.3L453.7,95.3L463.0,147.6L471.0,117.1 M494.6,152.0 M523.7,73.5 M543.5,134.5 M555.9,143.3 M577.5,152.0 M598.0,147.6 M618.6,143.3 M630.1,117.1L632.0,143.3",
     "top": 33,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -7823,7 +7837,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 557,
+    "car_standard": 558,
     "car_sentri": 32,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -8708,8 +8722,8 @@
       },
       {
        "h": 16,
-       "v": 9,
-       "w": 90.0
+       "v": 8,
+       "w": 80.0
       },
       {
        "h": 17,
@@ -8759,7 +8773,7 @@
       "hour": 2,
       "v": 25
      },
-     "readings": 557
+     "readings": 558
     }
    },
    "ly": {
@@ -9700,6 +9714,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -9722,8 +9737,8 @@
    },
    "stale": false,
    "first": "2026-09-14 22:17",
-   "posted_en": "Oct 20, 4:27 PM EDT",
-   "posted_es": "20 oct, 16:27 EDT",
+   "posted_en": "Oct 20, 4:37 PM EDT",
+   "posted_es": "20 oct, 16:37 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -9739,7 +9754,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M21.0,152.0 M40.2,152.0 M60.0,148.7 M78.6,138.6 M93.4,152.0 M107.9,152.0L116.3,152.0 M138.6,152.0 M160.9,152.0 M178.9,152.0 M193.7,44.8 M205.5,138.6 M226.7,152.0 M245.7,152.0 M264.9,118.5 M279.1,138.6L287.8,152.0 M305.8,142.0 M324.3,152.0 M340.4,111.8 M353.4,68.3L361.5,118.5L372.0,148.7L382.5,152.0 M400.5,138.6 M419.7,152.0 M432.0,85.0 M445.7,8.0L455.6,38.1L464.9,145.3L472.9,152.0 M496.4,152.0 M525.5,152.0 M545.3,152.0 M557.7,152.0 M579.4,152.0 M599.8,152.0 M620.4,152.0 M632.0,152.0",
+    "line": "M19.1,152.0 M38.3,152.0 M58.1,148.7 M76.7,138.6 M91.6,152.0 M106.0,152.0L114.5,152.0 M136.8,152.0 M159.0,152.0 M177.0,152.0 M191.9,44.8 M203.6,138.6 M224.9,152.0 M243.9,152.0 M263.0,118.5 M277.3,138.6L286.0,152.0 M303.9,142.0 M322.5,152.0 M338.6,111.8 M351.6,68.3L359.6,118.5L370.1,148.7L380.7,152.0 M398.6,138.6 M417.8,152.0 M430.2,85.0 M443.8,8.0L453.7,38.1L463.0,145.3L471.0,152.0 M494.6,152.0 M523.7,152.0 M543.5,152.0 M555.9,152.0 M577.5,152.0 M598.0,152.0 M618.6,152.0 M630.1,152.0L632.0,152.0",
     "top": 43,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -11704,6 +11719,7 @@
      }
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -13078,6 +13094,7 @@
      "worst": null
     }
    },
+   "sentri": "SENTRI",
    "hours": "7 am-11 pm",
    "hours_es": "7:00 a 23:00",
    "open": true,
@@ -15065,6 +15082,7 @@
      "flat": true
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -17159,6 +17177,7 @@
      "worst": null
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -19169,6 +19188,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -19341,6 +19361,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "8 am-Midnight",
    "hours_es": "8:00 a medianoche",
    "open": true,
@@ -23212,6 +23233,7 @@
      }
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -23381,6 +23403,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-Midnight",
    "hours_es": "6:00 a medianoche",
    "open": true,
@@ -24843,6 +24866,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-10 pm",
    "hours_es": "6:00 a 22:00",
    "open": true,
@@ -24965,6 +24989,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "7 am-11 pm",
    "hours_es": "7:00 a 23:00",
    "open": true,
@@ -24981,8 +25006,8 @@
    },
    "stale": false,
    "first": "2026-09-14 20:00",
-   "posted_en": "Oct 20, 3:00 PM CDT",
-   "posted_es": "20 oct, 15:00 CDT",
+   "posted_en": "Oct 20, 4:00 PM CDT",
+   "posted_es": "20 oct, 16:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -25123,6 +25148,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -25313,6 +25339,7 @@
      "flat": true
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-10 pm",
    "hours_es": "6:00 a 22:00",
    "open": true,
@@ -25451,6 +25478,7 @@
      "flat": true
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -25473,8 +25501,8 @@
    },
    "stale": false,
    "first": "2026-09-14 21:00",
-   "posted_en": "Oct 20, 2:00 PM CDT",
-   "posted_es": "20 oct, 14:00 CDT",
+   "posted_en": "Oct 20, 3:00 PM CDT",
+   "posted_es": "20 oct, 15:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -25522,10 +25550,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 447,
+    "car_standard": 448,
     "car_sentri": 0,
-    "car_ready": 423,
-    "pedestrian_standard": 439,
+    "car_ready": 424,
+    "pedestrian_standard": 440,
     "pedestrian_ready": 54
    },
    "d": {
@@ -26001,7 +26029,7 @@
          "lvl": 2
         },
         {
-         "v": 53,
+         "v": 50,
          "lvl": 2
         },
         {
@@ -26458,7 +26486,7 @@
       "hour": 18,
       "v": 82
      },
-     "readings": 447
+     "readings": 448
     },
     "car_ready": {
      "avg": 49,
@@ -26473,7 +26501,7 @@
       "v": 77
      },
      "flat": false,
-     "readings": 423
+     "readings": 424
     },
     "pedestrian_standard": {
      "grid": [
@@ -27404,7 +27432,7 @@
       "hour": 21,
       "v": 40
      },
-     "readings": 439
+     "readings": 440
     },
     "pedestrian_ready": {
      "avg": 2,
@@ -29312,6 +29340,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -29371,7 +29400,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M37.7,41.9 M74.9,140.1 M93.4,128.3 M112.0,16.5 M126.9,67.3L138.0,41.9L149.1,75.8 M171.4,145.2 M193.7,41.9 M212.3,75.8 M227.1,67.3L230.9,50.4 M260.6,141.8 M279.1,75.8 M297.7,41.9L308.9,50.4L320.0,24.9 M338.6,50.4 M357.1,138.4 M372.0,75.8 M386.9,67.3L394.3,41.9L405.4,16.5L412.9,8.0 M431.4,50.4 M453.7,138.4L464.9,145.2 M479.7,58.8L490.9,41.9L498.3,16.5L505.7,19.9 M528.0,143.5 M557.7,8.0 M576.3,67.3L587.4,50.4 M632.0,50.4",
+    "line": "M41.4,140.1 M60.0,128.3 M78.6,16.5 M93.4,67.3L104.6,41.9L115.7,75.8 M138.0,145.2 M160.3,41.9 M178.9,75.8 M193.7,67.3L197.4,50.4 M227.1,141.8 M245.7,75.8 M264.3,41.9L275.4,50.4L286.6,24.9 M305.1,50.4 M323.7,138.4 M338.6,75.8 M353.4,67.3L360.9,41.9L372.0,16.5L379.4,8.0 M398.0,50.4 M420.3,138.4L431.4,145.2 M446.3,58.8L457.4,41.9L464.9,16.5L472.3,19.9 M494.6,143.5 M524.3,8.0 M542.9,67.3L554.0,50.4 M598.6,50.4 M632.0,82.5",
     "top": 85,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -33233,6 +33262,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -37119,6 +37149,7 @@
      }
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -37930,6 +37961,7 @@
     }
    },
    "ly": {},
+   "sentri": "SENTRI",
    "hours": "6 am-Midnight",
    "hours_es": "6:00 a medianoche",
    "open": true,
@@ -38078,6 +38110,7 @@
      "flat": true
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -38239,6 +38272,7 @@
      "flat": true
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-10 pm",
    "hours_es": "6:00 a 22:00",
    "open": true,
@@ -38414,6 +38448,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -38584,6 +38619,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-10 pm",
    "hours_es": "6:00 a 22:00",
    "open": true,
@@ -38656,10 +38692,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 262,
+    "car_standard": 263,
     "car_sentri": 0,
     "car_ready": 0,
-    "pedestrian_standard": 262,
+    "pedestrian_standard": 263,
     "pedestrian_ready": 0
    },
    "d": {
@@ -38676,7 +38712,7 @@
       "v": 85
      },
      "flat": false,
-     "readings": 262
+     "readings": 263
     },
     "pedestrian_standard": {
      "avg": 3,
@@ -38691,7 +38727,7 @@
       "v": 15
      },
      "flat": false,
-     "readings": 262
+     "readings": 263
     }
    },
    "ly": {
@@ -38724,6 +38760,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-10 pm",
    "hours_es": "6:00 a 22:00",
    "open": true,
@@ -38732,9 +38769,9 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 20,
-     "en": "20 min",
-     "es": "20 min",
+     "v": 15,
+     "en": "15 min",
+     "es": "15 min",
      "lanes": 2
     },
     "pedestrian_standard": {
@@ -38746,8 +38783,8 @@
    },
    "stale": false,
    "first": "2026-09-14 18:00",
-   "posted_en": "Oct 20, 12:00 PM PDT",
-   "posted_es": "20 oct, 12:00 PDT",
+   "posted_en": "Oct 20, 1:00 PM PDT",
+   "posted_es": "20 oct, 13:00 PDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -41368,6 +41405,7 @@
      }
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-10 pm",
    "hours_es": "6:00 a 22:00",
    "open": true,
@@ -45289,6 +45327,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -45401,11 +45440,11 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 371,
-    "car_sentri": 371,
-    "car_ready": 371,
-    "pedestrian_standard": 371,
-    "pedestrian_ready": 371
+    "car_standard": 372,
+    "car_sentri": 372,
+    "car_ready": 372,
+    "pedestrian_standard": 372,
+    "pedestrian_ready": 372
    },
    "d": {
     "car_standard": {
@@ -45876,7 +45915,7 @@
        "h": 14,
        "cells": [
         {
-         "v": 106,
+         "v": 108,
          "lvl": 4
         },
         {
@@ -46337,7 +46376,7 @@
       "hour": 21,
       "v": 200
      },
-     "readings": 371
+     "readings": 372
     },
     "car_sentri": {
      "avg": 17,
@@ -46352,7 +46391,7 @@
       "v": 45
      },
      "flat": false,
-     "readings": 371
+     "readings": 372
     },
     "car_ready": {
      "avg": 75,
@@ -46367,7 +46406,7 @@
       "v": 170
      },
      "flat": false,
-     "readings": 371
+     "readings": 372
     },
     "pedestrian_standard": {
      "grid": [
@@ -46837,8 +46876,8 @@
        "h": 14,
        "cells": [
         {
-         "v": 58,
-         "lvl": 2
+         "v": 61,
+         "lvl": 3
         },
         {
          "v": 47,
@@ -47237,8 +47276,8 @@
       },
       {
        "h": 14,
-       "v": 40,
-       "w": 87.0
+       "v": 41,
+       "w": 89.1
       },
       {
        "h": 15,
@@ -47298,7 +47337,7 @@
       "hour": 7,
       "v": 63
      },
-     "readings": 371
+     "readings": 372
     },
     "pedestrian_ready": {
      "avg": 5,
@@ -47313,7 +47352,7 @@
       "v": 5
      },
      "flat": false,
-     "readings": 371
+     "readings": 372
     }
    },
    "ly": {
@@ -49220,6 +49259,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -49289,7 +49329,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M11.7,68.0L15.4,36.0L26.6,96.0 M48.9,128.0L60.0,148.0 M86.0,44.0 M112.0,56.0L123.1,128.0 M141.7,140.0 M242.0,104.0 M271.7,56.0 M286.6,80.0L294.0,80.0 M312.6,120.0 M327.4,80.0L338.6,128.0 M353.4,80.0 M375.7,16.0 M390.6,48.0 M405.4,48.0L412.9,48.0 M435.1,132.0 M450.0,44.0L461.1,28.0L472.3,8.0L476.0,8.0 M502.0,8.0 M524.3,56.0 M550.3,16.0 M565.1,56.0 M587.4,96.0 M606.0,104.0 M624.6,68.0L632.0,60.0",
+    "line": "M11.7,68.0L15.4,36.0L26.6,96.0 M48.9,128.0L60.0,148.0 M86.0,44.0 M112.0,56.0L123.1,128.0 M141.7,140.0 M242.0,104.0 M271.7,56.0 M286.6,80.0L294.0,80.0 M312.6,120.0 M327.4,80.0L338.6,128.0 M353.4,80.0 M375.7,16.0 M390.6,48.0 M405.4,48.0L412.9,48.0 M435.1,132.0 M450.0,44.0L461.1,28.0L472.3,8.0L476.0,8.0 M502.0,8.0 M524.3,56.0 M550.3,16.0L554.0,60.0L565.1,56.0 M587.4,96.0 M606.0,104.0 M624.6,68.0L632.0,60.0",
     "top": 180,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -49332,8 +49372,8 @@
     "car_standard": 0,
     "car_sentri": 0,
     "car_ready": 0,
-    "pedestrian_standard": 136,
-    "pedestrian_ready": 133
+    "pedestrian_standard": 137,
+    "pedestrian_ready": 134
    },
    "d": {
     "pedestrian_standard": {
@@ -49686,23 +49726,23 @@
      "avg": 14,
      "flat": false,
      "best": {
-      "dow": 1,
-      "hour": 12,
-      "v": 2
+      "dow": 0,
+      "hour": 14,
+      "v": 0
      },
      "worst": {
       "dow": 0,
       "hour": 6,
       "v": 45
      },
-     "readings": 136
+     "readings": 137
     },
     "pedestrian_ready": {
      "avg": 4,
      "best": {
-      "dow": 1,
-      "hour": 13,
-      "v": 2
+      "dow": 0,
+      "hour": 14,
+      "v": 0
      },
      "worst": {
       "dow": 0,
@@ -49710,10 +49750,11 @@
       "v": 16
      },
      "flat": false,
-     "readings": 133
+     "readings": 134
     }
    },
    "ly": {},
+   "sentri": "SENTRI",
    "hours": "6 am-2 pm",
    "hours_es": "6:00 a 14:00",
    "open": true,
@@ -49722,22 +49763,22 @@
    "notice": "",
    "now": {
     "pedestrian_standard": {
-     "v": 5,
-     "en": "5 min",
-     "es": "5 min",
+     "v": 0,
+     "en": "No wait",
+     "es": "Sin demora",
      "lanes": 4
     },
     "pedestrian_ready": {
-     "v": 5,
-     "en": "5 min",
-     "es": "5 min",
+     "v": 0,
+     "en": "No wait",
+     "es": "Sin demora",
      "lanes": 1
     }
    },
    "stale": false,
    "first": "2026-09-15 07:00",
-   "posted_en": "Oct 20, 1:00 PM PDT",
-   "posted_es": "20 oct, 13:00 PDT",
+   "posted_en": "Oct 20, 2:00 PM PDT",
+   "posted_es": "20 oct, 14:00 PDT",
    "first_en": "Sep 15, 2026",
    "first_es": "15 sep 2026",
    "usual": {
@@ -49753,7 +49794,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M78.6,108.8 M93.4,123.2 M175.1,22.4 M264.3,80.0L268.0,65.6 M338.6,94.4 M353.4,123.2L360.9,123.2 M431.4,137.6 M446.3,137.6L450.0,123.2 M524.3,8.0 M542.9,149.1 M620.9,65.6L632.0,137.6",
+    "line": "M78.6,108.8 M93.4,123.2 M175.1,22.4 M264.3,80.0L268.0,65.6 M338.6,94.4 M353.4,123.2L360.9,123.2 M431.4,137.6 M446.3,137.6L450.0,123.2 M524.3,8.0 M542.9,149.1L546.6,152.0 M620.9,65.6L632.0,137.6",
     "top": 50,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -50672,6 +50713,7 @@
     }
    },
    "ly": {},
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -53343,6 +53385,7 @@
      }
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-10 pm",
    "hours_es": "6:00 a 22:00",
    "open": true,
@@ -57214,6 +57257,7 @@
      }
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -61089,6 +61133,7 @@
      "flat": true
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -61259,6 +61304,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-8 pm",
    "hours_es": "6:00 a 20:00",
    "open": true,
@@ -61388,6 +61434,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-10 pm",
    "hours_es": "6:00 a 22:00",
    "open": true,
@@ -65217,6 +65264,7 @@
      }
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -67821,6 +67869,7 @@
      }
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-10 pm",
    "hours_es": "6:00 a 22:00",
    "open": true,
@@ -67916,6 +67965,7 @@
     }
    },
    "ly": {},
+   "sentri": "SENTRI",
    "hours": "10 am-6 pm",
    "hours_es": "10:00 a 18:00",
    "open": true,
@@ -71757,6 +71807,7 @@
      "flat": true
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -73766,6 +73817,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -75752,6 +75804,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -75891,6 +75944,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -76026,6 +76080,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "8 am-Midnight",
    "hours_es": "8:00 a medianoche",
    "open": true,
@@ -76132,6 +76187,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -76228,6 +76284,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -76291,7 +76348,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 353,
+    "car_standard": 354,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -76311,7 +76368,7 @@
       "v": 3
      },
      "flat": false,
-     "readings": 353
+     "readings": 354
     }
    },
    "ly": {
@@ -76330,6 +76387,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -78281,6 +78339,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -80268,6 +80327,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -81781,6 +81841,7 @@
     }
    },
    "ly": {},
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -83781,6 +83842,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -83896,6 +83958,7 @@
      "flat": true
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -83918,8 +83981,8 @@
    },
    "stale": false,
    "first": "2026-09-14 03:00",
-   "posted_en": "Oct 20, 4:00 PM EDT",
-   "posted_es": "20 oct, 16:00 EDT",
+   "posted_en": "Oct 20, 5:00 PM EDT",
+   "posted_es": "20 oct, 17:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -87457,6 +87520,7 @@
      }
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -90422,6 +90486,7 @@
      }
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-Midnight",
    "hours_es": "6:00 a medianoche",
    "open": true,
@@ -90579,6 +90644,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-10 pm",
    "hours_es": "6:00 a 22:00",
    "open": true,
@@ -94435,6 +94501,7 @@
      "flat": false
     }
    },
+   "sentri": "SENTRI",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -94562,6 +94629,7 @@
      "flat": false
     }
    },
+   "sentri": "NEXUS",
    "hours": "24 hrs/day",
    "hours_es": "24 horas",
    "open": true,
@@ -94679,6 +94747,7 @@
      "flat": true
     }
    },
+   "sentri": "SENTRI",
    "hours": "6 am-6 pm",
    "hours_es": "6:00 a 18:00",
    "open": true,
@@ -94845,11 +94914,11 @@
   "250501"
  ],
  "first": "2026-09-13 21:00",
- "newest": "2026-10-20 16:07",
+ "newest": "2026-10-20 16:37",
  "files": [
   {
    "year": "2026",
-   "rows": "28,182",
+   "rows": "28,191",
    "url": "/border-waits/border-car-pedestrian-wait-readings-2026.csv"
   }
  ]

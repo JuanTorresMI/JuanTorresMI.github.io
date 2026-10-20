@@ -27,9 +27,9 @@ layout: default
     <h1>{% if es %}{{ name }}: tiempo de espera{% else %}{{ name }} border wait times{% endif %}</h1>
     {%- if p %}
     {%- if es %}
-    <p class="rb-lede">Cuánto está la fila para entrar a Estados Unidos por {{ name }}, de {{ p.es.across }} a {{ p.es.city }}: en auto (carriles generales, SENTRI y Ready Lane, si los hay) y a pie, según los tiempos que publica la Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP), y a qué hora suele haber menos fila.{% if p.name %} En Estados Unidos se le conoce como {{ p.name }}.{% endif %}</p>
+    <p class="rb-lede">Cuánto está la fila para entrar a Estados Unidos por {{ name }}, de {{ p.es.across }} a {{ p.es.city }}, {% if p.car %}en auto{% endif %}{% if p.car and p.ped %} y {% endif %}{% if p.ped %}a pie{% endif %}, según los tiempos que publica la Oficina de Aduanas y Protección Fronteriza de EE. UU. (CBP), y a qué hora suele haber menos fila.{% if p.name %} En Estados Unidos se le conoce como {{ p.name }}.{% endif %}</p>
     {%- else %}
-    <p class="rb-lede">How long the line is to enter the United States at {{ name }}, from {{ p.across }} into {{ p.city }}: by car (the standard, {{ p.sentri }} and Ready lanes, where it has them) and on foot, as U.S. Customs and Border Protection posts it, and the hours it’s usually shortest.{% if p.es %} In Mexico it’s called {{ p.es.short }}.{% endif %}</p>
+    <p class="rb-lede">How long the line is to enter the United States at {{ name }}, from {{ p.across }} into {{ p.city }}, {% if p.car %}by car{% endif %}{% if p.car and p.ped %} and {% endif %}{% if p.ped %}on foot{% endif %}, as U.S. Customs and Border Protection posts it, and the hours it’s usually shortest.{% if p.es %} In Mexico it’s called {{ p.es.short }}.{% endif %}</p>
     {%- endif %}
     {%- if page.translation and page.translations_live %}
     <p class="bw-lang">{% if es %}<a href="{{ page.translation }}" hreflang="en" lang="en">In English →</a>{% else %}<a href="{{ page.translation }}" hreflang="es" lang="es">En español →</a>{% endif %}</p>
