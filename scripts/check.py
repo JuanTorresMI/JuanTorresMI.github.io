@@ -4,7 +4,8 @@
     python3 scripts/check.py _site
 
 Fails (exit 1) on:
-  - unrendered Liquid, or JSON-LD that does not parse;
+  - unrendered Liquid, or JSON-LD that does not parse, or a Dataset in it without a name or description
+    (Google rejects those; a reference to another page's Dataset is just its "@id");
   - a page without a title, description, canonical or share image;
   - an internal link, asset, canonical or hreflang that points at nothing, an hreflang pair that
     doesn't point both ways, or an <img> without alt text;
@@ -74,8 +75,16 @@ for f in sorted(files):
     for m in re.finditer(r"\{\{[^}]*\}\}|\{%[^%]*%\}", s):
         err(rel, f"unrendered Liquid: {m.group(0)[:60]}")
     for m in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', s, re.S):
-        try: json.loads(m.group(1))
-        except Exception as e: err(rel, f"JSON-LD does not parse: {e}")
+        try: ld = json.loads(m.group(1))
+        except Exception as e: err(rel, f"JSON-LD does not parse: {e}"); continue
+        stack = [ld]
+        while stack:
+            n = stack.pop()
+            if isinstance(n, list): stack.extend(n)
+            elif isinstance(n, dict):
+                if n.get("@type") == "Dataset" and not (n.get("name") and n.get("description")):
+                    err(rel, f"a Dataset in the JSON-LD has no name or description: {n.get('url') or n.get('@id')}")
+                stack.extend(n.values())
     p = Page(); p.feed(s)
     title = html.unescape(p.title or "").strip()
     if not title: err(rel, "no <title>")

@@ -138,6 +138,7 @@ translations_live: true
 {
   "@context": "https://schema.org",
   "@type": "Dataset",
+  "@id": "{{ page.url | absolute_url }}#dataset",
   "name": "Commercial truck wait times at U.S. land border crossings, by day and hour",
   "description": {{ page.description | jsonify }},
   "url": {{ page.url | absolute_url | jsonify }},

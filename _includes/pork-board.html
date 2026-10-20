@@ -295,6 +295,7 @@
 {
   "@context": "https://schema.org",
   "@type": "Dataset",
+  "@id": "{{ page.url | absolute_url }}#dataset",
   "name": {% if es %}"Valor de la canal de cerdo y precios de mayoreo de cada corte de cerdo, diario (USDA)"{% else %}"Daily USDA pork cutout and wholesale pork cut prices"{% endif %},
   "description": {{ page.description | jsonify }},
   "url": {{ page.url | absolute_url | jsonify }},
