@@ -1,7 +1,7 @@
 {
- "generated": "2026-10-21T11:51:16+00:00",
- "rows": 801525,
- "rows_fmt": "801,525",
+ "generated": "2026-10-21T13:48:55+00:00",
+ "rows": 801609,
+ "rows_fmt": "801,609",
  "files": 33,
  "datasets": [
   {
@@ -128,15 +128,15 @@
   },
   {
    "slug": "usda-sow-boar-prices",
-   "rows": 125664,
-   "rows_fmt": "125,664",
+   "rows": 125748,
+   "rows_fmt": "125,748",
    "first": "2020-12-07",
-   "newest": "2026-10-20",
+   "newest": "2026-10-21",
    "files": [
     {
-     "rows": 125664,
+     "rows": 125748,
      "first": "2020-12-07",
-     "newest": "2026-10-20",
+     "newest": "2026-10-21",
      "columns": [
       "section",
       "report_date",
@@ -150,12 +150,12 @@
       "avg_weight",
       "total_head"
      ],
-     "bytes": 16900161,
+     "bytes": 16911339,
      "file": "sow-boar-prices-by-region",
      "url": "/data/usda-sow-boar-prices/sow-boar-prices-by-region.csv",
      "report": 3452,
      "code": "LM_HG234",
-     "rows_fmt": "125,664",
+     "rows_fmt": "125,748",
      "size": "16.9 MB"
     }
    ]
