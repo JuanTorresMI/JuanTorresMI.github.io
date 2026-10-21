@@ -99,6 +99,7 @@ image_alt: "Tiempos de espera en la frontera para autos y peatones, por Juan Tor
   <h3>Descargar los datos</h3>
   <p>Cada lectura, guardada para siempre ({{ b.readings }} hasta ahora), los promedios de 30 días por cruce, carril, día y hora, y los promedios que publica CBP. Los archivos están en inglés.</p>
   <p>{% for f in b.files %}<a class="rb-btn" href="{{ f.url }}" download>Cada lectura, {{ f.year }} (CSV)</a> {% endfor %}<a class="rb-btn" href="/border-waits/border-car-pedestrian-wait-times.csv" download>Promedios de 30 días (CSV)</a> <a class="rb-btn" href="/border-waits/cbp-published-car-pedestrian-averages.csv" download>Promedios publicados por CBP (CSV)</a></p>
+  <p class="dc-link">Estos archivos también están, con todos los demás datos del sitio, en <a class="link" href="/es/datos/#border-car-pedestrian-waits">Datos abiertos</a>.</p>
 </section>
 {% else %}
 <p class="rb-empty">Todavía no hay lecturas.</p>

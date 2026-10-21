@@ -40,6 +40,13 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-21 — Every dataset in one catalog
+
+`/data/` now lists the boards' own files the same way as the open datasets: rows, first and newest date and
+size for each of the 59 CSVs (1.46 million rows), counted by `scripts/datasets.py` on every snapshot. The
+boards' files stay at their addresses (Kaggle pulls them). Every board's download section links to its
+entry on `/data/` (or `/es/datos/`), and `/data/` has its own card and group on `/projects/`.
+
 ## 2026-10-20 — Open data: twelve more USDA datasets and a catalog page
 
 `/data/` lists every CSV the site publishes, the boards' and twelve new datasets, with a DataCatalog in

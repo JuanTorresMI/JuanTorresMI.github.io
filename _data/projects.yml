@@ -6,7 +6,7 @@
 #
 #   slug       the page's id; also its share picture, assets/og/<slug>.png, unless `art` names another
 #   family     the page family (Work, Gamer…; see CLAUDE.md): labels the card and picks its stock
-#   group      the section of /projects/ it's listed under: tools, usda, border or site (projects.html names them)
+#   group      the section of /projects/ it's listed under: tools, data, usda, border or site (projects.html names them)
 #   title, url
 #   kind       the small label beside it (Simulation, Tool, Data…); `status` is kept for reference, nothing shows it
 #   short      one line for the home page and the cards; `summary` is the longer one the featured card shows
@@ -119,6 +119,26 @@
   metric: 2,770 craftable items · market-basis costing · scanner import
   stack: [JavaScript, Single-file web app, Opportunity cost, Local-first]
   keywords: [craft, ledger, minecraft, donut]
+
+- slug: open-data
+  family: Work
+  group: data
+  title: Open Data (Free CSV Datasets)
+  url: /data/
+  art: /assets/og/usda-market-prices.png
+  kind: Data
+  status: Live
+  short: Every dataset this site keeps, in one catalog, as free CSV files with fixed addresses, updated every weekday.
+  summary: >-
+    The catalog of every file the site publishes: the boards' own data (beef, pork, fed cattle, reefer freight,
+    border waits) and a dozen more USDA reports archived as published (hogs, sows, cow beef, beef trimmings,
+    lamb, dairy and more), from 2020. Each file keeps its address and its columns, so code and Kaggle notebooks
+    can read it straight from the site.
+  metric: 18 datasets · 59 CSV files · 1.4M+ rows · English and Spanish
+  stack: [Python, GitHub Actions, USDA LMR datamart, CBP Border Wait Times, CSV]
+  category: WebApplication
+  search: [free USDA datasets, USDA data CSV, livestock price data, hog price data, dairy price data, border wait time data, datos del USDA]
+  keywords: [datasets, open data]
 
 - slug: usda-market-prices
   family: Work
