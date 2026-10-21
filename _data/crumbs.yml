@@ -1,6 +1,7 @@
-# The breadcrumb trail of the data pages (_includes/crumb-chain.html): each address, its name in the trail
-# and its parent. /data/ and /es/datos/ are the root of every board, so a crawler finds every dataset from
-# them and every page names them. A page not listed here takes its front matter `parent` as the first step.
+# Every page's breadcrumb trail (_includes/crumb-chain.html): each address here, its name in the trail and
+# its parent. /data/ and /es/datos/ are the root of every data board, so a crawler finds every dataset from
+# them and every data page names them. A page not listed takes its front matter `parent`; else a post's
+# parent is /blog/ and a project page's is /projects/; else the trail is just Home and the page.
 /data/: { title: Open data }
 /usda-market-prices/: { title: USDA market prices, parent: /data/ }
 /beef-prices/: { title: Boxed beef prices, parent: /usda-market-prices/ }
@@ -16,3 +17,5 @@
 /es/precios-de-ganado-gordo/: { title: Precio del ganado gordo, parent: /es/precios-usda/ }
 /es/tiempos-de-espera/: { title: Tiempos de espera en la frontera, parent: /es/datos/ }
 /es/tiempos-de-espera/autos/: { title: Autos y peatones, parent: /es/tiempos-de-espera/ }
+/projects/: { title: Projects }
+/blog/: { title: Writing }

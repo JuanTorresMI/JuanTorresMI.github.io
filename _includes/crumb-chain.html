@@ -1,12 +1,18 @@
 {%- comment -%}
-  Sets `crumb_urls` and `crumb_names` (arrays, root first, the page itself not included) for a data page,
-  from _data/crumbs.yml: the page's own entry's parent, or else its front matter `parent`, then up the map.
-  Empty for pages outside it. head.html (the BreadcrumbList) and crumbs.html (the trail people see) use it.
+  Sets, for the page being rendered: `crumb_urls` and `crumb_names` (its ancestors, root first, Home not
+  included) and `crumb_self` (its own name in the trail). From _data/crumbs.yml: the page's own entry's
+  parent, or its front matter `parent`, or /blog/ for a post, or /projects/ for a project page; then up
+  the map. head.html (the BreadcrumbList) and crumbs.html (the trail people see) both use it.
 {%- endcomment -%}
 {%- assign crumb_map = site.data.crumbs -%}
+{%- assign crumb_project = nil -%}
+{%- if page.project -%}{%- for p in site.data.projects -%}{%- if p.slug == page.project -%}{%- assign crumb_project = p -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+{%- assign crumb_self = page.crumb_title | default: crumb_map[page.url].title | default: crumb_project.title | default: page.title | default: site.title -%}
 {%- assign crumb_up = nil -%}
 {%- if crumb_map[page.url] -%}{%- assign crumb_up = crumb_map[page.url].parent -%}
-{%- elsif page.parent.url and crumb_map[page.parent.url] -%}{%- assign crumb_up = page.parent.url -%}{%- endif -%}
+{%- elsif page.parent.url -%}{%- assign crumb_up = page.parent.url -%}
+{%- elsif page.collection == "posts" -%}{%- assign crumb_up = "/blog/" -%}
+{%- elsif crumb_project -%}{%- assign crumb_up = "/projects/" -%}{%- endif -%}
 {%- assign crumb_list = "" -%}
 {%- for i in (1..6) -%}
   {%- if crumb_up == nil or crumb_up == "" -%}{%- break -%}{%- endif -%}
@@ -15,4 +21,7 @@
 {%- endfor -%}
 {%- assign crumb_urls = crumb_list | split: "|" -%}
 {%- assign crumb_names = "" | split: "" -%}
-{%- for u in crumb_urls -%}{%- assign crumb_names = crumb_names | push: crumb_map[u].title -%}{%- endfor -%}
+{%- for u in crumb_urls -%}
+  {%- assign n = crumb_map[u].title -%}{%- if n == nil and u == page.parent.url -%}{%- assign n = page.parent.title -%}{%- endif -%}
+  {%- assign crumb_names = crumb_names | push: n -%}
+{%- endfor -%}

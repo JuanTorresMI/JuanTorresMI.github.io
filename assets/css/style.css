@@ -355,6 +355,7 @@ html { scroll-behavior: smooth; }
 /* ---------- breadcrumbs: the data pages' trail (_includes/crumbs.html), on ordinary and app pages ---------- */
 .crumbs { margin: 16px 0 24px; }
 .app-stage > .crumbs { margin-top: 0; }
+.crumbs-frame .crumbs { margin-bottom: 0; }
 .crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 0; font: 500 11px/1.5 var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .crumbs li + li::before { content: "›"; padding: 0 8px; color: var(--rule); }
 .crumbs a { color: var(--text-2); text-decoration: none; }
