@@ -57,29 +57,34 @@
   <p class="family">{% if es %}Trabajo · Datos abiertos{% else %}Work · Open data{% endif %}</p>
   <h1>{% if es %}Datos gratis del USDA y la frontera, en CSV{% else %}Free USDA and border datasets, in CSV{% endif %}</h1>
   {%- if es %}
-  <p class="lede">Todos los archivos CSV que publica este sitio, en un solo lugar: precios de cerdo, ganado, carne de res, cordero y lácteos, fletes refrigerados y tiempos de espera en la frontera. Cada archivo tiene una dirección fija y suma filas cada día hábil, así que se puede leer directo desde aquí en Python, R o Excel.{% if live and live.rows > 0 %} Los datos abiertos de abajo suman {{ live.rows_fmt }} filas en {{ live.files }} archivos.{% endif %} Los datos son del gobierno de EE. UU. (USDA AMS y CBP), de dominio público; cítalos.</p>
+  <p class="lede">Todos los archivos CSV que publica este sitio, en un solo lugar: precios de cerdo, ganado, carne de res, cordero y lácteos, fletes refrigerados y tiempos de espera en la frontera. Cada archivo tiene una dirección fija y suma filas cada día hábil, así que se puede leer directo desde aquí en Python, R o Excel.{% if live.all_files %} En total: {{ live.all_rows_fmt }} filas en {{ live.all_files }} archivos.{% endif %} Los datos son del gobierno de EE. UU. (USDA AMS y CBP), de dominio público; cítalos.</p>
   {%- else %}
-  <p class="lede">Every CSV this site publishes, in one place: hog, cattle, beef, pork, lamb and dairy prices, reefer truck rates and border wait times. Each file has a fixed address and gains rows every weekday, so Python, R or Excel can read it straight from here.{% if live and live.rows > 0 %} The open datasets below hold {{ live.rows_fmt }} rows in {{ live.files }} files.{% endif %} The data is the US government's (USDA AMS and CBP), public domain; please credit them.</p>
+  <p class="lede">Every CSV this site publishes, in one place: hog, cattle, beef, pork, lamb and dairy prices, reefer truck rates and border wait times. Each file has a fixed address and gains rows every weekday, so Python, R or Excel can read it straight from here.{% if live.all_files %} In all: {{ live.all_rows_fmt }} rows in {{ live.all_files }} files.{% endif %} The data is the US government's (USDA AMS and CBP), public domain; please credit them.</p>
   {%- endif %}
   <nav class="dc-files" aria-label="{% if es %}Conjuntos de datos{% else %}Datasets{% endif %}">
+    {%- for b in conf.boards %}<a href="#{{ b.slug }}">{% if es %}{{ b.title_es }}{% else %}{{ b.title }}{% endif %}</a>{% endfor %}
     {%- for d in conf.datasets %}<a href="#{{ d.slug }}">{% if es %}{{ d.title_es }}{% else %}{{ d.title }}{% endif %}</a>{% endfor %}
   </nav>
 </header>
 
-<section class="sec" id="boards">
-  <header class="sec-head"><h2>{% if es %}De los tableros{% else %}From the boards{% endif %}</h2><span class="label">{{ conf.boards.size }} {% if es %}conjuntos{% else %}datasets{% endif %}</span></header>
-  <div class="entries">
-  {%- for b in conf.boards %}
-    {%- if es and b.page_es != "" %}{% assign bp = b.page_es %}{% else %}{% assign bp = b.page %}{% endif %}
-    <div class="entry row">
-      <span class="key data">{% if b.kaggle != "" %}<a href="{{ b.kaggle }}" rel="noopener">Kaggle ↗</a>{% endif %}</span>
-      <span class="body"><span class="entry-head"><a class="entry-title" href="{{ bp }}"{% if es and b.page_es == "" %} hreflang="en"{% endif %}>{% if es %}{{ b.title_es }}{% else %}{{ b.title }}{% endif %}</a></span>
-      <span class="entry-text">{% if es %}{{ b.description_es }}{% else %}{{ b.description }}{% endif %}</span>
-      <span class="dc-files">{% for f in b.files %}<a class="data" href="{{ f }}">{{ f | split: "/" | last }}</a>{% endfor %}</span></span>
-    </div>
-  {%- endfor %}
-  </div>
+{%- for b in conf.boards %}
+{%- assign l = live.boards | where: "slug", b.slug | first %}
+{%- if es and b.page_es != "" %}{% assign bp = b.page_es %}{% else %}{% assign bp = b.page %}{% endif %}
+<section class="sec" id="{{ b.slug }}">
+  <header class="sec-head"><h2>{% if es %}{{ b.title_es }}{% else %}{{ b.title }}{% endif %}</h2><span class="label">{% if l and l.first != "" %}{{ l.first }} – {{ l.newest }}{% endif %}</span></header>
+  <p class="dc-text">{% if es %}{{ b.description_es }}{% else %}{{ b.description }}{% endif %} <a href="{{ bp }}"{% if es and b.page_es == "" %} hreflang="en"{% endif %}>{% if es %}Ver el tablero{% else %}See the board{% endif %} →</a>{% if b.kaggle != "" %} · <a href="{{ b.kaggle }}" rel="noopener">{% if es %}En Kaggle{% else %}On Kaggle{% endif %} ↗</a>{% endif %}</p>
+  {%- if l %}
+  <div class="dc-scroll"><table class="dc-table">
+    <thead><tr>{% if es %}<th scope="col">Archivo</th><th scope="col">Filas</th><th scope="col">Desde</th><th scope="col">Último</th><th scope="col">Tamaño</th>{% else %}<th scope="col">File</th><th scope="col">Rows</th><th scope="col">From</th><th scope="col">Newest</th><th scope="col">Size</th>{% endif %}</tr></thead>
+    <tbody>
+    {%- for f in l.files %}
+      <tr><th scope="row"><a href="{{ f.url }}">{{ f.file }}.csv</a></th><td>{{ f.rows_fmt }}</td><td>{{ f.first | default: "—" }}</td><td>{{ f.newest | default: "—" }}</td><td>{{ f.size }}</td></tr>
+    {%- endfor %}
+    </tbody>
+  </table></div>
+  {%- endif %}
 </section>
+{%- endfor %}
 
 {%- for d in conf.datasets %}
 {%- assign l = live.datasets | where: "slug", d.slug | first %}

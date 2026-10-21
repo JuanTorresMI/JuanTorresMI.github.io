@@ -1,8 +1,10 @@
 {
- "generated": "2026-10-21T13:48:55+00:00",
+ "generated": "2026-10-21T18:10:56+00:00",
  "rows": 801609,
  "rows_fmt": "801,609",
  "files": 33,
+ "all_rows_fmt": "1,459,077",
+ "all_files": 59,
  "datasets": [
   {
    "slug": "usda-hog-prices",
@@ -936,6 +938,669 @@
      "code": "DYMADVANCEDPRICES",
      "rows_fmt": "81",
      "size": "11 KB"
+    }
+   ]
+  }
+ ],
+ "boards": [
+  {
+   "slug": "beef-prices",
+   "rows": 115468,
+   "rows_fmt": "115,468",
+   "first": "2020-01-02",
+   "newest": "2026-10-20",
+   "files": [
+    {
+     "file": "boxed-beef-cutout-daily",
+     "url": "/beef-prices/boxed-beef-cutout-daily.csv",
+     "rows": 1733,
+     "rows_fmt": "1,733",
+     "first": "2020-01-02",
+     "newest": "2026-10-20",
+     "columns": [
+      "date",
+      "choice_cutout",
+      "select_cutout",
+      "choice_select_spread",
+      "choice_loads",
+      "select_loads",
+      "trimmings_loads",
+      "coarse_ground_loads",
+      "rib_choice",
+      "rib_select",
+      "chuck_choice",
+      "chuck_select",
+      "round_choice",
+      "round_select",
+      "loin_choice",
+      "loin_select",
+      "brisket_choice",
+      "brisket_select",
+      "plate_choice",
+      "plate_select",
+      "flank_choice",
+      "flank_select"
+     ],
+     "bytes": 263715,
+     "size": "0.3 MB"
+    },
+    {
+     "file": "boxed-beef-cut-prices-2020",
+     "url": "/beef-prices/boxed-beef-cut-prices-2020.csv",
+     "rows": 16960,
+     "rows_fmt": "16,960",
+     "first": "2020-01-02",
+     "newest": "2020-12-31",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "imps",
+      "fat_limitation",
+      "primal",
+      "grade",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "trades",
+      "pounds"
+     ],
+     "bytes": 2079264,
+     "size": "2.1 MB"
+    },
+    {
+     "file": "boxed-beef-cut-prices-2021",
+     "url": "/beef-prices/boxed-beef-cut-prices-2021.csv",
+     "rows": 17035,
+     "rows_fmt": "17,035",
+     "first": "2021-01-04",
+     "newest": "2021-12-30",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "imps",
+      "fat_limitation",
+      "primal",
+      "grade",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "trades",
+      "pounds"
+     ],
+     "bytes": 2088597,
+     "size": "2.1 MB"
+    },
+    {
+     "file": "boxed-beef-cut-prices-2022",
+     "url": "/beef-prices/boxed-beef-cut-prices-2022.csv",
+     "rows": 17000,
+     "rows_fmt": "17,000",
+     "first": "2022-01-03",
+     "newest": "2022-12-30",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "imps",
+      "fat_limitation",
+      "primal",
+      "grade",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "trades",
+      "pounds"
+     ],
+     "bytes": 2081969,
+     "size": "2.1 MB"
+    },
+    {
+     "file": "boxed-beef-cut-prices-2023",
+     "url": "/beef-prices/boxed-beef-cut-prices-2023.csv",
+     "rows": 17048,
+     "rows_fmt": "17,048",
+     "first": "2023-01-03",
+     "newest": "2023-12-29",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "imps",
+      "fat_limitation",
+      "primal",
+      "grade",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "trades",
+      "pounds"
+     ],
+     "bytes": 2090419,
+     "size": "2.1 MB"
+    },
+    {
+     "file": "boxed-beef-cut-prices-2024",
+     "url": "/beef-prices/boxed-beef-cut-prices-2024.csv",
+     "rows": 17101,
+     "rows_fmt": "17,101",
+     "first": "2024-01-02",
+     "newest": "2024-12-31",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "imps",
+      "fat_limitation",
+      "primal",
+      "grade",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "trades",
+      "pounds"
+     ],
+     "bytes": 2097946,
+     "size": "2.1 MB"
+    },
+    {
+     "file": "boxed-beef-cut-prices-2025",
+     "url": "/beef-prices/boxed-beef-cut-prices-2025.csv",
+     "rows": 16325,
+     "rows_fmt": "16,325",
+     "first": "2025-01-02",
+     "newest": "2025-12-31",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "imps",
+      "fat_limitation",
+      "primal",
+      "grade",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "trades",
+      "pounds"
+     ],
+     "bytes": 2002573,
+     "size": "2.0 MB"
+    },
+    {
+     "file": "boxed-beef-cut-prices-2026",
+     "url": "/beef-prices/boxed-beef-cut-prices-2026.csv",
+     "rows": 12266,
+     "rows_fmt": "12,266",
+     "first": "2026-01-02",
+     "newest": "2026-10-20",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "imps",
+      "fat_limitation",
+      "primal",
+      "grade",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "trades",
+      "pounds"
+     ],
+     "bytes": 1502602,
+     "size": "1.5 MB"
+    }
+   ]
+  },
+  {
+   "slug": "pork-prices",
+   "rows": 175881,
+   "rows_fmt": "175,881",
+   "first": "2020-01-02",
+   "newest": "2026-10-20",
+   "files": [
+    {
+     "file": "pork-cutout-daily",
+     "url": "/pork-prices/pork-cutout-daily.csv",
+     "rows": 1733,
+     "rows_fmt": "1,733",
+     "first": "2020-01-02",
+     "newest": "2026-10-20",
+     "columns": [
+      "date",
+      "carcass",
+      "loin",
+      "butt",
+      "picnic",
+      "rib",
+      "ham",
+      "belly",
+      "total_loads",
+      "cut_loads",
+      "trim_and_process_loads"
+     ],
+     "bytes": 132237,
+     "size": "0.1 MB"
+    },
+    {
+     "file": "pork-cut-prices-2020",
+     "url": "/pork-prices/pork-cut-prices-2020.csv",
+     "rows": 28194,
+     "rows_fmt": "28,194",
+     "first": "2020-01-02",
+     "newest": "2020-12-31",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "pounds"
+     ],
+     "bytes": 3218386,
+     "size": "3.2 MB"
+    },
+    {
+     "file": "pork-cut-prices-2021",
+     "url": "/pork-prices/pork-cut-prices-2021.csv",
+     "rows": 27285,
+     "rows_fmt": "27,285",
+     "first": "2021-01-04",
+     "newest": "2021-12-30",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "pounds"
+     ],
+     "bytes": 3110259,
+     "size": "3.1 MB"
+    },
+    {
+     "file": "pork-cut-prices-2022",
+     "url": "/pork-prices/pork-cut-prices-2022.csv",
+     "rows": 26403,
+     "rows_fmt": "26,403",
+     "first": "2022-01-03",
+     "newest": "2022-12-30",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "pounds"
+     ],
+     "bytes": 3005539,
+     "size": "3.0 MB"
+    },
+    {
+     "file": "pork-cut-prices-2023",
+     "url": "/pork-prices/pork-cut-prices-2023.csv",
+     "rows": 24996,
+     "rows_fmt": "24,996",
+     "first": "2023-01-03",
+     "newest": "2023-12-29",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "pounds"
+     ],
+     "bytes": 2845027,
+     "size": "2.8 MB"
+    },
+    {
+     "file": "pork-cut-prices-2024",
+     "url": "/pork-prices/pork-cut-prices-2024.csv",
+     "rows": 24228,
+     "rows_fmt": "24,228",
+     "first": "2024-01-02",
+     "newest": "2024-12-31",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "pounds"
+     ],
+     "bytes": 2745258,
+     "size": "2.7 MB"
+    },
+    {
+     "file": "pork-cut-prices-2025",
+     "url": "/pork-prices/pork-cut-prices-2025.csv",
+     "rows": 24150,
+     "rows_fmt": "24,150",
+     "first": "2025-01-02",
+     "newest": "2025-12-31",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "pounds"
+     ],
+     "bytes": 2736768,
+     "size": "2.7 MB"
+    },
+    {
+     "file": "pork-cut-prices-2026",
+     "url": "/pork-prices/pork-cut-prices-2026.csv",
+     "rows": 18622,
+     "rows_fmt": "18,622",
+     "first": "2026-01-02",
+     "newest": "2026-10-20",
+     "columns": [
+      "date",
+      "section",
+      "usda_description",
+      "name",
+      "low",
+      "high",
+      "weighted_average",
+      "weighted_average_per_lb",
+      "pounds"
+     ],
+     "bytes": 2105637,
+     "size": "2.1 MB"
+    },
+    {
+     "file": "pork-cut-names",
+     "url": "/pork-prices/pork-cut-names.csv",
+     "rows": 270,
+     "rows_fmt": "270",
+     "first": "",
+     "newest": "",
+     "columns": [
+      "usda_description",
+      "section",
+      "name",
+      "nombre",
+      "page",
+      "pagina"
+     ],
+     "bytes": 63105,
+     "size": "63 KB"
+    }
+   ]
+  },
+  {
+   "slug": "fed-cattle-prices",
+   "rows": 87976,
+   "rows_fmt": "87,976",
+   "first": "2020-01-02",
+   "newest": "2026-10-19",
+   "files": [
+    {
+     "file": "fed-cattle-weekly",
+     "url": "/fed-cattle-prices/fed-cattle-weekly.csv",
+     "rows": 55283,
+     "rows_fmt": "55,283",
+     "first": "2020-01-06",
+     "newest": "2026-10-19",
+     "columns": [
+      "report_date",
+      "week_start",
+      "week_end",
+      "region",
+      "purchase",
+      "class",
+      "basis",
+      "grade",
+      "head",
+      "dress_pct",
+      "weight_low",
+      "weight_high",
+      "weight_avg",
+      "price_low",
+      "price_high",
+      "weighted_average"
+     ],
+     "bytes": 6097903,
+     "size": "6.1 MB"
+    },
+    {
+     "file": "fed-cattle-5-area-daily",
+     "url": "/fed-cattle-prices/fed-cattle-5-area-daily.csv",
+     "rows": 32693,
+     "rows_fmt": "32,693",
+     "first": "2020-01-02",
+     "newest": "2026-10-19",
+     "columns": [
+      "date",
+      "class",
+      "basis",
+      "grade",
+      "head",
+      "dress_pct",
+      "weight_low",
+      "weight_high",
+      "weight_avg",
+      "price_low",
+      "price_high",
+      "weighted_average"
+     ],
+     "bytes": 2285832,
+     "size": "2.3 MB"
+    }
+   ]
+  },
+  {
+   "slug": "reefer-rates",
+   "rows": 30976,
+   "rows_fmt": "30,976",
+   "first": "2021-04-19",
+   "newest": "2026-10-19",
+   "files": [
+    {
+     "file": "usda-reefer-truck-rates",
+     "url": "/reefer-rates/usda-reefer-truck-rates.csv",
+     "rows": 30976,
+     "rows_fmt": "30,976",
+     "first": "2021-04-19",
+     "newest": "2026-10-19",
+     "columns": [
+      "week_of",
+      "origin_district",
+      "destination",
+      "low_usd",
+      "high_usd",
+      "mostly_low_usd",
+      "mostly_high_usd",
+      "change_pct",
+      "truck_availability"
+     ],
+     "bytes": 2564628,
+     "size": "2.6 MB"
+    }
+   ]
+  },
+  {
+   "slug": "border-truck-waits",
+   "rows": 87644,
+   "rows_fmt": "87,644",
+   "first": "2026-09-13",
+   "newest": "2026-10-21",
+   "files": [
+    {
+     "file": "border-truck-wait-readings-2026",
+     "url": "/border-waits/border-truck-wait-readings-2026.csv",
+     "rows": 16855,
+     "rows_fmt": "16,855",
+     "first": "2026-09-13",
+     "newest": "2026-10-21",
+     "columns": [
+      "port_number",
+      "posted_local",
+      "standard_wait_min",
+      "standard_lanes_open",
+      "fast_wait_min",
+      "fast_lanes_open",
+      "source"
+     ],
+     "bytes": 650118,
+     "size": "0.7 MB"
+    },
+    {
+     "file": "border-truck-wait-times",
+     "url": "/border-waits/border-truck-wait-times.csv",
+     "rows": 6071,
+     "rows_fmt": "6,071",
+     "first": "",
+     "newest": "",
+     "columns": [
+      "port_number",
+      "border",
+      "crossing",
+      "lane",
+      "weekday",
+      "hour_local",
+      "average_wait_min",
+      "readings",
+      "window_days",
+      "as_of"
+     ],
+     "bytes": 461334,
+     "size": "0.5 MB"
+    },
+    {
+     "file": "cbp-published-averages",
+     "url": "/border-waits/cbp-published-averages.csv",
+     "rows": 64718,
+     "rows_fmt": "64,718",
+     "first": "",
+     "newest": "",
+     "columns": [
+      "port_number",
+      "month",
+      "weekday",
+      "hour_local",
+      "standard_avg_min",
+      "fast_avg_min",
+      "retrieved"
+     ],
+     "bytes": 1888497,
+     "size": "1.9 MB"
+    }
+   ]
+  },
+  {
+   "slug": "border-car-pedestrian-waits",
+   "rows": 159523,
+   "rows_fmt": "159,523",
+   "first": "2026-09-13",
+   "newest": "2026-10-21",
+   "files": [
+    {
+     "file": "border-car-pedestrian-wait-readings-2026",
+     "url": "/border-waits/border-car-pedestrian-wait-readings-2026.csv",
+     "rows": 28916,
+     "rows_fmt": "28,916",
+     "first": "2026-09-13",
+     "newest": "2026-10-21",
+     "columns": [
+      "port_number",
+      "posted_local",
+      "car_standard_wait_min",
+      "car_standard_lanes_open",
+      "car_sentri_wait_min",
+      "car_sentri_lanes_open",
+      "car_ready_wait_min",
+      "car_ready_lanes_open",
+      "pedestrian_standard_wait_min",
+      "pedestrian_standard_lanes_open",
+      "pedestrian_ready_wait_min",
+      "pedestrian_ready_lanes_open",
+      "source"
+     ],
+     "bytes": 1358771,
+     "size": "1.4 MB"
+    },
+    {
+     "file": "border-car-pedestrian-wait-times",
+     "url": "/border-waits/border-car-pedestrian-wait-times.csv",
+     "rows": 18792,
+     "rows_fmt": "18,792",
+     "first": "",
+     "newest": "",
+     "columns": [
+      "port_number",
+      "border",
+      "crossing",
+      "mode",
+      "lane",
+      "weekday",
+      "hour_local",
+      "average_wait_min",
+      "readings",
+      "window_days",
+      "as_of"
+     ],
+     "bytes": 1528303,
+     "size": "1.5 MB"
+    },
+    {
+     "file": "cbp-published-car-pedestrian-averages",
+     "url": "/border-waits/cbp-published-car-pedestrian-averages.csv",
+     "rows": 111815,
+     "rows_fmt": "111,815",
+     "first": "",
+     "newest": "",
+     "columns": [
+      "port_number",
+      "month",
+      "weekday",
+      "hour_local",
+      "car_standard_avg_min",
+      "car_sentri_avg_min",
+      "car_ready_avg_min",
+      "pedestrian_standard_avg_min",
+      "pedestrian_ready_avg_min",
+      "retrieved"
+     ],
+     "bytes": 3743379,
+     "size": "3.7 MB"
     }
    ]
   }

@@ -11,8 +11,9 @@ file never changes shape. Dates become YYYY-MM-DD and numbers lose their thousan
 
     python3 scripts/datasets.py            # update every table
     python3 scripts/datasets.py hog        # only datasets whose slug contains "hog"
+    python3 scripts/datasets.py --count    # fetch nothing; just recount the files (the boards' too)
 """
-import csv, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
+import csv, glob, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
 from datetime import date, datetime, timedelta, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -114,6 +115,34 @@ def table(t):
                   "columns": header, "bytes": os.path.getsize(path)}
 
 
+DATE_COLS = ("date", "report_date", "week_of", "posted_local")
+
+
+def file_stats(rel):
+    """Rows, first and newest date, columns and size of one published CSV (the boards' own files)."""
+    path = os.path.join(ROOT, rel)
+    with open(path, encoding="utf-8", newline="") as fh:
+        rd = csv.reader(fh); header = next(rd, []); rows = list(rd)
+    di = next((header.index(c) for c in DATE_COLS if c in header), None)
+    dates = [r[di][:10] for r in rows if di is not None and len(r) > di and r[di]]
+    n, b = len(rows), os.path.getsize(path)
+    return {"file": os.path.basename(rel)[:-4], "url": "/" + rel.replace(os.sep, "/"), "rows": n, "rows_fmt": f"{n:,}",
+            "first": min(dates) if dates else "", "newest": max(dates) if dates else "", "columns": header, "bytes": b,
+            "size": f"{b / 1e6:.1f} MB" if b >= 1e5 else f"{b / 1e3:.0f} KB"}
+
+
+def boards(conf):
+    """The boards' own CSVs (they stay at their board's address), described the same way for /data/."""
+    out = []
+    for b in conf.get("boards", []):
+        files = [file_stats(os.path.relpath(f, ROOT)) for g in b["files"] for f in sorted(glob.glob(os.path.join(ROOT, g)))]
+        if not files: continue
+        dated = [f for f in files if f["first"]]
+        out.append({"slug": b["slug"], "rows": sum(f["rows"] for f in files), "rows_fmt": f"{sum(f['rows'] for f in files):,}",
+                    "first": min((f["first"] for f in dated), default=""), "newest": max((f["newest"] for f in dated), default=""), "files": files})
+    return out
+
+
 def main():
     conf = json.load(open(CONF, encoding="utf-8"))
     only = sys.argv[1] if len(sys.argv) > 1 else ""
@@ -126,7 +155,7 @@ def main():
         for t in d["tables"]:
             t = {**t, "slug": d["slug"]}
             info = old.get((d["slug"], t["file"]))
-            if not only or only in d["slug"]:
+            if only != "--count" and (not only or only in d["slug"]):
                 if not blocked:
                     try: _, got = table(t); info = {**got, "file": t["file"]} if got else info
                     except Blocked as e: blocked = str(e); print(f"{d['slug']}/{t['file']}: {e}", file=sys.stderr)
@@ -138,10 +167,14 @@ def main():
         if files:
             out.append({"slug": d["slug"], "rows": sum(f["rows"] for f in files), "rows_fmt": f"{sum(f['rows'] for f in files):,}",
                         "first": min(f["first"] for f in files if f["first"]), "newest": max(f["newest"] for f in files), "files": files})
+    bds = boards(conf)
     total = sum(d["rows"] for d in out)
+    every = total + sum(b["rows"] for b in bds)
     with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
         json.dump({"generated": datetime.now(timezone.utc).isoformat(timespec="seconds"), "rows": total, "rows_fmt": f"{total:,}",
-                   "files": sum(len(d["files"]) for d in out), "datasets": out}, fh, indent=1, ensure_ascii=False); fh.write("\n")
+                   "files": sum(len(d["files"]) for d in out), "all_rows_fmt": f"{every:,}",
+                   "all_files": sum(len(d["files"]) for d in out) + sum(len(b["files"]) for b in bds),
+                   "datasets": out, "boards": bds}, fh, indent=1, ensure_ascii=False); fh.write("\n")
     print(f"{len(out)} datasets, {total:,} rows, {_sent[0]} requests" + (f"; {failed} table(s) failed" if failed else "") + (f"; stopped: {blocked}" if blocked else ""))
     if failed and not out: sys.exit(1)
 

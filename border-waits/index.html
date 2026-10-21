@@ -107,6 +107,7 @@ translations_live: true
   <h3>Download the data</h3>
   <p>Every reading the board has, kept for good{% if b.archive %} ({{ b.archive.total }} so far){% endif %}: one file per year, each reading with the time the port posted it, the standard and FAST waits and lanes open, and whether this site’s Worker caught it (<code>worker</code>) or it came from the archive that filled in the weeks before (<code>archive</code>). Beside it, every month of averages CBP has published, to check the board’s own figures against.</p>
   <p>{% for f in b.archive.files %}<a class="rb-btn" href="{{ f.url }}" download>Every reading, {{ f.year }} (CSV)</a> {% endfor %}<a class="rb-btn" href="/border-waits/border-truck-wait-times.csv" download>The 30-day averages (CSV)</a> <a class="rb-btn" href="/border-waits/cbp-published-averages.csv" download>CBP’s published averages (CSV)</a></p>
+  <p class="dc-link">These files are also listed with every other dataset on this site, on <a class="link" href="/data/#border-truck-waits">Open data</a>.</p>
 </section>
 {% else %}
 <p class="rb-empty">The first readings haven’t been collected yet. They show up here the day after the Worker starts reading CBP.</p>

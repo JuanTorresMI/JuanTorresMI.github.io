@@ -373,6 +373,7 @@ html { scroll-behavior: smooth; }
 .page .dc-table th, .page .dc-table td { text-align: left; padding: 8px 16px 8px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; font-weight: 400; }
 .page .dc-table thead th { font: 500 11px/1.5 var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
 .page .dc code { font: 12px var(--mono); }
+.dc-link { color: var(--text-2); }
 
 /* ---------- print: the résumé page is the reason, but every page prints cleanly ---------- */
 @media print {
