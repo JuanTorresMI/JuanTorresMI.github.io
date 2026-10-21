@@ -33,12 +33,16 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **Plain Solver write-up**: per CLAUDE.md a new project gets a post, written from Juan's answers
   (why he built it, what surprised him). Not written yet. Also still open from the spec: the optional
   server tier for very large models (the 50 × 500 test solves in the browser in about 2 s).
-- **Kaggle for the open datasets** (Oct 20, 2026): each of the twelve in `data/` gets one Kaggle dataset
-  pulling its files by URL once the first run has filled them (`/data/` lists them), with a Spanish
-  section in the description; then set its `kaggle` in `_data/datasets.json`.
 - **More USDA boards** (Juan wants all of them): next are hogs (LM_HG217/218), lamb (LM_XL502) and cow
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
+
+## 2026-10-21 — The open datasets on Kaggle
+
+All twelve open datasets are on Kaggle, pulling their files from `data/` by URL, each with a description
+(with a Spanish section), column descriptions, tags and a starter notebook. `/data/` and its JSON-LD link
+each one (`kaggle` in `_data/datasets.json`). Still open: the slaughter cow and bull dataset on Kaggle has only
+the national file; `cow-bull-prices-regional.csv` needs adding there by URL.
 
 ## 2026-10-21 — Every dataset in one catalog
 

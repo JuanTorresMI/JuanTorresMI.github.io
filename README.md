@@ -86,7 +86,7 @@ changes. Each January adds a new `-YYYY.csv` beside last year's (add it to `PUBL
 | USDA Refrigerated Truck Rates by Lane | `reefer-rates/usda-reefer-truck-rates.csv` |
 | US Border Truck Wait Times (CBP) | `border-waits/border-truck-wait-readings-2026.csv`, `border-waits/border-truck-wait-times.csv`, `border-waits/cbp-published-averages.csv` |
 | US Border Car and Pedestrian Wait Times (CBP), not on Kaggle yet | `border-waits/border-car-pedestrian-wait-readings-2026.csv`, `border-waits/border-car-pedestrian-wait-times.csv`, `border-waits/cbp-published-car-pedestrian-averages.csv` |
-| The open datasets (12, one Kaggle dataset each, not on Kaggle yet) | `data/<dataset>/<table>.csv`, one file per table, every year in it; the list is `/data/` and `_data/datasets.json` |
+| The open datasets (12, one Kaggle dataset each; their Kaggle links are `kaggle` in `_data/datasets.json`) | `data/<dataset>/<table>.csv`, one file per table, every year in it; the list is `/data/` and `_data/datasets.json` |
 
 ### Workflows (`.github/workflows/`)
 
