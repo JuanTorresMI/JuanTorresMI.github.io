@@ -266,6 +266,11 @@ crawlers see.
   and defaults for both languages in `_config.yml`, the stubs' `translation` pairs, the sitemap,
   `check.py`'s snapshot list, `snapshot.yml`'s `git add` paths, a `projects.yml` entry, a card in
   `og-images.js`, the board in `usda-boards.html` and the hub, `screenshots.js`, and the docs.
+- **Embeddable charts**: `_layouts/embed.html` draws a board's chart with no chrome for other sites' iframes
+  (`/embed/<board>/`, `/es/insertar/<board>/`, noindex and out of the sitemap); `_data/embeds.yml` lists them,
+  and `_includes/embed-box.html` puts the copy-paste snippet on the board. The snippet's plain link under the
+  iframe is the point: it is the backlink (a link inside the iframe counts for the iframe). A new board's chart
+  is one entry in `embeds.yml`, two stub pages and one include call.
 - **Anything changing the head**: it is one include for every page. Test with `check.py`.
 - **Breadcrumbs**: every page but the home page, the 404 and the music page has one trail, the same in its
   `BreadcrumbList` (`head.html`; posts get their own beside the `BlogPosting`) and in the visible

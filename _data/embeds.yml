@@ -1,0 +1,41 @@
+# The embeddable charts (_layouts/embed.html; the snippet on each board is _includes/embed-box.html).
+# key: the snapshot (_data/live/<key>.json) and which chart in it; the board and the embed page in each language.
+beef:
+  chart: chart_year
+  board: /beef-prices/
+  board_es: /es/precios-de-carne-de-res/
+  embed: /embed/beef-prices/
+  embed_es: /es/insertar/precios-de-carne-de-res/
+  title: USDA boxed beef cutout, the past year
+  title_es: Cutout de res en caja del USDA, el último año
+  unit: Choice and Select, dollars per hundredweight
+  unit_es: Choice y Select, dólares por quintal
+  names: "Choice:Choice,Select:Select"
+  link: USDA boxed beef prices
+  link_es: Precios de la carne de res del USDA
+pork:
+  chart: chart_year
+  board: /pork-prices/
+  board_es: /es/precios-de-cerdo/
+  embed: /embed/pork-prices/
+  embed_es: /es/insertar/precios-de-cerdo/
+  title: USDA pork cutout and belly, the past year
+  title_es: Canal de cerdo y panceta del USDA, el último año
+  unit: Dollars per hundredweight
+  unit_es: Dólares por quintal
+  names: "Carcass:Canal,Belly:Panceta"
+  link: USDA pork prices
+  link_es: Precios del cerdo del USDA
+cattle:
+  chart: chart_year
+  board: /fed-cattle-prices/
+  board_es: /es/precios-de-ganado-gordo/
+  embed: /embed/fed-cattle-prices/
+  embed_es: /es/insertar/precios-de-ganado-gordo/
+  title: Fed cattle cash prices, the past year
+  title_es: Precio del ganado gordo, el último año
+  unit: 5-area weighted average, live, dollars per hundredweight
+  unit_es: Promedio ponderado de 5 áreas, en pie, dólares por quintal
+  names: "Steers:Novillos,Heifers:Vaquillas"
+  link: USDA fed cattle prices
+  link_es: Precio del ganado gordo del USDA

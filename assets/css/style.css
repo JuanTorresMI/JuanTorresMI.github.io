@@ -362,6 +362,15 @@ html { scroll-behavior: smooth; }
 .crumbs a:hover { color: var(--accent); }
 .crumbs [aria-current] { color: var(--muted); }
 
+/* ---------- embeds: the iframe chart pages (_layouts/embed.html) and the snippet box on the boards ---------- */
+.embed-body { margin: 0; background: var(--ground); color: var(--text); font-family: var(--sans); }
+.embed { padding: 12px 16px 8px; }
+.embed .rb-block { margin-top: 0; }
+.embed-credit { margin: 8px 0 0; font: 12px/1.5 var(--mono); color: var(--text-2); }
+.embed-credit a { color: var(--accent); }
+.embed-box { margin-top: 32px; }
+.embed-code { display: block; width: 100%; margin: 12px 0; padding: 12px; font: 12px/1.5 var(--mono); color: var(--text); background: var(--stock); border: 1px solid var(--rule); resize: vertical; }
+
 /* ---------- /data/: the catalog of every published CSV (a work page) ---------- */
 .page .dc .sec { margin-top: 80px; }
 .page .dc-text { max-width: 44em; margin: 16px 0 0; color: var(--text); }
