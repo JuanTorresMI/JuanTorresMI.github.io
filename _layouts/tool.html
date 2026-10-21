@@ -39,6 +39,7 @@
   <div class="app-shell" id="app-shell" data-mode="{{ page.app_mode | default: 'views' }}" data-start="{{ page.app_start }}" data-done-label="{{ page.app_done }}" data-auto="{{ page.app_auto | default: false }}">
     <nav class="app-rail" id="app-rail" aria-label="{% if es %}Secciones{% else %}Sections{% endif %}"></nav>
     <main class="app-stage{% if page.app_wrap %} {{ page.app_wrap }}{% endif %}" id="app-stage" tabindex="-1">
+      {%- include crumbs.html %}
       {{ content }}
     </main>
     <aside class="app-side" id="app-side" hidden></aside>

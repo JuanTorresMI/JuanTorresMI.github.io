@@ -1,0 +1,18 @@
+# The breadcrumb trail of the data pages (_includes/crumb-chain.html): each address, its name in the trail
+# and its parent. /data/ and /es/datos/ are the root of every board, so a crawler finds every dataset from
+# them and every page names them. A page not listed here takes its front matter `parent` as the first step.
+/data/: { title: Open data }
+/usda-market-prices/: { title: USDA market prices, parent: /data/ }
+/beef-prices/: { title: Boxed beef prices, parent: /usda-market-prices/ }
+/pork-prices/: { title: Pork prices, parent: /usda-market-prices/ }
+/fed-cattle-prices/: { title: Fed cattle prices, parent: /usda-market-prices/ }
+/reefer-rates/: { title: Reefer truck rates, parent: /usda-market-prices/ }
+/border-waits/: { title: Border truck wait times, parent: /data/ }
+/border-waits/cars/: { title: Cars and pedestrians, parent: /border-waits/ }
+/es/datos/: { title: Datos abiertos }
+/es/precios-usda/: { title: Precios del USDA, parent: /es/datos/ }
+/es/precios-de-carne-de-res/: { title: Precios de la carne de res, parent: /es/precios-usda/ }
+/es/precios-de-cerdo/: { title: Precios del cerdo, parent: /es/precios-usda/ }
+/es/precios-de-ganado-gordo/: { title: Precio del ganado gordo, parent: /es/precios-usda/ }
+/es/tiempos-de-espera/: { title: Tiempos de espera en la frontera, parent: /es/datos/ }
+/es/tiempos-de-espera/autos/: { title: Autos y peatones, parent: /es/tiempos-de-espera/ }

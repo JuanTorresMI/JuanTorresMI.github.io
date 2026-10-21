@@ -1,0 +1,9 @@
+{%- comment -%} The visible breadcrumb trail of a data page (see crumb-chain.html); nothing elsewhere. {%- endcomment -%}
+{%- include crumb-chain.html -%}
+{%- if crumb_urls.size > 0 %}
+<nav class="crumbs" aria-label="{% if page.lang == 'es' %}Ruta{% else %}Breadcrumb{% endif %}"><ol>
+  <li><a href="/">{% if page.lang == "es" %}Inicio{% else %}Home{% endif %}</a></li>
+  {%- for u in crumb_urls %}<li><a href="{{ u }}">{{ crumb_names[forloop.index0] }}</a></li>{% endfor %}
+  <li aria-current="page">{{ page.crumb_title | default: page.title }}</li>
+</ol></nav>
+{%- endif -%}
