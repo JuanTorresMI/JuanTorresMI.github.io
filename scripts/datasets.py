@@ -52,7 +52,7 @@ def fetch(rid, section, field, first, last):
     out, a = [], first
     while a <= last:
         b = min(last, a + timedelta(days=CHUNK_DAYS - 1))
-        url = f"{LMR}/{rid}/{urllib.parse.quote(section, safe='')}?q={field}={a:%m/%d/%Y}:{b:%m/%d/%Y}"
+        url = f"{LMR}/{rid}/{urllib.parse.quote(section, safe='/')   # the datamart wants a section's "/" as is (%2F is a 400)}?q={field}={a:%m/%d/%Y}:{b:%m/%d/%Y}"
         req = urllib.request.Request(url, headers={"User-Agent": "site-datasets (github.com/JuanTorresMI)", "Accept": "application/json"})
         if _sent[0] >= BUDGET: raise Blocked("this run's request budget is spent")
         for attempt in range(3):

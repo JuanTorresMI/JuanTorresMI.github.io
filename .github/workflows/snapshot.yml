@@ -69,6 +69,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Refresh the live page snapshots"
+          # A long run (the datasets' backfill) can finish after other pushes to main: put this commit on top.
+          git pull --rebase origin main
           git push origin HEAD:main
           echo "changed=true" >> "$GITHUB_OUTPUT"
       - name: Deploy
