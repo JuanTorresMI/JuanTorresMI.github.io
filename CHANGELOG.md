@@ -41,8 +41,7 @@ Things waiting on a decision or on Juan, so they aren't lost:
 
 All twelve open datasets are on Kaggle, pulling their files from `data/` by URL, each with a description
 (with a Spanish section), column descriptions, tags and a starter notebook. `/data/` and its JSON-LD link
-each one (`kaggle` in `_data/datasets.json`). Still open: the slaughter cow and bull dataset on Kaggle has only
-the national file; `cow-bull-prices-regional.csv` needs adding there by URL.
+each one (`kaggle` in `_data/datasets.json`).
 
 ## 2026-10-21 — Every dataset in one catalog
 
