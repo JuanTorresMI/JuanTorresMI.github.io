@@ -7,6 +7,7 @@
   <a class="skip" href="#main">Skip to content</a>
   {% include navbar.html %}
   {% if page.project %}{% include project-bar.html %}{% endif %}
+  <div class="frame crumbs-frame">{% include crumbs.html %}</div>
   <div id="main">
     {{ content }}
   </div>
