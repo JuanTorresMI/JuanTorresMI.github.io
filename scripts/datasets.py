@@ -23,6 +23,7 @@ LMR = "https://mpr.datamart.ams.usda.gov/services/v1.1/reports"
 START = date(2020, 1, 1)
 REFETCH_DAYS = 45
 CHUNK_DAYS = 366                             # the datamart answers at most 99,999 rows a request
+# A section's "/" is sent as is: the datamart answers %2F with a 400.
 PAUSE = 1.5                                  # seconds between requests: twelve at once got this machine a 403 for hours
 BUDGET = int(os.environ.get("DATASETS_BUDGET", "450"))   # requests per run; a table not reached is filled next run
 
@@ -52,7 +53,7 @@ def fetch(rid, section, field, first, last):
     out, a = [], first
     while a <= last:
         b = min(last, a + timedelta(days=CHUNK_DAYS - 1))
-        url = f"{LMR}/{rid}/{urllib.parse.quote(section, safe='/')   # the datamart wants a section's "/" as is (%2F is a 400)}?q={field}={a:%m/%d/%Y}:{b:%m/%d/%Y}"
+        url = f"{LMR}/{rid}/{urllib.parse.quote(section, safe='/')}?q={field}={a:%m/%d/%Y}:{b:%m/%d/%Y}"
         req = urllib.request.Request(url, headers={"User-Agent": "site-datasets (github.com/JuanTorresMI)", "Accept": "application/json"})
         if _sent[0] >= BUDGET: raise Blocked("this run's request budget is spent")
         for attempt in range(3):
