@@ -37,6 +37,12 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-21 — Embeddable charts
+
+The beef, pork and fed cattle boards each have an "Embed this chart" box: a snippet other sites paste, an
+iframe of the board's past-year chart (`/embed/…`, `/es/insertar/…`, kept current by every deploy) and a
+plain source link under it, which is the backlink. The embed pages are noindex and out of the sitemap.
+
 ## 2026-10-21 — The open datasets on Kaggle
 
 All twelve open datasets are on Kaggle, pulling their files from `data/` by URL, each with a description

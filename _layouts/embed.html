@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: 'en' }}">
+<head>
+{% include head.html %}
+<base target="_blank">
+</head>
+{%- comment -%}
+  An embeddable chart (`embed: beef|pork|cattle`, _data/embeds.yml): no site chrome, sized for an iframe, the
+  board's own SVG chart from the snapshot, and a credit link to the board. noindex (it would duplicate the board)
+  but followed. Other sites paste the snippet from _includes/embed-box.html, whose link outside the iframe is the
+  backlink; links here open in a new tab.
+{%- endcomment -%}
+{%- assign e = site.data.embeds[page.embed] -%}
+{%- assign live = site.data.live[page.embed] -%}
+{%- assign es = false -%}{%- if page.lang == "es" -%}{%- assign es = true -%}{%- endif -%}
+<body class="embed-body">
+<main class="embed bf">
+  {%- assign ch = live[e.chart] -%}
+  {%- if ch %}
+  {%- capture lab %}{% if es %}{{ e.title_es }}{% else %}{{ e.title }}{% endif %}{% endcapture %}
+  {% include price-chart.html chart=ch es=es label=lab title_en=e.title title_es=e.title_es unit_en=e.unit unit_es=e.unit_es names=e.names %}
+  {%- endif %}
+  <p class="embed-credit">{% if es %}Datos: USDA AMS · Gráfica y CSV gratis: <a href="{{ e.board_es | absolute_url }}">{{ e.link_es }}</a>, juantorresmi.github.io{% else %}Data: USDA AMS · Chart and free CSV: <a href="{{ e.board | absolute_url }}">{{ e.link }}</a>, juantorresmi.github.io{% endif %}</p>
+</main>
+</body>
+</html>
