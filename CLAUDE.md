@@ -267,6 +267,10 @@ crawlers see.
   `check.py`'s snapshot list, `snapshot.yml`'s `git add` paths, a `projects.yml` entry, a card in
   `og-images.js`, the board in `usda-boards.html` and the hub, `screenshots.js`, and the docs.
 - **Anything changing the head**: it is one include for every page. Test with `check.py`.
+- **Breadcrumbs**: the data pages' trail (the `BreadcrumbList` in `head.html` and the visible `crumbs.html` in
+  `default` and `tool`) comes from `_data/crumbs.yml`, rooted at `/data/` and `/es/datos/`. A new board adds
+  its address there with its parent; its item pages follow from their `parent`. Other pages keep the old
+  trail (Home › Projects › the project, or their `parent`).
 
 ## Things that are the way they are on purpose
 

@@ -1,0 +1,18 @@
+{%- comment -%}
+  Sets `crumb_urls` and `crumb_names` (arrays, root first, the page itself not included) for a data page,
+  from _data/crumbs.yml: the page's own entry's parent, or else its front matter `parent`, then up the map.
+  Empty for pages outside it. head.html (the BreadcrumbList) and crumbs.html (the trail people see) use it.
+{%- endcomment -%}
+{%- assign crumb_map = site.data.crumbs -%}
+{%- assign crumb_up = nil -%}
+{%- if crumb_map[page.url] -%}{%- assign crumb_up = crumb_map[page.url].parent -%}
+{%- elsif page.parent.url and crumb_map[page.parent.url] -%}{%- assign crumb_up = page.parent.url -%}{%- endif -%}
+{%- assign crumb_list = "" -%}
+{%- for i in (1..6) -%}
+  {%- if crumb_up == nil or crumb_up == "" -%}{%- break -%}{%- endif -%}
+  {%- assign crumb_list = crumb_up | append: "|" | append: crumb_list -%}
+  {%- assign crumb_up = crumb_map[crumb_up].parent -%}
+{%- endfor -%}
+{%- assign crumb_urls = crumb_list | split: "|" -%}
+{%- assign crumb_names = "" | split: "" -%}
+{%- for u in crumb_urls -%}{%- assign crumb_names = crumb_names | push: crumb_map[u].title -%}{%- endfor -%}

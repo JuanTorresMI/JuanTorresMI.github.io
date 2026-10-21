@@ -177,6 +177,7 @@
 {%- assign crumb_title = page.title | default: site.title -%}
 {%- assign project = nil -%}
 {%- if page.project -%}{%- for p in site.data.projects -%}{%- if p.slug == page.project -%}{%- assign project = p -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+{%- include crumb-chain.html -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -184,7 +185,9 @@
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": {% if lang == "es" %}"Inicio"{% else %}"Home"{% endif %}, "item": "{{ site.url }}/" }{% if project %},
+        { "@type": "ListItem", "position": 1, "name": {% if lang == "es" %}"Inicio"{% else %}"Home"{% endif %}, "item": "{{ site.url }}/" }{% if crumb_urls.size > 0 %}{% for u in crumb_urls %},
+        { "@type": "ListItem", "position": {{ forloop.index | plus: 1 }}, "name": {{ crumb_names[forloop.index0] | jsonify }}, "item": {{ u | absolute_url | jsonify }} }{% endfor %},
+        { "@type": "ListItem", "position": {{ crumb_urls.size | plus: 2 }}, "name": {{ page.crumb_title | default: crumb_title | jsonify }}, "item": {{ page.url | absolute_url | jsonify }} }{% elsif project %},
         { "@type": "ListItem", "position": 2, "name": "Projects", "item": {{ "/projects/" | absolute_url | jsonify }} },
         { "@type": "ListItem", "position": 3, "name": {{ project.title | jsonify }}, "item": {{ page.url | absolute_url | jsonify }} }{% elsif page.parent.parent %},
         { "@type": "ListItem", "position": 2, "name": {{ page.parent.parent.title | jsonify }}, "item": {{ page.parent.parent.url | absolute_url | jsonify }} },
