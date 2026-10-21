@@ -1,14 +1,14 @@
 {
- "generated": "2026-10-20T20:21:57-04:00",
+ "generated": "2026-10-20T23:03:25-04:00",
  "as_of_iso": "2026-10-20",
- "as_of_en": "Oct 20, 2026, 8:21 PM Michigan time",
- "as_of_es": "20 oct 2026, 20:21 (hora de Michigan)",
+ "as_of_en": "Oct 20, 2026, 11:03 PM Michigan time",
+ "as_of_es": "20 oct 2026, 23:03 (hora de Michigan)",
  "since_en": "Sep 13, 2026",
  "since_es": "13 sep 2026",
  "since_iso": "2026-09-13",
  "month_en": "October",
  "month_es": "octubre",
- "readings": "28,390",
+ "readings": "28,510",
  "ports": {
   "010401": {
    "port": "010401",
@@ -25,7 +25,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 320,
+    "car_standard": 321,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -45,7 +45,7 @@
       "v": 3
      },
      "flat": false,
-     "readings": 320
+     "readings": 321
     }
    },
    "ly": {
@@ -79,10 +79,10 @@
      "lanes": 1
     }
    },
-   "stale": true,
+   "stale": false,
    "first": "2026-09-13 23:00",
-   "posted_en": "Oct 19, 11:00 PM EDT",
-   "posted_es": "19 oct, 23:00 EDT",
+   "posted_en": "Oct 20, 11:00 PM EDT",
+   "posted_es": "20 oct, 23:00 EDT",
    "first_en": "Sep 13, 2026",
    "first_es": "13 sep 2026",
    "usual": {
@@ -114,7 +114,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 381,
+    "car_standard": 384,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -134,7 +134,7 @@
       "v": 15
      },
      "flat": false,
-     "readings": 381
+     "readings": 384
     }
    },
    "ly": {
@@ -168,9 +168,9 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 0,
-     "en": "No wait",
-     "es": "Sin demora",
+     "v": 5,
+     "en": "5 min",
+     "es": "5 min",
      "lanes": 1
     },
     "car_sentri": {
@@ -182,8 +182,8 @@
    },
    "stale": false,
    "first": "2026-09-14 22:00",
-   "posted_en": "Oct 20, 7:00 PM EDT",
-   "posted_es": "20 oct, 19:00 EDT",
+   "posted_en": "Oct 20, 11:00 PM EDT",
+   "posted_es": "20 oct, 23:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -378,7 +378,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 272,
+    "car_standard": 273,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -398,7 +398,7 @@
       "v": 5
      },
      "flat": false,
-     "readings": 272
+     "readings": 273
     }
    },
    "ly": {
@@ -432,10 +432,10 @@
      "lanes": 1
     }
    },
-   "stale": true,
+   "stale": false,
    "first": "2026-09-13 23:00",
-   "posted_en": "Oct 19, 11:00 PM EDT",
-   "posted_es": "19 oct, 23:00 EDT",
+   "posted_en": "Oct 20, 11:00 PM EDT",
+   "posted_es": "20 oct, 23:00 EDT",
    "first_en": "Sep 13, 2026",
    "first_es": "13 sep 2026",
    "usual": {
@@ -466,7 +466,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 187,
+    "car_standard": 189,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -486,7 +486,7 @@
       "v": 35
      },
      "flat": false,
-     "readings": 187
+     "readings": 189
     }
    },
    "ly": {
@@ -522,8 +522,8 @@
    },
    "stale": false,
    "first": "2026-09-14 08:00",
-   "posted_en": "Oct 20, 8:00 PM EDT",
-   "posted_es": "20 oct, 20:00 EDT",
+   "posted_en": "Oct 20, 11:00 PM EDT",
+   "posted_es": "20 oct, 23:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -552,7 +552,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 135,
+    "car_standard": 137,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -564,7 +564,7 @@
      "best": null,
      "worst": null,
      "flat": true,
-     "readings": 135
+     "readings": 137
     }
    },
    "ly": {
@@ -600,8 +600,8 @@
    },
    "stale": false,
    "first": "2026-09-14 08:00",
-   "posted_en": "Oct 20, 8:00 PM EDT",
-   "posted_es": "20 oct, 20:00 EDT",
+   "posted_en": "Oct 20, 11:00 PM EDT",
+   "posted_es": "20 oct, 23:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -631,7 +631,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 292,
+    "car_standard": 293,
     "car_sentri": 15,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -651,7 +651,7 @@
       "v": 82
      },
      "flat": false,
-     "readings": 292
+     "readings": 293
     }
    },
    "ly": {
@@ -707,8 +707,8 @@
    },
    "stale": false,
    "first": "2026-09-14 03:00",
-   "posted_en": "Oct 20, 8:00 PM EDT",
-   "posted_es": "20 oct, 20:00 EDT",
+   "posted_en": "Oct 20, 10:00 PM EDT",
+   "posted_es": "20 oct, 22:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -741,7 +741,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 221,
+    "car_standard": 222,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -753,7 +753,7 @@
      "best": null,
      "worst": null,
      "flat": true,
-     "readings": 221
+     "readings": 222
     }
    },
    "ly": {
@@ -787,10 +787,10 @@
      "lanes": 1
     }
    },
-   "stale": true,
+   "stale": false,
    "first": "2026-09-13 23:00",
-   "posted_en": "Oct 19, 11:00 PM EDT",
-   "posted_es": "19 oct, 23:00 EDT",
+   "posted_en": "Oct 20, 11:00 PM EDT",
+   "posted_es": "20 oct, 23:00 EDT",
    "first_en": "Sep 13, 2026",
    "first_es": "13 sep 2026",
    "usual": {
@@ -820,7 +820,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 296,
+    "car_standard": 299,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -832,7 +832,7 @@
      "best": null,
      "worst": null,
      "flat": true,
-     "readings": 296
+     "readings": 299
     }
    },
    "ly": {
@@ -863,13 +863,13 @@
      "v": 0,
      "en": "No wait",
      "es": "Sin demora",
-     "lanes": 3
+     "lanes": 2
     }
    },
-   "stale": true,
+   "stale": false,
    "first": "2026-09-14 03:00",
-   "posted_en": "Oct 19, 10:00 PM EDT",
-   "posted_es": "19 oct, 22:00 EDT",
+   "posted_en": "Oct 20, 11:00 PM EDT",
+   "posted_es": "20 oct, 23:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -900,7 +900,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 220,
+    "car_standard": 224,
     "car_sentri": 62,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -920,7 +920,7 @@
       "v": 12
      },
      "flat": false,
-     "readings": 220
+     "readings": 224
     },
     "car_sentri": {
      "avg": 3,
@@ -991,8 +991,8 @@
    },
    "stale": false,
    "first": "2026-09-14 05:00",
-   "posted_en": "Oct 20, 9:00 PM EDT",
-   "posted_es": "20 oct, 21:00 EDT",
+   "posted_en": "Oct 20, 11:00 PM EDT",
+   "posted_es": "20 oct, 23:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -1027,7 +1027,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 348,
+    "car_standard": 350,
     "car_sentri": 225,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -1963,7 +1963,7 @@
       "hour": 12,
       "v": 25
      },
-     "readings": 348
+     "readings": 350
     },
     "car_sentri": {
      "avg": 0,
@@ -2934,16 +2934,16 @@
      "lanes": 1
     },
     "car_sentri": {
-     "v": 0,
-     "en": "No wait",
-     "es": "Sin demora",
-     "lanes": 1
+     "v": null,
+     "en": "Closed",
+     "es": "Cerrado",
+     "lanes": null
     }
    },
    "stale": false,
    "first": "2026-09-14 18:00",
-   "posted_en": "Oct 20, 6:00 PM EDT",
-   "posted_es": "20 oct, 18:00 EDT",
+   "posted_en": "Oct 20, 11:00 PM EDT",
+   "posted_es": "20 oct, 23:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -2959,7 +2959,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M11.7,152.0 M71.1,152.0 M86.0,152.0 M100.9,152.0L108.3,152.0 M130.6,152.0 M152.9,152.0 M171.4,152.0L175.1,152.0 M238.3,152.0 M256.9,152.0L268.0,152.0L279.1,152.0L282.9,152.0L290.3,152.0L297.7,152.0 M312.6,152.0 M331.1,152.0 M346.0,152.0L353.4,152.0 M390.6,152.0 M412.9,104.0L420.3,152.0 M438.9,56.0L442.6,104.0 M479.7,152.0 M516.9,152.0 M535.4,152.0 M550.3,152.0 M568.9,152.0 M591.1,152.0 M613.4,152.0L624.6,152.0L628.3,152.0L632.0,152.0",
+    "line": "M52.6,152.0 M67.4,152.0 M82.3,152.0L89.7,152.0 M112.0,152.0 M134.3,152.0 M152.9,152.0L156.6,152.0 M219.7,152.0 M238.3,152.0L249.4,152.0L260.6,152.0L264.3,152.0L271.7,152.0L279.1,152.0 M294.0,152.0 M312.6,152.0 M327.4,152.0L334.9,152.0 M372.0,152.0 M394.3,104.0L401.7,152.0 M420.3,56.0L424.0,104.0 M461.1,152.0 M498.3,152.0 M516.9,152.0 M531.7,152.0L542.9,152.0L550.3,152.0 M572.6,152.0 M594.9,152.0L606.0,152.0L609.7,152.0L613.4,152.0 M632.0,152.0",
     "top": 30,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -2990,8 +2990,8 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 540,
-    "car_sentri": 399,
+    "car_standard": 545,
+    "car_sentri": 404,
     "car_ready": 0,
     "pedestrian_standard": 0,
     "pedestrian_ready": 0
@@ -3700,7 +3700,7 @@
          "lvl": 0
         },
         {
-         "v": 7,
+         "v": 5,
          "lvl": 0
         },
         {
@@ -3905,8 +3905,8 @@
       },
       {
        "h": 22,
-       "v": 11,
-       "w": 91.7
+       "v": 10,
+       "w": 83.3
       },
       {
        "h": 23,
@@ -3926,7 +3926,7 @@
       "hour": 0,
       "v": 52
      },
-     "readings": 540
+     "readings": 545
     },
     "car_sentri": {
      "avg": 2,
@@ -3941,7 +3941,7 @@
       "v": 16
      },
      "flat": false,
-     "readings": 399
+     "readings": 404
     }
    },
    "ly": {
@@ -4905,15 +4905,15 @@
    "notice": "A Ready Lane is available from 2-6pm Monday through Thursday.",
    "now": {
     "car_standard": {
-     "v": 12,
-     "en": "12 min",
-     "es": "12 min",
-     "lanes": 2
-    },
-    "car_sentri": {
      "v": 3,
      "en": "3 min",
      "es": "3 min",
+     "lanes": 2
+    },
+    "car_sentri": {
+     "v": 0,
+     "en": "No wait",
+     "es": "Sin demora",
      "lanes": 1
     },
     "car_ready": {
@@ -4925,8 +4925,8 @@
    },
    "stale": false,
    "first": "2026-09-14 22:17",
-   "posted_en": "Oct 20, 8:07 PM EDT",
-   "posted_es": "20 oct, 20:07 EDT",
+   "posted_en": "Oct 20, 10:57 PM EDT",
+   "posted_es": "20 oct, 22:57 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -4946,7 +4946,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M25.3,148.5 M45.1,148.5 M63.7,127.4 M78.6,145.0 M93.0,127.4L101.5,145.0 M123.8,145.0 M146.0,81.8 M164.0,148.5 M178.9,106.3 M190.6,134.4 M211.9,148.5 M230.9,113.4 M250.0,130.9 M264.3,120.4L273.0,123.9 M290.9,120.4 M309.5,148.5 M325.6,88.8 M338.6,8.0L346.6,106.3L357.1,123.9L367.7,123.9 M385.6,120.4 M404.8,148.5 M417.2,74.7 M430.8,78.2L440.7,71.2L450.0,134.4L458.0,113.4 M481.6,138.0 M510.7,120.4 M530.5,130.9 M542.9,141.5 M564.5,134.4 M585.0,152.0 M605.6,123.9 M617.1,109.9L619.0,148.5L620.4,148.5L622.1,134.4L624.6,148.5L626.4,148.5L627.9,145.0L630.1,130.9L632.0,109.9",
+    "line": "M16.0,148.5 M35.9,148.5 M54.4,127.4 M69.3,145.0 M83.7,127.4L92.2,145.0 M114.5,145.0 M136.8,81.8 M154.7,148.5 M169.6,106.3 M181.3,134.4 M202.6,148.5 M221.6,113.4 M240.8,130.9 M255.0,120.4L263.7,123.9 M281.6,120.4 M300.2,148.5 M316.3,88.8 M329.3,8.0L337.3,106.3L347.9,123.9L358.4,123.9 M376.3,120.4 M395.5,148.5 M407.9,74.7 M421.5,78.2L431.4,71.2L440.7,134.4L448.8,113.4 M472.3,138.0 M501.4,120.4 M521.2,130.9 M533.6,141.5 M555.2,134.4 M575.7,152.0 M596.3,123.9 M607.9,109.9L609.7,148.5L611.1,148.5L612.8,134.4L615.3,148.5L617.1,148.5L618.6,145.0L620.9,130.9L622.7,109.9L624.6,116.9L626.0,138.0L628.3,152.0L630.1,141.5L632.0,148.5",
     "top": 41,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -4975,7 +4975,7 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 542,
+    "car_standard": 547,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -5685,7 +5685,7 @@
          "lvl": 0
         },
         {
-         "v": 27,
+         "v": 19,
          "lvl": 1
         },
         {
@@ -5718,8 +5718,8 @@
          "lvl": 0
         },
         {
-         "v": 13,
-         "lvl": 1
+         "v": 9,
+         "lvl": 0
         },
         {
          "v": 25,
@@ -5885,13 +5885,13 @@
       },
       {
        "h": 21,
-       "v": 11,
-       "w": 68.8
+       "v": 10,
+       "w": 62.5
       },
       {
        "h": 22,
-       "v": 12,
-       "w": 75.0
+       "v": 11,
+       "w": 68.8
       },
       {
        "h": 23,
@@ -5899,7 +5899,7 @@
        "w": 31.2
       }
      ],
-     "avg": 9,
+     "avg": 8,
      "flat": false,
      "best": {
       "dow": 1,
@@ -5911,7 +5911,7 @@
       "hour": 14,
       "v": 30
      },
-     "readings": 542
+     "readings": 547
     }
    },
    "ly": {
@@ -7777,9 +7777,9 @@
    "notice": "A Ready Lane is available from 3-7pm Monday through Thursday.",
    "now": {
     "car_standard": {
-     "v": 2,
-     "en": "2 min",
-     "es": "2 min",
+     "v": 1,
+     "en": "1 min",
+     "es": "1 min",
      "lanes": 1
     },
     "pedestrian_standard": {
@@ -7791,13 +7791,13 @@
    },
    "stale": false,
    "first": "2026-09-14 22:17",
-   "posted_en": "Oct 20, 8:07 PM EDT",
-   "posted_es": "20 oct, 20:07 EDT",
+   "posted_en": "Oct 20, 10:57 PM EDT",
+   "posted_es": "20 oct, 22:57 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
     "car_standard": {
-     "avg": 9,
+     "avg": 8,
      "src": "ours"
     },
     "pedestrian_standard": {
@@ -7808,7 +7808,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M25.3,152.0 M45.1,147.6 M63.7,77.8 M78.6,8.0 M93.0,143.3L101.5,134.5 M123.8,143.3 M146.0,112.7 M164.0,134.5 M178.9,121.5 M190.6,108.4 M211.9,152.0 M230.9,86.5 M250.0,95.3 M264.3,138.9L273.0,64.7 M290.9,86.5 M309.5,143.3 M325.6,82.2 M338.6,16.7L346.6,104.0L357.1,117.1L367.7,134.5 M385.6,138.9 M404.8,147.6 M417.2,21.1 M430.8,95.3L440.7,95.3L450.0,147.6L458.0,117.1 M481.6,152.0 M510.7,73.5 M530.5,134.5 M542.9,143.3 M564.5,152.0 M585.0,147.6 M605.6,143.3 M617.1,117.1L619.0,143.3L620.4,147.6L622.1,134.5L624.6,143.3L626.4,143.3L627.9,138.9L630.1,147.6L632.0,143.3",
+    "line": "M16.0,152.0 M35.9,147.6 M54.4,77.8 M69.3,8.0 M83.7,143.3L92.2,134.5 M114.5,143.3 M136.8,112.7 M154.7,134.5 M169.6,121.5 M181.3,108.4 M202.6,152.0 M221.6,86.5 M240.8,95.3 M255.0,138.9L263.7,64.7 M281.6,86.5 M300.2,143.3 M316.3,82.2 M329.3,16.7L337.3,104.0L347.9,117.1L358.4,134.5 M376.3,138.9 M395.5,147.6 M407.9,21.1 M421.5,95.3L431.4,95.3L440.7,147.6L448.8,117.1 M472.3,152.0 M501.4,73.5 M521.2,134.5 M533.6,143.3 M555.2,152.0 M575.7,147.6 M596.3,143.3 M607.9,117.1L609.7,143.3L611.1,147.6L612.8,134.5L615.3,143.3L617.1,143.3L618.6,138.9L620.9,147.6L622.7,143.3L624.6,130.2L626.0,138.9L628.3,108.4L630.1,134.5L632.0,147.6",
     "top": 33,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -7837,7 +7837,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 541,
+    "car_standard": 546,
     "car_sentri": 32,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -8547,7 +8547,7 @@
          "lvl": 0
         },
         {
-         "v": 4,
+         "v": 2,
          "lvl": 0
         },
         {
@@ -8742,8 +8742,8 @@
       },
       {
        "h": 20,
-       "v": 5,
-       "w": 55.6
+       "v": 4,
+       "w": 44.4
       },
       {
        "h": 21,
@@ -8773,7 +8773,7 @@
       "hour": 2,
       "v": 25
      },
-     "readings": 541
+     "readings": 546
     }
    },
    "ly": {
@@ -9723,9 +9723,9 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 2,
-     "en": "2 min",
-     "es": "2 min",
+     "v": 0,
+     "en": "No wait",
+     "es": "Sin demora",
      "lanes": 2
     },
     "car_sentri": {
@@ -9737,8 +9737,8 @@
    },
    "stale": false,
    "first": "2026-09-14 22:17",
-   "posted_en": "Oct 20, 8:07 PM EDT",
-   "posted_es": "20 oct, 20:07 EDT",
+   "posted_en": "Oct 20, 10:57 PM EDT",
+   "posted_es": "20 oct, 22:57 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -9754,7 +9754,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M25.3,152.0 M45.1,148.7 M63.7,138.6 M78.6,152.0 M93.0,152.0L101.5,152.0 M123.8,152.0 M146.0,152.0 M164.0,152.0 M178.9,44.8 M190.6,138.6 M211.9,152.0 M230.9,152.0 M250.0,118.5 M264.3,138.6L273.0,152.0 M290.9,142.0 M309.5,152.0 M325.6,111.8 M338.6,68.3L346.6,118.5L357.1,148.7L367.7,152.0 M385.6,138.6 M404.8,152.0 M417.2,85.0 M430.8,8.0L440.7,38.1L450.0,145.3L458.0,152.0 M481.6,152.0 M510.7,152.0 M530.5,152.0 M542.9,152.0 M564.5,152.0 M585.0,152.0 M605.6,152.0 M617.1,152.0L619.0,152.0L620.4,152.0L622.1,152.0L624.6,152.0L626.4,152.0L627.9,152.0L630.1,152.0L632.0,145.3",
+    "line": "M16.0,152.0 M35.9,148.7 M54.4,138.6 M69.3,152.0 M83.7,152.0L92.2,152.0 M114.5,152.0 M136.8,152.0 M154.7,152.0 M169.6,44.8 M181.3,138.6 M202.6,152.0 M221.6,152.0 M240.8,118.5 M255.0,138.6L263.7,152.0 M281.6,142.0 M300.2,152.0 M316.3,111.8 M329.3,68.3L337.3,118.5L347.9,148.7L358.4,152.0 M376.3,138.6 M395.5,152.0 M407.9,85.0 M421.5,8.0L431.4,38.1L440.7,145.3L448.8,152.0 M472.3,152.0 M501.4,152.0 M521.2,152.0 M533.6,152.0 M555.2,152.0 M575.7,152.0 M596.3,152.0 M607.9,152.0L609.7,152.0L611.1,152.0L612.8,152.0L615.3,152.0L617.1,152.0L618.6,152.0L620.9,152.0L622.7,145.3L624.6,152.0L626.0,152.0L628.3,148.7L630.1,152.0L632.0,152.0",
     "top": 43,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -11746,10 +11746,10 @@
      "lanes": 1
     }
    },
-   "stale": true,
+   "stale": false,
    "first": "2026-09-14 20:00",
-   "posted_en": "Oct 19, 11:00 PM CDT",
-   "posted_es": "19 oct, 23:00 CDT",
+   "posted_en": "Oct 20, 11:00 PM CDT",
+   "posted_es": "20 oct, 23:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -11812,7 +11812,7 @@
    "readings": {
     "car_standard": 60,
     "car_sentri": 0,
-    "car_ready": 280,
+    "car_ready": 282,
     "pedestrian_standard": 0,
     "pedestrian_ready": 0
    },
@@ -12271,7 +12271,7 @@
          "lvl": 3
         },
         {
-         "v": 55,
+         "v": 56,
          "lvl": 2
         },
         {
@@ -12304,7 +12304,7 @@
          "lvl": 2
         },
         {
-         "v": 47,
+         "v": 50,
          "lvl": 2
         },
         {
@@ -12431,13 +12431,13 @@
       },
       {
        "h": 20,
-       "v": 52,
-       "w": 88.1
+       "v": 53,
+       "w": 89.8
       },
       {
        "h": 21,
-       "v": 46,
-       "w": 78.0
+       "v": 47,
+       "w": 79.7
       },
       {
        "h": 22,
@@ -12457,7 +12457,7 @@
       "hour": 19,
       "v": 116
      },
-     "readings": 280
+     "readings": 282
     }
    },
    "ly": {
@@ -13117,8 +13117,8 @@
    },
    "stale": false,
    "first": "2026-09-14 21:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "Oct 20, 9:00 PM CDT",
+   "posted_es": "20 oct, 21:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -13134,7 +13134,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M19.1,104.0 M63.7,140.0 M78.6,140.0 M93.4,128.0L100.9,104.0 M178.9,128.0L190.0,104.0 M230.9,140.0 M260.6,116.0L271.7,116.0 M286.6,104.0 M323.7,148.0 M346.0,104.0L357.1,104.0L368.3,104.0 M412.9,144.0 M431.4,104.0L442.6,80.0L450.0,80.0L457.4,80.0 M531.7,56.0L542.9,8.0 M606.0,140.0L617.1,128.0L620.9,128.0L624.6,104.0L628.3,128.0L632.0,104.0",
+    "line": "M11.7,104.0 M56.3,140.0 M71.1,140.0 M86.0,128.0L93.4,104.0 M171.4,128.0L182.6,104.0 M223.4,140.0 M253.1,116.0L264.3,116.0 M279.1,104.0 M316.3,148.0 M338.6,104.0L349.7,104.0L360.9,104.0 M405.4,144.0 M424.0,104.0L435.1,80.0L442.6,80.0L450.0,80.0 M524.3,56.0L535.4,8.0 M598.6,140.0L609.7,128.0L613.4,128.0L617.1,104.0L620.9,128.0L624.6,104.0L628.3,104.0L632.0,104.0",
     "top": 180,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -13176,8 +13176,8 @@
    "car": "car_sentri",
    "ped": null,
    "readings": {
-    "car_standard": 500,
-    "car_sentri": 501,
+    "car_standard": 502,
+    "car_sentri": 503,
     "car_ready": 1,
     "pedestrian_standard": 0,
     "pedestrian_ready": 0
@@ -13196,7 +13196,7 @@
       "v": 122
      },
      "flat": false,
-     "readings": 500
+     "readings": 502
     },
     "car_sentri": {
      "grid": [
@@ -13868,7 +13868,7 @@
          "lvl": 0
         },
         {
-         "v": 7,
+         "v": 6,
          "lvl": 0
         },
         {
@@ -14127,7 +14127,7 @@
       "hour": 21,
       "v": 25
      },
-     "readings": 501
+     "readings": 503
     }
    },
    "ly": {
@@ -15094,7 +15094,7 @@
      "v": 25,
      "en": "25 min",
      "es": "25 min",
-     "lanes": 2
+     "lanes": 3
     },
     "car_sentri": {
      "v": 5,
@@ -15111,8 +15111,8 @@
    },
    "stale": false,
    "first": "2026-09-14 21:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "Oct 20, 9:00 PM CDT",
+   "posted_es": "20 oct, 21:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -15132,7 +15132,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,147.2 M45.1,147.2 M63.7,147.2 M78.6,147.2 M93.4,80.0L100.9,128.0 M123.1,147.2 M145.4,128.0 M160.3,128.0 M178.9,128.0L190.0,128.0 M212.3,147.2 M230.9,147.2 M249.4,128.0L260.6,128.0L271.7,128.0 M290.3,147.2 M308.9,147.2 M323.7,128.0 M346.0,128.0L357.1,128.0L368.3,128.0 M383.1,147.2 M401.7,147.2L412.9,128.0 M431.4,128.0L442.6,128.0L450.0,128.0L457.4,128.0 M479.7,147.2 M509.4,152.0 M531.7,128.0L542.9,128.0 M561.4,147.2 M583.7,147.2 M606.0,147.2L617.1,128.0L620.9,128.0L624.6,80.0L628.3,128.0L632.0,128.0",
+    "line": "M15.4,147.2 M37.7,147.2 M56.3,147.2 M71.1,147.2 M86.0,80.0L93.4,128.0 M115.7,147.2 M138.0,128.0 M152.9,128.0 M171.4,128.0L182.6,128.0 M204.9,147.2 M223.4,147.2 M242.0,128.0L253.1,128.0L264.3,128.0 M282.9,147.2 M301.4,147.2 M316.3,128.0 M338.6,128.0L349.7,128.0L360.9,128.0 M375.7,147.2 M394.3,147.2L405.4,128.0 M424.0,128.0L435.1,128.0L442.6,128.0L450.0,128.0 M472.3,147.2 M502.0,152.0 M524.3,128.0L535.4,128.0 M554.0,147.2 M576.3,147.2 M598.6,147.2L609.7,128.0L613.4,128.0L617.1,80.0L620.9,128.0L624.6,128.0L628.3,128.0L632.0,128.0",
     "top": 30,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -15177,10 +15177,10 @@
    "ped": "pedestrian_ready",
    "readings": {
     "car_standard": 1,
-    "car_sentri": 339,
+    "car_sentri": 341,
     "car_ready": 4,
-    "pedestrian_standard": 272,
-    "pedestrian_ready": 334
+    "pedestrian_standard": 274,
+    "pedestrian_ready": 336
    },
    "d": {
     "car_sentri": {
@@ -16081,8 +16081,8 @@
       },
       {
        "h": 20,
-       "v": 8,
-       "w": 47.1
+       "v": 7,
+       "w": 41.2
       },
       {
        "h": 21,
@@ -16112,7 +16112,7 @@
       "hour": 8,
       "v": 30
      },
-     "readings": 339
+     "readings": 341
     },
     "pedestrian_standard": {
      "avg": 4,
@@ -16127,7 +16127,7 @@
       "v": 30
      },
      "flat": false,
-     "readings": 272
+     "readings": 274
     },
     "pedestrian_ready": {
      "grid": [
@@ -17058,7 +17058,7 @@
       "hour": 15,
       "v": 25
      },
-     "readings": 334
+     "readings": 336
     }
    },
    "ly": {
@@ -17192,10 +17192,10 @@
      "lanes": null
     },
     "car_sentri": {
-     "v": 20,
-     "en": "20 min",
-     "es": "20 min",
-     "lanes": 4
+     "v": 0,
+     "en": "No wait",
+     "es": "Sin demora",
+     "lanes": 3
     },
     "car_ready": {
      "v": null,
@@ -17207,7 +17207,7 @@
      "v": 0,
      "en": "No wait",
      "es": "Sin demora",
-     "lanes": 2
+     "lanes": 3
     },
     "pedestrian_ready": {
      "v": 0,
@@ -17218,8 +17218,8 @@
    },
    "stale": false,
    "first": "2026-09-14 03:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "Oct 20, 9:00 PM CDT",
+   "posted_es": "20 oct, 21:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -17247,7 +17247,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,152.0 M60.0,152.0 M74.9,90.3 M89.7,152.0L100.9,28.6 M123.1,152.0L126.9,152.0 M141.7,28.6 M160.3,152.0 M175.1,152.0L186.3,28.6 M230.9,8.0L242.0,110.9 M260.6,28.6L271.7,131.4 M290.3,152.0 M320.0,152.0 M338.6,110.9L346.0,131.4L353.4,90.3L364.6,152.0 M394.3,152.0L401.7,152.0L412.9,152.0 M427.7,131.4L438.9,152.0L450.0,152.0L457.4,152.0 M509.4,131.4 M524.3,49.1 M542.9,152.0 M602.3,90.3L613.4,69.7L620.9,69.7L624.6,152.0L628.3,152.0L632.0,69.7",
+    "line": "M15.4,152.0 M52.6,152.0 M67.4,90.3 M82.3,152.0L93.4,28.6 M115.7,152.0L119.4,152.0 M134.3,28.6 M152.9,152.0 M167.7,152.0L178.9,28.6 M223.4,8.0L234.6,110.9 M253.1,28.6L264.3,131.4 M282.9,152.0 M312.6,152.0 M331.1,110.9L338.6,131.4L346.0,90.3L357.1,152.0 M386.9,152.0L394.3,152.0L405.4,152.0 M420.3,131.4L431.4,152.0L442.6,152.0L450.0,152.0 M502.0,131.4 M516.9,49.1 M535.4,152.0 M594.9,90.3L606.0,69.7L613.4,69.7L617.1,152.0L620.9,152.0L624.6,69.7L628.3,152.0L632.0,152.0",
     "top": 35,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -17288,9 +17288,9 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 343,
+    "car_standard": 345,
     "car_sentri": 0,
-    "car_ready": 343,
+    "car_ready": 345,
     "pedestrian_standard": 0,
     "pedestrian_ready": 0
    },
@@ -17965,8 +17965,8 @@
          "lvl": null
         },
         {
-         "v": 10,
-         "lvl": 1
+         "v": 35,
+         "lvl": 2
         },
         {
          "v": 24,
@@ -17998,7 +17998,7 @@
          "lvl": 1
         },
         {
-         "v": 12,
+         "v": 23,
          "lvl": 1
         },
         {
@@ -18193,8 +18193,8 @@
       },
       {
        "h": 20,
-       "v": 39,
-       "w": 67.2
+       "v": 40,
+       "w": 69.0
       },
       {
        "h": 21,
@@ -18224,7 +18224,7 @@
       "hour": 15,
       "v": 135
      },
-     "readings": 343
+     "readings": 345
     },
     "car_ready": {
      "avg": 28,
@@ -18239,7 +18239,7 @@
       "v": 130
      },
      "flat": false,
-     "readings": 343
+     "readings": 345
     }
    },
    "ly": {
@@ -19197,22 +19197,22 @@
    "notice": "Ready Lanes are open from 8AM - Midnight seven days a week.\r\n\r\nGo to www.GetYouHome.gov for more information.",
    "now": {
     "car_standard": {
-     "v": 35,
-     "en": "35 min",
-     "es": "35 min",
-     "lanes": 6
+     "v": 45,
+     "en": "45 min",
+     "es": "45 min",
+     "lanes": 7
     },
     "car_ready": {
-     "v": 30,
-     "en": "30 min",
-     "es": "30 min",
+     "v": 40,
+     "en": "40 min",
+     "es": "40 min",
      "lanes": 6
     }
    },
    "stale": false,
    "first": "2026-09-14 03:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "Oct 20, 9:00 PM CDT",
+   "posted_es": "20 oct, 21:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -19228,7 +19228,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,152.0 M41.4,152.0 M60.0,80.0 M74.9,80.0 M89.7,152.0L100.9,56.0 M123.1,152.0L126.9,152.0 M141.7,56.0 M160.3,104.0 M175.1,56.0L186.3,56.0 M230.9,56.0L242.0,112.0 M260.6,56.0L271.7,104.0 M290.3,152.0L301.4,152.0 M320.0,144.0 M338.6,80.0L346.0,64.0L353.4,72.0L364.6,56.0 M394.3,152.0L401.7,152.0L412.9,120.0 M427.7,80.0L438.9,8.0L450.0,80.0L457.4,64.0 M509.4,56.0 M524.3,80.0 M542.9,112.0 M580.0,72.0 M602.3,112.0L613.4,80.0L620.9,104.0L624.6,104.0L628.3,104.0L632.0,96.0",
+    "line": "M15.4,152.0 M34.0,152.0 M52.6,80.0 M67.4,80.0 M82.3,152.0L93.4,56.0 M115.7,152.0L119.4,152.0 M134.3,56.0 M152.9,104.0 M167.7,56.0L178.9,56.0 M223.4,56.0L234.6,112.0 M253.1,56.0L264.3,104.0 M282.9,152.0L294.0,152.0 M312.6,144.0 M331.1,80.0L338.6,64.0L346.0,72.0L357.1,56.0 M386.9,152.0L394.3,152.0L405.4,120.0 M420.3,80.0L431.4,8.0L442.6,80.0L450.0,64.0 M502.0,56.0 M516.9,80.0 M535.4,112.0 M572.6,72.0 M594.9,112.0L606.0,80.0L613.4,104.0L617.1,104.0L620.9,104.0L624.6,96.0L628.3,56.0L632.0,80.0",
     "top": 90,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -19264,8 +19264,8 @@
    "car": "car_sentri",
    "ped": null,
    "readings": {
-    "car_standard": 189,
-    "car_sentri": 214,
+    "car_standard": 191,
+    "car_sentri": 216,
     "car_ready": 134,
     "pedestrian_standard": 0,
     "pedestrian_ready": 0
@@ -19284,7 +19284,7 @@
       "v": 45
      },
      "flat": false,
-     "readings": 189
+     "readings": 191
     },
     "car_sentri": {
      "avg": 0,
@@ -19299,7 +19299,7 @@
       "v": 20
      },
      "flat": false,
-     "readings": 214
+     "readings": 216
     },
     "car_ready": {
      "avg": 5,
@@ -19390,8 +19390,8 @@
    },
    "stale": false,
    "first": "2026-09-14 20:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "Oct 20, 9:00 PM CDT",
+   "posted_es": "20 oct, 21:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -19443,10 +19443,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 393,
-    "car_sentri": 322,
-    "car_ready": 377,
-    "pedestrian_standard": 394,
+    "car_standard": 396,
+    "car_sentri": 325,
+    "car_ready": 380,
+    "pedestrian_standard": 397,
     "pedestrian_ready": 0
    },
    "d": {
@@ -20087,8 +20087,8 @@
          "lvl": 2
         },
         {
-         "v": 20,
-         "lvl": 1
+         "v": 35,
+         "lvl": 2
         },
         {
          "v": 27,
@@ -20120,7 +20120,7 @@
          "lvl": 2
         },
         {
-         "v": 17,
+         "v": 28,
          "lvl": 1
         },
         {
@@ -20153,7 +20153,7 @@
          "lvl": 2
         },
         {
-         "v": 17,
+         "v": 24,
          "lvl": 1
         },
         {
@@ -20343,18 +20343,18 @@
       },
       {
        "h": 19,
-       "v": 35,
-       "w": 51.5
+       "v": 37,
+       "w": 54.4
       },
       {
        "h": 20,
-       "v": 30,
-       "w": 44.1
+       "v": 32,
+       "w": 47.1
       },
       {
        "h": 21,
-       "v": 27,
-       "w": 39.7
+       "v": 28,
+       "w": 41.2
       },
       {
        "h": 22,
@@ -20379,7 +20379,7 @@
       "hour": 11,
       "v": 312
      },
-     "readings": 393
+     "readings": 396
     },
     "car_sentri": {
      "avg": 4,
@@ -20394,7 +20394,7 @@
       "v": 20
      },
      "flat": false,
-     "readings": 322
+     "readings": 325
     },
     "car_ready": {
      "avg": 30,
@@ -20409,7 +20409,7 @@
       "v": 62
      },
      "flat": false,
-     "readings": 377
+     "readings": 380
     },
     "pedestrian_standard": {
      "grid": [
@@ -21048,7 +21048,7 @@
          "lvl": 0
         },
         {
-         "v": 1,
+         "v": 2,
          "lvl": 0
         },
         {
@@ -21081,7 +21081,7 @@
          "lvl": 0
         },
         {
-         "v": 1,
+         "v": 2,
          "lvl": 0
         },
         {
@@ -21304,13 +21304,13 @@
       },
       {
        "h": 19,
-       "v": 2,
-       "w": 9.1
+       "v": 3,
+       "w": 13.6
       },
       {
        "h": 20,
-       "v": 2,
-       "w": 9.1
+       "v": 3,
+       "w": 13.6
       },
       {
        "h": 21,
@@ -21340,7 +21340,7 @@
       "hour": 11,
       "v": 42
      },
-     "readings": 394
+     "readings": 397
     }
    },
    "ly": {
@@ -23242,34 +23242,34 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 60,
-     "en": "60 min",
-     "es": "60 min",
+     "v": 45,
+     "en": "45 min",
+     "es": "45 min",
      "lanes": 1
     },
     "car_sentri": {
-     "v": 10,
-     "en": "10 min",
-     "es": "10 min",
+     "v": 2,
+     "en": "2 min",
+     "es": "2 min",
      "lanes": 2
     },
     "car_ready": {
-     "v": 55,
-     "en": "55 min",
-     "es": "55 min",
+     "v": 40,
+     "en": "40 min",
+     "es": "40 min",
      "lanes": 3
     },
     "pedestrian_standard": {
-     "v": 5,
-     "en": "5 min",
-     "es": "5 min",
-     "lanes": 4
+     "v": 1,
+     "en": "1 min",
+     "es": "1 min",
+     "lanes": 3
     }
    },
    "stale": false,
    "first": "2026-09-14 21:00",
-   "posted_en": "Oct 20, 6:00 PM CDT",
-   "posted_es": "20 oct, 18:00 CDT",
+   "posted_en": "Oct 20, 9:00 PM CDT",
+   "posted_es": "20 oct, 21:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -23293,7 +23293,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M8.0,71.0 M22.9,125.0 M48.9,107.0 M63.7,35.0 M82.3,8.0 M97.1,44.0L104.6,17.0 M119.4,150.2 M149.1,71.0 M167.7,35.0L178.9,80.0 M193.7,134.0 M212.3,150.2 M234.6,107.0 M253.1,80.0L264.3,80.0L275.4,71.0L286.6,71.0 M312.6,134.0L323.7,71.0 M342.3,17.0L349.7,17.0L360.9,44.0L372.0,71.0 M386.9,134.0 M405.4,143.0L412.9,134.0 M435.1,71.0L442.6,62.0L453.7,71.0L461.1,44.0 M483.4,107.0 M513.1,62.0 M531.7,53.0 M546.6,62.0 M565.1,143.0 M587.4,89.0 M606.0,71.0 M620.9,44.0L628.3,35.0L632.0,44.0",
+    "line": "M11.7,125.0 M37.7,107.0 M52.6,35.0 M71.1,8.0 M86.0,44.0L93.4,17.0 M108.3,150.2 M138.0,71.0 M156.6,35.0L167.7,80.0 M182.6,134.0 M201.1,150.2 M223.4,107.0 M242.0,80.0L253.1,80.0L264.3,71.0L275.4,71.0 M301.4,134.0L312.6,71.0 M331.1,17.0L338.6,17.0L349.7,44.0L360.9,71.0 M375.7,134.0 M394.3,143.0L401.7,134.0 M424.0,71.0L431.4,62.0L442.6,71.0L450.0,44.0 M472.3,107.0 M502.0,62.0 M520.6,53.0 M535.4,62.0 M554.0,143.0 M576.3,89.0 M594.9,71.0 M609.7,44.0L617.1,35.0L620.9,44.0L624.6,35.0L628.3,44.0L632.0,71.0",
     "top": 80,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -23484,9 +23484,9 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 292,
+    "car_standard": 295,
     "car_sentri": 14,
-    "car_ready": 292,
+    "car_ready": 295,
     "pedestrian_standard": 0,
     "pedestrian_ready": 0
    },
@@ -23930,7 +23930,7 @@
          "lvl": 1
         },
         {
-         "v": 12,
+         "v": 10,
          "lvl": 1
         },
         {
@@ -23963,7 +23963,7 @@
          "lvl": 1
         },
         {
-         "v": 7,
+         "v": 6,
          "lvl": 0
         },
         {
@@ -23996,7 +23996,7 @@
          "lvl": 1
         },
         {
-         "v": 7,
+         "v": 6,
          "lvl": 0
         },
         {
@@ -24123,18 +24123,18 @@
       },
       {
        "h": 19,
-       "v": 37,
-       "w": 68.5
+       "v": 36,
+       "w": 66.7
       },
       {
        "h": 20,
-       "v": 31,
-       "w": 57.4
+       "v": 30,
+       "w": 55.6
       },
       {
        "h": 21,
-       "v": 22,
-       "w": 40.7
+       "v": 21,
+       "w": 38.9
       },
       {
        "h": 22,
@@ -24142,26 +24142,26 @@
        "w": 46.3
       }
      ],
-     "avg": 37,
+     "avg": 36,
      "flat": false,
      "best": {
       "dow": 1,
-      "hour": 20,
-      "v": 7
+      "hour": 21,
+      "v": 6
      },
      "worst": {
       "dow": 1,
       "hour": 8,
       "v": 130
      },
-     "readings": 292
+     "readings": 295
     },
     "car_ready": {
-     "avg": 31,
+     "avg": 30,
      "best": {
       "dow": 1,
-      "hour": 20,
-      "v": 3
+      "hour": 21,
+      "v": 2
      },
      "worst": {
       "dow": 5,
@@ -24169,7 +24169,7 @@
       "v": 68
      },
      "flat": false,
-     "readings": 292
+     "readings": 295
     }
    },
    "ly": {
@@ -24875,9 +24875,9 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 5,
-     "en": "5 min",
-     "es": "5 min",
+     "v": 2,
+     "en": "2 min",
+     "es": "2 min",
      "lanes": 1
     },
     "car_sentri": {
@@ -24887,21 +24887,21 @@
      "lanes": null
     },
     "car_ready": {
-     "v": 2,
-     "en": "2 min",
-     "es": "2 min",
-     "lanes": 2
+     "v": 1,
+     "en": "1 min",
+     "es": "1 min",
+     "lanes": 3
     }
    },
    "stale": false,
    "first": "2026-09-14 21:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "Oct 20, 9:00 PM CDT",
+   "posted_es": "20 oct, 21:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
     "car_standard": {
-     "avg": 37,
+     "avg": 36,
      "src": "ours"
     },
     "car_sentri": {
@@ -24909,14 +24909,14 @@
      "src": "cbp"
     },
     "car_ready": {
-     "avg": 31,
+     "avg": 30,
      "src": "ours"
     }
    },
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M8.0,118.1 M63.7,58.8 M82.3,50.4 M97.1,126.6L104.6,135.1 M149.1,126.6 M167.7,50.4L178.9,50.4 M193.7,135.1 M234.6,101.2 M253.1,50.4 M268.0,50.4L275.4,58.8 M323.7,109.6 M342.3,8.0L349.7,33.4L360.9,33.4L372.0,92.7 M412.9,143.5 M435.1,75.8L442.6,33.4L453.7,41.9L461.1,24.9 M513.1,50.4 M531.7,41.9 M546.6,109.6 M587.4,135.1 M606.0,50.4 M620.9,41.9L628.3,84.2L632.0,84.2",
+    "line": "M52.6,58.8 M71.1,50.4 M86.0,126.6L93.4,135.1 M138.0,126.6 M156.6,50.4L167.7,50.4 M182.6,135.1 M223.4,101.2 M242.0,50.4 M256.9,50.4L264.3,58.8 M312.6,109.6 M331.1,8.0L338.6,33.4L349.7,33.4L360.9,92.7 M401.7,143.5 M424.0,75.8L431.4,33.4L442.6,41.9L450.0,24.9 M502.0,50.4 M520.6,41.9 M535.4,109.6 M576.3,135.1 M594.9,50.4 M609.7,41.9L617.1,84.2L620.9,84.2L624.6,143.5L628.3,143.5L632.0,148.6",
     "top": 85,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -24950,7 +24950,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 246,
+    "car_standard": 248,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -24970,7 +24970,7 @@
       "v": 22
      },
      "flat": false,
-     "readings": 246
+     "readings": 248
     }
    },
    "ly": {
@@ -25006,8 +25006,8 @@
    },
    "stale": false,
    "first": "2026-09-14 20:00",
-   "posted_en": "Oct 20, 6:00 PM CDT",
-   "posted_es": "20 oct, 18:00 CDT",
+   "posted_en": "Oct 20, 9:00 PM CDT",
+   "posted_es": "20 oct, 21:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -25045,10 +25045,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 263,
+    "car_standard": 264,
     "car_sentri": 0,
     "car_ready": 39,
-    "pedestrian_standard": 128,
+    "pedestrian_standard": 129,
     "pedestrian_ready": 37
    },
    "d": {
@@ -25065,7 +25065,7 @@
       "v": 65
      },
      "flat": false,
-     "readings": 263
+     "readings": 264
     },
     "pedestrian_standard": {
      "avg": 8,
@@ -25080,7 +25080,7 @@
       "v": 15
      },
      "flat": false,
-     "readings": 128
+     "readings": 129
     }
    },
    "ly": {
@@ -25150,9 +25150,9 @@
    "notice": "The Pedestrian Ready lanes will be open daily from 12noon to 5pm.",
    "now": {
     "car_standard": {
-     "v": 45,
-     "en": "45 min",
-     "es": "45 min",
+     "v": 10,
+     "en": "10 min",
+     "es": "10 min",
      "lanes": 2
     },
     "car_ready": {
@@ -25162,10 +25162,10 @@
      "lanes": null
     },
     "pedestrian_standard": {
-     "v": 10,
-     "en": "10 min",
-     "es": "10 min",
-     "lanes": 2
+     "v": 5,
+     "en": "5 min",
+     "es": "5 min",
+     "lanes": 1
     },
     "pedestrian_ready": {
      "v": null,
@@ -25176,8 +25176,8 @@
    },
    "stale": false,
    "first": "2026-09-14 10:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "Oct 20, 9:00 PM CDT",
+   "posted_es": "20 oct, 21:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -25416,7 +25416,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 213,
+    "car_standard": 214,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -25436,7 +25436,7 @@
       "v": 19
      },
      "flat": false,
-     "readings": 213
+     "readings": 214
     }
    },
    "ly": {
@@ -25470,10 +25470,10 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 5,
-     "en": "5 min",
-     "es": "5 min",
-     "lanes": 3
+     "v": 6,
+     "en": "6 min",
+     "es": "6 min",
+     "lanes": 1
     },
     "car_ready": {
      "v": null,
@@ -25484,8 +25484,8 @@
    },
    "stale": false,
    "first": "2026-09-14 21:00",
-   "posted_en": "Oct 20, 6:00 PM CDT",
-   "posted_es": "20 oct, 18:00 CDT",
+   "posted_en": "Oct 20, 9:00 PM CDT",
+   "posted_es": "20 oct, 21:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -25533,10 +25533,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 432,
+    "car_standard": 434,
     "car_sentri": 0,
-    "car_ready": 408,
-    "pedestrian_standard": 424,
+    "car_ready": 410,
+    "pedestrian_standard": 426,
     "pedestrian_ready": 53
    },
    "d": {
@@ -26177,7 +26177,7 @@
          "lvl": 3
         },
         {
-         "v": 32,
+         "v": 34,
          "lvl": 2
         },
         {
@@ -26210,7 +26210,7 @@
          "lvl": 3
         },
         {
-         "v": 33,
+         "v": 34,
          "lvl": 2
         },
         {
@@ -26433,13 +26433,13 @@
       },
       {
        "h": 19,
-       "v": 60,
-       "w": 88.2
+       "v": 59,
+       "w": 86.8
       },
       {
        "h": 20,
-       "v": 61,
-       "w": 89.7
+       "v": 60,
+       "w": 88.2
       },
       {
        "h": 21,
@@ -26469,7 +26469,7 @@
       "hour": 18,
       "v": 80
      },
-     "readings": 432
+     "readings": 434
     },
     "car_ready": {
      "avg": 48,
@@ -26484,7 +26484,7 @@
       "v": 77
      },
      "flat": false,
-     "readings": 408
+     "readings": 410
     },
     "pedestrian_standard": {
      "grid": [
@@ -27123,7 +27123,7 @@
          "lvl": 0
         },
         {
-         "v": 1,
+         "v": 2,
          "lvl": 0
         },
         {
@@ -27415,7 +27415,7 @@
       "hour": 21,
       "v": 40
      },
-     "readings": 424
+     "readings": 426
     },
     "pedestrian_ready": {
      "avg": 2,
@@ -29324,21 +29324,21 @@
    "notice": "BOTA Passenger/Ready Lanes is open west side of port; Passenger Hrs 24 hours/7days, BOTA CARGO Mon-FRI 6 am to 4 pm. SAT/SUN CLOSED. Tune into AM 1610 for info.",
    "now": {
     "car_standard": {
-     "v": 38,
-     "en": "38 min",
-     "es": "38 min",
+     "v": 28,
+     "en": "28 min",
+     "es": "28 min",
      "lanes": 3
     },
     "car_ready": {
-     "v": 35,
-     "en": "35 min",
-     "es": "35 min",
-     "lanes": 6
+     "v": 25,
+     "en": "25 min",
+     "es": "25 min",
+     "lanes": 5
     },
     "pedestrian_standard": {
-     "v": 8,
-     "en": "8 min",
-     "es": "8 min",
+     "v": 3,
+     "en": "3 min",
+     "es": "3 min",
      "lanes": 2
     },
     "pedestrian_ready": {
@@ -29350,8 +29350,8 @@
    },
    "stale": false,
    "first": "2026-09-14 20:00",
-   "posted_en": "Oct 20, 6:00 PM MDT",
-   "posted_es": "20 oct, 18:00 MDT",
+   "posted_en": "Oct 20, 9:00 PM MDT",
+   "posted_es": "20 oct, 21:00 MDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -29375,7 +29375,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M26.6,140.1 M45.1,128.3 M63.7,16.5 M78.6,67.3L89.7,41.9L100.9,75.8 M123.1,145.2 M145.4,41.9 M164.0,75.8 M178.9,67.3L182.6,50.4 M212.3,141.8 M230.9,75.8 M249.4,41.9L260.6,50.4L271.7,24.9 M290.3,50.4 M308.9,138.4 M323.7,75.8 M338.6,67.3L346.0,41.9L357.1,16.5L364.6,8.0 M383.1,50.4 M405.4,138.4L416.6,145.2 M431.4,58.8L442.6,41.9L450.0,16.5L457.4,19.9 M479.7,143.5 M509.4,8.0 M528.0,67.3L539.1,50.4 M583.7,50.4 M617.1,82.5L624.6,84.2L628.3,70.7L632.0,87.6",
+    "line": "M19.1,140.1 M37.7,128.3 M56.3,16.5 M71.1,67.3L82.3,41.9L93.4,75.8 M115.7,145.2 M138.0,41.9 M156.6,75.8 M171.4,67.3L175.1,50.4 M204.9,141.8 M223.4,75.8 M242.0,41.9L253.1,50.4L264.3,24.9 M282.9,50.4 M301.4,138.4 M316.3,75.8 M331.1,67.3L338.6,41.9L349.7,16.5L357.1,8.0 M375.7,50.4 M398.0,138.4L409.1,145.2 M424.0,58.8L435.1,41.9L442.6,16.5L450.0,19.9 M472.3,143.5 M502.0,8.0 M520.6,67.3L531.7,50.4 M576.3,50.4 M609.7,82.5L617.1,84.2L620.9,70.7L624.6,87.6L628.3,87.6L632.0,87.6",
     "top": 85,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -29418,11 +29418,11 @@
    "car": "car_sentri",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 430,
-    "car_sentri": 455,
-    "car_ready": 452,
-    "pedestrian_standard": 454,
-    "pedestrian_ready": 425
+    "car_standard": 433,
+    "car_sentri": 458,
+    "car_ready": 455,
+    "pedestrian_standard": 457,
+    "pedestrian_ready": 428
    },
    "d": {
     "car_standard": {
@@ -29438,7 +29438,7 @@
       "v": 81
      },
      "flat": false,
-     "readings": 430
+     "readings": 433
     },
     "car_sentri": {
      "grid": [
@@ -30357,7 +30357,7 @@
        "w": 20.0
       }
      ],
-     "avg": 3,
+     "avg": 2,
      "flat": false,
      "best": {
       "dow": 2,
@@ -30369,7 +30369,7 @@
       "hour": 8,
       "v": 12
      },
-     "readings": 455
+     "readings": 458
     },
     "car_ready": {
      "avg": 40,
@@ -30384,7 +30384,7 @@
       "v": 77
      },
      "flat": false,
-     "readings": 452
+     "readings": 455
     },
     "pedestrian_standard": {
      "grid": [
@@ -30990,7 +30990,7 @@
          "lvl": 0
         },
         {
-         "v": 1,
+         "v": 3,
          "lvl": 0
         },
         {
@@ -31023,7 +31023,7 @@
          "lvl": 0
         },
         {
-         "v": 1,
+         "v": 2,
          "lvl": 0
         },
         {
@@ -31315,7 +31315,7 @@
       "hour": 17,
       "v": 35
      },
-     "readings": 454
+     "readings": 457
     },
     "pedestrian_ready": {
      "avg": 6,
@@ -31330,7 +31330,7 @@
       "v": 22
      },
      "flat": false,
-     "readings": 425
+     "readings": 428
     }
    },
    "ly": {
@@ -33246,40 +33246,40 @@
    "notice": "Ready Lanes are open at PDN.  See www.getyouhome.gov for more information. Tune in to AM 1620 for border crossing information.",
    "now": {
     "car_standard": {
-     "v": 42,
-     "en": "42 min",
-     "es": "42 min",
+     "v": 30,
+     "en": "30 min",
+     "es": "30 min",
      "lanes": 1
     },
     "car_sentri": {
-     "v": 4,
-     "en": "4 min",
-     "es": "4 min",
+     "v": 1,
+     "en": "1 min",
+     "es": "1 min",
      "lanes": 1
     },
     "car_ready": {
-     "v": 41,
-     "en": "41 min",
-     "es": "41 min",
+     "v": 30,
+     "en": "30 min",
+     "es": "30 min",
      "lanes": 4
     },
     "pedestrian_standard": {
-     "v": 5,
-     "en": "5 min",
-     "es": "5 min",
+     "v": 1,
+     "en": "1 min",
+     "es": "1 min",
      "lanes": 2
     },
     "pedestrian_ready": {
-     "v": 5,
-     "en": "5 min",
-     "es": "5 min",
-     "lanes": 2
+     "v": 1,
+     "en": "1 min",
+     "es": "1 min",
+     "lanes": 3
     }
    },
    "stale": false,
    "first": "2026-09-14 20:00",
-   "posted_en": "Oct 20, 5:00 PM MDT",
-   "posted_es": "20 oct, 17:00 MDT",
+   "posted_en": "Oct 20, 9:00 PM MDT",
+   "posted_es": "20 oct, 21:00 MDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -33288,7 +33288,7 @@
      "src": "ours"
     },
     "car_sentri": {
-     "avg": 3,
+     "avg": 2,
      "src": "ours"
     },
     "car_ready": {
@@ -33307,7 +33307,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M8.0,142.4 M26.6,137.6 M41.4,147.2 M67.4,142.4 M82.3,142.4 M97.1,142.4L104.6,147.2 M141.7,147.2 M164.0,142.4 M182.6,152.0L193.7,152.0 M212.3,152.0 M234.6,132.8 M253.1,142.4 M268.0,152.0L275.4,142.4 M294.0,128.0 M312.6,147.2 M327.4,147.2L334.9,137.6L342.3,137.6 M360.9,147.2L372.0,147.2 M386.9,147.2L398.0,147.2 M420.3,147.2 M435.1,152.0L446.3,152.0L453.7,41.6L461.1,147.2 M513.1,104.0 M531.7,142.4 M546.6,147.2 M587.4,147.2 M606.0,128.0 M620.9,137.6L624.6,80.0L628.3,137.6L632.0,132.8",
+    "line": "M15.4,137.6 M30.3,147.2 M56.3,142.4 M71.1,142.4 M86.0,142.4L93.4,147.2 M130.6,147.2 M152.9,142.4 M171.4,152.0L182.6,152.0 M201.1,152.0 M223.4,132.8 M242.0,142.4 M256.9,152.0L264.3,142.4 M282.9,128.0 M301.4,147.2 M316.3,147.2L323.7,137.6L331.1,137.6 M349.7,147.2L360.9,147.2 M375.7,147.2L386.9,147.2 M409.1,147.2 M424.0,152.0L435.1,152.0L442.6,41.6L450.0,147.2 M502.0,104.0 M520.6,142.4 M535.4,147.2 M576.3,147.2 M594.9,128.0 M609.7,137.6L613.4,80.0L617.1,137.6L620.9,132.8L624.6,147.2L628.3,147.2L632.0,147.2",
     "top": 30,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -33350,9 +33350,9 @@
    "ped": "pedestrian_standard",
    "readings": {
     "car_standard": 1,
-    "car_sentri": 450,
-    "car_ready": 450,
-    "pedestrian_standard": 448,
+    "car_sentri": 452,
+    "car_ready": 452,
+    "pedestrian_standard": 450,
     "pedestrian_ready": 0
    },
    "d": {
@@ -33993,7 +33993,7 @@
          "lvl": 0
         },
         {
-         "v": 0,
+         "v": 1,
          "lvl": 0
         },
         {
@@ -34254,8 +34254,8 @@
       },
       {
        "h": 20,
-       "v": 4,
-       "w": 44.4
+       "v": 3,
+       "w": 33.3
       },
       {
        "h": 21,
@@ -34278,14 +34278,14 @@
      "best": {
       "dow": 1,
       "hour": 19,
-      "v": 0
+      "v": 1
      },
      "worst": {
       "dow": 4,
       "hour": 14,
       "v": 28
      },
-     "readings": 450
+     "readings": 452
     },
     "car_ready": {
      "avg": 36,
@@ -34300,7 +34300,7 @@
       "v": 78
      },
      "flat": false,
-     "readings": 450
+     "readings": 452
     },
     "pedestrian_standard": {
      "grid": [
@@ -35231,7 +35231,7 @@
       "hour": 17,
       "v": 25
      },
-     "readings": 448
+     "readings": 450
     }
    },
    "ly": {
@@ -37145,9 +37145,9 @@
      "lanes": 4
     },
     "car_ready": {
-     "v": 10,
-     "en": "10 min",
-     "es": "10 min",
+     "v": 5,
+     "en": "5 min",
+     "es": "5 min",
      "lanes": 4
     },
     "pedestrian_standard": {
@@ -37159,8 +37159,8 @@
    },
    "stale": false,
    "first": "2026-09-14 20:00",
-   "posted_en": "Oct 20, 6:00 PM MDT",
-   "posted_es": "20 oct, 18:00 MDT",
+   "posted_en": "Oct 20, 8:00 PM MDT",
+   "posted_es": "20 oct, 20:00 MDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -37184,7 +37184,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,147.2 M45.1,147.2 M63.7,147.2 M78.6,147.2 M93.4,147.2L100.9,147.2 M123.1,147.2 M141.7,128.0 M164.0,147.2 M178.9,147.2L186.3,80.0 M212.3,147.2 M230.9,128.0 M249.4,128.0 M264.3,147.2L271.7,147.2 M286.6,147.2 M305.1,147.2 M323.7,147.2 M338.6,128.0L342.3,128.0L353.4,128.0L364.6,128.0 M383.1,32.0 M405.4,147.2L416.6,147.2L427.7,80.0L438.9,128.0L442.6,128.0 M457.4,104.0 M479.7,142.4 M509.4,147.2 M528.0,147.2 M542.9,147.2 M583.7,128.0 M606.0,147.2L617.1,104.0L620.9,147.2L624.6,147.2L628.3,147.2L632.0,147.2",
+    "line": "M15.4,147.2 M37.7,147.2 M56.3,147.2 M71.1,147.2 M86.0,147.2L93.4,147.2 M115.7,147.2 M134.3,128.0 M156.6,147.2 M171.4,147.2L178.9,80.0 M204.9,147.2 M223.4,128.0 M242.0,128.0 M256.9,147.2L264.3,147.2 M279.1,147.2 M297.7,147.2 M316.3,147.2 M331.1,128.0L334.9,128.0L346.0,128.0L357.1,128.0 M375.7,32.0 M398.0,147.2L409.1,147.2L420.3,80.0L431.4,128.0L435.1,128.0 M450.0,104.0 M472.3,142.4 M502.0,147.2 M520.6,147.2 M535.4,147.2 M576.3,128.0 M598.6,147.2L609.7,104.0L613.4,147.2L617.1,147.2L620.9,147.2L624.6,147.2L628.3,147.2L632.0,147.2",
     "top": 30,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -37225,7 +37225,7 @@
    "ped": null,
    "readings": {
     "car_standard": 0,
-    "car_sentri": 336,
+    "car_sentri": 339,
     "car_ready": 0,
     "pedestrian_standard": 0,
     "pedestrian_ready": 0
@@ -37932,7 +37932,7 @@
       "hour": 8,
       "v": 22
      },
-     "readings": 336
+     "readings": 339
     }
    },
    "ly": {},
@@ -37951,16 +37951,16 @@
      "lanes": null
     },
     "car_sentri": {
-     "v": 4,
-     "en": "4 min",
-     "es": "4 min",
-     "lanes": 3
+     "v": 1,
+     "en": "1 min",
+     "es": "1 min",
+     "lanes": 1
     }
    },
    "stale": false,
    "first": "2026-09-14 08:00",
-   "posted_en": "Oct 20, 5:00 PM MDT",
-   "posted_es": "20 oct, 17:00 MDT",
+   "posted_en": "Oct 20, 9:00 PM MDT",
+   "posted_es": "20 oct, 21:00 MDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -37976,7 +37976,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M8.0,142.4 M26.6,147.2 M67.4,142.4 M82.3,147.2 M97.1,147.2L104.6,147.2 M164.0,142.4 M182.6,142.4L193.7,128.0 M234.6,104.0 M253.1,147.2 M268.0,142.4L271.7,142.4 M294.0,128.0 M342.3,123.2 M360.9,80.0L372.0,128.0 M386.9,147.2 M435.1,142.4L446.3,147.2L453.7,147.2L461.1,147.2 M513.1,94.4 M535.4,142.4L546.6,147.2 M606.0,94.4 M620.9,128.0L624.6,128.0L628.3,137.6L632.0,132.8",
+    "line": "M15.4,147.2 M56.3,142.4 M71.1,147.2 M86.0,147.2L93.4,147.2 M152.9,142.4 M171.4,142.4L182.6,128.0 M223.4,104.0 M242.0,147.2 M256.9,142.4L260.6,142.4 M282.9,128.0 M331.1,123.2 M349.7,80.0L360.9,128.0 M375.7,147.2 M424.0,142.4L435.1,147.2L442.6,147.2L450.0,147.2 M502.0,94.4 M524.3,142.4L535.4,147.2 M594.9,94.4 M609.7,128.0L613.4,128.0L617.1,137.6L620.9,132.8L624.6,147.2L628.3,147.2L632.0,147.2",
     "top": 30,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -38011,10 +38011,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 459,
+    "car_standard": 461,
     "car_sentri": 0,
     "car_ready": 0,
-    "pedestrian_standard": 459,
+    "pedestrian_standard": 461,
     "pedestrian_ready": 0
    },
    "d": {
@@ -38031,7 +38031,7 @@
       "v": 36
      },
      "flat": false,
-     "readings": 459
+     "readings": 461
     },
     "pedestrian_standard": {
      "avg": 1,
@@ -38046,7 +38046,7 @@
       "v": 8
      },
      "flat": false,
-     "readings": 459
+     "readings": 461
     }
    },
    "ly": {
@@ -38097,7 +38097,7 @@
      "v": 5,
      "en": "5 min",
      "es": "5 min",
-     "lanes": 2
+     "lanes": 1
     },
     "pedestrian_standard": {
      "v": 0,
@@ -38114,8 +38114,8 @@
    },
    "stale": false,
    "first": "2026-09-14 21:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "Oct 20, 10:00 PM CDT",
+   "posted_es": "20 oct, 22:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -38161,10 +38161,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 344,
+    "car_standard": 346,
     "car_sentri": 0,
     "car_ready": 0,
-    "pedestrian_standard": 342,
+    "pedestrian_standard": 344,
     "pedestrian_ready": 0
    },
    "d": {
@@ -38181,7 +38181,7 @@
       "v": 38
      },
      "flat": false,
-     "readings": 344
+     "readings": 346
     },
     "pedestrian_standard": {
      "avg": 1,
@@ -38196,7 +38196,7 @@
       "v": 4
      },
      "flat": false,
-     "readings": 342
+     "readings": 344
     }
    },
    "ly": {
@@ -38256,10 +38256,10 @@
    "notice": "CARGO Monday-Friday 8 am to 4 pm. Saturday/Sunday Closed.",
    "now": {
     "car_standard": {
-     "v": 15,
-     "en": "15 min",
-     "es": "15 min",
-     "lanes": 2
+     "v": 10,
+     "en": "10 min",
+     "es": "10 min",
+     "lanes": 1
     },
     "car_sentri": {
      "v": null,
@@ -38288,8 +38288,8 @@
    },
    "stale": false,
    "first": "2026-09-14 20:00",
-   "posted_en": "Oct 20, 6:00 PM MDT",
-   "posted_es": "20 oct, 18:00 MDT",
+   "posted_en": "Oct 20, 8:00 PM MDT",
+   "posted_es": "20 oct, 20:00 MDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -38341,10 +38341,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 392,
+    "car_standard": 393,
     "car_sentri": 0,
     "car_ready": 2,
-    "pedestrian_standard": 389,
+    "pedestrian_standard": 390,
     "pedestrian_ready": 0
    },
    "d": {
@@ -38361,7 +38361,7 @@
       "v": 15
      },
      "flat": false,
-     "readings": 392
+     "readings": 393
     },
     "pedestrian_standard": {
      "avg": 1,
@@ -38376,7 +38376,7 @@
       "v": 5
      },
      "flat": false,
-     "readings": 389
+     "readings": 390
     }
    },
    "ly": {
@@ -38452,8 +38452,8 @@
    },
    "stale": false,
    "first": "2026-09-13 22:00",
-   "posted_en": "Oct 20, 7:00 PM MDT",
-   "posted_es": "20 oct, 19:00 MDT",
+   "posted_en": "Oct 20, 10:00 PM MDT",
+   "posted_es": "20 oct, 22:00 MDT",
    "first_en": "Sep 13, 2026",
    "first_es": "13 sep 2026",
    "usual": {
@@ -38497,10 +38497,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 319,
+    "car_standard": 321,
     "car_sentri": 0,
-    "car_ready": 319,
-    "pedestrian_standard": 319,
+    "car_ready": 321,
+    "pedestrian_standard": 321,
     "pedestrian_ready": 0
    },
    "d": {
@@ -38517,7 +38517,7 @@
       "v": 72
      },
      "flat": false,
-     "readings": 319
+     "readings": 321
     },
     "car_ready": {
      "avg": 38,
@@ -38532,7 +38532,7 @@
       "v": 68
      },
      "flat": false,
-     "readings": 319
+     "readings": 321
     },
     "pedestrian_standard": {
      "avg": 4,
@@ -38547,7 +38547,7 @@
       "v": 5
      },
      "flat": false,
-     "readings": 319
+     "readings": 321
     }
    },
    "ly": {
@@ -38623,8 +38623,8 @@
    },
    "stale": false,
    "first": "2026-09-14 20:00",
-   "posted_en": "Oct 20, 6:00 PM MDT",
-   "posted_es": "20 oct, 18:00 MDT",
+   "posted_en": "Oct 20, 9:00 PM MDT",
+   "posted_es": "20 oct, 21:00 MDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -38667,10 +38667,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 252,
+    "car_standard": 255,
     "car_sentri": 0,
     "car_ready": 0,
-    "pedestrian_standard": 252,
+    "pedestrian_standard": 255,
     "pedestrian_ready": 0
    },
    "d": {
@@ -38687,7 +38687,7 @@
       "v": 85
      },
      "flat": false,
-     "readings": 252
+     "readings": 255
     },
     "pedestrian_standard": {
      "avg": 3,
@@ -38702,7 +38702,7 @@
       "v": 15
      },
      "flat": false,
-     "readings": 252
+     "readings": 255
     }
    },
    "ly": {
@@ -38744,9 +38744,9 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 15,
-     "en": "15 min",
-     "es": "15 min",
+     "v": 0,
+     "en": "No wait",
+     "es": "Sin demora",
      "lanes": 2
     },
     "pedestrian_standard": {
@@ -38758,8 +38758,8 @@
    },
    "stale": false,
    "first": "2026-09-14 18:00",
-   "posted_en": "Oct 20, 5:00 PM PDT",
-   "posted_es": "20 oct, 17:00 PDT",
+   "posted_en": "Oct 20, 8:00 PM PDT",
+   "posted_es": "20 oct, 20:00 PDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -38806,10 +38806,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 316,
-    "car_sentri": 316,
-    "car_ready": 316,
-    "pedestrian_standard": 316,
+    "car_standard": 318,
+    "car_sentri": 318,
+    "car_ready": 318,
+    "pedestrian_standard": 318,
     "pedestrian_ready": 0
    },
    "d": {
@@ -39219,7 +39219,7 @@
          "lvl": 2
         },
         {
-         "v": 5,
+         "v": 8,
          "lvl": 0
         },
         {
@@ -39252,7 +39252,7 @@
          "lvl": 3
         },
         {
-         "v": 12,
+         "v": 23,
          "lvl": 1
         },
         {
@@ -39407,8 +39407,8 @@
       },
       {
        "h": 18,
-       "v": 49,
-       "w": 98.0
+       "v": 48,
+       "w": 96.0
       },
       {
        "h": 19,
@@ -39429,8 +39429,8 @@
      "avg": 44,
      "flat": false,
      "best": {
-      "dow": 1,
-      "hour": 18,
+      "dow": 2,
+      "hour": 12,
       "v": 5
      },
      "worst": {
@@ -39438,7 +39438,7 @@
       "hour": 21,
       "v": 113
      },
-     "readings": 316
+     "readings": 318
     },
     "car_sentri": {
      "avg": 10,
@@ -39453,7 +39453,7 @@
       "v": 23
      },
      "flat": false,
-     "readings": 316
+     "readings": 318
     },
     "car_ready": {
      "avg": 40,
@@ -39468,7 +39468,7 @@
       "v": 90
      },
      "flat": false,
-     "readings": 316
+     "readings": 318
     },
     "pedestrian_standard": {
      "grid": [
@@ -40095,7 +40095,7 @@
       "hour": 14,
       "v": 32
      },
-     "readings": 316
+     "readings": 318
     }
    },
    "ly": {
@@ -41389,9 +41389,9 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 20,
-     "en": "20 min",
-     "es": "20 min",
+     "v": 25,
+     "en": "25 min",
+     "es": "25 min",
      "lanes": 1
     },
     "car_sentri": {
@@ -41401,10 +41401,10 @@
      "lanes": 2
     },
     "car_ready": {
-     "v": 20,
-     "en": "20 min",
-     "es": "20 min",
-     "lanes": 2
+     "v": 25,
+     "en": "25 min",
+     "es": "25 min",
+     "lanes": 3
     },
     "pedestrian_standard": {
      "v": 5,
@@ -41415,8 +41415,8 @@
    },
    "stale": false,
    "first": "2026-09-14 18:00",
-   "posted_en": "Oct 20, 5:00 PM PDT",
-   "posted_es": "20 oct, 17:00 PDT",
+   "posted_en": "Oct 20, 8:00 PM PDT",
+   "posted_es": "20 oct, 20:00 PDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -41440,7 +41440,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,134.0 M63.7,116.0L74.9,8.0 M93.4,8.0L100.9,116.0 M164.0,134.0L175.1,116.0 M190.0,8.0 M249.4,122.0 M264.3,104.0L271.7,98.0 M323.7,122.0 M338.6,146.0L346.0,134.0L353.4,128.0L364.6,44.0 M379.4,104.0 M412.9,116.0 M427.7,44.0 M442.6,44.0L446.3,8.0L457.4,8.0 M509.4,44.0 M531.7,44.0L542.9,8.0 M602.3,98.0L613.4,116.0L620.9,128.0L628.3,98.0L632.0,128.0",
+    "line": "M15.4,134.0 M56.3,116.0L67.4,8.0 M86.0,8.0L93.4,116.0 M156.6,134.0L167.7,116.0 M182.6,8.0 M242.0,122.0 M256.9,104.0L264.3,98.0 M316.3,122.0 M331.1,146.0L338.6,134.0L346.0,128.0L357.1,44.0 M372.0,104.0 M405.4,116.0 M420.3,44.0 M435.1,44.0L438.9,8.0L450.0,8.0 M502.0,44.0 M524.3,44.0L535.4,8.0 M594.9,98.0L606.0,116.0L613.4,128.0L620.9,98.0L624.6,128.0L628.3,134.0L632.0,98.0",
     "top": 120,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -41483,11 +41483,11 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 455,
-    "car_sentri": 455,
-    "car_ready": 455,
-    "pedestrian_standard": 455,
-    "pedestrian_ready": 455
+    "car_standard": 457,
+    "car_sentri": 457,
+    "car_ready": 457,
+    "pedestrian_standard": 457,
+    "pedestrian_ready": 457
    },
    "d": {
     "car_standard": {
@@ -42094,8 +42094,8 @@
          "lvl": 3
         },
         {
-         "v": 27,
-         "lvl": 1
+         "v": 31,
+         "lvl": 2
         },
         {
          "v": 63,
@@ -42127,7 +42127,7 @@
          "lvl": 3
         },
         {
-         "v": 30,
+         "v": 35,
          "lvl": 2
         },
         {
@@ -42378,13 +42378,13 @@
       },
       {
        "h": 18,
-       "v": 74,
-       "w": 98.7
+       "v": 72,
+       "w": 96.0
       },
       {
        "h": 19,
-       "v": 60,
-       "w": 80.0
+       "v": 59,
+       "w": 78.7
       },
       {
        "h": 20,
@@ -42419,7 +42419,7 @@
       "hour": 22,
       "v": 165
      },
-     "readings": 455
+     "readings": 457
     },
     "car_sentri": {
      "avg": 8,
@@ -42434,10 +42434,10 @@
       "v": 24
      },
      "flat": false,
-     "readings": 455
+     "readings": 457
     },
     "car_ready": {
-     "avg": 53,
+     "avg": 52,
      "best": {
       "dow": 5,
       "hour": 2,
@@ -42449,7 +42449,7 @@
       "v": 165
      },
      "flat": false,
-     "readings": 455
+     "readings": 457
     },
     "pedestrian_standard": {
      "grid": [
@@ -43339,13 +43339,13 @@
       },
       {
        "h": 18,
-       "v": 19,
-       "w": 51.4
+       "v": 18,
+       "w": 48.6
       },
       {
        "h": 19,
-       "v": 18,
-       "w": 48.6
+       "v": 17,
+       "w": 45.9
       },
       {
        "h": 20,
@@ -43380,7 +43380,7 @@
       "hour": 13,
       "v": 65
      },
-     "readings": 455
+     "readings": 457
     },
     "pedestrian_ready": {
      "avg": 15,
@@ -43395,7 +43395,7 @@
       "v": 65
      },
      "flat": false,
-     "readings": 455
+     "readings": 457
     }
    },
    "ly": {
@@ -45317,9 +45317,9 @@
      "lanes": 3
     },
     "car_sentri": {
-     "v": 5,
-     "en": "5 min",
-     "es": "5 min",
+     "v": 10,
+     "en": "10 min",
+     "es": "10 min",
      "lanes": 4
     },
     "car_ready": {
@@ -45329,22 +45329,22 @@
      "lanes": 3
     },
     "pedestrian_standard": {
-     "v": 15,
-     "en": "15 min",
-     "es": "15 min",
+     "v": 5,
+     "en": "5 min",
+     "es": "5 min",
      "lanes": 3
     },
     "pedestrian_ready": {
-     "v": 15,
-     "en": "15 min",
-     "es": "15 min",
+     "v": 5,
+     "en": "5 min",
+     "es": "5 min",
      "lanes": 3
     }
    },
    "stale": false,
    "first": "2026-09-13 21:00",
-   "posted_en": "Oct 20, 5:00 PM PDT",
-   "posted_es": "20 oct, 17:00 PDT",
+   "posted_en": "Oct 20, 8:00 PM PDT",
+   "posted_es": "20 oct, 20:00 PDT",
    "first_en": "Sep 13, 2026",
    "first_es": "13 sep 2026",
    "usual": {
@@ -45357,7 +45357,7 @@
      "src": "ours"
     },
     "car_ready": {
-     "avg": 53,
+     "avg": 52,
      "src": "ours"
     },
     "pedestrian_standard": {
@@ -45372,7 +45372,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,144.0 M41.4,148.0 M63.7,68.0L74.9,32.0 M93.4,80.0L100.9,104.0 M141.7,140.0 M164.0,92.0L175.1,104.0 M190.0,56.0 M230.9,128.0 M249.4,104.0 M264.3,128.0L271.7,104.0 M286.6,104.0 M308.9,148.0 M323.7,144.0 M338.6,128.0L346.0,112.0L353.4,80.0L364.6,56.0 M383.1,80.0 M401.7,128.0L412.9,136.0 M442.6,68.0L446.3,24.0L457.4,8.0 M479.7,56.0 M509.4,80.0 M531.7,104.0L542.9,56.0 M561.4,80.0 M583.7,128.0 M602.3,104.0L613.4,96.0L620.9,80.0L624.6,104.0L628.3,116.0L632.0,116.0",
+    "line": "M15.4,144.0 M34.0,148.0 M56.3,68.0L67.4,32.0 M86.0,80.0L93.4,104.0 M134.3,140.0 M156.6,92.0L167.7,104.0 M182.6,56.0 M223.4,128.0 M242.0,104.0 M256.9,128.0L264.3,104.0 M279.1,104.0 M301.4,148.0 M316.3,144.0 M331.1,128.0L338.6,112.0L346.0,80.0L357.1,56.0 M375.7,80.0 M394.3,128.0L405.4,136.0 M435.1,68.0L438.9,24.0L450.0,8.0 M472.3,56.0 M502.0,80.0 M524.3,104.0L535.4,56.0 M554.0,80.0 M576.3,128.0 M594.9,104.0L606.0,96.0L613.4,80.0L617.1,104.0L620.9,116.0L624.6,116.0L628.3,116.0L632.0,116.0",
     "top": 180,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -45415,11 +45415,11 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 364,
-    "car_sentri": 364,
-    "car_ready": 364,
-    "pedestrian_standard": 364,
-    "pedestrian_ready": 364
+    "car_standard": 366,
+    "car_sentri": 366,
+    "car_ready": 366,
+    "pedestrian_standard": 366,
+    "pedestrian_ready": 366
    },
    "d": {
     "car_standard": {
@@ -45993,7 +45993,7 @@
          "lvl": 4
         },
         {
-         "v": 95,
+         "v": 90,
          "lvl": 4
         },
         {
@@ -46026,7 +46026,7 @@
          "lvl": 4
         },
         {
-         "v": 85,
+         "v": 82,
          "lvl": 3
         },
         {
@@ -46305,13 +46305,13 @@
       },
       {
        "h": 17,
-       "v": 120,
-       "w": 100.0
+       "v": 117,
+       "w": 97.5
       },
       {
        "h": 18,
-       "v": 98,
-       "w": 81.7
+       "v": 97,
+       "w": 80.8
       },
       {
        "h": 19,
@@ -46351,7 +46351,7 @@
       "hour": 15,
       "v": 195
      },
-     "readings": 364
+     "readings": 366
     },
     "car_sentri": {
      "avg": 17,
@@ -46366,7 +46366,7 @@
       "v": 45
      },
      "flat": false,
-     "readings": 364
+     "readings": 366
     },
     "car_ready": {
      "avg": 74,
@@ -46381,7 +46381,7 @@
       "v": 160
      },
      "flat": false,
-     "readings": 364
+     "readings": 366
     },
     "pedestrian_standard": {
      "grid": [
@@ -46954,8 +46954,8 @@
          "lvl": 0
         },
         {
-         "v": 15,
-         "lvl": 1
+         "v": 30,
+         "lvl": 2
         },
         {
          "v": 15,
@@ -46987,8 +46987,8 @@
          "lvl": 1
         },
         {
-         "v": 23,
-         "lvl": 1
+         "v": 32,
+         "lvl": 2
         },
         {
          "v": 8,
@@ -47266,13 +47266,13 @@
       },
       {
        "h": 17,
-       "v": 20,
-       "w": 43.5
+       "v": 23,
+       "w": 50.0
       },
       {
        "h": 18,
-       "v": 22,
-       "w": 47.8
+       "v": 24,
+       "w": 52.2
       },
       {
        "h": 19,
@@ -47312,7 +47312,7 @@
       "hour": 7,
       "v": 63
      },
-     "readings": 364
+     "readings": 366
     },
     "pedestrian_ready": {
      "avg": 5,
@@ -47327,7 +47327,7 @@
       "v": 5
      },
      "flat": false,
-     "readings": 364
+     "readings": 366
     }
    },
    "ly": {
@@ -49243,28 +49243,28 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 80,
-     "en": "80 min",
-     "es": "80 min",
-     "lanes": 7
+     "v": 75,
+     "en": "75 min",
+     "es": "75 min",
+     "lanes": 6
     },
     "car_sentri": {
-     "v": 15,
-     "en": "15 min",
-     "es": "15 min",
-     "lanes": 11
+     "v": 10,
+     "en": "10 min",
+     "es": "10 min",
+     "lanes": 10
     },
     "car_ready": {
-     "v": 60,
-     "en": "60 min",
-     "es": "60 min",
-     "lanes": 11
+     "v": 45,
+     "en": "45 min",
+     "es": "45 min",
+     "lanes": 12
     },
     "pedestrian_standard": {
-     "v": 60,
-     "en": "60 min",
-     "es": "60 min",
-     "lanes": 15
+     "v": 45,
+     "en": "45 min",
+     "es": "45 min",
+     "lanes": 16
     },
     "pedestrian_ready": {
      "v": 5,
@@ -49275,8 +49275,8 @@
    },
    "stale": false,
    "first": "2026-09-13 21:00",
-   "posted_en": "Oct 20, 4:00 PM PDT",
-   "posted_es": "20 oct, 16:00 PDT",
+   "posted_en": "Oct 20, 7:00 PM PDT",
+   "posted_es": "20 oct, 19:00 PDT",
    "first_en": "Sep 13, 2026",
    "first_es": "13 sep 2026",
    "usual": {
@@ -49304,7 +49304,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M8.0,96.0 M30.3,128.0L41.4,148.0 M67.4,44.0 M93.4,56.0L104.6,128.0 M123.1,140.0 M223.4,104.0 M253.1,56.0 M268.0,80.0L275.4,80.0 M294.0,120.0 M308.9,80.0L320.0,128.0 M334.9,80.0 M357.1,16.0 M372.0,48.0 M386.9,48.0L394.3,48.0 M416.6,132.0 M431.4,44.0L442.6,28.0L453.7,8.0L457.4,8.0 M483.4,8.0 M505.7,56.0 M531.7,16.0L535.4,60.0L546.6,56.0 M568.9,96.0 M587.4,104.0 M606.0,68.0L613.4,60.0L624.6,60.0L628.3,72.0L632.0,88.0",
+    "line": "M22.9,128.0L34.0,148.0 M60.0,44.0 M86.0,56.0L97.1,128.0 M115.7,140.0 M216.0,104.0 M245.7,56.0 M260.6,80.0L268.0,80.0 M286.6,120.0 M301.4,80.0L312.6,128.0 M327.4,80.0 M349.7,16.0 M364.6,48.0 M379.4,48.0L386.9,48.0 M409.1,132.0 M424.0,44.0L435.1,28.0L446.3,8.0L450.0,8.0 M476.0,8.0 M498.3,56.0 M524.3,16.0L528.0,60.0L539.1,56.0 M561.4,96.0 M580.0,104.0 M598.6,68.0L606.0,60.0L617.1,60.0L620.9,72.0L624.6,88.0L628.3,88.0L632.0,92.0",
     "top": 180,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -50806,10 +50806,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 311,
+    "car_standard": 313,
     "car_sentri": 0,
     "car_ready": 0,
-    "pedestrian_standard": 311,
+    "pedestrian_standard": 313,
     "pedestrian_ready": 0
    },
    "d": {
@@ -51252,7 +51252,7 @@
          "lvl": 4
         },
         {
-         "v": 50,
+         "v": 45,
          "lvl": 2
         },
         {
@@ -51381,87 +51381,87 @@
       {
        "h": 6,
        "v": 66,
-       "w": 79.5
+       "w": 81.5
       },
       {
        "h": 7,
        "v": 70,
-       "w": 84.3
+       "w": 86.4
       },
       {
        "h": 8,
        "v": 72,
-       "w": 86.7
+       "w": 88.9
       },
       {
        "h": 9,
        "v": 69,
-       "w": 83.1
+       "w": 85.2
       },
       {
        "h": 10,
        "v": 67,
-       "w": 80.7
+       "w": 82.7
       },
       {
        "h": 11,
        "v": 72,
-       "w": 86.7
+       "w": 88.9
       },
       {
        "h": 12,
        "v": 67,
-       "w": 80.7
+       "w": 82.7
       },
       {
        "h": 13,
        "v": 70,
-       "w": 84.3
+       "w": 86.4
       },
       {
        "h": 14,
        "v": 68,
-       "w": 81.9
+       "w": 84.0
       },
       {
        "h": 15,
        "v": 78,
-       "w": 94.0
+       "w": 96.3
       },
       {
        "h": 16,
        "v": 79,
-       "w": 95.2
+       "w": 97.5
       },
       {
        "h": 17,
        "v": 78,
-       "w": 94.0
+       "w": 96.3
       },
       {
        "h": 18,
-       "v": 71,
-       "w": 85.5
+       "v": 69,
+       "w": 85.2
       },
       {
        "h": 19,
-       "v": 83,
+       "v": 81,
        "w": 100.0
       },
       {
        "h": 20,
        "v": 71,
-       "w": 85.5
+       "w": 87.7
       },
       {
        "h": 21,
        "v": 64,
-       "w": 77.1
+       "w": 79.0
       },
       {
        "h": 22,
        "v": 30,
-       "w": 36.1
+       "w": 37.0
       }
      ],
      "avg": 71,
@@ -51476,7 +51476,7 @@
       "hour": 14,
       "v": 165
      },
-     "readings": 311
+     "readings": 313
     },
     "pedestrian_standard": {
      "grid": [
@@ -51917,7 +51917,7 @@
          "lvl": 0
         },
         {
-         "v": 13,
+         "v": 11,
          "lvl": 1
         },
         {
@@ -52141,7 +52141,7 @@
       "hour": 6,
       "v": 50
      },
-     "readings": 311
+     "readings": 313
     }
    },
    "ly": {
@@ -53421,8 +53421,8 @@
    },
    "stale": false,
    "first": "2026-09-14 19:00",
-   "posted_en": "Oct 20, 5:00 PM PDT",
-   "posted_es": "20 oct, 17:00 PDT",
+   "posted_en": "Oct 20, 8:00 PM PDT",
+   "posted_es": "20 oct, 20:00 PDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -53438,7 +53438,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M19.1,108.8 M60.0,75.2 M78.6,94.4L89.7,123.2L100.9,142.4 M145.4,94.4 M160.3,94.4 M178.9,36.8L190.0,36.8 M249.4,94.4L260.6,94.4L271.7,123.2 M290.3,142.4 M323.7,84.8 M338.6,94.4L346.0,94.4L357.1,94.4L368.3,94.4L379.4,113.6 M416.6,94.4 M431.4,94.4L438.9,94.4L450.0,8.0L457.4,8.0 M509.4,94.4 M528.0,56.0 M542.9,75.2 M602.3,65.6 M617.1,94.4L620.9,108.8L624.6,123.2L628.3,108.8L632.0,123.2",
+    "line": "M11.7,108.8 M52.6,75.2 M71.1,94.4L82.3,123.2L93.4,142.4 M138.0,94.4 M152.9,94.4 M171.4,36.8L182.6,36.8 M242.0,94.4L253.1,94.4L264.3,123.2 M282.9,142.4 M316.3,84.8 M331.1,94.4L338.6,94.4L349.7,94.4L360.9,94.4L372.0,113.6 M409.1,94.4 M424.0,94.4L431.4,94.4L442.6,8.0L450.0,8.0 M502.0,94.4 M520.6,56.0 M535.4,75.2 M594.9,65.6 M609.7,94.4L613.4,108.8L617.1,123.2L620.9,108.8L624.6,123.2L628.3,123.2L632.0,123.2",
     "top": 150,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -53480,10 +53480,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 385,
-    "car_sentri": 306,
-    "car_ready": 385,
-    "pedestrian_standard": 381,
+    "car_standard": 387,
+    "car_sentri": 308,
+    "car_ready": 387,
+    "pedestrian_standard": 383,
     "pedestrian_ready": 0
    },
    "d": {
@@ -54091,8 +54091,8 @@
          "lvl": 3
         },
         {
-         "v": 20,
-         "lvl": 1
+         "v": 50,
+         "lvl": 2
         },
         {
          "v": 30,
@@ -54157,8 +54157,8 @@
          "lvl": 3
         },
         {
-         "v": 68,
-         "lvl": 3
+         "v": 59,
+         "lvl": 2
         },
         {
          "v": 45,
@@ -54385,8 +54385,8 @@
       },
       {
        "h": 20,
-       "v": 68,
-       "w": 69.4
+       "v": 65,
+       "w": 66.3
       },
       {
        "h": 21,
@@ -54416,7 +54416,7 @@
       "hour": 18,
       "v": 177
      },
-     "readings": 385
+     "readings": 387
     },
     "car_sentri": {
      "avg": 20,
@@ -54431,7 +54431,7 @@
       "v": 52
      },
      "flat": false,
-     "readings": 306
+     "readings": 308
     },
     "car_ready": {
      "avg": 70,
@@ -54446,7 +54446,7 @@
       "v": 160
      },
      "flat": false,
-     "readings": 385
+     "readings": 387
     },
     "pedestrian_standard": {
      "grid": [
@@ -55052,7 +55052,7 @@
          "lvl": 1
         },
         {
-         "v": 5,
+         "v": 8,
          "lvl": 0
         },
         {
@@ -55118,7 +55118,7 @@
          "lvl": 1
         },
         {
-         "v": 5,
+         "v": 6,
          "lvl": 0
         },
         {
@@ -55377,7 +55377,7 @@
       "hour": 7,
       "v": 56
      },
-     "readings": 381
+     "readings": 383
     }
    },
    "ly": {
@@ -57279,21 +57279,21 @@
    "notice": "Entrance to Ready Lanes is on the far left as you approach the border.  Go to www.getyouhome.gov for more information\r\n\r\nGo to www.GetYouHome.gov for more information.",
    "now": {
     "car_standard": {
-     "v": 120,
-     "en": "120 min",
-     "es": "120 min",
-     "lanes": 3
+     "v": 30,
+     "en": "30 min",
+     "es": "30 min",
+     "lanes": 4
     },
     "car_sentri": {
      "v": 10,
      "en": "10 min",
      "es": "10 min",
-     "lanes": 3
+     "lanes": 2
     },
     "car_ready": {
-     "v": 110,
-     "en": "110 min",
-     "es": "110 min",
+     "v": 30,
+     "en": "30 min",
+     "es": "30 min",
      "lanes": 4
     },
     "pedestrian_standard": {
@@ -57305,8 +57305,8 @@
    },
    "stale": false,
    "first": "2026-09-13 22:00",
-   "posted_en": "Oct 20, 5:00 PM PDT",
-   "posted_es": "20 oct, 17:00 PDT",
+   "posted_en": "Oct 20, 8:00 PM PDT",
+   "posted_es": "20 oct, 20:00 PDT",
    "first_en": "Sep 13, 2026",
    "first_es": "13 sep 2026",
    "usual": {
@@ -57330,7 +57330,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M26.6,134.7L37.7,149.1 M60.0,117.4 M78.6,105.9 M93.4,117.4L100.9,129.0 M145.4,105.9 M164.0,100.2L175.1,100.2 M190.0,123.2 M230.9,100.2L242.0,100.2 M260.6,94.4L271.7,94.4 M290.3,117.4 M305.1,134.7 M323.7,126.1L334.9,88.6L346.0,105.9L357.1,94.4L368.3,65.6 M383.1,65.6 M401.7,129.0 M416.6,117.4L427.7,88.6 M442.6,54.1 M457.4,8.0 M479.7,42.6 M509.4,54.1 M531.7,71.4L542.9,65.6 M561.4,129.0 M580.0,111.7 M606.0,71.4L617.1,82.9L620.9,82.9L624.6,77.1L628.3,82.9L632.0,82.9",
+    "line": "M15.4,134.7L26.6,149.1 M48.9,117.4 M67.4,105.9 M82.3,117.4L89.7,129.0 M134.3,105.9 M152.9,100.2L164.0,100.2 M178.9,123.2 M219.7,100.2L230.9,100.2 M249.4,94.4L260.6,94.4 M279.1,117.4 M294.0,134.7 M312.6,126.1L323.7,88.6L334.9,105.9L346.0,94.4L357.1,65.6 M372.0,65.6 M390.6,129.0 M405.4,117.4L416.6,88.6 M431.4,54.1 M446.3,8.0 M468.6,42.6 M498.3,54.1 M520.6,71.4L531.7,65.6 M550.3,129.0 M568.9,111.7 M594.9,71.4L606.0,82.9L609.7,82.9L613.4,77.1L617.1,82.9L620.9,82.9L624.6,105.9L632.0,134.7",
     "top": 250,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -57373,10 +57373,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 434,
-    "car_sentri": 337,
+    "car_standard": 437,
+    "car_sentri": 340,
     "car_ready": 32,
-    "pedestrian_standard": 461,
+    "pedestrian_standard": 464,
     "pedestrian_ready": 0
    },
    "d": {
@@ -57984,7 +57984,7 @@
          "lvl": 2
         },
         {
-         "v": 35,
+         "v": 33,
          "lvl": 2
         },
         {
@@ -58017,7 +58017,7 @@
          "lvl": 3
         },
         {
-         "v": 38,
+         "v": 30,
          "lvl": 2
         },
         {
@@ -58263,8 +58263,8 @@
       },
       {
        "h": 17,
-       "v": 48,
-       "w": 87.3
+       "v": 47,
+       "w": 85.5
       },
       {
        "h": 18,
@@ -58273,8 +58273,8 @@
       },
       {
        "h": 19,
-       "v": 52,
-       "w": 94.5
+       "v": 49,
+       "w": 89.1
       },
       {
        "h": 20,
@@ -58309,7 +58309,7 @@
       "hour": 15,
       "v": 82
      },
-     "readings": 434
+     "readings": 437
     },
     "car_sentri": {
      "avg": 5,
@@ -58324,7 +58324,7 @@
       "v": 23
      },
      "flat": false,
-     "readings": 337
+     "readings": 340
     },
     "pedestrian_standard": {
      "grid": [
@@ -59255,7 +59255,7 @@
       "hour": 7,
       "v": 20
      },
-     "readings": 461
+     "readings": 464
     }
    },
    "ly": {
@@ -61158,7 +61158,7 @@
      "v": 15,
      "en": "15 min",
      "es": "15 min",
-     "lanes": 3
+     "lanes": 4
     },
     "car_sentri": {
      "v": 3,
@@ -61187,8 +61187,8 @@
    },
    "stale": false,
    "first": "2026-09-14 18:00",
-   "posted_en": "Oct 20, 4:00 PM PST",
-   "posted_es": "20 oct, 16:00 PST",
+   "posted_en": "Oct 20, 7:00 PM PST",
+   "posted_es": "20 oct, 19:00 PST",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -61216,7 +61216,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M8.0,56.0 M30.3,144.0 M45.1,144.0 M67.4,104.0 M82.3,80.0L93.4,80.0L104.6,120.0 M126.9,150.4 M149.1,150.4 M167.7,88.0L178.9,112.0 M193.7,104.0 M234.6,128.0 M253.1,80.0 M268.0,88.0L275.4,128.0 M294.0,128.0 M312.6,150.4 M327.4,144.0 M342.3,112.0L349.7,80.0L360.9,144.0L372.0,88.0 M386.9,56.0 M405.4,144.0L416.6,144.0 M435.1,120.0L446.3,88.0L453.7,56.0L461.1,104.0 M483.4,150.4 M513.1,8.0 M535.4,56.0L546.6,104.0 M568.9,150.4 M587.4,144.0 M609.7,120.0L620.9,88.0L624.6,80.0L628.3,80.0L632.0,128.0",
+    "line": "M19.1,144.0 M34.0,144.0 M56.3,104.0 M71.1,80.0L82.3,80.0L93.4,120.0 M115.7,150.4 M138.0,150.4 M156.6,88.0L167.7,112.0 M182.6,104.0 M223.4,128.0 M242.0,80.0 M256.9,88.0L264.3,128.0 M282.9,128.0 M301.4,150.4 M316.3,144.0 M331.1,112.0L338.6,80.0L349.7,144.0L360.9,88.0 M375.7,56.0 M394.3,144.0L405.4,144.0 M424.0,120.0L435.1,88.0L442.6,56.0L450.0,104.0 M472.3,150.4 M502.0,8.0 M524.3,56.0L535.4,104.0 M557.7,150.4 M576.3,144.0 M598.6,120.0L609.7,88.0L613.4,80.0L617.1,80.0L620.9,128.0L624.6,104.0L628.3,104.0L632.0,128.0",
     "top": 90,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -61320,7 +61320,7 @@
    "sentri": "SENTRI",
    "hours": "6 am-8 pm",
    "hours_es": "6:00 a 20:00",
-   "open": true,
+   "open": false,
    "max_car": 6,
    "max_ped": null,
    "notice": "",
@@ -61340,8 +61340,8 @@
    },
    "stale": false,
    "first": "2026-09-14 19:00",
-   "posted_en": "Oct 20, 7:00 PM MST",
-   "posted_es": "20 oct, 19:00 MST",
+   "posted_en": "",
+   "posted_es": "",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -61379,10 +61379,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 273,
+    "car_standard": 275,
     "car_sentri": 0,
     "car_ready": 0,
-    "pedestrian_standard": 272,
+    "pedestrian_standard": 274,
     "pedestrian_ready": 0
    },
    "d": {
@@ -61399,7 +61399,7 @@
       "v": 40
      },
      "flat": false,
-     "readings": 273
+     "readings": 275
     },
     "pedestrian_standard": {
      "avg": 1,
@@ -61414,7 +61414,7 @@
       "v": 8
      },
      "flat": false,
-     "readings": 272
+     "readings": 274
     }
    },
    "ly": {
@@ -61470,8 +61470,8 @@
    },
    "stale": false,
    "first": "2026-09-14 19:00",
-   "posted_en": "Oct 20, 5:00 PM PST",
-   "posted_es": "20 oct, 17:00 PST",
+   "posted_en": "Oct 20, 7:00 PM PST",
+   "posted_es": "20 oct, 19:00 PST",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -65366,10 +65366,10 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 333,
+    "car_standard": 335,
     "car_sentri": 0,
     "car_ready": 0,
-    "pedestrian_standard": 331,
+    "pedestrian_standard": 333,
     "pedestrian_ready": 0
    },
    "d": {
@@ -65779,7 +65779,7 @@
          "lvl": 2
         },
         {
-         "v": 15,
+         "v": 20,
          "lvl": 1
         },
         {
@@ -65812,7 +65812,7 @@
          "lvl": 4
         },
         {
-         "v": 15,
+         "v": 20,
          "lvl": 1
         },
         {
@@ -65972,8 +65972,8 @@
       },
       {
        "h": 19,
-       "v": 38,
-       "w": 95.0
+       "v": 37,
+       "w": 92.5
       },
       {
        "h": 20,
@@ -65998,7 +65998,7 @@
       "hour": 20,
       "v": 103
      },
-     "readings": 333
+     "readings": 335
     },
     "pedestrian_standard": {
      "grid": [
@@ -66625,7 +66625,7 @@
       "hour": 7,
       "v": 12
      },
-     "readings": 331
+     "readings": 333
     }
    },
    "ly": {
@@ -67891,10 +67891,10 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 35,
-     "en": "35 min",
-     "es": "35 min",
-     "lanes": 6
+     "v": 5,
+     "en": "5 min",
+     "es": "5 min",
+     "lanes": 5
     },
     "pedestrian_standard": {
      "v": 0,
@@ -67905,8 +67905,8 @@
    },
    "stale": false,
    "first": "2026-09-14 19:00",
-   "posted_en": "Oct 20, 5:00 PM MST",
-   "posted_es": "20 oct, 17:00 MST",
+   "posted_en": "Oct 20, 8:00 PM MST",
+   "posted_es": "20 oct, 20:00 MST",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -67922,7 +67922,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,152.0 M63.7,152.0 M78.6,136.0 M93.4,128.0L100.9,136.0 M145.4,152.0 M164.0,104.0 M178.9,136.0L190.0,152.0 M249.4,88.0 M264.3,56.0L271.7,56.0 M290.3,152.0 M323.7,152.0L334.9,112.0L346.0,80.0L357.1,56.0L368.3,8.0 M416.6,152.0L427.7,112.0 M442.6,72.0L450.0,16.0L457.4,40.0 M509.4,56.0 M528.0,56.0 M542.9,56.0 M606.0,80.0L617.1,56.0L620.9,56.0L624.6,136.0L628.3,88.0L632.0,96.0",
+    "line": "M15.4,152.0 M56.3,152.0 M71.1,136.0 M86.0,128.0L93.4,136.0 M138.0,152.0 M156.6,104.0 M171.4,136.0L182.6,152.0 M242.0,88.0 M256.9,56.0L264.3,56.0 M282.9,152.0 M316.3,152.0L327.4,112.0L338.6,80.0L349.7,56.0L360.9,8.0 M409.1,152.0L420.3,112.0 M435.1,72.0L442.6,16.0L450.0,40.0 M502.0,56.0 M520.6,56.0 M535.4,56.0 M598.6,80.0L609.7,56.0L613.4,56.0L617.1,136.0L620.9,88.0L624.6,96.0L628.3,104.0L632.0,104.0",
     "top": 90,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -67981,7 +67981,7 @@
    "sentri": "SENTRI",
    "hours": "10 am-6 pm",
    "hours_es": "10:00 a 18:00",
-   "open": true,
+   "open": false,
    "max_car": null,
    "max_ped": 4,
    "notice": "",
@@ -67995,8 +67995,8 @@
    },
    "stale": false,
    "first": "2026-09-15 10:00",
-   "posted_en": "Oct 20, 5:00 PM MST",
-   "posted_es": "20 oct, 17:00 MST",
+   "posted_en": "",
+   "posted_es": "",
    "first_en": "Sep 15, 2026",
    "first_es": "15 sep 2026",
    "usual": {
@@ -73839,15 +73839,15 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 0,
-     "en": "No wait",
-     "es": "Sin demora",
-     "lanes": 3
+     "v": 5,
+     "en": "5 min",
+     "es": "5 min",
+     "lanes": 1
     },
     "car_sentri": {
-     "v": 0,
-     "en": "No wait",
-     "es": "Sin demora",
+     "v": 5,
+     "en": "5 min",
+     "es": "5 min",
      "lanes": 1
     },
     "car_ready": {
@@ -73859,8 +73859,8 @@
    },
    "stale": false,
    "first": "2026-09-14 19:00",
-   "posted_en": "Oct 20, 5:00 PM PDT",
-   "posted_es": "20 oct, 17:00 PDT",
+   "posted_en": "Oct 20, 8:00 PM PDT",
+   "posted_es": "20 oct, 20:00 PDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -75826,15 +75826,15 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 0,
-     "en": "No wait",
-     "es": "Sin demora",
+     "v": 5,
+     "en": "5 min",
+     "es": "5 min",
      "lanes": 3
     },
     "car_sentri": {
-     "v": 0,
-     "en": "No wait",
-     "es": "Sin demora",
+     "v": 5,
+     "en": "5 min",
+     "es": "5 min",
      "lanes": 1
     },
     "car_ready": {
@@ -75846,8 +75846,8 @@
    },
    "stale": false,
    "first": "2026-09-14 18:00",
-   "posted_en": "Oct 20, 5:00 PM PDT",
-   "posted_es": "20 oct, 17:00 PDT",
+   "posted_en": "Oct 20, 8:00 PM PDT",
+   "posted_es": "20 oct, 20:00 PDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -76027,8 +76027,8 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 207,
-    "car_sentri": 152,
+    "car_standard": 208,
+    "car_sentri": 153,
     "car_ready": 0,
     "pedestrian_standard": 0,
     "pedestrian_ready": 0
@@ -76047,7 +76047,7 @@
       "v": 22
      },
      "flat": false,
-     "readings": 207
+     "readings": 208
     },
     "car_sentri": {
      "avg": 1,
@@ -76062,7 +76062,7 @@
       "v": 3
      },
      "flat": false,
-     "readings": 152
+     "readings": 153
     }
    },
    "ly": {
@@ -76122,8 +76122,8 @@
    },
    "stale": false,
    "first": "2026-09-13 23:00",
-   "posted_en": "Oct 20, 3:00 PM PDT",
-   "posted_es": "20 oct, 15:00 PDT",
+   "posted_en": "Oct 20, 7:00 PM PDT",
+   "posted_es": "20 oct, 19:00 PDT",
    "first_en": "Sep 13, 2026",
    "first_es": "13 sep 2026",
    "usual": {
@@ -76161,7 +76161,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 344,
+    "car_standard": 346,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -76181,7 +76181,7 @@
       "v": 42
      },
      "flat": false,
-     "readings": 344
+     "readings": 346
     }
    },
    "ly": {
@@ -76209,16 +76209,16 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 0,
-     "en": "No wait",
-     "es": "Sin demora",
+     "v": 30,
+     "en": "30 min",
+     "es": "30 min",
      "lanes": 1
     }
    },
    "stale": false,
    "first": "2026-09-14 20:00",
-   "posted_en": "Oct 20, 6:00 PM MDT",
-   "posted_es": "20 oct, 18:00 MDT",
+   "posted_en": "Oct 20, 9:00 PM MDT",
+   "posted_es": "20 oct, 21:00 MDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -76361,7 +76361,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 346,
+    "car_standard": 349,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -76381,7 +76381,7 @@
       "v": 3
      },
      "flat": false,
-     "readings": 346
+     "readings": 349
     }
    },
    "ly": {
@@ -76417,8 +76417,8 @@
    },
    "stale": false,
    "first": "2026-09-13 23:00",
-   "posted_en": "Oct 20, 8:00 PM CDT",
-   "posted_es": "20 oct, 20:00 CDT",
+   "posted_en": "Oct 20, 11:00 PM CDT",
+   "posted_es": "20 oct, 23:00 CDT",
    "first_en": "Sep 13, 2026",
    "first_es": "13 sep 2026",
    "usual": {
@@ -76446,7 +76446,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 503,
+    "car_standard": 505,
     "car_sentri": 261,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -77156,7 +77156,7 @@
          "lvl": 0
         },
         {
-         "v": 2,
+         "v": 1,
          "lvl": 0
         },
         {
@@ -77382,7 +77382,7 @@
       "hour": 11,
       "v": 15
      },
-     "readings": 503
+     "readings": 505
     },
     "car_sentri": {
      "avg": 1,
@@ -78381,8 +78381,8 @@
    },
    "stale": false,
    "first": "2026-09-14 22:00",
-   "posted_en": "Oct 20, 8:00 PM EDT",
-   "posted_es": "20 oct, 20:00 EDT",
+   "posted_en": "Oct 20, 10:00 PM EDT",
+   "posted_es": "20 oct, 22:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -78402,7 +78402,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,152.0 M45.1,152.0 M60.0,128.0 M78.6,152.0 M93.4,152.0L100.9,152.0 M123.1,152.0 M145.4,128.0 M164.0,152.0 M178.9,152.0L190.0,152.0 M212.3,152.0L219.7,152.0 M245.7,128.0 M264.3,80.0L271.7,152.0 M290.3,152.0 M308.9,152.0 M323.7,128.0 M338.6,128.0L346.0,56.0L357.1,128.0L364.6,128.0 M383.1,152.0 M405.4,128.0L412.9,128.0 M427.7,128.0L438.9,128.0L450.0,128.0L457.4,152.0 M479.7,152.0 M509.4,128.0 M528.0,152.0 M542.9,152.0 M561.4,152.0 M583.7,128.0 M606.0,128.0L617.1,152.0L620.9,152.0L624.6,152.0L628.3,152.0L632.0,152.0",
+    "line": "M15.4,152.0 M37.7,152.0 M52.6,128.0 M71.1,152.0 M86.0,152.0L93.4,152.0 M115.7,152.0 M138.0,128.0 M156.6,152.0 M171.4,152.0L182.6,152.0 M204.9,152.0L212.3,152.0 M238.3,128.0 M256.9,80.0L264.3,152.0 M282.9,152.0 M301.4,152.0 M316.3,128.0 M331.1,128.0L338.6,56.0L349.7,128.0L357.1,128.0 M375.7,152.0 M398.0,128.0L405.4,128.0 M420.3,128.0L431.4,128.0L442.6,128.0L450.0,152.0 M472.3,152.0 M502.0,128.0 M520.6,152.0 M535.4,152.0 M554.0,152.0 M576.3,128.0 M598.6,128.0L609.7,152.0L613.4,152.0L617.1,152.0L620.9,152.0L624.6,152.0L628.3,152.0L632.0,152.0",
     "top": 30,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -78434,7 +78434,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 504,
+    "car_standard": 506,
     "car_sentri": 269,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -79177,7 +79177,7 @@
          "lvl": 0
         },
         {
-         "v": 0,
+         "v": 1,
          "lvl": 0
         },
         {
@@ -79370,7 +79370,7 @@
       "hour": 12,
       "v": 15
      },
-     "readings": 504
+     "readings": 506
     },
     "car_sentri": {
      "avg": 2,
@@ -80352,7 +80352,7 @@
      "v": 5,
      "en": "5 min",
      "es": "5 min",
-     "lanes": 3
+     "lanes": 2
     },
     "car_sentri": {
      "v": null,
@@ -80369,8 +80369,8 @@
    },
    "stale": false,
    "first": "2026-09-14 10:00",
-   "posted_en": "Oct 20, 8:00 PM EDT",
-   "posted_es": "20 oct, 20:00 EDT",
+   "posted_en": "Oct 20, 10:00 PM EDT",
+   "posted_es": "20 oct, 22:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -80390,7 +80390,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,152.0 M45.1,152.0 M60.0,128.0 M78.6,152.0 M93.4,152.0L100.9,152.0 M123.1,152.0 M145.4,128.0 M164.0,152.0 M178.9,80.0L190.0,152.0 M212.3,152.0L219.7,152.0 M245.7,128.0 M264.3,80.0L271.7,152.0 M290.3,118.4 M308.9,152.0 M323.7,128.0 M338.6,128.0L346.0,80.0L357.1,80.0L364.6,128.0 M383.1,152.0 M401.7,152.0 M427.7,104.0L438.9,104.0L450.0,104.0L457.4,128.0 M479.7,152.0 M509.4,128.0 M528.0,128.0 M542.9,152.0 M561.4,152.0 M583.7,128.0 M606.0,128.0L617.1,104.0L620.9,152.0L624.6,128.0L628.3,152.0L632.0,128.0",
+    "line": "M15.4,152.0 M37.7,152.0 M52.6,128.0 M71.1,152.0 M86.0,152.0L93.4,152.0 M115.7,152.0 M138.0,128.0 M156.6,152.0 M171.4,80.0L182.6,152.0 M204.9,152.0L212.3,152.0 M238.3,128.0 M256.9,80.0L264.3,152.0 M282.9,118.4 M301.4,152.0 M316.3,128.0 M331.1,128.0L338.6,80.0L349.7,80.0L357.1,128.0 M375.7,152.0 M394.3,152.0 M420.3,104.0L431.4,104.0L442.6,104.0L450.0,128.0 M472.3,152.0 M502.0,128.0 M520.6,128.0 M535.4,152.0 M554.0,152.0 M576.3,128.0 M598.6,128.0L609.7,104.0L613.4,152.0L617.1,128.0L620.9,152.0L624.6,128.0L628.3,152.0L632.0,128.0",
     "top": 30,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -80424,7 +80424,7 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 504,
+    "car_standard": 506,
     "car_sentri": 259,
     "car_ready": 3,
     "pedestrian_standard": 246,
@@ -81167,7 +81167,7 @@
          "lvl": 0
         },
         {
-         "v": 0,
+         "v": 1,
          "lvl": 0
         },
         {
@@ -81360,7 +81360,7 @@
       "hour": 10,
       "v": 15
      },
-     "readings": 504
+     "readings": 506
     },
     "car_sentri": {
      "avg": 2,
@@ -81866,7 +81866,7 @@
      "v": 5,
      "en": "5 min",
      "es": "5 min",
-     "lanes": 3
+     "lanes": 2
     },
     "car_sentri": {
      "v": null,
@@ -81895,8 +81895,8 @@
    },
    "stale": false,
    "first": "2026-09-14 22:00",
-   "posted_en": "Oct 20, 8:00 PM EDT",
-   "posted_es": "20 oct, 20:00 EDT",
+   "posted_en": "Oct 20, 10:00 PM EDT",
+   "posted_es": "20 oct, 22:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -81924,7 +81924,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,152.0 M45.1,152.0 M60.0,128.0 M78.6,128.0 M93.4,152.0L100.9,128.0 M123.1,152.0 M145.4,128.0 M160.3,128.0 M178.9,104.0L190.0,152.0 M212.3,152.0L219.7,128.0 M245.7,128.0 M264.3,128.0L271.7,104.0 M290.3,128.0 M308.9,152.0 M323.7,128.0 M338.6,104.0L346.0,56.0L357.1,56.0L364.6,152.0 M383.1,152.0 M405.4,128.0L412.9,128.0 M427.7,80.0L438.9,104.0L450.0,104.0L457.4,104.0 M479.7,152.0 M509.4,128.0 M528.0,128.0 M542.9,152.0 M561.4,152.0 M583.7,104.0 M606.0,128.0L617.1,152.0L620.9,128.0L624.6,152.0L628.3,152.0L632.0,128.0",
+    "line": "M15.4,152.0 M37.7,152.0 M52.6,128.0 M71.1,128.0 M86.0,152.0L93.4,128.0 M115.7,152.0 M138.0,128.0 M152.9,128.0 M171.4,104.0L182.6,152.0 M204.9,152.0L212.3,128.0 M238.3,128.0 M256.9,128.0L264.3,104.0 M282.9,128.0 M301.4,152.0 M316.3,128.0 M331.1,104.0L338.6,56.0L349.7,56.0L357.1,152.0 M375.7,152.0 M398.0,128.0L405.4,128.0 M420.3,80.0L431.4,104.0L442.6,104.0L450.0,104.0 M472.3,152.0 M502.0,128.0 M520.6,128.0 M535.4,152.0 M554.0,152.0 M576.3,104.0 M598.6,128.0L609.7,152.0L613.4,128.0L617.1,152.0L620.9,152.0L624.6,128.0L628.3,152.0L632.0,128.0",
     "top": 30,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -81955,7 +81955,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 372,
+    "car_standard": 375,
     "car_sentri": 241,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -82665,7 +82665,7 @@
          "lvl": 0
         },
         {
-         "v": 2,
+         "v": 6,
          "lvl": 0
         },
         {
@@ -82698,8 +82698,8 @@
          "lvl": null
         },
         {
-         "v": null,
-         "lvl": null
+         "v": 0,
+         "lvl": 0
         },
         {
          "v": 0,
@@ -82870,8 +82870,8 @@
       },
       {
        "h": 22,
-       "v": 5,
-       "w": 29.4
+       "v": 4,
+       "w": 23.5
       },
       {
        "h": 23,
@@ -82891,7 +82891,7 @@
       "hour": 14,
       "v": 30
      },
-     "readings": 372
+     "readings": 375
     },
     "car_sentri": {
      "avg": 1,
@@ -83870,16 +83870,16 @@
      "lanes": 1
     },
     "car_sentri": {
-     "v": 0,
-     "en": "No wait",
-     "es": "Sin demora",
-     "lanes": 1
+     "v": null,
+     "en": "Closed",
+     "es": "Cerrado",
+     "lanes": null
     }
    },
    "stale": false,
    "first": "2026-09-14 22:00",
-   "posted_en": "Oct 20, 8:00 PM EST",
-   "posted_es": "20 oct, 20:00 EST",
+   "posted_en": "Oct 20, 11:00 PM EST",
+   "posted_es": "20 oct, 23:00 EST",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -83895,7 +83895,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M26.6,152.0 M45.1,152.0L56.3,152.0 M78.6,152.0 M93.4,152.0L100.9,152.0 M119.4,152.0 M141.7,152.0 M164.0,90.7 M178.9,133.6L190.0,152.0 M212.3,152.0L223.4,152.0 M249.4,121.4 M264.3,133.6L271.7,99.9 M301.4,152.0 M338.6,106.0L346.0,81.5L357.1,152.0L368.3,136.7 M405.4,152.0L416.6,106.0 M431.4,63.1L438.9,8.0L450.0,121.4L457.4,90.7 M479.7,152.0 M505.7,121.4 M528.0,54.0 M542.9,115.2 M557.7,152.0 M580.0,152.0 M602.3,152.0 M617.1,136.7L620.9,152.0L624.6,81.5L628.3,103.0L632.0,152.0",
+    "line": "M15.4,152.0 M34.0,152.0L45.1,152.0 M67.4,152.0 M82.3,152.0L89.7,152.0 M108.3,152.0 M130.6,152.0 M152.9,90.7 M167.7,133.6L178.9,152.0 M201.1,152.0L212.3,152.0 M238.3,121.4 M253.1,133.6L260.6,99.9 M290.3,152.0 M327.4,106.0L334.9,81.5L346.0,152.0L357.1,136.7 M394.3,152.0L405.4,106.0 M420.3,63.1L427.7,8.0L438.9,121.4L446.3,90.7 M468.6,152.0 M494.6,121.4 M516.9,54.0 M531.7,115.2 M546.6,152.0 M568.9,152.0 M591.1,152.0 M606.0,136.7L609.7,152.0L613.4,81.5L617.1,103.0L620.9,152.0L624.6,99.9L628.3,152.0L632.0,152.0",
     "top": 47,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -83926,7 +83926,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 316,
+    "car_standard": 318,
     "car_sentri": 3,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -83946,7 +83946,7 @@
       "v": 3
      },
      "flat": false,
-     "readings": 316
+     "readings": 318
     }
    },
    "ly": {
@@ -83994,8 +83994,8 @@
    },
    "stale": false,
    "first": "2026-09-14 03:00",
-   "posted_en": "Oct 20, 8:00 PM EDT",
-   "posted_es": "20 oct, 20:00 EDT",
+   "posted_en": "Oct 20, 11:00 PM EDT",
+   "posted_es": "20 oct, 23:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -84040,8 +84040,8 @@
    "readings": {
     "car_standard": 475,
     "car_sentri": 0,
-    "car_ready": 291,
-    "pedestrian_standard": 341,
+    "car_ready": 293,
+    "pedestrian_standard": 343,
     "pedestrian_ready": 0
    },
    "d": {
@@ -84951,7 +84951,7 @@
       "v": 195
      },
      "flat": false,
-     "readings": 291
+     "readings": 293
     },
     "pedestrian_standard": {
      "grid": [
@@ -85458,7 +85458,7 @@
          "lvl": 0
         },
         {
-         "v": 2,
+         "v": 1,
          "lvl": 0
         },
         {
@@ -85616,7 +85616,7 @@
       "hour": 15,
       "v": 22
      },
-     "readings": 341
+     "readings": 343
     }
    },
    "ly": {
@@ -87510,22 +87510,22 @@
      "lanes": null
     },
     "car_ready": {
-     "v": 60,
-     "en": "60 min",
-     "es": "60 min",
+     "v": 35,
+     "en": "35 min",
+     "es": "35 min",
      "lanes": 4
     },
     "pedestrian_standard": {
-     "v": 0,
-     "en": "No wait",
-     "es": "Sin demora",
-     "lanes": 1
+     "v": null,
+     "en": "Closed",
+     "es": "Cerrado",
+     "lanes": null
     }
    },
    "stale": false,
    "first": "2026-09-14 21:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "Oct 20, 10:00 PM CDT",
+   "posted_es": "20 oct, 22:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -87584,9 +87584,9 @@
    "ped": "pedestrian_standard",
    "readings": {
     "car_standard": 369,
-    "car_sentri": 377,
-    "car_ready": 272,
-    "pedestrian_standard": 377,
+    "car_sentri": 379,
+    "car_ready": 274,
+    "pedestrian_standard": 379,
     "pedestrian_ready": 0
    },
    "d": {
@@ -88077,7 +88077,7 @@
          "lvl": 0
         },
         {
-         "v": 0,
+         "v": 1,
          "lvl": 0
         },
         {
@@ -88110,7 +88110,7 @@
          "lvl": 0
         },
         {
-         "v": 2,
+         "v": 1,
          "lvl": 0
         },
         {
@@ -88306,7 +88306,7 @@
       "hour": 8,
       "v": 32
      },
-     "readings": 377
+     "readings": 379
     },
     "car_ready": {
      "avg": 37,
@@ -88321,7 +88321,7 @@
       "v": 100
      },
      "flat": false,
-     "readings": 272
+     "readings": 274
     },
     "pedestrian_standard": {
      "grid": [
@@ -89024,7 +89024,7 @@
       "hour": 9,
       "v": 5
      },
-     "readings": 377
+     "readings": 379
     }
    },
    "ly": {
@@ -90476,16 +90476,16 @@
      "lanes": null
     },
     "car_sentri": {
-     "v": 10,
-     "en": "10 min",
-     "es": "10 min",
-     "lanes": 2
+     "v": 0,
+     "en": "No wait",
+     "es": "Sin demora",
+     "lanes": 1
     },
     "car_ready": {
-     "v": 15,
-     "en": "15 min",
-     "es": "15 min",
-     "lanes": 3
+     "v": 0,
+     "en": "No wait",
+     "es": "Sin demora",
+     "lanes": 4
     },
     "pedestrian_standard": {
      "v": 0,
@@ -90496,8 +90496,8 @@
    },
    "stale": false,
    "first": "2026-09-14 21:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "Oct 20, 10:00 PM CDT",
+   "posted_es": "20 oct, 22:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -90521,7 +90521,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,152.0 M63.7,140.0 M78.6,152.0 M93.4,140.0L100.9,152.0 M145.4,8.0 M164.0,140.0 M178.9,152.0L190.0,152.0 M230.9,116.0 M245.7,140.0 M264.3,152.0L271.7,152.0 M290.3,152.0 M323.7,140.0L334.9,128.0L346.0,128.0L357.1,152.0L364.6,80.0 M405.4,152.0L416.6,140.0 M431.4,140.0L438.9,116.0L450.0,140.0L457.4,152.0 M509.4,152.0 M528.0,149.6 M542.9,140.0 M583.7,152.0 M602.3,152.0 M617.1,116.0L620.9,152.0L624.6,140.0L628.3,80.0L632.0,128.0",
+    "line": "M15.4,152.0 M56.3,140.0 M71.1,152.0 M86.0,140.0L93.4,152.0 M138.0,8.0 M156.6,140.0 M171.4,152.0L182.6,152.0 M223.4,116.0 M238.3,140.0 M256.9,152.0L264.3,152.0 M282.9,152.0 M316.3,140.0L327.4,128.0L338.6,128.0L349.7,152.0L357.1,80.0 M398.0,152.0L409.1,140.0 M424.0,140.0L431.4,116.0L442.6,140.0L450.0,152.0 M502.0,152.0 M520.6,149.6 M535.4,140.0 M576.3,152.0 M594.9,152.0 M609.7,116.0L613.4,152.0L617.1,140.0L620.9,80.0L624.6,128.0L628.3,140.0L632.0,152.0",
     "top": 60,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -90553,7 +90553,7 @@
    "readings": {
     "car_standard": 285,
     "car_sentri": 0,
-    "car_ready": 180,
+    "car_ready": 182,
     "pedestrian_standard": 0,
     "pedestrian_ready": 0
    },
@@ -90586,7 +90586,7 @@
       "v": 70
      },
      "flat": false,
-     "readings": 180
+     "readings": 182
     }
    },
    "ly": {
@@ -90634,16 +90634,16 @@
      "lanes": null
     },
     "car_ready": {
-     "v": 0,
-     "en": "No wait",
-     "es": "Sin demora",
-     "lanes": 2
+     "v": null,
+     "en": "Closed",
+     "es": "Cerrado",
+     "lanes": null
     }
    },
    "stale": false,
    "first": "2026-09-14 21:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "",
+   "posted_es": "",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -90686,11 +90686,11 @@
    "car": "car_standard",
    "ped": "pedestrian_standard",
    "readings": {
-    "car_standard": 472,
+    "car_standard": 474,
     "car_sentri": 0,
     "car_ready": 283,
-    "pedestrian_standard": 471,
-    "pedestrian_ready": 350
+    "pedestrian_standard": 473,
+    "pedestrian_ready": 352
    },
    "d": {
     "car_standard": {
@@ -91330,7 +91330,7 @@
          "lvl": 1
         },
         {
-         "v": 22,
+         "v": 24,
          "lvl": 1
         },
         {
@@ -91363,7 +91363,7 @@
          "lvl": 1
         },
         {
-         "v": 17,
+         "v": 24,
          "lvl": 1
         },
         {
@@ -91558,8 +91558,8 @@
       },
       {
        "h": 21,
-       "v": 22,
-       "w": 50.0
+       "v": 23,
+       "w": 52.3
       },
       {
        "h": 22,
@@ -91584,7 +91584,7 @@
       "hour": 19,
       "v": 100
      },
-     "readings": 472
+     "readings": 474
     },
     "car_ready": {
      "avg": 31,
@@ -92492,7 +92492,7 @@
       "hour": 15,
       "v": 48
      },
-     "readings": 471
+     "readings": 473
     },
     "pedestrian_ready": {
      "avg": 3,
@@ -92507,7 +92507,7 @@
       "v": 30
      },
      "flat": false,
-     "readings": 350
+     "readings": 352
     }
    },
    "ly": {
@@ -94421,9 +94421,9 @@
      "lanes": null
     },
     "pedestrian_standard": {
-     "v": 10,
-     "en": "10 min",
-     "es": "10 min",
+     "v": 0,
+     "en": "No wait",
+     "es": "Sin demora",
      "lanes": 1
     },
     "pedestrian_ready": {
@@ -94435,8 +94435,8 @@
    },
    "stale": false,
    "first": "2026-09-14 21:00",
-   "posted_en": "Oct 20, 7:00 PM CDT",
-   "posted_es": "20 oct, 19:00 CDT",
+   "posted_en": "Oct 20, 10:00 PM CDT",
+   "posted_es": "20 oct, 22:00 CDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -94460,7 +94460,7 @@
    "chart": {
     "w": 640,
     "h": 160,
-    "line": "M22.9,146.0 M45.1,98.0 M63.7,44.0 M78.6,146.0 M93.4,104.0L100.9,146.0 M123.1,152.0 M145.4,44.0 M164.0,80.0 M178.9,104.0L190.0,134.0 M208.6,140.0 M230.9,98.0 M245.7,116.0 M264.3,116.0L271.7,134.0 M290.3,146.0 M305.1,152.0 M323.7,128.0L334.9,80.0L346.0,80.0L357.1,44.0L364.6,44.0 M405.4,146.0L416.6,116.0 M431.4,80.0L438.9,56.0L450.0,32.0L457.4,44.0 M479.7,150.8 M509.4,98.0 M531.7,80.0L542.9,110.0 M565.1,152.0 M583.7,80.0 M602.3,8.0 M617.1,62.0L620.9,116.0L624.6,80.0L628.3,110.0L632.0,128.0",
+    "line": "M15.4,146.0 M37.7,98.0 M56.3,44.0 M71.1,146.0 M86.0,104.0L93.4,146.0 M115.7,152.0 M138.0,44.0 M156.6,80.0 M171.4,104.0L182.6,134.0 M201.1,140.0 M223.4,98.0 M238.3,116.0 M256.9,116.0L264.3,134.0 M282.9,146.0 M297.7,152.0 M316.3,128.0L327.4,80.0L338.6,80.0L349.7,44.0L357.1,44.0 M398.0,146.0L409.1,116.0 M424.0,80.0L431.4,56.0L442.6,32.0L450.0,44.0 M472.3,150.8 M502.0,98.0 M524.3,80.0L535.4,110.0 M557.7,152.0 M576.3,80.0 M594.9,8.0 M609.7,62.0L613.4,116.0L617.1,80.0L620.9,110.0L624.6,128.0L628.3,116.0L632.0,98.0",
     "top": 120,
     "start_en": "Tue, Oct 13",
     "end_en": "Tue, Oct 20",
@@ -94489,7 +94489,7 @@
    "car": "car_standard",
    "ped": null,
    "readings": {
-    "car_standard": 384,
+    "car_standard": 387,
     "car_sentri": 0,
     "car_ready": 0,
     "pedestrian_standard": 0,
@@ -94509,7 +94509,7 @@
       "v": 12
      },
      "flat": false,
-     "readings": 384
+     "readings": 387
     }
    },
    "ly": {
@@ -94537,16 +94537,16 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 0,
-     "en": "No wait",
-     "es": "Sin demora",
+     "v": 5,
+     "en": "5 min",
+     "es": "5 min",
      "lanes": 1
     }
    },
    "stale": false,
    "first": "2026-09-14 19:00",
-   "posted_en": "Oct 20, 7:00 PM EDT",
-   "posted_es": "20 oct, 19:00 EDT",
+   "posted_en": "Oct 20, 11:00 PM EDT",
+   "posted_es": "20 oct, 23:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -94649,7 +94649,7 @@
    "sentri": "SENTRI",
    "hours": "6 am-6 pm",
    "hours_es": "6:00 a 18:00",
-   "open": true,
+   "open": false,
    "max_car": 2,
    "max_ped": 4,
    "notice": "",
@@ -94687,8 +94687,8 @@
    },
    "stale": false,
    "first": "2026-09-15 06:00",
-   "posted_en": "Oct 20, 6:00 PM MDT",
-   "posted_es": "20 oct, 18:00 MDT",
+   "posted_en": "",
+   "posted_es": "",
    "first_en": "Sep 15, 2026",
    "first_es": "15 sep 2026",
    "usual": {
@@ -94717,8 +94717,8 @@
   }
  },
  "total": 69,
- "reporting": 64,
- "longest": "250601",
+ "reporting": 63,
+ "longest": "260401",
  "mexico": [
   "250201",
   "230503",
@@ -94813,11 +94813,11 @@
   "250501"
  ],
  "first": "2026-09-13 21:00",
- "newest": "2026-10-20 21:00",
+ "newest": "2026-10-20 23:00",
  "files": [
   {
    "year": "2026",
-   "rows": "28,390",
+   "rows": "28,510",
    "url": "/border-waits/border-car-pedestrian-wait-readings-2026.csv"
   }
  ]
