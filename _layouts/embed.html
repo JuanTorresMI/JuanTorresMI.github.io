@@ -15,9 +15,10 @@
 {%- assign es = false -%}{%- if page.lang == "es" -%}{%- assign es = true -%}{%- endif -%}
 <body class="embed-body">
 <main class="embed bf">
-  {%- if live and live[e.chart] %}
+  {%- assign ch = live[e.chart] -%}
+  {%- if ch %}
   {%- capture lab %}{% if es %}{{ e.title_es }}{% else %}{{ e.title }}{% endif %}{% endcapture %}
-  {% include price-chart.html chart=live[e.chart] es=es label=lab title_en=e.title title_es=e.title_es unit_en=e.unit unit_es=e.unit_es names=e.names %}
+  {% include price-chart.html chart=ch es=es label=lab title_en=e.title title_es=e.title_es unit_en=e.unit unit_es=e.unit_es names=e.names %}
   {%- endif %}
   <p class="embed-credit">{% if es %}Datos: USDA AMS · Gráfica y CSV gratis: <a href="{{ e.board_es | absolute_url }}">{{ e.link_es }}</a>, juantorresmi.github.io{% else %}Data: USDA AMS · Chart and free CSV: <a href="{{ e.board | absolute_url }}">{{ e.link }}</a>, juantorresmi.github.io{% endif %}</p>
 </main>
