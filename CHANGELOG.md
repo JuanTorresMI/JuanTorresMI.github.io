@@ -37,6 +37,12 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-22 — Dev tools on the home page
+
+A "Dev tools" section at the bottom of the home page links the private Card Tracker (its own repo,
+JuanTorresMI/card-tracker; a Cloudflare Worker behind Cloudflare Access). The link is `nofollow` and the app sends
+`noindex`, so it stays out of search; the URL is `card_tracker_url` in `_config.yml`.
+
 ## 2026-10-21 — Embeddable charts
 
 The beef, pork and fed cattle boards each have an "Embed this chart" box: a snippet other sites paste, an

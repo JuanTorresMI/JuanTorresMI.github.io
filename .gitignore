@@ -21,3 +21,6 @@ _data/lastmod.json
 
 # One-off output of scripts/border-backfill.mjs
 border-backfill.sql
+
+# The Zenodo upload bundle (zips of data/ and the form to fill); built by hand, uploaded by hand
+zenodo-upload/
