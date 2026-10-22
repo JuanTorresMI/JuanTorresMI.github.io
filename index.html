@@ -87,6 +87,21 @@ image: /assets/og/home.png
   </div>
 </section>
 
+{%- comment -%} Private tools behind their own login (Cloudflare Access): linked so I can find them, nofollow so
+  search engines don't (the app also sends noindex on every response). {%- endcomment %}
+<section class="sec" id="dev-tools">
+  <header class="sec-head"><h2>Dev tools</h2><span class="label">Login required</span></header>
+  <div class="entries">
+    <a class="entry row" href="{{ site.card_tracker_url }}" rel="nofollow noopener">
+      <span class="key label">Private</span>
+      <span class="body">
+        <span class="entry-head"><span class="entry-title">Card Tracker</span><span class="go" aria-hidden="true">→</span></span>
+        <span class="entry-text">A private app for logging sports cards, their photos, deals and profit, shared with a couple of friends. It asks for a login.</span>
+      </span>
+    </a>
+  </div>
+</section>
+
 <script>
 (() => {
   document.getElementById("vcard").addEventListener("click", () => {
