@@ -1,8 +1,8 @@
 {
- "generated": "2026-10-23T13:58:08-04:00",
+ "generated": "2026-10-23T14:05:54-04:00",
  "as_of_iso": "2026-10-23",
- "as_of_en": "Oct 23, 2026, 1:58 PM Michigan time",
- "as_of_es": "23 oct 2026, 13:58 (hora de Michigan)",
+ "as_of_en": "Oct 23, 2026, 2:05 PM Michigan time",
+ "as_of_es": "23 oct 2026, 14:05 (hora de Michigan)",
  "since_en": "Sep 13, 2026",
  "since_es": "13 sep 2026",
  "since_iso": "2026-09-13",
@@ -4913,15 +4913,15 @@
    "notice": "A Ready Lane is available from 2-6pm Monday through Thursday.",
    "now": {
     "car_standard": {
-     "v": 15,
-     "en": "15 min",
-     "es": "15 min",
-     "lanes": 4
+     "v": 10,
+     "en": "10 min",
+     "es": "10 min",
+     "lanes": 6
     },
     "car_sentri": {
-     "v": 1,
-     "en": "1 min",
-     "es": "1 min",
+     "v": 4,
+     "en": "4 min",
+     "es": "4 min",
      "lanes": 1
     },
     "car_ready": {
@@ -4933,8 +4933,8 @@
    },
    "stale": false,
    "first": "2026-09-14 22:17",
-   "posted_en": "Oct 23, 1:37 PM EDT",
-   "posted_es": "23 oct, 13:37 EDT",
+   "posted_en": "Oct 23, 1:47 PM EDT",
+   "posted_es": "23 oct, 13:47 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -7785,9 +7785,9 @@
    "notice": "A Ready Lane is available from 3-7pm Monday through Thursday.",
    "now": {
     "car_standard": {
-     "v": 19,
-     "en": "19 min",
-     "es": "19 min",
+     "v": 14,
+     "en": "14 min",
+     "es": "14 min",
      "lanes": 6
     },
     "pedestrian_standard": {
@@ -7799,8 +7799,8 @@
    },
    "stale": false,
    "first": "2026-09-14 22:17",
-   "posted_en": "Oct 23, 1:37 PM EDT",
-   "posted_es": "23 oct, 13:37 EDT",
+   "posted_en": "Oct 23, 1:47 PM EDT",
+   "posted_es": "23 oct, 13:47 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -9731,10 +9731,10 @@
    "notice": "",
    "now": {
     "car_standard": {
-     "v": 17,
-     "en": "17 min",
-     "es": "17 min",
-     "lanes": 4
+     "v": 12,
+     "en": "12 min",
+     "es": "12 min",
+     "lanes": 6
     },
     "car_sentri": {
      "v": null,
@@ -9745,8 +9745,8 @@
    },
    "stale": false,
    "first": "2026-09-14 22:17",
-   "posted_en": "Oct 23, 1:37 PM EDT",
-   "posted_es": "23 oct, 13:37 EDT",
+   "posted_en": "Oct 23, 1:47 PM EDT",
+   "posted_es": "23 oct, 13:47 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -61179,9 +61179,9 @@
      "lanes": 2
     },
     "car_sentri": {
-     "v": 5,
-     "en": "5 min",
-     "es": "5 min",
+     "v": 10,
+     "en": "10 min",
+     "es": "10 min",
      "lanes": 1
     },
     "car_ready": {
@@ -61205,8 +61205,8 @@
    },
    "stale": false,
    "first": "2026-09-14 18:00",
-   "posted_en": "Oct 23, 10:00 AM PST",
-   "posted_es": "23 oct, 10:00 PST",
+   "posted_en": "Oct 23, 11:00 AM PST",
+   "posted_es": "23 oct, 11:00 PST",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
@@ -83995,8 +83995,8 @@
    },
    "stale": false,
    "first": "2026-09-14 03:00",
-   "posted_en": "Oct 23, 1:00 PM EDT",
-   "posted_es": "23 oct, 13:00 EDT",
+   "posted_en": "Oct 23, 2:00 PM EDT",
+   "posted_es": "23 oct, 14:00 EDT",
    "first_en": "Sep 14, 2026",
    "first_es": "14 sep 2026",
    "usual": {
