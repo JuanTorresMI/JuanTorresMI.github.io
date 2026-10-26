@@ -51,6 +51,8 @@
     const p = $("latest-player"), pl = player(n);
     if (p.src !== pl.src) { p.className = pl.cls; p.src = pl.src; p.title = n.title; }
     $("music-count").textContent = rs.length;
+    // "listen anywhere" belongs to the release the site was built with; a newer one hides it.
+    document.querySelectorAll("[data-for]").forEach((x) => { x.hidden = x.dataset.for !== n.title; });
     $("grid").replaceChildren(...rs.map(card));
   }).catch(() => {});
 

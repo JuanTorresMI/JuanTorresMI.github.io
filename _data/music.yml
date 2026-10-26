@@ -12,7 +12,9 @@
 # (`spotify`, `apple`, `youtube`); the page links the first one it has, in that order, and plays
 # Spotify's player, or Apple Music's when a song isn't on Spotify yet. `cover` is the art the
 # platform serves (Apple: …/600x600bb.jpg; Spotify: i.scdn.co …00001e02… is 300px). `credit` is a
-# feature or producer ("feat. soulcast"), shown beside the title. `versions` are alternate cuts
+# feature or producer ("feat. soulcast"), shown beside the title. `everywhere` is the release's
+# DistroKid HyperFollow page, which lists every store DistroKid sent it to; the newest release's
+# shows as "listen anywhere". `versions` are alternate cuts
 # (sped up, slowed) shown as small links under the track.
 # To add a platform, add it to `platforms`: it becomes a link on the page and a sameAs in the
 # structured data.
@@ -36,4 +38,5 @@ releases:
     explicit: true
     apple: https://music.apple.com/us/album/el-sayed-feat-soulcast/6827015258?i=6827015259
     youtube: https://music.youtube.com/watch?v=Ghv0B13V0oo
+    everywhere: https://distrokid.com/hyperfollow/jjulio/el-sayed-feat-soulcast
     cover: https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ae/4b/38/ae4b38d2-6548-47d9-1c65-0aaca95ef9d3/artwork.jpg/600x600bb.jpg

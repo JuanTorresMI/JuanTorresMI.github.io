@@ -46,7 +46,9 @@ in place of SoundCloud's RSS, plus the new Spotify artist, so a song shows up fr
 lists it first; Spotify's new-artist profile had no tracks yet on release day. The newest song plays in
 Spotify's player, or Apple Music's until it reaches Spotify. Credits like "feat." are split from the
 title the way "prod." already was. New share picture (`scripts/music-og.js` now takes the name from
-the data file and can drive an installed Edge). The home page's About links the new name.
+the data file and can drive an installed Edge). The home page's About links the new name. The newest release also gets a "listen anywhere" link to
+its DistroKid HyperFollow page, which lists every store DistroKid sends it to (still in pre-save mode on
+release day, so individual store pages beyond these three come later).
 
 ## 2026-10-22 — Dev tools on the home page
 

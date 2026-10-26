@@ -53,6 +53,9 @@ image_alt: "jjulio. detroit / trap / hyperpop / alt."
         {%- for p in m.platforms %}
         <li><a href="{{ p.url }}" rel="me">{{ p.name | downcase }} <span aria-hidden="true">↗</span></a></li>
         {%- endfor %}
+        {%- if latest.everywhere %}
+        <li data-for="{{ latest.title | escape }}"><a href="{{ latest.everywhere }}">every other platform <span aria-hidden="true">↗</span></a></li>
+        {%- endif %}
       </ul>
     </section>
   </aside>
@@ -72,6 +75,9 @@ image_alt: "jjulio. detroit / trap / hyperpop / alt."
         <p class="latest-title" id="latest-title">{{ latest.title }}</p>
         <p class="latest-meta" id="latest-meta">{{ latest.date | date: "%b %-d, %Y" | downcase }}{% if latest.credit %} · {{ latest.credit }}{% endif %}</p>
       </div>
+      {%- if latest.everywhere %}
+      <p class="anywhere" data-for="{{ latest.title | escape }}"><a href="{{ latest.everywhere }}">listen anywhere <span aria-hidden="true">↗</span></a></p>
+      {%- endif %}
       {%- comment %} Spotify's player for the newest song, or Apple Music's until it's on Spotify. {% endcomment %}
       {%- if latest.spotify %}
       <iframe class="player sp" id="latest-player" title="{{ latest.title | escape }}" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
