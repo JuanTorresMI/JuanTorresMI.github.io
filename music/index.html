@@ -1,11 +1,11 @@
 ---
 layout: artist
-title: Yokonjuan
-seo_title: "yokonjuan"
+title: jjulio
+seo_title: "jjulio"
 permalink: /music/
-description: "yokonjuan on spotify and soundcloud. every track, the covers, and a guestbook."
+description: "jjulio on spotify, apple music and youtube music. every track, the covers, and a guestbook."
 image: /music/og.jpg
-image_alt: "yokonjuan. detroit / trap / hyperpop / alt."
+image_alt: "jjulio. detroit / trap / hyperpop / alt."
 ---
 {%- comment %}
   A profile page, the way MySpace did them: the artist's card on the left, boxes on the right.
@@ -67,13 +67,19 @@ image_alt: "yokonjuan. detroit / trap / hyperpop / alt."
 
     <section class="box latest" id="latest">
       <h2>{{ m.artist | downcase }}'s latest</h2>
-      {%- assign latest_url = latest.soundcloud | default: latest.spotify %}
+
       <div class="latest-head">
         <p class="latest-title" id="latest-title">{{ latest.title }}</p>
         <p class="latest-meta" id="latest-meta">{{ latest.date | date: "%b %-d, %Y" | downcase }}{% if latest.credit %} · {{ latest.credit }}{% endif %}</p>
       </div>
-      <iframe class="player" id="latest-player" title="{{ latest.title | escape }}" loading="lazy" allow="autoplay; encrypted-media"
-        src="https://w.soundcloud.com/player/?url={{ latest_url | url_encode }}&amp;color=%23b9d7ff&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false&amp;visual=true"></iframe>
+      {%- comment %} Spotify's player for the newest song, or Apple Music's until it's on Spotify. {% endcomment %}
+      {%- if latest.spotify %}
+      <iframe class="player sp" id="latest-player" title="{{ latest.title | escape }}" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        src="https://open.spotify.com/embed/track/{{ latest.spotify | split: '/' | last }}?theme=0"></iframe>
+      {%- else %}
+      <iframe class="player am" id="latest-player" title="{{ latest.title | escape }}" loading="lazy" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
+        src="{{ latest.apple | replace: 'https://music.apple.com/', 'https://embed.music.apple.com/' }}"></iframe>
+      {%- endif %}
     </section>
 
     <section class="box">
@@ -81,10 +87,10 @@ image_alt: "yokonjuan. detroit / trap / hyperpop / alt."
       <ul class="grid" id="grid">
         {%- for r in m.releases %}
         <li>
-          <a class="rel" href="{{ r.soundcloud | default: r.spotify }}">
+          <a class="rel" href="{{ r.spotify | default: r.apple | default: r.youtube }}">
             <img src="{{ r.cover }}" alt="Cover of {{ r.title | escape }}" width="300" height="300" loading="lazy" decoding="async">
             <span class="rel-title">{{ r.title }}{% if r.explicit %} <span class="e" title="Explicit">e</span>{% endif %}</span>
-            <span class="rel-meta">{{ r.date | date: "%Y" }} · {% if r.soundcloud %}soundcloud{% else %}spotify{% endif %}{% if r.cut %} · {{ r.cut }}{% endif %}{% if r.credit %} · {{ r.credit }}{% endif %}</span>
+            <span class="rel-meta">{{ r.date | date: "%Y" }} · {% if r.spotify %}spotify{% elsif r.apple %}apple music{% else %}youtube music{% endif %}{% if r.cut %} · {{ r.cut }}{% endif %}{% if r.credit %} · {{ r.credit }}{% endif %}</span>
           </a>
           {%- if r.versions %}
           <span class="rel-versions">{% for v in r.versions %}<a href="{{ v.url }}">{{ v.name }}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}</span>
@@ -140,7 +146,7 @@ image_alt: "yokonjuan. detroit / trap / hyperpop / alt."
     {
       "@type": "MusicRecording",
       "name": {{ r.title | jsonify }},
-      "url": {{ r.soundcloud | default: r.spotify | jsonify }},
+      "url": {{ r.spotify | default: r.apple | default: r.youtube | jsonify }},
       "datePublished": "{{ r.date | date: '%Y-%m-%d' }}",
       "image": {{ r.cover | jsonify }},
       "byArtist": { "@id": "{{ page.url | absolute_url }}#artist" }

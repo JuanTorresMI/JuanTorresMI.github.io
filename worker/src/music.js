@@ -1,7 +1,7 @@
-/* Yokonjuan's page (/music/ on the site): the catalog, a visitor counter and a guestbook.
+/* jjulio's page (/music/ on the site): the catalog, a visitor counter and a guestbook.
  *
- *   GET    /music                  { artist, avatar, releases: [...] }, read live from SoundCloud's
- *                                  public RSS and Spotify's public player data, cached an hour
+ *   GET    /music                  { artist, avatar, releases: [...] }, read live from Apple Music's
+ *                                  public lookup API and Spotify's public player data, cached an hour
  *   GET    /music/visits           { count }
  *   POST   /music/visits           { count } after adding one (the page sends this once a session)
  *   GET    /music/guestbook        { entries: [{ id, name, message, at }] }, newest first
@@ -16,13 +16,11 @@
  * from the model passes; if it can't be reached, the post is refused, not waved through.
  * Everything is free-tier: past a limit, Cloudflare refuses requests rather than billing.
  *
- * Nothing here returns anything about the person behind the artist: SoundCloud's feed carries
- * profile fields, and only track fields are passed on.
+ * Nothing here returns anything about the person behind the artist: only track fields are passed on.
  */
 
-const SC_USER = "1330261887";
-const SC_RSS = `https://feeds.soundcloud.com/users/soundcloud:users:${SC_USER}/sounds.rss`;
-const SPOTIFY_ARTIST = "3agKv2bGKcWCN6cdT2z0Oc";
+const APPLE_ARTIST = "6826970497";
+const SPOTIFY_ARTIST = "4BfPXv7KeLlZQK8wCaSkl4";
 const CATALOG_CACHE_S = 3600;
 // The moderation model. MODERATION_MODEL in wrangler.toml overrides it, so when Cloudflare retires
 // a model (they retired Llama 3.1 8B in May 2026) the fix is one line of config. About 3 of the
@@ -35,16 +33,13 @@ const AI_CHECKS_MAX = 300;                  // model calls a day, well inside th
 
 /* ------------------------------------------------------------------- the catalog ---- */
 
-const entities = (s) => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"')
-  .replace(/&#0?39;/g, "'").replace(/&apos;/g, "'").replace(/&amp;/g, "&");
-const unwrap = (s) => s.replace(/^\s*<!\[CDATA\[/, "").replace(/\]\]>\s*$/, "").trim();
-
-/* "Distance Slowed (prod. xviroxas)" -> { base: "Distance", version: "slowed", credit: "prod. xviroxas" }.
-   Versions of one song are grouped under it; the base title is what's shown. */
+/* "El-Sayed (feat. soulcast)" -> { base: "El-Sayed", credit: "feat. soulcast" }; "Distance Slowed
+   (prod. xviroxas)" -> { base: "Distance", version: "slowed", credit: "prod. xviroxas" }. Versions of
+   one song are grouped under it; the base title is what's shown. */
 function parseTitle(raw) {
   let t = raw.trim(), credit = null, version = null;
-  const c = /[\[(]+\s*prod\.?\s*([^\])]+?)\s*[\])]+/i.exec(t);
-  if (c) { credit = "prod. " + c[1].trim(); t = t.replace(c[0], " "); }
+  const c = /[\[(]+\s*(prod|feat|ft|with)\.?\s*([^\])]+?)\s*[\])]+/i.exec(t);
+  if (c) { credit = (/^prod/i.test(c[1]) ? "prod. " : "feat. ") + c[2].trim(); t = t.replace(c[0], " "); }
   const v = /\b(sped\s*up|slowed(?:\s*\+\s*reverb)?|reverb|nightcore|instrumental)\b/i.exec(t);
   if (v) { version = v[1].toLowerCase().replace(/\s+/g, " "); t = t.replace(v[0], " "); }
   t = t.replace(/[\[(]+\s*[\])]+/g, " ").replace(/\/\//g, " ").replace(/\s+/g, " ").trim();
@@ -52,21 +47,18 @@ function parseTitle(raw) {
 }
 const key = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "");
 
-async function soundcloud() {
-  const r = await fetch(SC_RSS, { headers: { "User-Agent": "yokonjuan music page" } });
-  if (!r.ok) throw new Error("SoundCloud said " + r.status);
-  const xml = await r.text();
-  const field = (b, name) => { const m = new RegExp(`<${name}(?:\\s[^>]*)?>([\\s\\S]*?)</${name}>`).exec(b); return m ? entities(unwrap(m[1])) : ""; };
-  return [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].map((m) => {
-    const b = m[1];
-    const img = /<itunes:image\s+href="([^"]+)"/.exec(b);
-    return {
-      title: field(b, "title"), url: field(b, "link"), date: new Date(field(b, "pubDate")).toISOString(),
-      cover: img ? img[1].replace(/-t\d+x\d+\./, "-t500x500.") : null,
-      explicit: /<itunes:explicit>\s*(yes|true|explicit)\s*</i.test(b),
-      platform: "soundcloud",
-    };
-  }).filter((t) => t.title && t.url);
+/* Apple's public lookup API: every song on the artist, with its release date, cover and the
+   explicit flag, in one request. The cover comes at 100px; the same URL serves 600px. */
+async function apple() {
+  const r = await fetch(`https://itunes.apple.com/lookup?id=${APPLE_ARTIST}&entity=song&limit=200`);
+  if (!r.ok) throw new Error("Apple Music said " + r.status);
+  const d = await r.json();
+  return (d.results || []).filter((t) => t.wrapperType === "track" && t.trackViewUrl).map((t) => ({
+    title: t.trackName, url: t.trackViewUrl.replace(/[?&]uo=\d+/, ""),
+    date: t.releaseDate ? new Date(t.releaseDate).toISOString() : null,
+    cover: t.artworkUrl100 ? t.artworkUrl100.replace(/\/\d+x\d+bb\./, "/600x600bb.") : null,
+    explicit: t.trackExplicitness === "explicit", platform: "apple",
+  }));
 }
 
 /* Spotify's embeddable player pages carry their data as JSON; that's all this reads. The artist
@@ -97,9 +89,9 @@ async function spotify() {
 }
 
 export async function catalog() {
-  const [sc, sp] = await Promise.allSettled([soundcloud(), spotify()]);
-  const all = [...(sc.status === "fulfilled" ? sc.value : []), ...(sp.status === "fulfilled" ? sp.value : [])];
-  if (!all.length) throw new Error("Couldn't reach SoundCloud or Spotify");
+  const [ap, sp] = await Promise.allSettled([apple(), spotify()]);
+  if (ap.status === "rejected" && sp.status === "rejected") throw new Error("Couldn't reach Apple Music or Spotify");
+  const all = [...(ap.status === "fulfilled" ? ap.value : []), ...(sp.status === "fulfilled" ? sp.value : [])];
 
   // One entry per song: the original's title, date and cover, with its other cuts and its
   // other platform folded in. Oldest first while building, so the original claims the entry.
@@ -111,7 +103,7 @@ export async function catalog() {
       s = { title: p.base, date: t.date, cover: t.cover, credit: p.credit, explicit: t.explicit, links: {}, versions: [] };
       songs.set(k, s);
     }
-    if (p.version) { s.versions.push({ name: p.version, url: t.url }); continue; }
+    if (p.version) { s.versions.push({ name: p.version, url: t.url, platform: t.platform }); continue; }
     if (!s.links[t.platform]) s.links[t.platform] = t.url;
     if (!s.credit && p.credit) s.credit = p.credit;
     if (t.date && (!s.date || t.date < s.date)) s.date = t.date;
@@ -123,16 +115,16 @@ export async function catalog() {
   for (const s of songs.values()) {
     if (!Object.keys(s.links).length && s.versions.length) {
       const v = s.versions.shift();
-      s.links.soundcloud = v.url;
+      s.links[v.platform] = v.url;
       s.cut = v.name;
     }
   }
   const releases = [...songs.values()].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   return {
-    artist: "Yokonjuan",
+    artist: "jjulio",
     avatar: releases[0] ? releases[0].cover : null,
     releases,
-    sources: { soundcloud: sc.status === "fulfilled", spotify: sp.status === "fulfilled" },
+    sources: { apple: ap.status === "fulfilled", spotify: sp.status === "fulfilled" },
     updated: new Date().toISOString(),
   };
 }
@@ -207,6 +199,7 @@ const bumpDaily = (env, what) => env.DB.prepare(
   "INSERT INTO counters (name, value) VALUES (?, 1) ON CONFLICT(name) DO UPDATE SET value = value + 1 RETURNING value"
 ).bind(`${what}:${today()}`).first();
 
+// The salt still says yokonjuan (the old name): changing it would reset every visitor's posting limits.
 async function ipHash(request) {
   const ip = request.headers.get("CF-Connecting-IP") || "unknown";
   const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("yokonjuan:" + ip));

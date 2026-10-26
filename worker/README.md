@@ -26,7 +26,7 @@ npx.cmd wrangler deploy
 | `GET /pork` | USDA's newest pork report: the carcass cutout, primals and every cut | the pork pages, when their copy is behind | `src/pork.js` |
 | `GET /usage` | This account's use of the free plan for the last 30 days, from Cloudflare's GraphQL Analytics | `/worker-usage/`, `snapshot.py` | `src/usage.js` |
 | `GET /refresh`, `POST /refresh` | Whether the pages can be updated yet; starts the site's snapshot workflow (one global hour of cooldown) | the "Update now" button on the data boards | `src/refresh.js` |
-| `GET /music`, `/music/visits`, `/music/guestbook` (+ `POST`, `DELETE /music/guestbook/<id>`) | Yokonjuan's catalog, visitor counter, guestbook | `/music/` | `src/music.js` |
+| `GET /music`, `/music/visits`, `/music/guestbook` (+ `POST`, `DELETE /music/guestbook/<id>`) | jjulio's catalog, visitor counter, guestbook | `/music/` | `src/music.js` |
 
 **Cron triggers** (`wrangler.toml`): at :17 and :47 every hour it reads CBP's border waits;
 in USDA's windows (`lmrWindow` in `src/index.js`: weekdays 1:30 to 6 pm Central until the day's report is stored, and 6 to 8 am for corrections) it checks for a new boxed beef and pork report; a new one, and the :47 run at 11 UTC every day,
@@ -144,9 +144,10 @@ that appears in both.
 
 ## The music page: catalog, counter, guestbook
 
-The same Worker also serves Yokonjuan's page (`/music/` on the site); the code is
-`src/music.js`. The catalog needs nothing set up: it reads SoundCloud's public RSS and
-Spotify's public player data, so new releases show up within the hour. The visitor counter
+The same Worker also serves jjulio's page (`/music/` on the site); the code is
+`src/music.js`. The catalog needs nothing set up: it reads Apple Music's public lookup API
+(every song, one request) and Spotify's public player data (the artist's top tracks), so new
+releases show up within the hour. The artist IDs are `APPLE_ARTIST` and `SPOTIFY_ARTIST` at the top. The visitor counter
 and the guestbook need a small database (D1) and Workers AI, which checks guestbook posts
 before they're stored. Both are free at this size.
 

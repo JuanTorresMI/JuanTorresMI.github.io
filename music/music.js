@@ -1,4 +1,4 @@
-/* Yokonjuan's page, live: the catalog (so the avatar and "latest" follow the newest release
+/* jjulio's page, live: the catalog (so the avatar and "latest" follow the newest release
    without anyone editing the site), the visitor counter and the guestbook, all from the Worker
    (worker/src/music.js). Anything that fails leaves the page as the site built it. Everything
    from outside is written with textContent, never as HTML. */
@@ -14,17 +14,20 @@
   const get = (path, init) => fetch(base + path, init).then(async (r) => { const d = await r.json().catch(() => ({})); if (!r.ok) throw Object.assign(new Error(d.error || "failed"), { status: r.status }); return d; });
 
   /* ---------------- the catalog ---------------- */
-  const playerSrc = (r) => r.links.soundcloud
-    ? "https://w.soundcloud.com/player/?url=" + encodeURIComponent(r.links.soundcloud) + "&color=%23b9d7ff&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
-    : "https://open.spotify.com/embed/track/" + r.links.spotify.split("/").pop() + "?theme=0";
+  // Spotify first, then Apple Music: the link a release goes to, the word under it, and the player.
+  const link = (r) => r.links.spotify || r.links.apple;
+  const where = (r) => (r.links.spotify ? "spotify" : "apple music");
+  const player = (r) => r.links.spotify
+    ? { cls: "player sp", src: "https://open.spotify.com/embed/track/" + r.links.spotify.split("/").pop() + "?theme=0" }
+    : { cls: "player am", src: r.links.apple.replace("https://music.apple.com/", "https://embed.music.apple.com/") };
 
   function card(r) {
     const li = el("li"), a = el("a", "rel");
-    a.href = r.links.soundcloud || r.links.spotify;
+    a.href = link(r);
     const img = el("img"); img.src = r.cover || ""; img.alt = "Cover of " + r.title; img.width = 300; img.height = 300; img.loading = "lazy"; img.decoding = "async";
     const title = el("span", "rel-title", r.title);
     if (r.explicit) { title.append(" "); const e = el("span", "e", "e"); e.title = "Explicit"; title.append(e); }
-    const meta = [new Date(r.date).getUTCFullYear(), r.links.soundcloud ? "soundcloud" : "spotify", r.cut, r.credit].filter(Boolean).join(" · ");
+    const meta = [new Date(r.date).getUTCFullYear(), where(r), r.cut, r.credit].filter(Boolean).join(" · ");
     a.append(img, title, el("span", "rel-meta", meta));
     li.append(a);
     if (r.versions && r.versions.length) {
@@ -36,7 +39,7 @@
   }
 
   get("").then((d) => {
-    const rs = (d.releases || []).filter((r) => r.links && (r.links.soundcloud || r.links.spotify));
+    const rs = (d.releases || []).filter((r) => r.links && link(r));
     if (!rs.length) return;
     const n = rs[0];
     if (n.cover) { $("avatar").src = n.cover; $("avatar").alt = "Cover of " + n.title + ", the newest release"; }
@@ -45,8 +48,8 @@
     $("fact-last").textContent = day(n.date);
     $("latest-title").textContent = n.title;
     $("latest-meta").textContent = [day(n.date), n.cut, n.credit].filter(Boolean).join(" · ");
-    const p = $("latest-player"), src = playerSrc(n);
-    if (p.src !== src) { p.src = src; p.title = n.title; }
+    const p = $("latest-player"), pl = player(n);
+    if (p.src !== pl.src) { p.className = pl.cls; p.src = pl.src; p.title = n.title; }
     $("music-count").textContent = rs.length;
     $("grid").replaceChildren(...rs.map(card));
   }).catch(() => {});

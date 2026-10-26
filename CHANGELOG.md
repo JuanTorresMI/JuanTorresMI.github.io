@@ -37,6 +37,17 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-26 — The music page becomes jjulio
+
+Juan rebranded his music as jjulio. `/music/` now carries the new name, links Spotify, Apple Music and
+YouTube Music (SoundCloud and the old Yokonjuan Spotify are gone), and starts fresh with the first
+jjulio single, "El-Sayed (feat. soulcast)". The Worker's catalog reads Apple Music's public lookup API
+in place of SoundCloud's RSS, plus the new Spotify artist, so a song shows up from whichever platform
+lists it first; Spotify's new-artist profile had no tracks yet on release day. The newest song plays in
+Spotify's player, or Apple Music's until it reaches Spotify. Credits like "feat." are split from the
+title the way "prod." already was. New share picture (`scripts/music-og.js` now takes the name from
+the data file and can drive an installed Edge). The home page's About links the new name.
+
 ## 2026-10-22 — Dev tools on the home page
 
 A "Dev tools" section at the bottom of the home page links the private Card Tracker (its own repo,
