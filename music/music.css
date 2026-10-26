@@ -139,6 +139,8 @@ ol, ul { padding: 0; list-style: none; }
   .player:not(.sp):not(.am) { height: 300px; }
 }
 @media (max-width: 520px) {
+  /* three platform names don't fit beside the name; the links box and the footer carry them */
+  .top nav { display: none; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
   .id { grid-template-columns: 112px 1fr; }
 }
