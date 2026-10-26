@@ -40,7 +40,11 @@
     return li;
   }
 
-  get("").then((d) => {
+  // "no-cache": a browser may still hold an answer from before a rename (the old artist's songs), so
+  // it asks the Worker each time; the Worker keeps its own copy, so that costs nothing upstream.
+  get("", { cache: "no-cache" }).then((d) => {
+    // Only this artist's songs, ever: an answer for anyone else (an old name) changes nothing.
+    if (String(d.artist || "").toLowerCase() !== String(main.dataset.artist || "").toLowerCase()) return;
     const rs = (d.releases || []).filter((r) => r.links && link(r));
     if (!rs.length) return;
     const n = rs[0];
