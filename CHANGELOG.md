@@ -41,14 +41,17 @@ Things waiting on a decision or on Juan, so they aren't lost:
 
 Juan rebranded his music as jjulio. `/music/` now carries the new name, links Spotify, Apple Music and
 YouTube Music (SoundCloud and the old Yokonjuan Spotify are gone), and starts fresh with the first
-jjulio single, "El-Sayed (feat. soulcast)". The Worker's catalog reads Apple Music's public lookup API
-in place of SoundCloud's RSS, plus the new Spotify artist, so a song shows up from whichever platform
-lists it first; Spotify's new-artist profile had no tracks yet on release day. The newest song plays in
-Spotify's player, or Apple Music's until it reaches Spotify. Credits like "feat." are split from the
-title the way "prod." already was. New share picture (`scripts/music-og.js` now takes the name from
-the data file and can drive an installed Edge). The home page's About links the new name. The newest release also gets a "listen anywhere" link to
-its DistroKid HyperFollow page, which lists every store DistroKid sends it to (still in pre-save mode on
-release day, so individual store pages beyond these three come later).
+jjulio single, "El-Sayed (feat. soulcast)". The newest release gets a "listen on" row with a button for
+every store it's on, so listeners choose a store on the page itself rather than on DistroKid's.
+
+The Worker's catalog reads the new Spotify artist and Deezer's public search in place of SoundCloud's
+RSS, and picks up each store's link as it lists the song. Apple Music's lookup API answers 403 to
+Cloudflare, so Apple Music, YouTube Music, Amazon Music and Tidal links are kept in the data file. A
+source that fails is named in the answer and retried in five minutes instead of an hour. Spotify's
+new-artist profile had no tracks yet on release day, so the newest song plays in Apple Music's player
+until Spotify lists it. Credits like "feat." are split from the title the way "prod." already was.
+New share picture (`scripts/music-og.js` now takes the name from the data file and can drive an
+installed Edge). The home page's About links the new name.
 
 ## 2026-10-22 — Dev tools on the home page
 

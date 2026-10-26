@@ -212,7 +212,7 @@ portfolio**: its own layout (`_layouts/artist.html`, which doesn't use `head.htm
 Nothing on it may name or link Juan Torres, and the portfolio's JSON-LD doesn't connect the two
 names: the portfolio links in (nav, home About), the music page never links back. Any words in
 Juan's voice (`about` in the data file) are his; don't write them. The page reads the live
-catalog (Apple Music's lookup API and Spotify's player data), visitor counter and guestbook from the
+catalog (Spotify's player data and Deezer's search; Apple Music refuses Cloudflare, so its links are in the data file), visitor counter and guestbook from the
 Worker; the data file is the fallback and what crawlers see. The D1 database is still named `yokonjuan`
 and the guestbook's visitor hash keeps its old salt, on purpose: renaming either would lose data or reset limits.
 

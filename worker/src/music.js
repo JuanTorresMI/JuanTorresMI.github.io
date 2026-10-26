@@ -1,7 +1,9 @@
 /* jjulio's page (/music/ on the site): the catalog, a visitor counter and a guestbook.
  *
- *   GET    /music                  { artist, avatar, releases: [...] }, read live from Apple Music's
- *                                  public lookup API and Spotify's public player data, cached an hour
+ *   GET    /music                  { artist, avatar, releases: [...] }, read live from Spotify's public
+ *                                  player data and Deezer's public search, cached an hour (five minutes
+ *                                  when a source failed). Apple Music's lookup API refuses Cloudflare
+ *                                  (403), so Apple links come from the site's data file instead.
  *   GET    /music/visits           { count }
  *   POST   /music/visits           { count } after adding one (the page sends this once a session)
  *   GET    /music/guestbook        { entries: [{ id, name, message, at }] }, newest first
@@ -19,7 +21,7 @@
  * Nothing here returns anything about the person behind the artist: only track fields are passed on.
  */
 
-const APPLE_ARTIST = "6826970497";
+const ARTIST = "jjulio";
 const SPOTIFY_ARTIST = "4BfPXv7KeLlZQK8wCaSkl4";
 const CATALOG_CACHE_S = 3600;
 // The moderation model. MODERATION_MODEL in wrangler.toml overrides it, so when Cloudflare retires
@@ -47,17 +49,16 @@ function parseTitle(raw) {
 }
 const key = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "");
 
-/* Apple's public lookup API: every song on the artist, with its release date, cover and the
-   explicit flag, in one request. The cover comes at 100px; the same URL serves 600px. */
-async function apple() {
-  const r = await fetch(`https://itunes.apple.com/lookup?id=${APPLE_ARTIST}&entity=song&limit=200`);
-  if (!r.ok) throw new Error("Apple Music said " + r.status);
+/* Deezer's public search, kept to songs whose artist is exactly this one (the search is fuzzy).
+   It gives no release date; the other platforms supply it. */
+async function deezer() {
+  const r = await fetch(`https://api.deezer.com/search?q=${encodeURIComponent(ARTIST)}&limit=50`);
+  if (!r.ok) throw new Error("Deezer said " + r.status);
   const d = await r.json();
-  return (d.results || []).filter((t) => t.wrapperType === "track" && t.trackViewUrl).map((t) => ({
-    title: t.trackName, url: t.trackViewUrl.replace(/[?&]uo=\d+/, ""),
-    date: t.releaseDate ? new Date(t.releaseDate).toISOString() : null,
-    cover: t.artworkUrl100 ? t.artworkUrl100.replace(/\/\d+x\d+bb\./, "/600x600bb.") : null,
-    explicit: t.trackExplicitness === "explicit", platform: "apple",
+  if (d.error) throw new Error("Deezer: " + (d.error.message || "error"));
+  return (d.data || []).filter((t) => t.artist && t.artist.name.toLowerCase() === ARTIST && t.link).map((t) => ({
+    title: t.title, url: t.link, date: null,
+    cover: t.album && t.album.cover_xl ? t.album.cover_xl : null, explicit: !!t.explicit_lyrics, platform: "deezer",
   }));
 }
 
@@ -89,9 +90,12 @@ async function spotify() {
 }
 
 export async function catalog() {
-  const [ap, sp] = await Promise.allSettled([apple(), spotify()]);
-  if (ap.status === "rejected" && sp.status === "rejected") throw new Error("Couldn't reach Apple Music or Spotify");
-  const all = [...(ap.status === "fulfilled" ? ap.value : []), ...(sp.status === "fulfilled" ? sp.value : [])];
+  const names = ["spotify", "deezer"];
+  const got = await Promise.allSettled([spotify(), deezer()]);
+  if (got.every((g) => g.status === "rejected")) throw new Error("Couldn't reach Spotify or Deezer");
+  const all = got.flatMap((g) => (g.status === "fulfilled" ? g.value : []));
+  // Each source's state, and why one failed, so a gap on the page can be explained from the answer.
+  const sources = Object.fromEntries(names.map((n, i) => [n, got[i].status === "fulfilled" ? true : String(got[i].reason && got[i].reason.message || got[i].reason)]));
 
   // One entry per song: the original's title, date and cover, with its other cuts and its
   // other platform folded in. Oldest first while building, so the original claims the entry.
@@ -121,10 +125,10 @@ export async function catalog() {
   }
   const releases = [...songs.values()].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   return {
-    artist: "jjulio",
+    artist: ARTIST,
     avatar: releases[0] ? releases[0].cover : null,
     releases,
-    sources: { apple: ap.status === "fulfilled", spotify: sp.status === "fulfilled" },
+    sources,
     updated: new Date().toISOString(),
   };
 }

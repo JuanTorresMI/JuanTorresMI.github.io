@@ -198,10 +198,13 @@ async function musicRoute(request, env, ctx, route, url, cors) {
   const fromSite = origins.includes(request.headers.get("Origin") || "");
   try {
     if (route === "/music" && m === "GET") {
-      const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/music-jjulio");
+      const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/music-jjulio-2");
       const hit = await cache.match(cacheKey);
       if (hit) { const fresh = new Response(hit.body, hit); for (const [k, v] of Object.entries(cors)) fresh.headers.set(k, v); return fresh; }
-      const res = json(await catalog(), 200, { ...cors, "Cache-Control": `public, max-age=${CATALOG_MAX_AGE}` });
+      const cat = await catalog();
+      // A full answer keeps an hour; one with a source down is retried in five minutes.
+      const age = Object.values(cat.sources).every((v) => v === true) ? CATALOG_MAX_AGE : 300;
+      const res = json(cat, 200, { ...cors, "Cache-Control": `public, max-age=${age}` });
       ctx.waitUntil(cache.put(cacheKey, res.clone()));
       return res;
     }

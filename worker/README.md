@@ -145,9 +145,10 @@ that appears in both.
 ## The music page: catalog, counter, guestbook
 
 The same Worker also serves jjulio's page (`/music/` on the site); the code is
-`src/music.js`. The catalog needs nothing set up: it reads Apple Music's public lookup API
-(every song, one request) and Spotify's public player data (the artist's top tracks), so new
-releases show up within the hour. The artist IDs are `APPLE_ARTIST` and `SPOTIFY_ARTIST` at the top. The visitor counter
+`src/music.js`. The catalog needs nothing set up: it reads Spotify's public player data (the
+artist's top tracks) and Deezer's public search, so new releases show up within the hour. Apple Music's
+lookup API answers 403 to Cloudflare, so Apple links live in `_data/music.yml`. The artist is set at the
+top (`ARTIST`, `SPOTIFY_ARTIST`). `sources` in the answer says which platforms answered, or why one didn't. The visitor counter
 and the guestbook need a small database (D1) and Workers AI, which checks guestbook posts
 before they're stored. Both are free at this size.
 

@@ -85,9 +85,10 @@ ol, ul { padding: 0; list-style: none; }
 .latest-meta { font: 400 12px/1.5 var(--mono); color: var(--muted); }
 .player { display: block; width: calc(100% - 32px); height: 360px; border: 0; background: #0d0e12; }
 .latest .player { margin-top: 0; }
-.anywhere { margin: -4px 16px 12px; font: 400 12px/1.5 var(--mono); }
-.anywhere a { color: var(--ice); text-decoration: none; }
-.anywhere a:hover { text-decoration: underline; }
+.listen { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: -4px 16px 12px; font: 400 12px/1.5 var(--mono); }
+.listen span { color: var(--muted); margin-right: 4px; }
+.listen a { padding: 4px 10px; border: 1px solid var(--line-2); color: var(--text-2); text-decoration: none; transition: color 0.2s, border-color 0.2s; }
+.listen a:hover { color: var(--ice); border-color: var(--ice); }
 /* one-song players: Spotify's compact one is 152px tall, Apple Music's 175px */
 .player.sp { height: 152px; border-radius: 12px; }
 .player.am { height: 175px; border-radius: 10px; background: transparent; }

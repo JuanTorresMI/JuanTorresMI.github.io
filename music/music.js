@@ -14,12 +14,14 @@
   const get = (path, init) => fetch(base + path, init).then(async (r) => { const d = await r.json().catch(() => ({})); if (!r.ok) throw Object.assign(new Error(d.error || "failed"), { status: r.status }); return d; });
 
   /* ---------------- the catalog ---------------- */
-  // Spotify first, then Apple Music: the link a release goes to, the word under it, and the player.
-  const link = (r) => r.links.spotify || r.links.apple;
-  const where = (r) => (r.links.spotify ? "spotify" : "apple music");
+  const STORES = [["spotify", "spotify"], ["apple", "apple music"], ["youtube", "youtube music"], ["deezer", "deezer"], ["amazon", "amazon music"], ["tidal", "tidal"]];
+  // Spotify first, then Apple Music, then Deezer: the link a release goes to, the word under it, and the player.
+  const link = (r) => r.links.spotify || r.links.apple || r.links.deezer;
+  const where = (r) => (r.links.spotify ? "spotify" : r.links.apple ? "apple music" : "deezer");
+  // A song only on Deezer so far keeps whatever player the page was built with.
   const player = (r) => r.links.spotify
     ? { cls: "player sp", src: "https://open.spotify.com/embed/track/" + r.links.spotify.split("/").pop() + "?theme=0" }
-    : { cls: "player am", src: r.links.apple.replace("https://music.apple.com/", "https://embed.music.apple.com/") };
+    : r.links.apple ? { cls: "player am", src: r.links.apple.replace("https://music.apple.com/", "https://embed.music.apple.com/") } : null;
 
   function card(r) {
     const li = el("li"), a = el("a", "rel");
@@ -49,10 +51,23 @@
     $("latest-title").textContent = n.title;
     $("latest-meta").textContent = [day(n.date), n.cut, n.credit].filter(Boolean).join(" · ");
     const p = $("latest-player"), pl = player(n);
-    if (p.src !== pl.src) { p.className = pl.cls; p.src = pl.src; p.title = n.title; }
+    if (pl && p.src !== pl.src) { p.className = pl.cls; p.src = pl.src; p.title = n.title; }
     $("music-count").textContent = rs.length;
-    // "listen anywhere" belongs to the release the site was built with; a newer one hides it.
-    document.querySelectorAll("[data-for]").forEach((x) => { x.hidden = x.dataset.for !== n.title; });
+    // "listen on": the stores the Worker found, added to the built row's (YouTube, Amazon and Tidal are
+    // only in the data file), or in its place when the Worker's newest song is a newer one.
+    const row = $("listen");
+    if (row) {
+      const same = row.dataset.for === n.title;
+      if (!same) row.querySelectorAll("a").forEach((a) => a.remove());
+      row.dataset.for = n.title;
+      for (const p of STORES) {
+        const url = n.links[p[0]];
+        if (!url || row.querySelector(`a[data-p="${p[0]}"]`)) continue;
+        const a = el("a", null, p[1]); a.href = url; a.dataset.p = p[0];
+        const after = STORES.slice(STORES.indexOf(p) + 1).map((q) => row.querySelector(`a[data-p="${q[0]}"]`)).find(Boolean);
+        row.insertBefore(a, after || null); row.insertBefore(document.createTextNode(" "), a);
+      }
+    }
     $("grid").replaceChildren(...rs.map(card));
   }).catch(() => {});
 

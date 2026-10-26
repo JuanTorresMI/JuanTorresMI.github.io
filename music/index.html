@@ -53,9 +53,7 @@ image_alt: "jjulio. detroit / trap / hyperpop / alt."
         {%- for p in m.platforms %}
         <li><a href="{{ p.url }}" rel="me">{{ p.name | downcase }} <span aria-hidden="true">↗</span></a></li>
         {%- endfor %}
-        {%- if latest.everywhere %}
-        <li data-for="{{ latest.title | escape }}"><a href="{{ latest.everywhere }}">every other platform <span aria-hidden="true">↗</span></a></li>
-        {%- endif %}
+
       </ul>
     </section>
   </aside>
@@ -75,9 +73,15 @@ image_alt: "jjulio. detroit / trap / hyperpop / alt."
         <p class="latest-title" id="latest-title">{{ latest.title }}</p>
         <p class="latest-meta" id="latest-meta">{{ latest.date | date: "%b %-d, %Y" | downcase }}{% if latest.credit %} · {{ latest.credit }}{% endif %}</p>
       </div>
-      {%- if latest.everywhere %}
-      <p class="anywhere" data-for="{{ latest.title | escape }}"><a href="{{ latest.everywhere }}">listen anywhere <span aria-hidden="true">↗</span></a></p>
-      {%- endif %}
+      {%- comment %} Every store the newest song is on; music.js adds any the Worker finds later. {% endcomment %}
+      <p class="listen" id="listen" data-for="{{ latest.title | escape }}"><span>listen on</span>
+        {%- if latest.spotify %} <a data-p="spotify" href="{{ latest.spotify }}">spotify</a>{% endif %}
+        {%- if latest.apple %} <a data-p="apple" href="{{ latest.apple }}">apple music</a>{% endif %}
+        {%- if latest.youtube %} <a data-p="youtube" href="{{ latest.youtube }}">youtube music</a>{% endif %}
+        {%- if latest.deezer %} <a data-p="deezer" href="{{ latest.deezer }}">deezer</a>{% endif %}
+        {%- if latest.amazon %} <a data-p="amazon" href="{{ latest.amazon }}">amazon music</a>{% endif %}
+        {%- if latest.tidal %} <a data-p="tidal" href="{{ latest.tidal }}">tidal</a>{% endif %}
+      </p>
       {%- comment %} Spotify's player for the newest song, or Apple Music's until it's on Spotify. {% endcomment %}
       {%- if latest.spotify %}
       <iframe class="player sp" id="latest-player" title="{{ latest.title | escape }}" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
