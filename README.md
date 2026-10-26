@@ -2,7 +2,7 @@
 
 The personal site of Juan Torres, a Logistics Management student at Central Michigan University:
 a résumé, the projects he builds (simulations, planners and live freight data that all run in
-the browser), his writing, and a few pages fed by live data. It also hosts Yokonjuan's music
+the browser), his writing, and a few pages fed by live data. It also hosts jjulio's music
 page, which is kept deliberately separate from the rest.
 
 Built with Jekyll and published by GitHub Pages from `main`. There is nothing to compile for an
@@ -39,7 +39,7 @@ on purpose. This README is the overview.
 | `/es/precios-de-carne-de-res/`, `/es/precios-de-cerdo/`, `/es/precios-de-ganado-gordo/`, `/es/precios-usda/` and every item under them | The same boards and pages in Spanish, paired with hreflang | Work | the same snapshots |
 | `/youtube/` | The YouTube channel's numbers and uploads | Gamer | `_data/live/youtube.json`, refreshed live by the Worker |
 | `/watching/` | What's on the house TV (public, but `noindex`) | Chill | `_data/live/watching.json`, refreshed live by the Worker |
-| `/music/` | Yokonjuan, the music page (its own layout and look) | Separate | `_data/music.yml`, refreshed live by the Worker |
+| `/music/` | jjulio, the music page (its own layout and look) | Separate | `_data/music.yml`, refreshed live by the Worker |
 
 Plus `/feed.xml` (RSS), `/sitemap.xml`, `/robots.txt`, `/site.webmanifest`, a 404 page and a few
 redirect stubs for addresses that moved (`redirects/`).
@@ -47,7 +47,7 @@ redirect stubs for addresses that moved (`redirects/`).
 ## How it fits together
 
 ```
-                     ┌─ Stremio, YouTube, USDA (truck rates, newest beef and pork), EIA, CBP, Substack, SoundCloud, Spotify
+                     ┌─ Stremio, YouTube, USDA (truck rates, newest beef and pork), EIA, CBP, Substack, Apple Music, Spotify
                      │
 Cloudflare Worker  ◄─┘  worker/: polls on cron triggers, holds short buffers in D1 (no permanent history), holds the keys
      │

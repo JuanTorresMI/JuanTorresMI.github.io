@@ -20,7 +20,7 @@ how the live data flows, the workflows and scripts.
 | `_layouts/app.html` | Full-width project pages: nav, project bar, the page's own markup, footer |
 | `_layouts/tool.html`, `assets/css/app.css`, `assets/js/app-shell.js` | The app layout for project pages people use: a top bar, a rail of the page's sections (one at a time in `app_mode: views`, a contents list in `app_mode: read`), an optional side panel. Pages mark parts with `data-view` / `data-title` (and `data-n`, `data-order`, `data-rail-group`), `data-app-side`, `data-app-tools`; the layout's comment documents them. The data boards set `app_auto: true` instead: every top-level `section[id]` with an `h2` becomes a view, named from the board's jump links. So no page may use `data-view` for anything of its own (the reefer sheet's buttons use `data-sheet`). Each view change is a history entry (Back returns to the last view; page scripts that call `replaceState` pass `history.state` through) and the rail moves focus to the view's heading. Nothing is hidden without JavaScript |
 | `_layouts/reefer-lane.html`, `border-crossing.html`, `beef-cut.html`, `pork-cut.html`, `cattle-region.html` | One generated page per reefer lane / border crossing / beef cut / pork cut / cattle region, each in English and Spanish where the board has both (see "Live data pages") |
-| `_layouts/artist.html`, `music/`, `_data/music.yml` | Yokonjuan's page (`/music/`); see "The music page" |
+| `_layouts/artist.html`, `music/`, `_data/music.yml` | jjulio's page (`/music/`); see "The music page" |
 | `_layouts/redirect.html`, `redirects/` | Old addresses that moved |
 | `assets/css/style.css` | The only stylesheet for the portfolio. Fonts, tokens, grid, every component, print |
 | `assets/fonts/` | Cormorant Garamond, Inter, IBM Plex Mono (latin woff2, self-hosted) |
@@ -206,14 +206,15 @@ that grows without a trim and a CSV that keeps it.
 
 ## The music page
 
-`/music/` is Yokonjuan's page, Juan's music, and it is **deliberately separate from the
+`/music/` is jjulio's page, Juan's music (Yokonjuan until Oct 2026), and it is **deliberately separate from the
 portfolio**: its own layout (`_layouts/artist.html`, which doesn't use `head.html`), stylesheet
 (`music/music.css`), script (`music/music.js`), icon and share picture (`scripts/music-og.js`).
 Nothing on it may name or link Juan Torres, and the portfolio's JSON-LD doesn't connect the two
 names: the portfolio links in (nav, home About), the music page never links back. Any words in
 Juan's voice (`about` in the data file) are his; don't write them. The page reads the live
-catalog, visitor counter and guestbook from the Worker; the data file is the fallback and what
-crawlers see.
+catalog (Spotify's player data and Deezer's search; Apple Music refuses Cloudflare, so its links are in the data file), visitor counter and guestbook from the
+Worker; the data file is the fallback and what crawlers see. The D1 database is still named `yokonjuan`
+and the guestbook's visitor hash keeps its old salt, on purpose: renaming either would lose data or reset limits.
 
 ## Adding things
 

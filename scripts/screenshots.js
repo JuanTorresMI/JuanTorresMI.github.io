@@ -4,8 +4,8 @@
  *   NODE_PATH=$(npm root -g) node scripts/screenshots.js _site /tmp/shots
  *
  * Needs the playwright package and its Chromium (npm install -g playwright && npx playwright
- * install chromium). Errors from outside services (GitHub's API, the Worker, YouTube and
- * SoundCloud embeds) are expected when the network is restricted.
+ * install chromium). Errors from outside services (GitHub's API, the Worker, YouTube, Spotify and
+ * Apple Music embeds) are expected when the network is restricted.
  */
 const { chromium } = require("playwright");
 const http = require("http"), fs = require("fs"), path = require("path");

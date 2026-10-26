@@ -12,7 +12,7 @@
  *   GET /pork      USDA's newest pork report: the carcass cutout, primals and every cut (see pork.js)
  *   GET, POST /refresh   start the site's snapshot workflow, at most once an hour (see refresh.js)
  *   GET /usage     this account's use of the free plan, from Cloudflare's analytics (see usage.js)
- *   /music/...     Yokonjuan's page: catalog, visitor counter, guestbook (see music.js)
+ *   /music/...     jjulio's page: catalog, visitor counter, guestbook (see music.js)
  *
  * Two cron triggers in wrangler.toml call `scheduled`, at :17 and :47. Both read CBP's border wait
  * times, so those are polled every half hour. On weekdays, in the windows USDA posts and corrects the
@@ -190,7 +190,7 @@ async function refreshRoute(request, env, cors) {
 
 /* ------------------------------------------------------------ the music page ---- */
 
-/* Yokonjuan's catalog, counter and guestbook; see music.js. Writes are only accepted from the
+/* jjulio's catalog, counter and guestbook; see music.js. Writes are only accepted from the
    site's own pages (WRITE_ORIGINS), so another site can't sign the guestbook through a visitor. */
 async function musicRoute(request, env, ctx, route, url, cors) {
   const m = request.method;
@@ -198,10 +198,13 @@ async function musicRoute(request, env, ctx, route, url, cors) {
   const fromSite = origins.includes(request.headers.get("Origin") || "");
   try {
     if (route === "/music" && m === "GET") {
-      const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/music");
+      const cache = caches.default, cacheKey = new Request(url.origin + "/__cache/music-jjulio-2");
       const hit = await cache.match(cacheKey);
       if (hit) { const fresh = new Response(hit.body, hit); for (const [k, v] of Object.entries(cors)) fresh.headers.set(k, v); return fresh; }
-      const res = json(await catalog(), 200, { ...cors, "Cache-Control": `public, max-age=${CATALOG_MAX_AGE}` });
+      const cat = await catalog();
+      // A full answer keeps an hour; one with a source down is retried in five minutes.
+      const age = Object.values(cat.sources).every((v) => v === true) ? CATALOG_MAX_AGE : 300;
+      const res = json(cat, 200, { ...cors, "Cache-Control": `public, max-age=${age}` });
       ctx.waitUntil(cache.put(cacheKey, res.clone()));
       return res;
     }

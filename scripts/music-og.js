@@ -1,9 +1,11 @@
-/* Draws music/og.jpg, the picture shown when a link to Yokonjuan's page is shared (1200×630).
+/* Draws music/og.jpg, the picture shown when a link to the music page is shared (1200×630).
  * Kept apart from og-images.js on purpose: the music page shares nothing with the portfolio,
  * and its picture must not name Juan Torres. It uses the page's look (music/music.css) and
- * the five newest covers from _data/music.yml, fetched from the platforms when it runs.
+ * the artist's name and the five newest covers from _data/music.yml, fetched from the platforms when
+ * it runs. With fewer than three covers, the newest one sits large beside the name instead.
  *
  *   NODE_PATH=$(npm root -g) node scripts/music-og.js
+ *   PW_CHANNEL=msedge ...   drives an installed Edge instead of Playwright's own Chromium
  */
 const { chromium } = require("playwright");
 const fs = require("fs"), path = require("path");
@@ -14,6 +16,8 @@ const font = (f) => "data:font/woff2;base64," + fs.readFileSync(path.join(root, 
 const yml = fs.readFileSync(path.join(root, "_data", "music.yml"), "utf8");
 const covers = [...yml.matchAll(/^\s+cover:\s*(\S+)/gm)].map((m) => m[1]).slice(0, 5);
 const tags = (yml.match(/^tags:\s*\[(.*)\]/m) || [, ""])[1].split(",").map((s) => s.trim()).join(" / ");
+const artist = (yml.match(/^artist:\s*(.+)$/m) || [, ""])[1].trim().toLowerCase();
+const row = covers.length >= 3;
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face { font-family: "Inter"; font-weight: 100 900; src: url("${font("inter.woff2")}") format("woff2"); }
@@ -30,13 +34,15 @@ body { position: relative; padding: 64px 72px; color: #e9eaee; font-family: "Int
   -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 42px rgba(185,215,255,.16)); }
 .covers { position: absolute; left: 72px; right: 72px; bottom: 64px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
 .covers img { width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid rgba(233,234,238,.12); filter: saturate(.85) brightness(.92); }
+.solo { position: absolute; right: 72px; top: 64px; width: 502px; height: 502px; object-fit: cover; border: 1px solid rgba(233,234,238,.12); filter: saturate(.9) brightness(.94); }
+.word.big { margin-top: 210px; font-size: 168px; }
 </style></head><body><div class="grain"></div>
-<p class="tags">${tags}</p><div class="word">yokonjuan</div>
-<div class="covers">${covers.map((c) => `<img src="${c}">`).join("")}</div>
+<p class="tags">${tags}</p><div class="word${row ? "" : " big"}">${artist}</div>
+${row ? `<div class="covers">${covers.map((c) => `<img src="${c}">`).join("")}</div>` : covers.length ? `<img class="solo" src="${covers[0]}">` : ""}
 </body></html>`;
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});
   const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
   await page.setContent(html, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);

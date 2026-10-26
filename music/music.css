@@ -1,4 +1,4 @@
-/* Yokonjuan. A profile page in the MySpace mould: the artist's card down the left, boxes with
+/* jjulio. A profile page in the MySpace mould: the artist's card down the left, boxes with
    header strips down the right, a visitor counter and a guestbook. Nothing is shared with the
    portfolio's style.css. Near-black, a cold glow, film grain, chrome on the name; square edges
    and a plain grid keep it tidy enough to show anyone. The fonts are the site's self-hosted
@@ -85,6 +85,13 @@ ol, ul { padding: 0; list-style: none; }
 .latest-meta { font: 400 12px/1.5 var(--mono); color: var(--muted); }
 .player { display: block; width: calc(100% - 32px); height: 360px; border: 0; background: #0d0e12; }
 .latest .player { margin-top: 0; }
+.listen { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: -4px 16px 12px; font: 400 12px/1.5 var(--mono); }
+.listen span { color: var(--muted); margin-right: 4px; }
+.listen a { padding: 4px 10px; border: 1px solid var(--line-2); color: var(--text-2); text-decoration: none; transition: color 0.2s, border-color 0.2s; }
+.listen a:hover { color: var(--ice); border-color: var(--ice); }
+/* one-song players: Spotify's compact one is 152px tall, Apple Music's 175px */
+.player.sp { height: 152px; border-radius: 12px; }
+.player.am { height: 175px; border-radius: 10px; background: transparent; }
 
 /* the music grid */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 28px 16px; }
@@ -133,9 +140,11 @@ ol, ul { padding: 0; list-style: none; }
   .id .name { grid-column: 1 / -1; margin: 0 0 12px; font-size: 40px; }
   .id .avatar, .id .facts { margin: 0; }
   .id .facts { align-content: start; }
-  .player { height: 300px; }
+  .player:not(.sp):not(.am) { height: 300px; }
 }
 @media (max-width: 520px) {
+  /* three platform names don't fit beside the name; the links box and the footer carry them */
+  .top nav { display: none; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
   .id { grid-template-columns: 112px 1fr; }
 }
