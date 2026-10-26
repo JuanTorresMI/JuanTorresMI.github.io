@@ -39,6 +39,10 @@ Things waiting on a decision or on Juan, so they aren't lost:
 
 ## 2026-10-26 — The music page becomes jjulio
 
+After the switch, a browser that had opened the page before it could still hold the Worker's old
+answer (it was cacheable for an hour) and show the old Yokonjuan Spotify songs. The page now asks the
+Worker each time and ignores any answer that isn't for the artist it was built for.
+
 Juan rebranded his music as jjulio. `/music/` now carries the new name, links Spotify, Apple Music and
 YouTube Music (SoundCloud and the old Yokonjuan Spotify are gone), and starts fresh with the first
 jjulio single, "El-Sayed (feat. soulcast)". The newest release gets a "listen on" row with a button for
