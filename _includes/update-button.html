@@ -4,12 +4,13 @@
   workflow, which rebuilds every page with the newest data. One global cooldown of an hour, so the
   button shows when the next update is possible. Hidden until the Worker says it is set up, and
   without JavaScript, so it never shows a button that can't work; with JavaScript its space is kept
-  (invisible) from the first paint, so the page doesn't move when it shows (style.css, data-js-show).
+  (invisible) from the first paint, so the page doesn't move when it shows (style.css, data-js-show). The note
+  starts with the usual wording (the same as T.idle below) so the kept space is the height it shows at.
 {%- endcomment -%}
 {%- assign es = include.es -%}
 <div class="rb-update" id="rb-update" hidden data-js-show>
   <button type="button" class="rb-chip" id="rb-update-btn">{% if es %}Actualizar ahora{% else %}Update now{% endif %}</button>
-  <p id="rb-update-note" aria-live="polite"></p>
+  <p id="rb-update-note" aria-live="polite">{% if es %}Las páginas se actualizan cada mañana y cuando el USDA publica precios nuevos. Este botón las actualiza ya, para todos (una vez por hora).{% else %}The pages update every morning and when USDA posts new prices. This updates them now, for everyone (once an hour).{% endif %}</p>
 </div>
 <script>
 (() => {
