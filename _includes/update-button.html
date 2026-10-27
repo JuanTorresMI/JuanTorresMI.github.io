@@ -3,10 +3,11 @@
   for the Spanish pages. It asks the Worker's /refresh (worker/src/refresh.js) to start the snapshot
   workflow, which rebuilds every page with the newest data. One global cooldown of an hour, so the
   button shows when the next update is possible. Hidden until the Worker says it is set up, and
-  without JavaScript, so it never shows a button that can't work.
+  without JavaScript, so it never shows a button that can't work; with JavaScript its space is kept
+  (invisible) from the first paint, so the page doesn't move when it shows (style.css, data-js-show).
 {%- endcomment -%}
 {%- assign es = include.es -%}
-<div class="rb-update" id="rb-update" hidden>
+<div class="rb-update" id="rb-update" hidden data-js-show>
   <button type="button" class="rb-chip" id="rb-update-btn">{% if es %}Actualizar ahora{% else %}Update now{% endif %}</button>
   <p id="rb-update-note" aria-live="polite"></p>
 </div>
@@ -41,7 +42,9 @@
     note.textContent = T.wait(m < 1 ? T.now : T.min(m), at);
     timer = setTimeout(() => show(d), Math.min(wait, 60000));
   }
-  fetch(url).then((r) => r.json()).then((d) => { if (!d.ready) return; box.hidden = false; show(d); }).catch(() => {});
+  // Not set up, or no answer: give back the space kept for it.
+  const drop = () => box.removeAttribute("data-js-show");
+  fetch(url).then((r) => r.json()).then((d) => { if (!d.ready) return drop(); box.hidden = false; show(d); }).catch(drop);
   btn.addEventListener("click", () => {
     btn.disabled = true;
     fetch(url, { method: "POST" }).then((r) => r.json().then((d) => [r.status, d])).then(([status, d]) => {

@@ -45,7 +45,8 @@ cut pages, per mile and per case on lane pages, "when to cross", "sell live or i
 find-a-cut and budget boxes, the fuel surcharge) was hidden in the HTML and shown by its script a moment
 after the first paint, pushing everything under it down. `head.html` now marks the page `.has-js` before
 anything draws, and the tools (`data-js-show`) take their place from the start; without JavaScript they
-stay hidden as before.
+stay hidden as before. The boards' "Update now" box, which waits on the Worker's answer, keeps its space
+(invisible) from the start too, and gives it back only if the Worker isn't set up or doesn't answer.
 
 ## 2026-10-26 — The music page becomes jjulio
 

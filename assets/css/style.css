@@ -647,6 +647,8 @@ html { scroll-behavior: smooth; }
    than being shown by their script a moment later and pushing the page down (layout shift). */
 .has-js [data-js-show][hidden] { display: block !important; }
 .has-js .rb-look[data-js-show][hidden] { display: flex !important; }
+/* "Update now" waits on the Worker's answer: its space is kept, invisible, until then. */
+.has-js .rb-update[data-js-show][hidden] { display: flex !important; visibility: hidden; }
 .bf-find { margin-top: 16px; }
 .bf-find label { max-width: 520px; flex-basis: 100%; }
 .bf-px { display: inline-block; }
