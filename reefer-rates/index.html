@@ -176,13 +176,13 @@ last_modified_at: 2026-10-15
 <section class="rb-sec" id="surcharge" aria-labelledby="surcharge-h">
   <h2 id="surcharge-h">Fuel surcharge calculator</h2>
   <p>Most fuel surcharges follow one formula: the week’s diesel price, minus the base price your contract names, divided by the truck’s miles per gallon, is the surcharge per mile. This week’s U.S. average is {{ r.diesel.price }} a gallon (week of {{ r.diesel.week }}).</p>
-  <form class="rb-look" id="fsc-form" onsubmit="return false" hidden>
+  <form class="rb-look" id="fsc-form" onsubmit="return false" hidden data-js-show>
     <label>Diesel, per gallon <input id="fsc-diesel" type="number" inputmode="decimal" min="0" step="0.001" value="{{ r.diesel.v }}"></label>
     <label>Base price in your contract <input id="fsc-base" type="number" inputmode="decimal" min="0" step="0.01" placeholder="e.g. 1.25"></label>
     <label>Miles per gallon <input id="fsc-mpg" type="number" inputmode="decimal" min="1" step="0.1" value="6"></label>
     <label>Miles on the load <input id="fsc-miles" type="number" inputmode="numeric" min="0" step="1" placeholder="optional"></label>
   </form>
-  <div class="rb-answer" id="fsc-out" aria-live="polite" hidden><p>Enter the base price from your contract.</p></div>
+  <div class="rb-answer" id="fsc-out" aria-live="polite" hidden data-js-show><p>Enter the base price from your contract.</p></div>
   <h3>Surcharge per mile at this week’s diesel</h3>
   <div class="rb-scroll">
     <table class="rb-t">

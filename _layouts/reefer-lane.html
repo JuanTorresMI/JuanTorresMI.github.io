@@ -49,7 +49,7 @@ layout: default
 </p>
 
 {%- if l.raw.low and l.raw.high %}
-<section class="rb-block bf-tools" id="per-mile" hidden>
+<section class="rb-block bf-tools" id="per-mile" hidden data-js-show>
   <h2>Rate per mile <span>{% if l.current %}This week’s{% else %}The last{% endif %} quote, for your trip</span></h2>
   <form class="rb-look" onsubmit="return false">
     <label>Miles from pickup to delivery <input id="pm-miles" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 1,350"></label>
@@ -57,7 +57,7 @@ layout: default
   <div class="rb-answer" id="pm-out" aria-live="polite"><p>Enter the trip’s miles to turn the {{ l.range }} rate into dollars per mile.</p></div>
   <script type="application/json" id="pm-data">{{ l.raw | jsonify }}</script>
 </section>
-<section class="rb-block bf-tools" id="per-case" hidden>
+<section class="rb-block bf-tools" id="per-case" hidden data-js-show>
   <h2>Freight cost per case <span>What the truck adds to each case and pound</span></h2>
   <form class="rb-look" onsubmit="return false">
     <label>Cases on the truck <input id="pc-cases" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 1,000"></label>

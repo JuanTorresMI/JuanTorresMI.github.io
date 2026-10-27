@@ -78,6 +78,7 @@
   or at the end of <body> the page would flash the system theme first.
 {% endcomment %}
 <script>
+  document.documentElement.classList.add("has-js");
   (() => { try { const t = localStorage.getItem("jt-theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {} })();
 </script>
 {% comment %}
