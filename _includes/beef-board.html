@@ -116,7 +116,7 @@
 <section class="rb-sec" id="cuts" aria-labelledby="cuts-h">
   <h2 id="cuts-h">{% if es %}Precio de mayoreo de cada corte de res hoy{% else %}Wholesale price of every beef cut today{% endif %}</h2>
   <p>{% if es %}Cada corte que se vendió el {{ r.on_day_es }}, {{ r.traded }} en total, por primal y del más caro al más barato. Los precios son el promedio ponderado de las ventas negociadas del día, por libra, con el precio por quintal que reporta el USDA debajo. “Semana” es el cambio frente al precio del mismo grado una semana antes. El código después de cada nombre es su número IMPS y su límite de grasa (vea <a class="link" href="#codes">cómo leer los códigos</a>). Haga clic en un corte para ver cada día registrado y revisar un precio que le cotizaron.{% else %}Every cut that traded on {{ r.on_day }}, {{ r.traded }} in all, by primal and dearest first. Prices are the weighted average of the day’s negotiated sales, per pound, with the price per hundredweight USDA reports under it. “Week” is the change from the same grade’s price a week earlier. The code after each name is its IMPS number and fat limitation (see <a class="link" href="#codes">how to read the codes</a>). Click a cut for every day on record and to check a price you were quoted.{% endif %}</p>
-  <form class="rb-look bf-find" id="bf-find" role="search" onsubmit="return false" hidden>
+  <form class="rb-look bf-find" id="bf-find" role="search" onsubmit="return false" hidden data-js-show>
     <label>{% if es %}Buscar un corte <input type="search" id="bf-q" placeholder="rib eye, pecho, 112A, arrachera…" autocomplete="off" spellcheck="false">{% else %}Find a cut <input type="search" id="bf-q" placeholder="ribeye, brisket, 112A, skirt…" autocomplete="off" spellcheck="false">{% endif %}</label>
   </form>
   <p class="rb-note bf-find-n" id="bf-find-n" aria-live="polite" hidden></p>
@@ -136,7 +136,7 @@
   </div>
   </div>
   {%- endfor %}
-  <section class="rb-block bf-tools" id="budget" hidden>
+  <section class="rb-block bf-tools" id="budget" hidden data-js-show>
     <h3>{% if es %}Presupuestar una compra <span>Los precios de hoy del USDA para su pedido</span>{% else %}Budget a buy <span>Today’s USDA prices for your order</span>{% endif %}</h3>
     <form class="rb-look" id="bg-form" onsubmit="return false">
       <label>{% if es %}Corte{% else %}Cut{% endif %} <select id="bg-cut"></select></label>

@@ -91,7 +91,7 @@ layout: default
 </section>
 {%- endif %}
 
-<section class="rb-block bf-tools" id="calc" aria-labelledby="calc-h" hidden>
+<section class="rb-block bf-tools" id="calc" aria-labelledby="calc-h" hidden data-js-show>
   <h2 id="calc-h">{% if es %}¿Vender en pie o en canal? <span>{% if c.tool_from_5area %}Con los precios de 5 áreas{% else %}Con los precios de {{ c.es }}{% endif %}</span>{% else %}Sell live or in the beef? <span>{% if c.tool_from_5area %}At the 5-area prices{% else %}At {{ c.name }}’s prices{% endif %}</span>{% endif %}</h2>
   {%- if c.tool_from_5area %}<p class="rb-note">{% if es %}{{ c.es }} no tuvo precio de contado en pie y en canal esta semana, así que los precios empiezan en los de 5 áreas.{% else %}{{ c.name }} didn’t have both a live and a dressed cash price this week, so the prices start at the 5-area market’s.{% endif %}</p>{% endif %}
   {% include cattle-calc.html tool=c.tool es=es %}

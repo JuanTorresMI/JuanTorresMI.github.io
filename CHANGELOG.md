@@ -37,6 +37,16 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-27 — The boards' tools stop moving the page
+
+Cloudflare's Core Web Vitals showed layout shift of 0.12 to 0.15 (over the 0.1 "good" line) on the
+boards' item pages, in `section.rb-block`. The cause: every tool (the price check and trim calculator on
+cut pages, per mile and per case on lane pages, "when to cross", "sell live or in the beef?", the boards'
+find-a-cut and budget boxes, the fuel surcharge) was hidden in the HTML and shown by its script a moment
+after the first paint, pushing everything under it down. `head.html` now marks the page `.has-js` before
+anything draws, and the tools (`data-js-show`) take their place from the start; without JavaScript they
+stay hidden as before.
+
 ## 2026-10-26 — The music page becomes jjulio
 
 After the switch, a browser that had opened the page before it could still hold the Worker's old

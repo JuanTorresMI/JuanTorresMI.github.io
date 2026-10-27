@@ -642,6 +642,11 @@ html { scroll-behavior: smooth; }
 .bf-live { padding: 12px 16px; border-left: 2px solid var(--accent); background: var(--stock); color: var(--ink) !important; }
 /* the tools: find a cut on the board, check a price and the trim cost on a cut page (beef-prices/tools.js) */
 .bf tr[hidden], .bf .bf-group[hidden], .bf section[hidden], .bf-tools[hidden], .bf-find[hidden], .bf-find-n[hidden] { display: none !important; }
+/* The boards' tools (data-js-show) are hidden in the HTML so a reader without JavaScript never sees a form that does
+   nothing. With JavaScript (head.html sets .has-js before the first paint) they take their place from the start, rather
+   than being shown by their script a moment later and pushing the page down (layout shift). */
+.has-js [data-js-show][hidden] { display: block !important; }
+.has-js .rb-look[data-js-show][hidden] { display: flex !important; }
 .bf-find { margin-top: 16px; }
 .bf-find label { max-width: 520px; flex-basis: 100%; }
 .bf-px { display: inline-block; }

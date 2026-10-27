@@ -6,7 +6,7 @@
 {%- assign c = include.c -%}
 {%- assign m = include.m -%}
 {%- assign es = include.es -%}
-<div class="bf-tools" id="bf-tools" hidden>
+<div class="bf-tools" id="bf-tools" hidden data-js-show>
   <section class="rb-block" id="check" aria-labelledby="check-h">
     <h2 id="check-h">{% if es %}Revisar un precio <span>Frente a las ventas de este producto según el USDA</span>{% else %}Check a price <span>Against USDA’s sales of this {% if c.section == "cut" or c.section == "mixed" %}cut{% else %}item{% endif %}</span>{% endif %}</h2>
     <form class="rb-look" onsubmit="return false">

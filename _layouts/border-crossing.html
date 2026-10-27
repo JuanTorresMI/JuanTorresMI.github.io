@@ -104,7 +104,7 @@ layout: default
 
 {%- if p.grid.size > 0 %}{% assign plan = p.grid %}{% assign plan_src = "ours" %}{% elsif ly.grid.size > 0 %}{% assign plan = ly.grid %}{% assign plan_src = "cbp" %}{% else %}{% assign plan = nil %}{% endif %}
 {%- if plan %}
-<section class="rb-block bf-tools" id="plan" hidden>
+<section class="rb-block bf-tools" id="plan" hidden data-js-show>
   <h2>{% if es %}¿A qué hora cruzar?{% else %}When to cross{% endif %} <span>{% if plan_src == "ours" %}{% if es %}Según los últimos 30 días{% else %}From the last 30 days{% endif %}{% else %}{% if es %}Según los promedios de CBP de {{ ly.month_es }} del año pasado{% else %}From CBP’s averages for {{ ly.month_en }} last year{% endif %}{% endif %}</span></h2>
   <form class="rb-look" onsubmit="return false">
     <label>{% if es %}Día{% else %}Day{% endif %} <select id="pl-day">{% for d in t.days %}<option value="{{ forloop.index0 }}">{{ d | capitalize }}</option>{% endfor %}</select></label>
