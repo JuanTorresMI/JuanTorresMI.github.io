@@ -37,6 +37,7 @@ on purpose. This README is the overview.
 | `/fed-cattle-prices/`, `/fed-cattle-prices/<region>/` | What packers pay for fed cattle each week, 5-area and by region, live and dressed | Work | `_data/live/cattle.json` (from USDA's archive; no Worker) |
 | `/usda-market-prices/` | The parent of the four USDA boards | Work | the boards' snapshots |
 | `/es/precios-de-carne-de-res/`, `/es/precios-de-cerdo/`, `/es/precios-de-ganado-gordo/`, `/es/precios-usda/` and every item under them | The same boards and pages in Spanish, paired with hreflang | Work | the same snapshots |
+| `/mma-cards/` | The MMA card shop: cards for sale, sales, and the eBay deal scanner's record (never costs or live deals) | Work | `_data/live/cards.json` and `mma-cards/photos/`, copied daily from the Card Tracker's public showcase Worker (`cards_url`) |
 | `/youtube/` | The YouTube channel's numbers and uploads | Gamer | `_data/live/youtube.json`, refreshed live by the Worker |
 | `/watching/` | What's on the house TV (public, but `noindex`) | Chill | `_data/live/watching.json`, refreshed live by the Worker |
 | `/music/` | jjulio, the music page (its own layout and look) | Separate | `_data/music.yml`, refreshed live by the Worker |

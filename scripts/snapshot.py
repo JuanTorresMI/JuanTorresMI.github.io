@@ -17,6 +17,7 @@ in numbers or say "Oct 14"), so the templates only loop:
     _data/live/beef.json        /beef-prices/, /es/precios-de-carne-de-res/ and every cut page
     _data/live/pork.json        /pork-prices/, /es/precios-de-cerdo/ and every cut page
     _data/live/cattle.json      /fed-cattle-prices/, /es/precios-de-ganado-gordo/ and every region page
+    _data/live/cards.json       /mma-cards/ (from the Card Tracker's showcase Worker, cards_url), and its photos
 
 plus a front-matter stub for each reefer lane (_reefer_lanes/), each named border crossing
 (_border_crossings/, _border_crossings_es/), each beef and pork cut and each cattle region, in both
@@ -3008,6 +3009,88 @@ def usage(d):
                                            "pct": share(peak["requests"], lim["requests"])["pct"]}}
 
 
+# ---- the MMA card shop (/mma-cards/) -----------------------------------------------------------------------------
+# Its data comes from the Card Tracker's public showcase Worker (card-tracker repo, src/showcase.js), not this site's
+# Worker: cards for sale and sold, totals, and the deal scanner's record. That Worker never sends what a card cost,
+# per-card profit, live deals or the searches behind them; this job only formats what it sends. Each card's photo is
+# copied once into mma-cards/photos/ (and removed when the card leaves the page), so visitors cost the app nothing.
+CARDS_PHOTOS = os.path.join(ROOT, "mma-cards", "photos")
+
+
+def cards_url():
+    if os.environ.get("CARDS_URL"): return os.environ["CARDS_URL"].rstrip("/")
+    for line in open(os.path.join(ROOT, "_config.yml"), encoding="utf-8"):
+        if line.startswith("cards_url:"):
+            return line.split(":", 1)[1].strip().strip('"').strip("'").rstrip("/")
+    return ""
+
+
+def usd(cents, whole=False):
+    if cents is None: return "—"
+    v = cents / 100
+    return f"${v:,.0f}" if whole else f"${v:,.2f}"
+
+
+def month_label(ym):
+    y, m = ym.split("-")
+    return f"{MONTHS[int(m) - 1][:3]} {y}"
+
+
+def card_photos(base, cards):
+    """Each shown card's thumbnail in mma-cards/photos/<id>.webp: fetched once, removed once the card is off the page."""
+    os.makedirs(CARDS_PHOTOS, exist_ok=True)
+    keep = set()
+    for c in cards:
+        if not c.get("photo"): continue
+        path = os.path.join(CARDS_PHOTOS, f"{c['id']}.webp")
+        keep.add(path)
+        if os.path.exists(path): continue
+        try:
+            req = urllib.request.Request(f"{base}/photo/{c['id']}.webp", headers={"User-Agent": "site-snapshot (github.com/JuanTorresMI)"})
+            with urllib.request.urlopen(req, timeout=60) as r: body = r.read()
+            if len(body) > 200_000: raise RuntimeError("too big for a thumbnail")
+            with open(path, "wb") as f: f.write(body)
+        except Exception as e:
+            print(f"  cards: no photo for card {c['id']} ({e})", file=sys.stderr); keep.discard(path)
+    for f in glob.glob(os.path.join(CARDS_PHOTOS, "*.webp")):
+        if f not in keep: os.remove(f)
+    return {os.path.basename(p)[:-5] for p in keep}
+
+
+def cards(base):
+    """The /mma-cards/ page, from the showcase Worker's /showcase.json."""
+    d = get(base + "/showcase.json")
+    t, s = d["totals"], d["scanner"]
+    shown = d["for_sale"] + d["sold"]
+    have = card_photos(base, shown)
+    pct = lambda x: "—" if x is None else f"{round(x * 100)}%"
+    def card(c):
+        return {"id": c["id"], "name": c["name"], "player": c.get("player") or "", "set": c.get("set") or "",
+                "parallel": c.get("parallel") or "", "serial": c.get("serial") or "", "rookie": c.get("rookie"), "auto": c.get("auto"),
+                "photo": f"/mma-cards/photos/{c['id']}.webp" if str(c["id"]) in have else None}
+    kinds = {"price": "under the max for its search", "market": "underpriced against other listings", "lot": "a lot cheap per card"}
+    finds = [{"found": full_date(datetime.fromisoformat(f["found"])), "title": f["title"], "image": f.get("image"), "how": f["how"],
+              "cost": usd(f["cost"]), "worth": usd(f["worth"]) if f.get("worth") else None,
+              "under": pct((f["worth"] - f["cost"]) / f["worth"]) if f.get("worth") else None,
+              "lot": f"{fmt(f['lot_count'])} cards, {usd(round(f['cost'] / f['lot_count']))} each" if f.get("lot_count") else None,
+              "basis": f.get("basis"), "buying": f["buying"]} for f in d["finds"]]
+    return {
+        "updated": d["updated"], "checked": full_date(when(d["updated"])), "shop_url": d["shop_url"],
+        "stats": {"cards": fmt(t["cards"]), "listed": fmt(t["listed"]), "sold": fmt(t["sold"]), "revenue": usd(t["revenue"], whole=True),
+                  "profit": usd(t["net_profit"], whole=True) if t["net_profit"] is not None else None, "margin": pct(t["margin"]) if t["margin"] is not None else None,
+                  "days": "—" if t["avg_days_to_sell"] is None else f"{round(t['avg_days_to_sell'])} days", "sell_through": pct(t["sell_through"])},
+        "months": [{"month": month_label(m["month"]), "sales": fmt(m["sales"]), "revenue": usd(m["revenue"], whole=True),
+                    "profit": usd(m["profit"], whole=True) if m["profit"] is not None else None} for m in reversed(t["months"])],
+        "for_sale": [{**card(c), "price": usd(c["price"]), "listed": full_date(datetime.fromisoformat(c["listed"])) if c.get("listed") else ""} for c in d["for_sale"]],
+        "sold": [{**card(c), "price": usd(c["price"]), "month": month_label(c["month"]) if c.get("month") else "",
+                  "days": "" if c.get("days_to_sell") is None else plural(c["days_to_sell"], "day", "days"), "where": c.get("sold_on") or ""} for c in d["sold"]],
+        "scanner": {"calls": fmt(s["calls_per_day"]) if s["calls_per_day"] is not None else "—", "asks": fmt(s["asks_on_file"]), "finds": fmt(s["finds_30d"]),
+                    "bought": fmt(s["bought_30d"]), "under": pct(s["median_under"]),
+                    "kinds": [{"what": kinds.get(k, k), "n": fmt(n)} for k, n in sorted(s["by_kind"].items(), key=lambda kv: -kv[1])]},
+        "finds": finds,
+    }
+
+
 def main():
     base = worker_url()
     if not base: sys.exit("no worker_url in _config.yml")
@@ -3015,7 +3098,7 @@ def main():
     failed = 0
     jobs = (("youtube", lambda: youtube(get(base + "/youtube"))), ("watching", lambda: watching(get(base + "/"))),
             ("reefer", lambda: reefer(base)), ("border", lambda: border(base)), ("border_people", lambda: border_people(base)), ("beef", beef), ("pork", pork), ("cattle", cattle),
-            ("usage", lambda: usage(get(base + "/usage"))))
+            ("usage", lambda: usage(get(base + "/usage"))), ("cards", lambda: cards(cards_url())))
     only = sys.argv[1:]                          # `snapshot.py beef` runs just that one
     if only: jobs = tuple(j for j in jobs if j[0] in only)
     for name, job in jobs:

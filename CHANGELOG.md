@@ -37,6 +37,16 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-10-28 — The MMA card shop
+
+A new project page, `/mma-cards/` (Work family): Juan's UFC card side business and the tools behind it. It shows
+the cards for sale (with photos and list prices, linking to his CollX shop), recent sales, totals, and the eBay deal
+scanner's record with past finds. The data comes from a public, read-only showcase Worker in the card-tracker repo,
+copied daily by a new `cards` job in `snapshot.py` (with each card's photo, once). It never shows what a card cost,
+per-card profit, the scanner's searches or limits, or anything still for sale: profit totals appear only from 5
+sales on (a month's from 3), and finds only 14 days on, once the listing ended, never one he bought.
+`og-images.js` takes `PW_CHANNEL` like `music-og.js`, to draw with an installed browser.
+
 ## 2026-10-27 — The boards' tools stop moving the page
 
 Cloudflare's Core Web Vitals showed layout shift of 0.12 to 0.15 (over the 0.1 "good" line) on the

@@ -1,0 +1,146 @@
+---
+layout: tool
+app_auto: true
+app_wrap: page
+project: mma-cards
+title: MMA Card Shop
+seo_title: "MMA Card Shop · UFC Cards for Sale and the eBay Deal Scanner Behind Them"
+permalink: /mma-cards/
+description: My UFC trading card side business. The cards for sale, what has sold, and the record of the eBay deal scanner and inventory app I built to run it.
+image: /assets/og/mma-cards.png
+image_alt: "MMA Card Shop, by Juan Torres. UFC cards for sale and the eBay deal scanner behind them."
+---
+{%- comment -%}
+  A "work" page (see the families in CLAUDE.md), in the boards' rate-sheet style (.rb in style.css).
+  Drawn from site.data.live.cards, the copy scripts/snapshot.py makes once a day of the Card Tracker's
+  public showcase Worker (card-tracker repo, src/showcase.js), with the photos in mma-cards/photos/.
+  That Worker never sends what a card cost, per-card profit, live deals or the searches behind them, so
+  nothing on this page can undercut a sale. No script: the snapshot is the page.
+{%- endcomment -%}
+{%- assign c = site.data.live.cards -%}
+<div class="rb mc">
+<header class="rb-head">
+  <div class="rb-title">
+    <p class="rb-family">Work · E-commerce</p>
+    <h1>MMA Card Shop</h1>
+    <p class="rb-sub">I buy UFC trading cards and sell them on CollX. To run it I built a private inventory app that tracks every card’s cost, fees and profit, and a deal scanner that searches eBay every ten minutes. This is the shop: what’s for sale, what has sold, and what the scanner finds.</p>
+    {%- if c.shop_url %}
+    <p><a class="rb-btn" href="{{ c.shop_url }}" rel="noopener">Shop on CollX</a></p>
+    {%- endif %}
+  </div>
+  <dl class="rb-stamp">
+    <div><dt>For sale</dt><dd>{{ c.stats.listed | default: "—" }}</dd></div>
+    <div><dt>Sold</dt><dd>{{ c.stats.sold | default: "—" }}</dd></div>
+    <div><dt>Deals found, 30 days</dt><dd>{{ c.scanner.finds | default: "—" }}</dd></div>
+    <div><dt>Typical find</dt><dd>{% if c.scanner.under and c.scanner.under != "—" %}{{ c.scanner.under }} under value{% else %}—{% endif %}</dd></div>
+  </dl>
+</header>
+
+<section class="rb-sec" id="shop" aria-labelledby="shop-h">
+  <h2 id="shop-h">The shop in numbers</h2>
+  {%- if c %}
+  <p>Every card I buy goes into the inventory app with what it cost; every sale with its price and the marketplace’s fees and supplies, so profit is what actually lands, not the sticker price. Profit shows here only once there are enough sales that no single card’s cost can be worked out from it. Updated {{ c.checked }}.</p>
+  <dl class="mc-stats">
+    <div><dt>Cards tracked</dt><dd>{{ c.stats.cards }}</dd></div>
+    <div><dt>Sold</dt><dd>{{ c.stats.sold }}</dd></div>
+    <div><dt>Revenue</dt><dd>{{ c.stats.revenue }}</dd></div>
+    <div><dt>Profit after fees</dt><dd>{{ c.stats.profit | default: "after 5 sales" }}</dd></div>
+    <div><dt>Margin</dt><dd>{{ c.stats.margin | default: "after 5 sales" }}</dd></div>
+    <div><dt>Average days to sell</dt><dd>{{ c.stats.days }}</dd></div>
+    <div><dt>Sold so far</dt><dd>{{ c.stats.sell_through }} of cards</dd></div>
+  </dl>
+  {%- if c.months.size > 0 %}
+  <table class="rb-t rb-stack">
+    <thead><tr><th scope="col">Month</th><th scope="col">Sales</th><th scope="col">Revenue</th><th scope="col">Profit after fees</th></tr></thead>
+    <tbody>
+    {%- for m in c.months %}
+      <tr><th scope="row">{{ m.month }}</th><td data-label="Sales">{{ m.sales }}</td><td data-label="Revenue">{{ m.revenue }}</td><td data-label="Profit after fees">{{ m.profit | default: "after 3 sales" }}</td></tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <p>No sales logged yet: the first ones show here month by month.</p>
+  {%- endif %}
+  {%- else %}
+  <p>The first snapshot hasn’t been taken yet.</p>
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="for-sale" aria-labelledby="sale-h">
+  <h2 id="sale-h">For sale</h2>
+  {%- if c.for_sale.size > 0 %}
+  <p>{{ c.for_sale.size }} cards, dearest first. Every one is listed on <a href="{{ c.shop_url }}" rel="noopener">my CollX shop</a>, which is where to buy; prices are the ones listed there as of {{ c.checked }}.</p>
+  <ul class="mc-grid">
+  {%- for k in c.for_sale %}
+    <li class="mc-card">
+      {%- if k.photo %}<img src="{{ k.photo }}" alt="{{ k.name | escape }}" loading="lazy" width="160" height="224">{% else %}<span class="mc-nophoto" aria-hidden="true"></span>{% endif %}
+      <p class="mc-name">{{ k.name }}</p>
+      <p class="mc-tags">{% if k.auto %}<span>Auto</span>{% endif %}{% if k.rookie %}<span>RC</span>{% endif %}{% if k.serial != "" %}<span>{{ k.serial }}</span>{% endif %}</p>
+      <p class="mc-price">{% if k.price != "—" %}{{ k.price }}{% else %}Price on CollX{% endif %}</p>
+    </li>
+  {%- endfor %}
+  </ul>
+  {%- else %}
+  <p>Nothing listed right now. <a href="{{ c.shop_url | default: '#' }}" rel="noopener">The CollX shop</a> has whatever is.</p>
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="sold" aria-labelledby="sold-h">
+  <h2 id="sold-h">Recently sold</h2>
+  {%- if c.sold.size > 0 %}
+  <table class="rb-t rb-stack">
+    <thead><tr><th scope="col">Card</th><th scope="col">Sold for</th><th scope="col">Where</th><th scope="col">Month</th><th scope="col">Days to sell</th></tr></thead>
+    <tbody>
+    {%- for k in c.sold %}
+      <tr><th scope="row">{{ k.name }}</th><td data-label="Sold for">{{ k.price }}</td><td data-label="Where">{{ k.where }}</td><td data-label="Month">{{ k.month }}</td><td data-label="Days to sell">{{ k.days }}</td></tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <p>No sales logged yet.</p>
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="scanner" aria-labelledby="scanner-h">
+  <h2 id="scanner-h">The deal scanner</h2>
+  <p>Every ten minutes the scanner runs a set of eBay searches through eBay’s official Browse API, about {{ c.scanner.calls | default: "—" }} calls a day, and holds each new listing against what it should cost. It keeps every fixed-price listing it sees as an asking price under the card it is ({{ c.scanner.asks | default: "—" }} on file), so it knows what a card goes for even when there is no sale to compare. When something is worth buying, my phone gets an alert.</p>
+  <dl class="mc-stats">
+    <div><dt>Found, last 30 days</dt><dd>{{ c.scanner.finds | default: "—" }}</dd></div>
+    <div><dt>I bought</dt><dd>{{ c.scanner.bought | default: "—" }}</dd></div>
+    <div><dt>Typical find</dt><dd>{% if c.scanner.under and c.scanner.under != "—" %}{{ c.scanner.under }} under value{% else %}—{% endif %}</dd></div>
+    {%- for k in c.scanner.kinds %}
+    <div><dt>{{ k.what | capitalize }}</dt><dd>{{ k.n }}</dd></div>
+    {%- endfor %}
+  </dl>
+  <h3 class="mc-h3">Past finds</h3>
+  {%- if c.finds.size > 0 %}
+  <p>Examples from at least two weeks ago, whose listings have ended, and none I bought: shown so the method is visible without showing anything still for sale.</p>
+  <ul class="mc-finds">
+  {%- for f in c.finds %}
+    <li>
+      {%- if f.image %}<img src="{{ f.image }}" alt="{{ f.title | escape }}" loading="lazy" width="72" height="72" referrerpolicy="no-referrer">{% endif %}
+      <div>
+        <p class="mc-name">{{ f.title }}</p>
+        <p class="data">{{ f.cost }}{% if f.lot %} · {{ f.lot }}{% endif %}{% if f.worth %} · worth about {{ f.worth }} ({{ f.under }} under){% endif %}</p>
+        <p class="mc-how">Found {{ f.found }} by {{ f.how }}{% if f.basis %}, priced against {{ f.basis }}{% endif %}.</p>
+      </div>
+    </li>
+  {%- endfor %}
+  </ul>
+  {%- else %}
+  <p>Finds show here two weeks after they were found, once their listings have ended, so nothing here is still for sale. The first ones are on their way.</p>
+  {%- endif %}
+</section>
+
+<section class="sec" id="how-it-works">
+  <header class="sec-head"><h2>How it works</h2>{% if c %}<span class="label">Updated {{ c.checked }}</span>{% endif %}</header>
+  <div class="row">
+    <div class="body prose">
+      <p><strong>The inventory app.</strong> A private web app on my phone, built on a Cloudflare Worker with a D1 database and R2 for photos, behind Cloudflare Access. Every card goes in with what it cost (shipping and tax included); scanning a card identifies it against the set’s checklist. A sale records the price, and the app takes off the marketplace’s fees and the supplies it took (a penny sleeve or a toploader, a share of the envelope), so every card has a true profit. A deal check works out, before I buy, what a card has to sell for to clear my margin.</p>
+      <p><strong>What the scanner watches.</strong> The fighters on UFC cards three to six weeks out, read from ESPN’s schedule, since that’s when their cards are cheapest before the fight; the sport’s most collected fighters every day; listings with a fighter’s name or a card word misspelled, which fewer buyers find; cards listed outside the card categories; and lots, priced per card. Broad searches read the newest 100 listings a look, the rest 25, and copies of one search share a single call.</p>
+      <p><strong>What a card is worth.</strong> eBay’s API has no sold prices, so the scanner learns from asking prices: the middle of three or more listings of the same card (fighter, year, product, insert and parallel, print run, autograph, grade), or, with fewer, a careful lower quarter of the same fighter’s similar cards. A listing well under that is underpriced. The most to pay is that value less the selling fees and my profit; for an auction, the most to bid comes out of that after shipping and tax.</p>
+      <p><strong>What this page leaves out.</strong> What any card cost me, the profit on any one card, the searches and limits the scanner uses, and anything that could still be bought. This page is a copy, made once a day, of a separate public summary that never has those in it.</p>
+    </div>
+  </div>
+</section>
+</div>

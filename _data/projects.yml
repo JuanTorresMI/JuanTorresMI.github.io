@@ -120,6 +120,28 @@
   stack: [JavaScript, Single-file web app, Opportunity cost, Local-first]
   keywords: [craft, ledger, minecraft, donut]
 
+- slug: mma-cards
+  family: Work
+  group: tools
+  title: MMA Card Shop
+  url: /mma-cards/
+  guide: /mma-cards/#how-it-works
+  kind: Business
+  status: Live
+  short: My UFC card flipping side business, with the inventory app and eBay deal scanner I built to run it.
+  summary: >-
+    I buy UFC trading cards on eBay and Whatnot and sell them on CollX. To run it I built a private inventory app
+    that tracks every card's cost, fees and profit, and a deal scanner that searches eBay every ten minutes with
+    eBay's Browse API. It watches the fighters on upcoming UFC cards, star fighters, misspelled listings and cheap
+    lots; it prices each card against what other sellers ask for the same card or similar ones, works out the most
+    to pay and still make a profit, and sends a phone alert. This page shows the shop's cards for sale, its sales
+    and the scanner's record, without what anything cost.
+  metric: Every 10 minutes · eBay Browse API · price estimates from similar listings · $0 to run
+  stack: [JavaScript, Python, Cloudflare Workers, D1 (SQLite), R2, eBay Browse API, Web Push, PWA]
+  category: BusinessApplication
+  search: [ufc card deals, mma trading cards, ebay deal finder, card flipping tracker, sports card inventory app]
+  keywords: [card, collx, ufc, mma]
+
 - slug: open-data
   family: Work
   group: data
