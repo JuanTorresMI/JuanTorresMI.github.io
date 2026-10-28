@@ -1,9 +1,9 @@
 {
- "generated": "2026-10-28T15:17:16+00:00",
- "rows": 804047,
- "rows_fmt": "804,047",
+ "generated": "2026-10-28T19:11:05+00:00",
+ "rows": 804072,
+ "rows_fmt": "804,072",
  "files": 33,
- "all_rows_fmt": "1,474,713",
+ "all_rows_fmt": "1,475,134",
  "all_files": 59,
  "datasets": [
   {
@@ -834,15 +834,15 @@
   },
   {
    "slug": "usda-dairy-product-prices",
-   "rows": 9038,
-   "rows_fmt": "9,038",
+   "rows": 9063,
+   "rows_fmt": "9,063",
    "first": "2020-01-04",
-   "newest": "2026-10-17",
+   "newest": "2026-10-24",
    "files": [
     {
-     "rows": 8875,
+     "rows": 8900,
      "first": "2020-01-04",
-     "newest": "2026-10-17",
+     "newest": "2026-10-24",
      "columns": [
       "section",
       "week_ending_date",
@@ -861,12 +861,12 @@
       "nonfat_milk_price",
       "nonfat_milk_sales"
      ],
-     "bytes": 885552,
+     "bytes": 887945,
      "file": "dairy-products-sales",
      "url": "/data/usda-dairy-product-prices/dairy-products-sales.csv",
      "report": 2993,
      "code": "DYWDAIRYPRODUCTSSALES",
-     "rows_fmt": "8,875",
+     "rows_fmt": "8,900",
      "size": "0.9 MB"
     },
     {
@@ -1367,10 +1367,10 @@
   },
   {
    "slug": "fed-cattle-prices",
-   "rows": 88084,
-   "rows_fmt": "88,084",
+   "rows": 88092,
+   "rows_fmt": "88,092",
    "first": "2020-01-02",
-   "newest": "2026-10-27",
+   "newest": "2026-10-28",
    "files": [
     {
      "file": "fed-cattle-weekly",
@@ -1403,10 +1403,10 @@
     {
      "file": "fed-cattle-5-area-daily",
      "url": "/fed-cattle-prices/fed-cattle-5-area-daily.csv",
-     "rows": 32725,
-     "rows_fmt": "32,725",
+     "rows": 32733,
+     "rows_fmt": "32,733",
      "first": "2020-01-02",
-     "newest": "2026-10-27",
+     "newest": "2026-10-28",
      "columns": [
       "date",
       "class",
@@ -1421,7 +1421,7 @@
       "price_high",
       "weighted_average"
      ],
-     "bytes": 2288075,
+     "bytes": 2288614,
      "size": "2.3 MB"
     }
    ]
@@ -1458,16 +1458,16 @@
   },
   {
    "slug": "border-truck-waits",
-   "rows": 91819,
-   "rows_fmt": "91,819",
+   "rows": 91977,
+   "rows_fmt": "91,977",
    "first": "2026-09-13",
    "newest": "2026-10-28",
    "files": [
     {
      "file": "border-truck-wait-readings-2026",
      "url": "/border-waits/border-truck-wait-readings-2026.csv",
-     "rows": 20993,
-     "rows_fmt": "20,993",
+     "rows": 21142,
+     "rows_fmt": "21,142",
      "first": "2026-09-13",
      "newest": "2026-10-28",
      "columns": [
@@ -1479,14 +1479,14 @@
       "fast_lanes_open",
       "source"
      ],
-     "bytes": 806249,
+     "bytes": 811915,
      "size": "0.8 MB"
     },
     {
      "file": "border-truck-wait-times",
      "url": "/border-waits/border-truck-wait-times.csv",
-     "rows": 6108,
-     "rows_fmt": "6,108",
+     "rows": 6117,
+     "rows_fmt": "6,117",
      "first": "",
      "newest": "",
      "columns": [
@@ -1501,7 +1501,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 463949,
+     "bytes": 464696,
      "size": "0.5 MB"
     },
     {
@@ -1527,16 +1527,16 @@
   },
   {
    "slug": "border-car-pedestrian-waits",
-   "rows": 167577,
-   "rows_fmt": "167,577",
+   "rows": 167807,
+   "rows_fmt": "167,807",
    "first": "2026-09-13",
    "newest": "2026-10-28",
    "files": [
     {
      "file": "border-car-pedestrian-wait-readings-2026",
      "url": "/border-waits/border-car-pedestrian-wait-readings-2026.csv",
-     "rows": 36711,
-     "rows_fmt": "36,711",
+     "rows": 36927,
+     "rows_fmt": "36,927",
      "first": "2026-09-13",
      "newest": "2026-10-28",
      "columns": [
@@ -1554,14 +1554,14 @@
       "pedestrian_ready_lanes_open",
       "source"
      ],
-     "bytes": 1717141,
+     "bytes": 1727110,
      "size": "1.7 MB"
     },
     {
      "file": "border-car-pedestrian-wait-times",
      "url": "/border-waits/border-car-pedestrian-wait-times.csv",
-     "rows": 19051,
-     "rows_fmt": "19,051",
+     "rows": 19065,
+     "rows_fmt": "19,065",
      "first": "",
      "newest": "",
      "columns": [
@@ -1577,8 +1577,8 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 1548917,
-     "size": "1.5 MB"
+     "bytes": 1550137,
+     "size": "1.6 MB"
     },
     {
      "file": "cbp-published-car-pedestrian-averages",
