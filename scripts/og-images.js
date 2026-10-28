@@ -50,6 +50,8 @@ const CARDS = {
     sub: "Beef · Pork · Fed cattle · Reefer freight · English and Spanish", bottom: ["juantorresmi.github.io/usda-market-prices", "USDA AMS · free CSVs"] },
   "worker-usage": { top: ["Juan Torres", "Data"], name: "Worker usage",
     sub: "Cloudflare’s free plan, used and left, from its own analytics", bottom: ["juantorresmi.github.io/worker-usage", "Cloudflare Workers · D1 · GraphQL Analytics"] },
+  "mma-cards": { top: ["Juan Torres", "Work · E-commerce"], name: "MMA Card Shop",
+    sub: "UFC cards for sale, and the eBay deal scanner behind them", bottom: ["juantorresmi.github.io/mma-cards", "Cloudflare Workers · D1 · eBay Browse API"] },
   youtube: { top: ["Juan Torres", "YouTube"], name: "On YouTube",
     sub: "The channel’s numbers, refreshed every three hours", bottom: ["juantorresmi.github.io/youtube", "Cloudflare Worker · YouTube Data API"] },
 };
@@ -92,7 +94,7 @@ html, body { margin: 0; width: ${size}px; height: ${size}px; overflow: hidden; b
 
 (async () => {
   fs.mkdirSync(outDir, { recursive: true });
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {});   // PW_CHANNEL=msedge: an installed browser
   const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1, colorScheme: "light" });
   for (const [name, c] of Object.entries(CARDS)) {
     await page.setContent(cardHtml(c), { waitUntil: "load" });

@@ -430,6 +430,25 @@ html { scroll-behavior: smooth; }
 .rb-stamp dd span { color: var(--text-2); }
 .wu-sched td { font-family: var(--sans); font-size: 15px; white-space: normal !important; }
 .wu-sched th { width: 22%; }
+/* The MMA card shop (/mma-cards/): a stamp-like row of figures, the cards for sale as a grid of photos, past finds. */
+.mc-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1px; margin: 16px 0 24px; border: 1px solid var(--rule); background: var(--rule); }
+.mc-stats > div { padding: 12px 16px; background: var(--ground); }
+.mc-stats dt { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.mc-stats dd { margin: 4px 0 0; font-family: var(--mono); font-size: 17px; color: var(--ink); }
+.mc-grid { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+.mc-card { display: flex; flex-direction: column; gap: 8px; padding: 8px; border: 1px solid var(--rule); background: var(--stock); }
+.mc-card img, .mc-nophoto { display: block; width: 100%; height: auto; aspect-ratio: 5 / 7; object-fit: cover; background: var(--silian); }
+.mc-name { margin: 0; font-size: 14px; line-height: 1.4; color: var(--ink); }
+.mc-tags { margin: 0; display: flex; flex-wrap: wrap; gap: 4px; min-height: 0; }
+.mc-tags span { font: 500 11px var(--mono); padding: 0 4px; border: 1px solid var(--rule); color: var(--text-2); }
+.mc-tags:empty { display: none; }
+.mc-price { margin: auto 0 0; font: 500 16px var(--mono); color: var(--ink); }
+.mc-h3 { margin: 32px 0 8px; font-size: 12px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.mc-finds { list-style: none; margin: 0; padding: 0; }
+.mc-finds li { display: grid; grid-template-columns: 72px 1fr; gap: 16px; padding: 16px 0; border-top: 1px solid var(--rule); }
+.mc-finds img { width: 72px; height: 72px; object-fit: cover; background: var(--silian); }
+.mc-finds p { margin: 0 0 4px; }
+.mc-how { font-size: 13px; color: var(--text-2); }
 .rb-update { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 16px; }
 .rb-update[hidden] { display: none; }
 .rb-update p { flex: 1 1 280px; margin: 0; font-size: 14px; line-height: 1.5; color: var(--text-2); }

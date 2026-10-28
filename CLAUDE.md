@@ -201,6 +201,13 @@ that grows without a trim and a CSV that keeps it.
   size), today and for 30 days. The Worker reads Cloudflare's GraphQL Analytics hourly with a read-only
   token (`CF_ANALYTICS_TOKEN`, `worker/src/usage.js`) and keeps one row; the page renders the snapshot's
   copy (`_data/live/usage.json`) and its script swaps in `/usage`.
+- **`/mma-cards/`**: the MMA card shop (cards for sale, sales, the eBay deal scanner's record). Its data is not
+  this site's Worker: `snapshot.py`'s `cards` job copies the Card Tracker's public, read-only showcase Worker
+  (`cards_url` in `_config.yml`; card-tracker repo, `src/showcase.js`) into `_data/live/cards.json`, and each
+  card's photo once into `mma-cards/photos/` (removed when the card leaves the page). That Worker never sends what
+  a card cost, per-card profit, the scanner's searches or limits, or any deal that could still be bought (finds
+  show 14 days on, once the listing ended, and never one Juan bought); keep it that way, since the page must not
+  undercut his sales. No page script.
 - **`/blog/`**: renders the local posts in HTML and merges Substack's items by script, so the
   list works without JavaScript and for crawlers.
 

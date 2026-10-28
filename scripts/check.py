@@ -143,6 +143,7 @@ if not os.path.isfile(os.path.join(site, "robots.txt")): err("robots.txt", "miss
 # or a browser with JavaScript off sees only the placeholder.
 for page, placeholder in (("youtube/index.html", "Asking YouTube…"), ("watching/index.html", "Asking the TV…"),
                           ("worker-usage/index.html", "Asking Cloudflare…"),
+                          ("mma-cards/index.html", "The first snapshot hasn’t been taken yet"),
                           ("reefer-rates/index.html", "The first report hasn’t been collected yet"),
                           ("border-waits/index.html", "The first readings haven’t been collected yet"),
                           ("border-waits/cars/index.html", "The first readings haven’t been collected yet"),
