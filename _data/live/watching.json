@@ -1,13 +1,13 @@
 {
- "generated": "2026-10-29T19:12:11.774Z",
+ "generated": "2026-10-29T20:18:15.728Z",
  "checked": "Oct 29, 2026",
  "last": {
-  "title": "South Park",
+  "title": "Tombstone",
   "sub": "",
-  "poster": "https://images.metahub.space/poster/small/tt0121955/img",
-  "link": "https://www.imdb.com/title/tt0121955/",
-  "initials": "SO",
-  "meta": "82% through · 4 min left · stopped Oct 28, 2026"
+  "poster": "https://images.metahub.space/poster/small/tt0108358/img",
+  "link": "https://www.imdb.com/title/tt0108358/",
+  "initials": "TO",
+  "meta": "73% through · 34 min left · stopped Oct 29, 2026"
  },
  "tiles": [
   {
@@ -15,7 +15,7 @@
    "l": "shows"
   },
   {
-   "n": "27",
+   "n": "28",
    "l": "films"
   },
   {
@@ -30,8 +30,14 @@
  "count": "8 titles this week",
  "days": [
   {
-   "day": "Wed, Oct 28",
+   "day": "Thu, Oct 29",
    "items": [
+    {
+     "kind": "Film",
+     "title": "Tombstone",
+     "link": "https://www.imdb.com/title/tt0108358/",
+     "meta": ""
+    },
     {
      "kind": "TV",
      "title": "South Park",
@@ -194,12 +200,6 @@
      "kind": "Film",
      "title": "X-Men: First Class",
      "link": "https://www.imdb.com/title/tt1270798/",
-     "meta": ""
-    },
-    {
-     "kind": "Film",
-     "title": "The End of Oak Street",
-     "link": "https://www.imdb.com/title/tt27165187/",
      "meta": ""
     }
    ]

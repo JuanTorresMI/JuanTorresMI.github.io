@@ -1,22 +1,22 @@
 {
- "generated": "2026-10-29T19:15:15+00:00",
- "rows": 804513,
- "rows_fmt": "804,513",
+ "generated": "2026-10-29T20:21:27+00:00",
+ "rows": 804847,
+ "rows_fmt": "804,847",
  "files": 33,
- "all_rows_fmt": "1,477,419",
+ "all_rows_fmt": "1,478,081",
  "all_files": 59,
  "datasets": [
   {
    "slug": "usda-hog-prices",
-   "rows": 113058,
-   "rows_fmt": "113,058",
+   "rows": 113100,
+   "rows_fmt": "113,100",
    "first": "2020-01-02",
    "newest": "2026-10-29",
    "files": [
     {
-     "rows": 62604,
+     "rows": 62640,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "section",
       "report_date",
@@ -28,18 +28,18 @@
       "price_chg",
       "price_5day"
      ],
-     "bytes": 6338431,
+     "bytes": 6342065,
      "file": "hog-prices-by-region",
      "url": "/data/usda-hog-prices/hog-prices-by-region.csv",
      "report": 2675,
      "code": "LM_HG203",
-     "rows_fmt": "62,604",
+     "rows_fmt": "62,640",
      "size": "6.3 MB"
     },
     {
-     "rows": 10434,
+     "rows": 10440,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "report_date",
       "purchase_type",
@@ -48,12 +48,12 @@
       "actual_week_ago",
       "actual_year_ago"
      ],
-     "bytes": 683160,
+     "bytes": 683557,
      "file": "hog-volume-by-purchase-type",
      "url": "/data/usda-hog-prices/hog-volume-by-purchase-type.csv",
      "report": 2675,
      "code": "LM_HG203",
-     "rows_fmt": "10,434",
+     "rows_fmt": "10,440",
      "size": "0.7 MB"
     },
     {
@@ -164,32 +164,32 @@
   },
   {
    "slug": "usda-cow-beef-cutout",
-   "rows": 133729,
-   "rows_fmt": "133,729",
+   "rows": 133806,
+   "rows_fmt": "133,806",
    "first": "2020-01-02",
-   "newest": "2026-10-28",
+   "newest": "2026-10-29",
    "files": [
     {
-     "rows": 1739,
+     "rows": 1740,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "report_date",
       "current_cutout_value",
       "change_cutout_value"
      ],
-     "bytes": 40002,
+     "bytes": 40024,
      "file": "cow-cutout-value",
      "url": "/data/usda-cow-beef-cutout/cow-cutout-value.csv",
      "report": 2455,
      "code": "LM_XB405",
-     "rows_fmt": "1,739",
+     "rows_fmt": "1,740",
      "size": "40 KB"
     },
     {
-     "rows": 26085,
+     "rows": 26100,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "report_date",
       "item_desc",
@@ -197,18 +197,18 @@
       "current_value",
       "change_value"
      ],
-     "bytes": 1170722,
+     "bytes": 1171390,
      "file": "cow-cutout-items",
      "url": "/data/usda-cow-beef-cutout/cow-cutout-items.csv",
      "report": 2455,
      "code": "LM_XB405",
-     "rows_fmt": "26,085",
+     "rows_fmt": "26,100",
      "size": "1.2 MB"
     },
     {
-     "rows": 104166,
+     "rows": 104226,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "section",
       "report_date",
@@ -218,18 +218,18 @@
       "weighted_avg",
       "change_in_wtd_avg"
      ],
-     "bytes": 7687835,
+     "bytes": 7692182,
      "file": "cow-beef-cuts",
      "url": "/data/usda-cow-beef-cutout/cow-beef-cuts.csv",
      "report": 2455,
      "code": "LM_XB405",
-     "rows_fmt": "104,166",
+     "rows_fmt": "104,226",
      "size": "7.7 MB"
     },
     {
-     "rows": 1739,
+     "rows": 1740,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "report_date",
       "boner_volume_loads",
@@ -243,27 +243,27 @@
       "lean_volume_pounds",
       "frozen_volume_pounds"
      ],
-     "bytes": 128147,
+     "bytes": 128219,
      "file": "cow-cutout-volume",
      "url": "/data/usda-cow-beef-cutout/cow-cutout-volume.csv",
      "report": 2455,
      "code": "LM_XB405",
-     "rows_fmt": "1,739",
+     "rows_fmt": "1,740",
      "size": "0.1 MB"
     }
    ]
   },
   {
    "slug": "usda-beef-trimmings-prices",
-   "rows": 60865,
-   "rows_fmt": "60,865",
+   "rows": 60900,
+   "rows_fmt": "60,900",
    "first": "2020-01-02",
-   "newest": "2026-10-28",
+   "newest": "2026-10-29",
    "files": [
     {
-     "rows": 59126,
+     "rows": 59160,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "section",
       "report_date",
@@ -275,18 +275,18 @@
       "price_range_high",
       "price_range_avg"
      ],
-     "bytes": 3892747,
+     "bytes": 3894941,
      "file": "beef-trimmings",
      "url": "/data/usda-beef-trimmings-prices/beef-trimmings.csv",
      "report": 2451,
      "code": "LM_XB401",
-     "rows_fmt": "59,126",
+     "rows_fmt": "59,160",
      "size": "3.9 MB"
     },
     {
-     "rows": 1739,
+     "rows": 1740,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "report_date",
       "trend",
@@ -295,12 +295,12 @@
       "central_volume_pounds",
       "national_volume_pounds"
      ],
-     "bytes": 66417,
+     "bytes": 66454,
      "file": "beef-trimmings-volume",
      "url": "/data/usda-beef-trimmings-prices/beef-trimmings-volume.csv",
      "report": 2451,
      "code": "LM_XB401",
-     "rows_fmt": "1,739",
+     "rows_fmt": "1,740",
      "size": "66 KB"
     }
    ]
@@ -432,15 +432,15 @@
   },
   {
    "slug": "usda-slaughter-cow-bull-prices",
-   "rows": 86500,
-   "rows_fmt": "86,500",
+   "rows": 86550,
+   "rows_fmt": "86,550",
    "first": "2020-01-02",
-   "newest": "2026-10-28",
+   "newest": "2026-10-29",
    "files": [
     {
-     "rows": 50170,
+     "rows": 50199,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "report_date_end",
       "selling_desc",
@@ -454,18 +454,18 @@
       "price_range_high",
       "wtd_avg_price"
      ],
-     "bytes": 5432001,
+     "bytes": 5435119,
      "file": "cow-bull-prices-national",
      "url": "/data/usda-slaughter-cow-bull-prices/cow-bull-prices-national.csv",
      "report": 2467,
      "code": "LM_CT103",
-     "rows_fmt": "50,170",
+     "rows_fmt": "50,199",
      "size": "5.4 MB"
     },
     {
-     "rows": 36330,
+     "rows": 36351,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "report_date_end",
       "region_name",
@@ -480,13 +480,13 @@
       "live_price_range_high",
       "live_wtd_avg_price"
      ],
-     "bytes": 3148802,
+     "bytes": 3150515,
      "file": "cow-bull-prices-regional",
      "url": "/data/usda-slaughter-cow-bull-prices/cow-bull-prices-regional.csv",
      "report": 2467,
      "code": "LM_CT103",
-     "rows_fmt": "36,330",
-     "size": "3.1 MB"
+     "rows_fmt": "36,351",
+     "size": "3.2 MB"
     }
    ]
   },
@@ -743,15 +743,15 @@
   },
   {
    "slug": "usda-lamb-prices",
-   "rows": 235996,
-   "rows_fmt": "235,996",
+   "rows": 236126,
+   "rows_fmt": "236,126",
    "first": "2020-01-02",
-   "newest": "2026-10-28",
+   "newest": "2026-10-29",
    "files": [
     {
-     "rows": 33004,
+     "rows": 33023,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "report_date",
       "imps_code",
@@ -761,18 +761,18 @@
       "percentage_carcass",
       "cut_weight"
      ],
-     "bytes": 1740795,
+     "bytes": 1741801,
      "file": "lamb-cutout-cuts",
      "url": "/data/usda-lamb-prices/lamb-cutout-cuts.csv",
      "report": 2649,
      "code": "LM_XL502",
-     "rows_fmt": "33,004",
+     "rows_fmt": "33,023",
      "size": "1.7 MB"
     },
     {
-     "rows": 1738,
+     "rows": 1739,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "report_date",
       "gross_carcass_price",
@@ -780,18 +780,18 @@
       "gross_carcass_percentage",
       "gross_carcass_weight"
      ],
-     "bytes": 66593,
+     "bytes": 66631,
      "file": "lamb-carcass-value",
      "url": "/data/usda-lamb-prices/lamb-carcass-value.csv",
      "report": 2649,
      "code": "LM_XL502",
-     "rows_fmt": "1,738",
+     "rows_fmt": "1,739",
      "size": "67 KB"
     },
     {
-     "rows": 191286,
+     "rows": 191396,
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "report_date",
       "refrigeration_description",
@@ -801,12 +801,12 @@
       "price_range_avg",
       "change_from_prior_day"
      ],
-     "bytes": 10086945,
+     "bytes": 10092711,
      "file": "boxed-lamb-cuts",
      "url": "/data/usda-lamb-prices/boxed-lamb-cuts.csv",
      "report": 2648,
      "code": "LM_XL500",
-     "rows_fmt": "191,286",
+     "rows_fmt": "191,396",
      "size": "10.1 MB"
     },
     {
@@ -945,18 +945,18 @@
  "boards": [
   {
    "slug": "beef-prices",
-   "rows": 115841,
-   "rows_fmt": "115,841",
+   "rows": 115898,
+   "rows_fmt": "115,898",
    "first": "2020-01-02",
-   "newest": "2026-10-28",
+   "newest": "2026-10-29",
    "files": [
     {
      "file": "boxed-beef-cutout-daily",
      "url": "/beef-prices/boxed-beef-cutout-daily.csv",
-     "rows": 1739,
-     "rows_fmt": "1,739",
+     "rows": 1740,
+     "rows_fmt": "1,740",
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "date",
       "choice_cutout",
@@ -981,7 +981,7 @@
       "flank_choice",
       "flank_select"
      ],
-     "bytes": 264627,
+     "bytes": 264778,
      "size": "0.3 MB"
     },
     {
@@ -1143,10 +1143,10 @@
     {
      "file": "boxed-beef-cut-prices-2026",
      "url": "/beef-prices/boxed-beef-cut-prices-2026.csv",
-     "rows": 12633,
-     "rows_fmt": "12,633",
+     "rows": 12689,
+     "rows_fmt": "12,689",
      "first": "2026-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "date",
       "section",
@@ -1163,25 +1163,25 @@
       "trades",
       "pounds"
      ],
-     "bytes": 1547375,
-     "size": "1.5 MB"
+     "bytes": 1554280,
+     "size": "1.6 MB"
     }
    ]
   },
   {
    "slug": "pork-prices",
-   "rows": 176454,
-   "rows_fmt": "176,454",
+   "rows": 176546,
+   "rows_fmt": "176,546",
    "first": "2020-01-02",
-   "newest": "2026-10-28",
+   "newest": "2026-10-29",
    "files": [
     {
      "file": "pork-cutout-daily",
      "url": "/pork-prices/pork-cutout-daily.csv",
-     "rows": 1739,
-     "rows_fmt": "1,739",
+     "rows": 1740,
+     "rows_fmt": "1,740",
      "first": "2020-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "date",
       "carcass",
@@ -1195,7 +1195,7 @@
       "cut_loads",
       "trim_and_process_loads"
      ],
-     "bytes": 132683,
+     "bytes": 132757,
      "size": "0.1 MB"
     },
     {
@@ -1327,10 +1327,10 @@
     {
      "file": "pork-cut-prices-2026",
      "url": "/pork-prices/pork-cut-prices-2026.csv",
-     "rows": 19189,
-     "rows_fmt": "19,189",
+     "rows": 19280,
+     "rows_fmt": "19,280",
      "first": "2026-01-02",
-     "newest": "2026-10-28",
+     "newest": "2026-10-29",
      "columns": [
       "date",
       "section",
@@ -1342,7 +1342,7 @@
       "weighted_average_per_lb",
       "pounds"
      ],
-     "bytes": 2169083,
+     "bytes": 2179362,
      "size": "2.2 MB"
     },
     {
@@ -1458,16 +1458,16 @@
   },
   {
    "slug": "border-truck-waits",
-   "rows": 92567,
-   "rows_fmt": "92,567",
+   "rows": 92635,
+   "rows_fmt": "92,635",
    "first": "2026-09-13",
    "newest": "2026-10-29",
    "files": [
     {
      "file": "border-truck-wait-readings-2026",
      "url": "/border-waits/border-truck-wait-readings-2026.csv",
-     "rows": 21741,
-     "rows_fmt": "21,741",
+     "rows": 21806,
+     "rows_fmt": "21,806",
      "first": "2026-09-13",
      "newest": "2026-10-29",
      "columns": [
@@ -1479,14 +1479,14 @@
       "fast_lanes_open",
       "source"
      ],
-     "bytes": 834628,
+     "bytes": 837095,
      "size": "0.8 MB"
     },
     {
      "file": "border-truck-wait-times",
      "url": "/border-waits/border-truck-wait-times.csv",
-     "rows": 6108,
-     "rows_fmt": "6,108",
+     "rows": 6111,
+     "rows_fmt": "6,111",
      "first": "",
      "newest": "",
      "columns": [
@@ -1501,7 +1501,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 464121,
+     "bytes": 464345,
      "size": "0.5 MB"
     },
     {
@@ -1527,16 +1527,16 @@
   },
   {
    "slug": "border-car-pedestrian-waits",
-   "rows": 168873,
-   "rows_fmt": "168,873",
+   "rows": 168984,
+   "rows_fmt": "168,984",
    "first": "2026-09-13",
    "newest": "2026-10-29",
    "files": [
     {
      "file": "border-car-pedestrian-wait-readings-2026",
      "url": "/border-waits/border-car-pedestrian-wait-readings-2026.csv",
-     "rows": 37991,
-     "rows_fmt": "37,991",
+     "rows": 38092,
+     "rows_fmt": "38,092",
      "first": "2026-09-13",
      "newest": "2026-10-29",
      "columns": [
@@ -1554,14 +1554,14 @@
       "pedestrian_ready_lanes_open",
       "source"
      ],
-     "bytes": 1775897,
+     "bytes": 1780589,
      "size": "1.8 MB"
     },
     {
      "file": "border-car-pedestrian-wait-times",
      "url": "/border-waits/border-car-pedestrian-wait-times.csv",
-     "rows": 19067,
-     "rows_fmt": "19,067",
+     "rows": 19077,
+     "rows_fmt": "19,077",
      "first": "",
      "newest": "",
      "columns": [
@@ -1577,7 +1577,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 1550796,
+     "bytes": 1551575,
      "size": "1.6 MB"
     },
     {
