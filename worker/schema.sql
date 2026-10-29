@@ -47,6 +47,8 @@ CREATE TABLE IF NOT EXISTS border_waits (
   fast_lanes INTEGER,
   PRIMARY KEY (port, at)
 ) WITHOUT ROWID;
+-- By time too: the snapshot's "since" read, the oldest reading and the 14-day trim would each read every row without it.
+CREATE INDEX IF NOT EXISTS border_waits_at ON border_waits (at);
 
 -- The same feed's car and pedestrian lanes (src/border.js, toPeople), one row per port per posted
 -- reading, for the site's archive (border-waits/border-car-pedestrian-wait-readings-YYYY.csv). The same
@@ -64,6 +66,7 @@ CREATE TABLE IF NOT EXISTS border_people (
   walk_ready       INTEGER, walk_ready_lanes INTEGER,
   PRIMARY KEY (port, at)
 ) WITHOUT ROWID;
+CREATE INDEX IF NOT EXISTS border_people_at ON border_people (at);
 
 CREATE TABLE IF NOT EXISTS border_latest (
   id         INTEGER PRIMARY KEY CHECK (id = 1),   -- one row: the board as the last poll saw it
