@@ -189306,35 +189306,65 @@ report_date,refrigeration_description,item_desc,number_trades,total_weight,price
 2026-10-02,Frozen,Necks (),5,3353,450.39,-.77
 2026-10-02,Frozen,Fat and Bone (),,,,
 2026-10-05,Fresh,"Carcass, 3-way, 55/dn (200A)",,,,
+2026-10-05,Frozen,"Loins, trimmed 0x0 (232)",,,,
 2026-10-05,Fresh,"Carcass, 3-way, 55/65 (200A)",,,,
+2026-10-05,Frozen,"Loins, short-cut, 2x2 (232A)",,,,
 2026-10-05,Fresh,"Carcass, 3-way, 65/up (200A)",,,,
+2026-10-05,Frozen,"Loins, short-cut, 1x1 (232A)",,,,
 2026-10-05,Fresh,Foresaddle (202),,,,
+2026-10-05,Frozen,"Loins, short-cut, 0x0 (232A)",,,,
 2026-10-05,Fresh,Bracelet (203),,,,
+2026-10-05,Frozen,"Loin, boneless, tied (232C)",,,,
 2026-10-05,Fresh,"Rack, 8-Rib, light (204)",20,3399,1613.78,1.55
+2026-10-05,Frozen,"Flank, untrimmed (232E)",,,,
 2026-10-05,Fresh,"Rack, 8-Rib, medium (204)",27,17708,1486.00,-17.54
+2026-10-05,Frozen,Legs (233),,,,
 2026-10-05,Fresh,"Rack, 8-Rib, heavy (204)",,,,
+2026-10-05,Frozen,"Leg, trotter-off (233A)",,,,
 2026-10-05,Fresh,"Rack, chined (204A)",12,2936,1782.72,19.71
+2026-10-05,Frozen,"Leg, trotter-off, partial bnls (233C)",,,,
 2026-10-05,Fresh,"Rack, roast-ready (204B)",16,3238,2089.04,4.18
+2026-10-05,Frozen,"Leg, steamship (233E)",,,,
 2026-10-05,Fresh,"Rack, roast-ready, frenched (204C)",56,5307,3054.35,12.42
+2026-10-05,Frozen,Hindshank (233F),14,3323,879.25,20.25
 2026-10-05,Fresh,"Rack, roast-ready, special (204D)",64,5132,3395.83,-3.27
+2026-10-05,Frozen,"Leg, Boneless, Tied (234)",3,1440,1064.83,1.58
 2026-10-05,Fresh,Shoulders (206),33,21321,647.78,.46
+2026-10-05,Frozen,"Leg, shank off, bnls (234A)",,,,
 2026-10-05,Fresh,"Shoulders, square-cut (207)",125,36334,653.84,-4.75
+2026-10-05,Frozen,"Leg, 2-way boneless (234B)",,,,
 2026-10-05,Fresh,"Shoulders, square-cut, bnls (208)",30,6416,1153.64,-16.91
+2026-10-05,Frozen,"Leg, bottom, boneless (234C)",,,,
 2026-10-05,Fresh,Breast (209),23,5912,550.40,1.36
+2026-10-05,Frozen,"Leg, outside, boneless (234D)",,,,
 2026-10-05,Fresh,"Breast, bulk ()",,,,
+2026-10-05,Frozen,"Leg, inside, boneless (234E)",5,592,1108.40,134.26
 2026-10-05,Fresh,"Ribs, Breast bones off (209A)",17,2224,961.80,-10.04
+2026-10-05,Frozen,"Leg, sirloin tip, bnls (234F)",,,,
 2026-10-05,Fresh,Foreshank (210),98,7291,776.69,-6.23
+2026-10-05,Frozen,"Sirloin, boneless (234G)",,,,
 2026-10-05,Fresh,"Hindsaddle, long-cut (229)",,,,
+2026-10-05,Frozen,Back (235),,,,
 2026-10-05,Fresh,Hindsaddle (230),,,,
+2026-10-05,Frozen,"Back, trimmed (236)",,,,
 2026-10-05,Fresh,Loins (231),9,2684,786.39,-14.14
+2026-10-05,Frozen,Trimmings (238),,,,
 2026-10-05,Fresh,"Loins, trimmed 4x4 (232)",44,4264,915.13,1.10
+2026-10-05,Frozen,Special trimmings (239),,,,
 2026-10-05,Fresh,"Loins, trimmed 2x2 (232)",3,421,1138.85,.77
+2026-10-05,Frozen,"Loin, boneless, 3-way (244)",,,,
 2026-10-05,Fresh,"Loins, trimmed 1x1 (232)",36,3413,1146.01,-27.99
+2026-10-05,Frozen,Sirloin (245),,,,
 2026-10-05,Fresh,"Loins, trimmed 0x0 (232)",24,2137,1192.69,-6.66
+2026-10-05,Frozen,Tenderloin (246),,,,
 2026-10-05,Fresh,"Loins, short-cut, 2x2 (232A)",,,,
+2026-10-05,Frozen,Lamb for stewing (295),29,7727,1151.50,.76
 2026-10-05,Fresh,"Loins, short-cut, 1x1 (232A)",14,2152,1169.68,-.03
+2026-10-05,Frozen,Ground lamb (296),31,13580,835.84,19.85
 2026-10-05,Fresh,"Loins, short-cut, 0x0 (232A)",,,,
+2026-10-05,Frozen,Necks (),7,2426,504.20,53.81
 2026-10-05,Fresh,"Loin, boneless, tied (232C)",8,348,2474.75,172.82
+2026-10-05,Frozen,Fat and Bone (),,,,
 2026-10-05,Fresh,"Flank, untrimmed (232E)",14,2634,381.07,1.12
 2026-10-05,Fresh,Legs (233),6,927,695.99,.00
 2026-10-05,Fresh,"Leg, trotter-off (233A)",92,20957,688.04,3.27
@@ -189385,36 +189415,6 @@ report_date,refrigeration_description,item_desc,number_trades,total_weight,price
 2026-10-05,Frozen,"Loins, trimmed 4x4 (232)",,,,
 2026-10-05,Frozen,"Loins, trimmed 2x2 (232)",,,,
 2026-10-05,Frozen,"Loins, trimmed 1x1 (232)",3,7057,947.27,
-2026-10-05,Frozen,"Loins, trimmed 0x0 (232)",,,,
-2026-10-05,Frozen,"Loins, short-cut, 2x2 (232A)",,,,
-2026-10-05,Frozen,"Loins, short-cut, 1x1 (232A)",,,,
-2026-10-05,Frozen,"Loins, short-cut, 0x0 (232A)",,,,
-2026-10-05,Frozen,"Loin, boneless, tied (232C)",,,,
-2026-10-05,Frozen,"Flank, untrimmed (232E)",,,,
-2026-10-05,Frozen,Legs (233),,,,
-2026-10-05,Frozen,"Leg, trotter-off (233A)",,,,
-2026-10-05,Frozen,"Leg, trotter-off, partial bnls (233C)",,,,
-2026-10-05,Frozen,"Leg, steamship (233E)",,,,
-2026-10-05,Frozen,Hindshank (233F),14,3323,879.25,20.25
-2026-10-05,Frozen,"Leg, Boneless, Tied (234)",3,1440,1064.83,1.58
-2026-10-05,Frozen,"Leg, shank off, bnls (234A)",,,,
-2026-10-05,Frozen,"Leg, 2-way boneless (234B)",,,,
-2026-10-05,Frozen,"Leg, bottom, boneless (234C)",,,,
-2026-10-05,Frozen,"Leg, outside, boneless (234D)",,,,
-2026-10-05,Frozen,"Leg, inside, boneless (234E)",5,592,1108.40,134.26
-2026-10-05,Frozen,"Leg, sirloin tip, bnls (234F)",,,,
-2026-10-05,Frozen,"Sirloin, boneless (234G)",,,,
-2026-10-05,Frozen,Back (235),,,,
-2026-10-05,Frozen,"Back, trimmed (236)",,,,
-2026-10-05,Frozen,Trimmings (238),,,,
-2026-10-05,Frozen,Special trimmings (239),,,,
-2026-10-05,Frozen,"Loin, boneless, 3-way (244)",,,,
-2026-10-05,Frozen,Sirloin (245),,,,
-2026-10-05,Frozen,Tenderloin (246),,,,
-2026-10-05,Frozen,Lamb for stewing (295),29,7727,1151.50,.76
-2026-10-05,Frozen,Ground lamb (296),31,13580,835.84,19.85
-2026-10-05,Frozen,Necks (),7,2426,504.20,53.81
-2026-10-05,Frozen,Fat and Bone (),,,,
 2026-10-06,Fresh,"Carcass, 3-way, 55/dn (200A)",,,,
 2026-10-06,Fresh,"Carcass, 3-way, 55/65 (200A)",,,,
 2026-10-06,Fresh,"Carcass, 3-way, 65/up (200A)",,,,
@@ -191175,3 +191175,113 @@ report_date,refrigeration_description,item_desc,number_trades,total_weight,price
 2026-10-27,Frozen,Ground lamb (296),21,5906,809.22,-4.68
 2026-10-27,Frozen,Necks (),6,2804,517.76,3.02
 2026-10-27,Frozen,Fat and Bone (),,,,
+2026-10-28,Fresh,"Carcass, 3-way, 55/dn (200A)",,,,
+2026-10-28,Fresh,"Carcass, 3-way, 55/65 (200A)",,,,
+2026-10-28,Fresh,"Carcass, 3-way, 65/up (200A)",,,,
+2026-10-28,Fresh,Foresaddle (202),,,,
+2026-10-28,Fresh,Bracelet (203),,,,
+2026-10-28,Fresh,"Rack, 8-Rib, light (204)",19,3816,1616.50,-.43
+2026-10-28,Fresh,"Rack, 8-Rib, medium (204)",21,11237,1475.78,-5.03
+2026-10-28,Fresh,"Rack, 8-Rib, heavy (204)",,,,
+2026-10-28,Fresh,"Rack, chined (204A)",14,3334,1924.39,14.61
+2026-10-28,Fresh,"Rack, roast-ready (204B)",27,5998,1994.19,-3.92
+2026-10-28,Fresh,"Rack, roast-ready, frenched (204C)",53,4468,3033.58,14.20
+2026-10-28,Fresh,"Rack, roast-ready, special (204D)",66,5952,3423.92,-3.10
+2026-10-28,Fresh,Shoulders (206),33,17267,635.94,1.97
+2026-10-28,Fresh,"Shoulders, square-cut (207)",133,37393,656.74,-1.13
+2026-10-28,Fresh,"Shoulders, square-cut, bnls (208)",30,6658,1173.75,-4.28
+2026-10-28,Fresh,Breast (209),26,7630,532.43,.74
+2026-10-28,Fresh,"Breast, bulk ()",,,,
+2026-10-28,Fresh,"Ribs, Breast bones off (209A)",20,1850,999.00,-17.70
+2026-10-28,Fresh,Foreshank (210),101,9292,785.76,1.68
+2026-10-28,Fresh,"Hindsaddle, long-cut (229)",,,,
+2026-10-28,Fresh,Hindsaddle (230),,,,
+2026-10-28,Fresh,Loins (231),6,1787,824.97,87.86
+2026-10-28,Fresh,"Loins, trimmed 4x4 (232)",38,5500,913.91,-5.49
+2026-10-28,Fresh,"Loins, trimmed 2x2 (232)",4,653,1006.59,-4.77
+2026-10-28,Fresh,"Loins, trimmed 1x1 (232)",41,2843,1177.74,-1.01
+2026-10-28,Fresh,"Loins, trimmed 0x0 (232)",28,2734,1208.92,1.44
+2026-10-28,Fresh,"Loins, short-cut, 2x2 (232A)",,,,
+2026-10-28,Fresh,"Loins, short-cut, 1x1 (232A)",14,3830,1165.21,.08
+2026-10-28,Fresh,"Loins, short-cut, 0x0 (232A)",,,,
+2026-10-28,Fresh,"Loin, boneless, tied (232C)",,,,
+2026-10-28,Fresh,"Flank, untrimmed (232E)",14,3238,384.43,.37
+2026-10-28,Fresh,Legs (233),7,830,691.65,.00
+2026-10-28,Fresh,"Leg, trotter-off (233A)",97,24007,686.41,-2.13
+2026-10-28,Fresh,"Leg, trotter-off, partial bnls (233C)",12,1751,980.69,46.28
+2026-10-28,Fresh,"Leg, steamship (233E)",,,,
+2026-10-28,Fresh,Hindshank (233F),32,4597,856.47,-9.26
+2026-10-28,Fresh,"Leg, Boneless, Tied (234)",58,7863,1002.20,1.70
+2026-10-28,Fresh,"Leg, shank off, bnls (234A)",25,3802,1086.73,3.65
+2026-10-28,Fresh,"Leg, 2-way boneless (234B)",,,,
+2026-10-28,Fresh,"Leg, bottom, boneless (234C)",,,,
+2026-10-28,Fresh,"Leg, outside, boneless (234D)",,,,
+2026-10-28,Fresh,"Leg, inside, boneless (234E)",39,2701,1196.65,-8.98
+2026-10-28,Fresh,"Leg, sirloin tip, bnls (234F)",,,,
+2026-10-28,Fresh,"Sirloin, boneless (234G)",11,796,1434.52,2.88
+2026-10-28,Fresh,Back (235),,,,
+2026-10-28,Fresh,"Back, trimmed (236)",3,34,1079.00,.00
+2026-10-28,Fresh,Trimmings (238),6,968,757.02,4.87
+2026-10-28,Fresh,Special trimmings (239),8,110,852.64,-1.36
+2026-10-28,Fresh,"Loin, boneless, 3-way (244)",,,,
+2026-10-28,Fresh,Sirloin (245),,,,
+2026-10-28,Fresh,Tenderloin (246),,,,
+2026-10-28,Fresh,Lamb for stewing (295),10,4137,1124.42,7.70
+2026-10-28,Fresh,Ground lamb (296),55,35925,907.22,-.10
+2026-10-28,Fresh,Necks (),5,1384,542.24,.69
+2026-10-28,Fresh,Fat and Bone (),,,,
+2026-10-28,Frozen,"Carcass, 3-way, 55/dn (200A)",,,,
+2026-10-28,Frozen,"Carcass, 3-way, 55/65 (200A)",,,,
+2026-10-28,Frozen,"Carcass, 3-way, 65/up (200A)",,,,
+2026-10-28,Frozen,Foresaddle (202),,,,
+2026-10-28,Frozen,Bracelet (203),,,,
+2026-10-28,Frozen,"Rack, 8-Rib, light (204)",,,,
+2026-10-28,Frozen,"Rack, 8-Rib, medium (204)",,,,
+2026-10-28,Frozen,"Rack, 8-Rib, heavy (204)",,,,
+2026-10-28,Frozen,"Rack, chined (204A)",,,,
+2026-10-28,Frozen,"Rack, roast-ready (204B)",,,,
+2026-10-28,Frozen,"Rack, roast-ready, frenched (204C)",,,,
+2026-10-28,Frozen,"Rack, roast-ready, special (204D)",,,,
+2026-10-28,Frozen,Shoulders (206),,,,
+2026-10-28,Frozen,"Shoulders, square-cut (207)",,,,
+2026-10-28,Frozen,"Shoulders, square-cut, bnls (208)",,,,
+2026-10-28,Frozen,Breast (209),4,13909,427.90,-1.61
+2026-10-28,Frozen,"Breast, bulk ()",,,,
+2026-10-28,Frozen,"Ribs, Breast bones off (209A)",,,,
+2026-10-28,Frozen,Foreshank (210),13,4006,745.73,-3.35
+2026-10-28,Frozen,"Hindsaddle, long-cut (229)",,,,
+2026-10-28,Frozen,Hindsaddle (230),,,,
+2026-10-28,Frozen,Loins (231),,,,
+2026-10-28,Frozen,"Loins, trimmed 4x4 (232)",,,,
+2026-10-28,Frozen,"Loins, trimmed 2x2 (232)",,,,
+2026-10-28,Frozen,"Loins, trimmed 1x1 (232)",3,3693,948.75,
+2026-10-28,Frozen,"Loins, trimmed 0x0 (232)",,,,
+2026-10-28,Frozen,"Loins, short-cut, 2x2 (232A)",,,,
+2026-10-28,Frozen,"Loins, short-cut, 1x1 (232A)",,,,
+2026-10-28,Frozen,"Loins, short-cut, 0x0 (232A)",,,,
+2026-10-28,Frozen,"Loin, boneless, tied (232C)",,,,
+2026-10-28,Frozen,"Flank, untrimmed (232E)",,,,
+2026-10-28,Frozen,Legs (233),,,,
+2026-10-28,Frozen,"Leg, trotter-off (233A)",,,,
+2026-10-28,Frozen,"Leg, trotter-off, partial bnls (233C)",,,,
+2026-10-28,Frozen,"Leg, steamship (233E)",,,,
+2026-10-28,Frozen,Hindshank (233F),13,2260,888.22,-33.97
+2026-10-28,Frozen,"Leg, Boneless, Tied (234)",3,547,1008.26,
+2026-10-28,Frozen,"Leg, shank off, bnls (234A)",,,,
+2026-10-28,Frozen,"Leg, 2-way boneless (234B)",,,,
+2026-10-28,Frozen,"Leg, bottom, boneless (234C)",,,,
+2026-10-28,Frozen,"Leg, outside, boneless (234D)",,,,
+2026-10-28,Frozen,"Leg, inside, boneless (234E)",,,,
+2026-10-28,Frozen,"Leg, sirloin tip, bnls (234F)",,,,
+2026-10-28,Frozen,"Sirloin, boneless (234G)",,,,
+2026-10-28,Frozen,Back (235),,,,
+2026-10-28,Frozen,"Back, trimmed (236)",,,,
+2026-10-28,Frozen,Trimmings (238),,,,
+2026-10-28,Frozen,Special trimmings (239),,,,
+2026-10-28,Frozen,"Loin, boneless, 3-way (244)",,,,
+2026-10-28,Frozen,Sirloin (245),,,,
+2026-10-28,Frozen,Tenderloin (246),,,,
+2026-10-28,Frozen,Lamb for stewing (295),29,4932,1119.91,2.81
+2026-10-28,Frozen,Ground lamb (296),20,4886,806.97,-2.25
+2026-10-28,Frozen,Necks (),6,2804,517.76,.00
+2026-10-28,Frozen,Fat and Bone (),,,,
