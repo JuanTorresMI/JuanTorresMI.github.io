@@ -30,6 +30,7 @@ how the live data flows, the workflows and scripts.
 | `aggregate-planning/` | The planner: `index.html` (layout `app`), `planner.css` (scoped under `.ap`), `model.js` (the LP/MIP; no DOM, runs in Node), `solver.js` + `solver-worker.js` (HiGHS in a Web Worker), `app.js`, `study.js` (study mode: the plan taken apart step by step; the worker's `explain()` does the extra solves), `xlsx.js` (the downloadable workbook, no library), `sw.js` (offline). `lib/` holds HiGHS and Chart.js, vendored unchanged |
 | `plain-solver/` | The general solver: `index.html` (its own layout, `_layouts/solver.html`: a full-screen app with a top bar, a step rail, one screen per step and a plain-English summary; the guide at `#guide` below it), `solver.css` (scoped under `.ps`), `model.js` (the model JSON and everything that compiles it: expand, classify, LP writer, units, checks, the math; no DOM, runs in Node), `engines.js` (nonlinear and evolutionary engines), `solve.js` (one solve: routing, HiGHS, diagnosis, two-sided shadow prices, limits), `engine-worker.js` + `engine.js` (the Web Worker), `templates.js`, `blocks.js` (building blocks: fill-in-the-blank sentences that write a whole pattern, and combining models), `text.js` (the whole model as text, read and write), `excel.js` (the model as one Excel sheet with live formulas and Excel's own Solver model stored in it, as hidden `solver_*` names; `aggregate-planning/xlsx.js` writes them), `app.js` (the build-your-own flow, sentence builder, results, what-if, reports, imports; step 4's "The most profit" / "The lowest cost" lines are stored as two ordinary results, `moneyIn` and `moneyOut`, and read back from them). The guide's FAQ and four questions are also its `FAQPage` and `HowTo` JSON-LD: change the visible text and the JSON-LD together. It uses the planner's HiGHS (`aggregate-planning/lib`) and `.xlsx` writer, so changing either changes both. Tests: `node scripts/plain-solver-test.js` (the CI runs them) `scripts/plain-solver-page-test.js` (Playwright, clicks through the page at phone and desktop widths), and `scripts/plain-solver-excel-check.js` + `.ps1` (on Windows with Excel: opens every exported workbook, runs its Solver, compares answers) |
 | `reefer-rates/`, `border-waits/`, `es/tiempos-de-espera/`, `beef-prices/`, `pork-prices/`, `fed-cattle-prices/`, `usda-market-prices/`, `es/precios-*/` | The data boards' index pages, their CSVs and scripts (see "Live data pages"). The beef, pork and cattle boards are each one include (`_includes/beef-board.html`, `pork-board.html`, `cattle-board.html`) that the English and Spanish index pages both render; `usda-hub.html` is the parent page; `price-chart`, `price-grid`, `price-season`, `cut-tools`, `cattle-detail`, `cattle-calc` and `usda-boards` are their shared parts |
+| `mma-cards/` | The MMA card shop: `index.html` (layout `tool`, `app_auto`, the boards' `.rb` styles plus `.mc-*` in `style.css`) and `photos/` (card thumbnails `snapshot.py` copies; never edit by hand). Its data comes from the card-tracker repo's showcase Worker, not `worker/` (see "Live data pages") |
 | `worker/` | The Cloudflare Worker behind every live page. Not part of the Jekyll build; its README lists its routes, crons, secrets and tables |
 | `scripts/` | `check.py` (verifies a build), `screenshots.js` (visual pass), `og-images.js` and `music-og.js` (share pictures), `snapshot.py` (Worker data → `_data/live/`), `lastmod.py` (git dates for the sitemap), `indexnow.py` (pings Bing and other IndexNow engines after each deploy), `border-backfill.mjs` (one-off: border history from before the Worker, from an archive of CBP's feed) |
 | `data/`, `_data/datasets.json`, `scripts/datasets.py` | The open datasets: USDA datamart reports archived as published (hogs, sows, cow beef, trimmings, lamb, dairy, comprehensive reports), one CSV per table from 2020, listed on `/data/` (the catalog of every published CSV, boards' too). The boards' own CSVs stay at their board's address (published, never moved); `datasets.json` lists them under `boards` and `datasets.py` counts their rows and dates, so `/data/` shows every file the same way, and every board's download section links to its entry there. `/data/` is also a card on `/projects/` (group `data`). A new dataset is an entry in `datasets.json`; the snapshot workflow runs `datasets.py` after the boards, paced (1.5 s a request, 450 a run, stops on a 403: parallel requests got a 403 for hours). `check.py` treats every file `_data/live/datasets.json` lists as published |
@@ -91,7 +92,7 @@ dates and figures. Spacing steps are multiples of 8.
 
 | Family | Form | Pages (root class) |
 | --- | --- | --- |
-| **Work** | A dense rate sheet or control panel, mono figures | Reefer board (`.rb`), border waits (`.rb .bw`), beef prices (`.rb .bf`), planner (`.ap`), Fruit Fly Dispatcher |
+| **Work** | A dense rate sheet or control panel, mono figures | Reefer board (`.rb`), border waits (`.rb .bw`), beef prices (`.rb .bf`), MMA card shop (`.rb .mc`), planner (`.ap`), Fruit Fly Dispatcher |
 | **Professional** | The raised eggshell card | Home, résumé (`.cv`), projects (`.pj`) |
 | **Gamer** | Night stock, 2px HUD frames, mono labels, slot grids | YouTube (`.yt`), Craft Ledger's gamer layer (`.cl`) |
 | **Chill** | Night stock, italic serif, posters, lots of air | The house TV (`.tv`) |
@@ -207,7 +208,17 @@ that grows without a trim and a CSV that keeps it.
   card's photo once into `mma-cards/photos/` (removed when the card leaves the page). That Worker never sends what
   a card cost, per-card profit, the scanner's searches or limits, or any deal that could still be bought (finds
   show 14 days on, once the listing ended, and never one Juan bought); keep it that way, since the page must not
-  undercut his sales. No page script.
+  undercut his sales. No page script. The filtering is the showcase Worker's job, not this site's: a change to what
+  the page may show goes in `src/showcase.js` there (its `test/showcase.test.js` fails if a cost reaches the output,
+  and its README's "The public showcase" covers deploying it), never in `snapshot.py`. Its rules that the page
+  repeats: MMA cards only (`isMma`: UFC, MMA, Bellator or PFL in the set or description), and profit only from 5
+  sales in total and 3 in a month (`MIN_SALES_TOTAL`, `MIN_SALES_MONTH`); the page's "after 5 sales" / "after 3
+  sales" placeholders must match those. The `cards` job reads `/showcase.json`'s `totals`, `scanner`, `for_sale`,
+  `sold` and `finds` by name, so renaming a field there breaks the snapshot here (the job fails and the last good
+  `cards.json` stays). `CARDS_URL` overrides `cards_url` (for a local `wrangler dev` of the showcase). Photos over
+  200 KB are skipped, and the workflow commits `mma-cards/photos` with the other snapshot paths. Separately, the
+  home page's "Dev tools" links the private Card Tracker app itself (`card_tracker_url`, `nofollow`, behind
+  Cloudflare Access).
 - **`/blog/`**: renders the local posts in HTML and merges Substack's items by script, so the
   list works without JavaScript and for crawlers.
 

@@ -6,6 +6,7 @@ JavaScript off. The script on each page still fetches fresh numbers for everyone
     python3 scripts/snapshot.py
     python3 scripts/snapshot.py beef                                  # one source only
     WORKER_URL=http://127.0.0.1:8787 python3 scripts/snapshot.py     # against `wrangler dev`
+    CARDS_URL=http://127.0.0.1:8787 python3 scripts/snapshot.py cards  # the card shop against the showcase's `wrangler dev`
 
 Writes, already formatted the way the pages show them (Liquid on GitHub Pages can't put commas
 in numbers or say "Oct 14"), so the templates only loop:
@@ -3014,6 +3015,7 @@ def usage(d):
 # Worker: cards for sale and sold, totals, and the deal scanner's record. That Worker never sends what a card cost,
 # per-card profit, live deals or the searches behind them; this job only formats what it sends. Each card's photo is
 # copied once into mma-cards/photos/ (and removed when the card leaves the page), so visitors cost the app nothing.
+# The field names read below are showcase.js's output; rename one there and this job fails (the old cards.json stays).
 CARDS_PHOTOS = os.path.join(ROOT, "mma-cards", "photos")
 
 

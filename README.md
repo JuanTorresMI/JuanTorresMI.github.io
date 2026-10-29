@@ -59,6 +59,8 @@ Cloudflare Worker  ◄─┘  worker/: polls on cron triggers, holds short buffe
               │  writes _data/live/*.json, the generated pages' stubs (both languages), CSVs; commits; starts a deploy
               ▼
          Jekyll on GitHub Pages ─► the site ─► scripts/indexnow.py pings Bing and others
+
+card-showcase Worker (card-tracker repo, read-only, no costs) ─► scripts/snapshot.py ─► /mma-cards/ and its photos
 ```
 
 Every page that shows live data also carries a copy of it in its HTML, so search engines and
@@ -101,7 +103,7 @@ changes. Each January adds a new `-YYYY.csv` beside last year's (add it to `PUBL
 
 | Path | What it is |
 | --- | --- |
-| `_config.yml` | Name, tagline, description, social links, default share picture, Worker URL, collections, build excludes |
+| `_config.yml` | Name, tagline, description, social links, default share picture, Worker URLs (`worker_url`, and `cards_url` for the card shop), the Card Tracker link, collections, build excludes |
 | `_data/` | `projects.yml`, `resume.yml`, `music.yml`, the border, reefer, beef and pork reference lists (`pork_cuts.json` grows on its own as USDA adds items), and `live/` (the snapshots, written by `snapshot.py`, never edited by hand) |
 | `_includes/` | `head.html` (titles, meta tags, structured data, for every page), the nav, footer and project bar, the border heat map |
 | `_layouts/` | `default` (ordinary pages), `post`, `app` (full-width projects), `tool` (the app layout: a top bar, a rail of the page's sections shown one at a time, an optional side panel; the planner, Craft Ledger and every data board use it, with `assets/css/app.css` and `assets/js/app-shell.js`), `solver` (Plain Solver's own app layout), `reefer-lane`, `border-crossing`, `beef-cut`, `pork-cut`, `cattle-region`, `artist` (the music page), `redirect` |
@@ -110,6 +112,7 @@ changes. Each January adds a new `-YYYY.csv` beside last year's (add it to `PUBL
 | `assets/` | `css/style.css` (the site's stylesheet; `css/app.css` and `js/app-shell.js` are the app layout's), self-hosted fonts, share pictures (`og/`), icons, the résumé PDF and its `.docx` source |
 | `fruit-fly-dispatcher/`, `craft-ledger.html`, `aggregate-planning/`, `plain-solver/` | The browser projects |
 | `reefer-rates/`, `border-waits/`, `es/`, `beef-prices/`, `pork-prices/`, `fed-cattle-prices/`, `usda-market-prices/` | The data boards' index pages and their CSV downloads. The beef, pork and cattle boards are one include each (`_includes/beef-board.html`, `pork-board.html`, `cattle-board.html`), rendered in English or Spanish |
+| `mma-cards/` | The MMA card shop page and `photos/`, the card thumbnails the snapshot copies from the Card Tracker's showcase Worker (never edited by hand) |
 | `music/` | The music page, its stylesheet, script, icon and share picture |
 | `worker/` | The Cloudflare Worker; see [worker/README.md](worker/README.md) |
 | `scripts/` | Build checks, the snapshot, and the image and screenshot generators (below) |
