@@ -59,7 +59,7 @@ jobs:
         id: commit
         if: ${{ !inputs.check && !inputs.test }}
         run: |
-          if [ -e _data/social_posted.json ]; then git add _data/social_posted.json; fi
+          git add _data/social_posted.json _data/social_prices.json
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0

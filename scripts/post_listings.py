@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Cards from the MMA card shop to Instagram as Reels: the card front and back, its name, price, a few hashtags and a song.
 
-  python3 scripts/post_listings.py post        posts the dearest card not posted yet
+  python3 scripts/post_listings.py post        posts the next card: a price drop, else the dearest new card, else an old one again
   python3 scripts/post_listings.py preview     prints every card's caption
   python3 scripts/post_listings.py check       signs in, prints the account's name (never the token) and the songs it would use
   python3 scripts/post_listings.py test DIR    draws the next Reel with its song's preview into DIR, and publishes nothing
@@ -11,7 +11,9 @@ from Instagram's own music, attached by Instagram. A Reel is drawn in the run th
 straight to Instagram, so no video is ever stored. Instagram's API can't choose where a song starts: CUES holds the
 reveal until a song's good part.
 
-What's posted is kept in _data/social_posted.json, so a card never goes out twice. Without IG_USER_ID and
+Each run reads the shop live, so a newly listed card can go out at the next slot. What's posted is kept in
+_data/social_posted.json, and each card's last known price in _data/social_prices.json: a drop of DROP_FROM or more jumps the
+line with its own Reel. With no new cards, a card still for sale after REPEAT_DAYS comes round again, at most once a day. Without IG_USER_ID and
 IG_ACCESS_TOKEN (GitHub secrets), `post` only prints what it would have sent.
 """
 import json, os, re, sys, tempfile, time, urllib.error, urllib.parse, urllib.request
@@ -21,11 +23,15 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 CARDS = os.path.join(ROOT, "_data", "live", "cards.json")
 POSTED = os.path.join(ROOT, "_data", "social_posted.json")
+PRICES = os.path.join(ROOT, "_data", "social_prices.json")
 HOSTS = ["https://graph.instagram.com/v22.0", "https://graph.facebook.com/v22.0"]    # Instagram login's tokens, Unified login's
 # Songs: what's trending by these first, then searches. Instagram has no genre filter, so the artists and words are the filter.
 CORRIDOS = ("fuerza regida", "peso pluma", "natanael cano", "junior h", "gabito ballesteros", "tito double p", "luis r conriquez", "grupo firme", "xavi",
             "oscar maydon", "chino pacas", "ivan cornejo", "eslabon armado", "banda ms", "carin leon", "calle 24", "grupo frontera", "los tigres del norte")
 LATIN = ("bad bunny", "karol g", "feid", "rauw alejandro", "humbe", "bago villain", "christian nodal", "kali uchis", "anuel aa", "ozuna", "j balvin")
+DROP_FROM = 0.05            # a price this far under the last one is a drop
+REPEAT_DAYS = 14            # how long before a card still for sale can go out again
+REPEAT_GAP_H = 20           # and how far apart those repeats are
 CUES = {}                   # audio_id: seconds into the song that its good part starts (scripts/make_reel.py holds the reveal for them)
 UNCLEAN = re.compile(r"fuck|shit|bitch|bxtch|nigga|puta|verga|cabr[oó]n|chinga", re.I)
 PRODUCTS = [("stadium club", "StadiumClub"), ("chrome", "ToppsChrome"), ("prizm", "PaniniPrizm"), ("select", "PaniniSelect"), ("knockout", "ToppsKnockout"),
@@ -52,8 +58,8 @@ def tag(words):
     return "#" + re.sub(r"[^A-Za-z0-9]", "", "".join(w[:1].upper() + w[1:] for w in words.split()))
 
 
-def caption(c):
-    """The card's name, its price, and five hashtags at most."""
+def caption(c, was=None):
+    """The card's name, its price, and five hashtags at most; for a price drop, what it was."""
     name = c["name"].strip()
     if c.get("player") and c["player"].lower() not in name.lower():
         name = f"{c['player']}: {name}"
@@ -62,7 +68,8 @@ def caption(c):
     low = f"{name} {c.get('set') or ''}".lower()
     tags += [f"#{t}" for p, t in PRODUCTS if p in low][:1]
     tags += ["#RookieCard"] if c.get("rookie") else ["#Autograph"] if c.get("auto") else ["#MMACards"]
-    return f"{name}\n{c['price']} · shop link in bio\n\n{' '.join(tags[:5])}"
+    price = f"Price drop: was {was}, now {c['price']}" if was else c["price"]
+    return f"{name}\n{price} · shop link in bio\n\n{' '.join(tags[:5])}"
 
 
 def showcase_url():
@@ -133,11 +140,67 @@ def trending():
         print(f"  {s.get('title')} - {s.get('display_artist')} ({(s.get('duration_in_ms') or 0) // 1000}s)")
 
 
-def reel_due():
-    """The dearest card with a photo not posted yet, or None."""
-    posted = load(POSTED, {})
-    todo = [c for c in load(CARDS, {}).get("for_sale", []) if c.get("photo") and priced(c) and str(c["id"]) not in posted]
-    return max(todo, key=worth, default=None)
+def listings():
+    """The cards for sale right now, from the shop itself: the site's copy (a day old at worst) only if that's down."""
+    try:
+        with urllib.request.urlopen(urllib.request.Request(f"{showcase_url()}/showcase.json", headers={"User-Agent": "juantorresmi-site"}), timeout=30) as r:
+            return [{**c, "player": c.get("player") or "", "set": c.get("set") or "", "parallel": c.get("parallel") or "", "serial": c.get("serial") or "",
+                     "price": f"${c['price'] / 100:,.2f}" if c.get("price") else ""} for c in json.load(r)["for_sale"]]
+    except Exception as e:
+        print(f"Using the site's copy of the shop ({e})")
+        return load(CARDS, {}).get("for_sale", [])
+
+
+def cents_of(c):
+    return round(worth(c) * 100)
+
+
+def hours_since(when):
+    return (datetime.now(timezone.utc) - datetime.fromisoformat(when)).total_seconds() / 3600
+
+
+def when_posted(v):
+    """When a card went out (the first posts kept only a date, or nothing but that)."""
+    at = v.get("at") if isinstance(v, dict) else None
+    day = v.get("date") if isinstance(v, dict) else v
+    return at or f"{day}T00:00:00+00:00"
+
+
+def next_up(cards, posted, prices):
+    """What goes next, as (card, old price or None, why): a price drop, then the dearest new card, then an old one again."""
+    ready = [c for c in cards if c.get("photo") and priced(c)]
+    drops = [c for c in ready if prices.get(str(c["id"])) and cents_of(c) <= prices[str(c["id"])] * (1 - DROP_FROM)]
+    if drops:
+        c = max(drops, key=lambda x: prices[str(x["id"])] - cents_of(x))
+        return c, f"${prices[str(c['id'])] / 100:,.2f}", "drop"
+    fresh = [c for c in ready if str(c["id"]) not in posted]
+    if fresh:
+        return max(fresh, key=worth), None, "new"
+    # Nothing new: keep the page alive with what's still for sale, oldest post first, without repeating too often.
+    if posted and min(hours_since(when_posted(v)) for v in posted.values()) < REPEAT_GAP_H:
+        return None, None, "resting"
+    again = [c for c in ready if hours_since(when_posted(posted[str(c["id"])])) >= REPEAT_DAYS * 24]
+    if again:
+        return min(again, key=lambda c: when_posted(posted[str(c["id"])])), None, "again"
+    return None, None, "out of cards"
+
+
+def note_prices(cards, prices):
+    """Remember each card's price. A drop stays waiting at its old price until it's posted; a raise moves the mark up."""
+    for c in cards:
+        if priced(c):
+            now, was = cents_of(c), prices.get(str(c["id"]))
+            if not was or now > was * (1 - DROP_FROM):
+                prices[str(c["id"])] = now
+    live = {str(c["id"]) for c in cards}
+    for k in [k for k in prices if k not in live]:
+        del prices[k]        # sold or taken down
+
+
+def save(path, data):
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(data, f, indent=2, sort_keys=True)
+        f.write("\n")
 
 
 def photos_of(c, folder):
@@ -158,16 +221,17 @@ def test(folder):
     """The next Reel as it would go out, without its song, which only Instagram can add: nothing is published."""
     import make_reel
     os.makedirs(folder, exist_ok=True)
-    c = reel_due()
+    c, was, why = next_up(listings(), load(POSTED, {}), load(PRICES, {}))
     if not c:
-        return print("No card due a Reel.")
+        return print(f"Nothing to post: {why}.")
     picks = pick_songs(used_songs()) or pick_songs()
     song = picks[0] if picks else None
     front, back = photos_of(c, folder)
-    make_reel.make(c, front, back, os.path.join(folder, "next-reel.mp4"), cue=CUES.get((song or {}).get("audio_id"), 0.0), stills=os.path.join(folder, "frames.png"))
+    make_reel.make(c, front, back, os.path.join(folder, "next-reel.mp4"), cue=CUES.get((song or {}).get("audio_id"), 0.0), stills=os.path.join(folder, "frames.png"),
+                   was=was, words="STILL AVAILABLE" if why == "again" else None)
     with open(os.path.join(folder, "caption.txt"), "w", encoding="utf-8") as f:
-        f.write(f"{caption(c)}\n\nSong: {song.get('title')} - {song.get('display_artist')}\n" if song else f"{caption(c)}\n\nNo song found.\n")
-    print(f"Card {c['id']}: {c['name']} | song: {(song or {}).get('title')} - {(song or {}).get('display_artist')} | back photo: {bool(back)}")
+        f.write(f"{caption(c, was)}\n\nSong: {song.get('title')} - {song.get('display_artist')}\n" if song else f"{caption(c, was)}\n\nNo song found.\n")
+    print(f"Card {c['id']} ({why}): {c['name']} | song: {(song or {}).get('title')} - {(song or {}).get('display_artist')} | back photo: {bool(back)}")
 
 
 def used_songs():
@@ -186,13 +250,15 @@ def graph(host, path, **fields):
 
 
 def post():
-    """The dearest listed card with a photo not posted yet, as a Reel: drawn here and uploaded straight to Instagram."""
+    """The next card (next_up) as a Reel: drawn here and uploaded straight to Instagram. No card is fine: the run just ends."""
     import make_reel
-    posted = load(POSTED, {})
-    c = reel_due()
+    posted, prices, cards = load(POSTED, {}), load(PRICES, {}), listings()
+    c, was, why = next_up(cards, posted, prices)
+    note_prices(cards, prices)
     if not c:
-        return print("Nothing to post.")
-    text = caption(c)
+        save(PRICES, prices)
+        return print(f"Nothing to post: {why}.")
+    text = caption(c, was)
     if not (os.environ.get("IG_USER_ID") and os.environ.get("IG_ACCESS_TOKEN")):
         return print(f"No Instagram keys. Would post card {c['id']}:\n{text}")
     user, host = os.environ["IG_USER_ID"], account()[0]
@@ -205,7 +271,7 @@ def post():
     with tempfile.TemporaryDirectory() as tmp:
         film = os.path.join(tmp, "reel.mp4")
         front, back = photos_of(c, tmp)
-        make_reel.make(c, front, back, film, cue=cue)
+        make_reel.make(c, front, back, film, cue=cue, was=was, words="STILL AVAILABLE" if why == "again" else None)
         # The cover is the finished frame: the card, its price and the shop.
         fields = {"media_type": "REELS", "upload_type": "resumable", "caption": text, "share_to_feed": "true", "thumb_offset": str(int((cue + 11) * 1000))}
         if song:
@@ -227,12 +293,12 @@ def post():
         time.sleep(5)
     media = graph(host, f"{user}/media_publish", creation_id=made).get("id")
     # When each one went out, and its id: what the search for the best time reads back.
-    posted[str(c["id"])] = {"date": date.today().isoformat(), "at": datetime.now(timezone.utc).isoformat(timespec="minutes"), "media": media,
+    posted[str(c["id"])] = {"date": date.today().isoformat(), "at": datetime.now(timezone.utc).isoformat(timespec="minutes"), "media": media, "kind": why,
                             "song": song and song["audio_id"], "song_name": song and f"{song.get('title')} - {song.get('display_artist')}"}
-    with open(POSTED, "w", encoding="utf-8", newline="\n") as f:
-        json.dump(posted, f, indent=2, sort_keys=True)
-        f.write("\n")
-    print(f"Posted card {c['id']}: {c['name']}" + (f" with {posted[str(c['id'])]['song_name']}" if song else ""))
+    prices[str(c["id"])] = cents_of(c)    # the drop's been told: this is the new mark
+    save(POSTED, posted)
+    save(PRICES, prices)
+    print(f"Posted card {c['id']} ({why}): {c['name']}" + (f" with {posted[str(c['id'])]['song_name']}" if song else ""))
 
 
 if __name__ == "__main__":
