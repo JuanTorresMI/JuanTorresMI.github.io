@@ -219,13 +219,14 @@ that grows without a trim and a CSV that keeps it.
   200 KB are skipped, and the workflow commits `mma-cards/photos` with the other snapshot paths. Separately, the
   home page's "Dev tools" links the private Card Tracker app itself (`card_tracker_url`, `nofollow`, behind
   Cloudflare Access).
-- **Instagram**: the Worker starts the `Post a listing` workflow at 8:47 pm Eastern (`refresh.js`; it has no GitHub
-  schedule). It runs `scripts/post_listings.py`: it posts the dearest listed card not yet in `_data/social_posted.json`
-  (never edit that by hand), then draws the photo posts (`make_reel.py`'s `still`) into `mma-cards/social/`, since Instagram fetches a photo from a public
-  address. Cards from $5 go out as Reels (`scripts/make_reel.py`), drawn in the run and uploaded straight to Instagram, so no
-  video is stored, with card sounds (`scripts/sfx`, CC0) and a song Instagram attaches: trending corridos first, picked by artist (its search is loose and few are
-  cleared for apps), then Latin. The rest go as photos. Pictures come from the showcase's `/photo/<card>-full.webp` and
-  `-back.webp`, fighters from its `player`. Only listed cards ever go out: never live deals.
+- **Instagram**: the Worker starts the `Post a listing` workflow at :47 past 12, 5, 8 and 10 pm Eastern (`refresh.js`; it has no
+  GitHub schedule). It runs `scripts/post_listings.py`: the dearest listed card with a photo not yet in
+  `_data/social_posted.json` (never edit that by hand) goes out as a Reel (`scripts/make_reel.py`), every post, since only Reels
+  can carry a song. It's drawn in the run and uploaded straight to Instagram, so no video is stored, with card sounds
+  (`scripts/sfx`, CC0) and a song Instagram attaches: trending corridos first, picked by artist (its search is loose and few are
+  cleared for apps), then Latin. Instagram can't choose where a song starts: `CUES` holds the reveal until its good part.
+  Photos come from the showcase's `/photo/<card>-full.webp` and `-back.webp`, fighters from its `player`. Only listed cards ever
+  go out: never live deals.
 - **`/blog/`**: renders the local posts in HTML and merges Substack's items by script, so the
   list works without JavaScript and for crawlers.
 

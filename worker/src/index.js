@@ -98,7 +98,7 @@ export default {
     ctx.waitUntil(pagesTick(env, now, event.cron, log).catch(log("usda and pages")));
     // Cloudflare's analytics for the usage page, once an hour.
     if (event.cron === "47 * * * *") ctx.waitUntil(usageTick(env, now).catch(log("usage")));
-    // The day's Instagram post, at 8:47 pm Eastern (refresh.js).
+    // The day's Instagram posts, in their slots (refresh.js).
     if (socialDue(now, event.cron)) ctx.waitUntil(startSocial(env).catch(log("social")));
   },
 };

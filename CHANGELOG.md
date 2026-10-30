@@ -42,10 +42,10 @@ Things waiting on a decision or on Juan, so they aren't lost:
 
 ## 2026-10-30 — Listings to Instagram
 
-The `Post a listing` workflow (`scripts/post_listings.py`) posts one listed card a day at 8:47 pm Eastern, started by the
-Worker, dearest first. Cards from $5 go as Reels (`scripts/make_reel.py`) with a corrido or Latin song Instagram attaches;
-the rest as a photo on a 1080×1350 picture. Each has its name, price and up to five hashtags. Live data stays out of it:
-only cards already for sale.
+The `Post a listing` workflow (`scripts/post_listings.py`) posts listed cards at four slots a day (:47 past 12, 5, 8 and 10 pm
+Eastern), started by the Worker, dearest first, to find the best time. Every post is a Reel (`scripts/make_reel.py`) showing
+the front and back, with a corrido or Latin song Instagram attaches, the card's name, price and up to five hashtags. Live data
+stays out of it: only cards already for sale.
 
 ## 2026-10-28 — The MMA card shop
 
