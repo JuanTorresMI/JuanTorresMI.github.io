@@ -2,7 +2,7 @@
 """Draws a card's Reel: 16 seconds, 1080x1920, long enough for its song to settle. The card rises in, flips to its back and returns (a card with no back photo
 shines instead), then its price and the shop. The words stay in the area Instagram leaves clear; the top 14% and bottom
 35% hold only decoration. Its own sound is recorded card effects (scripts/sfx, Kenney's Casino Audio, CC0); Instagram adds
-the song on top (post_listings.py). The API can't choose where a song starts, so `cue` holds the reveal for that many seconds,
+the song on top (post_listings.py). It loops: the card flies out at the end and rises back in at the start, over the same stage. The API can't choose where a song starts, so `cue` holds the reveal for that many seconds,
 until the song's good part."""
 import math, os, random, re, subprocess
 import imageio_ffmpeg
@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 FONT = os.path.join(HERE, "fonts", "Anton-Regular.ttf")
 # (seconds, file, volume): the card lands, the words hit, each flip, the price, the shop.
 SOUNDS = [(0.02, "card-slide-1.ogg", 0.8), (0.35, "card-place-1.ogg", 1.0), (1.3, "card-place-2.ogg", 0.6), (4.6, "card-slide-3.ogg", 1.0), (7.0, "card-slide-5.ogg", 1.0),
-          (8.6, "chips-stack-2.ogg", 0.9), (9.2, "card-shove-1.ogg", 0.8)]
+          (8.6, "chips-stack-2.ogg", 0.9), (9.2, "card-shove-1.ogg", 0.8), (15.3, "card-slide-1.ogg", 0.8)]
 INK, WHITE, RED = (10, 10, 13), (255, 255, 255), (255, 34, 44)
 SHOP_TOP, SHOP = "SHOP MY CARDS ON COLLX", "JUANJULIO"
 CH = 800
@@ -113,6 +113,24 @@ def caption_line(frame, y, s, alpha):
     frame.alpha_composite(layer, (W // 2 - w // 2, y - 30))
 
 
+def refractor(c):
+    """The refractor a card is, in words ("ORANGE REFRACTOR"), or ""."""
+    text = f"{c.get('parallel') or ''} {c.get('name') or ''} {c.get('set') or ''}"
+    if not re.search(r"refractor", text, re.I): return ""
+    return c["parallel"].upper() if "refractor" in (c.get("parallel") or "").lower() else "REFRACTOR"
+
+
+def chip(frame, xy, s, alpha, color):
+    """A solid label on the card's corner, there all the way through."""
+    if alpha <= 0: return
+    f = ImageFont.truetype(FONT, 46)
+    layer = Image.new("RGBA", (int(f.getlength(s)) + 44, 74), color + (255,))
+    ImageDraw.Draw(layer).text((layer.width / 2, 37), s, font=f, fill=INK + (255,), anchor="mm")
+    layer = layer.rotate(3, expand=True, resample=Image.BICUBIC)
+    layer.putalpha(layer.getchannel("A").point(lambda v: int(v * alpha)))
+    frame.alpha_composite(layer, (int(xy[0]), int(xy[1])))
+
+
 def sticker(frame, xy, s, p, color):
     R = 150
     layer = Image.new("RGBA", (R * 2 + 40, R * 2 + 40), (0, 0, 0, 0))
@@ -192,7 +210,7 @@ def stage(front, color, ghost_text):
     ds = ImageDraw.Draw(stripes)
     for x in range(-H, W * 2 + H, 190):
         ds.polygon([(x, 0), (x + 46, 0), (x + 46 - H // 2, H), (x - H // 2, H)], fill=WHITE + (9,))
-    sparks = [(rng.uniform(0, W), rng.uniform(0, H), rng.uniform(1.5, 4.5), rng.uniform(50, 150)) for _ in range(46)]
+    sparks = [(rng.uniform(0, W), rng.uniform(0, H), rng.uniform(1.5, 4.5), rng.choice((1, 2))) for _ in range(46)]
     return st, stripes, sparks
 
 
@@ -224,6 +242,7 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
     price_now = float(re.sub(r"[^\d.]", "", card.get("price") or "0") or 0)
     off = round((1 - price_now / float(re.sub(r"[^\d.]", "", was))) * 100) if was else 0
     st, stripes, sparks = stage(front, color, f"-{off}%" if was else f"/{run}" if run else name.split()[-1])
+    finish = refractor(card)
     words, line, price = ("PRICE DROP" if was else words or hook(card)), label(card), (card.get("price") or "").replace(".00", "")
     top_size, name_size, sub_size = fit(words, 132, 930), fit(name, 112, 930), fit(name, 86, 860)
     total = SECS + cue
@@ -242,12 +261,12 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
     for n in range(int(FPS * total)):
         t = n / FPS - cue
         frame = st.copy()
-        off = int((t + cue) * 40) % 190
+        off = round((t + cue) / total * 190 * 3) % 190    # whole turns, so the last frame meets the first
         frame.alpha_composite(stripes.crop((off, 0, W + off, H)))
         d = ImageDraw.Draw(frame)
         for x, y, r, v in sparks:
-            yy = (y - v * (t + cue)) % H
-            d.ellipse((x - r, yy - r, x + r, yy + r), fill=color + (int(120 * (0.5 + 0.5 * math.sin(t * 3 + x))),))
+            yy = (y - v * H * (t + cue) / total) % H
+            d.ellipse((x - r, yy - r, x + r, yy + r), fill=color + (int(120 * (0.5 + 0.5 * math.sin((t + cue) / total * 2 * math.pi * 5 + x))),))
         if t < 0:
             # Before the song's good part: only the hook, breathing, and the card still hidden.
             poster(frame, (W / 2, 800), words, top_size, color, 1, 1 + 0.03 * math.sin(n / FPS * 4))
@@ -269,7 +288,9 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
                     ImageDraw.Draw(band).polygon([(x, 0), (x + 230, 0), (x + 230 - sh, sh), (x - sh, sh)], fill=120)
                     base.paste(Image.new("RGB", base.size, "white"), (0, 0), band.filter(ImageFilter.GaussianBlur(40)))
         pic = turned(base, 180 + a if flipped else a, cw, scale)
-        cy = 800 + 7 * math.sin(t * 1.9) + (1 - rise) * 1100
+        # The last moment: the card flies up and out as the words go, and the Reel starts over with it rising in.
+        leave = ease(clamp((t - (SECS - 0.7)) / 0.7))
+        cy = 800 + 7 * math.sin(t / SECS * 2 * math.pi * 3) + (1 - rise) * 1100 - leave * 1400
         x, y = W // 2 - pic.width // 2, int(cy - pic.height / 2)
         sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         ImageDraw.Draw(sh).rectangle((x + 14, y + 26, x + pic.width + 14, y + pic.height + 26), fill=(0, 0, 0, 190))
@@ -278,19 +299,20 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         hook_in, hook_out = clamp((t - 0.35) / 0.2), clamp((t - 4.3) / 0.2)
         poster(frame, (W / 2, 322), words, top_size, color, hook_in * (1 - hook_out), 1 + 0.85 * (1 - ease(hook_in)))
         name_in = clamp((t - 4.4) / 0.22)
-        poster(frame, (W / 2, 288), name, name_size, WHITE, name_in, 1.25 - 0.25 * ease(name_in), tilt=0)
-        caption_line(frame, 384, line, clamp((t - 4.55) / 0.25))
+        poster(frame, (W / 2, 288), name, name_size, WHITE, name_in * (1 - leave), 1.25 - 0.25 * ease(name_in), tilt=0)
+        caption_line(frame, 384, line, clamp((t - 4.55) / 0.25) * (1 - leave))
         sub_in = clamp((t - 1.3) / 0.2)
         poster(frame, (W / 2, 1206), name, sub_size, WHITE, sub_in * (1 - hook_out), 1 + 0.5 * (1 - ease(sub_in)), stroke=7, tilt=1)
         price_in = clamp((t - 8.6) / 0.2)
-        if was and t >= 7.9:
-            was_tag(frame, (310, 1040), was.replace(".00", ""), ease(clamp((t - 8.25) / 0.3)))
-        if price_in and price: sticker(frame, (806, 1010), price, price_in, color)
-        if t >= 9.2: tag(frame, 1212, back_out(clamp((t - 9.2) / 0.32)), color)
+        lift = leave * 1400
+        if was and t >= 7.9 and leave < 1:
+            was_tag(frame, (310, 1040 - lift), was.replace(".00", ""), ease(clamp((t - 8.25) / 0.3)))
+        if finish and leave < 1:
+            chip(frame, (W / 2 - pic.width / 2 + 16, y + 26), finish, clamp((t - 1.0) / 0.2), color)
+        if price_in and price and leave < 1: sticker(frame, (806, 1010 - lift), price, price_in, color)
+        if t >= 9.2 and leave < 1: tag(frame, 1212, back_out(clamp((t - 9.2) / 0.32)) * (1 - leave), color)
         fl = max(0.0, *[0.5 * (1 - clamp((t - at) / 0.13)) if t >= at else 0.0 for at in (0.35, 8.6)])
         if fl: frame.alpha_composite(Image.new("RGBA", (W, H), WHITE + (int(255 * fl),)))
-        fade = clamp((t - (SECS - 0.8)) / 0.8)    # a soft end, not a cut
-        if fade: frame.alpha_composite(Image.new("RGBA", (W, H), INK + (int(255 * fade),)))
         rgb = frame.convert("RGB")
         ff.stdin.write(rgb.tobytes())
         if stills and n - int(cue * FPS) in shots: sheet.append(rgb.resize((216, 384)))

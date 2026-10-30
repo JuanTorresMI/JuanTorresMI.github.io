@@ -14,6 +14,14 @@ on:
         description: "Draw the next Reel with its song as an artifact, and publish nothing"
         type: boolean
         default: false
+      card:
+        description: "Post this card id instead of the next one"
+        type: string
+        default: ""
+      was:
+        description: "With card: its old price, for a price-drop Reel ($100.00)"
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -55,12 +63,14 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           SOCIAL_KEY: ${{ secrets.SOCIAL_KEY }}
-        run: python3 scripts/post_listings.py post
+          CARD: ${{ inputs.card }}
+          WAS: ${{ inputs.was }}
+        run: python3 scripts/post_listings.py post "$CARD" "$WAS"
       - name: Commit
         id: commit
         if: ${{ !inputs.check && !inputs.test }}
         run: |
-          git add _data/social_posted.json _data/social_prices.json
+          git add _data/social_posted.json _data/social_prices.json _data/social_songs.json
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
