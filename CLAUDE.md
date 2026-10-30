@@ -219,6 +219,10 @@ that grows without a trim and a CSV that keeps it.
   200 KB are skipped, and the workflow commits `mma-cards/photos` with the other snapshot paths. Separately, the
   home page's "Dev tools" links the private Card Tracker app itself (`card_tracker_url`, `nofollow`, behind
   Cloudflare Access).
+- **Instagram**: the `Post a listing` workflow runs `scripts/post_listings.py`: it posts the dearest listed card not yet
+  in `_data/social_posted.json` (never edit that by hand), then draws new cards' JPEGs into `mma-cards/social/`, since
+  Instagram fetches a public JPEG and so a run posts what the last run deployed. Pictures come from the showcase's
+  `/photo/<card>-full.webp`, fighters from its `player`. Only listed cards ever go out: never live deals.
 - **`/blog/`**: renders the local posts in HTML and merges Substack's items by script, so the
   list works without JavaScript and for crawlers.
 

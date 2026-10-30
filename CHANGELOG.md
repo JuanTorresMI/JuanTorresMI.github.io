@@ -9,6 +9,9 @@ collected, or what it costs to run.
 
 Things waiting on a decision or on Juan, so they aren't lost:
 
+- **Instagram posting**: needs a Creator account, a Meta developer app, and the `IG_USER_ID` and `IG_ACCESS_TOKEN`
+  secrets. The token expires after 60 days unless refreshed. Listed cards without a photo are skipped, including the
+  dearest ones: add photos in the Card Tracker. TikTok isn't built: its API only posts privately until an app passes audit.
 - **Renew `GH_DISPATCH_TOKEN`** before it expires (set Oct 18, 2026; fine-grained, this repo only,
   Actions: read and write). Steps in worker/README.md, "Updating the pages". If it lapses, GitHub's
   backup schedule keeps the pages updating, hours late, and the button hides itself.
@@ -36,6 +39,12 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **More USDA boards** (Juan wants all of them): next are hogs (LM_HG217/218), lamb (LM_XL502) and cow
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
+
+## 2026-10-30 — Listings to Instagram
+
+The `Post a listing` workflow (`scripts/post_listings.py`) posts one listed card a day, dearest first: its photo on a
+1080×1350 picture (`mma-cards/social/`), its name, price and up to five hashtags. Live data stays out of it: only cards
+already for sale. It runs in preview until the `IG_USER_ID` and `IG_ACCESS_TOKEN` secrets exist.
 
 ## 2026-10-28 — The MMA card shop
 
