@@ -1,0 +1,54 @@
+# One listed card a day to Instagram (scripts/post_listings.py). It posts what the last run drew and deployed, then
+# draws any new cards' pictures, so a new card can go out the day after. Without the IG_USER_ID and IG_ACCESS_TOKEN
+# secrets it only prints what it would post.
+name: Post a listing
+
+on:
+  schedule:
+    - cron: "17 22 * * *"           # early evening in Michigan
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: social
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet pillow
+      - name: Post
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: python3 scripts/post_listings.py post
+      - name: Draw new pictures
+        run: python3 scripts/post_listings.py prepare
+      - name: Commit
+        id: commit
+        run: |
+          git add mma-cards/social
+          if [ -e _data/social_posted.json ]; then git add _data/social_posted.json; fi
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update the listing posts"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run jekyll-gh-pages.yml --ref main
