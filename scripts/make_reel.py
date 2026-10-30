@@ -209,8 +209,8 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None):
     sounds = [s for s in SOUNDS if back or s[0] not in (3.4, 5.2)]
     inputs = ["-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-"]
     chains = []
-    for i, (at, name, vol) in enumerate(sounds, 1):
-        inputs += ["-i", os.path.join(HERE, "sfx", name)]
+    for i, (at, sound, vol) in enumerate(sounds, 1):
+        inputs += ["-i", os.path.join(HERE, "sfx", sound)]
         ms = int((at + cue) * 1000)
         chains.append(f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,volume={vol},adelay={ms}|{ms}[s{i}]")
     mix = ";".join(chains) + ";" + "".join(f"[s{i}]" for i in range(1, len(sounds) + 1)) + f"amix=inputs={len(sounds)}:normalize=0:duration=longest,apad,atrim=0:{total}[a]"
