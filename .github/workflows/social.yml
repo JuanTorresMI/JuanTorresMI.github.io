@@ -9,7 +9,11 @@ on:
   workflow_dispatch:
     inputs:
       check:
-        description: "Only sign in and print the account's name"
+        description: "Only sign in and print the account's name and songs"
+        type: boolean
+        default: false
+      test:
+        description: "Draw the next Reel with its song as an artifact, and publish nothing"
         type: boolean
         default: false
 
@@ -29,7 +33,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install --quiet pillow
+      - run: pip install --quiet pillow imageio-ffmpeg
+      - name: Test Reel (publishes nothing)
+        if: inputs.test
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: python3 scripts/post_listings.py test reel-test
+      - uses: actions/upload-artifact@v4
+        if: inputs.test
+        with:
+          name: reel-test
+          path: reel-test/
       - name: Check the sign-in
         if: inputs.check
         env:
@@ -37,17 +52,17 @@ jobs:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
         run: python3 scripts/post_listings.py check
       - name: Post
-        if: ${{ !inputs.check }}
+        if: ${{ !inputs.check && !inputs.test }}
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
         run: python3 scripts/post_listings.py post
       - name: Draw new pictures
-        if: ${{ !inputs.check }}
+        if: ${{ !inputs.check && !inputs.test }}
         run: python3 scripts/post_listings.py prepare
       - name: Commit
         id: commit
-        if: ${{ !inputs.check }}
+        if: ${{ !inputs.check && !inputs.test }}
         run: |
           git add mma-cards/social
           if [ -e _data/social_posted.json ]; then git add _data/social_posted.json; fi
