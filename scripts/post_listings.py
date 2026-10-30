@@ -112,6 +112,21 @@ def check():
     print(f"Signed in as {name} through {host.split('/')[2]}" if host else "The token didn't work on either host.")
     if not host:
         sys.exit(1)
+    trending()
+
+
+def trending():
+    """The music Instagram offers apps right now: with no search words, what's trending. Unified login's host only."""
+    q = urllib.parse.urlencode({"audio_type": "music", "user_id": os.environ["IG_USER_ID"], "access_token": os.environ["IG_ACCESS_TOKEN"]})
+    try:
+        with urllib.request.urlopen(f"https://graph.facebook.com/v22.0/ig_audio?{q}", timeout=30) as r:
+            songs = json.load(r).get("audio", [])
+    except urllib.error.HTTPError as e:
+        print(f"Trending music refused ({e.code}): {json.load(e).get('error', {}).get('message', '')[:200]}")
+        return
+    print(f"{len(songs)} trending songs:")
+    for s in songs[:25]:
+        print(f"  {s.get('title')} - {s.get('display_artist')} ({(s.get('duration_in_ms') or 0) // 1000}s)")
 
 
 def graph(host, path, **fields):
