@@ -4,12 +4,13 @@
   python3 scripts/post_listings.py prepare     draws a 1080x1350 JPEG per listed card with a photo (mma-cards/social/)
   python3 scripts/post_listings.py post        posts the dearest card not posted yet, once its JPEG is live on the site
   python3 scripts/post_listings.py preview     prints every card's caption
+  python3 scripts/post_listings.py check       signs in and prints the account's name, never the token
 
 Instagram fetches a picture from a public address, and only JPEGs, so a run posts what the last run drew and deployed.
 What's posted is kept in _data/social_posted.json, so a card never goes out twice. Without IG_USER_ID and
 IG_ACCESS_TOKEN (GitHub secrets), `post` only prints what it would have sent.
 """
-import io, json, os, re, sys, time, urllib.parse, urllib.request
+import io, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
 from datetime import date
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -17,7 +18,7 @@ CARDS = os.path.join(ROOT, "_data", "live", "cards.json")
 POSTED = os.path.join(ROOT, "_data", "social_posted.json")
 SOCIAL = os.path.join(ROOT, "mma-cards", "social")
 SITE = "https://juantorresmi.github.io"
-GRAPH = "https://graph.instagram.com/v21.0"
+HOSTS = ["https://graph.instagram.com/v21.0", "https://graph.facebook.com/v21.0"]    # Instagram login's tokens, Unified login's
 SIZE = (1080, 1350)         # Instagram's tallest feed picture
 STOCK = (240, 236, 226)     # the site's bone stock
 PRODUCTS = [("stadium club", "StadiumClub"), ("chrome", "ToppsChrome"), ("prizm", "PaniniPrizm"), ("select", "PaniniSelect"), ("knockout", "ToppsKnockout"),
@@ -93,9 +94,29 @@ def prepare():
     print(f"{len(keep)} pictures ready")
 
 
-def graph(path, **fields):
+def account():
+    """Which of Meta's hosts takes this token, and the account it signs in as: (host, username), or (None, None)."""
+    for host in HOSTS:
+        try:
+            token = urllib.parse.urlencode({"fields": "username", "access_token": os.environ["IG_ACCESS_TOKEN"]})
+            with urllib.request.urlopen(f"{host}/{os.environ['IG_USER_ID']}?{token}", timeout=30) as r:
+                return host, json.load(r).get("username")
+        except urllib.error.HTTPError as e:
+            print(f"{host.split('/')[2]} refused it ({e.code}): {json.load(e).get('error', {}).get('message', '')[:160]}")
+    return None, None
+
+
+def check():
+    """Signs in and prints only the account's name: the token never reaches the log."""
+    host, name = account()
+    print(f"Signed in as {name} through {host.split('/')[2]}" if host else "The token didn't work on either host.")
+    if not host:
+        sys.exit(1)
+
+
+def graph(host, path, **fields):
     fields["access_token"] = os.environ["IG_ACCESS_TOKEN"]
-    url = f"{GRAPH}/{path}"
+    url = f"{host}/{path}"
     if path.endswith(("/media", "/media_publish")):
         req = urllib.request.Request(url, data=urllib.parse.urlencode(fields).encode(), method="POST")
     else:
@@ -123,13 +144,15 @@ def post():
         if not (os.environ.get("IG_USER_ID") and os.environ.get("IG_ACCESS_TOKEN")):
             print(f"No Instagram keys. Would post {image}:\n{text}")
             return
-        user = os.environ["IG_USER_ID"]
-        made = graph(f"{user}/media", image_url=image, caption=text)["id"]
+        user, host = os.environ["IG_USER_ID"], account()[0]
+        if not host:
+            sys.exit("The Instagram token didn't work.")
+        made = graph(host, f"{user}/media", image_url=image, caption=text)["id"]
         for _ in range(12):
-            if graph(made, fields="status_code").get("status_code") == "FINISHED":
+            if graph(host, made, fields="status_code").get("status_code") == "FINISHED":
                 break
             time.sleep(5)
-        graph(f"{user}/media_publish", creation_id=made)
+        graph(host, f"{user}/media_publish", creation_id=made)
         posted[str(c["id"])] = date.today().isoformat()
         with open(POSTED, "w", encoding="utf-8", newline="\n") as f:
             json.dump(posted, f, indent=2, sort_keys=True)
@@ -145,6 +168,8 @@ if __name__ == "__main__":
         prepare()
     elif what == "post":
         post()
+    elif what == "check":
+        check()
     else:
         for c in load(CARDS, {}).get("for_sale", []):
             print(f"--- {c['id']}{' (no photo)' if not c.get('photo') else ''}\n{caption(c)}")
