@@ -16,7 +16,7 @@ Instagram fetches a picture from a public address, and only JPEGs, so a run post
 What's posted is kept in _data/social_posted.json, so a card never goes out twice. Without IG_USER_ID and
 IG_ACCESS_TOKEN (GitHub secrets), `post` only prints what it would have sent.
 """
-import io, json, os, re, sys, tempfile, time, urllib.error, urllib.parse, urllib.request
+import json, os, re, sys, tempfile, time, urllib.error, urllib.parse, urllib.request
 from datetime import date
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,8 +26,6 @@ POSTED = os.path.join(ROOT, "_data", "social_posted.json")
 SOCIAL = os.path.join(ROOT, "mma-cards", "social")
 SITE = "https://juantorresmi.github.io"
 HOSTS = ["https://graph.instagram.com/v22.0", "https://graph.facebook.com/v22.0"]    # Instagram login's tokens, Unified login's
-SIZE = (1080, 1350)         # Instagram's tallest feed picture
-STOCK = (240, 236, 226)     # the site's bone stock
 REEL_FROM = 5.0             # dollars: dearer cards get a Reel
 # Songs: what's trending by these first, then searches. Instagram has no genre filter, so the artists and words are the filter.
 CORRIDOS = ("fuerza regida", "peso pluma", "natanael cano", "junior h", "gabito ballesteros", "tito double p", "luis r conriquez", "grupo firme", "xavi",
@@ -77,31 +75,30 @@ def showcase_url():
         return os.environ.get("CARDS_URL") or re.search(r'^cards_url:\s*"([^"]+)"', f.read(), re.M).group(1)
 
 
+def picture(c):
+    """A photo post's file. The price is drawn on it, so a new price is a new picture."""
+    return f"post-{c['id']}-{round(worth(c) * 100)}.jpg"
+
+
 def prepare():
-    """A JPEG per listed card with a photo; the ones no longer listed are removed."""
-    from PIL import Image
+    """A picture per listed card that goes out as a photo, not yet posted; any other file is removed."""
+    import make_reel
     os.makedirs(SOCIAL, exist_ok=True)
-    listed = [c for c in load(CARDS, {}).get("for_sale", []) if c.get("photo")]
+    posted = load(POSTED, {})
+    listed = [c for c in load(CARDS, {}).get("for_sale", []) if c.get("photo") and priced(c) and worth(c) < REEL_FROM and str(c["id"]) not in posted]
     keep = set()
     for c in listed:
-        path = os.path.join(SOCIAL, f"{c['id']}.jpg")
+        path = os.path.join(SOCIAL, picture(c))
         keep.add(path)
         if os.path.exists(path):
             continue
-        try:
-            # Cloudflare refuses Python's default user agent.
-            with urllib.request.urlopen(urllib.request.Request(f"{showcase_url()}/photo/{c['id']}-full.webp", headers={"User-Agent": "juantorresmi-site"}), timeout=30) as r:
-                pic = Image.open(io.BytesIO(r.read())).convert("RGB")
-        except Exception as e:
-            print(f"no full photo for card {c['id']}: {e}", file=sys.stderr)
-            keep.discard(path)
-            continue
-        # The whole card on the stock, never cropped; a small photo isn't blown up past 2x.
-        scale = min(SIZE[0] * 0.9 / pic.width, SIZE[1] * 0.9 / pic.height, 2)
-        pic = pic.resize((round(pic.width * scale), round(pic.height * scale)), Image.LANCZOS)
-        page = Image.new("RGB", SIZE, STOCK)
-        page.paste(pic, ((SIZE[0] - pic.width) // 2, (SIZE[1] - pic.height) // 2))
-        page.save(path, "JPEG", quality=88, optimize=True)
+        with tempfile.TemporaryDirectory() as tmp:
+            front = photos_of(c, tmp)[0]
+            if not front:
+                print(f"no full photo for card {c['id']}", file=sys.stderr)
+                keep.discard(path)
+                continue
+            make_reel.still(c, front, path)
     for f in os.listdir(SOCIAL):
         if os.path.join(SOCIAL, f) not in keep:
             os.remove(os.path.join(SOCIAL, f))
@@ -235,9 +232,9 @@ def post():
     posted = load(POSTED, {})
     todo = [c for c in load(CARDS, {}).get("for_sale", []) if str(c["id"]) not in posted and priced(c)]
     for c in sorted(todo, key=worth, reverse=True):
-        image = f"{SITE}/mma-cards/social/{c['id']}.jpg"
+        image = f"{SITE}/mma-cards/social/{picture(c)}"
         reel = worth(c) >= REEL_FROM and c.get("photo")
-        if not reel and (not os.path.exists(os.path.join(SOCIAL, f"{c['id']}.jpg")) or not is_live(image)):
+        if not reel and (not os.path.exists(os.path.join(SOCIAL, picture(c))) or not is_live(image)):
             continue
         text = caption(c)
         if not (os.environ.get("IG_USER_ID") and os.environ.get("IG_ACCESS_TOKEN")):
