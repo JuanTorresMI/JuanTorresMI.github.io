@@ -15,7 +15,8 @@ image_alt: "MMA Card Shop, by Juan Torres. UFC cards for sale and the eBay deal 
   Drawn from site.data.live.cards, the copy scripts/snapshot.py makes once a day of the Card Tracker's
   public showcase Worker (card-tracker repo, src/showcase.js), with the photos in mma-cards/photos/.
   That Worker never sends what a card cost, per-card profit, live deals or the searches behind them, so
-  nothing on this page can undercut a sale. No script: the snapshot is the page.
+  nothing on this page can undercut a sale. No script: the snapshot is the page. The On Instagram section is
+  _data/social_feed.json and mma-cards/reels/, which scripts/post_listings.py keeps to the latest posts.
   "after 5 sales" and "after 3 sales" below are showcase.js's MIN_SALES_TOTAL and MIN_SALES_MONTH: change them together.
 {%- endcomment -%}
 {%- assign c = site.data.live.cards -%}
@@ -26,7 +27,7 @@ image_alt: "MMA Card Shop, by Juan Torres. UFC cards for sale and the eBay deal 
     <h1>MMA Card Shop</h1>
     <p class="rb-sub">I buy UFC trading cards and sell them on CollX. To run it I built a private inventory app that tracks every card’s cost, fees and profit, and a deal scanner that searches eBay every ten minutes. This is the shop: what’s for sale, what has sold, and what the scanner finds.</p>
     {%- if c.shop_url %}
-    <p><a class="rb-btn" href="{{ c.shop_url }}" rel="noopener">Shop on CollX</a></p>
+    <p><a class="rb-btn" href="{{ c.shop_url }}" rel="noopener">Shop on CollX</a> <a class="rb-btn" href="{{ site.instagram_url }}" rel="noopener">Follow on Instagram</a></p>
     {%- endif %}
   </div>
   <dl class="rb-stamp">
@@ -83,6 +84,23 @@ image_alt: "MMA Card Shop, by Juan Torres. UFC cards for sale and the eBay deal 
   </ul>
   {%- else %}
   <p>Nothing listed right now. <a href="{{ c.shop_url | default: '#' }}" rel="noopener">The CollX shop</a> has whatever is.</p>
+  {%- endif %}
+</section>
+
+<section class="rb-sec" id="instagram" aria-labelledby="ig-h">
+  <h2 id="ig-h">On Instagram</h2>
+  <p class="mc-how">Every card gets a short Reel on <a href="{{ site.instagram_url }}" rel="noopener">@luvjjulio</a>, and a price drop gets its own.</p>
+  {%- if site.data.social_feed and site.data.social_feed.size > 0 %}
+  <ul class="mc-grid mc-reels">
+    {%- for p in site.data.social_feed %}
+    <li class="mc-card">
+      <a href="{{ p.url }}" rel="noopener"><img src="/mma-cards/reels/{{ p.media }}.jpg" alt="Reel of {{ p.title | escape }}" loading="lazy" width="360" height="640"></a>
+      <p class="mc-name"><a href="{{ p.url }}" rel="noopener">{{ p.name | escape }}</a></p>
+      <p class="mc-tags">{% if p.drop %}<span>Price drop</span>{% endif %}</p>
+      <p class="mc-price">{{ p.price }}</p>
+    </li>
+    {%- endfor %}
+  </ul>
   {%- endif %}
 </section>
 

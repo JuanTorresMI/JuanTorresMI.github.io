@@ -14,6 +14,10 @@ on:
         description: "Draw the next Reel with its song as an artifact, and publish nothing"
         type: boolean
         default: false
+      backfill:
+        description: "Only put what's already posted on the page"
+        type: boolean
+        default: false
       card:
         description: "Post this card id instead of the next one"
         type: string
@@ -59,8 +63,14 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
         run: python3 scripts/post_listings.py check
+      - name: Backfill the page
+        if: inputs.backfill
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: python3 scripts/post_listings.py backfill
       - name: Post
-        if: ${{ !inputs.check && !inputs.test }}
+        if: ${{ !inputs.check && !inputs.test && !inputs.backfill }}
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
@@ -73,6 +83,7 @@ jobs:
         if: ${{ !inputs.check && !inputs.test }}
         run: |
           git add _data/social_posted.json _data/social_prices.json _data/social_songs.json
+          if [ -e _data/social_feed.json ]; then git add _data/social_feed.json mma-cards/reels; fi
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0

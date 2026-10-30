@@ -45,7 +45,7 @@ Things waiting on a decision or on Juan, so they aren't lost:
 The `Post a listing` workflow (`scripts/post_listings.py`) posts listed cards at four slots a day (:47 past 12, 5, 8 and 10 pm
 Eastern), started by the Worker, dearest first, to find the best time. Every post is a Reel (`scripts/make_reel.py`) showing
 the front and back, with a corrido or Latin song Instagram attaches, the card's name, price and up to five hashtags. Live data
-stays out of it: only cards already for sale.
+stays out of it: only cards already for sale. `/mma-cards/` shows the latest 12 under On Instagram, with a follow link.
 
 ## 2026-10-28 — The MMA card shop
 
