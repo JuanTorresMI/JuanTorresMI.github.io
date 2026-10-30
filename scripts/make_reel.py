@@ -14,7 +14,7 @@ FONT = os.path.join(HERE, "fonts", "Anton-Regular.ttf")
 # (seconds, file, volume): the card lands, the words hit, each flip, the price, the shop.
 SOUNDS = [(0.02, "card-slide-1.ogg", 0.8), (0.35, "card-place-1.ogg", 1.0), (1.3, "card-place-2.ogg", 0.6), (4.6, "card-slide-3.ogg", 1.0), (7.0, "card-slide-5.ogg", 1.0),
           (8.6, "chips-stack-2.ogg", 0.9), (9.2, "card-shove-1.ogg", 0.8)]
-INK, WHITE = (10, 10, 13), (255, 255, 255)
+INK, WHITE, RED = (10, 10, 13), (255, 255, 255), (255, 34, 44)
 SHOP_TOP, SHOP = "SHOP MY CARDS ON COLLX", "JUANJULIO"
 CH = 800
 
@@ -196,9 +196,22 @@ def stage(front, color, ghost_text):
     return st, stripes, sparks
 
 
-def make(card, front_path, back_path, out, cue=0.0, stills=None):
+def was_tag(frame, xy, s, strike):
+    """The old price, struck through as the new one lands."""
+    poster(frame, xy, s, 84, WHITE, stroke=7, tilt=-4)
+    if strike:
+        w = ImageFont.truetype(FONT, 84).getlength(s)
+        n = strike * (w + 30)
+        d = ImageDraw.Draw(frame)
+        x0, y = xy[0] - w / 2 - 15, xy[1] + 8
+        d.line((x0, y + 12, x0 + n, y + 12 - n * 0.09), fill=RED + (255,), width=13)
+
+
+def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words=None):
+    """`was` is the old price of a price drop, which gets its own look: red, with the old price struck through.
+    `words` replaces the opening hook ("STILL AVAILABLE")."""
     raw = cutout(front_path)
-    color = accent(raw)
+    color = RED if was else accent(raw)
     cw = round(raw.width * CH / raw.height)
     def prep(c):
         c = c.resize((cw * 2, CH * 2), Image.LANCZOS).convert("RGBA")
@@ -208,8 +221,10 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None):
     back = prep(cutout(back_path)) if back_path else None
     name = (card.get("player") or "").upper() or "UFC CARD"
     run = run_of(card)
-    st, stripes, sparks = stage(front, color, f"/{run}" if run else name.split()[-1])
-    words, line, price = hook(card), label(card), (card.get("price") or "").replace(".00", "")
+    price_now = float(re.sub(r"[^\d.]", "", card.get("price") or "0") or 0)
+    off = round((1 - price_now / float(re.sub(r"[^\d.]", "", was))) * 100) if was else 0
+    st, stripes, sparks = stage(front, color, f"-{off}%" if was else f"/{run}" if run else name.split()[-1])
+    words, line, price = ("PRICE DROP" if was else words or hook(card)), label(card), (card.get("price") or "").replace(".00", "")
     top_size, name_size, sub_size = fit(words, 132, 930), fit(name, 112, 930), fit(name, 86, 860)
     total = SECS + cue
     sounds = [s for s in SOUNDS if back or s[0] not in (4.6, 7.0)]
@@ -268,6 +283,8 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None):
         sub_in = clamp((t - 1.3) / 0.2)
         poster(frame, (W / 2, 1206), name, sub_size, WHITE, sub_in * (1 - hook_out), 1 + 0.5 * (1 - ease(sub_in)), stroke=7, tilt=1)
         price_in = clamp((t - 8.6) / 0.2)
+        if was and t >= 7.9:
+            was_tag(frame, (310, 1040), was.replace(".00", ""), ease(clamp((t - 8.25) / 0.3)))
         if price_in and price: sticker(frame, (806, 1010), price, price_in, color)
         if t >= 9.2: tag(frame, 1212, back_out(clamp((t - 9.2) / 0.32)), color)
         fl = max(0.0, *[0.5 * (1 - clamp((t - at) / 0.13)) if t >= at else 0.0 for at in (0.35, 8.6)])

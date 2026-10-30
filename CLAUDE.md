@@ -220,8 +220,10 @@ that grows without a trim and a CSV that keeps it.
   home page's "Dev tools" links the private Card Tracker app itself (`card_tracker_url`, `nofollow`, behind
   Cloudflare Access).
 - **Instagram**: the Worker starts the `Post a listing` workflow at :47 past 12, 5, 8 and 10 pm Eastern (`refresh.js`; it has no
-  GitHub schedule). It runs `scripts/post_listings.py`: the dearest listed card with a photo not yet in
-  `_data/social_posted.json` (never edit that by hand) goes out as a Reel (`scripts/make_reel.py`), every post, since only Reels
+  GitHub schedule). It runs `scripts/post_listings.py`, which reads the shop live: a price drop of 5% or more against
+  `_data/social_prices.json` goes first (a red Reel with the old price struck through), then the dearest listed card with a photo
+  not yet in `_data/social_posted.json` (never edit either by hand), then, with no new cards, one still for sale after 14 days
+  ("STILL AVAILABLE", once a day at most). Each goes out as a Reel (`scripts/make_reel.py`), every post, since only Reels
   can carry a song. It's drawn in the run and uploaded straight to Instagram, so no video is stored, with card sounds
   (`scripts/sfx`, CC0) and a song Instagram attaches: trending corridos first, picked by artist (its search is loose and few are
   cleared for apps), then Latin. Instagram can't choose where a song starts: `CUES` holds the reveal until its good part.
