@@ -219,16 +219,18 @@ that grows without a trim and a CSV that keeps it.
   200 KB are skipped, and the workflow commits `mma-cards/photos` with the other snapshot paths. Separately, the
   home page's "Dev tools" links the private Card Tracker app itself (`card_tracker_url`, `nofollow`, behind
   Cloudflare Access).
-- **Instagram**: the Worker starts the `Post a listing` workflow at :47 past 12, 5, 8 and 10 pm Eastern (`refresh.js`; it has no
-  GitHub schedule). It runs `scripts/post_listings.py`, which reads the shop live: a price drop of 5% or more against
-  `_data/social_prices.json` goes first (a red Reel with the old price struck through), then the dearest listed card with a photo
-  not yet in `_data/social_posted.json` (never edit either by hand), then, with no new cards, one still for sale after 14 days
-  ("STILL AVAILABLE", once a day at most). Each goes out as a Reel (`scripts/make_reel.py`), every post, since only Reels
-  can carry a song. It's drawn in the run and parked in R2 just while Instagram fetches it (the showcase's `/reel/`, secret `SOCIAL_KEY`; a direct upload loses the song), so no video is kept, with card sounds
-  (`scripts/sfx`, CC0) and a song Instagram attaches: trending corridos first, picked by artist (its search is loose and few are
-  cleared for apps), then Latin. Instagram can't choose where a song starts: `CUES` holds the reveal until its good part.
-  Photos come from the showcase's `/photo/<card>-full.webp` and `-back.webp`, fighters from its `player`. Only listed cards ever
-  go out: never live deals.
+- **Instagram** (`@luvjjulio`, `instagram_url`): the Worker starts the `Post a listing` workflow at :47 past 12, 5, 8 and 10 pm
+  Eastern (`refresh.js`; it has no GitHub schedule). `scripts/post_listings.py` reads the shop live and posts one card as a Reel
+  (`scripts/make_reel.py`), every post, since only Reels can carry a song: a price drop of 5% or more against
+  `_data/social_prices.json` first, then the dearest listed card with a photo not yet in `_data/social_posted.json`, then, with
+  nothing new, one still for sale after 14 days ("STILL AVAILABLE", once a day at most). Never edit those files by hand. The film
+  is drawn in the run and parked in R2 only while Instagram fetches it (the showcase's `/reel/`, secret `SOCIAL_KEY`): a direct
+  upload loses the song. It has card sounds (`scripts/sfx`, CC0) and a song Instagram attaches, in turn by `_data/social_songs.json`:
+  corrido artists first (Instagram's search is loose and few are cleared for apps), then Latin. Instagram can't choose where a song
+  starts: `CUES` holds the reveal until its good part. The film's words stay out of the top 14% and bottom 35%, and it loops: the
+  card leaves at the end and rises in at the start. The latest 12 are on `/mma-cards/` (`_data/social_feed.json`, `mma-cards/reels/`,
+  a local copy of each cover, since Instagram's addresses expire). Only listed cards ever go out: never live deals. The portfolio
+  links out to this account and nothing in the JSON-LD connects them (see "The music page").
 - **`/blog/`**: renders the local posts in HTML and merges Substack's items by script, so the
   list works without JavaScript and for crawlers.
 

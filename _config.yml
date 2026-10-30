@@ -125,6 +125,7 @@ worker_url: "https://house-tv.5342543fsd.workers.dev"
 # The MMA card shop page (/mma-cards/): the Card Tracker's public, read-only showcase Worker (card-tracker repo,
 # src/showcase.js). scripts/snapshot.py copies its /showcase.json and photos daily.
 cards_url: "https://card-showcase.5342543fsd.workers.dev"
+instagram_url: "https://www.instagram.com/luvjjulio/"
 # The private Card Tracker (its own repo, JuanTorresMI/card-tracker), linked from the home page's Dev tools; it sits behind Cloudflare Access.
 card_tracker_url: https://ledger-q7m3.5342543fsd.workers.dev/
 # The family label on /watching/.

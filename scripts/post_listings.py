@@ -16,7 +16,7 @@ _data/social_posted.json, and each card's last known price in _data/social_price
 line with its own Reel. With no new cards, a card still for sale after REPEAT_DAYS comes round again, at most once a day. Without IG_USER_ID and
 IG_ACCESS_TOKEN (GitHub secrets), `post` only prints what it would have sent.
 """
-import json, os, re, sys, tempfile, time, urllib.error, urllib.parse, urllib.request
+import io, json, os, re, sys, tempfile, time, urllib.error, urllib.parse, urllib.request
 from datetime import date, datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,6 +25,9 @@ CARDS = os.path.join(ROOT, "_data", "live", "cards.json")
 POSTED = os.path.join(ROOT, "_data", "social_posted.json")
 PRICES = os.path.join(ROOT, "_data", "social_prices.json")
 SONGS = os.path.join(ROOT, "_data", "social_songs.json")
+FEED = os.path.join(ROOT, "_data", "social_feed.json")      # the /mma-cards/ page's On Instagram section, newest first
+COVERS = os.path.join(ROOT, "mma-cards", "reels")           # its small cover pictures; Instagram's own addresses expire
+FEED_KEEP = 12
 HOSTS = ["https://graph.instagram.com/v22.0", "https://graph.facebook.com/v22.0"]    # Instagram login's tokens, Unified login's
 # Songs: what's trending by these first, then searches. Instagram has no genre filter, so the artists and words are the filter.
 CORRIDOS = ("fuerza regida", "peso pluma", "natanael cano", "junior h", "gabito ballesteros", "tito double p", "luis r conriquez", "grupo firme", "xavi",
@@ -182,6 +185,34 @@ def shelf(method, url, body=None):
         r.read()
 
 
+def feed_add(host, media, c, kind):
+    """A posted Reel on the page: its link, name, price and a small copy of its cover. Only the latest few are kept."""
+    from PIL import Image
+    info = graph(host, media, fields="permalink,thumbnail_url")
+    os.makedirs(COVERS, exist_ok=True)
+    with urllib.request.urlopen(urllib.request.Request(info["thumbnail_url"], headers={"User-Agent": "Mozilla/5.0"}), timeout=30) as r:
+        pic = Image.open(io.BytesIO(r.read())).convert("RGB")
+    pic.thumbnail((360, 640))
+    pic.save(os.path.join(COVERS, f"{media}.jpg"), "JPEG", quality=82, optimize=True)
+    name = c.get("player") or c["name"]
+    rest = [p for p in load(FEED, []) if p["media"] != media]
+    feed = [{"media": media, "url": info["permalink"], "name": name, "title": c["name"], "price": (c.get("price") or "").replace(".00", ""), "drop": kind == "drop"}, *rest]
+    save(FEED, feed[:FEED_KEEP])
+    keep = {f"{p['media']}.jpg" for p in feed[:FEED_KEEP]}
+    for f in os.listdir(COVERS):
+        if f not in keep:
+            os.remove(os.path.join(COVERS, f))
+
+
+def feed_backfill():
+    """Puts what's already been posted on the page."""
+    host = account()[0]
+    cards = {str(c["id"]): c for c in listings()}
+    for k, v in sorted(load(POSTED, {}).items(), key=lambda kv: when_posted(kv[1])):
+        if isinstance(v, dict) and v.get("media") and k in cards:
+            feed_add(host, v["media"], cards[k], v.get("kind"))
+
+
 def next_up(cards, posted, prices):
     """What goes next, as (card, old price or None, why): a price drop, then the dearest new card, then an old one again."""
     ready = [c for c in cards if c.get("photo") and priced(c)]
@@ -319,6 +350,10 @@ def post(card=None, old=None):
     save(PRICES, prices)
     if song:
         save(SONGS, {**used_songs(), song["audio_id"]: posted[str(c["id"])]["at"]})
+    try:
+        feed_add(host, media, c, why)
+    except Exception as e:      # the post is out: the page can miss one
+        print(f"Couldn't add it to the page: {e}")
     print(f"Posted card {c['id']} ({why}): {c['name']}" + (f" with {posted[str(c['id'])]['song_name']}" if song else ""))
 
 
@@ -328,6 +363,8 @@ if __name__ == "__main__":
         post(*sys.argv[2:4])
     elif what == "check":
         check()
+    elif what == "backfill":
+        feed_backfill()
     elif what == "test":
         test(*sys.argv[2:5])
     else:
