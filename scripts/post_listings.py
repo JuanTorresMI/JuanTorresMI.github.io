@@ -351,7 +351,7 @@ def post(card=None, old=None):
     if song:
         save(SONGS, {**used_songs(), song["audio_id"]: posted[str(c["id"])]["at"]})
     try:
-        feed_add(host, media, c, why)
+        feed_add(host, media, c, "drop" if was else why)
     except Exception as e:      # the post is out: the page can miss one
         print(f"Couldn't add it to the page: {e}")
     print(f"Posted card {c['id']} ({why}): {c['name']}" + (f" with {posted[str(c['id'])]['song_name']}" if song else ""))
