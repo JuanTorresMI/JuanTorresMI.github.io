@@ -3,9 +3,8 @@
 # secrets it only prints what it would post.
 name: Post a listing
 
+# Who starts it: the Worker, at 8:47 pm Eastern (worker/src/refresh.js). GitHub's own schedule runs hours late here.
 on:
-  schedule:
-    - cron: "17 22 * * *"           # early evening in Michigan
   workflow_dispatch:
     inputs:
       check:

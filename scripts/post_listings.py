@@ -207,7 +207,7 @@ def test(folder):
     c = reel_due()
     if not c:
         return print("No card due a Reel.")
-    picks = pick_songs(used_songs())
+    picks = pick_songs(used_songs()) or pick_songs()
     song = picks[0] if picks else None
     audio = None
     if song and song.get("download_url"):
@@ -252,7 +252,8 @@ def post():
         video = f"{SITE}/mma-cards/social/reel-{c['id']}.mp4"
         reel = worth(c) >= REEL_FROM and os.path.exists(os.path.join(SOCIAL, f"reel-{c['id']}.mp4")) and is_live(video)
         if worth(c) >= REEL_FROM and c.get("photo") and not reel:
-            continue    # its Reel is drawn first, for the next run
+            print(f"Waiting for card {c['id']}'s Reel, which this run draws.")
+            return      # Reels go first, dearest first: nothing cheaper jumps ahead of one still being drawn
         if not reel and (not os.path.exists(os.path.join(SOCIAL, f"{c['id']}.jpg")) or not is_live(image)):
             continue
         text = caption(c)
@@ -264,7 +265,8 @@ def post():
             sys.exit("The Instagram token didn't work.")
         song = None
         if reel:
-            picks = pick_songs(used_songs())
+            # Few corridos are cleared for apps: when they've all been used, one comes round again instead of a silent Reel.
+            picks = pick_songs(used_songs()) or pick_songs()
             song = picks[0] if picks else None
             fields = {"media_type": "REELS", "video_url": video, "caption": text, "share_to_feed": "true"}
             if song:

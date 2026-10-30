@@ -27,7 +27,7 @@ import { reeferWeek, REEFER_MAX_AGE, REEFER_WEEK_MAX_AGE } from "./reefer.js";
 import { borderTick, borderNow, borderReadings, borderPeopleReadings, borderPrune, BORDER_MAX_AGE } from "./border.js";
 import { beefTick, beefData, BEEF_MAX_AGE } from "./beef.js";
 import { porkTick, porkData, PORK_MAX_AGE } from "./pork.js";
-import { refreshState, startSnapshot, snapshotDue, setPending, isPending } from "./refresh.js";
+import { refreshState, startSnapshot, snapshotDue, setPending, isPending, socialDue, startSocial } from "./refresh.js";
 import { usageTick, usageData, USAGE_MAX_AGE } from "./usage.js";
 
 const STREMIO = "https://api.strem.io/api/datastoreGet";
@@ -98,6 +98,8 @@ export default {
     ctx.waitUntil(pagesTick(env, now, event.cron, log).catch(log("usda and pages")));
     // Cloudflare's analytics for the usage page, once an hour.
     if (event.cron === "47 * * * *") ctx.waitUntil(usageTick(env, now).catch(log("usage")));
+    // The day's Instagram post, at 8:47 pm Eastern (refresh.js).
+    if (socialDue(now, event.cron)) ctx.waitUntil(startSocial(env).catch(log("social")));
   },
 };
 

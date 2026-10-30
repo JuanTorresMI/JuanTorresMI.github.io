@@ -26,6 +26,24 @@ export const SNAPSHOT_HOUR_UTC = 11;     // 6:47 am Central in summer, 5:47 in w
 const REPO = "JuanTorresMI/JuanTorresMI.github.io";
 const WORKFLOW = "snapshot.yml";
 
+/* The daily Instagram post (.github/workflows/social.yml): at 8:47 pm Eastern, whatever the clocks are doing, from the
+   :47 cron run. 8 to 10 pm Eastern was sports content's best time on Instagram every day of the week (Comscore, 2022),
+   and GitHub's own schedule runs hours late. No cooldown: this hour's one run is the only thing that starts it. */
+const SOCIAL_HOUR_ET = 20;
+export function socialDue(now, cron) {
+  if (cron !== "47 * * * *") return false;
+  return Number(new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hourCycle: "h23" }).format(now)) === SOCIAL_HOUR_ET;
+}
+export async function startSocial(env) {
+  if (!env.GH_DISPATCH_TOKEN) return;
+  const res = await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/social.yml/dispatches`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${env.GH_DISPATCH_TOKEN}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "house-tv-worker" },
+    body: JSON.stringify({ ref: "main" }),
+  });
+  if (!res.ok) throw new Error(`GitHub answered ${res.status}`);
+}
+
 async function lastStart(env) {
   const row = await env.DB.prepare("SELECT value FROM counters WHERE name = 'refresh_at'").first();
   return row ? Number(row.value) : 0;
