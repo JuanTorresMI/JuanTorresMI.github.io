@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Draws a card's Reel: 9 seconds, 1080x1920. The card rises in, flips to its back and returns (a card with no back photo
+"""Draws a card's Reel: 16 seconds, 1080x1920, long enough for its song to settle. The card rises in, flips to its back and returns (a card with no back photo
 shines instead), then its price and the shop. The words stay in the area Instagram leaves clear; the top 14% and bottom
 35% hold only decoration. Its own sound is recorded card effects (scripts/sfx, Kenney's Casino Audio, CC0); Instagram adds
 the song on top (post_listings.py). The API can't choose where a song starts, so `cue` holds the reveal for that many seconds,
@@ -8,12 +8,12 @@ import math, os, random, re, subprocess
 import imageio_ffmpeg
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
-W, H, FPS, SECS = 1080, 1920, 30, 9
+W, H, FPS, SECS = 1080, 1920, 30, 16
 HERE = os.path.dirname(os.path.abspath(__file__))
 FONT = os.path.join(HERE, "fonts", "Anton-Regular.ttf")
 # (seconds, file, volume): the card lands, the words hit, each flip, the price, the shop.
-SOUNDS = [(0.02, "card-slide-1.ogg", 0.8), (0.35, "card-place-1.ogg", 1.0), (1.3, "card-place-2.ogg", 0.6), (3.4, "card-slide-3.ogg", 1.0), (5.2, "card-slide-5.ogg", 1.0),
-          (6.1, "chips-stack-2.ogg", 0.9), (6.7, "card-shove-1.ogg", 0.8)]
+SOUNDS = [(0.02, "card-slide-1.ogg", 0.8), (0.35, "card-place-1.ogg", 1.0), (1.3, "card-place-2.ogg", 0.6), (4.6, "card-slide-3.ogg", 1.0), (7.0, "card-slide-5.ogg", 1.0),
+          (8.6, "chips-stack-2.ogg", 0.9), (9.2, "card-shove-1.ogg", 0.8)]
 INK, WHITE = (10, 10, 13), (255, 255, 255)
 SHOP_TOP, SHOP = "SHOP MY CARDS ON COLLX", "JUANJULIO"
 CH = 800
@@ -206,7 +206,7 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None):
     words, line, price = hook(card), label(card), (card.get("price") or "").replace(".00", "")
     top_size, name_size, sub_size = fit(words, 132, 930), fit(name, 112, 930), fit(name, 86, 860)
     total = SECS + cue
-    sounds = [s for s in SOUNDS if back or s[0] not in (3.4, 5.2)]
+    sounds = [s for s in SOUNDS if back or s[0] not in (4.6, 7.0)]
     inputs = ["-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-"]
     chains = []
     for i, (at, sound, vol) in enumerate(sounds, 1):
@@ -216,7 +216,7 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None):
     mix = ";".join(chains) + ";" + "".join(f"[s{i}]" for i in range(1, len(sounds) + 1)) + f"amix=inputs={len(sounds)}:normalize=0:duration=longest,apad,atrim=0:{total}[a]"
     ff = subprocess.Popen([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", *inputs, "-filter_complex", mix, "-map", "0:v", "-map", "[a]", "-t", str(total),
                            "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-preset", "medium", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", out], stdin=subprocess.PIPE)
-    shots = {6, 16, 45, 108, 114, 126, 165, 215, 255}
+    shots = {6, 16, 60, 145, 150, 165, 225, 290, 420}
     sheet = []
     for n in range(int(FPS * total)):
         t = n / FPS - cue
@@ -234,12 +234,12 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None):
             ff.stdin.write(rgb.tobytes())
             continue
         rise = back_out(clamp(t / 0.42)) if t < 0.42 else 1
-        a = (ease(clamp((t - 3.4) / 0.7)) * 180 + ease(clamp((t - 5.2) / 0.7)) * 180) % 360 if back else 0
+        a = (ease(clamp((t - 4.6) / 0.7)) * 180 + ease(clamp((t - 7.0) / 0.7)) * 180) % 360 if back else 0
         flipped = 90 < a < 270
-        scale = 0.90 + 0.03 * ease(clamp(t / SECS)) + 0.03 * ease(clamp((t - 5.9) / 0.3))
+        scale = 0.88 + 0.04 * ease(clamp(t / 8)) + 0.05 * ease(clamp((t - 8) / (SECS - 8)))
         base = (back if flipped else front).copy()
         if not flipped and a < 8 or not flipped and a > 352:
-            for at in (1.55, 7.2) if back else (1.55, 3.8, 5.3, 7.2):
+            for at in (2.2, 10.5, 13.0) if back else (2.2, 5.0, 7.8, 10.5, 13.0):
                 p = (t - at) / 0.9
                 if 0 <= p <= 1:
                     sw, sh = base.size
@@ -254,18 +254,20 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None):
         ImageDraw.Draw(sh).rectangle((x + 14, y + 26, x + pic.width + 14, y + pic.height + 26), fill=(0, 0, 0, 190))
         frame.alpha_composite(sh.filter(ImageFilter.GaussianBlur(30)))
         if y < H: frame.paste(pic, (x, y), pic)
-        hook_in, hook_out = clamp((t - 0.35) / 0.2), clamp((t - 3.1) / 0.2)
+        hook_in, hook_out = clamp((t - 0.35) / 0.2), clamp((t - 4.3) / 0.2)
         poster(frame, (W / 2, 322), words, top_size, color, hook_in * (1 - hook_out), 1 + 0.85 * (1 - ease(hook_in)))
-        name_in = clamp((t - 3.2) / 0.22)
+        name_in = clamp((t - 4.4) / 0.22)
         poster(frame, (W / 2, 288), name, name_size, WHITE, name_in, 1.25 - 0.25 * ease(name_in), tilt=0)
-        caption_line(frame, 384, line, clamp((t - 3.35) / 0.25))
+        caption_line(frame, 384, line, clamp((t - 4.55) / 0.25))
         sub_in = clamp((t - 1.3) / 0.2)
         poster(frame, (W / 2, 1206), name, sub_size, WHITE, sub_in * (1 - hook_out), 1 + 0.5 * (1 - ease(sub_in)), stroke=7, tilt=1)
-        price_in = clamp((t - 6.1) / 0.2)
+        price_in = clamp((t - 8.6) / 0.2)
         if price_in and price: sticker(frame, (806, 1010), price, price_in, color)
-        if t >= 6.7: tag(frame, 1212, back_out(clamp((t - 6.7) / 0.32)), color)
-        fl = max(0.0, *[0.5 * (1 - clamp((t - at) / 0.13)) if t >= at else 0.0 for at in (0.35, 6.1)])
+        if t >= 9.2: tag(frame, 1212, back_out(clamp((t - 9.2) / 0.32)), color)
+        fl = max(0.0, *[0.5 * (1 - clamp((t - at) / 0.13)) if t >= at else 0.0 for at in (0.35, 8.6)])
         if fl: frame.alpha_composite(Image.new("RGBA", (W, H), WHITE + (int(255 * fl),)))
+        fade = clamp((t - (SECS - 0.8)) / 0.8)    # a soft end, not a cut
+        if fade: frame.alpha_composite(Image.new("RGBA", (W, H), INK + (int(255 * fade),)))
         rgb = frame.convert("RGB")
         ff.stdin.write(rgb.tobytes())
         if stills and n - int(cue * FPS) in shots: sheet.append(rgb.resize((216, 384)))
