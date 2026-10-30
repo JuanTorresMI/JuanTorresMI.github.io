@@ -113,25 +113,8 @@ def caption_line(frame, y, s, alpha):
     frame.alpha_composite(layer, (W // 2 - w // 2, y - 30))
 
 
-def refractor(c):
-    """The refractor a card is, in words ("ORANGE REFRACTOR"), or ""."""
-    text = f"{c.get('parallel') or ''} {c.get('name') or ''} {c.get('set') or ''}"
-    if not re.search(r"refractor", text, re.I): return ""
-    return c["parallel"].upper() if "refractor" in (c.get("parallel") or "").lower() else "REFRACTOR"
-
-
-def chip(frame, xy, s, alpha, color):
-    """A solid label on the card's corner, there all the way through."""
-    if alpha <= 0: return
-    f = ImageFont.truetype(FONT, 46)
-    layer = Image.new("RGBA", (int(f.getlength(s)) + 44, 74), color + (255,))
-    ImageDraw.Draw(layer).text((layer.width / 2, 37), s, font=f, fill=INK + (255,), anchor="mm")
-    layer = layer.rotate(3, expand=True, resample=Image.BICUBIC)
-    layer.putalpha(layer.getchannel("A").point(lambda v: int(v * alpha)))
-    frame.alpha_composite(layer, (int(xy[0]), int(xy[1])))
-
-
-def sticker(frame, xy, s, p, color):
+def sticker(frame, xy, s, p, color, was=None, strike=0):
+    """The price on a starburst. A price drop has the old price struck through inside it, so everything about the price is in one place."""
     R = 150
     layer = Image.new("RGBA", (R * 2 + 40, R * 2 + 40), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
@@ -139,7 +122,14 @@ def sticker(frame, xy, s, p, color):
     pts = [(c + (R if i % 2 == 0 else R * 0.84) * math.cos(i * math.pi / 14), c + (R if i % 2 == 0 else R * 0.84) * math.sin(i * math.pi / 14)) for i in range(28)]
     d.polygon([(x + 8, y + 10) for x, y in pts], fill=(0, 0, 0, 170))
     d.polygon(pts, fill=color + (255,), outline=INK + (255,), width=7)
-    d.text((c, c), s, font=ImageFont.truetype(FONT, fit(s, 118, 230)), fill=INK + (255,), anchor="mm")
+    if was:
+        f = ImageFont.truetype(FONT, 54)
+        d.text((c, c - 66), was, font=f, fill=WHITE + (255,), anchor="mm", stroke_width=3, stroke_fill=INK + (255,))
+        w = f.getlength(was) + 20
+        if strike: d.line((c - w / 2, c - 58, c - w / 2 + w * strike, c - 72), fill=INK + (255,), width=9)
+        d.text((c, c + 30), s, font=ImageFont.truetype(FONT, fit(s, 108, 230)), fill=INK + (255,), anchor="mm")
+    else:
+        d.text((c, c), s, font=ImageFont.truetype(FONT, fit(s, 118, 230)), fill=INK + (255,), anchor="mm")
     layer = layer.rotate(10, expand=True, resample=Image.BICUBIC)
     k = 1.5 - 0.5 * ease(p)
     layer = layer.resize((int(layer.width * k), int(layer.height * k)), Image.BICUBIC)
@@ -214,17 +204,6 @@ def stage(front, color, ghost_text):
     return st, stripes, sparks
 
 
-def was_tag(frame, xy, s, strike):
-    """The old price, struck through as the new one lands."""
-    poster(frame, xy, s, 84, WHITE, stroke=7, tilt=-4)
-    if strike:
-        w = ImageFont.truetype(FONT, 84).getlength(s)
-        n = strike * (w + 30)
-        d = ImageDraw.Draw(frame)
-        x0, y = xy[0] - w / 2 - 15, xy[1] + 8
-        d.line((x0, y + 12, x0 + n, y + 12 - n * 0.09), fill=RED + (255,), width=13)
-
-
 def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words=None):
     """`was` is the old price of a price drop, which gets its own look: red, with the old price struck through.
     `words` replaces the opening hook ("STILL AVAILABLE")."""
@@ -241,9 +220,9 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
     run = run_of(card)
     price_now = float(re.sub(r"[^\d.]", "", card.get("price") or "0") or 0)
     off = round((1 - price_now / float(re.sub(r"[^\d.]", "", was))) * 100) if was else 0
-    st, stripes, sparks = stage(front, color, f"-{off}%" if was else f"/{run}" if run else name.split()[-1])
-    finish = refractor(card)
-    words, line, price = ("PRICE DROP" if was else words or hook(card)), label(card), (card.get("price") or "").replace(".00", "")
+    st, stripes, sparks = stage(front, color, f"/{run}" if run else f"-{off}%" if was else name.split()[-1])
+    rarity = hook(card)
+    words, line, price = ("PRICE DROP" if was else words or rarity), label(card), (card.get("price") or "").replace(".00", "")
     top_size, name_size, sub_size = fit(words, 132, 930), fit(name, 112, 930), fit(name, 86, 860)
     total = SECS + cue
     sounds = [s for s in SOUNDS if back or s[0] not in (4.6, 7.0)]
@@ -256,7 +235,7 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
     mix = ";".join(chains) + ";" + "".join(f"[s{i}]" for i in range(1, len(sounds) + 1)) + f"amix=inputs={len(sounds)}:normalize=0:duration=longest,apad,atrim=0:{total}[a]"
     ff = subprocess.Popen([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", *inputs, "-filter_complex", mix, "-map", "0:v", "-map", "[a]", "-t", str(total),
                            "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-preset", "medium", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", out], stdin=subprocess.PIPE)
-    shots = {6, 16, 60, 145, 150, 165, 225, 290, 420}
+    shots = {6, 20, 80, 150, 165, 225, 262, 290, 420, 462}
     sheet = []
     for n in range(int(FPS * total)):
         t = n / FPS - cue
@@ -276,7 +255,9 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         rise = back_out(clamp(t / 0.42)) if t < 0.42 else 1
         a = (ease(clamp((t - 4.6) / 0.7)) * 180 + ease(clamp((t - 7.0) / 0.7)) * 180) % 360 if back else 0
         flipped = 90 < a < 270
-        scale = 0.88 + 0.04 * ease(clamp(t / 8)) + 0.05 * ease(clamp((t - 8) / (SECS - 8)))
+        # The card eases back and up for the finish, so the price and the shop sit clear of it.
+        settle = ease(clamp((t - 7.9) / 0.6))
+        scale = 0.88 + 0.04 * ease(clamp(t / 8)) - 0.14 * settle + 0.03 * ease(clamp((t - 9) / (SECS - 9)))
         base = (back if flipped else front).copy()
         if not flipped and a < 8 or not flipped and a > 352:
             for at in (2.2, 10.5, 13.0) if back else (2.2, 5.0, 7.8, 10.5, 13.0):
@@ -290,14 +271,20 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         pic = turned(base, 180 + a if flipped else a, cw, scale)
         # The last moment: the card flies up and out as the words go, and the Reel starts over with it rising in.
         leave = ease(clamp((t - (SECS - 0.7)) / 0.7))
-        cy = 800 + 7 * math.sin(t / SECS * 2 * math.pi * 3) + (1 - rise) * 1500 - leave * 1400
+        cy = 800 - 55 * settle + 7 * math.sin(t / SECS * 2 * math.pi * 3) + (1 - rise) * 1500 - leave * 1400
         x, y = W // 2 - pic.width // 2, int(cy - pic.height / 2)
         sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         ImageDraw.Draw(sh).rectangle((x + 14, y + 26, x + pic.width + 14, y + pic.height + 26), fill=(0, 0, 0, 190))
         frame.alpha_composite(sh.filter(ImageFilter.GaussianBlur(30)))
         if y < H: frame.paste(pic, (x, y), pic)
         hook_in, hook_out = clamp((t - 0.35) / 0.2), clamp((t - 4.3) / 0.2)
-        poster(frame, (W / 2, 322), words, top_size, color, hook_in * (1 - hook_out), 1 + 0.85 * (1 - ease(hook_in)))
+        if was and rarity != "FRESH DROP":
+            # A price drop still says how rare the card is: the drop first, then the rarity.
+            swap = clamp((t - 2.3) / 0.2)
+            poster(frame, (W / 2, 322), words, top_size, color, hook_in * (1 - swap), 1 + 0.85 * (1 - ease(hook_in)))
+            poster(frame, (W / 2, 322), rarity, fit(rarity, 132, 930), color, swap * (1 - hook_out), 1.25 - 0.25 * ease(swap))
+        else:
+            poster(frame, (W / 2, 322), words, top_size, color, hook_in * (1 - hook_out), 1 + 0.85 * (1 - ease(hook_in)))
         name_in = clamp((t - 4.4) / 0.22)
         poster(frame, (W / 2, 288), name, name_size, WHITE, name_in * (1 - leave), 1.25 - 0.25 * ease(name_in), tilt=0)
         caption_line(frame, 384, line, clamp((t - 4.55) / 0.25) * (1 - leave))
@@ -305,12 +292,9 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         poster(frame, (W / 2, 1206), name, sub_size, WHITE, sub_in * (1 - hook_out), 1 + 0.5 * (1 - ease(sub_in)), stroke=7, tilt=1)
         price_in = clamp((t - 8.6) / 0.2)
         lift = leave * 1400
-        if was and t >= 7.9 and leave < 1:
-            was_tag(frame, (310, 1040 - lift), was.replace(".00", ""), ease(clamp((t - 8.25) / 0.3)))
-        if finish and leave < 1:
-            chip(frame, (W / 2 - pic.width / 2 + 16, y + 26), finish, clamp((t - 1.0) / 0.2), color)
-        if price_in and price and leave < 1: sticker(frame, (806, 1010 - lift), price, price_in, color)
-        if t >= 9.2 and leave < 1: tag(frame, 1212, back_out(clamp((t - 9.2) / 0.32)) * (1 - leave), color)
+        if price_in and price and leave < 1:
+            sticker(frame, (816, 975 - lift), price, price_in, color, was and was.replace(".00", ""), ease(clamp((t - 8.9) / 0.3)))
+        if t >= 9.2 and leave < 1: tag(frame, 1185, back_out(clamp((t - 9.2) / 0.32)) * (1 - leave), color)
         fl = max(0.0, *[0.5 * (1 - clamp((t - at) / 0.13)) if t >= at else 0.0 for at in (0.35, 8.6)])
         if fl: frame.alpha_composite(Image.new("RGBA", (W, H), WHITE + (int(255 * fl),)))
         rgb = frame.convert("RGB")

@@ -233,11 +233,14 @@ def photos_of(c, folder):
     return paths
 
 
-def test(folder):
+def test(folder, card=None, old=None):
     """The next Reel as it would go out, without its song, which only Instagram can add: nothing is published."""
     import make_reel
     os.makedirs(folder, exist_ok=True)
-    c, was, why = next_up(listings(), load(POSTED, {}), load(PRICES, {}))
+    cards = listings()
+    c, was, why = next_up(cards, load(POSTED, {}), load(PRICES, {}))
+    if card:
+        c, was, why = next((x for x in cards if str(x["id"]) == str(card)), None), old or None, "asked"
     if not c:
         return print(f"Nothing to post: {why}.")
     picks = pick_songs(used_songs())
@@ -326,7 +329,7 @@ if __name__ == "__main__":
     elif what == "check":
         check()
     elif what == "test":
-        test(sys.argv[2])
+        test(*sys.argv[2:5])
     else:
         for c in load(CARDS, {}).get("for_sale", []):
             print(f"--- {c['id']}{' (no photo)' if not c.get('photo') else ''}\n{caption(c)}")
