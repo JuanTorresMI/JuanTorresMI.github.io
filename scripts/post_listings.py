@@ -24,11 +24,16 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 CARDS = os.path.join(ROOT, "_data", "live", "cards.json")
 POSTED = os.path.join(ROOT, "_data", "social_posted.json")
 PRICES = os.path.join(ROOT, "_data", "social_prices.json")
+SONGS = os.path.join(ROOT, "_data", "social_songs.json")
 HOSTS = ["https://graph.instagram.com/v22.0", "https://graph.facebook.com/v22.0"]    # Instagram login's tokens, Unified login's
 # Songs: what's trending by these first, then searches. Instagram has no genre filter, so the artists and words are the filter.
 CORRIDOS = ("fuerza regida", "peso pluma", "natanael cano", "junior h", "gabito ballesteros", "tito double p", "luis r conriquez", "grupo firme", "xavi",
-            "oscar maydon", "chino pacas", "ivan cornejo", "eslabon armado", "banda ms", "carin leon", "calle 24", "grupo frontera", "los tigres del norte")
-LATIN = ("bad bunny", "karol g", "feid", "rauw alejandro", "humbe", "bago villain", "christian nodal", "kali uchis", "anuel aa", "ozuna", "j balvin")
+            "oscar maydon", "chino pacas", "ivan cornejo", "eslabon armado", "banda ms", "carin leon", "calle 24", "grupo frontera", "los tigres del norte",
+            "los tucanes de tijuana", "gerardo ortiz", "alfredo olivas", "ariel camacho", "grupo codiciado", "legado 7", "banda el recodo", "julion alvarez",
+            "los dos carnales", "lenin ramirez", "el fantasma", "t3r elemento", "yahritza", "dannylux", "luis angel", "el komander", "calibre 50", "los plebes del rancho",
+            "marca registrada", "enigma norteno", "hector rubio", "grupo arriesgado", "edgardo nunez", "pepe aguilar", "los alegres del barranco", "los inquietos del norte")
+LATIN = ("bad bunny", "karol g", "feid", "rauw alejandro", "humbe", "bago villain", "christian nodal", "kali uchis", "anuel aa", "ozuna", "j balvin",
+         "maluma", "daddy yankee", "don omar", "wisin", "myke towers", "arcangel", "nicky jam", "becky g", "sech", "jhayco", "eladio carrion", "villa", "azabache")
 DROP_FROM = 0.05            # a price this far under the last one is a drop
 REPEAT_DAYS = 14            # how long before a card still for sale can go out again
 REPEAT_GAP_H = 20           # and how far apart those repeats are
@@ -67,6 +72,7 @@ def caption(c, was=None):
     tags += ["#UFC", "#UFCCards"]
     low = f"{name} {c.get('set') or ''}".lower()
     tags += [f"#{t}" for p, t in PRODUCTS if p in low][:1]
+    tags += ["#Refractor"] if re.search("refractor", f"{name} {c.get('parallel') or ''}", re.I) else []
     tags += ["#RookieCard"] if c.get("rookie") else ["#Autograph"] if c.get("auto") else ["#MMACards"]
     price = f"Price drop: was {was}, now {c['price']}" if was else c["price"]
     return f"{name}\n{price} · shop link in bio\n\n{' '.join(tags[:5])}"
@@ -116,21 +122,24 @@ def by(song, names):
     return any(n in artist for n in names)
 
 
-def pick_songs(used=()):
-    """Songs in the order they'd be used: trending corridos, the corrido artists' other songs, trending Latin. Clean titles, none used before."""
+def pick_songs(used={}):
+    """Songs in the order they'd be used: trending corridos, the corrido artists' other songs, then Latin, longest unused first. Clean titles."""
     now = songs()
     found = [s for s in now if by(s, CORRIDOS)]
     # Instagram's search is loose (a genre's name brings back anything): ask for each artist, and keep only theirs.
     for name in CORRIDOS:
         found += [s for s in songs(name) if by(s, CORRIDOS)]
     found += [s for s in now if by(s, LATIN)]
-    seen, out = set(used), []
+    for name in LATIN:
+        found += [s for s in songs(name) if by(s, LATIN)]
+    seen, out = set(), []
     for s in found:
         key = s.get("audio_id")
         if key and key not in seen and (s.get("duration_in_ms") or 0) >= 20000 and not UNCLEAN.search(f"{s.get('title')} {s.get('display_artist')}"):
             seen.add(key)
             out.append(s)
-    return out
+    # Least recently used first (never used before all), keeping that order among equals: the songs take turns.
+    return sorted(out, key=lambda s: used.get(s["audio_id"], ""))
 
 
 def trending():
@@ -231,7 +240,7 @@ def test(folder):
     c, was, why = next_up(listings(), load(POSTED, {}), load(PRICES, {}))
     if not c:
         return print(f"Nothing to post: {why}.")
-    picks = pick_songs(used_songs()) or pick_songs()
+    picks = pick_songs(used_songs())
     song = picks[0] if picks else None
     front, back = photos_of(c, folder)
     make_reel.make(c, front, back, os.path.join(folder, "next-reel.mp4"), cue=CUES.get((song or {}).get("audio_id"), 0.0), stills=os.path.join(folder, "frames.png"),
@@ -242,7 +251,7 @@ def test(folder):
 
 
 def used_songs():
-    return [v["song"] for v in load(POSTED, {}).values() if isinstance(v, dict) and v.get("song")]
+    return load(SONGS, {})
 
 
 def graph(host, path, **fields):
@@ -256,11 +265,13 @@ def graph(host, path, **fields):
         return json.load(r)
 
 
-def post():
-    """The next card (next_up) as a Reel: drawn here and uploaded straight to Instagram. No card is fine: the run just ends."""
+def post(card=None, old=None):
+    """The next card (next_up), or the one asked for, as a Reel. No card is fine: the run just ends."""
     import make_reel
     posted, prices, cards = load(POSTED, {}), load(PRICES, {}), listings()
     c, was, why = next_up(cards, posted, prices)
+    if card:
+        c, was, why = next((x for x in cards if str(x["id"]) == str(card)), None), old or None, "asked"
     note_prices(cards, prices)
     if not c:
         save(PRICES, prices)
@@ -271,8 +282,7 @@ def post():
     user, host = os.environ["IG_USER_ID"], account()[0]
     if not host:
         sys.exit("The Instagram token didn't work.")
-    # Few corridos are cleared for apps: when they've all been used, one comes round again instead of a silent Reel.
-    picks = pick_songs(used_songs()) or pick_songs()
+    picks = pick_songs(used_songs())
     song = picks[0] if picks else None
     cue = CUES.get((song or {}).get("audio_id"), 0.0)
     slug = f"card-{c['id']}-{int(time.time())}"
@@ -304,13 +314,15 @@ def post():
     prices[str(c["id"])] = cents_of(c)    # the drop's been told: this is the new mark
     save(POSTED, posted)
     save(PRICES, prices)
+    if song:
+        save(SONGS, {**used_songs(), song["audio_id"]: posted[str(c["id"])]["at"]})
     print(f"Posted card {c['id']} ({why}): {c['name']}" + (f" with {posted[str(c['id'])]['song_name']}" if song else ""))
 
 
 if __name__ == "__main__":
     what = sys.argv[1] if len(sys.argv) > 1 else "preview"
     if what == "post":
-        post()
+        post(*sys.argv[2:4])
     elif what == "check":
         check()
     elif what == "test":
