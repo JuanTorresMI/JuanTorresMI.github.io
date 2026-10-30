@@ -28,12 +28,10 @@ def cutout(path):
     corner = im.getpixel((6, 6))
     mask = ImageChops.difference(im, Image.new("RGB", im.size, corner)).convert("L").point(lambda v: 255 if v > 55 else 0)
     box = mask.filter(ImageFilter.MinFilter(9)).getbbox()
-    if box:
-        x0, y0, x1, y1 = box
-        w, h = x1 - x0, y1 - y0
-        if w * h > im.width * im.height * 0.3 and 0.55 < w / h < 0.85:
-            return im.crop((x0 + 9, y0 + 9, x1 - 9, y1 - 9))
-    return im
+    if not box or (box[2] - box[0]) * (box[3] - box[1]) < im.width * im.height * 0.3:
+        return im
+    x0, y0, x1, y1 = box
+    return im.crop((x0 + 9, y0 + 9, x1 - 9, y1 - 9))
 
 
 def accent(im):

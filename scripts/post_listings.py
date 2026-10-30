@@ -31,7 +31,6 @@ REEL_FROM = 5.0             # dollars: dearer cards get a Reel
 CORRIDOS = ("fuerza regida", "peso pluma", "natanael cano", "junior h", "gabito ballesteros", "tito double p", "luis r conriquez", "grupo firme", "xavi",
             "oscar maydon", "chino pacas", "ivan cornejo", "eslabon armado", "banda ms", "carin leon", "calle 24", "grupo frontera", "los tigres del norte")
 LATIN = ("bad bunny", "karol g", "feid", "rauw alejandro", "humbe", "bago villain", "natalia lafourcade", "christian nodal", "kali uchis", "anuel aa", "ozuna", "j balvin")
-SEARCHES = ("corridos tumbados", "corridos belicos", "corridos", "regional mexicano", "musica mexicana")
 UNCLEAN = re.compile(r"fuck|shit|bitch|bxtch|nigga|puta|verga|cabr[oó]n|chinga", re.I)
 PRODUCTS = [("stadium club", "StadiumClub"), ("chrome", "ToppsChrome"), ("prizm", "PaniniPrizm"), ("select", "PaniniSelect"), ("knockout", "ToppsKnockout"),
             ("royalty", "ToppsRoyalty"), ("midnight", "ToppsMidnight"), ("optic", "DonrussOptic"), ("donruss", "Donruss"), ("finest", "ToppsFinest")]
@@ -157,11 +156,12 @@ def by(song, names):
 
 
 def pick_songs(used=()):
-    """Songs in the order they'd be used: trending corridos, searched corridos, trending Latin. Clean titles, none used before."""
+    """Songs in the order they'd be used: trending corridos, the corrido artists' other songs, trending Latin. Clean titles, none used before."""
     now = songs()
     found = [s for s in now if by(s, CORRIDOS)]
-    for words in SEARCHES:
-        found += songs(words)
+    # Instagram's search is loose (a genre's name brings back anything): ask for each artist, and keep only theirs.
+    for name in CORRIDOS:
+        found += [s for s in songs(name) if by(s, CORRIDOS)]
     found += [s for s in now if by(s, LATIN)]
     seen, out = set(used), []
     for s in found:
