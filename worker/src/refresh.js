@@ -26,13 +26,14 @@ export const SNAPSHOT_HOUR_UTC = 11;     // 6:47 am Central in summer, 5:47 in w
 const REPO = "JuanTorresMI/JuanTorresMI.github.io";
 const WORKFLOW = "snapshot.yml";
 
-/* The daily Instagram post (.github/workflows/social.yml): at 8:47 pm Eastern, whatever the clocks are doing, from the
-   :47 cron run. 8 to 10 pm Eastern was sports content's best time on Instagram every day of the week (Comscore, 2022),
-   and GitHub's own schedule runs hours late. No cooldown: this hour's one run is the only thing that starts it. */
-const SOCIAL_HOUR_ET = 20;
+/* The Instagram posts (.github/workflows/social.yml): four slots a day at :47 past these Eastern hours, whatever the clocks
+   are doing, from the :47 cron run, while each post's reach shows which works best (_data/social_posted.json has when each
+   went out). 8 to 10 pm Eastern was sports content's best time every day of the week (Comscore, 2022); the others are the
+   test. GitHub's own schedule runs hours late. No cooldown: this hour's one run is the only thing that starts it. */
+const SOCIAL_HOURS_ET = [12, 17, 20, 22];
 export function socialDue(now, cron) {
   if (cron !== "47 * * * *") return false;
-  return Number(new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hourCycle: "h23" }).format(now)) === SOCIAL_HOUR_ET;
+  return SOCIAL_HOURS_ET.includes(Number(new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", hourCycle: "h23" }).format(now)));
 }
 export async function startSocial(env) {
   if (!env.GH_DISPATCH_TOKEN) return;

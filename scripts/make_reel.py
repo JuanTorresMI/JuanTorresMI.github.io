@@ -196,52 +196,6 @@ def stage(front, color, ghost_text):
     return st, stripes, sparks
 
 
-def still(card, front_path, out):
-    """A photo post, 1080x1350, in the Reels' look: the card cut out on a dark stage in its own colour, the fighter, set, price and shop."""
-    PW, PH = 1080, 1350
-    raw = cutout(front_path)
-    color = accent(raw)
-    ch = 860 if raw.height >= raw.width else 620
-    cw = round(raw.width * ch / raw.height)
-    if cw > 900:
-        cw, ch = 900, round(raw.height * 900 / raw.width)
-    pic = raw.resize((cw, ch), Image.LANCZOS).convert("RGBA")
-    ImageDraw.Draw(pic).rectangle((0, 0, cw - 1, ch - 1), outline=(255, 255, 255, 235), width=4)
-    glow = raw.resize((PW, PH)).filter(ImageFilter.GaussianBlur(90))
-    shade = Image.new("L", (PW, PH), 0)
-    ImageDraw.Draw(shade).ellipse((-240, 40, PW + 240, 1160), fill=255)
-    frame = Image.composite(Image.eval(glow, lambda v: int(v * 0.42)), Image.new("RGB", (PW, PH), INK), shade.filter(ImageFilter.GaussianBlur(150))).convert("RGBA")
-    tone = Image.new("RGBA", (PW, PH), (0, 0, 0, 0))
-    d = ImageDraw.Draw(tone)
-    for row, y in enumerate(range(1040, PH + 30, 30)):
-        r = (y - 1040) / (PH - 1040) * 9
-        for x in range((row % 2) * 15, PW + 30, 30):
-            d.ellipse((x - r, y - r, x + r, y + r), fill=color + (110,))
-    frame.alpha_composite(tone)
-    ds = ImageDraw.Draw(frame)
-    for x in range(-PH, PW + PH, 190):
-        over = Image.new("RGBA", (PW, PH), (0, 0, 0, 0))
-        ImageDraw.Draw(over).polygon([(x, 0), (x + 46, 0), (x + 46 - PH // 2, PH), (x - PH // 2, PH)], fill=WHITE + (8,))
-        frame.alpha_composite(over)
-    name = (card.get("player") or "").upper() or "UFC CARD"
-    top = 232
-    x, y = PW // 2 - cw // 2, top + (860 - ch) // 2
-    sh = Image.new("RGBA", (PW, PH), (0, 0, 0, 0))
-    ImageDraw.Draw(sh).rectangle((x + 14, y + 22, x + cw + 14, y + ch + 22), fill=(0, 0, 0, 190))
-    frame.alpha_composite(sh.filter(ImageFilter.GaussianBlur(28)))
-    frame.alpha_composite(pic, (x, y))
-    poster(frame, (PW / 2, 104), name, fit(name, 104, 960), WHITE, tilt=0)
-    caption_line(frame, 196, label(card), 1)
-    words = hook(card)
-    if words != "FRESH DROP":
-        poster(frame, (PW / 2, y + 40), words, fit(words, 62, 620), color, stroke=6)
-    price = (card.get("price") or "").replace(".00", "")
-    if price:
-        sticker(frame, (x + cw - 10, y + ch - 110), price, 1, color)
-    tag(frame, 1228, 1, color)
-    frame.convert("RGB").save(out, "JPEG", quality=92, optimize=True)
-
-
 def make(card, front_path, back_path, out, cue=0.0, stills=None):
     raw = cutout(front_path)
     color = accent(raw)
