@@ -8,13 +8,15 @@
   python3 scripts/post_listings.py test DIR    draws the next Reel with its song's preview into DIR, and publishes nothing
 
 Cards from REEL_FROM up go out as Reels (scripts/make_reel.py) with a trending corrido or other Latin song from
-Instagram's own music, attached by Instagram; the rest as photos.
+Instagram's own music, attached by Instagram; the rest as photos. A Reel is drawn in the run that posts it and goes
+straight to Instagram, so no video is ever stored. Instagram's API can't choose where a song starts: CUES holds the
+reveal until a song's good part.
 
 Instagram fetches a picture from a public address, and only JPEGs, so a run posts what the last run drew and deployed.
 What's posted is kept in _data/social_posted.json, so a card never goes out twice. Without IG_USER_ID and
 IG_ACCESS_TOKEN (GitHub secrets), `post` only prints what it would have sent.
 """
-import io, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
+import io, json, os, re, sys, tempfile, time, urllib.error, urllib.parse, urllib.request
 from datetime import date
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,6 +33,7 @@ REEL_FROM = 5.0             # dollars: dearer cards get a Reel
 CORRIDOS = ("fuerza regida", "peso pluma", "natanael cano", "junior h", "gabito ballesteros", "tito double p", "luis r conriquez", "grupo firme", "xavi",
             "oscar maydon", "chino pacas", "ivan cornejo", "eslabon armado", "banda ms", "carin leon", "calle 24", "grupo frontera", "los tigres del norte")
 LATIN = ("bad bunny", "karol g", "feid", "rauw alejandro", "humbe", "bago villain", "natalia lafourcade", "christian nodal", "kali uchis", "anuel aa", "ozuna", "j balvin")
+CUES = {}                   # audio_id: seconds into the song that its good part starts (scripts/make_reel.py holds the reveal for them)
 UNCLEAN = re.compile(r"fuck|shit|bitch|bxtch|nigga|puta|verga|cabr[oó]n|chinga", re.I)
 PRODUCTS = [("stadium club", "StadiumClub"), ("chrome", "ToppsChrome"), ("prizm", "PaniniPrizm"), ("select", "PaniniSelect"), ("knockout", "ToppsKnockout"),
             ("royalty", "ToppsRoyalty"), ("midnight", "ToppsMidnight"), ("optic", "DonrussOptic"), ("donruss", "Donruss"), ("finest", "ToppsFinest")]
@@ -99,17 +102,6 @@ def prepare():
         page = Image.new("RGB", SIZE, STOCK)
         page.paste(pic, ((SIZE[0] - pic.width) // 2, (SIZE[1] - pic.height) // 2))
         page.save(path, "JPEG", quality=88, optimize=True)
-    # One Reel at a time, the next one due: a posted Reel's file goes, so videos don't pile up in the repo.
-    c = reel_due()
-    if c:
-        import make_reel
-        path = os.path.join(SOCIAL, f"reel-{c['id']}.mp4")
-        keep.add(path)
-        if not os.path.exists(path):
-            tmp = os.path.join(ROOT, ".reel-photos")
-            os.makedirs(tmp, exist_ok=True)
-            front, back = photos_of(c, tmp)
-            make_reel.make(c, front, back, path)
     for f in os.listdir(SOCIAL):
         if os.path.join(SOCIAL, f) not in keep:
             os.remove(os.path.join(SOCIAL, f))
@@ -201,7 +193,7 @@ def photos_of(c, folder):
 
 
 def test(folder):
-    """The next Reel as it would go out, with a preview of its song: nothing is published."""
+    """The next Reel as it would go out, without its song, which only Instagram can add: nothing is published."""
     import make_reel
     os.makedirs(folder, exist_ok=True)
     c = reel_due()
@@ -209,16 +201,11 @@ def test(folder):
         return print("No card due a Reel.")
     picks = pick_songs(used_songs()) or pick_songs()
     song = picks[0] if picks else None
-    audio = None
-    if song and song.get("download_url"):
-        audio = os.path.join(folder, "song.m4a")
-        with urllib.request.urlopen(urllib.request.Request(song["download_url"], headers={"User-Agent": "Mozilla/5.0"}), timeout=60) as r, open(audio, "wb") as f:
-            f.write(r.read())
     front, back = photos_of(c, folder)
-    make_reel.make(c, front, back, os.path.join(folder, "next-reel.mp4"), audio=audio, stills=os.path.join(folder, "frames.png"))
+    make_reel.make(c, front, back, os.path.join(folder, "next-reel.mp4"), cue=CUES.get((song or {}).get("audio_id"), 0.0), stills=os.path.join(folder, "frames.png"))
     with open(os.path.join(folder, "caption.txt"), "w", encoding="utf-8") as f:
         f.write(f"{caption(c)}\n\nSong: {song.get('title')} - {song.get('display_artist')}\n" if song else f"{caption(c)}\n\nNo song found.\n")
-    print(f"Card {c['id']}: {c['name']} | song: {(song or {}).get('title')} - {(song or {}).get('display_artist')} | preview audio: {bool(audio)} | back photo: {bool(back)}")
+    print(f"Card {c['id']}: {c['name']} | song: {(song or {}).get('title')} - {(song or {}).get('display_artist')} | back photo: {bool(back)}")
 
 
 def used_songs():
@@ -249,11 +236,7 @@ def post():
     todo = [c for c in load(CARDS, {}).get("for_sale", []) if str(c["id"]) not in posted and priced(c)]
     for c in sorted(todo, key=worth, reverse=True):
         image = f"{SITE}/mma-cards/social/{c['id']}.jpg"
-        video = f"{SITE}/mma-cards/social/reel-{c['id']}.mp4"
-        reel = worth(c) >= REEL_FROM and os.path.exists(os.path.join(SOCIAL, f"reel-{c['id']}.mp4")) and is_live(video)
-        if worth(c) >= REEL_FROM and c.get("photo") and not reel:
-            print(f"Waiting for card {c['id']}'s Reel, which this run draws.")
-            return      # Reels go first, dearest first: nothing cheaper jumps ahead of one still being drawn
+        reel = worth(c) >= REEL_FROM and c.get("photo")
         if not reel and (not os.path.exists(os.path.join(SOCIAL, f"{c['id']}.jpg")) or not is_live(image)):
             continue
         text = caption(c)
@@ -268,10 +251,22 @@ def post():
             # Few corridos are cleared for apps: when they've all been used, one comes round again instead of a silent Reel.
             picks = pick_songs(used_songs()) or pick_songs()
             song = picks[0] if picks else None
-            fields = {"media_type": "REELS", "video_url": video, "caption": text, "share_to_feed": "true"}
-            if song:
-                fields["audio_configuration"] = json.dumps({"audio_id": song["audio_id"], "audio_volume": 100, "video_volume": 1})
-            made = graph(host, f"{user}/media", **fields)["id"]
+            import make_reel
+            with tempfile.TemporaryDirectory() as tmp:
+                film = os.path.join(tmp, "reel.mp4")
+                front, back = photos_of(c, tmp)
+                make_reel.make(c, front, back, film, cue=CUES.get((song or {}).get("audio_id"), 0.0))
+                fields = {"media_type": "REELS", "upload_type": "resumable", "caption": text, "share_to_feed": "true"}
+                if song:
+                    fields["audio_configuration"] = json.dumps({"audio_id": song["audio_id"], "audio_volume": 80, "video_volume": 100})
+                made = graph(host, f"{user}/media", **fields)["id"]
+                with open(film, "rb") as f:
+                    body = f.read()
+                # The film itself goes to Instagram, so nothing has to host it.
+                up = urllib.request.Request(f"https://rupload.facebook.com/ig-api-upload/v22.0/{made}", data=body, method="POST",
+                                            headers={"Authorization": f"OAuth {os.environ['IG_ACCESS_TOKEN']}", "offset": "0", "file_size": str(len(body))})
+                with urllib.request.urlopen(up, timeout=180) as r:
+                    r.read()
         else:
             made = graph(host, f"{user}/media", image_url=image, caption=text)["id"]
         for _ in range(60):
@@ -286,7 +281,7 @@ def post():
         with open(POSTED, "w", encoding="utf-8", newline="\n") as f:
             json.dump(posted, f, indent=2, sort_keys=True)
             f.write("\n")
-        print(f"Posted card {c['id']}: {c['name']}")
+        print(f"Posted card {c['id']}: {c['name']}" + (f" with {posted[str(c['id'])]['song_name']}" if song else ""))
         return
     print("Nothing to post.")
 

@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 """Draws a card's Reel: 9 seconds, 1080x1920. The card rises in, flips to its back and returns (a card with no back photo
 shines instead), then its price and the shop. The words stay in the area Instagram leaves clear; the top 14% and bottom
-35% hold only decoration. The film is silent: Instagram attaches the song (post_listings.py), or `audio` adds one for a test."""
+35% hold only decoration. Its own sound is recorded card effects (scripts/sfx, Kenney's Casino Audio, CC0); Instagram adds
+the song on top (post_listings.py). The API can't choose where a song starts, so `cue` holds the reveal for that many seconds,
+until the song's good part."""
 import math, os, random, re, subprocess
 import imageio_ffmpeg
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 W, H, FPS, SECS = 1080, 1920, 30, 9
-FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts", "Anton-Regular.ttf")
+HERE = os.path.dirname(os.path.abspath(__file__))
+FONT = os.path.join(HERE, "fonts", "Anton-Regular.ttf")
+# (seconds, file, volume): the card lands, the words hit, each flip, the price, the shop.
+SOUNDS = [(0.02, "card-slide-1.ogg", 0.8), (0.35, "card-place-1.ogg", 1.0), (1.3, "card-place-2.ogg", 0.6), (3.4, "card-slide-3.ogg", 1.0), (5.2, "card-slide-5.ogg", 1.0),
+          (6.1, "chips-stack-2.ogg", 0.9), (6.7, "card-shove-1.ogg", 0.8)]
 INK, WHITE = (10, 10, 13), (255, 255, 255)
 SHOP_TOP, SHOP = "SHOP MY CARDS ON COLLX", "JUANJULIO"
 CH = 800
@@ -184,7 +190,7 @@ def stage(front, color, ghost_text):
     return st, stripes, sparks
 
 
-def make(card, front_path, back_path, out, audio=None, stills=None):
+def make(card, front_path, back_path, out, cue=0.0, stills=None):
     raw = cutout(front_path)
     color = accent(raw)
     cw = round(raw.width * CH / raw.height)
@@ -199,21 +205,34 @@ def make(card, front_path, back_path, out, audio=None, stills=None):
     st, stripes, sparks = stage(front, color, f"/{run}" if run else name.split()[-1])
     words, line, price = hook(card), label(card), (card.get("price") or "").replace(".00", "")
     top_size, name_size, sub_size = fit(words, 132, 930), fit(name, 112, 930), fit(name, 86, 860)
+    total = SECS + cue
+    sounds = [s for s in SOUNDS if back or s[0] not in (3.4, 5.2)]
     inputs = ["-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-"]
-    inputs += ["-i", audio] if audio else ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo"]
-    ff = subprocess.Popen([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", *inputs, "-t", str(SECS), "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20",
-                           "-preset", "medium", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", out], stdin=subprocess.PIPE)
+    chains = []
+    for i, (at, name, vol) in enumerate(sounds, 1):
+        inputs += ["-i", os.path.join(HERE, "sfx", name)]
+        ms = int((at + cue) * 1000)
+        chains.append(f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,volume={vol},adelay={ms}|{ms}[s{i}]")
+    mix = ";".join(chains) + ";" + "".join(f"[s{i}]" for i in range(1, len(sounds) + 1)) + f"amix=inputs={len(sounds)}:normalize=0:duration=longest,apad,atrim=0:{total}[a]"
+    ff = subprocess.Popen([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", *inputs, "-filter_complex", mix, "-map", "0:v", "-map", "[a]", "-t", str(total),
+                           "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-preset", "medium", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", out], stdin=subprocess.PIPE)
     shots = {6, 16, 45, 108, 114, 126, 165, 215, 255}
     sheet = []
-    for n in range(FPS * SECS):
-        t = n / FPS
+    for n in range(int(FPS * total)):
+        t = n / FPS - cue
         frame = st.copy()
-        off = int(t * 40) % 190
+        off = int((t + cue) * 40) % 190
         frame.alpha_composite(stripes.crop((off, 0, W + off, H)))
         d = ImageDraw.Draw(frame)
         for x, y, r, v in sparks:
-            yy = (y - v * t) % H
+            yy = (y - v * (t + cue)) % H
             d.ellipse((x - r, yy - r, x + r, yy + r), fill=color + (int(120 * (0.5 + 0.5 * math.sin(t * 3 + x))),))
+        if t < 0:
+            # Before the song's good part: only the hook, breathing, and the card still hidden.
+            poster(frame, (W / 2, 800), words, top_size, color, 1, 1 + 0.03 * math.sin(n / FPS * 4))
+            rgb = frame.convert("RGB")
+            ff.stdin.write(rgb.tobytes())
+            continue
         rise = back_out(clamp(t / 0.42)) if t < 0.42 else 1
         a = (ease(clamp((t - 3.4) / 0.7)) * 180 + ease(clamp((t - 5.2) / 0.7)) * 180) % 360 if back else 0
         flipped = 90 < a < 270
@@ -249,7 +268,7 @@ def make(card, front_path, back_path, out, audio=None, stills=None):
         if fl: frame.alpha_composite(Image.new("RGBA", (W, H), WHITE + (int(255 * fl),)))
         rgb = frame.convert("RGB")
         ff.stdin.write(rgb.tobytes())
-        if stills and n in shots: sheet.append(rgb.resize((216, 384)))
+        if stills and n - int(cue * FPS) in shots: sheet.append(rgb.resize((216, 384)))
     ff.stdin.close()
     if ff.wait(): raise RuntimeError("ffmpeg failed")
     if stills:
