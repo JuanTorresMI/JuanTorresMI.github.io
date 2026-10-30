@@ -257,7 +257,7 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         flipped = 90 < a < 270
         # The card eases back and up for the finish, so the price and the shop sit clear of it.
         settle = ease(clamp((t - 7.9) / 0.6))
-        scale = 0.88 + 0.04 * ease(clamp(t / 8)) - 0.11 * settle + 0.03 * ease(clamp((t - 9) / (SECS - 9)))
+        scale = 0.88 + 0.04 * ease(clamp(t / 8)) - 0.14 * settle + 0.03 * ease(clamp((t - 9) / (SECS - 9)))
         base = (back if flipped else front).copy()
         if not flipped and a < 8 or not flipped and a > 352:
             for at in (2.2, 10.5, 13.0) if back else (2.2, 5.0, 7.8, 10.5, 13.0):
@@ -271,7 +271,7 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         pic = turned(base, 180 + a if flipped else a, cw, scale)
         # The last moment: the card flies up and out as the words go, and the Reel starts over with it rising in.
         leave = ease(clamp((t - (SECS - 0.7)) / 0.7))
-        cy = 800 - 95 * settle + 7 * math.sin(t / SECS * 2 * math.pi * 3) + (1 - rise) * 1500 - leave * 1400
+        cy = 800 - 55 * settle + 7 * math.sin(t / SECS * 2 * math.pi * 3) + (1 - rise) * 1500 - leave * 1400
         x, y = W // 2 - pic.width // 2, int(cy - pic.height / 2)
         sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         ImageDraw.Draw(sh).rectangle((x + 14, y + 26, x + pic.width + 14, y + pic.height + 26), fill=(0, 0, 0, 190))
