@@ -290,7 +290,7 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         pic = turned(base, 180 + a if flipped else a, cw, scale)
         # The last moment: the card flies up and out as the words go, and the Reel starts over with it rising in.
         leave = ease(clamp((t - (SECS - 0.7)) / 0.7))
-        cy = 800 + 7 * math.sin(t / SECS * 2 * math.pi * 3) + (1 - rise) * 1100 - leave * 1400
+        cy = 800 + 7 * math.sin(t / SECS * 2 * math.pi * 3) + (1 - rise) * 1500 - leave * 1400
         x, y = W // 2 - pic.width // 2, int(cy - pic.height / 2)
         sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         ImageDraw.Draw(sh).rectangle((x + 14, y + 26, x + pic.width + 14, y + pic.height + 26), fill=(0, 0, 0, 190))
