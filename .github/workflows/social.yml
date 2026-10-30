@@ -1,4 +1,4 @@
-# One listed card to Instagram as a Reel (scripts/post_listings.py), drawn here and uploaded straight there. Without the
+# One listed card to Instagram as a Reel (scripts/post_listings.py), drawn here, parked in R2 for Instagram to fetch. Without the
 # IG_USER_ID and IG_ACCESS_TOKEN secrets it only prints what it would post.
 name: Post a listing
 
@@ -54,6 +54,7 @@ jobs:
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          SOCIAL_KEY: ${{ secrets.SOCIAL_KEY }}
         run: python3 scripts/post_listings.py post
       - name: Commit
         id: commit

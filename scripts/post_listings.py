@@ -7,8 +7,8 @@
   python3 scripts/post_listings.py test DIR    draws the next Reel with its song's preview into DIR, and publishes nothing
 
 Every post is a Reel (scripts/make_reel.py), since only Reels can carry a song, with a trending corrido or other Latin song
-from Instagram's own music, attached by Instagram. A Reel is drawn in the run that posts it and goes
-straight to Instagram, so no video is ever stored. Instagram's API can't choose where a song starts: CUES holds the
+from Instagram's own music, attached by Instagram. A Reel is drawn in the run that posts it and sits in R2 just long
+enough for Instagram to fetch it, so no video is kept. Instagram's API can't choose where a song starts: CUES holds the
 reveal until a song's good part.
 
 Each run reads the shop live, so a newly listed card can go out at the next slot. What's posted is kept in
@@ -166,6 +166,13 @@ def when_posted(v):
     return at or f"{day}T00:00:00+00:00"
 
 
+def shelf(method, url, body=None):
+    """Puts a film on, or takes it off, the shop Worker's shelf in R2."""
+    req = urllib.request.Request(url, data=body, method=method, headers={"x-social-key": os.environ["SOCIAL_KEY"], "User-Agent": "juantorresmi-site", "Content-Type": "video/mp4"})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        r.read()
+
+
 def next_up(cards, posted, prices):
     """What goes next, as (card, old price or None, why): a price drop, then the dearest new card, then an old one again."""
     ready = [c for c in cards if c.get("photo") and priced(c)]
@@ -268,22 +275,20 @@ def post():
     picks = pick_songs(used_songs()) or pick_songs()
     song = picks[0] if picks else None
     cue = CUES.get((song or {}).get("audio_id"), 0.0)
+    slug = f"card-{c['id']}-{int(time.time())}"
     with tempfile.TemporaryDirectory() as tmp:
         film = os.path.join(tmp, "reel.mp4")
         front, back = photos_of(c, tmp)
         make_reel.make(c, front, back, film, cue=cue, was=was, words="STILL AVAILABLE" if why == "again" else None)
         # The cover is the finished frame: the card, its price and the shop.
-        fields = {"media_type": "REELS", "upload_type": "resumable", "caption": text, "share_to_feed": "true", "thumb_offset": str(int((cue + 11) * 1000))}
+        # A song only stays on when Instagram fetches the film from a link (a direct upload lost it), so it sits in R2 until then.
+        reel_url = f"{showcase_url()}/reel/{slug}.mp4"
+        with open(film, "rb") as f:
+            shelf("PUT", reel_url, f.read())
+        fields = {"media_type": "REELS", "video_url": reel_url, "caption": text, "share_to_feed": "true", "thumb_offset": str(int((cue + 11) * 1000))}
         if song:
             fields["audio_configuration"] = json.dumps({"audio_id": song["audio_id"], "audio_volume": 80, "video_volume": 100})
         made = graph(host, f"{user}/media", **fields)["id"]
-        with open(film, "rb") as f:
-            body = f.read()
-        # The film itself goes to Instagram, so nothing has to host it.
-        up = urllib.request.Request(f"https://rupload.facebook.com/ig-api-upload/v22.0/{made}", data=body, method="POST",
-                                    headers={"Authorization": f"OAuth {os.environ['IG_ACCESS_TOKEN']}", "offset": "0", "file_size": str(len(body))})
-        with urllib.request.urlopen(up, timeout=180) as r:
-            r.read()
     for _ in range(60):
         state = graph(host, made, fields="status_code").get("status_code")
         if state == "FINISHED":
@@ -292,6 +297,7 @@ def post():
             sys.exit(f"Instagram couldn't process card {c['id']}.")
         time.sleep(5)
     media = graph(host, f"{user}/media_publish", creation_id=made).get("id")
+    shelf("DELETE", reel_url)
     # When each one went out, and its id: what the search for the best time reads back.
     posted[str(c["id"])] = {"date": date.today().isoformat(), "at": datetime.now(timezone.utc).isoformat(timespec="minutes"), "media": media, "kind": why,
                             "song": song and song["audio_id"], "song_name": song and f"{song.get('title')} - {song.get('display_artist')}"}
