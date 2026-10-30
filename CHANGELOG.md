@@ -9,9 +9,9 @@ collected, or what it costs to run.
 
 Things waiting on a decision or on Juan, so they aren't lost:
 
-- **Instagram posting**: needs a Creator account, a Meta developer app, and the `IG_USER_ID` and `IG_ACCESS_TOKEN`
-  secrets. The token expires after 60 days unless refreshed. Listed cards without a photo are skipped, including the
-  dearest ones: add photos in the Card Tracker. TikTok isn't built: its API only posts privately until an app passes audit.
+- **Instagram posting**: listed cards without a photo are skipped: add photos in the Card Tracker. Check the
+  account's token doesn't expire (it was made in the dashboard; a long-lived user token lasts 60 days). `GH_DISPATCH_TOKEN`
+  now starts the daily post too. TikTok isn't built: its API only posts privately until an app passes audit.
 - **Renew `GH_DISPATCH_TOKEN`** before it expires (set Oct 18, 2026; fine-grained, this repo only,
   Actions: read and write). Steps in worker/README.md, "Updating the pages". If it lapses, GitHub's
   backup schedule keeps the pages updating, hours late, and the button hides itself.
@@ -42,9 +42,10 @@ Things waiting on a decision or on Juan, so they aren't lost:
 
 ## 2026-10-30 — Listings to Instagram
 
-The `Post a listing` workflow (`scripts/post_listings.py`) posts one listed card a day, dearest first: its photo on a
-1080×1350 picture (`mma-cards/social/`), its name, price and up to five hashtags. Live data stays out of it: only cards
-already for sale. It runs in preview until the `IG_USER_ID` and `IG_ACCESS_TOKEN` secrets exist.
+The `Post a listing` workflow (`scripts/post_listings.py`) posts one listed card a day at 8:47 pm Eastern, started by the
+Worker, dearest first. Cards from $5 go as Reels (`scripts/make_reel.py`) with a corrido or Latin song Instagram attaches;
+the rest as a photo on a 1080×1350 picture. Each has its name, price and up to five hashtags. Live data stays out of it:
+only cards already for sale.
 
 ## 2026-10-28 — The MMA card shop
 
