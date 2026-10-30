@@ -224,7 +224,7 @@ that grows without a trim and a CSV that keeps it.
   `_data/social_prices.json` goes first (a red Reel with the old price struck through), then the dearest listed card with a photo
   not yet in `_data/social_posted.json` (never edit either by hand), then, with no new cards, one still for sale after 14 days
   ("STILL AVAILABLE", once a day at most). Each goes out as a Reel (`scripts/make_reel.py`), every post, since only Reels
-  can carry a song. It's drawn in the run and uploaded straight to Instagram, so no video is stored, with card sounds
+  can carry a song. It's drawn in the run and parked in R2 just while Instagram fetches it (the showcase's `/reel/`, secret `SOCIAL_KEY`; a direct upload loses the song), so no video is kept, with card sounds
   (`scripts/sfx`, CC0) and a song Instagram attaches: trending corridos first, picked by artist (its search is loose and few are
   cleared for apps), then Latin. Instagram can't choose where a song starts: `CUES` holds the reveal until its good part.
   Photos come from the showcase's `/photo/<card>-full.webp` and `-back.webp`, fighters from its `player`. Only listed cards ever
