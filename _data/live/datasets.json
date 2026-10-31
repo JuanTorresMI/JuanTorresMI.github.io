@@ -1,9 +1,9 @@
 {
- "generated": "2026-10-31T02:44:28+00:00",
+ "generated": "2026-10-31T11:50:33+00:00",
  "rows": 805288,
  "rows_fmt": "805,288",
  "files": 33,
- "all_rows_fmt": "1,480,739",
+ "all_rows_fmt": "1,481,243",
  "all_files": 59,
  "datasets": [
   {
@@ -1458,18 +1458,18 @@
   },
   {
    "slug": "border-truck-waits",
-   "rows": 93407,
-   "rows_fmt": "93,407",
+   "rows": 93574,
+   "rows_fmt": "93,574",
    "first": "2026-09-13",
-   "newest": "2026-10-30",
+   "newest": "2026-10-31",
    "files": [
     {
      "file": "border-truck-wait-readings-2026",
      "url": "/border-waits/border-truck-wait-readings-2026.csv",
-     "rows": 22610,
-     "rows_fmt": "22,610",
+     "rows": 22770,
+     "rows_fmt": "22,770",
      "first": "2026-09-13",
-     "newest": "2026-10-30",
+     "newest": "2026-10-31",
      "columns": [
       "port_number",
       "posted_local",
@@ -1479,14 +1479,14 @@
       "fast_lanes_open",
       "source"
      ],
-     "bytes": 867468,
+     "bytes": 873414,
      "size": "0.9 MB"
     },
     {
      "file": "border-truck-wait-times",
      "url": "/border-waits/border-truck-wait-times.csv",
-     "rows": 6079,
-     "rows_fmt": "6,079",
+     "rows": 6086,
+     "rows_fmt": "6,086",
      "first": "",
      "newest": "",
      "columns": [
@@ -1501,7 +1501,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 462097,
+     "bytes": 462539,
      "size": "0.5 MB"
     },
     {
@@ -1527,18 +1527,18 @@
   },
   {
    "slug": "border-car-pedestrian-waits",
-   "rows": 170272,
-   "rows_fmt": "170,272",
+   "rows": 170609,
+   "rows_fmt": "170,609",
    "first": "2026-09-13",
-   "newest": "2026-10-30",
+   "newest": "2026-10-31",
    "files": [
     {
      "file": "border-car-pedestrian-wait-readings-2026",
      "url": "/border-waits/border-car-pedestrian-wait-readings-2026.csv",
-     "rows": 39460,
-     "rows_fmt": "39,460",
+     "rows": 39778,
+     "rows_fmt": "39,778",
      "first": "2026-09-13",
-     "newest": "2026-10-30",
+     "newest": "2026-10-31",
      "columns": [
       "port_number",
       "posted_local",
@@ -1554,14 +1554,14 @@
       "pedestrian_ready_lanes_open",
       "source"
      ],
-     "bytes": 1843501,
-     "size": "1.8 MB"
+     "bytes": 1857820,
+     "size": "1.9 MB"
     },
     {
      "file": "border-car-pedestrian-wait-times",
      "url": "/border-waits/border-car-pedestrian-wait-times.csv",
-     "rows": 18997,
-     "rows_fmt": "18,997",
+     "rows": 19016,
+     "rows_fmt": "19,016",
      "first": "",
      "newest": "",
      "columns": [
@@ -1577,7 +1577,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 1545276,
+     "bytes": 1546829,
      "size": "1.5 MB"
     },
     {

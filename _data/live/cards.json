@@ -1,9 +1,9 @@
 {
- "updated": "2026-10-31T02:42:36.854Z",
- "checked": "Oct 30, 2026",
+ "updated": "2026-10-31T11:48:38.824Z",
+ "checked": "Oct 31, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
-  "cards": "61",
+  "cards": "62",
   "listed": "49",
   "sold": "1",
   "revenue": "$4",
@@ -678,22 +678,22 @@
  ],
  "scanner": {
   "calls": "2,653",
-  "asks": "10,401",
-  "finds": "165",
-  "bought": "6",
+  "asks": "11,441",
+  "finds": "172",
+  "bought": "7",
   "under": "57%",
   "kinds": [
    {
     "what": "underpriced against other listings",
-    "n": "103"
+    "n": "106"
    },
    {
     "what": "under the max for its search",
-    "n": "35"
+    "n": "38"
    },
    {
     "what": "a lot cheap per card",
-    "n": "27"
+    "n": "28"
    }
   ]
  },
