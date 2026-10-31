@@ -1,18 +1,25 @@
 {
- "updated": "2026-10-30T20:19:25.492Z",
+ "updated": "2026-10-31T02:42:36.854Z",
  "checked": "Oct 30, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
   "cards": "61",
-  "listed": "50",
-  "sold": "0",
-  "revenue": "$0",
+  "listed": "49",
+  "sold": "1",
+  "revenue": "$4",
   "profit": null,
   "margin": null,
   "days": "—",
-  "sell_through": "0%"
+  "sell_through": "2%"
  },
- "months": [],
+ "months": [
+  {
+   "month": "Oct 2026",
+   "sales": "1",
+   "revenue": "$4",
+   "profit": null
+  }
+ ],
  "for_sale": [
   {
    "id": 100,
@@ -64,19 +71,6 @@
    "auto": false,
    "photo": "/mma-cards/photos/17.webp",
    "price": "$6.00",
-   "listed": "Oct 24, 2026"
-  },
-  {
-   "id": 24,
-   "name": "2025 Topps Chrome UFC - Tailor Made Conor McGregor #TRM-10",
-   "player": "Conor McGregor",
-   "set": "",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/24.webp",
-   "price": "$3.75",
    "listed": "Oct 24, 2026"
   },
   {
@@ -665,21 +659,37 @@
    "listed": "Oct 24, 2026"
   }
  ],
- "sold": [],
+ "sold": [
+  {
+   "id": 24,
+   "name": "2025 Topps Chrome UFC - Tailor Made Conor McGregor #TRM-10",
+   "player": "Conor McGregor",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/24.webp",
+   "price": "$3.75",
+   "month": "Oct 2026",
+   "days": "",
+   "where": "CollX"
+  }
+ ],
  "scanner": {
-  "calls": "2,469",
-  "asks": "9,815",
-  "finds": "155",
+  "calls": "2,653",
+  "asks": "10,401",
+  "finds": "165",
   "bought": "6",
-  "under": "56%",
+  "under": "57%",
   "kinds": [
    {
     "what": "underpriced against other listings",
-    "n": "96"
+    "n": "103"
    },
    {
     "what": "under the max for its search",
-    "n": "32"
+    "n": "35"
    },
    {
     "what": "a lot cheap per card",
