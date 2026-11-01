@@ -9,8 +9,8 @@ collected, or what it costs to run.
 
 Things waiting on a decision or on Juan, so they aren't lost:
 
-- **Instagram posting**: listed cards without a photo are skipped: add photos in the Card Tracker. Check the
-  account's token doesn't expire (made in the dashboard about Oct 29, 2026; a long-lived user token lasts 60 days, so renew it by mid-December). `GH_DISPATCH_TOKEN`
+- **Instagram posting**: listed cards without a photo are skipped: add photos in the Card Tracker. Renew the
+  account's token by Dec 31, 2026: `IG_ACCESS_TOKEN` is a long-lived user token made Nov 1. Pick luvjjulio under Assets when making it, and extend it. `GH_DISPATCH_TOKEN`
   now starts the daily post too. TikTok isn't built: its API only posts privately until an app passes audit.
 - **Renew `GH_DISPATCH_TOKEN`** before it expires (set Oct 18, 2026; fine-grained, this repo only,
   Actions: read and write). Steps in worker/README.md, "Updating the pages". If it lapses, GitHub's
