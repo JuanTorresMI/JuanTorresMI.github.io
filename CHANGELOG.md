@@ -10,7 +10,7 @@ collected, or what it costs to run.
 Things waiting on a decision or on Juan, so they aren't lost:
 
 - **Instagram posting**: listed cards without a photo are skipped: add photos in the Card Tracker. Check the
-  account's token doesn't expire (it was made in the dashboard; a long-lived user token lasts 60 days). `GH_DISPATCH_TOKEN`
+  account's token doesn't expire (made in the dashboard about Oct 29, 2026; a long-lived user token lasts 60 days, so renew it by mid-December). `GH_DISPATCH_TOKEN`
   now starts the daily post too. TikTok isn't built: its API only posts privately until an app passes audit.
 - **Renew `GH_DISPATCH_TOKEN`** before it expires (set Oct 18, 2026; fine-grained, this repo only,
   Actions: read and write). Steps in worker/README.md, "Updating the pages". If it lapses, GitHub's
@@ -39,6 +39,11 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **More USDA boards** (Juan wants all of them): next are hogs (LM_HG217/218), lamb (LM_XL502) and cow
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
+
+## 2026-11-01 — Reels name hand-written cards
+
+A card with a hand-written name, like a PSA In the Presence auto, now shows the person's name and AUTOGRAPHED in its Reel. A long
+set line loses whole words, "UFC" first, and a case kept whole on its front keeps its whole back too.
 
 ## 2026-10-30 — Listings to Instagram
 
