@@ -1,10 +1,10 @@
 {
- "updated": "2026-10-31T17:56:32.035Z",
- "checked": "Oct 31, 2026",
+ "updated": "2026-11-01T11:48:45.224Z",
+ "checked": "Nov 1, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
-  "cards": "62",
-  "listed": "49",
+  "cards": "64",
+  "listed": "54",
   "sold": "1",
   "revenue": "$4",
   "profit": null,
@@ -35,6 +35,32 @@
    "listed": "Oct 24, 2026"
   },
   {
+   "id": 114,
+   "name": "Laura Sanko 2026 Champions Collection UFC Gold Ink On-Card Auto - PSA In the Presence",
+   "player": "",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/114.webp",
+   "price": "$50.00",
+   "listed": "Oct 31, 2026"
+  },
+  {
+   "id": 113,
+   "name": "Demetrious Johnson 2026 Champions Collection UFC Gold Ink On-Card Auto - PSA In the Presence",
+   "player": "",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/113.webp",
+   "price": "$45.00",
+   "listed": "Oct 31, 2026"
+  },
+  {
    "id": 7,
    "name": "2026 Stadium Club UFC - Triumvirates Max Holloway #TV-9",
    "player": "Max Holloway",
@@ -44,7 +70,7 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/7.webp",
-   "price": "$24.00",
+   "price": "$15.00",
    "listed": "Oct 30, 2026"
   },
   {
@@ -657,6 +683,45 @@
    "photo": null,
    "price": "$0.50",
    "listed": "Oct 24, 2026"
+  },
+  {
+   "id": 108,
+   "name": "#25 Khabib Nurmagomedov 2019 Topps Chrome UFC - Refractor",
+   "player": "Khabib Nurmagomedov",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": null,
+   "price": "—",
+   "listed": "Nov 1, 2026"
+  },
+  {
+   "id": 109,
+   "name": "#90 Sean O'Malley 2019 Topps Chrome UFC",
+   "player": "Sean O'Malley",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": null,
+   "price": "—",
+   "listed": "Nov 1, 2026"
+  },
+  {
+   "id": 110,
+   "name": "#62 Justin Gaethje 2019 Topps Chrome UFC",
+   "player": "Justin Gaethje",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": null,
+   "price": "—",
+   "listed": "Nov 1, 2026"
   }
  ],
  "sold": [
@@ -677,23 +742,23 @@
   }
  ],
  "scanner": {
-  "calls": "2,653",
-  "asks": "11,500",
-  "finds": "176",
+  "calls": "2,741",
+  "asks": "13,453",
+  "finds": "201",
   "bought": "7",
-  "under": "57%",
+  "under": "58%",
   "kinds": [
    {
     "what": "underpriced against other listings",
-    "n": "109"
+    "n": "123"
    },
    {
     "what": "under the max for its search",
-    "n": "39"
+    "n": "45"
    },
    {
     "what": "a lot cheap per card",
-    "n": "28"
+    "n": "33"
    }
   ]
  },
