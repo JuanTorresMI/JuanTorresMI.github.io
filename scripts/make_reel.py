@@ -220,7 +220,8 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         ImageDraw.Draw(c).rectangle((0, 0, cw * 2 - 1, CH * 2 - 1), outline=(255, 255, 255, 235), width=6)
         return c
     front = prep(raw)
-    back = prep(cutout(back_path)) if back_path else None
+    # A front kept whole (a slab or a case on a pale backdrop) keeps its back whole too, so the two sides match.
+    back = prep(cutout(back_path) if "backdrop" in raw.info else Image.open(back_path).convert("RGB")) if back_path else None
     name = (card.get("player") or "").upper() or "UFC CARD"
     run = run_of(card)
     price_now = float(re.sub(r"[^\d.]", "", card.get("price") or "0") or 0)
