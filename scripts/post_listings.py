@@ -152,11 +152,18 @@ def trending():
         print(f"  {s.get('title')} - {s.get('display_artist')} ({(s.get('duration_in_ms') or 0) // 1000}s)")
 
 
+def lead_name(name):
+    """The person a hand-written card name opens with ("Laura Sanko 2026 Champions Collection..."), for a card the shop has no fighter for."""
+    m = re.match(r"([A-Z][\w'.-]+(?: [A-Z][\w'.-]+){1,3}) (?:19|20)\d\d\b", name or "")
+    return m.group(1) if m and not re.search(r"\b(topps|panini|ufc|lot)\b", m.group(1), re.I) else ""
+
+
 def listings():
     """The cards for sale right now, from the shop itself: the site's copy (a day old at worst) only if that's down."""
     try:
         with urllib.request.urlopen(urllib.request.Request(f"{showcase_url()}/showcase.json", headers={"User-Agent": "juantorresmi-site"}), timeout=30) as r:
-            return [{**c, "player": c.get("player") or "", "set": c.get("set") or "", "parallel": c.get("parallel") or "", "serial": c.get("serial") or "",
+            return [{**c, "player": c.get("player") or lead_name(c["name"]), "set": c.get("set") or "", "parallel": c.get("parallel") or "", "serial": c.get("serial") or "",
+                     "auto": c.get("auto") or bool(re.search(r"\b(auto|autograph|signature)", c["name"], re.I)),
                      "price": f"${c['price'] / 100:,.2f}" if c.get("price") else ""} for c in json.load(r)["for_sale"]]
     except Exception as e:
         print(f"Using the site's copy of the shop ({e})")
