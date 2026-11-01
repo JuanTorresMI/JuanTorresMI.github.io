@@ -138,13 +138,13 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 535502,mexico,Brownsville – Veterans International,standard,Saturday,13,5.0,4,30,2026-11-01
 535502,mexico,Brownsville – Veterans International,standard,Saturday,14,4.0,5,30,2026-11-01
 535502,mexico,Brownsville – Veterans International,standard,Saturday,15,5.0,4,30,2026-11-01
-535502,mexico,Brownsville – Veterans International,standard,Sunday,8,0.0,4,30,2026-11-01
-535502,mexico,Brownsville – Veterans International,standard,Sunday,9,0.0,3,30,2026-11-01
-535502,mexico,Brownsville – Veterans International,standard,Sunday,10,1.7,3,30,2026-11-01
+535502,mexico,Brownsville – Veterans International,standard,Sunday,8,0.0,5,30,2026-11-01
+535502,mexico,Brownsville – Veterans International,standard,Sunday,9,0.0,4,30,2026-11-01
+535502,mexico,Brownsville – Veterans International,standard,Sunday,10,1.3,4,30,2026-11-01
 535502,mexico,Brownsville – Veterans International,FAST,Sunday,10,0.0,1,30,2026-11-01
-535502,mexico,Brownsville – Veterans International,standard,Sunday,11,1.7,3,30,2026-11-01
+535502,mexico,Brownsville – Veterans International,standard,Sunday,11,1.3,4,30,2026-11-01
 535502,mexico,Brownsville – Veterans International,FAST,Sunday,11,0.0,1,30,2026-11-01
-535502,mexico,Brownsville – Veterans International,standard,Sunday,12,1.7,3,30,2026-11-01
+535502,mexico,Brownsville – Veterans International,standard,Sunday,12,1.3,4,30,2026-11-01
 535502,mexico,Brownsville – Veterans International,FAST,Sunday,12,0.0,1,30,2026-11-01
 535502,mexico,Brownsville – Veterans International,standard,Sunday,13,3.3,3,30,2026-11-01
 535502,mexico,Brownsville – Veterans International,FAST,Sunday,13,5.0,1,30,2026-11-01
@@ -654,10 +654,10 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 230302,mexico,Eagle Pass – Bridge II,standard,Saturday,13,2.3,3,30,2026-11-01
 230302,mexico,Eagle Pass – Bridge II,standard,Saturday,14,3.4,5,30,2026-11-01
 230302,mexico,Eagle Pass – Bridge II,standard,Saturday,15,8.3,3,30,2026-11-01
-230302,mexico,Eagle Pass – Bridge II,standard,Sunday,8,2.3,3,30,2026-11-01
-230302,mexico,Eagle Pass – Bridge II,standard,Sunday,9,1.0,1,30,2026-11-01
+230302,mexico,Eagle Pass – Bridge II,standard,Sunday,8,2.0,4,30,2026-11-01
+230302,mexico,Eagle Pass – Bridge II,standard,Sunday,9,1.0,2,30,2026-11-01
 230302,mexico,Eagle Pass – Bridge II,standard,Sunday,10,3.0,2,30,2026-11-01
-230302,mexico,Eagle Pass – Bridge II,standard,Sunday,11,3.7,3,30,2026-11-01
+230302,mexico,Eagle Pass – Bridge II,standard,Sunday,11,3.0,4,30,2026-11-01
 230302,mexico,Eagle Pass – Bridge II,standard,Sunday,12,3.0,2,30,2026-11-01
 230302,mexico,Eagle Pass – Bridge II,standard,Sunday,13,3.0,2,30,2026-11-01
 230302,mexico,Eagle Pass – Bridge II,standard,Sunday,14,3.0,2,30,2026-11-01
@@ -1125,14 +1125,14 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 230403,mexico,Laredo – Colombia Solidarity,FAST,Saturday,19,0.0,1,30,2026-11-01
 230403,mexico,Laredo – Colombia Solidarity,standard,Saturday,21,0.0,1,30,2026-11-01
 230403,mexico,Laredo – Colombia Solidarity,FAST,Saturday,21,0.0,1,30,2026-11-01
-230403,mexico,Laredo – Colombia Solidarity,standard,Sunday,8,5.0,2,30,2026-11-01
-230403,mexico,Laredo – Colombia Solidarity,FAST,Sunday,8,2.5,2,30,2026-11-01
-230403,mexico,Laredo – Colombia Solidarity,standard,Sunday,9,0.0,2,30,2026-11-01
-230403,mexico,Laredo – Colombia Solidarity,FAST,Sunday,9,0.0,2,30,2026-11-01
-230403,mexico,Laredo – Colombia Solidarity,standard,Sunday,10,0.0,2,30,2026-11-01
-230403,mexico,Laredo – Colombia Solidarity,FAST,Sunday,10,0.0,2,30,2026-11-01
-230403,mexico,Laredo – Colombia Solidarity,standard,Sunday,11,0.0,3,30,2026-11-01
-230403,mexico,Laredo – Colombia Solidarity,FAST,Sunday,11,0.0,3,30,2026-11-01
+230403,mexico,Laredo – Colombia Solidarity,standard,Sunday,8,5.0,3,30,2026-11-01
+230403,mexico,Laredo – Colombia Solidarity,FAST,Sunday,8,3.3,3,30,2026-11-01
+230403,mexico,Laredo – Colombia Solidarity,standard,Sunday,9,1.7,3,30,2026-11-01
+230403,mexico,Laredo – Colombia Solidarity,FAST,Sunday,9,5.0,3,30,2026-11-01
+230403,mexico,Laredo – Colombia Solidarity,standard,Sunday,10,1.7,3,30,2026-11-01
+230403,mexico,Laredo – Colombia Solidarity,FAST,Sunday,10,0.0,3,30,2026-11-01
+230403,mexico,Laredo – Colombia Solidarity,standard,Sunday,11,1.3,4,30,2026-11-01
+230403,mexico,Laredo – Colombia Solidarity,FAST,Sunday,11,1.3,4,30,2026-11-01
 230403,mexico,Laredo – Colombia Solidarity,standard,Sunday,12,6.7,3,30,2026-11-01
 230403,mexico,Laredo – Colombia Solidarity,FAST,Sunday,12,5.0,3,30,2026-11-01
 230403,mexico,Laredo – Colombia Solidarity,standard,Sunday,13,0.0,2,30,2026-11-01
@@ -1333,14 +1333,14 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 230404,mexico,Laredo – World Trade Bridge,FAST,Saturday,18,1.7,3,30,2026-11-01
 230404,mexico,Laredo – World Trade Bridge,standard,Saturday,19,0.0,1,30,2026-11-01
 230404,mexico,Laredo – World Trade Bridge,FAST,Saturday,19,0.0,1,30,2026-11-01
-230404,mexico,Laredo – World Trade Bridge,standard,Sunday,8,0.0,2,30,2026-11-01
-230404,mexico,Laredo – World Trade Bridge,FAST,Sunday,8,0.0,2,30,2026-11-01
-230404,mexico,Laredo – World Trade Bridge,standard,Sunday,9,27.5,2,30,2026-11-01
-230404,mexico,Laredo – World Trade Bridge,FAST,Sunday,9,10.0,2,30,2026-11-01
-230404,mexico,Laredo – World Trade Bridge,standard,Sunday,10,13.3,3,30,2026-11-01
-230404,mexico,Laredo – World Trade Bridge,FAST,Sunday,10,3.3,3,30,2026-11-01
-230404,mexico,Laredo – World Trade Bridge,standard,Sunday,11,25.0,2,30,2026-11-01
-230404,mexico,Laredo – World Trade Bridge,FAST,Sunday,11,5.0,2,30,2026-11-01
+230404,mexico,Laredo – World Trade Bridge,standard,Sunday,8,6.7,3,30,2026-11-01
+230404,mexico,Laredo – World Trade Bridge,FAST,Sunday,8,0.0,3,30,2026-11-01
+230404,mexico,Laredo – World Trade Bridge,standard,Sunday,9,26.7,3,30,2026-11-01
+230404,mexico,Laredo – World Trade Bridge,FAST,Sunday,9,6.7,3,30,2026-11-01
+230404,mexico,Laredo – World Trade Bridge,standard,Sunday,10,16.3,4,30,2026-11-01
+230404,mexico,Laredo – World Trade Bridge,FAST,Sunday,10,2.5,4,30,2026-11-01
+230404,mexico,Laredo – World Trade Bridge,standard,Sunday,11,30.0,3,30,2026-11-01
+230404,mexico,Laredo – World Trade Bridge,FAST,Sunday,11,3.3,3,30,2026-11-01
 230404,mexico,Laredo – World Trade Bridge,standard,Sunday,12,40.0,3,30,2026-11-01
 230404,mexico,Laredo – World Trade Bridge,FAST,Sunday,12,10.0,3,30,2026-11-01
 230404,mexico,Laredo – World Trade Bridge,standard,Sunday,13,32.5,2,30,2026-11-01
@@ -1793,12 +1793,12 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 250602,mexico,Otay Mesa – Commercial,FAST,Saturday,14,5.0,3,30,2026-11-01
 250602,mexico,Otay Mesa – Commercial,standard,Saturday,15,3.3,3,30,2026-11-01
 250602,mexico,Otay Mesa – Commercial,FAST,Saturday,15,3.3,3,30,2026-11-01
-250602,mexico,Otay Mesa – Commercial,standard,Sunday,8,17.5,2,30,2026-11-01
-250602,mexico,Otay Mesa – Commercial,FAST,Sunday,8,12.5,2,30,2026-11-01
-250602,mexico,Otay Mesa – Commercial,standard,Sunday,9,5.0,1,30,2026-11-01
-250602,mexico,Otay Mesa – Commercial,FAST,Sunday,9,5.0,1,30,2026-11-01
-250602,mexico,Otay Mesa – Commercial,standard,Sunday,10,3.3,3,30,2026-11-01
-250602,mexico,Otay Mesa – Commercial,FAST,Sunday,10,3.3,3,30,2026-11-01
+250602,mexico,Otay Mesa – Commercial,standard,Sunday,8,13.3,3,30,2026-11-01
+250602,mexico,Otay Mesa – Commercial,FAST,Sunday,8,10.0,3,30,2026-11-01
+250602,mexico,Otay Mesa – Commercial,standard,Sunday,9,5.0,2,30,2026-11-01
+250602,mexico,Otay Mesa – Commercial,FAST,Sunday,9,5.0,2,30,2026-11-01
+250602,mexico,Otay Mesa – Commercial,standard,Sunday,10,3.8,4,30,2026-11-01
+250602,mexico,Otay Mesa – Commercial,FAST,Sunday,10,3.8,4,30,2026-11-01
 250602,mexico,Otay Mesa – Commercial,standard,Sunday,11,5.0,3,30,2026-11-01
 250602,mexico,Otay Mesa – Commercial,FAST,Sunday,11,3.3,3,30,2026-11-01
 250602,mexico,Otay Mesa – Commercial,standard,Sunday,12,5.0,2,30,2026-11-01
@@ -1983,16 +1983,16 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 230502,mexico,Hidalgo/Pharr – Pharr,FAST,Saturday,17,5.0,1,30,2026-11-01
 230502,mexico,Hidalgo/Pharr – Pharr,standard,Saturday,18,10.0,1,30,2026-11-01
 230502,mexico,Hidalgo/Pharr – Pharr,FAST,Saturday,18,5.0,1,30,2026-11-01
-230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,8,2.5,2,30,2026-11-01
-230502,mexico,Hidalgo/Pharr – Pharr,FAST,Sunday,8,0.0,2,30,2026-11-01
-230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,9,3.7,3,30,2026-11-01
-230502,mexico,Hidalgo/Pharr – Pharr,FAST,Sunday,9,0.7,3,30,2026-11-01
-230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,10,15.0,1,30,2026-11-01
-230502,mexico,Hidalgo/Pharr – Pharr,FAST,Sunday,10,10.0,1,30,2026-11-01
-230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,11,18.3,3,30,2026-11-01
-230502,mexico,Hidalgo/Pharr – Pharr,FAST,Sunday,11,13.3,3,30,2026-11-01
-230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,12,11.7,3,30,2026-11-01
-230502,mexico,Hidalgo/Pharr – Pharr,FAST,Sunday,12,10.0,3,30,2026-11-01
+230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,8,1.7,3,30,2026-11-01
+230502,mexico,Hidalgo/Pharr – Pharr,FAST,Sunday,8,0.0,3,30,2026-11-01
+230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,9,7.8,4,30,2026-11-01
+230502,mexico,Hidalgo/Pharr – Pharr,FAST,Sunday,9,4.3,4,30,2026-11-01
+230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,10,22.5,2,30,2026-11-01
+230502,mexico,Hidalgo/Pharr – Pharr,FAST,Sunday,10,17.5,2,30,2026-11-01
+230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,11,17.5,4,30,2026-11-01
+230502,mexico,Hidalgo/Pharr – Pharr,FAST,Sunday,11,12.5,4,30,2026-11-01
+230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,12,15.0,4,30,2026-11-01
+230502,mexico,Hidalgo/Pharr – Pharr,FAST,Sunday,12,12.5,4,30,2026-11-01
 230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,13,15.0,2,30,2026-11-01
 230502,mexico,Hidalgo/Pharr – Pharr,FAST,Sunday,13,10.0,2,30,2026-11-01
 230502,mexico,Hidalgo/Pharr – Pharr,standard,Sunday,14,5.0,2,30,2026-11-01
@@ -2116,9 +2116,9 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 230701,mexico,Rio Grande City,standard,Saturday,14,0.0,1,30,2026-11-01
 230701,mexico,Rio Grande City,standard,Saturday,15,0.0,1,30,2026-11-01
 230701,mexico,Rio Grande City,standard,Saturday,21,0.0,1,30,2026-11-01
-230701,mexico,Rio Grande City,standard,Sunday,10,0.0,3,30,2026-11-01
+230701,mexico,Rio Grande City,standard,Sunday,10,0.0,4,30,2026-11-01
 230701,mexico,Rio Grande City,standard,Sunday,11,0.0,2,30,2026-11-01
-230701,mexico,Rio Grande City,standard,Sunday,12,0.0,3,30,2026-11-01
+230701,mexico,Rio Grande City,standard,Sunday,12,0.0,4,30,2026-11-01
 230701,mexico,Rio Grande City,standard,Sunday,15,5.0,1,30,2026-11-01
 230701,mexico,Rio Grande City,standard,Sunday,16,0.0,1,30,2026-11-01
 231001,mexico,Roma,standard,Monday,9,0.0,3,30,2026-11-01
@@ -2182,9 +2182,10 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 231001,mexico,Roma,standard,Saturday,15,2.5,4,30,2026-11-01
 231001,mexico,Roma,standard,Saturday,16,0.0,1,30,2026-11-01
 231001,mexico,Roma,standard,Saturday,17,0.0,1,30,2026-11-01
-231001,mexico,Roma,standard,Sunday,8,0.0,2,30,2026-11-01
+231001,mexico,Roma,standard,Sunday,8,0.0,3,30,2026-11-01
 231001,mexico,Roma,standard,Sunday,10,2.5,2,30,2026-11-01
-231001,mexico,Roma,standard,Sunday,12,5.0,1,30,2026-11-01
+231001,mexico,Roma,standard,Sunday,11,10.0,1,30,2026-11-01
+231001,mexico,Roma,standard,Sunday,12,5.0,2,30,2026-11-01
 231001,mexico,Roma,standard,Sunday,13,10.0,1,30,2026-11-01
 231001,mexico,Roma,standard,Sunday,14,0.0,1,30,2026-11-01
 231002,mexico,Roma – Texas (second listing),standard,Sunday,8,0.0,1,30,2026-11-01
@@ -2705,12 +2706,12 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 300401,canada,Blaine – Pacific Highway,standard,Sunday,1,3.3,3,30,2026-11-01
 300401,canada,Blaine – Pacific Highway,standard,Sunday,2,5.0,5,30,2026-11-01
 300401,canada,Blaine – Pacific Highway,standard,Sunday,3,5.0,3,30,2026-11-01
-300401,canada,Blaine – Pacific Highway,standard,Sunday,4,5.0,2,30,2026-11-01
-300401,canada,Blaine – Pacific Highway,standard,Sunday,5,3.3,3,30,2026-11-01
-300401,canada,Blaine – Pacific Highway,standard,Sunday,6,8.8,4,30,2026-11-01
-300401,canada,Blaine – Pacific Highway,standard,Sunday,7,15.0,3,30,2026-11-01
-300401,canada,Blaine – Pacific Highway,standard,Sunday,8,8.3,3,30,2026-11-01
-300401,canada,Blaine – Pacific Highway,standard,Sunday,9,5.0,3,30,2026-11-01
+300401,canada,Blaine – Pacific Highway,standard,Sunday,4,5.0,3,30,2026-11-01
+300401,canada,Blaine – Pacific Highway,standard,Sunday,5,3.8,4,30,2026-11-01
+300401,canada,Blaine – Pacific Highway,standard,Sunday,6,8.0,5,30,2026-11-01
+300401,canada,Blaine – Pacific Highway,standard,Sunday,7,12.5,4,30,2026-11-01
+300401,canada,Blaine – Pacific Highway,standard,Sunday,8,7.5,4,30,2026-11-01
+300401,canada,Blaine – Pacific Highway,standard,Sunday,9,5.0,4,30,2026-11-01
 300401,canada,Blaine – Pacific Highway,standard,Sunday,10,5.0,3,30,2026-11-01
 300401,canada,Blaine – Pacific Highway,standard,Sunday,11,7.5,2,30,2026-11-01
 300401,canada,Blaine – Pacific Highway,standard,Sunday,12,3.3,3,30,2026-11-01
@@ -2876,13 +2877,13 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,4,2.4,7,30,2026-11-01
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,5,2.4,7,30,2026-11-01
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,6,5.6,8,30,2026-11-01
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,7,3.4,5,30,2026-11-01
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,8,8.8,5,30,2026-11-01
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,9,5.0,6,30,2026-11-01
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,10,8.5,6,30,2026-11-01
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,11,11.0,5,30,2026-11-01
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,12,9.6,5,30,2026-11-01
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,13,11.8,6,30,2026-11-01
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,7,6.3,7,30,2026-11-01
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,8,16.1,7,30,2026-11-01
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,9,4.5,8,30,2026-11-01
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,10,7.9,8,30,2026-11-01
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,11,11.9,7,30,2026-11-01
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,12,10.0,7,30,2026-11-01
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,13,10.9,7,30,2026-11-01
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,14,10.2,5,30,2026-11-01
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,15,15.2,6,30,2026-11-01
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,standard,Sunday,16,23.8,5,30,2026-11-01
@@ -3024,10 +3025,10 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 011503,canada,Calais – International Avenue,standard,Sunday,4,0.0,3,30,2026-11-01
 011503,canada,Calais – International Avenue,standard,Sunday,5,0.0,2,30,2026-11-01
 011503,canada,Calais – International Avenue,standard,Sunday,6,0.0,3,30,2026-11-01
-011503,canada,Calais – International Avenue,standard,Sunday,7,0.0,2,30,2026-11-01
-011503,canada,Calais – International Avenue,standard,Sunday,8,0.0,4,30,2026-11-01
+011503,canada,Calais – International Avenue,standard,Sunday,7,0.0,3,30,2026-11-01
+011503,canada,Calais – International Avenue,standard,Sunday,8,0.0,5,30,2026-11-01
 011503,canada,Calais – International Avenue,standard,Sunday,9,0.0,3,30,2026-11-01
-011503,canada,Calais – International Avenue,standard,Sunday,10,0.0,2,30,2026-11-01
+011503,canada,Calais – International Avenue,standard,Sunday,10,0.0,3,30,2026-11-01
 011503,canada,Calais – International Avenue,standard,Sunday,11,0.0,2,30,2026-11-01
 011503,canada,Calais – International Avenue,standard,Sunday,12,0.0,2,30,2026-11-01
 011503,canada,Calais – International Avenue,standard,Sunday,13,0.0,2,30,2026-11-01
@@ -3223,15 +3224,20 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 071201,canada,Champlain,standard,Sunday,4,0.0,1,30,2026-11-01
 071201,canada,Champlain,standard,Sunday,5,0.0,1,30,2026-11-01
 071201,canada,Champlain,standard,Sunday,6,0.0,2,30,2026-11-01
-071201,canada,Champlain,standard,Sunday,7,0.0,2,30,2026-11-01
-071201,canada,Champlain,standard,Sunday,8,0.0,3,30,2026-11-01
-071201,canada,Champlain,standard,Sunday,9,0.0,4,30,2026-11-01
-071201,canada,Champlain,standard,Sunday,10,0.0,2,30,2026-11-01
-071201,canada,Champlain,standard,Sunday,11,0.0,3,30,2026-11-01
-071201,canada,Champlain,standard,Sunday,12,0.0,3,30,2026-11-01
-071201,canada,Champlain,standard,Sunday,13,0.0,2,30,2026-11-01
-071201,canada,Champlain,standard,Sunday,14,0.0,3,30,2026-11-01
-071201,canada,Champlain,FAST,Sunday,14,0.0,1,30,2026-11-01
+071201,canada,Champlain,standard,Sunday,7,0.0,3,30,2026-11-01
+071201,canada,Champlain,standard,Sunday,8,0.0,4,30,2026-11-01
+071201,canada,Champlain,standard,Sunday,9,0.0,5,30,2026-11-01
+071201,canada,Champlain,FAST,Sunday,9,0.0,1,30,2026-11-01
+071201,canada,Champlain,standard,Sunday,10,0.0,3,30,2026-11-01
+071201,canada,Champlain,FAST,Sunday,10,0.0,1,30,2026-11-01
+071201,canada,Champlain,standard,Sunday,11,3.8,4,30,2026-11-01
+071201,canada,Champlain,FAST,Sunday,11,0.0,1,30,2026-11-01
+071201,canada,Champlain,standard,Sunday,12,2.5,4,30,2026-11-01
+071201,canada,Champlain,FAST,Sunday,12,0.0,1,30,2026-11-01
+071201,canada,Champlain,standard,Sunday,13,1.7,3,30,2026-11-01
+071201,canada,Champlain,FAST,Sunday,13,0.0,1,30,2026-11-01
+071201,canada,Champlain,standard,Sunday,14,0.0,4,30,2026-11-01
+071201,canada,Champlain,FAST,Sunday,14,0.0,2,30,2026-11-01
 071201,canada,Champlain,standard,Sunday,15,0.0,3,30,2026-11-01
 071201,canada,Champlain,FAST,Sunday,15,0.0,1,30,2026-11-01
 071201,canada,Champlain,standard,Sunday,16,0.0,2,30,2026-11-01
@@ -3345,7 +3351,7 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 020901,canada,Derby Line,standard,Saturday,6,0.0,1,30,2026-11-01
 020901,canada,Derby Line,standard,Saturday,8,0.0,4,30,2026-11-01
 020901,canada,Derby Line,standard,Saturday,9,0.0,2,30,2026-11-01
-020901,canada,Derby Line,standard,Saturday,10,0.0,2,30,2026-11-01
+020901,canada,Derby Line,standard,Saturday,10,0.0,3,30,2026-11-01
 020901,canada,Derby Line,standard,Saturday,11,1.7,3,30,2026-11-01
 020901,canada,Derby Line,standard,Saturday,12,2.5,2,30,2026-11-01
 020901,canada,Derby Line,standard,Saturday,13,0.0,2,30,2026-11-01
@@ -3598,11 +3604,11 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 380001,canada,Detroit – Ambassador Bridge,standard,Sunday,4,1.3,4,30,2026-11-01
 380001,canada,Detroit – Ambassador Bridge,standard,Sunday,5,0.0,4,30,2026-11-01
 380001,canada,Detroit – Ambassador Bridge,standard,Sunday,6,0.0,2,30,2026-11-01
-380001,canada,Detroit – Ambassador Bridge,standard,Sunday,7,2.5,2,30,2026-11-01
+380001,canada,Detroit – Ambassador Bridge,standard,Sunday,7,1.7,3,30,2026-11-01
 380001,canada,Detroit – Ambassador Bridge,standard,Sunday,8,5.0,1,30,2026-11-01
-380001,canada,Detroit – Ambassador Bridge,standard,Sunday,9,15.0,3,30,2026-11-01
+380001,canada,Detroit – Ambassador Bridge,standard,Sunday,9,13.8,4,30,2026-11-01
 380001,canada,Detroit – Ambassador Bridge,standard,Sunday,10,6.7,3,30,2026-11-01
-380001,canada,Detroit – Ambassador Bridge,standard,Sunday,11,5.0,3,30,2026-11-01
+380001,canada,Detroit – Ambassador Bridge,standard,Sunday,11,6.3,4,30,2026-11-01
 380001,canada,Detroit – Ambassador Bridge,standard,Sunday,12,11.7,3,30,2026-11-01
 380001,canada,Detroit – Ambassador Bridge,FAST,Sunday,12,25.0,1,30,2026-11-01
 380001,canada,Detroit – Ambassador Bridge,standard,Sunday,13,15.0,3,30,2026-11-01
@@ -3694,9 +3700,10 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 380002,canada,Detroit – Windsor Tunnel,standard,Saturday,15,6.3,4,30,2026-11-01
 380002,canada,Detroit – Windsor Tunnel,standard,Sunday,5,0.0,1,30,2026-11-01
 380002,canada,Detroit – Windsor Tunnel,standard,Sunday,6,0.0,2,30,2026-11-01
-380002,canada,Detroit – Windsor Tunnel,standard,Sunday,7,5.0,1,30,2026-11-01
+380002,canada,Detroit – Windsor Tunnel,standard,Sunday,7,2.5,2,30,2026-11-01
+380002,canada,Detroit – Windsor Tunnel,standard,Sunday,9,5.0,1,30,2026-11-01
 380002,canada,Detroit – Windsor Tunnel,standard,Sunday,10,5.0,1,30,2026-11-01
-380002,canada,Detroit – Windsor Tunnel,standard,Sunday,11,5.0,2,30,2026-11-01
+380002,canada,Detroit – Windsor Tunnel,standard,Sunday,11,5.0,3,30,2026-11-01
 380002,canada,Detroit – Windsor Tunnel,standard,Sunday,12,12.5,2,30,2026-11-01
 380002,canada,Detroit – Windsor Tunnel,standard,Sunday,13,15.0,2,30,2026-11-01
 380002,canada,Detroit – Windsor Tunnel,standard,Sunday,14,11.7,3,30,2026-11-01
@@ -3910,11 +3917,11 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,4,0.0,4,30,2026-11-01
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,5,0.0,4,30,2026-11-01
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,6,0.0,2,30,2026-11-01
-380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,7,2.5,2,30,2026-11-01
+380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,7,1.7,3,30,2026-11-01
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,8,0.0,1,30,2026-11-01
-380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,9,3.3,3,30,2026-11-01
+380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,9,3.8,4,30,2026-11-01
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,10,3.3,3,30,2026-11-01
-380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,11,6.7,3,30,2026-11-01
+380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,11,6.3,4,30,2026-11-01
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,12,3.3,3,30,2026-11-01
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,13,3.3,3,30,2026-11-01
 380102,canada,Detroit – Gordie Howe International Bridge,standard,Sunday,14,3.3,3,30,2026-11-01
@@ -4052,12 +4059,12 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 021201,canada,Highgate Springs,standard,Sunday,4,0.0,2,30,2026-11-01
 021201,canada,Highgate Springs,standard,Sunday,5,0.0,2,30,2026-11-01
 021201,canada,Highgate Springs,standard,Sunday,6,0.0,3,30,2026-11-01
-021201,canada,Highgate Springs,standard,Sunday,7,0.0,2,30,2026-11-01
-021201,canada,Highgate Springs,standard,Sunday,8,0.0,2,30,2026-11-01
-021201,canada,Highgate Springs,standard,Sunday,9,0.0,3,30,2026-11-01
-021201,canada,Highgate Springs,standard,Sunday,10,0.0,2,30,2026-11-01
-021201,canada,Highgate Springs,standard,Sunday,11,0.0,2,30,2026-11-01
-021201,canada,Highgate Springs,standard,Sunday,12,0.0,1,30,2026-11-01
+021201,canada,Highgate Springs,standard,Sunday,7,0.0,3,30,2026-11-01
+021201,canada,Highgate Springs,standard,Sunday,8,0.0,3,30,2026-11-01
+021201,canada,Highgate Springs,standard,Sunday,9,0.0,4,30,2026-11-01
+021201,canada,Highgate Springs,standard,Sunday,10,0.0,3,30,2026-11-01
+021201,canada,Highgate Springs,standard,Sunday,11,0.0,3,30,2026-11-01
+021201,canada,Highgate Springs,standard,Sunday,12,0.0,2,30,2026-11-01
 021201,canada,Highgate Springs,standard,Sunday,13,0.0,2,30,2026-11-01
 021201,canada,Highgate Springs,standard,Sunday,14,0.0,3,30,2026-11-01
 021201,canada,Highgate Springs,standard,Sunday,15,0.0,2,30,2026-11-01
@@ -4215,12 +4222,12 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 010601,canada,Houlton,standard,Sunday,4,0.7,3,30,2026-11-01
 010601,canada,Houlton,standard,Sunday,5,0.0,2,30,2026-11-01
 010601,canada,Houlton,standard,Sunday,6,1.0,4,30,2026-11-01
-010601,canada,Houlton,standard,Sunday,7,1.7,3,30,2026-11-01
+010601,canada,Houlton,standard,Sunday,7,1.3,4,30,2026-11-01
 010601,canada,Houlton,standard,Sunday,8,1.0,2,30,2026-11-01
-010601,canada,Houlton,standard,Sunday,9,1.3,3,30,2026-11-01
-010601,canada,Houlton,standard,Sunday,10,1.3,3,30,2026-11-01
+010601,canada,Houlton,standard,Sunday,9,1.5,4,30,2026-11-01
+010601,canada,Houlton,standard,Sunday,10,1.8,4,30,2026-11-01
 010601,canada,Houlton,standard,Sunday,11,5.0,2,30,2026-11-01
-010601,canada,Houlton,standard,Sunday,12,3.0,2,30,2026-11-01
+010601,canada,Houlton,standard,Sunday,12,4.0,3,30,2026-11-01
 010601,canada,Houlton,standard,Sunday,13,0.7,3,30,2026-11-01
 010601,canada,Houlton,standard,Sunday,14,6.5,2,30,2026-11-01
 010601,canada,Houlton,standard,Sunday,15,3.0,3,30,2026-11-01
@@ -4349,11 +4356,11 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 360401,canada,International Falls,standard,Saturday,6,0.3,3,30,2026-11-01
 360401,canada,International Falls,standard,Saturday,7,0.0,3,30,2026-11-01
 360401,canada,International Falls,standard,Saturday,8,0.0,4,30,2026-11-01
-360401,canada,International Falls,standard,Saturday,9,0.0,2,30,2026-11-01
+360401,canada,International Falls,standard,Saturday,9,0.0,3,30,2026-11-01
 360401,canada,International Falls,standard,Saturday,10,0.0,4,30,2026-11-01
 360401,canada,International Falls,standard,Saturday,11,0.0,4,30,2026-11-01
 360401,canada,International Falls,standard,Saturday,12,0.0,2,30,2026-11-01
-360401,canada,International Falls,standard,Saturday,13,0.0,2,30,2026-11-01
+360401,canada,International Falls,standard,Saturday,13,0.0,3,30,2026-11-01
 360401,canada,International Falls,standard,Saturday,14,0.0,3,30,2026-11-01
 360401,canada,International Falls,standard,Saturday,15,0.0,3,30,2026-11-01
 360401,canada,International Falls,standard,Saturday,16,0.0,4,30,2026-11-01
@@ -4371,12 +4378,12 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 360401,canada,International Falls,standard,Sunday,5,0.0,3,30,2026-11-01
 360401,canada,International Falls,standard,Sunday,6,0.0,5,30,2026-11-01
 360401,canada,International Falls,standard,Sunday,7,0.0,2,30,2026-11-01
-360401,canada,International Falls,standard,Sunday,8,0.0,3,30,2026-11-01
-360401,canada,International Falls,standard,Sunday,9,0.0,4,30,2026-11-01
+360401,canada,International Falls,standard,Sunday,8,0.0,4,30,2026-11-01
+360401,canada,International Falls,standard,Sunday,9,0.0,5,30,2026-11-01
 360401,canada,International Falls,standard,Sunday,10,0.0,3,30,2026-11-01
-360401,canada,International Falls,standard,Sunday,11,0.0,3,30,2026-11-01
-360401,canada,International Falls,standard,Sunday,12,0.0,2,30,2026-11-01
-360401,canada,International Falls,standard,Sunday,13,0.0,4,30,2026-11-01
+360401,canada,International Falls,standard,Sunday,11,0.0,4,30,2026-11-01
+360401,canada,International Falls,standard,Sunday,12,0.0,3,30,2026-11-01
+360401,canada,International Falls,standard,Sunday,13,0.0,5,30,2026-11-01
 360401,canada,International Falls,standard,Sunday,14,0.0,4,30,2026-11-01
 360401,canada,International Falls,standard,Sunday,15,0.0,2,30,2026-11-01
 360401,canada,International Falls,standard,Sunday,16,0.0,3,30,2026-11-01
@@ -4521,12 +4528,12 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 010401,canada,Jackman,standard,Sunday,5,0.0,4,30,2026-11-01
 010401,canada,Jackman,standard,Sunday,6,0.0,4,30,2026-11-01
 010401,canada,Jackman,standard,Sunday,7,0.0,3,30,2026-11-01
-010401,canada,Jackman,standard,Sunday,8,0.0,3,30,2026-11-01
+010401,canada,Jackman,standard,Sunday,8,0.0,4,30,2026-11-01
 010401,canada,Jackman,standard,Sunday,9,0.0,3,30,2026-11-01
-010401,canada,Jackman,standard,Sunday,10,0.0,3,30,2026-11-01
-010401,canada,Jackman,standard,Sunday,11,0.0,3,30,2026-11-01
-010401,canada,Jackman,standard,Sunday,12,0.0,4,30,2026-11-01
-010401,canada,Jackman,standard,Sunday,13,0.0,2,30,2026-11-01
+010401,canada,Jackman,standard,Sunday,10,0.0,4,30,2026-11-01
+010401,canada,Jackman,standard,Sunday,11,0.0,4,30,2026-11-01
+010401,canada,Jackman,standard,Sunday,12,0.0,5,30,2026-11-01
+010401,canada,Jackman,standard,Sunday,13,0.0,3,30,2026-11-01
 010401,canada,Jackman,standard,Sunday,14,0.0,3,30,2026-11-01
 010401,canada,Jackman,standard,Sunday,15,0.0,4,30,2026-11-01
 010401,canada,Jackman,standard,Sunday,16,0.0,2,30,2026-11-01
@@ -4687,13 +4694,13 @@ port_number,border,crossing,lane,weekday,hour_local,average_wait_min,readings,wi
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,4,0.0,7,30,2026-11-01
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,5,0.0,7,30,2026-11-01
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,6,0.0,8,30,2026-11-01
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,7,0.0,5,30,2026-11-01
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,8,1.4,5,30,2026-11-01
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,9,1.0,6,30,2026-11-01
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,10,8.3,6,30,2026-11-01
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,11,0.2,5,30,2026-11-01
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,12,2.6,5,30,2026-11-01
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,13,8.8,6,30,2026-11-01
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,7,0.3,7,30,2026-11-01
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,8,3.0,7,30,2026-11-01
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,9,1.1,8,30,2026-11-01
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,10,6.3,8,30,2026-11-01
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,11,0.3,7,30,2026-11-01
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,12,4.9,7,30,2026-11-01
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,13,8.0,7,30,2026-11-01
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,14,8.2,5,30,2026-11-01
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,15,13.3,6,30,2026-11-01
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,standard,Sunday,16,7.0,5,30,2026-11-01
@@ -4957,10 +4964,10 @@ L01901,canada,Madawaska,standard,Sunday,3,0.0,3,30,2026-11-01
 L01901,canada,Madawaska,standard,Sunday,4,0.7,3,30,2026-11-01
 L01901,canada,Madawaska,standard,Sunday,5,0.0,2,30,2026-11-01
 L01901,canada,Madawaska,standard,Sunday,6,0.7,3,30,2026-11-01
-L01901,canada,Madawaska,standard,Sunday,7,1.3,3,30,2026-11-01
+L01901,canada,Madawaska,standard,Sunday,7,1.0,4,30,2026-11-01
 L01901,canada,Madawaska,standard,Sunday,8,0.0,2,30,2026-11-01
 L01901,canada,Madawaska,standard,Sunday,9,0.0,3,30,2026-11-01
-L01901,canada,Madawaska,standard,Sunday,10,3.3,3,30,2026-11-01
+L01901,canada,Madawaska,standard,Sunday,10,2.5,4,30,2026-11-01
 L01901,canada,Madawaska,standard,Sunday,11,2.5,2,30,2026-11-01
 L01901,canada,Madawaska,standard,Sunday,12,10.0,2,30,2026-11-01
 L01901,canada,Madawaska,standard,Sunday,13,1.7,3,30,2026-11-01
@@ -5106,13 +5113,13 @@ L01901,canada,Madawaska,standard,Sunday,23,0.0,2,30,2026-11-01
 070401,canada,Massena,standard,Sunday,5,0.0,2,30,2026-11-01
 070401,canada,Massena,standard,Sunday,6,0.0,3,30,2026-11-01
 070401,canada,Massena,standard,Sunday,7,0.0,3,30,2026-11-01
-070401,canada,Massena,standard,Sunday,8,0.0,3,30,2026-11-01
-070401,canada,Massena,standard,Sunday,9,0.0,4,30,2026-11-01
+070401,canada,Massena,standard,Sunday,8,0.0,4,30,2026-11-01
+070401,canada,Massena,standard,Sunday,9,0.0,5,30,2026-11-01
 070401,canada,Massena,standard,Sunday,10,0.0,1,30,2026-11-01
-070401,canada,Massena,standard,Sunday,11,0.0,2,30,2026-11-01
+070401,canada,Massena,standard,Sunday,11,0.0,3,30,2026-11-01
 070401,canada,Massena,standard,Sunday,12,0.0,1,30,2026-11-01
 070401,canada,Massena,standard,Sunday,13,0.0,3,30,2026-11-01
-070401,canada,Massena,standard,Sunday,14,0.0,1,30,2026-11-01
+070401,canada,Massena,standard,Sunday,14,0.0,2,30,2026-11-01
 070401,canada,Massena,standard,Sunday,15,0.0,3,30,2026-11-01
 070401,canada,Massena,standard,Sunday,16,0.0,4,30,2026-11-01
 070401,canada,Massena,standard,Sunday,17,0.0,2,30,2026-11-01
@@ -5318,8 +5325,10 @@ L01901,canada,Madawaska,standard,Sunday,23,0.0,2,30,2026-11-01
 070101,canada,Ogdensburg,standard,Saturday,8,0.0,2,30,2026-11-01
 070101,canada,Ogdensburg,standard,Saturday,9,0.0,2,30,2026-11-01
 070101,canada,Ogdensburg,standard,Saturday,10,0.0,1,30,2026-11-01
-070101,canada,Ogdensburg,standard,Saturday,11,1.0,1,30,2026-11-01
+070101,canada,Ogdensburg,standard,Saturday,11,0.5,2,30,2026-11-01
 070101,canada,Ogdensburg,standard,Saturday,12,1.0,2,30,2026-11-01
+070101,canada,Ogdensburg,standard,Saturday,13,1.0,1,30,2026-11-01
+070101,canada,Ogdensburg,standard,Saturday,14,1.0,1,30,2026-11-01
 070101,canada,Ogdensburg,standard,Saturday,15,1.0,2,30,2026-11-01
 070101,canada,Ogdensburg,standard,Saturday,17,0.0,1,30,2026-11-01
 070101,canada,Ogdensburg,standard,Saturday,18,0.5,2,30,2026-11-01
@@ -5336,6 +5345,7 @@ L01901,canada,Madawaska,standard,Sunday,23,0.0,2,30,2026-11-01
 070101,canada,Ogdensburg,standard,Sunday,7,0.0,5,30,2026-11-01
 070101,canada,Ogdensburg,standard,Sunday,8,0.0,2,30,2026-11-01
 070101,canada,Ogdensburg,standard,Sunday,10,0.0,1,30,2026-11-01
+070101,canada,Ogdensburg,standard,Sunday,11,0.0,1,30,2026-11-01
 070101,canada,Ogdensburg,standard,Sunday,12,1.0,1,30,2026-11-01
 070101,canada,Ogdensburg,standard,Sunday,13,0.0,1,30,2026-11-01
 070101,canada,Ogdensburg,standard,Sunday,14,0.0,1,30,2026-11-01
@@ -5474,11 +5484,11 @@ L01901,canada,Madawaska,standard,Sunday,23,0.0,2,30,2026-11-01
 340101,canada,Pembina,standard,Saturday,20,2.0,1,30,2026-11-01
 340101,canada,Pembina,standard,Saturday,21,2.0,1,30,2026-11-01
 340101,canada,Pembina,standard,Saturday,23,0.0,1,30,2026-11-01
-340101,canada,Pembina,standard,Sunday,7,14.0,1,30,2026-11-01
+340101,canada,Pembina,standard,Sunday,7,19.0,2,30,2026-11-01
 340101,canada,Pembina,standard,Sunday,8,9.0,2,30,2026-11-01
 340101,canada,Pembina,standard,Sunday,9,2.0,2,30,2026-11-01
-340101,canada,Pembina,standard,Sunday,10,12.0,2,30,2026-11-01
-340101,canada,Pembina,standard,Sunday,11,16.0,2,30,2026-11-01
+340101,canada,Pembina,standard,Sunday,10,11.3,3,30,2026-11-01
+340101,canada,Pembina,standard,Sunday,11,12.3,3,30,2026-11-01
 340101,canada,Pembina,standard,Sunday,12,10.0,2,30,2026-11-01
 340101,canada,Pembina,standard,Sunday,13,6.0,1,30,2026-11-01
 340101,canada,Pembina,standard,Sunday,14,15.0,2,30,2026-11-01
@@ -5719,12 +5729,13 @@ L01901,canada,Madawaska,standard,Sunday,23,0.0,2,30,2026-11-01
 380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,5,0.0,3,30,2026-11-01
 380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,6,0.0,5,30,2026-11-01
 380201,canada,Port Huron – Bluewater Bridge,FAST,Sunday,6,0.0,1,30,2026-11-01
-380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,7,0.0,3,30,2026-11-01
-380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,9,0.0,1,30,2026-11-01
-380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,10,6.7,3,30,2026-11-01
-380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,11,20.5,2,30,2026-11-01
+380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,7,0.0,4,30,2026-11-01
+380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,8,10.0,1,30,2026-11-01
+380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,9,30.0,2,30,2026-11-01
+380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,10,20.0,4,30,2026-11-01
+380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,11,33.7,3,30,2026-11-01
 380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,12,36.0,3,30,2026-11-01
-380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,13,52.0,1,30,2026-11-01
+380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,13,65.0,2,30,2026-11-01
 380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,14,35.0,3,30,2026-11-01
 380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,15,54.0,2,30,2026-11-01
 380201,canada,Port Huron – Bluewater Bridge,standard,Sunday,16,40.0,4,30,2026-11-01
@@ -5863,7 +5874,7 @@ L01901,canada,Madawaska,standard,Sunday,23,0.0,2,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Saturday,10,0.0,3,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Saturday,11,1.3,4,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Saturday,12,0.0,3,30,2026-11-01
-380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Saturday,13,0.0,2,30,2026-11-01
+380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Saturday,13,0.0,3,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Saturday,14,0.0,5,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Saturday,15,1.7,3,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Saturday,16,3.3,3,30,2026-11-01
@@ -5882,13 +5893,13 @@ L01901,canada,Madawaska,standard,Sunday,23,0.0,2,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,5,0.0,2,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,6,0.0,4,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,7,0.0,3,30,2026-11-01
-380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,8,0.0,2,30,2026-11-01
-380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,9,0.0,4,30,2026-11-01
+380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,8,0.0,3,30,2026-11-01
+380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,9,0.0,5,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,10,0.0,3,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,11,0.0,2,30,2026-11-01
-380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,12,0.0,2,30,2026-11-01
+380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,12,0.0,3,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,13,0.0,3,30,2026-11-01
-380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,14,0.0,3,30,2026-11-01
+380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,14,0.0,4,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,15,0.0,3,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,16,0.0,2,30,2026-11-01
 380301,canada,Sault Ste. Marie – International Bridge - SSM,standard,Sunday,17,0.0,3,30,2026-11-01
@@ -5966,7 +5977,7 @@ L01901,canada,Madawaska,standard,Sunday,23,0.0,2,30,2026-11-01
 300901,canada,Sumas,standard,Sunday,4,0.0,5,30,2026-11-01
 300901,canada,Sumas,standard,Sunday,5,0.0,2,30,2026-11-01
 300901,canada,Sumas,standard,Sunday,6,0.0,4,30,2026-11-01
-300901,canada,Sumas,standard,Sunday,7,0.0,4,30,2026-11-01
+300901,canada,Sumas,standard,Sunday,7,0.0,5,30,2026-11-01
 300901,canada,Sumas,standard,Sunday,10,0.0,1,30,2026-11-01
 300901,canada,Sumas,standard,Sunday,16,0.0,1,30,2026-11-01
 300901,canada,Sumas,standard,Sunday,17,0.0,1,30,2026-11-01
@@ -6093,14 +6104,14 @@ L01901,canada,Madawaska,standard,Sunday,23,0.0,2,30,2026-11-01
 331001,canada,Sweetgrass,standard,Sunday,2,3.3,3,30,2026-11-01
 331001,canada,Sweetgrass,standard,Sunday,3,3.3,3,30,2026-11-01
 331001,canada,Sweetgrass,standard,Sunday,4,3.8,4,30,2026-11-01
-331001,canada,Sweetgrass,standard,Sunday,5,2.5,2,30,2026-11-01
-331001,canada,Sweetgrass,standard,Sunday,6,2.5,2,30,2026-11-01
-331001,canada,Sweetgrass,standard,Sunday,7,2.5,4,30,2026-11-01
-331001,canada,Sweetgrass,standard,Sunday,8,3.3,3,30,2026-11-01
-331001,canada,Sweetgrass,standard,Sunday,9,5.0,3,30,2026-11-01
-331001,canada,Sweetgrass,standard,Sunday,10,5.0,3,30,2026-11-01
+331001,canada,Sweetgrass,standard,Sunday,5,3.3,3,30,2026-11-01
+331001,canada,Sweetgrass,standard,Sunday,6,3.3,3,30,2026-11-01
+331001,canada,Sweetgrass,standard,Sunday,7,3.0,5,30,2026-11-01
+331001,canada,Sweetgrass,standard,Sunday,8,7.5,4,30,2026-11-01
+331001,canada,Sweetgrass,standard,Sunday,9,13.8,4,30,2026-11-01
+331001,canada,Sweetgrass,standard,Sunday,10,5.0,4,30,2026-11-01
 331001,canada,Sweetgrass,standard,Sunday,11,3.7,3,30,2026-11-01
-331001,canada,Sweetgrass,standard,Sunday,12,5.0,2,30,2026-11-01
+331001,canada,Sweetgrass,standard,Sunday,12,5.0,3,30,2026-11-01
 331001,canada,Sweetgrass,standard,Sunday,13,8.3,3,30,2026-11-01
 331001,canada,Sweetgrass,standard,Sunday,14,7.5,4,30,2026-11-01
 331001,canada,Sweetgrass,standard,Sunday,15,5.0,4,30,2026-11-01
