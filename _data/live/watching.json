@@ -1,21 +1,14 @@
 {
- "generated": "2026-11-01T18:32:43.505Z",
- "checked": "Nov 1, 2026",
- "last": {
-  "title": "Outlander",
-  "sub": "",
-  "poster": "https://images.metahub.space/poster/small/tt3006802/img",
-  "link": "https://www.imdb.com/title/tt3006802/",
-  "initials": "OU",
-  "meta": "0% through · 0 min left · stopped Nov 1, 2026"
- },
+ "generated": "2026-11-02T11:47:38.956Z",
+ "checked": "Nov 2, 2026",
+ "last": null,
  "tiles": [
   {
    "n": "7",
    "l": "shows"
   },
   {
-   "n": "29",
+   "n": "31",
    "l": "films"
   },
   {
@@ -23,15 +16,33 @@
    "l": "in the library"
   },
   {
-   "n": "3.8 days",
+   "n": "4.1 days",
    "l": "of runtime"
   }
  ],
- "count": "8 titles this week",
+ "count": "10 titles this week",
  "days": [
   {
    "day": "Sun, Nov 1",
    "items": [
+    {
+     "kind": "TV",
+     "title": "Breaking Bad",
+     "link": "https://www.imdb.com/title/tt0903747/",
+     "meta": ""
+    },
+    {
+     "kind": "Film",
+     "title": "Project Hail Mary",
+     "link": "https://www.imdb.com/title/tt12042730/",
+     "meta": ""
+    },
+    {
+     "kind": "Film",
+     "title": "The Cycle",
+     "link": "https://www.imdb.com/title/tt32358390/",
+     "meta": ""
+    },
     {
      "kind": "TV",
      "title": "Outlander",
@@ -66,12 +77,6 @@
   {
    "day": "Mon, Oct 26",
    "items": [
-    {
-     "kind": "TV",
-     "title": "Breaking Bad",
-     "link": "https://www.imdb.com/title/tt0903747/",
-     "meta": ""
-    },
     {
      "kind": "Film",
      "title": "Remain Calm",
@@ -173,28 +178,6 @@
      "kind": "Film",
      "title": "Other Mommy",
      "link": "https://www.imdb.com/title/tt36586020/",
-     "meta": ""
-    }
-   ]
-  },
-  {
-   "day": "Sat, Oct 10",
-   "items": [
-    {
-     "kind": "Film",
-     "title": "It",
-     "link": "https://www.imdb.com/title/tt1396484/",
-     "meta": ""
-    }
-   ]
-  },
-  {
-   "day": "Fri, Oct 9",
-   "items": [
-    {
-     "kind": "Film",
-     "title": "Instructions Not Included",
-     "link": "https://www.imdb.com/title/tt2378281/",
      "meta": ""
     }
    ]
