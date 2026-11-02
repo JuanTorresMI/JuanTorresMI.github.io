@@ -3,13 +3,13 @@
  "license": "U.S. government data, public domain. Credit USDA AMS.",
  "units": "USD per hundredweight (100 lb), live or dressed weight as the basis says",
  "week": {
-  "report_date": "2026-10-26",
-  "start": "2026-10-19",
-  "end": "2026-10-25"
+  "report_date": "2026-11-02",
+  "start": "2026-10-26",
+  "end": "2026-11-01"
  },
  "five_area": {
-  "steer_live_fob": 227.08,
-  "steer_dressed_delivered": 360.79
+  "steer_live_fob": 223.73,
+  "steer_dressed_delivered": 352.19
  },
  "regions": [
   {
@@ -17,8 +17,8 @@
    "name": "5-area",
    "states": "Texas-Oklahoma-New Mexico, Kansas, Nebraska, Colorado and Iowa-Minnesota",
    "report": "LM_CT150",
-   "live_fob": 227.35,
-   "dressed_delivered": 360.29,
+   "live_fob": 223.91,
+   "dressed_delivered": 352.1,
    "page": "https://juantorresmi.github.io/fed-cattle-prices/five-area/"
   },
   {
@@ -44,8 +44,8 @@
    "name": "Nebraska",
    "states": "Nebraska",
    "report": "LM_CT158",
-   "live_fob": 228.33,
-   "dressed_delivered": 358.86,
+   "live_fob": 224.06,
+   "dressed_delivered": 351.03,
    "page": "https://juantorresmi.github.io/fed-cattle-prices/nebraska/"
   },
   {
@@ -53,8 +53,8 @@
    "name": "Western Cornbelt",
    "states": "Iowa, Minnesota and Missouri",
    "report": "LM_CT154",
-   "live_fob": 226.66,
-   "dressed_delivered": 362.31,
+   "live_fob": 223.45,
+   "dressed_delivered": 354.41,
    "page": "https://juantorresmi.github.io/fed-cattle-prices/western-cornbelt/"
   },
   {
@@ -62,7 +62,7 @@
    "name": "Eastern Cornbelt",
    "states": "Michigan, Indiana, Illinois, Wisconsin and Kentucky",
    "report": "LM_CT154",
-   "live_fob": 223.3,
+   "live_fob": 223.18,
    "dressed_delivered": null,
    "page": "https://juantorresmi.github.io/fed-cattle-prices/eastern-cornbelt/"
   },
@@ -71,8 +71,8 @@
    "name": "Northern Plains",
    "states": "Wyoming, Montana, South Dakota and North Dakota",
    "report": "LM_CT154",
-   "live_fob": 227.31,
-   "dressed_delivered": 355.48,
+   "live_fob": 222.97,
+   "dressed_delivered": 351.95,
    "page": "https://juantorresmi.github.io/fed-cattle-prices/northern-plains/"
   },
   {
@@ -80,15 +80,15 @@
    "name": "Northeast",
    "states": "Ohio, Pennsylvania, New York, Virginia, West Virginia and New England",
    "report": "LM_CT154",
-   "live_fob": 221.41,
+   "live_fob": 220.71,
    "dressed_delivered": null,
    "page": "https://juantorresmi.github.io/fed-cattle-prices/northeast/"
   }
  ],
  "latest_day": {
-  "date": "2026-10-30",
-  "steer_live_fob": 223.68,
-  "steer_dressed_delivered": 349.82
+  "date": "2026-11-02",
+  "steer_live_fob": 223.3,
+  "steer_dressed_delivered": 345.0
  },
  "history": [
   "https://juantorresmi.github.io/fed-cattle-prices/fed-cattle-weekly.csv",
