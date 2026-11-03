@@ -1,7 +1,14 @@
 {
- "generated": "2026-11-02T21:18:20.321Z",
- "checked": "Nov 2, 2026",
- "last": null,
+ "generated": "2026-11-03T11:47:30.565Z",
+ "checked": "Nov 3, 2026",
+ "last": {
+  "title": "South Park",
+  "sub": "",
+  "poster": "https://images.metahub.space/poster/small/tt0121955/img",
+  "link": "https://www.imdb.com/title/tt0121955/",
+  "initials": "SO",
+  "meta": "1% through · 22 min left · stopped Nov 2, 2026"
+ },
  "tiles": [
   {
    "n": "7",
@@ -16,12 +23,23 @@
    "l": "in the library"
   },
   {
-   "n": "4.1 days",
+   "n": "4.2 days",
    "l": "of runtime"
   }
  ],
- "count": "10 titles this week",
+ "count": "7 titles this week",
  "days": [
+  {
+   "day": "Mon, Nov 2",
+   "items": [
+    {
+     "kind": "TV",
+     "title": "South Park",
+     "link": "https://www.imdb.com/title/tt0121955/",
+     "meta": ""
+    }
+   ]
+  },
   {
    "day": "Sun, Nov 1",
    "items": [
@@ -64,12 +82,6 @@
      "kind": "Film",
      "title": "Tombstone",
      "link": "https://www.imdb.com/title/tt0108358/",
-     "meta": ""
-    },
-    {
-     "kind": "TV",
-     "title": "South Park",
-     "link": "https://www.imdb.com/title/tt0121955/",
      "meta": ""
     }
    ]

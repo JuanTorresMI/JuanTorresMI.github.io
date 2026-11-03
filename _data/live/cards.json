@@ -1,18 +1,24 @@
 {
- "updated": "2026-11-02T21:19:40.180Z",
- "checked": "Nov 2, 2026",
+ "updated": "2026-11-03T11:48:41.158Z",
+ "checked": "Nov 3, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
-  "cards": "64",
-  "listed": "54",
-  "sold": "1",
-  "revenue": "$4",
+  "cards": "95",
+  "listed": "83",
+  "sold": "2",
+  "revenue": "$17",
   "profit": null,
   "margin": null,
-  "days": "—",
+  "days": "11 days",
   "sell_through": "2%"
  },
  "months": [
+  {
+   "month": "Nov 2026",
+   "sales": "1",
+   "revenue": "$13",
+   "profit": null
+  },
   {
    "month": "Oct 2026",
    "sales": "1",
@@ -21,6 +27,19 @@
   }
  ],
  "for_sale": [
+  {
+   "id": 144,
+   "name": "2024 Topps Knockout UFC - Lights Gold Islam Makhachev #LTS-1",
+   "player": "Islam Makhachev",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/144.webp",
+   "price": "$100.00",
+   "listed": "Nov 2, 2026"
+  },
   {
    "id": 100,
    "name": "2026 Topps Chrome UFC #IP-9 Sean Strickland, Orange Refractor 4/25",
@@ -61,19 +80,6 @@
    "listed": "Oct 31, 2026"
   },
   {
-   "id": 7,
-   "name": "2026 Stadium Club UFC - Triumvirates Max Holloway #TV-9",
-   "player": "Max Holloway",
-   "set": "",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/7.webp",
-   "price": "$15.00",
-   "listed": "Oct 30, 2026"
-  },
-  {
    "id": 6,
    "name": "2026 Topps Chrome UFC #90 Alex Pereira, Blue RayWave Refractor 53/150",
    "player": "Alex Pereira",
@@ -98,6 +104,19 @@
    "photo": "/mma-cards/photos/17.webp",
    "price": "$6.00",
    "listed": "Oct 24, 2026"
+  },
+  {
+   "id": 127,
+   "name": "2026 Topps Chrome UFC #46 Bo Nickal",
+   "player": "Bo Nickal",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/127.webp",
+   "price": "$3.99",
+   "listed": "Nov 2, 2026"
   },
   {
    "id": 23,
@@ -152,6 +171,19 @@
    "listed": "Oct 24, 2026"
   },
   {
+   "id": 143,
+   "name": "2026 Topps Chrome UFC #93 Ian Machado Garry",
+   "player": "Ian Machado Garry",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/143.webp",
+   "price": "$2.05",
+   "listed": "Nov 2, 2026"
+  },
+  {
    "id": 8,
    "name": "2025 Topps Chrome UFC #TRM-1 Caio Borralho",
    "player": "Caio Borralho",
@@ -163,6 +195,19 @@
    "photo": "/mma-cards/photos/8.webp",
    "price": "$2.00",
    "listed": "Oct 24, 2026"
+  },
+  {
+   "id": 124,
+   "name": "2026 Topps Chrome UFC #73 Virna Jandiroba",
+   "player": "Virna Jandiroba",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/124.webp",
+   "price": "$2.00",
+   "listed": "Nov 2, 2026"
   },
   {
    "id": 21,
@@ -230,6 +275,32 @@
    "listed": "Oct 24, 2026"
   },
   {
+   "id": 130,
+   "name": "2026 Topps Chrome UFC #180 Maycee Barber",
+   "player": "Maycee Barber",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/130.webp",
+   "price": "$1.75",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 121,
+   "name": "2026 Topps Chrome UFC #157 Khalil Rountree Jr.",
+   "player": "Khalil Rountree Jr.",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/121.webp",
+   "price": "$1.74",
+   "listed": "Nov 2, 2026"
+  },
+  {
    "id": 9,
    "name": "2025 Topps Chrome UFC Diego Lopes #140",
    "player": "Diego Lopes",
@@ -267,6 +338,19 @@
    "photo": "/mma-cards/photos/22.webp",
    "price": "$1.69",
    "listed": "Oct 24, 2026"
+  },
+  {
+   "id": 135,
+   "name": "2026 Topps Chrome UFC #123 Carlos Prates",
+   "player": "Carlos Prates",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/135.webp",
+   "price": "$1.69",
+   "listed": "Nov 2, 2026"
   },
   {
    "id": 87,
@@ -321,6 +405,58 @@
    "listed": "Oct 24, 2026"
   },
   {
+   "id": 115,
+   "name": "2026 Topps Chrome UFC #58 Tracy Cortez",
+   "player": "Tracy Cortez",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/115.webp",
+   "price": "$1.59",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 116,
+   "name": "2026 Topps Chrome UFC #190 Lerone Murphy",
+   "player": "Lerone Murphy",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/116.webp",
+   "price": "$1.59",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 139,
+   "name": "2026 Topps Chrome UFC #115 Umar Nurmagomedov",
+   "player": "Umar Nurmagomedov",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/139.webp",
+   "price": "$1.59",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 140,
+   "name": "2026 Topps Chrome UFC #128 Diego Lopes",
+   "player": "Diego Lopes",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/140.webp",
+   "price": "$1.51",
+   "listed": "Nov 2, 2026"
+  },
+  {
    "id": 3,
    "name": "2025 Stadium Club UFC - Chrome Georges St-Pierre #C-32",
    "player": "Georges St-Pierre",
@@ -360,6 +496,32 @@
    "listed": "Oct 24, 2026"
   },
   {
+   "id": 117,
+   "name": "2026 Topps Chrome UFC #35 Chase Hooper",
+   "player": "Chase Hooper",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/117.webp",
+   "price": "$1.49",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 126,
+   "name": "2026 Topps Chrome UFC #23 Paddy Pimblett",
+   "player": "Paddy Pimblett",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/126.webp",
+   "price": "$1.49",
+   "listed": "Nov 2, 2026"
+  },
+  {
    "id": 78,
    "name": "2026 Topps Chrome UFC #IYF-10 Chuck Liddell",
    "player": "Chuck Liddell",
@@ -371,6 +533,19 @@
    "photo": null,
    "price": "$1.47",
    "listed": "Oct 24, 2026"
+  },
+  {
+   "id": 122,
+   "name": "2026 Topps Chrome UFC #12 Alexander Volkov",
+   "player": "Alexander Volkov",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/122.webp",
+   "price": "$1.43",
+   "listed": "Nov 2, 2026"
   },
   {
    "id": 74,
@@ -410,6 +585,19 @@
    "photo": null,
    "price": "$1.39",
    "listed": "Oct 24, 2026"
+  },
+  {
+   "id": 119,
+   "name": "2026 Topps Chrome UFC #105 Macy Chiasson",
+   "player": "Macy Chiasson",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/119.webp",
+   "price": "$1.38",
+   "listed": "Nov 2, 2026"
   },
   {
    "id": 77,
@@ -607,6 +795,58 @@
    "listed": "Oct 24, 2026"
   },
   {
+   "id": 120,
+   "name": "2026 Topps Chrome UFC #19 Azamat Murzakanov",
+   "player": "Azamat Murzakanov",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/120.webp",
+   "price": "$0.99",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 125,
+   "name": "2026 Topps Chrome UFC #28 Jean Matsumoto",
+   "player": "Jean Matsumoto",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/125.webp",
+   "price": "$0.99",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 128,
+   "name": "2026 Topps Chrome UFC #38 Reinier De Ridder",
+   "player": "Reinier De Ridder",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/128.webp",
+   "price": "$0.99",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 136,
+   "name": "2026 Topps Chrome UFC #135 Michael Page",
+   "player": "Michael Page",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/136.webp",
+   "price": "$0.99",
+   "listed": "Nov 2, 2026"
+  },
+  {
    "id": 93,
    "name": "2026 Topps Chrome UFC #137 Daniel Santos, Refractor, RC",
    "player": "Daniel Santos",
@@ -631,6 +871,19 @@
    "photo": "/mma-cards/photos/18.webp",
    "price": "$0.83",
    "listed": "Oct 24, 2026"
+  },
+  {
+   "id": 142,
+   "name": "2026 Topps Chrome UFC #63 Erin Blanchfield",
+   "player": "Erin Blanchfield",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/142.webp",
+   "price": "$0.81",
+   "listed": "Nov 2, 2026"
   },
   {
    "id": 19,
@@ -685,6 +938,136 @@
    "listed": "Oct 24, 2026"
   },
   {
+   "id": 118,
+   "name": "2026 Topps Chrome UFC #25 Nazim Sadykhov",
+   "player": "Nazim Sadykhov",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/118.webp",
+   "price": "$0.50",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 123,
+   "name": "2026 Topps Chrome UFC #142 Tim Elliott",
+   "player": "Tim Elliott",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/123.webp",
+   "price": "$0.50",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 129,
+   "name": "2026 Topps Chrome UFC #149 Roman Kopylov",
+   "player": "Roman Kopylov",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/129.webp",
+   "price": "$0.50",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 131,
+   "name": "2026 Topps Chrome UFC #49 Esteban Ribovics",
+   "player": "Esteban Ribovics",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/131.webp",
+   "price": "$0.50",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 132,
+   "name": "2026 Topps Chrome UFC #122 Vinicius Oliveira",
+   "player": "Vinicius Oliveira",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/132.webp",
+   "price": "$0.50",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 133,
+   "name": "2026 Topps Chrome UFC #116 Yan Xiaonan",
+   "player": "Yan Xiaonan",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/133.webp",
+   "price": "$0.50",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 134,
+   "name": "2026 Topps Chrome UFC #112 Amanda Lemos",
+   "player": "Amanda Lemos",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/134.webp",
+   "price": "$0.50",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 137,
+   "name": "2026 Topps Chrome UFC #130 Jose Mariscal",
+   "player": "Jose Mariscal",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/137.webp",
+   "price": "$0.50",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 138,
+   "name": "2026 Topps Chrome UFC #173 Irene Aldana",
+   "player": "Irene Aldana",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/138.webp",
+   "price": "$0.50",
+   "listed": "Nov 2, 2026"
+  },
+  {
+   "id": 141,
+   "name": "2026 Topps Chrome UFC #169 Charles Jourdain",
+   "player": "Charles Jourdain",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/141.webp",
+   "price": "$0.50",
+   "listed": "Nov 2, 2026"
+  },
+  {
    "id": 108,
    "name": "#25 Khabib Nurmagomedov 2019 Topps Chrome UFC - Refractor",
    "player": "Khabib Nurmagomedov",
@@ -726,6 +1109,21 @@
  ],
  "sold": [
   {
+   "id": 7,
+   "name": "2026 Stadium Club UFC - Triumvirates Max Holloway #TV-9",
+   "player": "Max Holloway",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/7.webp",
+   "price": "$13.00",
+   "month": "Nov 2026",
+   "days": "11 days",
+   "where": "CollX"
+  },
+  {
    "id": 24,
    "name": "2025 Topps Chrome UFC - Tailor Made Conor McGregor #TRM-10",
    "player": "Conor McGregor",
@@ -742,23 +1140,23 @@
   }
  ],
  "scanner": {
-  "calls": "2,861",
-  "asks": "19,710",
-  "finds": "262",
-  "bought": "7",
-  "under": "58%",
+  "calls": "2,914",
+  "asks": "21,336",
+  "finds": "293",
+  "bought": "9",
+  "under": "59%",
   "kinds": [
    {
     "what": "underpriced against other listings",
-    "n": "169"
+    "n": "191"
    },
    {
     "what": "under the max for its search",
-    "n": "51"
+    "n": "59"
    },
    {
     "what": "a lot cheap per card",
-    "n": "42"
+    "n": "43"
    }
   ]
  },
