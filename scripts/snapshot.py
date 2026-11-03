@@ -3027,7 +3027,7 @@ def cards_url():
     return ""
 
 
-def usd(cents, whole=False):
+def usd_cents(cents, whole=False):
     if cents is None: return "—"
     v = cents / 100
     return f"${v:,.0f}" if whole else f"${v:,.2f}"
@@ -3072,19 +3072,19 @@ def cards(base):
                 "photo": f"/mma-cards/photos/{c['id']}.webp" if str(c["id"]) in have else None}
     kinds = {"price": "under the max for its search", "market": "underpriced against other listings", "lot": "a lot cheap per card"}
     finds = [{"found": full_date(datetime.fromisoformat(f["found"])), "title": f["title"], "image": f.get("image"), "how": f["how"],
-              "cost": usd(f["cost"]), "worth": usd(f["worth"]) if f.get("worth") else None,
+              "cost": usd_cents(f["cost"]), "worth": usd_cents(f["worth"]) if f.get("worth") else None,
               "under": pct((f["worth"] - f["cost"]) / f["worth"]) if f.get("worth") else None,
-              "lot": f"{fmt(f['lot_count'])} cards, {usd(round(f['cost'] / f['lot_count']))} each" if f.get("lot_count") else None,
+              "lot": f"{fmt(f['lot_count'])} cards, {usd_cents(round(f['cost'] / f['lot_count']))} each" if f.get("lot_count") else None,
               "basis": f.get("basis"), "buying": f["buying"]} for f in d["finds"]]
     return {
         "updated": d["updated"], "checked": full_date(when(d["updated"])), "shop_url": d["shop_url"],
-        "stats": {"cards": fmt(t["cards"]), "listed": fmt(t["listed"]), "sold": fmt(t["sold"]), "revenue": usd(t["revenue"], whole=True),
-                  "profit": usd(t["net_profit"], whole=True) if t["net_profit"] is not None else None, "margin": pct(t["margin"]) if t["margin"] is not None else None,
+        "stats": {"cards": fmt(t["cards"]), "listed": fmt(t["listed"]), "sold": fmt(t["sold"]), "revenue": usd_cents(t["revenue"], whole=True),
+                  "profit": usd_cents(t["net_profit"], whole=True) if t["net_profit"] is not None else None, "margin": pct(t["margin"]) if t["margin"] is not None else None,
                   "days": "—" if t["avg_days_to_sell"] is None else f"{round(t['avg_days_to_sell'])} days", "sell_through": pct(t["sell_through"])},
-        "months": [{"month": month_label(m["month"]), "sales": fmt(m["sales"]), "revenue": usd(m["revenue"], whole=True),
-                    "profit": usd(m["profit"], whole=True) if m["profit"] is not None else None} for m in reversed(t["months"])],
-        "for_sale": [{**card(c), "price": usd(c["price"]), "listed": full_date(datetime.fromisoformat(c["listed"])) if c.get("listed") else ""} for c in d["for_sale"]],
-        "sold": [{**card(c), "price": usd(c["price"]), "month": month_label(c["month"]) if c.get("month") else "",
+        "months": [{"month": month_label(m["month"]), "sales": fmt(m["sales"]), "revenue": usd_cents(m["revenue"], whole=True),
+                    "profit": usd_cents(m["profit"], whole=True) if m["profit"] is not None else None} for m in reversed(t["months"])],
+        "for_sale": [{**card(c), "price": usd_cents(c["price"]), "listed": full_date(datetime.fromisoformat(c["listed"])) if c.get("listed") else ""} for c in d["for_sale"]],
+        "sold": [{**card(c), "price": usd_cents(c["price"]), "month": month_label(c["month"]) if c.get("month") else "",
                   "days": "" if c.get("days_to_sell") is None else plural(c["days_to_sell"], "day", "days"), "where": c.get("sold_on") or ""} for c in d["sold"]],
         "scanner": {"calls": fmt(s["calls_per_day"]) if s["calls_per_day"] is not None else "—", "asks": fmt(s["asks_on_file"]), "finds": fmt(s["finds_30d"]),
                     "bought": fmt(s["bought_30d"]), "under": pct(s["median_under"]),

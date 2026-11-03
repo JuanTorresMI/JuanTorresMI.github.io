@@ -158,6 +158,14 @@ for page, placeholder in (("youtube/index.html", "Asking YouTube…"), ("watchin
     f = os.path.join(site, page)
     if os.path.isfile(f) and placeholder in open(f, encoding="utf-8").read():
         err("/" + page, "has no snapshot in its HTML; run scripts/snapshot.py")
+# The cutouts are dollars per hundredweight, in the hundreds. A stamp under $50 means a price was
+# formatted as if it were cents (a card-shop formatter once shadowed the boards' own, Oct 30 2026).
+_live = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "_data", "live")
+for name, key in (("beef", "choice"), ("pork", "carcass")):
+    try:
+        v = json.load(open(os.path.join(_live, name + ".json"), encoding="utf-8"))["stamp"][key]
+        if v and float(v.lstrip("$").replace(",", "")) < 50: err(f"_data/live/{name}.json", f"cutout reads {v} per cwt; a price was formatted 100× too small")
+    except (OSError, KeyError, ValueError): pass
 
 # CSVs other people's code pulls by their address: the Kaggle datasets fetch these on a schedule.
 # Never rename, move or delete one, and never rename or reorder its columns; a new column goes at

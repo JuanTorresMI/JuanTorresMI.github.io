@@ -40,6 +40,13 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-11-02 — Beef and pork prices back in dollars per hundredweight
+
+From Oct 30 the beef and pork boards showed every price 100 times too small (a Choice cutout of "$3.65 per
+cwt" instead of $365.04), and so did the beef board's search snippet. The card shop's money formatter, which
+takes cents, had the same name as the boards' own and replaced it. It is now `usd_cents`, the snapshots are
+redrawn, and `check.py` fails if a cutout reads under $50 per cwt. The CSVs store raw numbers and were never wrong.
+
 ## 2026-11-01 — Reels name hand-written cards
 
 A card with a hand-written name, like a PSA In the Presence auto, now shows the person's name and AUTOGRAPHED in its Reel. A long
