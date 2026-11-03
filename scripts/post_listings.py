@@ -5,6 +5,7 @@
   python3 scripts/post_listings.py preview     prints every card's caption
   python3 scripts/post_listings.py check       signs in, prints the account's name (never the token) and the songs it would use
   python3 scripts/post_listings.py test DIR    draws the next Reel with its song's preview into DIR, and publishes nothing
+  python3 scripts/post_listings.py stats       each post's views, reach, likes, saves, shares and watch time, and the account's 28 days
 
 Every post is a Reel (scripts/make_reel.py), since only Reels can carry a song, with a trending corrido or other Latin song
 from Instagram's own music, attached by Instagram. A Reel is drawn in the run that posts it and sits in R2 just long
@@ -364,12 +365,75 @@ def post(card=None, old=None):
     print(f"Posted card {c['id']} ({why}): {c['name']}" + (f" with {posted[str(c['id'])]['song_name']}" if song else ""))
 
 
+REEL_METRICS = ("views", "reach", "likes", "comments", "saved", "shares", "total_interactions", "ig_reels_avg_watch_time")
+ACCOUNT_METRICS = ("reach", "views", "profile_views", "website_clicks", "accounts_engaged", "follows_and_unfollows")
+
+
+def read(host, path, **fields):
+    """A GET from the Graph API (graph() POSTs to paths that end in /media)."""
+    fields["access_token"] = os.environ["IG_ACCESS_TOKEN"]
+    with urllib.request.urlopen(f"{host}/{path}?{urllib.parse.urlencode(fields)}", timeout=60) as r:
+        return json.load(r)
+
+
+def insights(host, path, metrics, **fields):
+    """{metric: value}: all at once, else one by one, since a metric Meta won't give for one post refuses the whole request."""
+    def values(d):
+        out = {}
+        for m in d.get("data", []):
+            v = m.get("total_value", {}).get("value") if "total_value" in m else (m.get("values") or [{}])[0].get("value")
+            out[m["name"]] = v
+        return out
+    try:
+        return values(read(host, f"{path}/insights", metric=",".join(metrics), **fields))
+    except urllib.error.HTTPError:
+        out = {}
+        for m in metrics:
+            try:
+                out.update(values(read(host, f"{path}/insights", metric=m, **fields)))
+            except urllib.error.HTTPError:
+                pass
+        return out
+
+
+def stats():
+    """Each Reel's views, reach, likes, saves, shares and watch time, and the account's last 28 days: a table in the log and the
+    run's summary. Reads only; the token never reaches the log."""
+    host, name = account()
+    if not host:
+        sys.exit(1)
+    user = os.environ["IG_USER_ID"]
+    me = read(host, user, fields="followers_count,follows_count,media_count")
+    media = read(host, f"{user}/media", fields="id,caption,timestamp,permalink,like_count,comments_count,media_product_type", limit=50).get("data", [])
+    rows = []
+    for m in media:
+        i = insights(host, m["id"], REEL_METRICS)
+        title = (m.get("caption") or "").split("\n")[0][:60]
+        rows.append({"when": m["timestamp"][:16].replace("T", " "), "title": title, "url": m.get("permalink"), **{k: i.get(k) for k in REEL_METRICS}})
+    until = int(time.time()); since = until - 28 * 86400
+    acct = insights(host, user, ACCOUNT_METRICS, period="day", metric_type="total_value", since=since, until=until)
+    lines = [f"## @{name}: {me.get('followers_count')} followers, following {me.get('follows_count')}, {me.get('media_count')} posts", "",
+             "Last 28 days: " + ", ".join(f"{k.replace('_', ' ')} {v}" for k, v in acct.items()), "",
+             "| Posted (UTC) | Post | Views | Reach | Likes | Comments | Saves | Shares | Avg watch (s) |", "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
+    for r in rows:
+        watch = r["ig_reels_avg_watch_time"]
+        lines.append(f"| {r['when']} | [{r['title'] or 'post'}]({r['url']}) | {r['views']} | {r['reach']} | {r['likes']} | {r['comments']} | {r['saved']} | {r['shares']} | "
+                     f"{round(watch / 1000, 1) if isinstance(watch, (int, float)) else watch} |")
+    text = "\n".join(lines)
+    print(text)
+    print("JSON " + json.dumps({"account": me, "last_28_days": acct, "posts": rows}))
+    if os.environ.get("GITHUB_STEP_SUMMARY"):
+        with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
+            f.write(text + "\n")
+
 if __name__ == "__main__":
     what = sys.argv[1] if len(sys.argv) > 1 else "preview"
     if what == "post":
         post(*sys.argv[2:4])
     elif what == "check":
         check()
+    elif what == "stats":
+        stats()
     elif what == "backfill":
         feed_backfill()
     elif what == "test":
