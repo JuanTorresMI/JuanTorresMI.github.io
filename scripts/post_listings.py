@@ -366,6 +366,7 @@ def post(card=None, old=None):
 
 
 REEL_METRICS = ("views", "reach", "likes", "comments", "saved", "shares", "total_interactions", "ig_reels_avg_watch_time")
+REFUSED = set()      # each reason Instagram gives once, not once per post
 ACCOUNT_METRICS = ("reach", "views", "profile_views", "website_clicks", "accounts_engaged", "follows_and_unfollows")
 
 
@@ -391,8 +392,11 @@ def insights(host, path, metrics, **fields):
         for m in metrics:
             try:
                 out.update(values(read(host, f"{path}/insights", metric=m, **fields)))
-            except urllib.error.HTTPError:
-                pass
+            except urllib.error.HTTPError as e:
+                why = json.load(e).get("error", {}).get("message", "")[:200]
+                if why not in REFUSED:
+                    REFUSED.add(why)
+                    print(f"Instagram refused {m} ({e.code}): {why}")
         return out
 
 
@@ -410,6 +414,9 @@ def stats():
         i = insights(host, m["id"], REEL_METRICS)
         title = (m.get("caption") or "").split("\n")[0][:60]
         rows.append({"when": m["timestamp"][:16].replace("T", " "), "title": title, "url": m.get("permalink"), **{k: i.get(k) for k in REEL_METRICS}})
+        # Likes and comments come with the post itself, so they show even when the insights are refused.
+        rows[-1]["likes"] = rows[-1]["likes"] if rows[-1]["likes"] is not None else m.get("like_count")
+        rows[-1]["comments"] = rows[-1]["comments"] if rows[-1]["comments"] is not None else m.get("comments_count")
     until = int(time.time()); since = until - 28 * 86400
     acct = insights(host, user, ACCOUNT_METRICS, period="day", metric_type="total_value", since=since, until=until)
     lines = [f"## @{name}: {me.get('followers_count')} followers, following {me.get('follows_count')}, {me.get('media_count')} posts", "",
