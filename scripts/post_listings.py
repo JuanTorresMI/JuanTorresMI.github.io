@@ -155,6 +155,15 @@ def pick_songs(used={}):
     return sorted(out, key=lambda s: used.get(s["audio_id"], ""))
 
 
+def music(searches):
+    """What Instagram's music for apps has for each search ("hype;trap;eminem"): title, artist, length and id, to choose songs by."""
+    for words in [w.strip() for w in searches.split(";") if w.strip()]:
+        found = songs(words)
+        print(f"\n== {words}: {len(found)}")
+        for s in found:
+            print(f"  {s.get('audio_id')}  {round((s.get('duration_in_ms') or 0) / 1000)}s  {s.get('title')} - {s.get('display_artist')}")
+
+
 def trending():
     picks = pick_songs()
     print(f"{len(picks)} songs to choose from:")
@@ -484,6 +493,8 @@ if __name__ == "__main__":
         post(*sys.argv[2:4])
     elif what == "check":
         check()
+    elif what == "music":
+        music(" ".join(sys.argv[2:]))
     elif what == "stats":
         stats()
     elif what == "backfill":

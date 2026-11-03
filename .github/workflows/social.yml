@@ -14,6 +14,10 @@ on:
         description: "Draw the next Reel with its song as an artifact, and publish nothing"
         type: boolean
         default: false
+      music:
+        description: "Only list Instagram's songs for these searches, split by ; (hype;trap)"
+        type: string
+        default: ""
       stats:
         description: "Only print how the posts and the account are doing"
         type: boolean
@@ -70,6 +74,13 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
         run: python3 scripts/post_listings.py check
+      - name: Songs for these searches
+        if: inputs.music != ''
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          WORDS: ${{ inputs.music }}
+        run: python3 scripts/post_listings.py music "$WORDS"
       - name: How the posts are doing
         if: inputs.stats
         env:
@@ -83,7 +94,7 @@ jobs:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
         run: python3 scripts/post_listings.py backfill
       - name: Post
-        if: ${{ !inputs.check && !inputs.test && !inputs.stats && !inputs.backfill }}
+        if: ${{ !inputs.check && !inputs.test && !inputs.stats && inputs.music == '' && !inputs.backfill }}
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
@@ -93,7 +104,7 @@ jobs:
         run: python3 scripts/post_listings.py post "$CARD" "$WAS"
       - name: Commit
         id: commit
-        if: ${{ !inputs.check && !inputs.test && !inputs.stats }}
+        if: ${{ !inputs.check && !inputs.test && !inputs.stats && inputs.music == '' }}
         run: |
           git add _data/social_posted.json _data/social_prices.json _data/social_songs.json
           if [ -e _data/social_feed.json ]; then git add _data/social_feed.json mma-cards/reels; fi
