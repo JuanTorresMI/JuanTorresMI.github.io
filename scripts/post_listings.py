@@ -7,8 +7,8 @@
   python3 scripts/post_listings.py test DIR    draws the next Reel with its song's preview into DIR, and publishes nothing
   python3 scripts/post_listings.py stats       each post's views, reach, likes, saves, shares and watch time, and the account's 28 days
 
-Every post is a Reel (scripts/make_reel.py), since only Reels can carry a song, with a trending corrido or other Latin song
-from Instagram's own music, attached by Instagram. A Reel is drawn in the run that posts it and sits in R2 just long
+Every post is a Reel (scripts/make_reel.py), since only Reels can carry a song, with a hype song from Instagram's own
+music (PLAYLIST), attached by Instagram. A Reel is drawn in the run that posts it and sits in R2 just long
 enough for Instagram to fetch it, so no video is kept. Instagram's API can't choose where a song starts: CUES holds the
 reveal until a song's good part.
 
@@ -30,14 +30,19 @@ FEED = os.path.join(ROOT, "_data", "social_feed.json")      # the /mma-cards/ pa
 COVERS = os.path.join(ROOT, "mma-cards", "reels")           # its small cover pictures; Instagram's own addresses expire
 FEED_KEEP = 12
 HOSTS = ["https://graph.instagram.com/v22.0", "https://graph.facebook.com/v22.0"]    # Instagram login's tokens, Unified login's
-# Songs: what's trending by these first, then searches. Instagram has no genre filter, so the artists and words are the filter.
-CORRIDOS = ("fuerza regida", "peso pluma", "natanael cano", "junior h", "gabito ballesteros", "tito double p", "luis r conriquez", "grupo firme", "xavi",
-            "oscar maydon", "chino pacas", "ivan cornejo", "eslabon armado", "banda ms", "carin leon", "calle 24", "grupo frontera", "los tigres del norte",
-            "los tucanes de tijuana", "gerardo ortiz", "alfredo olivas", "ariel camacho", "grupo codiciado", "legado 7", "banda el recodo", "julion alvarez",
-            "los dos carnales", "lenin ramirez", "el fantasma", "t3r elemento", "yahritza", "dannylux", "luis angel", "el komander", "calibre 50", "los plebes del rancho",
-            "marca registrada", "enigma norteno", "hector rubio", "grupo arriesgado", "edgardo nunez", "pepe aguilar", "los alegres del barranco", "los inquietos del norte")
-LATIN = ("bad bunny", "karol g", "feid", "rauw alejandro", "humbe", "bago villain", "christian nodal", "kali uchis", "anuel aa", "ozuna", "j balvin",
-         "maluma", "daddy yankee", "don omar", "wisin", "myke towers", "arcangel", "nicky jam", "becky g", "sech", "jhayco", "eladio carrion", "villa", "azabache")
+# Songs: hand-picked from what Instagram's music offers apps, which is its own royalty-free library (a search for a famous
+# artist brings back library tracks; the few real songs cleared for apps are mostly explicit). Hype hip-hop, trap and fight
+# tracks that fit a card reveal, found with `post_listings.py music "hype;trap;fight"` (Nov 3, 2026). They take turns.
+PLAYLIST = [
+    ("523966117385305", "Big Leagues (Instrumental)", "Mike Floss"), ("1004757262558654", "Highlight Reel", "ill Think in ink"),
+    ("1377485917727304", "Fighter", "LAVLO"), ("1068592065620532", "Legendary", "LAVLO"), ("1583825469924235", "Masterpiece", "LAVLO"),
+    ("391037959442354", "Fight Club", "Mike Floss"), ("1108285910189784", "Knockout", "Adam Griffith"), ("5614637338649821", "Top 5", "Mike Floss"),
+    ("266326379158916", "No Demons (Instrumental)", "Mike Floss"), ("748675236641409", "Crown (Instrumental)", "Mike Floss"),
+    ("3550166498639096", "New Benz (Instrumental)", "Maxsickboy"), ("4319336215018695", "This What We Doin (Instrumental)", "Sbvce"),
+    ("1130375707604333", "No Limit", "Maxsickboy"), ("1744948239772680", "Greatness", "Jordan Olmos"), ("1147923547185188", "Champions", "stereogully"),
+    ("774667642107625", "Battle", "Sam Marshall"), ("791711906519334", "Fight (Instrumental)", "Sugartapes"), ("4111362749091905", "Go (Instrumental)", "Company Money"),
+    ("1347176186322399", "Do Ma Thing", "Tony Dark Eyes"), ("1060743318649873", "Climb", "Maxsickboy"), ("1649979542404348", "Get It", "Mike Floss"),
+]
 DROP_FROM = 0.05            # a price this far under the last one is a drop
 # Recycling ("STILL AVAILABLE"): only when there's nothing new, a drop or a sale to post. A card waits 7 days after its first
 # post, then twice as long after each repeat (7, 14, 28), goes round MAX_REPEATS times at most (after that only a price drop
@@ -130,28 +135,9 @@ def songs(words=None):
         return []
 
 
-def by(song, names):
-    artist = (song.get("display_artist") or "").lower()
-    return any(n in artist for n in names)
-
-
 def pick_songs(used={}):
-    """Songs in the order they'd be used: trending corridos, the corrido artists' other songs, then Latin, longest unused first. Clean titles."""
-    now = songs()
-    found = [s for s in now if by(s, CORRIDOS)]
-    # Instagram's search is loose (a genre's name brings back anything): ask for each artist, and keep only theirs.
-    for name in CORRIDOS:
-        found += [s for s in songs(name) if by(s, CORRIDOS)]
-    found += [s for s in now if by(s, LATIN)]
-    for name in LATIN:
-        found += [s for s in songs(name) if by(s, LATIN)]
-    seen, out = set(), []
-    for s in found:
-        key = s.get("audio_id")
-        if key and key not in seen and (s.get("duration_in_ms") or 0) >= 20000 and not UNCLEAN.search(f"{s.get('title')} {s.get('display_artist')}"):
-            seen.add(key)
-            out.append(s)
-    # Least recently used first (never used before all), keeping that order among equals: the songs take turns.
+    """The playlist in the order it'd be used: least recently used first (never used before all), the list's order among equals."""
+    out = [{"audio_id": i, "title": t, "display_artist": a} for i, t, a in PLAYLIST]
     return sorted(out, key=lambda s: used.get(s["audio_id"], ""))
 
 
@@ -168,7 +154,7 @@ def trending():
     picks = pick_songs()
     print(f"{len(picks)} songs to choose from:")
     for s in picks[:25]:
-        print(f"  {s.get('title')} - {s.get('display_artist')} ({(s.get('duration_in_ms') or 0) // 1000}s)")
+        print(f"  {s.get('title')} - {s.get('display_artist')}")
 
 
 def lead_name(name):
@@ -390,7 +376,15 @@ def post(card=None, old=None):
         fields = {"media_type": "REELS", "video_url": reel_url, "caption": text, "share_to_feed": "true", "thumb_offset": str(int((cue + 11) * 1000))}
         if song:
             fields["audio_configuration"] = json.dumps({"audio_id": song["audio_id"], "audio_volume": 80, "video_volume": 100})
-        made = graph(host, f"{user}/media", **fields)["id"]
+        try:
+            made = graph(host, f"{user}/media", **fields)["id"]
+        except urllib.error.HTTPError as e:
+            if not song:
+                raise
+            # A song Instagram no longer offers apps: the post goes out with the card's own sounds, and the song is named in the log.
+            print(f"Instagram refused the song {song['title']} ({e.code}): {json.load(e).get('error', {}).get('message', '')[:160]}. Posting without it.")
+            fields.pop("audio_configuration"); song = None
+            made = graph(host, f"{user}/media", **fields)["id"]
     for _ in range(60):
         state = graph(host, made, fields="status_code").get("status_code")
         if state == "FINISHED":

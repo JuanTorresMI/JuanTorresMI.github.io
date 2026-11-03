@@ -230,7 +230,9 @@ that grows without a trim and a CSV that keeps it.
   prints each Reel's likes and comments (views, reach and saves need the token's `instagram_manage_insights` permission). Never edit those files by hand. The film
   is drawn in the run and parked in R2 only while Instagram fetches it (the showcase's `/reel/`, secret `SOCIAL_KEY`): a direct
   upload loses the song. It has card sounds (`scripts/sfx`, CC0) and a song Instagram attaches, in turn by `_data/social_songs.json`:
-  corrido artists first (Instagram's search is loose and few are cleared for apps), then Latin. Instagram can't choose where a song
+  `PLAYLIST`, hype hip-hop, trap and fight tracks picked by hand (Juan dropped the corridos on Nov 3, 2026). Apps only get Instagram's
+  royalty-free library, never famous artists' songs; the workflow's `music` switch lists what a search finds, and a refused song posts
+  without music. Instagram can't choose where a song
   starts: `CUES` holds the reveal until its good part. The film's words stay out of the top 14% and bottom 35%, and it loops: the
   card leaves at the end and rises in at the start. The latest 12 are on `/mma-cards/` (`_data/social_feed.json`, `mma-cards/reels/`,
   a local copy of each cover, since Instagram's addresses expire). Only listed cards ever go out: never live deals. The portfolio
