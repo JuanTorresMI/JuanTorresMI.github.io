@@ -49,6 +49,8 @@ jobs:
     # A Reel takes a few minutes. A hang must not hold the slot (runs queue behind this one, and later ones get cancelled) for
     # GitHub's default six hours, as one did on Nov 2.
     timeout-minutes: 20
+    env:
+      PYTHONUNBUFFERED: "1"     # every line reaches the log as it happens, even from a run that's stopped
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

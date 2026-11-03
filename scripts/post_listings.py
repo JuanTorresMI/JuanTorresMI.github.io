@@ -310,7 +310,9 @@ def test(folder, card=None, old=None):
         return print(f"Nothing to post: {why}.")
     picks = pick_songs(used_songs())
     song = picks[0] if picks else None
+    print(f"Card {c['id']} ({why}): getting photos")
     front, back = photos_of(c, folder)
+    print("Drawing the Reel"); t0 = time.time()
     make_reel.make(c, front, back, os.path.join(folder, "next-reel.mp4"), cue=CUES.get((song or {}).get("audio_id"), 0.0), stills=os.path.join(folder, "frames.png"),
                    was=was, words=WORDS.get(why))
     text = caption(c, was, why == "sold")
@@ -366,8 +368,11 @@ def post(card=None, old=None):
     slug = f"card-{c['id']}-{int(time.time())}"
     with tempfile.TemporaryDirectory() as tmp:
         film = os.path.join(tmp, "reel.mp4")
+        print(f"Card {c['id']} ({why}), song {(song or {}).get('title')}: getting photos")
         front, back = photos_of(c, tmp)
+        print("Drawing the Reel"); t0 = time.time()
         make_reel.make(c, front, back, film, cue=cue, was=was, words=WORDS.get(why))
+        print(f"Drawn in {time.time() - t0:.0f}s; parking it for Instagram")
         # The cover is the finished frame: the card, its price and the shop.
         # A song only stays on when Instagram fetches the film from a link (a direct upload lost it), so it sits in R2 until then.
         reel_url = f"{showcase_url()}/reel/{slug}.mp4"
@@ -385,6 +390,7 @@ def post(card=None, old=None):
             print(f"Instagram refused the song {song['title']} ({e.code}): {json.load(e).get('error', {}).get('message', '')[:160]}. Posting without it.")
             fields.pop("audio_configuration"); song = None
             made = graph(host, f"{user}/media", **fields)["id"]
+    print("Instagram is processing it")
     for _ in range(60):
         state = graph(host, made, fields="status_code").get("status_code")
         if state == "FINISHED":
@@ -482,6 +488,10 @@ def stats():
             f.write(text + "\n")
 
 if __name__ == "__main__":
+    # A run that hangs (one did, twice, somewhere in drawing or posting) prints where every thread is stuck after 8 minutes and
+    # ends, rather than holding the posting slot until the workflow's 20-minute limit kills it with nothing to show.
+    import faulthandler
+    faulthandler.dump_traceback_later(480, exit=True)
     what = sys.argv[1] if len(sys.argv) > 1 else "preview"
     if what == "post":
         post(*sys.argv[2:4])
