@@ -39,8 +39,13 @@ CORRIDOS = ("fuerza regida", "peso pluma", "natanael cano", "junior h", "gabito 
 LATIN = ("bad bunny", "karol g", "feid", "rauw alejandro", "humbe", "bago villain", "christian nodal", "kali uchis", "anuel aa", "ozuna", "j balvin",
          "maluma", "daddy yankee", "don omar", "wisin", "myke towers", "arcangel", "nicky jam", "becky g", "sech", "jhayco", "eladio carrion", "villa", "azabache")
 DROP_FROM = 0.05            # a price this far under the last one is a drop
-REPEAT_DAYS = 7             # how long before a card still for sale can go out again ("STILL AVAILABLE")
-REPEAT_GAP_H = 20           # and how far apart those repeats are
+# Recycling ("STILL AVAILABLE"): only when there's nothing new, a drop or a sale to post. A card waits 7 days after its first
+# post, then twice as long after each repeat (7, 14, 28), goes round MAX_REPEATS times at most (after that only a price drop
+# brings it back), and the account repeats at most RECYCLE_WEEK cards a week and never within REPEAT_GAP_H of any post.
+REPEAT_DAYS = 7
+MAX_REPEATS = 3
+RECYCLE_WEEK = 3
+REPEAT_GAP_H = 20
 MIN_POST = 10               # dollars: cheaper cards aren't posted (a drop counts when the card was at least this before it)
 WORDS = {"again": "STILL AVAILABLE", "sold": "SOLD"}     # the opening words of a repeat and of a sale, in place of the card's rarity
 CUES = {}                   # audio_id: seconds into the song that its good part starts (scripts/make_reel.py holds the reveal for them)
@@ -252,10 +257,20 @@ def next_up(cards, posted, prices, sold=()):
     # Nothing new: keep the page alive with what's still for sale, oldest post first, without repeating too often.
     if posted and min(hours_since(when_posted(v)) for v in posted.values()) < REPEAT_GAP_H:
         return None, None, "resting"
-    again = [c for c in ready if hours_since(when_posted(posted[str(c["id"])])) >= REPEAT_DAYS * 24]
+    week = [v for v in posted.values() if isinstance(v, dict) and v.get("kind") == "again" and hours_since(when_posted(v)) < 7 * 24]
+    if len(week) >= RECYCLE_WEEK:
+        return None, None, f"{len(week)} repeats this week already"
+    again = [c for c in ready if repeats(posted[str(c["id"])]) < MAX_REPEATS
+             and hours_since(when_posted(posted[str(c["id"])])) >= REPEAT_DAYS * 24 * 2 ** repeats(posted[str(c["id"])])]
     if again:
-        return min(again, key=lambda c: when_posted(posted[str(c["id"])])), None, "again"
+        # The dearest of the ones due, so the best cards come round first; the longest-waiting breaks a tie.
+        return max(again, key=lambda c: (worth(c), hours_since(when_posted(posted[str(c["id"])])))), None, "again"
     return None, None, "out of cards"
+
+
+def repeats(v):
+    """How many times a card has gone round again since its first post (or its last price drop)."""
+    return v.get("repeats", 1 if v.get("kind") == "again" else 0) if isinstance(v, dict) else 0
 
 
 def note_prices(cards, prices):
@@ -378,8 +393,10 @@ def post(card=None, old=None):
     shelf("DELETE", reel_url)
     # When each one went out, and its id: what the search for the best time reads back.
     key = f"sold-{c['id']}" if why == "sold" else str(c["id"])     # a sale's Reel is its own entry: the card's for-sale one stays
+    # A repeat counts toward the card's limit and lengthens its next wait; a price drop starts it over.
+    times = repeats(posted.get(key)) + 1 if why == "again" else 0 if why in ("drop", "new") or was else repeats(posted.get(key))
     posted[key] = {"date": date.today().isoformat(), "at": datetime.now(timezone.utc).isoformat(timespec="minutes"), "media": media, "kind": why,
-                   "song": song and song["audio_id"], "song_name": song and f"{song.get('title')} - {song.get('display_artist')}"}
+                   "repeats": times, "song": song and song["audio_id"], "song_name": song and f"{song.get('title')} - {song.get('display_artist')}"}
     if why != "sold":
         prices[str(c["id"])] = cents_of(c)    # the drop's been told: this is the new mark
     save(POSTED, posted)
