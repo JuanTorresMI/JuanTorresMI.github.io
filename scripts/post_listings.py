@@ -40,6 +40,7 @@ LATIN = ("bad bunny", "karol g", "feid", "rauw alejandro", "humbe", "bago villai
          "maluma", "daddy yankee", "don omar", "wisin", "myke towers", "arcangel", "nicky jam", "becky g", "sech", "jhayco", "eladio carrion", "villa", "azabache")
 DROP_FROM = 0.05            # a price this far under the last one is a drop
 REPEAT_DAYS = 14            # how long before a card still for sale can go out again
+MIN_POST = 10               # dollars: cheaper cards aren't posted (a drop counts when the card was at least this before it)
 REPEAT_GAP_H = 20           # and how far apart those repeats are
 CUES = {}                   # audio_id: seconds into the song that its good part starts (scripts/make_reel.py holds the reveal for them)
 UNCLEAN = re.compile(r"fuck|shit|bitch|bxtch|nigga|puta|verga|cabr[oó]n|chinga", re.I)
@@ -224,7 +225,8 @@ def feed_backfill():
 def next_up(cards, posted, prices):
     """What goes next, as (card, old price or None, why): a price drop, then the dearest new card, then an old one again."""
     ready = [c for c in cards if c.get("photo") and priced(c)]
-    drops = [c for c in ready if prices.get(str(c["id"])) and cents_of(c) <= prices[str(c["id"])] * (1 - DROP_FROM)]
+    drops = [c for c in ready if prices.get(str(c["id"])) and prices[str(c["id"])] >= MIN_POST * 100 and cents_of(c) <= prices[str(c["id"])] * (1 - DROP_FROM)]
+    ready = [c for c in ready if worth(c) >= MIN_POST]
     if drops:
         c = max(drops, key=lambda x: prices[str(x["id"])] - cents_of(x))
         return c, f"${prices[str(c['id'])] / 100:,.2f}", "drop"
