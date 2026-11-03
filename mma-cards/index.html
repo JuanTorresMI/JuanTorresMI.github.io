@@ -96,7 +96,7 @@ image_alt: "MMA Card Shop, by Juan Torres. UFC cards for sale and the eBay deal 
     <li class="mc-card">
       <a href="{{ p.url }}" rel="noopener"><img src="/mma-cards/reels/{{ p.media }}.jpg" alt="Reel of {{ p.title | escape }}" loading="lazy" width="360" height="640"></a>
       <p class="mc-name"><a href="{{ p.url }}" rel="noopener">{{ p.name | escape }}</a></p>
-      <p class="mc-tags">{% if p.drop %}<span>Price drop</span>{% endif %}</p>
+      <p class="mc-tags">{% if p.drop %}<span>Price drop</span>{% endif %}{% if p.sold %}<span>Sold</span>{% endif %}</p>
       <p class="mc-price">{{ p.price }}</p>
     </li>
     {%- endfor %}

@@ -223,8 +223,9 @@ that grows without a trim and a CSV that keeps it.
   Eastern (`refresh.js`; it has no GitHub schedule; it was four a day until Nov 3, 2026, when mostly $1 cards drew about a like each).
   `scripts/post_listings.py` reads the shop live and posts one card as a Reel (`scripts/make_reel.py`), every post, since only Reels
   can carry a song, and only cards of $10 and up (`MIN_POST`; a slot with none is skipped): a price drop of 5% or more against
-  `_data/social_prices.json` first (from $10 or more), then the dearest listed card with a photo not yet in `_data/social_posted.json`,
-  then, with nothing new, one still for sale after 14 days ("STILL AVAILABLE", once a day at most). The `stats` switch on the workflow
+  `_data/social_prices.json` first (from $10 or more), then a SOLD Reel for a card of $10 or more sold this month or last (`sold-<id>` in `_data/social_posted.json`, a thank-you
+  caption, "Sold" on the page), then the dearest listed card with a photo not yet posted, then, with nothing new, one still for sale
+  after 7 days ("STILL AVAILABLE", once a day at most). The `stats` switch on the workflow
   prints each Reel's likes and comments (views, reach and saves need the token's `instagram_manage_insights` permission). Never edit those files by hand. The film
   is drawn in the run and parked in R2 only while Instagram fetches it (the showcase's `/reel/`, secret `SOCIAL_KEY`): a direct
   upload loses the song. It has card sounds (`scripts/sfx`, CC0) and a song Instagram attaches, in turn by `_data/social_songs.json`:
