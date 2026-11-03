@@ -232,15 +232,18 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
     top_size, name_size, sub_size = fit(words, 132, 930), fit(name, 112, 930), fit(name, 86, 860)
     total = SECS + cue
     sounds = [s for s in SOUNDS if back or s[0] not in (4.6, 7.0)]
-    inputs = ["-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-"]
+    # Two passes: the frames go to a silent video, then the sounds are mixed onto it. Doing both in one ffmpeg, with the
+    # frames coming down a pipe, now and then left ffmpeg and this script waiting on each other until the run timed out.
+    silent = out + ".video.mp4"
+    inputs = ["-i", silent]
     chains = []
     for i, (at, sound, vol) in enumerate(sounds, 1):
         inputs += ["-i", os.path.join(HERE, "sfx", sound)]
         ms = int((at + cue) * 1000)
         chains.append(f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,volume={vol},adelay={ms}|{ms}[s{i}]")
     mix = ";".join(chains) + ";" + "".join(f"[s{i}]" for i in range(1, len(sounds) + 1)) + f"amix=inputs={len(sounds)}:normalize=0:duration=longest,apad,atrim=0:{total}[a]"
-    ff = subprocess.Popen([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", *inputs, "-filter_complex", mix, "-map", "0:v", "-map", "[a]", "-t", str(total),
-                           "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-preset", "medium", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", out], stdin=subprocess.PIPE)
+    ff = subprocess.Popen([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
+                           "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-preset", "medium", silent], stdin=subprocess.PIPE)
     shots = {6, 20, 80, 150, 165, 225, 262, 290, 420, 462}
     sheet = []
     for n in range(int(FPS * total)):
@@ -307,7 +310,10 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         ff.stdin.write(rgb.tobytes())
         if stills and n - int(cue * FPS) in shots: sheet.append(rgb.resize((216, 384)))
     ff.stdin.close()
-    if ff.wait(): raise RuntimeError("ffmpeg failed")
+    if ff.wait(timeout=120): raise RuntimeError("ffmpeg failed")
+    subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", *inputs, "-filter_complex", mix, "-map", "0:v", "-map", "[a]", "-t", str(total),
+                    "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", out], check=True, timeout=120)
+    os.remove(silent)
     if stills:
         strip = Image.new("RGB", (216 * len(sheet), 384), "white")
         for i, f in enumerate(sheet): strip.paste(f, (216 * i, 0))
