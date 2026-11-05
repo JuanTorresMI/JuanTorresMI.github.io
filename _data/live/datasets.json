@@ -1,9 +1,9 @@
 {
- "generated": "2026-11-04T21:22:08+00:00",
+ "generated": "2026-11-05T03:44:44+00:00",
  "rows": 806820,
  "rows_fmt": "806,820",
  "files": 33,
- "all_rows_fmt": "1,490,739",
+ "all_rows_fmt": "1,491,101",
  "all_files": 59,
  "datasets": [
   {
@@ -1458,16 +1458,16 @@
   },
   {
    "slug": "border-truck-waits",
-   "rows": 96009,
-   "rows_fmt": "96,009",
+   "rows": 96130,
+   "rows_fmt": "96,130",
    "first": "2026-09-13",
    "newest": "2026-11-04",
    "files": [
     {
      "file": "border-truck-wait-readings-2026",
      "url": "/border-waits/border-truck-wait-readings-2026.csv",
-     "rows": 25160,
-     "rows_fmt": "25,160",
+     "rows": 25293,
+     "rows_fmt": "25,293",
      "first": "2026-09-13",
      "newest": "2026-11-04",
      "columns": [
@@ -1479,14 +1479,14 @@
       "fast_lanes_open",
       "source"
      ],
-     "bytes": 963655,
+     "bytes": 968719,
      "size": "1.0 MB"
     },
     {
      "file": "border-truck-wait-times",
      "url": "/border-waits/border-truck-wait-times.csv",
-     "rows": 6131,
-     "rows_fmt": "6,131",
+     "rows": 6119,
+     "rows_fmt": "6,119",
      "first": "",
      "newest": "",
      "columns": [
@@ -1501,7 +1501,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 465600,
+     "bytes": 464726,
      "size": "0.5 MB"
     },
     {
@@ -1527,16 +1527,16 @@
   },
   {
    "slug": "border-car-pedestrian-waits",
-   "rows": 175453,
-   "rows_fmt": "175,453",
+   "rows": 175694,
+   "rows_fmt": "175,694",
    "first": "2026-09-13",
    "newest": "2026-11-04",
    "files": [
     {
      "file": "border-car-pedestrian-wait-readings-2026",
      "url": "/border-waits/border-car-pedestrian-wait-readings-2026.csv",
-     "rows": 44539,
-     "rows_fmt": "44,539",
+     "rows": 44780,
+     "rows_fmt": "44,780",
      "first": "2026-09-13",
      "newest": "2026-11-04",
      "columns": [
@@ -1554,7 +1554,7 @@
       "pedestrian_ready_lanes_open",
       "source"
      ],
-     "bytes": 2077231,
+     "bytes": 2088401,
      "size": "2.1 MB"
     },
     {
