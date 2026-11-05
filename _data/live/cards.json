@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-05T19:14:52.047Z",
+ "updated": "2026-11-05T22:19:31.425Z",
  "checked": "Nov 5, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
-  "cards": "524",
+  "cards": "523",
   "listed": "507",
   "sold": "2",
   "revenue": "$17",
@@ -1219,7 +1219,7 @@
    "serial": "",
    "rookie": false,
    "auto": false,
-   "photo": null,
+   "photo": "/mma-cards/photos/667.webp",
    "price": "$1.62",
    "listed": "Nov 5, 2026"
   },
@@ -2415,7 +2415,7 @@
    "serial": "",
    "rookie": false,
    "auto": false,
-   "photo": null,
+   "photo": "/mma-cards/photos/664.webp",
    "price": "$1.35",
    "listed": "Nov 5, 2026"
   },
@@ -2727,7 +2727,7 @@
    "serial": "",
    "rookie": false,
    "auto": false,
-   "photo": null,
+   "photo": "/mma-cards/photos/665.webp",
    "price": "$1.29",
    "listed": "Nov 5, 2026"
   },
@@ -3668,19 +3668,6 @@
    "listed": "Nov 2, 2026"
   },
   {
-   "id": 195,
-   "name": "2026 Topps Chrome UFC #193 Andre Lima, RC",
-   "player": "Andre Lima",
-   "set": "2026 Topps Chrome UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": true,
-   "auto": false,
-   "photo": "/mma-cards/photos/195.webp",
-   "price": "$0.99",
-   "listed": "Nov 3, 2026"
-  },
-  {
    "id": 420,
    "name": "2026 Topps Chrome UFC #61 Marcus Almeida, RC",
    "player": "Marcus Almeida",
@@ -3715,7 +3702,7 @@
    "serial": "",
    "rookie": false,
    "auto": false,
-   "photo": null,
+   "photo": "/mma-cards/photos/671.webp",
    "price": "$0.91",
    "listed": "Nov 5, 2026"
   },
@@ -3950,6 +3937,19 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/176.webp",
+   "price": "$0.89",
+   "listed": "Nov 3, 2026"
+  },
+  {
+   "id": 195,
+   "name": "2026 Topps Chrome UFC #193 Andre Lima, RC",
+   "player": "Andre Lima",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": true,
+   "auto": false,
+   "photo": "/mma-cards/photos/195.webp",
    "price": "$0.89",
    "listed": "Nov 3, 2026"
   },
@@ -4729,7 +4729,7 @@
    "serial": "",
    "rookie": false,
    "auto": false,
-   "photo": null,
+   "photo": "/mma-cards/photos/666.webp",
    "price": "$0.65",
    "listed": "Nov 5, 2026"
   },
@@ -5600,7 +5600,7 @@
    "serial": "",
    "rookie": false,
    "auto": false,
-   "photo": null,
+   "photo": "/mma-cards/photos/670.webp",
    "price": "$0.58",
    "listed": "Nov 5, 2026"
   },
@@ -6562,7 +6562,7 @@
    "serial": "",
    "rookie": false,
    "auto": false,
-   "photo": null,
+   "photo": "/mma-cards/photos/668.webp",
    "price": "$0.25",
    "listed": "Nov 5, 2026"
   },
@@ -6575,7 +6575,7 @@
    "serial": "",
    "rookie": false,
    "auto": false,
-   "photo": null,
+   "photo": "/mma-cards/photos/669.webp",
    "price": "$0.25",
    "listed": "Nov 5, 2026"
   },
@@ -6654,13 +6654,13 @@
  "scanner": {
   "calls": "3,232",
   "asks": "29,824",
-  "finds": "359",
+  "finds": "360",
   "bought": "10",
-  "under": "59%",
+  "under": "58%",
   "kinds": [
    {
     "what": "underpriced against other listings",
-    "n": "233"
+    "n": "234"
    },
    {
     "what": "under the max for its search",

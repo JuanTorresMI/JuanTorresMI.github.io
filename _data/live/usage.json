@@ -1,67 +1,67 @@
 {
  "ready": true,
- "generated": "2026-11-05T18:47:11.362Z",
- "checked": "Nov 5, 1 PM (Michigan time)",
+ "generated": "2026-11-05T21:47:11.362Z",
+ "checked": "Nov 5, 4 PM (Michigan time)",
  "today": "Nov 5, 2026",
  "meters": [
   {
    "what": "Worker requests",
-   "used": "3,099",
-   "left": "96,901",
+   "used": "4,714",
+   "left": "95,286",
    "limit": "100,000 a day",
-   "pct": "3.1%",
-   "w": 3.1
+   "pct": "4.7%",
+   "w": 4.7
   },
   {
    "what": "Database rows read",
-   "used": "2,523,052",
-   "left": "2,476,948",
+   "used": "3,722,970",
+   "left": "1,277,030",
    "limit": "5,000,000 a day",
-   "pct": "50%",
-   "w": 50.5
+   "pct": "74%",
+   "w": 74.5
   },
   {
    "what": "Database rows written",
-   "used": "38,745",
-   "left": "61,255",
+   "used": "50,375",
+   "left": "49,625",
    "limit": "100,000 a day",
-   "pct": "39%",
-   "w": 38.7
+   "pct": "50%",
+   "w": 50.4
   },
   {
    "what": "Database storage, as Cloudflare counts it",
-   "used": "22 MB",
+   "used": "23 MB",
    "left": "5.0 GB",
    "limit": "5.0 GB",
-   "pct": "0.4%",
-   "w": 0.4
+   "pct": "0.5%",
+   "w": 0.5
   },
   {
    "what": "CPU, a typical run (median)",
-   "used": "5.1 ms",
-   "left": "4.9 ms to spare",
+   "used": "5.9 ms",
+   "left": "4.1 ms to spare",
    "limit": "10 ms a run",
-   "pct": "51%",
-   "w": 50.7
+   "pct": "59%",
+   "w": 59.1
   },
   {
    "what": "CPU, the slowest 1% of runs",
-   "used": "150 ms",
-   "left": "over by 140 ms",
+   "used": "153 ms",
+   "left": "over by 143 ms",
    "limit": "10 ms a run",
-   "pct": "1504%",
+   "pct": "1526%",
    "w": 100
   }
  ],
  "days": [
   {
    "day": "Thu, Nov 5",
-   "requests": "3,099",
-   "errors": "3",
-   "rows_read": "2,523,052",
-   "rows_written": "38,745",
-   "cpu50": "5.1 ms",
-   "cpu": "150 ms"
+   "requests": "4,714",
+   "errors": "13",
+   "rows_read": "3,722,970",
+   "rows_written": "50,375",
+   "cpu50": "5.9 ms",
+   "cpu": "153 ms"
   },
   {
    "day": "Wed, Nov 4",
@@ -299,14 +299,14 @@
   }
  ],
  "stamp": {
-  "requests": "3,099",
-  "requests_left": "96,901",
-  "rows_read": "2,523,052",
-  "rows_written": "38,745",
-  "size": "22 MB",
-  "cpu": "5.1 ms"
+  "requests": "4,714",
+  "requests_left": "95,286",
+  "rows_read": "3,722,970",
+  "rows_written": "50,375",
+  "size": "23 MB",
+  "cpu": "5.9 ms"
  },
- "errors_30": "3",
+ "errors_30": "13",
  "cpu_over": true,
  "avg_requests": "1,160",
  "past_days": 26,
