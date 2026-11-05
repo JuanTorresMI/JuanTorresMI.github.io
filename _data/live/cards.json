@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-05T11:48:38.807Z",
+ "updated": "2026-11-05T19:14:52.047Z",
  "checked": "Nov 5, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
-  "cards": "512",
-  "listed": "496",
+  "cards": "524",
+  "listed": "507",
   "sold": "2",
   "revenue": "$17",
   "profit": null,
@@ -78,6 +78,19 @@
    "photo": "/mma-cards/photos/113.webp",
    "price": "$45.00",
    "listed": "Oct 31, 2026"
+  },
+  {
+   "id": 568,
+   "name": "2026 Stadium Club UFC - Triumvirates Black Islam Makhachev #TV-1",
+   "player": "Islam Makhachev",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/568.webp",
+   "price": "$25.00",
+   "listed": "Nov 5, 2026"
   },
   {
    "id": 103,
@@ -1196,6 +1209,19 @@
    "photo": "/mma-cards/photos/461.webp",
    "price": "$1.62",
    "listed": "Nov 4, 2026"
+  },
+  {
+   "id": 667,
+   "name": "2021 Panini Prizm UFC Brendan Allen #134",
+   "player": "",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": null,
+   "price": "$1.62",
+   "listed": "Nov 5, 2026"
   },
   {
    "id": 251,
@@ -2381,6 +2407,19 @@
    "listed": "Nov 3, 2026"
   },
   {
+   "id": 664,
+   "name": "2021 Panini Chronicles UFC Ciryl Gane #28",
+   "player": "Ciryl Gane",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": null,
+   "price": "$1.35",
+   "listed": "Nov 5, 2026"
+  },
+  {
    "id": 185,
    "name": "2026 Stadium Club UFC Rei Tsuruya #158",
    "player": "Rei Tsuruya",
@@ -2602,6 +2641,19 @@
    "listed": "Nov 4, 2026"
   },
   {
+   "id": 569,
+   "name": "2026 Topps Chrome UFC #18 Ciryl Gane, UFC Glove Refractor",
+   "player": "Ciryl Gane",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "UFC Glove Refractor",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/569.webp",
+   "price": "$1.30",
+   "listed": "Nov 5, 2026"
+  },
+  {
    "id": 250,
    "name": "2025 Stadium Club UFC Max Holloway #10",
    "player": "Max Holloway",
@@ -2665,6 +2717,19 @@
    "photo": "/mma-cards/photos/510.webp",
    "price": "$1.29",
    "listed": "Nov 4, 2026"
+  },
+  {
+   "id": 665,
+   "name": "2021 Panini Chronicles UFC Francis Ngannou #85",
+   "player": "",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": null,
+   "price": "$1.29",
+   "listed": "Nov 5, 2026"
   },
   {
    "id": 221,
@@ -2769,6 +2834,19 @@
    "photo": "/mma-cards/photos/519.webp",
    "price": "$1.25",
    "listed": "Nov 4, 2026"
+  },
+  {
+   "id": 570,
+   "name": "2026 Topps Chrome UFC #69 Tallison Teixeira, Refractor, RC",
+   "player": "Tallison Teixeira",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "Refractor",
+   "serial": "",
+   "rookie": true,
+   "auto": false,
+   "photo": "/mma-cards/photos/570.webp",
+   "price": "$1.25",
+   "listed": "Nov 5, 2026"
   },
   {
    "id": 434,
@@ -3627,6 +3705,19 @@
    "photo": "/mma-cards/photos/506.webp",
    "price": "$0.94",
    "listed": "Nov 4, 2026"
+  },
+  {
+   "id": 671,
+   "name": "2021 Panini Chronicles UFC Amanda Nunes #7",
+   "player": "Amanda Nunes",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": null,
+   "price": "$0.91",
+   "listed": "Nov 5, 2026"
   },
   {
    "id": 239,
@@ -4630,6 +4721,19 @@
    "listed": "Nov 3, 2026"
   },
   {
+   "id": 666,
+   "name": "2022 Donruss Optic UFC Khamzat Chimaev #72",
+   "player": "Khamzat Chimaev",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": null,
+   "price": "$0.65",
+   "listed": "Nov 5, 2026"
+  },
+  {
    "id": 219,
    "name": "2025 Stadium Club UFC Gilbert Burns #147",
    "player": "Gilbert Burns",
@@ -5486,6 +5590,19 @@
    "photo": "/mma-cards/photos/563.webp",
    "price": "$0.59",
    "listed": "Nov 3, 2026"
+  },
+  {
+   "id": 670,
+   "name": "2021 Panini Chronicles UFC Jorge Masvidal #31",
+   "player": "",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": null,
+   "price": "$0.58",
+   "listed": "Nov 5, 2026"
   },
   {
    "id": 19,
@@ -6437,6 +6554,32 @@
    "listed": "Nov 3, 2026"
   },
   {
+   "id": 668,
+   "name": "2021 Panini Prizm UFC Marion Reneau #133",
+   "player": "",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": null,
+   "price": "$0.25",
+   "listed": "Nov 5, 2026"
+  },
+  {
+   "id": 669,
+   "name": "2021 Panini Chronicles UFC Zhang Weili #10",
+   "player": "Zhang Weili",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": null,
+   "price": "$0.25",
+   "listed": "Nov 5, 2026"
+  },
+  {
    "id": 108,
    "name": "#25 Khabib Nurmagomedov 2019 Topps Chrome UFC - Refractor",
    "player": "Khabib Nurmagomedov",
@@ -6510,18 +6653,18 @@
  ],
  "scanner": {
   "calls": "3,232",
-  "asks": "26,116",
-  "finds": "353",
-  "bought": "9",
+  "asks": "29,824",
+  "finds": "359",
+  "bought": "10",
   "under": "59%",
   "kinds": [
    {
     "what": "underpriced against other listings",
-    "n": "228"
+    "n": "233"
    },
    {
     "what": "under the max for its search",
-    "n": "74"
+    "n": "75"
    },
    {
     "what": "a lot cheap per card",
