@@ -1,32 +1,32 @@
 {
  "ready": true,
- "generated": "2026-11-06T11:47:11.362Z",
- "checked": "Nov 6, 6 AM (Michigan time)",
+ "generated": "2026-11-06T15:47:11.362Z",
+ "checked": "Nov 6, 10 AM (Michigan time)",
  "today": "Nov 6, 2026",
  "meters": [
   {
    "what": "Worker requests",
-   "used": "503",
-   "left": "99,497",
+   "used": "844",
+   "left": "99,156",
    "limit": "100,000 a day",
-   "pct": "0.5%",
-   "w": 0.5
+   "pct": "0.8%",
+   "w": 0.8
   },
   {
    "what": "Database rows read",
-   "used": "418,861",
-   "left": "4,581,139",
+   "used": "582,236",
+   "left": "4,417,764",
    "limit": "5,000,000 a day",
-   "pct": "8.4%",
-   "w": 8.4
+   "pct": "12%",
+   "w": 11.6
   },
   {
    "what": "Database rows written",
-   "used": "17,167",
-   "left": "82,833",
+   "used": "21,643",
+   "left": "78,357",
    "limit": "100,000 a day",
-   "pct": "17%",
-   "w": 17.2
+   "pct": "22%",
+   "w": 21.6
   },
   {
    "what": "Database storage, as Cloudflare counts it",
@@ -38,30 +38,30 @@
   },
   {
    "what": "CPU, a typical run (median)",
-   "used": "3.9 ms",
-   "left": "6.1 ms to spare",
+   "used": "4.6 ms",
+   "left": "5.4 ms to spare",
    "limit": "10 ms a run",
-   "pct": "39%",
-   "w": 38.8
+   "pct": "46%",
+   "w": 45.8
   },
   {
    "what": "CPU, the slowest 1% of runs",
-   "used": "175 ms",
-   "left": "over by 165 ms",
+   "used": "180 ms",
+   "left": "over by 170 ms",
    "limit": "10 ms a run",
-   "pct": "1755%",
+   "pct": "1799%",
    "w": 100
   }
  ],
  "days": [
   {
    "day": "Fri, Nov 6",
-   "requests": "503",
+   "requests": "844",
    "errors": "0",
-   "rows_read": "418,861",
-   "rows_written": "17,167",
-   "cpu50": "3.9 ms",
-   "cpu": "175 ms"
+   "rows_read": "582,236",
+   "rows_written": "21,643",
+   "cpu50": "4.6 ms",
+   "cpu": "180 ms"
   },
   {
    "day": "Thu, Nov 5",
@@ -299,12 +299,12 @@
   }
  ],
  "stamp": {
-  "requests": "503",
-  "requests_left": "99,497",
-  "rows_read": "418,861",
-  "rows_written": "17,167",
+  "requests": "844",
+  "requests_left": "99,156",
+  "rows_read": "582,236",
+  "rows_written": "21,643",
   "size": "24 MB",
-  "cpu": "3.9 ms"
+  "cpu": "4.6 ms"
  },
  "errors_30": "13",
  "cpu_over": true,
