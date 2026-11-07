@@ -241,7 +241,7 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         inputs += ["-i", os.path.join(HERE, "sfx", sound)]
         ms = int((at + cue) * 1000)
         chains.append(f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,volume={vol},adelay={ms}|{ms}[s{i}]")
-    mix = ";".join(chains) + ";" + "".join(f"[s{i}]" for i in range(1, len(sounds) + 1)) + f"amix=inputs={len(sounds)}:normalize=0:duration=longest,apad,atrim=0:{total}[a]"
+    mix = ";".join(chains) + ";" + "".join(f"[s{i}]" for i in range(1, len(sounds) + 1)) + f"amix=inputs={len(sounds)}:normalize=0:duration=longest,apad=whole_dur={total},atrim=0:{total}[a]"
     ff = subprocess.Popen([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
                            "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-preset", "medium", silent], stdin=subprocess.PIPE)
     shots = {6, 20, 80, 150, 165, 225, 262, 290, 420, 462}
@@ -311,9 +311,20 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         if stills and n - int(cue * FPS) in shots: sheet.append(rgb.resize((216, 384)))
     ff.stdin.close()
     if ff.wait(timeout=120): raise RuntimeError("ffmpeg failed")
-    subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", *inputs, "-filter_complex", mix, "-map", "0:v", "-map", "[a]", "-t", str(total),
-                    "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", out], check=True, timeout=120)
-    os.remove(silent)
+    # The sounds, with stdin shut (ffmpeg reads it for keys and once sat 2 minutes on it, Nov 7) and a padding that ends
+    # by itself. Tried twice; if both fail the Reel goes out without its card sounds (Instagram still adds the song).
+    for tries in (1, 2):
+        try:
+            subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), "-nostdin", "-y", "-loglevel", "error", *inputs, "-filter_complex", mix, "-map", "0:v", "-map", "[a]",
+                            "-t", str(total), "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", out],
+                           check=True, timeout=60, stdin=subprocess.DEVNULL)
+            break
+        except (subprocess.TimeoutExpired, subprocess.CalledProcessError) as e:
+            print(f"Mixing the sounds failed ({type(e).__name__}), try {tries} of 2", flush=True)
+            if tries == 2:
+                print("Posting it without the card sounds", flush=True)
+                os.replace(silent, out)
+    if os.path.exists(silent): os.remove(silent)
     if stills:
         strip = Image.new("RGB", (216 * len(sheet), 384), "white")
         for i, f in enumerate(sheet): strip.paste(f, (216 * i, 0))
