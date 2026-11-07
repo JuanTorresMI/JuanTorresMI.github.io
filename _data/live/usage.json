@@ -1,36 +1,36 @@
 {
  "ready": true,
- "generated": "2026-11-07T11:47:11.362Z",
- "checked": "Nov 7, 6 AM (Michigan time)",
+ "generated": "2026-11-07T17:47:11.362Z",
+ "checked": "Nov 7, 12 PM (Michigan time)",
  "today": "Nov 7, 2026",
  "meters": [
   {
    "what": "Worker requests",
-   "used": "318",
-   "left": "99,682",
+   "used": "479",
+   "left": "99,521",
    "limit": "100,000 a day",
-   "pct": "0.3%",
-   "w": 0.3
+   "pct": "0.5%",
+   "w": 0.5
   },
   {
    "what": "Database rows read",
-   "used": "407,860",
-   "left": "4,592,140",
+   "used": "615,011",
+   "left": "4,384,989",
    "limit": "5,000,000 a day",
-   "pct": "8.2%",
-   "w": 8.2
+   "pct": "12%",
+   "w": 12.3
   },
   {
    "what": "Database rows written",
-   "used": "16,159",
-   "left": "83,841",
+   "used": "23,522",
+   "left": "76,478",
    "limit": "100,000 a day",
-   "pct": "16%",
-   "w": 16.2
+   "pct": "24%",
+   "w": 23.5
   },
   {
    "what": "Database storage, as Cloudflare counts it",
-   "used": "25 MB",
+   "used": "26 MB",
    "left": "5.0 GB",
    "limit": "5.0 GB",
    "pct": "0.5%",
@@ -38,11 +38,11 @@
   },
   {
    "what": "CPU, a typical run (median)",
-   "used": "3.5 ms",
-   "left": "6.5 ms to spare",
+   "used": "4.1 ms",
+   "left": "5.9 ms to spare",
    "limit": "10 ms a run",
-   "pct": "35%",
-   "w": 34.9
+   "pct": "41%",
+   "w": 41.4
   },
   {
    "what": "CPU, the slowest 1% of runs",
@@ -56,11 +56,11 @@
  "days": [
   {
    "day": "Sat, Nov 7",
-   "requests": "318",
+   "requests": "479",
    "errors": "0",
-   "rows_read": "407,860",
-   "rows_written": "16,159",
-   "cpu50": "3.5 ms",
+   "rows_read": "615,011",
+   "rows_written": "23,522",
+   "cpu50": "4.1 ms",
    "cpu": "174 ms"
   },
   {
@@ -299,12 +299,12 @@
   }
  ],
  "stamp": {
-  "requests": "318",
-  "requests_left": "99,682",
-  "rows_read": "407,860",
-  "rows_written": "16,159",
-  "size": "25 MB",
-  "cpu": "3.5 ms"
+  "requests": "479",
+  "requests_left": "99,521",
+  "rows_read": "615,011",
+  "rows_written": "23,522",
+  "size": "26 MB",
+  "cpu": "4.1 ms"
  },
  "errors_30": "13",
  "cpu_over": true,

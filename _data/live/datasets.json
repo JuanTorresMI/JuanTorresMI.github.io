@@ -1,9 +1,9 @@
 {
- "generated": "2026-11-07T11:57:20+00:00",
+ "generated": "2026-11-07T18:20:39+00:00",
  "rows": 807730,
  "rows_fmt": "807,730",
  "files": 33,
- "all_rows_fmt": "1,496,260",
+ "all_rows_fmt": "1,496,792",
  "all_files": 59,
  "datasets": [
   {
@@ -1458,16 +1458,16 @@
   },
   {
    "slug": "border-truck-waits",
-   "rows": 97486,
-   "rows_fmt": "97,486",
+   "rows": 97644,
+   "rows_fmt": "97,644",
    "first": "2026-09-13",
    "newest": "2026-11-07",
    "files": [
     {
      "file": "border-truck-wait-readings-2026",
      "url": "/border-waits/border-truck-wait-readings-2026.csv",
-     "rows": 26666,
-     "rows_fmt": "26,666",
+     "rows": 26817,
+     "rows_fmt": "26,817",
      "first": "2026-09-13",
      "newest": "2026-11-07",
      "columns": [
@@ -1479,14 +1479,14 @@
       "fast_lanes_open",
       "source"
      ],
-     "bytes": 1020595,
+     "bytes": 1026284,
      "size": "1.0 MB"
     },
     {
      "file": "border-truck-wait-times",
      "url": "/border-waits/border-truck-wait-times.csv",
-     "rows": 6102,
-     "rows_fmt": "6,102",
+     "rows": 6109,
+     "rows_fmt": "6,109",
      "first": "",
      "newest": "",
      "columns": [
@@ -1501,7 +1501,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 463598,
+     "bytes": 464184,
      "size": "0.5 MB"
     },
     {
@@ -1527,16 +1527,16 @@
   },
   {
    "slug": "border-car-pedestrian-waits",
-   "rows": 178241,
-   "rows_fmt": "178,241",
+   "rows": 178615,
+   "rows_fmt": "178,615",
    "first": "2026-09-13",
    "newest": "2026-11-07",
    "files": [
     {
      "file": "border-car-pedestrian-wait-readings-2026",
      "url": "/border-waits/border-car-pedestrian-wait-readings-2026.csv",
-     "rows": 47336,
-     "rows_fmt": "47,336",
+     "rows": 47687,
+     "rows_fmt": "47,687",
      "first": "2026-09-13",
      "newest": "2026-11-07",
      "columns": [
@@ -1554,14 +1554,14 @@
       "pedestrian_ready_lanes_open",
       "source"
      ],
-     "bytes": 2205378,
+     "bytes": 2221603,
      "size": "2.2 MB"
     },
     {
      "file": "border-car-pedestrian-wait-times",
      "url": "/border-waits/border-car-pedestrian-wait-times.csv",
-     "rows": 19090,
-     "rows_fmt": "19,090",
+     "rows": 19113,
+     "rows_fmt": "19,113",
      "first": "",
      "newest": "",
      "columns": [
@@ -1577,7 +1577,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 1551956,
+     "bytes": 1553820,
      "size": "1.6 MB"
     },
     {
