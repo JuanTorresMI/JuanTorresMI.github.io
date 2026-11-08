@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Cards from the MMA card shop to Instagram as Reels: the card front and back, its name, price, a few hashtags and a song.
 
-  python3 scripts/post_listings.py post        posts the next card: a price drop, else the dearest new card, else an old one again
+  python3 scripts/post_listings.py post        posts the next card: a price drop, a sale, a set's collage, the dearest new card, an old one again
+  python3 scripts/post_listings.py post "set:2025 Topps Chrome"    posts that set's collage now
   python3 scripts/post_listings.py preview     prints every card's caption
   python3 scripts/post_listings.py check       signs in, prints the account's name (never the token) and the songs it would use
   python3 scripts/post_listings.py test DIR    draws the next Reel with its song's preview into DIR, and publishes nothing
   python3 scripts/post_listings.py stats       each post's views, reach, likes, saves, shares and watch time, and the account's 28 days
 
-Every post is a Reel (scripts/make_reel.py), since only Reels can carry a song, with a hype song from Instagram's own
+Every post is a Reel (scripts/make_reel.py) in one of its looks (THEMES, in turn), and goes to the Facebook Page too
+(to_facebook), since Instagram's own cross-posting skips posts made through the API. Only Reels can carry a song, with a hype song from Instagram's own
 music (PLAYLIST), attached by Instagram. A Reel is drawn in the run that posts it and sits in R2 just long
 enough for Instagram to fetch it, so no video is kept. Instagram's API can't choose where a song starts: CUES holds the
 reveal until a song's good part.
@@ -53,6 +55,13 @@ RECYCLE_WEEK = 3
 REPEAT_GAP_H = 20
 MIN_POST = 10               # dollars: cheaper cards aren't posted (a drop counts when the card was at least this before it)
 WORDS = {"again": "STILL AVAILABLE", "sold": "SOLD"}     # the opening words of a repeat and of a sale, in place of the card's rarity
+# Set collages (Juan, Nov 8, 2026: "compile posts ... all of the Topps Chrome 2025 UFC set ... a collage"): a set with SET_MIN
+# or more cards for sale (with photos) gets one Reel of them together, the dearest first, 12 at most. One collage every
+# SET_EVERY_H at most, and the same set again after SET_AGAIN_DAYS. Every price counts here: a collage is where the cheaper
+# cards get seen. A collage goes ahead of a new card's own post; a price drop or a sale still comes first.
+SET_MIN = 4
+SET_EVERY_H = 72
+SET_AGAIN_DAYS = 21
 CUES = {}                   # audio_id: seconds into the song that its good part starts (scripts/make_reel.py holds the reveal for them)
 UNCLEAN = re.compile(r"fuck|shit|bitch|bxtch|nigga|puta|verga|cabr[oó]n|chinga", re.I)
 PRODUCTS = [("stadium club", "StadiumClub"), ("chrome", "ToppsChrome"), ("prizm", "PaniniPrizm"), ("select", "PaniniSelect"), ("knockout", "ToppsKnockout"),
@@ -96,6 +105,16 @@ def caption(c, was=None, sold=False):
     return f"{name}\n{price} · shop link in bio\n\n{' '.join(tags[:5])}"
 
 
+def caption_set(g):
+    """A collage's caption: the set, how many, the dearest few with their prices, five hashtags at most."""
+    low = g["name"].lower()
+    tags = ["#UFC", "#UFCCards"] + [f"#{t}" for p, t in PRODUCTS if p in low][:1] + ["#MMACards", "#TradingCards"]
+    names = [f"{c.get('player') or c['name']} {c['price'].replace('.00', '')}" for c in g["cards"][:5]]
+    more = g["count"] - len(names)
+    return (f"{g['name']}: {g['count']} cards for sale\n" + " · ".join(names) + (f" and {more} more" if more > 0 else "") +
+            "\nShop link in bio\n\n" + " ".join(tags[:5]))
+
+
 def showcase_url():
     with open(os.path.join(ROOT, "_config.yml"), encoding="utf-8") as f:
         return os.environ.get("CARDS_URL") or re.search(r'^cards_url:\s*"([^"]+)"', f.read(), re.M).group(1)
@@ -119,6 +138,8 @@ def check():
     print(f"Signed in as {name} through {host.split('/')[2]}" if host else "The token didn't work on either host.")
     if not host:
         sys.exit(1)
+    page, _, why = facebook_page()
+    print(f"Facebook: posting to {why} ({page})" if page else f"Facebook: not posting, {why}")
     trending()
 
 
@@ -216,8 +237,9 @@ def feed_add(host, media, c, kind):
     pic.save(os.path.join(COVERS, f"{media}.jpg"), "JPEG", quality=82, optimize=True)
     name = c.get("player") or c["name"]
     rest = [p for p in load(FEED, []) if p["media"] != media]
-    feed = [{"media": media, "url": info["permalink"], "name": name, "title": c["name"], "price": (c.get("price") or "").replace(".00", ""), "drop": kind == "drop",
-             "sold": kind == "sold"}, *rest]
+    price = f"{c['count']} cards" if kind == "set" else (c.get("price") or "").replace(".00", "")
+    feed = [{"media": media, "url": info["permalink"], "name": name, "title": c["name"], "price": price, "drop": kind == "drop",
+             "sold": kind == "sold", "set": kind == "set"}, *rest]
     save(FEED, feed[:FEED_KEEP])
     keep = {f"{p['media']}.jpg" for p in feed[:FEED_KEEP]}
     for f in os.listdir(COVERS):
@@ -234,6 +256,37 @@ def feed_backfill():
             feed_add(host, v["media"], cards[k], v.get("kind"))
 
 
+def set_of(c):
+    """The card's set, year and product ("2025 Topps Chrome UFC"): the shop's, else read from the start of its name."""
+    name = c.get("set") or ""
+    if not name:
+        m = re.match(r"((?:19|20)\d\d) (.+?) UFC\b", c.get("name") or "")
+        name = f"{m.group(1)} {m.group(2)} UFC" if m else ""
+    return re.sub(r"\bTopps Stadium Club\b", "Stadium Club", re.sub(r"\s+", " ", name)).strip()
+
+
+def set_key(name):
+    return "set-" + re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+
+
+def collage(name, cards):
+    """A set's collage, as one post: what next_up returns for it. The cards shown are the dearest 4, 6, 9 or 12."""
+    group = sorted([c for c in cards if c.get("photo") and priced(c) and set_of(c) == name], key=worth, reverse=True)
+    shown = max([k for k in (4, 6, 9, 12) if k <= len(group)], default=0)
+    return {"id": set_key(name), "name": name, "set": name, "player": "", "price": "", "cards": group[:shown], "count": len(group)}
+
+
+def sets_due(cards, posted):
+    """The sets due a collage, the one whose collage shows the most money first, or none while the last collage is under
+    SET_EVERY_H old."""
+    if any(isinstance(v, dict) and v.get("kind") == "set" and hours_since(when_posted(v)) < SET_EVERY_H for v in posted.values()):
+        return []
+    names = {set_of(c) for c in cards if c.get("photo") and priced(c)} - {""}
+    due = [collage(n, cards) for n in names]
+    due = [g for g in due if g["count"] >= SET_MIN and (g["id"] not in posted or hours_since(when_posted(posted[g["id"]])) >= SET_AGAIN_DAYS * 24)]
+    return sorted(due, key=lambda g: (sum(worth(c) for c in g["cards"]), g["count"]), reverse=True)
+
+
 def next_up(cards, posted, prices, sold=()):
     """What goes next, as (card, old price or None, why): a price drop, then a recent sale ("sold", kept in posted as
     sold-<id>), then the dearest new card, then an old one again."""
@@ -246,6 +299,9 @@ def next_up(cards, posted, prices, sold=()):
     sales = [c for c in sold if c.get("photo") and priced(c) and worth(c) >= MIN_POST and f"sold-{c['id']}" not in posted]
     if sales:
         return max(sales, key=worth), None, "sold"
+    sets = sets_due(cards, posted)
+    if sets:
+        return sets[0], None, "set"
     fresh = [c for c in ready if str(c["id"]) not in posted]
     if fresh:
         return max(fresh, key=worth), None, "new"
@@ -310,15 +366,52 @@ def test(folder, card=None, old=None):
         return print(f"Nothing to post: {why}.")
     picks = pick_songs(used_songs())
     song = picks[0] if picks else None
-    print(f"Card {c['id']} ({why}): getting photos")
-    front, back = photos_of(c, folder)
-    print("Drawing the Reel"); t0 = time.time()
-    make_reel.make(c, front, back, os.path.join(folder, "next-reel.mp4"), cue=CUES.get((song or {}).get("audio_id"), 0.0), stills=os.path.join(folder, "frames.png"),
-                   was=was, words=WORDS.get(why))
-    text = caption(c, was, why == "sold")
+    theme = pick_theme(load(POSTED, {}))
+    print(f"{c['id']} ({why}, look {theme}): getting photos")
+    draw(c, why, was, folder, os.path.join(folder, "next-reel.mp4"), CUES.get((song or {}).get("audio_id"), 0.0), theme, stills=os.path.join(folder, "frames.png"))
+    text = caption_set(c) if why == "set" else caption(c, was, why == "sold")
     with open(os.path.join(folder, "caption.txt"), "w", encoding="utf-8") as f:
         f.write(f"{text}\n\nSong: {song.get('title')} - {song.get('display_artist')}\n" if song else f"{text}\n\nNo song found.\n")
-    print(f"Card {c['id']} ({why}): {c['name']} | song: {(song or {}).get('title')} - {(song or {}).get('display_artist')} | back photo: {bool(back)}")
+    print(f"{c['id']} ({why}, look {theme}): {c['name']} | song: {(song or {}).get('title')} - {(song or {}).get('display_artist')}")
+
+
+def front_of(c, folder):
+    """Just the card's front photo, for a collage."""
+    path = os.path.join(folder, f"{c['id']}-full.webp")
+    with urllib.request.urlopen(urllib.request.Request(f"{showcase_url()}/photo/{c['id']}-full.webp", headers={"User-Agent": "juantorresmi-site"}), timeout=30) as r, open(path, "wb") as f:
+        f.write(r.read())
+    return path
+
+
+def draw(c, why, was, folder, film, cue, theme, stills=None):
+    """The Reel for a card or (why "set") a set's collage, into `film`."""
+    import make_reel
+    if why == "set":
+        items = []
+        for x in c["cards"]:
+            try:
+                items.append((x, front_of(x, folder)))
+            except urllib.error.HTTPError:
+                pass        # a photo gone since the shop's list: the collage does without it
+        items = items[:max([k for k in (4, 6, 9, 12) if k <= len(items)], default=0)]
+        if len(items) < SET_MIN:
+            raise RuntimeError(f"Only {len(items)} photos for {c['name']}")
+        sub = f"{len(items)} CARDS FOR SALE" if c["count"] == len(items) else f"{c['count']} CARDS  ·  THE TOP {len(items)}"
+        title = re.sub(r"\s*UFC$", "", c["name"]).upper()
+        return make_reel.make_set(title, f"UFC  ·  {sub}", items, film, c["count"], cue=cue, theme=theme, stills=stills)
+    front, back = photos_of(c, folder)
+    make_reel.make(c, front, back, film, cue=cue, stills=stills, was=was, words=WORDS.get(why), theme=theme)
+
+
+def pick_theme(posted):
+    """The look (make_reel.THEMES) least recently used, so they take turns. Posts from before the looks were all "glow"."""
+    import make_reel
+    last = {}
+    for v in posted.values():
+        if isinstance(v, dict):
+            t = v.get("theme") or "glow"
+            last[t] = max(last.get(t, ""), when_posted(v))
+    return min(make_reel.THEMES, key=lambda t: (last.get(t, ""), make_reel.THEMES.index(t)))
 
 
 def choose(cards, posted, prices, card=None, old=None):
@@ -326,6 +419,12 @@ def choose(cards, posted, prices, card=None, old=None):
     sold = recent_sales()
     if not card:
         return next_up(cards, posted, prices, sold)
+    if str(card).lower().startswith("set:"):
+        want = card[4:].strip().lower()
+        name = next((n for n in sorted({set_of(c) for c in cards}) if n.lower() == want), None) or \
+            next((n for n in sorted({set_of(c) for c in cards}) if want in n.lower()), None)
+        g = name and collage(name, cards)
+        return (g, None, "set") if g and len(g["cards"]) >= SET_MIN else (None, None, f"no set like {card[4:]!r} with {SET_MIN} cards with photos")
     c = next((x for x in cards if str(x["id"]) == str(card)), None)
     if c:
         return c, old or None, "asked"
@@ -356,7 +455,7 @@ def post(card=None, old=None):
     if not c:
         save(PRICES, prices)
         return print(f"Nothing to post: {why}.")
-    text = caption(c, was, why == "sold")
+    text = caption_set(c) if why == "set" else caption(c, was, why == "sold")
     if not (os.environ.get("IG_USER_ID") and os.environ.get("IG_ACCESS_TOKEN")):
         return print(f"No Instagram keys. Would post card {c['id']}:\n{text}")
     user, host = os.environ["IG_USER_ID"], account()[0]
@@ -365,13 +464,13 @@ def post(card=None, old=None):
     picks = pick_songs(used_songs())
     song = picks[0] if picks else None
     cue = CUES.get((song or {}).get("audio_id"), 0.0)
+    theme = pick_theme(posted)
     slug = f"card-{c['id']}-{int(time.time())}"
     with tempfile.TemporaryDirectory() as tmp:
         film = os.path.join(tmp, "reel.mp4")
-        print(f"Card {c['id']} ({why}), song {(song or {}).get('title')}: getting photos")
-        front, back = photos_of(c, tmp)
-        print("Drawing the Reel"); t0 = time.time()
-        make_reel.make(c, front, back, film, cue=cue, was=was, words=WORDS.get(why))
+        print(f"{c['id']} ({why}, look {theme}), song {(song or {}).get('title')}: getting photos and drawing")
+        t0 = time.time()
+        draw(c, why, was, tmp, film, cue, theme)
         print(f"Drawn in {time.time() - t0:.0f}s; parking it for Instagram")
         # The cover is the finished frame: the card, its price and the shop.
         # A song only stays on when Instagram fetches the film from a link (a direct upload lost it), so it sits in R2 until then.
@@ -399,14 +498,19 @@ def post(card=None, old=None):
             sys.exit(f"Instagram couldn't process card {c['id']}.")
         time.sleep(5)
     media = graph(host, f"{user}/media_publish", creation_id=made).get("id")
+    fb = to_facebook(reel_url, text)
     shelf("DELETE", reel_url)
     # When each one went out, and its id: what the search for the best time reads back.
     key = f"sold-{c['id']}" if why == "sold" else str(c["id"])     # a sale's Reel is its own entry: the card's for-sale one stays
     # A repeat counts toward the card's limit and lengthens its next wait; a price drop starts it over.
     times = repeats(posted.get(key)) + 1 if why == "again" else 0 if why in ("drop", "new") or was else repeats(posted.get(key))
     posted[key] = {"date": date.today().isoformat(), "at": datetime.now(timezone.utc).isoformat(timespec="minutes"), "media": media, "kind": why,
-                   "repeats": times, "song": song and song["audio_id"], "song_name": song and f"{song.get('title')} - {song.get('display_artist')}"}
-    if why != "sold":
+                   "repeats": times, "song": song and song["audio_id"], "song_name": song and f"{song.get('title')} - {song.get('display_artist')}", "theme": theme}
+    if fb:
+        posted[key]["facebook"] = fb
+    if why == "set":
+        posted[key]["cards"] = [x["id"] for x in c["cards"]]
+    if why not in ("sold", "set"):
         prices[str(c["id"])] = cents_of(c)    # the drop's been told: this is the new mark
     save(POSTED, posted)
     save(PRICES, prices)
@@ -416,7 +520,56 @@ def post(card=None, old=None):
         feed_add(host, media, c, "drop" if was else why)
     except Exception as e:      # the post is out: the page can miss one
         print(f"Couldn't add it to the page: {e}")
-    print(f"Posted card {c['id']} ({why}): {c['name']}" + (f" with {posted[key]['song_name']}" if song else ""))
+    print(f"Posted {c['id']} ({why}, look {theme}): {c['name']}" + (f" with {posted[key]['song_name']}" if song else "") + (", and on Facebook" if fb else ""))
+
+
+FB = "https://graph.facebook.com/v22.0"
+
+
+def facebook_page():
+    """The Facebook Page the Reels also go to, as (page id, page token, its name or why not). Instagram's own "share to
+    Facebook" works only for posts made in the app, never for ones sent through the API (Juan, Nov 8, 2026: "cross posting
+    to Facebook doesn't work at all"), so the run posts there itself. The Page and its token come from FB_PAGE_ID and
+    FB_PAGE_TOKEN when they're set, else from the Instagram token's own Pages (a Facebook-login token with pages_manage_posts)."""
+    if os.environ.get("FB_PAGE_ID") and os.environ.get("FB_PAGE_TOKEN"):
+        return os.environ["FB_PAGE_ID"], os.environ["FB_PAGE_TOKEN"], "the FB_PAGE_ID Page"
+    try:
+        pages = read(FB, "me/accounts", fields="id,name,access_token,instagram_business_account").get("data", [])
+    except urllib.error.HTTPError as e:
+        return None, None, f"the token can't list Facebook Pages ({e.code}: {json.load(e).get('error', {}).get('message', '')[:160]})"
+    except urllib.error.URLError as e:
+        return None, None, f"Facebook didn't answer ({e})"
+    for pg in pages:
+        if (pg.get("instagram_business_account") or {}).get("id") == os.environ["IG_USER_ID"]:
+            return pg["id"], pg["access_token"], pg.get("name")
+    return None, None, f"none of the token's {len(pages)} Pages is linked to this Instagram account"
+
+
+def fb_post(url, token, data=None, headers=None):
+    req = urllib.request.Request(url, data=urllib.parse.urlencode(data or {}).encode(), method="POST", headers={"Authorization": f"OAuth {token}", **(headers or {})})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        return json.load(r)
+
+
+def to_facebook(video_url, text):
+    """The Reel on the Facebook Page too, from the same parked film (Pages' Reels API: start, upload by link, publish).
+    Facebook's API can't add Instagram's song, so it goes out with the card sounds. Returns the video's id, or None: a
+    Facebook failure never stops the Instagram post."""
+    page, token, name = facebook_page()
+    if not page:
+        print(f"Not posted to Facebook: {name}")
+        return None
+    try:
+        vid = fb_post(f"{FB}/{page}/video_reels", token, {"upload_phase": "start"})["video_id"]
+        fb_post(f"https://rupload.facebook.com/video-upload/v22.0/{vid}", token, headers={"file_url": video_url})
+        fb_post(f"{FB}/{page}/video_reels", token, {"upload_phase": "finish", "video_id": vid, "video_state": "PUBLISHED", "description": text})
+        print(f"Posted to Facebook ({name}): video {vid}")
+        return vid
+    except urllib.error.HTTPError as e:
+        print(f"Facebook refused the Reel ({e.code}): {json.load(e).get('error', {}).get('message', '')[:200]}")
+    except Exception as e:
+        print(f"Facebook post failed: {e}")
+    return None
 
 
 REEL_METRICS = ("views", "reach", "likes", "comments", "saved", "shares", "total_interactions", "ig_reels_avg_watch_time")

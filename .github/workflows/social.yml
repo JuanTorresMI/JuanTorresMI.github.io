@@ -27,7 +27,7 @@ on:
         type: boolean
         default: false
       card:
-        description: "Post this card id instead of the next one"
+        description: "Post this card id instead of the next one, or set:<name> for a set's collage (set:2025 Topps Chrome)"
         type: string
         default: ""
       was:
@@ -75,6 +75,8 @@ jobs:
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
         run: python3 scripts/post_listings.py check
       - name: Songs for these searches
         if: inputs.music != ''
@@ -101,6 +103,9 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           SOCIAL_KEY: ${{ secrets.SOCIAL_KEY }}
+          # Optional: the Facebook Page the Reels also go to. Without them the run asks the Instagram token for its Pages.
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
           CARD: ${{ inputs.card }}
           WAS: ${{ inputs.was }}
         run: python3 scripts/post_listings.py post "$CARD" "$WAS"

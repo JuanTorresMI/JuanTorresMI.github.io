@@ -89,14 +89,14 @@ image_alt: "MMA Card Shop, by Juan Torres. UFC cards for sale and the eBay deal 
 
 <section class="rb-sec" id="instagram" aria-labelledby="ig-h">
   <h2 id="ig-h">On Instagram</h2>
-  <p class="mc-how">Every card gets a short Reel on <a href="{{ site.instagram_url }}" rel="noopener">@luvjjulio</a>, and a price drop gets its own.</p>
+  <p class="mc-how">Every card gets a short Reel on <a href="{{ site.instagram_url }}" rel="noopener">@luvjjulio</a>, a price drop gets its own, and each set a collage of its cards.</p>
   {%- if site.data.social_feed and site.data.social_feed.size > 0 %}
   <ul class="mc-grid mc-reels">
     {%- for p in site.data.social_feed %}
     <li class="mc-card">
-      <a href="{{ p.url }}" rel="noopener"><img src="/mma-cards/reels/{{ p.media }}.jpg" alt="Reel of {{ p.title | escape }}" loading="lazy" width="360" height="640"></a>
+      <a href="{{ p.url }}" rel="noopener"><img src="/mma-cards/reels/{{ p.media }}.jpg" alt="Reel of {% if p.set %}the {% endif %}{{ p.title | escape }}{% if p.set %} cards{% endif %}" loading="lazy" width="360" height="640"></a>
       <p class="mc-name"><a href="{{ p.url }}" rel="noopener">{{ p.name | escape }}</a></p>
-      <p class="mc-tags">{% if p.drop %}<span>Price drop</span>{% endif %}{% if p.sold %}<span>Sold</span>{% endif %}</p>
+      <p class="mc-tags">{% if p.drop %}<span>Price drop</span>{% endif %}{% if p.sold %}<span>Sold</span>{% endif %}{% if p.set %}<span>Set</span>{% endif %}</p>
       <p class="mc-price">{{ p.price }}</p>
     </li>
     {%- endfor %}

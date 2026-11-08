@@ -226,7 +226,13 @@ that grows without a trim and a CSV that keeps it.
   `_data/social_prices.json` first (from $10 or more), then a SOLD Reel for a card of $10 or more sold this month or last (`sold-<id>` in `_data/social_posted.json`, a thank-you
   caption, "Sold" on the page), then the dearest listed card with a photo not yet posted, then, with nothing new, one still for sale
   ("STILL AVAILABLE"): 7 days after its first post, then 14, then 28, three repeats at most per card (a price drop starts it over), three
-  repeats a week at most, never within 20 hours of any post, dearest first. The `stats` switch on the workflow
+  repeats a week at most, never within 20 hours of any post, dearest first. A set with 4 or more listed cards with photos (any price) gets a
+  collage Reel (`make_set`: up to 12 cards in a grid, the dearest few step forward), one collage every 3 days at most, the same set
+  again after 21 days, the most valuable set first; it comes after drops and sales and before new cards (`set-<slug>` in
+  `social_posted.json`; the workflow's `card` input takes `set:<name>`). Behind the card each Reel takes one of `make_reel.THEMES`
+  in turn (glow, octagon, spotlight, comic, retro, holo); the layout and safe areas are the same in all. Every Reel also goes to
+  the Facebook Page (`to_facebook`, Pages' Reels API, without the song), since Instagram's "share to Facebook" skips API posts:
+  `FB_PAGE_ID` and `FB_PAGE_TOKEN` secrets, else the Instagram token's own Pages; `check` says which. The `stats` switch on the workflow
   prints each Reel's likes and comments (views, reach and saves need the token's `instagram_manage_insights` permission). Never edit those files by hand. The film
   is drawn in the run and parked in R2 only while Instagram fetches it (the showcase's `/reel/`, secret `SOCIAL_KEY`): a direct
   upload loses the song. It has card sounds (`scripts/sfx`, CC0) and a song Instagram attaches, in turn by `_data/social_songs.json`:

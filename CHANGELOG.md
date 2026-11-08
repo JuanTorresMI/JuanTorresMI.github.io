@@ -40,6 +40,15 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-11-08 — Reels: set collages, six looks, and Facebook
+
+Instagram now gets a collage Reel for each set in the shop with 4 or more cards with photos: up to 12 of its cards drop into a
+grid, the dearest few step forward with their names and prices, then how many the shop has. One every 3 days at most, each set
+every 21 days, most valuable set first; drops and sales still go first. Single-card Reels keep their layout but take turns
+between six backgrounds (the card's glow, an octagon, spotlights, a comic burst, a retro sunset, holo foil). Instagram's own
+"share to Facebook" never fired, because it skips posts made through the API, so each Reel is now posted to the Facebook Page
+by the run itself (without Instagram's song). The On Instagram section on `/mma-cards/` marks collages "Set".
+
 ## 2026-11-02 — Beef and pork prices back in dollars per hundredweight
 
 From Oct 30 the beef and pork boards showed every price 100 times too small (a Choice cutout of "$3.65 per
