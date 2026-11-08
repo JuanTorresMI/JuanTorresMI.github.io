@@ -1,22 +1,22 @@
 {
- "updated": "2026-11-08T11:49:01.471Z",
+ "updated": "2026-11-08T18:30:55.549Z",
  "checked": "Nov 8, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
   "cards": "551",
-  "listed": "535",
-  "sold": "2",
-  "revenue": "$17",
+  "listed": "534",
+  "sold": "3",
+  "revenue": "$19",
   "profit": null,
   "margin": null,
-  "days": "11 days",
-  "sell_through": "0%"
+  "days": "12 days",
+  "sell_through": "1%"
  },
  "months": [
   {
    "month": "Nov 2026",
-   "sales": "1",
-   "revenue": "$13",
+   "sales": "2",
+   "revenue": "$14",
    "profit": null
   },
   {
@@ -2338,19 +2338,6 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/231.webp",
-   "price": "$1.35",
-   "listed": "Nov 3, 2026"
-  },
-  {
-   "id": 254,
-   "name": "2025 Stadium Club UFC #15 Joshua Van, RC",
-   "player": "Joshua Van",
-   "set": "2025 Stadium Club UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": true,
-   "auto": false,
-   "photo": "/mma-cards/photos/254.webp",
    "price": "$1.35",
    "listed": "Nov 3, 2026"
   },
@@ -6985,6 +6972,21 @@
  ],
  "sold": [
   {
+   "id": 254,
+   "name": "2025 Stadium Club UFC #15 Joshua Van, RC",
+   "player": "Joshua Van",
+   "set": "2025 Stadium Club UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": true,
+   "auto": false,
+   "photo": "/mma-cards/photos/254.webp",
+   "price": "$1.35",
+   "month": "Nov 2026",
+   "days": "13 days",
+   "where": "eBay"
+  },
+  {
    "id": 7,
    "name": "2026 Stadium Club UFC #TV-9 Max Holloway",
    "player": "Max Holloway",
@@ -7017,22 +7019,22 @@
  ],
  "scanner": {
   "calls": "3,317",
-  "asks": "35,905",
-  "finds": "460",
+  "asks": "36,232",
+  "finds": "662",
   "bought": "11",
   "under": "60%",
   "kinds": [
    {
-    "what": "underpriced against other listings",
-    "n": "280"
+    "what": "under the max for its search",
+    "n": "319"
    },
    {
-    "what": "under the max for its search",
-    "n": "119"
+    "what": "underpriced against other listings",
+    "n": "281"
    },
    {
     "what": "a lot cheap per card",
-    "n": "61"
+    "n": "62"
    }
   ]
  },
