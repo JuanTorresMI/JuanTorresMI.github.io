@@ -1,23 +1,23 @@
 {
- "updated": "2026-11-08T18:30:55.549Z",
- "checked": "Nov 8, 2026",
+ "updated": "2026-11-09T11:48:50.734Z",
+ "checked": "Nov 9, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
-  "cards": "551",
+  "cards": "553",
   "listed": "534",
-  "sold": "3",
-  "revenue": "$19",
+  "sold": "4",
+  "revenue": "$21",
   "profit": null,
   "margin": null,
-  "days": "12 days",
+  "days": "11 days",
   "sell_through": "1%"
  },
  "months": [
   {
    "month": "Nov 2026",
-   "sales": "2",
-   "revenue": "$14",
-   "profit": null
+   "sales": "3",
+   "revenue": "$16",
+   "profit": "$7"
   },
   {
    "month": "Oct 2026",
@@ -37,7 +37,7 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/144.webp",
-   "price": "$100.00",
+   "price": "$90.00",
    "listed": "Nov 2, 2026"
   },
   {
@@ -54,6 +54,19 @@
    "listed": "Oct 24, 2026"
   },
   {
+   "id": 113,
+   "name": "Demetrious Johnson 2026 Champions Collection UFC Gold Ink On-Card Auto - PSA In the Presence",
+   "player": "Charles Johnson",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/113.webp",
+   "price": "$41.00",
+   "listed": "Oct 31, 2026"
+  },
+  {
    "id": 114,
    "name": "Laura Sanko 2026 Champions Collection UFC Gold Ink On-Card Auto - PSA In the Presence",
    "player": "",
@@ -63,34 +76,8 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/114.webp",
-   "price": "$50.00",
+   "price": "$35.00",
    "listed": "Oct 31, 2026"
-  },
-  {
-   "id": 113,
-   "name": "Demetrious Johnson 2026 Champions Collection UFC Gold Ink On-Card Auto - PSA In the Presence",
-   "player": "",
-   "set": "",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/113.webp",
-   "price": "$45.00",
-   "listed": "Oct 31, 2026"
-  },
-  {
-   "id": 568,
-   "name": "2026 Stadium Club UFC #TV-1 Islam Makhachev",
-   "player": "Islam Makhachev",
-   "set": "2026 Stadium Club UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/568.webp",
-   "price": "$25.00",
-   "listed": "Nov 5, 2026"
   },
   {
    "id": 103,
@@ -106,6 +93,32 @@
    "listed": "Nov 3, 2026"
   },
   {
+   "id": 568,
+   "name": "2026 Stadium Club UFC #TV-1 Islam Makhachev",
+   "player": "Islam Makhachev",
+   "set": "2026 Stadium Club UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/568.webp",
+   "price": "$21.00",
+   "listed": "Nov 5, 2026"
+  },
+  {
+   "id": 703,
+   "name": "2022 Panini Prizm UFC - Champion Signatures Brandon Moreno #CS-BMR",
+   "player": "Brandon Moreno",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/703.webp",
+   "price": "$18.00",
+   "listed": "Nov 8, 2026"
+  },
+  {
    "id": 6,
    "name": "2026 Topps Chrome UFC #90 Alex Pereira, Blue RayWave Refractor 53/150",
    "player": "Alex Pereira",
@@ -115,21 +128,8 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/6.webp",
-   "price": "$13.00",
+   "price": "$11.00",
    "listed": "Oct 30, 2026"
-  },
-  {
-   "id": 324,
-   "name": "2025 Stadium Club UFC #50 Aljamain Sterling",
-   "player": "Aljamain Sterling",
-   "set": "2025 Stadium Club UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/324.webp",
-   "price": "$9.00",
-   "listed": "Nov 3, 2026"
   },
   {
    "id": 701,
@@ -143,19 +143,6 @@
    "photo": "/mma-cards/photos/701.webp",
    "price": "$8.00",
    "listed": "Nov 6, 2026"
-  },
-  {
-   "id": 17,
-   "name": "2025 Topps Chrome UFC #YTQ-8 Diego Lopes",
-   "player": "Diego Lopes",
-   "set": "2025 Topps Chrome UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/17.webp",
-   "price": "$6.00",
-   "listed": "Oct 24, 2026"
   },
   {
    "id": 110,
@@ -272,6 +259,19 @@
    "auto": false,
    "photo": "/mma-cards/photos/334.webp",
    "price": "$3.15",
+   "listed": "Nov 3, 2026"
+  },
+  {
+   "id": 324,
+   "name": "2025 Stadium Club UFC #50 Aljamain Sterling",
+   "player": "Aljamain Sterling",
+   "set": "2025 Stadium Club UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/324.webp",
+   "price": "$3.00",
    "listed": "Nov 3, 2026"
   },
   {
@@ -587,6 +587,19 @@
    "listed": "Oct 24, 2026"
   },
   {
+   "id": 17,
+   "name": "2025 Topps Chrome UFC #YTQ-8 Diego Lopes",
+   "player": "Diego Lopes",
+   "set": "2025 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/17.webp",
+   "price": "$2.00",
+   "listed": "Oct 24, 2026"
+  },
+  {
    "id": 124,
    "name": "2026 Topps Chrome UFC #73 Virna Jandiroba",
    "player": "Virna Jandiroba",
@@ -622,6 +635,19 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/473.webp",
+   "price": "$2.00",
+   "listed": "Nov 4, 2026"
+  },
+  {
+   "id": 533,
+   "name": "2024 Topps Finest UFC #50 Kai Kara-France",
+   "player": "Kai Kara-France",
+   "set": "2024 Topps Finest UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/533.webp",
    "price": "$2.00",
    "listed": "Nov 4, 2026"
   },
@@ -1549,19 +1575,6 @@
    "listed": "Nov 4, 2026"
   },
   {
-   "id": 550,
-   "name": "2025 Topps Chrome UFC - Plexus Islam Makhachev #PLX-11",
-   "player": "Islam Makhachev",
-   "set": "",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/550.webp",
-   "price": "$1.57",
-   "listed": "Nov 3, 2026"
-  },
-  {
    "id": 325,
    "name": "2025 Stadium Club UFC #51 Jamahal Hill",
    "player": "Jamahal Hill",
@@ -1831,19 +1844,6 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/444.webp",
-   "price": "$1.47",
-   "listed": "Nov 4, 2026"
-  },
-  {
-   "id": 507,
-   "name": "2024 Topps Finest UFC #106 Mateusz Gamrot",
-   "player": "Mateusz Gamrot",
-   "set": "2024 Topps Finest UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/507.webp",
    "price": "$1.47",
    "listed": "Nov 4, 2026"
   },
@@ -2186,19 +2186,6 @@
    "listed": "Nov 3, 2026"
   },
   {
-   "id": 509,
-   "name": "2024 Topps Finest UFC #94 Holly Holm",
-   "player": "Holly Holm",
-   "set": "2024 Topps Finest UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/509.webp",
-   "price": "$1.39",
-   "listed": "Nov 4, 2026"
-  },
-  {
    "id": 517,
    "name": "2024 Topps Finest UFC #94 Holly Holm",
    "player": "Holly Holm",
@@ -2208,19 +2195,6 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/517.webp",
-   "price": "$1.39",
-   "listed": "Nov 4, 2026"
-  },
-  {
-   "id": 524,
-   "name": "2024 Topps Finest UFC #94 Holly Holm",
-   "player": "Holly Holm",
-   "set": "2024 Topps Finest UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/524.webp",
    "price": "$1.39",
    "listed": "Nov 4, 2026"
   },
@@ -2845,6 +2819,19 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/486.webp",
+   "price": "$1.30",
+   "listed": "Nov 4, 2026"
+  },
+  {
+   "id": 527,
+   "name": "2024 Topps Finest UFC #18 Carlos Ulberg",
+   "player": "Carlos Ulberg",
+   "set": "2024 Topps Finest UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/527.webp",
    "price": "$1.30",
    "listed": "Nov 4, 2026"
   },
@@ -3837,6 +3824,58 @@
    "listed": "Nov 4, 2026"
   },
   {
+   "id": 509,
+   "name": "2024 Topps Finest UFC #9 Yan Xiaonan",
+   "player": "Yan Xiaonan",
+   "set": "2024 Topps Finest UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/509.webp",
+   "price": "$1.00",
+   "listed": "Nov 4, 2026"
+  },
+  {
+   "id": 520,
+   "name": "2024 Topps Finest UFC #43 Sean Brady",
+   "player": "Sean Brady",
+   "set": "2024 Topps Finest UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/520.webp",
+   "price": "$1.00",
+   "listed": "Nov 4, 2026"
+  },
+  {
+   "id": 522,
+   "name": "2024 Topps Finest UFC #69 Shavkat Rakhmonov",
+   "player": "Shavkat Rakhmonov",
+   "set": "2024 Topps Finest UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/522.webp",
+   "price": "$1.00",
+   "listed": "Nov 4, 2026"
+  },
+  {
+   "id": 524,
+   "name": "2024 Topps Finest UFC #4 Paulo Costa",
+   "player": "Paulo Costa",
+   "set": "2024 Topps Finest UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/524.webp",
+   "price": "$1.00",
+   "listed": "Nov 4, 2026"
+  },
+  {
    "id": 76,
    "name": "2026 Topps Chrome UFC #179 Nora Cornolle, RC",
    "player": "Nora Cornolle",
@@ -4137,8 +4176,8 @@
   },
   {
    "id": 511,
-   "name": "2024 Topps Finest UFC #177 Brian Ortega",
-   "player": "Brian Ortega",
+   "name": "2024 Topps Finest UFC #196 Beneil Dariush",
+   "player": "Beneil Dariush",
    "set": "2024 Topps Finest UFC",
    "parallel": "",
    "serial": "",
@@ -4631,66 +4670,14 @@
   },
   {
    "id": 516,
-   "name": "2024 Topps Finest UFC #44 Brian Ortega",
-   "player": "Brian Ortega",
+   "name": "2024 Topps Finest UFC #50 Kai Kara-France",
+   "player": "Kai Kara-France",
    "set": "2024 Topps Finest UFC",
    "parallel": "",
    "serial": "",
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/516.webp",
-   "price": "$0.84",
-   "listed": "Nov 4, 2026"
-  },
-  {
-   "id": 520,
-   "name": "2024 Topps Finest UFC #44 Brian Ortega",
-   "player": "Brian Ortega",
-   "set": "2024 Topps Finest UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/520.webp",
-   "price": "$0.84",
-   "listed": "Nov 4, 2026"
-  },
-  {
-   "id": 522,
-   "name": "2024 Topps Finest UFC #44 Brian Ortega",
-   "player": "Brian Ortega",
-   "set": "2024 Topps Finest UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/522.webp",
-   "price": "$0.84",
-   "listed": "Nov 4, 2026"
-  },
-  {
-   "id": 527,
-   "name": "2024 Topps Finest UFC #44 Brian Ortega",
-   "player": "Brian Ortega",
-   "set": "2024 Topps Finest UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/527.webp",
-   "price": "$0.84",
-   "listed": "Nov 4, 2026"
-  },
-  {
-   "id": 533,
-   "name": "2024 Topps Finest UFC #44 Brian Ortega",
-   "player": "Brian Ortega",
-   "set": "2024 Topps Finest UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/533.webp",
    "price": "$0.84",
    "listed": "Nov 4, 2026"
   },
@@ -6515,6 +6502,19 @@
    "listed": "Nov 4, 2026"
   },
   {
+   "id": 507,
+   "name": "2024 Topps Finest UFC #172 Sergei Pavlovich",
+   "player": "Sergei Pavlovich",
+   "set": "2024 Topps Finest UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/507.webp",
+   "price": "$0.50",
+   "listed": "Nov 4, 2026"
+  },
+  {
    "id": 675,
    "name": "2024 Topps Chrome UFC #FDP-8 Derrick Lewis, Refractor",
    "player": "Derrick Lewis",
@@ -6987,6 +6987,21 @@
    "where": "eBay"
   },
   {
+   "id": 550,
+   "name": "2025 Topps Chrome UFC - Plexus Islam Makhachev #PLX-11",
+   "player": "Islam Makhachev",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/550.webp",
+   "price": "$1.57",
+   "month": "Nov 2026",
+   "days": "10 days",
+   "where": "CollX"
+  },
+  {
    "id": 7,
    "name": "2026 Stadium Club UFC #TV-9 Max Holloway",
    "player": "Max Holloway",
@@ -7018,15 +7033,15 @@
   }
  ],
  "scanner": {
-  "calls": "3,317",
-  "asks": "36,232",
-  "finds": "662",
-  "bought": "11",
+  "calls": "3,270",
+  "asks": "41,839",
+  "finds": "673",
+  "bought": "12",
   "under": "60%",
   "kinds": [
    {
     "what": "under the max for its search",
-    "n": "319"
+    "n": "329"
    },
    {
     "what": "underpriced against other listings",
@@ -7034,7 +7049,7 @@
    },
    {
     "what": "a lot cheap per card",
-    "n": "62"
+    "n": "63"
    }
   ]
  },
