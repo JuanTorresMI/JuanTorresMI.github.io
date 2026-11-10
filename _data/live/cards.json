@@ -1,23 +1,23 @@
 {
- "updated": "2026-11-09T21:49:00.538Z",
- "checked": "Nov 9, 2026",
+ "updated": "2026-11-10T11:48:48.851Z",
+ "checked": "Nov 10, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
   "cards": "554",
-  "listed": "534",
-  "sold": "4",
-  "revenue": "$21",
-  "profit": null,
-  "margin": null,
-  "days": "11 days",
+  "listed": "530",
+  "sold": "8",
+  "revenue": "$33",
+  "profit": "$15",
+  "margin": "46%",
+  "days": "12 days",
   "sell_through": "1%"
  },
  "months": [
   {
    "month": "Nov 2026",
-   "sales": "3",
-   "revenue": "$16",
-   "profit": "$7"
+   "sales": "7",
+   "revenue": "$28",
+   "profit": "$13"
   },
   {
    "month": "Oct 2026",
@@ -130,19 +130,6 @@
    "photo": "/mma-cards/photos/6.webp",
    "price": "$11.00",
    "listed": "Oct 30, 2026"
-  },
-  {
-   "id": 701,
-   "name": "2019 Topps Chrome UFC #25 Khabib Nurmagomedov",
-   "player": "Khabib Nurmagomedov",
-   "set": "2019 Topps Chrome UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/701.webp",
-   "price": "$8.00",
-   "listed": "Nov 6, 2026"
   },
   {
    "id": 110,
@@ -663,19 +650,6 @@
    "photo": "/mma-cards/photos/686.webp",
    "price": "$2.00",
    "listed": "Nov 6, 2026"
-  },
-  {
-   "id": 109,
-   "name": "2019 Topps Chrome UFC #90 Sean O'Malley",
-   "player": "Sean O'Malley",
-   "set": "2019 Topps Chrome UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/109.webp",
-   "price": "$1.99",
-   "listed": "Nov 1, 2026"
   },
   {
    "id": 207,
@@ -3369,19 +3343,6 @@
    "listed": "Nov 4, 2026"
   },
   {
-   "id": 460,
-   "name": "2025 Topps Chrome UFC #PLX-14 Khabib Nurmagomedov",
-   "player": "Khabib Nurmagomedov",
-   "set": "2025 Topps Chrome UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/460.webp",
-   "price": "$1.12",
-   "listed": "Nov 4, 2026"
-  },
-  {
    "id": 466,
    "name": "2024 Topps Finest UFC #176 Tabatha Ricci",
    "player": "Tabatha Ricci",
@@ -3941,19 +3902,6 @@
    "listed": "Nov 2, 2026"
   },
   {
-   "id": 195,
-   "name": "2026 Topps Chrome UFC #193 Andre Lima, RC",
-   "player": "Andre Lima",
-   "set": "2026 Topps Chrome UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": true,
-   "auto": false,
-   "photo": "/mma-cards/photos/195.webp",
-   "price": "$0.99",
-   "listed": "Nov 3, 2026"
-  },
-  {
    "id": 420,
    "name": "2026 Topps Chrome UFC #61 Marcus Almeida, RC",
    "player": "Marcus Almeida",
@@ -4227,15 +4175,15 @@
    "listed": "Nov 3, 2026"
   },
   {
-   "id": 245,
-   "name": "2025 Stadium Club UFC #4 Khabib Nurmagomedov",
-   "player": "Khabib Nurmagomedov",
-   "set": "2025 Stadium Club UFC",
+   "id": 195,
+   "name": "2026 Topps Chrome UFC #193 Andre Lima, RC",
+   "player": "Andre Lima",
+   "set": "2026 Topps Chrome UFC",
    "parallel": "",
    "serial": "",
-   "rookie": false,
+   "rookie": true,
    "auto": false,
-   "photo": "/mma-cards/photos/245.webp",
+   "photo": "/mma-cards/photos/195.webp",
    "price": "$0.89",
    "listed": "Nov 3, 2026"
   },
@@ -6972,6 +6920,66 @@
  ],
  "sold": [
   {
+   "id": 109,
+   "name": "2019 Topps Chrome UFC #90 Sean O'Malley",
+   "player": "Sean O'Malley",
+   "set": "2019 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/109.webp",
+   "price": "$1.99",
+   "month": "Nov 2026",
+   "days": "12 days",
+   "where": "CollX"
+  },
+  {
+   "id": 245,
+   "name": "2025 Stadium Club UFC #4 Khabib Nurmagomedov",
+   "player": "Khabib Nurmagomedov",
+   "set": "2025 Stadium Club UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/245.webp",
+   "price": "$0.89",
+   "month": "Nov 2026",
+   "days": "15 days",
+   "where": "CollX"
+  },
+  {
+   "id": 460,
+   "name": "2025 Topps Chrome UFC #PLX-14 Khabib Nurmagomedov",
+   "player": "Khabib Nurmagomedov",
+   "set": "2025 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/460.webp",
+   "price": "$1.12",
+   "month": "Nov 2026",
+   "days": "12 days",
+   "where": "CollX"
+  },
+  {
+   "id": 701,
+   "name": "2019 Topps Chrome UFC #25 Khabib Nurmagomedov",
+   "player": "Khabib Nurmagomedov",
+   "set": "2019 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/701.webp",
+   "price": "$8.00",
+   "month": "Nov 2026",
+   "days": "12 days",
+   "where": "CollX"
+  },
+  {
    "id": 254,
    "name": "2025 Stadium Club UFC #15 Joshua Van, RC",
    "player": "Joshua Van",
@@ -7033,19 +7041,19 @@
   }
  ],
  "scanner": {
-  "calls": "3,270",
-  "asks": "44,764",
-  "finds": "678",
+  "calls": "3,334",
+  "asks": "76,220",
+  "finds": "681",
   "bought": "13",
   "under": "60%",
   "kinds": [
    {
     "what": "under the max for its search",
-    "n": "330"
+    "n": "332"
    },
    {
     "what": "underpriced against other listings",
-    "n": "281"
+    "n": "282"
    },
    {
     "what": "a lot cheap per card",
