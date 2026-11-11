@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-10T22:24:24.183Z",
- "checked": "Nov 10, 2026",
+ "updated": "2026-11-11T11:49:05.811Z",
+ "checked": "Nov 11, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
-  "cards": "554",
-  "listed": "530",
+  "cards": "556",
+  "listed": "532",
   "sold": "8",
   "revenue": "$33",
   "profit": "$15",
@@ -80,6 +80,19 @@
    "listed": "Oct 31, 2026"
   },
   {
+   "id": 567,
+   "name": "2025 Topps Knockout UFC #UF-2 Alex Pereira",
+   "player": "Alex Pereira",
+   "set": "2025 Topps Knockout UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/567.webp",
+   "price": "$25.00",
+   "listed": "Nov 11, 2026"
+  },
+  {
    "id": 103,
    "name": "2026 Stadium Club UFC #TV-25 Georges St-Pierre",
    "player": "Georges St-Pierre",
@@ -91,6 +104,19 @@
    "photo": "/mma-cards/photos/103.webp",
    "price": "$23.00",
    "listed": "Nov 3, 2026"
+  },
+  {
+   "id": 708,
+   "name": "2021 Panini Prizm UFC - Orange Prizms Joaquin Buckley #190",
+   "player": "Joaquin Buckley",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/708.webp",
+   "price": "$22.50",
+   "listed": "Nov 11, 2026"
   },
   {
    "id": 568,
@@ -3902,6 +3928,19 @@
    "listed": "Nov 2, 2026"
   },
   {
+   "id": 195,
+   "name": "2026 Topps Chrome UFC #193 Andre Lima, RC",
+   "player": "Andre Lima",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": true,
+   "auto": false,
+   "photo": "/mma-cards/photos/195.webp",
+   "price": "$0.99",
+   "listed": "Nov 3, 2026"
+  },
+  {
    "id": 420,
    "name": "2026 Topps Chrome UFC #61 Marcus Almeida, RC",
    "player": "Marcus Almeida",
@@ -4171,19 +4210,6 @@
    "rookie": true,
    "auto": false,
    "photo": "/mma-cards/photos/176.webp",
-   "price": "$0.89",
-   "listed": "Nov 3, 2026"
-  },
-  {
-   "id": 195,
-   "name": "2026 Topps Chrome UFC #193 Andre Lima, RC",
-   "player": "Andre Lima",
-   "set": "2026 Topps Chrome UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": true,
-   "auto": false,
-   "photo": "/mma-cards/photos/195.webp",
    "price": "$0.89",
    "listed": "Nov 3, 2026"
   },
@@ -7041,19 +7067,19 @@
   }
  ],
  "scanner": {
-  "calls": "3,334",
-  "asks": "77,135",
-  "finds": "683",
-  "bought": "13",
+  "calls": "3,327",
+  "asks": "86,317",
+  "finds": "688",
+  "bought": "15",
   "under": "60%",
   "kinds": [
    {
     "what": "under the max for its search",
-    "n": "332"
+    "n": "335"
    },
    {
     "what": "underpriced against other listings",
-    "n": "284"
+    "n": "286"
    },
    {
     "what": "a lot cheap per card",
@@ -7062,6 +7088,186 @@
   ]
  },
  "finds": [
+  {
+   "found": "Oct 28, 2026",
+   "title": "2023 Panini Donruss Optic UFC - My House Jon Jones #17 Red Prizm /99",
+   "image": "https://i.ebayimg.com/images/g/N7QAAeSwtBBq4bHN/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$10.00",
+   "worth": "$17.32",
+   "under": "42%",
+   "lot": null,
+   "basis": "4 similar listings: same fighter, any product, cards /76-150",
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "2024 Topps Finest UFC - Headliners Conor McGregor #HDL-5",
+   "image": "https://i.ebayimg.com/images/g/mrMAAeSwGV1q4ZDd/s-l225.jpg",
+   "how": "the star-fighter watch",
+   "cost": "$1.75",
+   "worth": "$5.94",
+   "under": "71%",
+   "lot": null,
+   "basis": "16 similar listings: same fighter, any product, cards unnumbered",
+   "buying": "Buy It Now"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "Topps Knockout UFC 2026 - Jiri Prochazka /50 Dual Relic Auto TOA-JP",
+   "image": "https://i.ebayimg.com/images/g/eM4AAeSwtgFq4Xbb/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$4.99",
+   "worth": "$54.00",
+   "under": "91%",
+   "lot": null,
+   "basis": "3 similar listings: same fighter, any product, autos /26-75",
+   "buying": "Auction"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "Topps UFC Knockout 2025 Brian Ortega Fearless Fighter Auto #FF-BO /299",
+   "image": "https://i.ebayimg.com/images/g/pGoAAeSw-CVq4W66/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$4.99",
+   "worth": "$13.87",
+   "under": "64%",
+   "lot": null,
+   "basis": "3 similar listings: same fighter, any product, autos /151+",
+   "buying": "Auction"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "2026 Topps Chrome UFC Sapphire Autograph #BAVAS Aljamain Sterling AUTO",
+   "image": "https://i.ebayimg.com/images/g/i~8AAeSw6dVq4WQs/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$6.99",
+   "worth": "$16.00",
+   "under": "56%",
+   "lot": null,
+   "basis": "3 similar listings: same fighter, chrome autos unnumbered",
+   "buying": "Auction"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "2026 Topps Chrome UFC Sapphire Orange Refractor Navajo Stirling RC Rookie 01/25",
+   "image": "https://i.ebayimg.com/images/g/4e4AAeSwZe5q4WWX/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$6.99",
+   "worth": null,
+   "under": null,
+   "lot": null,
+   "basis": null,
+   "buying": "Auction"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "2026 Topps Chrome UFC Virna Jandiroba 1986 Signatures Refractor #86S-VJ Auto",
+   "image": "https://i.ebayimg.com/images/g/sZYAAeSw9WZq4VyT/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$5.99",
+   "worth": "$12.00",
+   "under": "50%",
+   "lot": null,
+   "basis": "4 listings: the same card",
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "Exclusive Slaps Collection UFC MMA Ailin Pérez Autographed Trading Card",
+   "image": "https://i.ebayimg.com/images/g/uTgAAeSwW-pq4VcI/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$11.00",
+   "worth": "$24.00",
+   "under": "54%",
+   "lot": null,
+   "basis": "3 listings: the same card",
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "2024 Topps Royalty UFC - Aljamain Sterling Influential Ink Auto /49",
+   "image": "https://i.ebayimg.com/images/g/AvYAAeSwHghq4RGz/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$5.98",
+   "worth": "$19.00",
+   "under": "69%",
+   "lot": null,
+   "basis": "4 similar listings: same fighter, any product, autos /26-75",
+   "buying": "Auction"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "2024 Topps Royalty UFC Brian Ortega Dual Relic Auto #19/25 (ML)",
+   "image": "https://i.ebayimg.com/images/g/NW8AAeSwwlRq2mfX/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$14.75",
+   "worth": null,
+   "under": null,
+   "lot": null,
+   "basis": null,
+   "buying": "Auction"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "Bulk Mixed Vets Only Base Cards 3000+ Trading Card Lot MLB, NBA, NFL, WNBA, UFC",
+   "image": "https://i.ebayimg.com/images/g/Bm8AAeSw3FFq4T3c/s-l225.jpg",
+   "how": "a UFC lot, priced per card",
+   "cost": "$404.00",
+   "worth": null,
+   "under": null,
+   "lot": "3,000 cards, $0.13 each",
+   "basis": null,
+   "buying": "Buy It Now"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "2022 Select UFC Octagon Action Signatures Flash Prizm Jared Cannonier Auto",
+   "image": "https://i.ebayimg.com/images/g/VvcAAeSwDtBq1nxr/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$8.24",
+   "worth": "$14.85",
+   "under": "45%",
+   "lot": null,
+   "basis": "3 similar listings: same fighter, prizm autos unnumbered",
+   "buying": "Auction"
+  },
+  {
+   "found": "Oct 28, 2026",
+   "title": "2025 Topps Chrome UFC Jiri Prochazka Green Refractor Auto #93/99 (ML)",
+   "image": "https://i.ebayimg.com/images/g/sYoAAeSw1IZq2j7R/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$15.25",
+   "worth": "$53.99",
+   "under": "72%",
+   "lot": null,
+   "basis": "4 similar listings: same fighter, chrome autos /76-150",
+   "buying": "Auction"
+  },
+  {
+   "found": "Oct 27, 2026",
+   "title": "UFC Trading Card Lot (over 200 cards) Donruss Optic Prizm Select Topps Chrome RC",
+   "image": "https://i.ebayimg.com/images/g/xgQAAeSwFthq4TXQ/s-l225.jpg",
+   "how": "a UFC lot, priced per card",
+   "cost": "$47.00",
+   "worth": null,
+   "under": null,
+   "lot": "200 cards, $0.24 each",
+   "basis": null,
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Oct 27, 2026",
+   "title": "Topps 2025 Royalty UFC Rookie Relic Autographs Hyunsung Park RRA-HP /99",
+   "image": "https://i.ebayimg.com/images/g/sgEAAeSwZmdq4SML/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$5.00",
+   "worth": "$11.99",
+   "under": "58%",
+   "lot": null,
+   "basis": "6 listings: the same card",
+   "buying": "Best Offer"
+  },
   {
    "found": "Oct 27, 2026",
    "title": "2026 Topps Chrome UFC #5 Conor McGregor Magenta Refractor #/399",
@@ -7238,18 +7444,6 @@
    "cost": "$20.98",
    "worth": "$48.99",
    "under": "57%",
-   "lot": null,
-   "basis": null,
-   "buying": "Buy It Now"
-  },
-  {
-   "found": "Oct 27, 2026",
-   "title": "2026 Topps Stadium Club Ufc Bo Nickal Fight Motion Autograph #FMA-BN",
-   "image": "https://i.ebayimg.com/images/g/Nx8AAeSwElZq4MbX/s-l225.jpg",
-   "how": "the any-UFC sweep",
-   "cost": "$24.00",
-   "worth": "$45.35",
-   "under": "47%",
    "lot": null,
    "basis": null,
    "buying": "Buy It Now"

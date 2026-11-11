@@ -1,13 +1,13 @@
 {
- "generated": "2026-11-10T22:18:19.019Z",
- "checked": "Nov 10, 2026",
+ "generated": "2026-11-11T11:47:30.560Z",
+ "checked": "Nov 11, 2026",
  "last": {
-  "title": "Dexter",
+  "title": "Ted 2",
   "sub": "",
-  "poster": "https://images.metahub.space/poster/small/tt0773262/img",
-  "link": "https://www.imdb.com/title/tt0773262/",
-  "initials": "DE",
-  "meta": "50% through · 24 min left · stopped Nov 9, 2026"
+  "poster": "https://images.metahub.space/poster/small/tt2637276/img",
+  "link": "https://www.imdb.com/title/tt2637276/",
+  "initials": "TE",
+  "meta": "0% through · 115 min left · stopped Nov 10, 2026"
  },
  "tiles": [
   {
@@ -15,7 +15,7 @@
    "l": "shows"
   },
   {
-   "n": "33",
+   "n": "35",
    "l": "films"
   },
   {
@@ -23,12 +23,29 @@
    "l": "in the library"
   },
   {
-   "n": "4.4 days",
+   "n": "4.5 days",
    "l": "of runtime"
   }
  ],
- "count": "5 titles this week",
+ "count": "7 titles this week",
  "days": [
+  {
+   "day": "Tue, Nov 10",
+   "items": [
+    {
+     "kind": "Film",
+     "title": "Ted 2",
+     "link": "https://www.imdb.com/title/tt2637276/",
+     "meta": ""
+    },
+    {
+     "kind": "Film",
+     "title": "Ted",
+     "link": "https://www.imdb.com/title/tt1637725/",
+     "meta": ""
+    }
+   ]
+  },
   {
    "day": "Mon, Nov 9",
    "items": [
@@ -178,23 +195,6 @@
      "kind": "TV",
      "title": "Ted",
      "link": "https://www.imdb.com/title/tt14824792/",
-     "meta": ""
-    },
-    {
-     "kind": "Film",
-     "title": "The Conjuring 2",
-     "link": "https://www.imdb.com/title/tt3065204/",
-     "meta": ""
-    }
-   ]
-  },
-  {
-   "day": "Mon, Oct 19",
-   "items": [
-    {
-     "kind": "Film",
-     "title": "Obsession",
-     "link": "https://www.imdb.com/title/tt37287335/",
      "meta": ""
     }
    ]
