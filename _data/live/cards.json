@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-12T04:16:29.241Z",
- "checked": "Nov 11, 2026",
+ "updated": "2026-11-12T11:49:09.898Z",
+ "checked": "Nov 12, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
   "cards": "555",
@@ -106,19 +106,6 @@
    "listed": "Nov 3, 2026"
   },
   {
-   "id": 708,
-   "name": "2021 Panini Prizm UFC - Orange Prizms Joaquin Buckley #190",
-   "player": "Joaquin Buckley",
-   "set": "",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/708.webp",
-   "price": "$22.50",
-   "listed": "Nov 11, 2026"
-  },
-  {
    "id": 568,
    "name": "2026 Stadium Club UFC #TV-1 Islam Makhachev",
    "player": "Islam Makhachev",
@@ -130,6 +117,19 @@
    "photo": "/mma-cards/photos/568.webp",
    "price": "$21.00",
    "listed": "Nov 5, 2026"
+  },
+  {
+   "id": 708,
+   "name": "2021 Panini Prizm UFC - Orange Prizms Joaquin Buckley #190",
+   "player": "Joaquin Buckley",
+   "set": "",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/708.webp",
+   "price": "$20.00",
+   "listed": "Nov 11, 2026"
   },
   {
    "id": 703,
@@ -3928,19 +3928,6 @@
    "listed": "Nov 2, 2026"
   },
   {
-   "id": 195,
-   "name": "2026 Topps Chrome UFC #193 Andre Lima, RC",
-   "player": "Andre Lima",
-   "set": "2026 Topps Chrome UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": true,
-   "auto": false,
-   "photo": "/mma-cards/photos/195.webp",
-   "price": "$0.99",
-   "listed": "Nov 3, 2026"
-  },
-  {
    "id": 420,
    "name": "2026 Topps Chrome UFC #61 Marcus Almeida, RC",
    "player": "Marcus Almeida",
@@ -4210,6 +4197,19 @@
    "rookie": true,
    "auto": false,
    "photo": "/mma-cards/photos/176.webp",
+   "price": "$0.89",
+   "listed": "Nov 3, 2026"
+  },
+  {
+   "id": 195,
+   "name": "2026 Topps Chrome UFC #193 Andre Lima, RC",
+   "player": "Andre Lima",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": true,
+   "auto": false,
+   "photo": "/mma-cards/photos/195.webp",
    "price": "$0.89",
    "listed": "Nov 3, 2026"
   },
@@ -7068,14 +7068,14 @@
  ],
  "scanner": {
   "calls": "3,341",
-  "asks": "88,339",
-  "finds": "551",
+  "asks": "89,370",
+  "finds": "559",
   "bought": "15",
   "under": "60%",
   "kinds": [
    {
     "what": "underpriced against other listings",
-    "n": "277"
+    "n": "279"
    },
    {
     "what": "under the max for its search",
@@ -7084,10 +7084,42 @@
    {
     "what": "a lot cheap per card",
     "n": "68"
+   },
+   {
+    "what": "unpriced",
+    "n": "5"
+   },
+   {
+    "what": "maybe",
+    "n": "1"
    }
   ]
  },
  "finds": [
+  {
+   "found": "Oct 29, 2026",
+   "title": "2025 Topps Finest UFC Refractor Amir Albazi Auto #FA-AA",
+   "image": "https://i.ebayimg.com/images/g/dXIAAeSwi6RqueLh/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$5.12",
+   "worth": "$12.14",
+   "under": "58%",
+   "lot": null,
+   "basis": "16 similar listings: same fighter, any product, autos unnumbered",
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Oct 29, 2026",
+   "title": "Topps 2026 UFC Stadium Club Concentration Autographs Ciryl Gane CNA-CG Auto",
+   "image": "https://i.ebayimg.com/images/g/sp8AAeSw-CpqwpmJ/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$17.99",
+   "worth": "$68.39",
+   "under": "74%",
+   "lot": null,
+   "basis": "9 similar listings: same fighter, any product, autos unnumbered",
+   "buying": "Best Offer"
+  },
   {
    "found": "Oct 29, 2026",
    "title": "Topps UFC Knockout 2026 Navajo Stirling Rookie #46 Serial Numbered /125",
@@ -7423,30 +7455,6 @@
    "lot": "3,000 cards, $0.13 each",
    "basis": null,
    "buying": "Buy It Now"
-  },
-  {
-   "found": "Oct 28, 2026",
-   "title": "2022 Select UFC Octagon Action Signatures Flash Prizm Jared Cannonier Auto",
-   "image": "https://i.ebayimg.com/images/g/VvcAAeSwDtBq1nxr/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$8.24",
-   "worth": "$14.85",
-   "under": "45%",
-   "lot": null,
-   "basis": "3 similar listings: same fighter, prizm autos unnumbered",
-   "buying": "Auction"
-  },
-  {
-   "found": "Oct 28, 2026",
-   "title": "2025 Topps Chrome UFC Jiri Prochazka Green Refractor Auto #93/99 (ML)",
-   "image": "https://i.ebayimg.com/images/g/sYoAAeSw1IZq2j7R/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$15.25",
-   "worth": "$53.99",
-   "under": "72%",
-   "lot": null,
-   "basis": "4 similar listings: same fighter, chrome autos /76-150",
-   "buying": "Auction"
   }
  ]
 }
