@@ -1,32 +1,32 @@
 {
  "ready": true,
- "generated": "2026-11-12T11:47:11.362Z",
- "checked": "Nov 12, 6 AM (Michigan time)",
+ "generated": "2026-11-12T12:47:11.362Z",
+ "checked": "Nov 12, 7 AM (Michigan time)",
  "today": "Nov 12, 2026",
  "meters": [
   {
    "what": "Worker requests",
-   "used": "6,892",
-   "left": "93,108",
+   "used": "6,922",
+   "left": "93,078",
    "limit": "100,000 a day",
    "pct": "6.9%",
    "w": 6.9
   },
   {
    "what": "Database rows read",
-   "used": "2,892,889",
-   "left": "2,107,111",
+   "used": "3,075,432",
+   "left": "1,924,568",
    "limit": "5,000,000 a day",
-   "pct": "58%",
-   "w": 57.9
+   "pct": "62%",
+   "w": 61.5
   },
   {
    "what": "Database rows written",
-   "used": "64,821",
-   "left": "35,179",
+   "used": "65,734",
+   "left": "34,266",
    "limit": "100,000 a day",
-   "pct": "65%",
-   "w": 64.8
+   "pct": "66%",
+   "w": 65.7
   },
   {
    "what": "Database storage, as Cloudflare counts it",
@@ -46,22 +46,22 @@
   },
   {
    "what": "CPU, the slowest 1% of runs",
-   "used": "148 ms",
-   "left": "over by 138 ms",
+   "used": "152 ms",
+   "left": "over by 142 ms",
    "limit": "10 ms a run",
-   "pct": "1475%",
+   "pct": "1523%",
    "w": 100
   }
  ],
  "days": [
   {
    "day": "Thu, Nov 12",
-   "requests": "6,892",
+   "requests": "6,922",
    "errors": "0",
-   "rows_read": "2,892,889",
-   "rows_written": "64,821",
+   "rows_read": "3,075,432",
+   "rows_written": "65,734",
    "cpu50": "5.0 ms",
-   "cpu": "148 ms"
+   "cpu": "152 ms"
   },
   {
    "day": "Wed, Nov 11",
@@ -326,10 +326,10 @@
   }
  ],
  "stamp": {
-  "requests": "6,892",
-  "requests_left": "93,108",
-  "rows_read": "2,892,889",
-  "rows_written": "64,821",
+  "requests": "6,922",
+  "requests_left": "93,078",
+  "rows_read": "3,075,432",
+  "rows_written": "65,734",
   "size": "61 MB",
   "cpu": "5.0 ms"
  },
