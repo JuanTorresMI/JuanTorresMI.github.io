@@ -1,13 +1,13 @@
 {
- "generated": "2026-11-12T21:05:14.323Z",
+ "generated": "2026-11-13T03:33:50.037Z",
  "checked": "Nov 12, 2026",
  "last": {
-  "title": "Ted 2",
+  "title": "Dexter",
   "sub": "",
-  "poster": "https://images.metahub.space/poster/small/tt2637276/img",
-  "link": "https://www.imdb.com/title/tt2637276/",
-  "initials": "TE",
-  "meta": "0% through · 115 min left · stopped Nov 10, 2026"
+  "poster": "https://images.metahub.space/poster/small/tt0773262/img",
+  "link": "https://www.imdb.com/title/tt0773262/",
+  "initials": "DE",
+  "meta": "39% through · 32 min left · stopped Nov 12, 2026"
  },
  "tiles": [
   {
@@ -23,12 +23,23 @@
    "l": "in the library"
   },
   {
-   "n": "4.5 days",
+   "n": "4.9 days",
    "l": "of runtime"
   }
  ],
- "count": "7 titles this week",
+ "count": "5 titles this week",
  "days": [
+  {
+   "day": "Thu, Nov 12",
+   "items": [
+    {
+     "kind": "TV",
+     "title": "Dexter",
+     "link": "https://www.imdb.com/title/tt0773262/",
+     "meta": ""
+    }
+   ]
+  },
   {
    "day": "Tue, Nov 10",
    "items": [
@@ -42,17 +53,6 @@
      "kind": "Film",
      "title": "Ted",
      "link": "https://www.imdb.com/title/tt1637725/",
-     "meta": ""
-    }
-   ]
-  },
-  {
-   "day": "Mon, Nov 9",
-   "items": [
-    {
-     "kind": "TV",
-     "title": "Dexter",
-     "link": "https://www.imdb.com/title/tt0773262/",
      "meta": ""
     }
    ]
