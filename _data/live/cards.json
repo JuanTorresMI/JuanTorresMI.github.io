@@ -1,23 +1,23 @@
 {
- "updated": "2026-11-13T03:35:07.151Z",
- "checked": "Nov 12, 2026",
+ "updated": "2026-11-13T11:49:03.328Z",
+ "checked": "Nov 13, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
-  "cards": "555",
-  "listed": "532",
-  "sold": "8",
-  "revenue": "$33",
-  "profit": "$15",
-  "margin": "46%",
+  "cards": "556",
+  "listed": "530",
+  "sold": "10",
+  "revenue": "$39",
+  "profit": "$16",
+  "margin": "42%",
   "days": "12 days",
-  "sell_through": "1%"
+  "sell_through": "2%"
  },
  "months": [
   {
    "month": "Nov 2026",
-   "sales": "7",
-   "revenue": "$28",
-   "profit": "$13"
+   "sales": "9",
+   "revenue": "$32",
+   "profit": "$14"
   },
   {
    "month": "Oct 2026",
@@ -596,19 +596,6 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/8.webp",
-   "price": "$2.00",
-   "listed": "Oct 24, 2026"
-  },
-  {
-   "id": 17,
-   "name": "2025 Topps Chrome UFC #YTQ-8 Diego Lopes",
-   "player": "Diego Lopes",
-   "set": "2025 Topps Chrome UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/17.webp",
    "price": "$2.00",
    "listed": "Oct 24, 2026"
   },
@@ -1272,19 +1259,6 @@
    "rookie": false,
    "auto": false,
    "photo": "/mma-cards/photos/16.webp",
-   "price": "$1.69",
-   "listed": "Oct 24, 2026"
-  },
-  {
-   "id": 22,
-   "name": "2025 Topps Chrome UFC #AKA-3 Justin Gaethje",
-   "player": "Justin Gaethje",
-   "set": "2025 Topps Chrome UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/22.webp",
    "price": "$1.69",
    "listed": "Oct 24, 2026"
   },
@@ -6946,6 +6920,36 @@
  ],
  "sold": [
   {
+   "id": 17,
+   "name": "2025 Topps Chrome UFC #YTQ-8 Diego Lopes",
+   "player": "Diego Lopes",
+   "set": "2025 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/17.webp",
+   "price": "$2.39",
+   "month": "Nov 2026",
+   "days": "",
+   "where": "eBay"
+  },
+  {
+   "id": 22,
+   "name": "2025 Topps Chrome UFC #AKA-3 Justin Gaethje",
+   "player": "Justin Gaethje",
+   "set": "2025 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/22.webp",
+   "price": "$1.69",
+   "month": "Nov 2026",
+   "days": "",
+   "where": "eBay"
+  },
+  {
    "id": 109,
    "name": "2019 Topps Chrome UFC #90 Sean O'Malley",
    "player": "Sean O'Malley",
@@ -7068,9 +7072,9 @@
  ],
  "scanner": {
   "calls": "3,475",
-  "asks": "98,807",
-  "finds": "576",
-  "bought": "15",
+  "asks": "99,938",
+  "finds": "578",
+  "bought": "16",
   "under": "59%",
   "kinds": [
    {
@@ -7087,7 +7091,7 @@
    },
    {
     "what": "unpriced",
-    "n": "17"
+    "n": "19"
    },
    {
     "what": "maybe",
@@ -7096,6 +7100,30 @@
   ]
  },
  "finds": [
+  {
+   "found": "Oct 30, 2026",
+   "title": "Topps 2025 UFC Midnight Khamzat Chimaev Serial Numbered /75 #3",
+   "image": "https://i.ebayimg.com/images/g/RRgAAeSwNBBq5BWW/s-l225.jpg",
+   "how": "the star-fighter watch",
+   "cost": "$9.00",
+   "worth": "$43.99",
+   "under": "80%",
+   "lot": null,
+   "basis": "3 listings: the same card",
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Oct 30, 2026",
+   "title": "Topps 2026 UFC Stadium Club Kamaru Usman Serial Numbered /25 #87",
+   "image": "https://i.ebayimg.com/images/g/ofsAAeSwwvJq5BN2/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$6.50",
+   "worth": "$16.00",
+   "under": "59%",
+   "lot": null,
+   "basis": "3 similar listings: same fighter, stadium club cards /11-25, the cheapest (few copies: check Sold)",
+   "buying": "Best Offer"
+  },
   {
    "found": "Oct 30, 2026",
    "title": "2024 TOPPS FINEST UFC #FA-IMA IKRAM ALISKEROV GOLD SHIMMER REFRACTOR AUTO /39",
@@ -7431,30 +7459,6 @@
    "lot": null,
    "basis": "9 similar listings: same fighter, any product, autos unnumbered",
    "buying": "Best Offer"
-  },
-  {
-   "found": "Oct 29, 2026",
-   "title": "Topps UFC Knockout 2026 Navajo Stirling Rookie #46 Serial Numbered /125",
-   "image": "https://i.ebayimg.com/images/g/ZsgAAeSwdmVq0CVg/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$14.00",
-   "worth": "$24.00",
-   "under": "42%",
-   "lot": null,
-   "basis": "8 similar listings: same fighter, any product, cards /76-150",
-   "buying": "Auction"
-  },
-  {
-   "found": "Oct 29, 2026",
-   "title": "Panini 2022 Donruss UFC Brian Ortega #45 Parallel/Variety MMA Card /75",
-   "image": "https://i.ebayimg.com/images/g/n7AAAeSwKs5qdAVv/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$6.32",
-   "worth": "$16.74",
-   "under": "62%",
-   "lot": null,
-   "basis": "5 similar listings: same fighter, any product, cards /26-75",
-   "buying": "Auction"
   }
  ]
 }
