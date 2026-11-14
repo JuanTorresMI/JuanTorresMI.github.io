@@ -1,9 +1,9 @@
 {
- "generated": "2026-11-13T21:51:32+00:00",
- "rows": 809986,
- "rows_fmt": "809,986",
+ "generated": "2026-11-14T11:51:17+00:00",
+ "rows": 810144,
+ "rows_fmt": "810,144",
  "files": 33,
- "all_rows_fmt": "1,510,486",
+ "all_rows_fmt": "1,511,528",
  "all_files": 59,
  "datasets": [
   {
@@ -743,15 +743,15 @@
   },
   {
    "slug": "usda-lamb-prices",
-   "rows": 237482,
-   "rows_fmt": "237,482",
+   "rows": 237640,
+   "rows_fmt": "237,640",
    "first": "2020-01-02",
-   "newest": "2026-11-12",
+   "newest": "2026-11-13",
    "files": [
     {
-     "rows": 33213,
+     "rows": 33232,
      "first": "2020-01-02",
-     "newest": "2026-11-12",
+     "newest": "2026-11-13",
      "columns": [
       "report_date",
       "imps_code",
@@ -761,18 +761,18 @@
       "percentage_carcass",
       "cut_weight"
      ],
-     "bytes": 1751895,
+     "bytes": 1752908,
      "file": "lamb-cutout-cuts",
      "url": "/data/usda-lamb-prices/lamb-cutout-cuts.csv",
      "report": 2649,
      "code": "LM_XL502",
-     "rows_fmt": "33,213",
+     "rows_fmt": "33,232",
      "size": "1.8 MB"
     },
     {
-     "rows": 1749,
+     "rows": 1750,
      "first": "2020-01-02",
-     "newest": "2026-11-12",
+     "newest": "2026-11-13",
      "columns": [
       "report_date",
       "gross_carcass_price",
@@ -780,18 +780,18 @@
       "gross_carcass_percentage",
       "gross_carcass_weight"
      ],
-     "bytes": 67018,
+     "bytes": 67057,
      "file": "lamb-carcass-value",
      "url": "/data/usda-lamb-prices/lamb-carcass-value.csv",
      "report": 2649,
      "code": "LM_XL502",
-     "rows_fmt": "1,749",
+     "rows_fmt": "1,750",
      "size": "67 KB"
     },
     {
-     "rows": 192496,
+     "rows": 192606,
      "first": "2020-01-02",
-     "newest": "2026-11-12",
+     "newest": "2026-11-13",
      "columns": [
       "report_date",
       "refrigeration_description",
@@ -801,18 +801,18 @@
       "price_range_avg",
       "change_from_prior_day"
      ],
-     "bytes": 10150698,
+     "bytes": 10156507,
      "file": "boxed-lamb-cuts",
      "url": "/data/usda-lamb-prices/boxed-lamb-cuts.csv",
      "report": 2648,
      "code": "LM_XL500",
-     "rows_fmt": "192,496",
+     "rows_fmt": "192,606",
      "size": "10.2 MB"
     },
     {
-     "rows": 10024,
+     "rows": 10052,
      "first": "2020-01-03",
-     "newest": "2026-11-06",
+     "newest": "2026-11-13",
      "columns": [
       "section",
       "report_date",
@@ -822,12 +822,12 @@
       "price_range_high",
       "weighted_average"
      ],
-     "bytes": 475636,
+     "bytes": 476969,
      "file": "comprehensive-lamb-carcass",
      "url": "/data/usda-lamb-prices/comprehensive-lamb-carcass.csv",
      "report": 2651,
      "code": "LM_XL555",
-     "rows_fmt": "10,024",
+     "rows_fmt": "10,052",
      "size": "0.5 MB"
     }
    ]
@@ -1458,18 +1458,18 @@
   },
   {
    "slug": "border-truck-waits",
-   "rows": 101145,
-   "rows_fmt": "101,145",
+   "rows": 101428,
+   "rows_fmt": "101,428",
    "first": "2026-09-13",
-   "newest": "2026-11-13",
+   "newest": "2026-11-14",
    "files": [
     {
      "file": "border-truck-wait-readings-2026",
      "url": "/border-waits/border-truck-wait-readings-2026.csv",
-     "rows": 30275,
-     "rows_fmt": "30,275",
+     "rows": 30568,
+     "rows_fmt": "30,568",
      "first": "2026-09-13",
-     "newest": "2026-11-13",
+     "newest": "2026-11-14",
      "columns": [
       "port_number",
       "posted_local",
@@ -1479,14 +1479,14 @@
       "fast_lanes_open",
       "source"
      ],
-     "bytes": 1156838,
+     "bytes": 1167837,
      "size": "1.2 MB"
     },
     {
      "file": "border-truck-wait-times",
      "url": "/border-waits/border-truck-wait-times.csv",
-     "rows": 6152,
-     "rows_fmt": "6,152",
+     "rows": 6142,
+     "rows_fmt": "6,142",
      "first": "",
      "newest": "",
      "columns": [
@@ -1501,7 +1501,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 467031,
+     "bytes": 466107,
      "size": "0.5 MB"
     },
     {
@@ -1527,18 +1527,18 @@
   },
   {
    "slug": "border-car-pedestrian-waits",
-   "rows": 185593,
-   "rows_fmt": "185,593",
+   "rows": 186194,
+   "rows_fmt": "186,194",
    "first": "2026-09-13",
-   "newest": "2026-11-13",
+   "newest": "2026-11-14",
    "files": [
     {
      "file": "border-car-pedestrian-wait-readings-2026",
      "url": "/border-waits/border-car-pedestrian-wait-readings-2026.csv",
-     "rows": 54467,
-     "rows_fmt": "54,467",
+     "rows": 55044,
+     "rows_fmt": "55,044",
      "first": "2026-09-13",
-     "newest": "2026-11-13",
+     "newest": "2026-11-14",
      "columns": [
       "port_number",
       "posted_local",
@@ -1554,14 +1554,14 @@
       "pedestrian_ready_lanes_open",
       "source"
      ],
-     "bytes": 2533594,
-     "size": "2.5 MB"
+     "bytes": 2559899,
+     "size": "2.6 MB"
     },
     {
      "file": "border-car-pedestrian-wait-times",
      "url": "/border-waits/border-car-pedestrian-wait-times.csv",
-     "rows": 19311,
-     "rows_fmt": "19,311",
+     "rows": 19335,
+     "rows_fmt": "19,335",
      "first": "",
      "newest": "",
      "columns": [
@@ -1577,7 +1577,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 1569627,
+     "bytes": 1571558,
      "size": "1.6 MB"
     },
     {
