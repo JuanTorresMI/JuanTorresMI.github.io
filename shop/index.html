@@ -1,11 +1,11 @@
 ---
 layout: shop
 title: JuanJulio Cards
-seo_title: "JuanJulio Cards · UFC and MMA Trading Cards for Sale on eBay and CollX"
+seo_title: "JuanJulio Cards · UFC, Football, Basketball and Baseball Cards for Sale"
 permalink: /shop/
-description: UFC and MMA trading cards for sale. Shop the JuanJulio MMA and Sports store on eBay or JuanJulio on CollX, and follow the new cards on Instagram.
+description: UFC and MMA trading cards, plus football, basketball and baseball, for sale. Shop the JuanJulio MMA and Sports store on eBay or JuanJulio on CollX.
 image: /assets/og/mma-cards.png
-image_alt: "JuanJulio Cards. UFC and MMA trading cards for sale."
+image_alt: "JuanJulio Cards. UFC and sports trading cards for sale."
 ---
 {%- comment -%}
   The card shop's landing page (Juan, Nov 16, 2026: "a stand alone card page with a proper theme that fits the
@@ -18,6 +18,8 @@ image_alt: "JuanJulio Cards. UFC and MMA trading cards for sale."
   /mma-cards/, which shows the business's own numbers.
 {%- endcomment -%}
 {%- assign c = site.data.live.cards -%}
+{%- comment %} Every card for sale, any sport (the lists below are the MMA cards, the shop's dearest). {% endcomment -%}
+{%- assign total = c.stats.listed_all | default: c.stats.listed -%}
 <a class="skip" href="#cards">Skip to the cards</a>
 <header class="top">
   <p class="mark">JuanJulio <b>Cards</b></p>
@@ -27,9 +29,9 @@ image_alt: "JuanJulio Cards. UFC and MMA trading cards for sale."
 <main>
 <section class="hero">
   <div class="hero-words">
-    <p class="kicker">UFC · MMA trading cards</p>
+    <p class="kicker">UFC · MMA · Sports cards</p>
     <h1>JuanJulio <span>Cards</span></h1>
-    <p class="lede">Refractors, rookies, numbered parallels and autographs{% if c.stats.listed %}. <strong>{{ c.stats.listed }} cards</strong> for sale now{% endif %}.</p>
+    <p class="lede">UFC and MMA cards first, plus football, basketball and baseball: refractors, rookies, numbered parallels and autographs{% if total %}. <strong>{{ total }} cards</strong> for sale now{% endif %}.</p>
     <div class="stores">
       <a class="store main" href="{{ site.ebay_store_url }}" rel="noopener">
         <span class="store-go">Shop on eBay</span>
@@ -55,7 +57,7 @@ image_alt: "JuanJulio Cards. UFC and MMA trading cards for sale."
   </div>
 </section>
 
-<p class="band" aria-hidden="true"><span>Refractors</span><span>Rookies</span><span>Numbered</span><span>Autographs</span><span>Inserts</span></p>
+<p class="band" aria-hidden="true"><span>UFC</span><span>Football</span><span>Basketball</span><span>Baseball</span></p>
 
 {%- if c.for_sale.size > 0 %}
 <section class="sec" id="cards" aria-labelledby="cards-h">
@@ -79,7 +81,7 @@ image_alt: "JuanJulio Cards. UFC and MMA trading cards for sale."
     {%- endif -%}
   {%- endfor %}
   </ul>
-  <p class="more"><a class="btn" href="{{ site.ebay_store_url }}" rel="noopener">See all {{ c.stats.listed }} cards on eBay</a>{% if c.shop_url %}<a class="btn ghost" href="{{ c.shop_url }}" rel="noopener">Or on CollX</a>{% endif %}</p>
+  <p class="more"><a class="btn" href="{{ site.ebay_store_url }}" rel="noopener">See all {{ total }} cards on eBay</a>{% if c.shop_url %}<a class="btn ghost" href="{{ c.shop_url }}" rel="noopener">Or on CollX</a>{% endif %}</p>
 </section>
 {%- endif %}
 
@@ -106,7 +108,7 @@ image_alt: "JuanJulio Cards. UFC and MMA trading cards for sale."
   <ol class="rules">
     <li><h3>Pick a store</h3><p>Buy on eBay with its money-back guarantee, and save up to 15% when you buy several cards. Or use the CollX app, where you can make an offer on any card.</p></li>
     <li><h3>Shipping</h3><p>Orders ship by mail. Cards of $20 and up come with tracking.</p></li>
-    <li><h3>Looking for a fighter?</h3><p>Search the eBay store by name, or message us on <a href="{{ site.instagram_url }}" rel="noopener">Instagram</a>.</p></li>
+    <li><h3>Looking for someone?</h3><p>Search the eBay store by fighter or player, or message us on <a href="{{ site.instagram_url }}" rel="noopener">Instagram</a>.</p></li>
   </ol>
 </section>
 </main>
