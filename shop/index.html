@@ -1,0 +1,88 @@
+---
+layout: default
+title: JuanJulio Cards
+seo_title: "JuanJulio Cards · UFC and MMA Trading Cards for Sale on eBay and CollX"
+permalink: /shop/
+parent: /mma-cards/
+description: UFC and MMA trading cards for sale. Shop the JuanJulio MMA and Sports store on eBay or JuanJulio on CollX, and follow the new cards on Instagram.
+image: /assets/og/mma-cards.png
+image_alt: "MMA Card Shop, by Juan Torres. UFC cards for sale."
+---
+{%- comment -%}
+  The card shop's landing page (Juan, Nov 16, 2026: "a proper shop landing page for my eBay and collx"): the
+  address for Instagram's bio link and every Reel's "link in bio", so it's built for a phone first. The two
+  stores at the top, then the dearest cards with photos, the latest Reels, how buying works. A "work" page in
+  the boards' style (.rb .mc), with its own few rules under .sh in style.css. Cards and prices come from
+  site.data.live.cards, the daily copy of the showcase Worker (see /mma-cards/), so nothing here shows a cost or a
+  live deal. Prices shown are CollX's; eBay's are set separately, so the page says which.
+{%- endcomment -%}
+{%- assign c = site.data.live.cards -%}
+<div class="rb mc sh">
+<header class="sh-head">
+  <p class="rb-family">Work · Card shop</p>
+  <h1>JuanJulio Cards</h1>
+  <p class="sh-sub">UFC and MMA trading cards: refractors, rookies, numbered parallels and autographs{% if c.stats.listed %}, {{ c.stats.listed }} for sale now{% endif %}.</p>
+</header>
+
+<nav class="sh-stores" aria-label="Where to buy">
+  <a class="sh-store sh-main" href="{{ site.ebay_store_url }}" rel="noopener">
+    <span class="sh-where">eBay</span>
+    <span class="sh-name">JuanJulio MMA and Sports</span>
+    <span class="sh-note">Buy more, save more: up to 15% off with more cards in the cart</span>
+  </a>
+  {%- if c.shop_url %}
+  <a class="sh-store" href="{{ c.shop_url }}" rel="noopener">
+    <span class="sh-where">CollX</span>
+    <span class="sh-name">JuanJulio</span>
+    <span class="sh-note">The same cards in the CollX app; make an offer on any of them</span>
+  </a>
+  {%- endif %}
+</nav>
+<p class="sh-follow"><a href="{{ site.instagram_url }}" rel="noopener">Instagram @luvjjulio</a><a href="{{ site.facebook_url }}" rel="noopener">Facebook</a></p>
+
+{%- if c.for_sale.size > 0 %}
+<section class="rb-sec" id="top-cards" aria-labelledby="top-h">
+  <h2 id="top-h">Top cards</h2>
+  <p class="mc-how">The dearest cards for sale. Prices are CollX’s as of {{ c.checked }}; eBay sets its own.</p>
+  <ul class="mc-grid">
+  {%- assign shown = 0 -%}
+  {%- for k in c.for_sale -%}
+    {%- if k.photo and shown < 8 -%}
+    {%- assign shown = shown | plus: 1 %}
+    <li class="mc-card">
+      <a href="{{ site.ebay_store_url }}" rel="noopener"><img src="{{ k.photo }}" alt="{{ k.name | escape }}" loading="lazy" width="160" height="224"></a>
+      <p class="mc-name">{{ k.name }}</p>
+      <p class="mc-tags">{% if k.auto %}<span>Auto</span>{% endif %}{% if k.rookie %}<span>RC</span>{% endif %}{% if k.serial != "" %}<span>{{ k.serial }}</span>{% endif %}</p>
+      <p class="mc-price">{{ k.price }}</p>
+    </li>
+    {%- endif -%}
+  {%- endfor %}
+  </ul>
+  <p class="sh-more"><a class="rb-btn" href="{{ site.ebay_store_url }}" rel="noopener">See every card on eBay</a> <a href="/mma-cards/#for-sale">The full list here</a></p>
+</section>
+{%- endif %}
+
+{%- if site.data.social_feed and site.data.social_feed.size > 0 %}
+<section class="rb-sec" id="reels" aria-labelledby="reels-h">
+  <h2 id="reels-h">Latest Reels</h2>
+  <ul class="mc-grid mc-reels sh-reels">
+    {%- for p in site.data.social_feed limit: 4 %}
+    <li class="mc-card">
+      <a href="{{ p.url }}" rel="noopener"><img src="/mma-cards/reels/{{ p.media }}.jpg" alt="Reel of {% if p.set %}the {% endif %}{{ p.title | escape }}{% if p.set %} cards{% endif %}" loading="lazy" width="360" height="640"></a>
+      <p class="mc-name"><a href="{{ p.url }}" rel="noopener">{{ p.name | escape }}</a></p>
+      <p class="mc-price">{{ p.price }}</p>
+    </li>
+    {%- endfor %}
+  </ul>
+</section>
+{%- endif %}
+
+<section class="rb-sec" id="buying" aria-labelledby="buy-h">
+  <h2 id="buy-h">How buying works</h2>
+  <dl class="sh-faq">
+    <div><dt>eBay or CollX?</dt><dd>Either: most cards are on both. eBay takes cards, carts and offers the usual way, with eBay’s money-back guarantee; the store’s buy-more deal takes up to 15% off when you buy several. CollX is the card collectors’ app, where you can send an offer on any card.</dd></div>
+    <div><dt>Shipping</dt><dd>Cards under $20 ship in a plain envelope; $20 and up ship with tracking.</dd></div>
+    <div><dt>Looking for a fighter?</dt><dd>Search the eBay store by name, or send a message on <a href="{{ site.instagram_url }}" rel="noopener">Instagram</a>.</dd></div>
+  </dl>
+</section>
+</div>

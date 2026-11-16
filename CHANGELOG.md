@@ -41,6 +41,14 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-11-16 — The shop's landing page
+
+`/shop/` is the card shop's front door, built for the Instagram bio link and every Reel's "link in bio": the eBay
+store (JuanJulio MMA and Sports, with its buy-more deal) and CollX as two big tiles, Instagram and the Facebook
+Page, the eight dearest cards with photos, the latest four Reels, and how buying and shipping work. It reads the
+same daily snapshot as `/mma-cards/`, so it never shows a cost or a live deal. The store addresses are
+`ebay_store_url` and `facebook_url` in `_config.yml`.
+
 ## 2026-11-16 — Reels: fight week, a fighter intro, captions that ask, daily Stories
 
 A study of ~25 UFC card accounts through the Graph API found that plain "card, price, link in bio" feeds like ours get about

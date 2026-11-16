@@ -126,6 +126,9 @@ worker_url: "https://house-tv.5342543fsd.workers.dev"
 # src/showcase.js). scripts/snapshot.py copies its /showcase.json and photos daily.
 cards_url: "https://card-showcase.5342543fsd.workers.dev"
 instagram_url: "https://www.instagram.com/luvjjulio/"
+# The card shop's own storefronts, on the shop's landing page (/shop/, the address for Instagram's bio link).
+ebay_store_url: "https://www.ebay.com/str/juanjuliommaandsports"
+facebook_url: "https://www.facebook.com/profile.php?id=1436824466179904"
 # The private Card Tracker (its own repo, JuanTorresMI/card-tracker), linked from the home page's Dev tools; it sits behind Cloudflare Access.
 card_tracker_url: https://ledger-q7m3.5342543fsd.workers.dev/
 # The family label on /watching/.
