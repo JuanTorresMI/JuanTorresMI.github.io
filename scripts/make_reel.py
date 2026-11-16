@@ -21,6 +21,13 @@ SOUNDS = [(0.02, "card-slide-1.ogg", 0.8), (0.35, "card-place-1.ogg", 1.0), (1.3
 INK, WHITE, RED = (10, 10, 13), (255, 255, 255), (255, 34, 44)
 SHOP_TOP, SHOP = "SHOP MY CARDS ON COLLX", "JUANJULIO"
 CH = 800
+# The fighter edit (Juan, Nov 16, 2026: "fighter edits that transition into the card listing"): before the card rises, three
+# hard cuts on the beat into the card's own photo (close on the fighter, wider, the whole card), punching in and shaking,
+# his name slammed over them. Only the card's own picture: never UFC footage or event photos, which Meta's copyright
+# matching mutes or takes down. A card with no fighter named has no intro.
+INTRO = 1.6
+BEATS = (0.0, 0.53, 1.06)
+INTRO_SOUNDS = [(0.0, "card-shove-1.ogg", 1.0), (0.53, "card-place-1.ogg", 1.0), (1.06, "card-place-2.ogg", 1.0)]
 
 ease = lambda t: t * t * (3 - 2 * t)
 clamp = lambda x, a=0.0, b=1.0: max(a, min(b, x))
@@ -427,9 +434,49 @@ class Backdrop:
         return frame
 
 
-def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words=None, theme="glow"):
+def fighter_shots(raw):
+    """The intro's three cuts from the card's photo, each fitted to the box above the words: close on the upper middle
+    (where a card's fighter usually is), wider, then the whole card."""
+    w, h = raw.size
+    crops = [raw.crop((int(w * .16), int(h * .07), int(w * .84), int(h * .52))), raw.crop((int(w * .05), int(h * .03), int(w * .95), int(h * .68))), raw]
+    out = []
+    for im in crops:
+        k = min(1000 / im.width, 880 / im.height)
+        im = im.resize((max(2, round(im.width * k)), max(2, round(im.height * k))), Image.LANCZOS).convert("RGBA")
+        ImageDraw.Draw(im).rectangle((0, 0, im.width - 1, im.height - 1), outline=(255, 255, 255, 235), width=6)
+        out.append(im)
+    return out
+
+
+def intro_frame(frame, ti, shots, name, sub, color):
+    """One frame of the fighter edit at `ti` seconds."""
+    j = max(i for i, b in enumerate(BEATS) if ti >= b)
+    u = ti - BEATS[j]
+    frame.alpha_composite(Image.new("RGBA", (W, H), INK + (130,)))
+    pic = shots[j]
+    k = 1 + 0.22 * (1 - ease(clamp(u / 0.3))) + 0.05 * u + (0.5 * ease(clamp((ti - (INTRO - 0.14)) / 0.14)))
+    pic = pic.resize((max(2, round(pic.width * k)), max(2, round(pic.height * k))), Image.BILINEAR)
+    if u < 0.12:
+        # The hit: the red pulled apart from the rest for a moment.
+        r, g, b, a = pic.split()
+        pic = Image.merge("RGBA", (ImageChops.offset(r, 14, 0), g, b, a))
+    shake = 16 * (1 - clamp(u / 0.25))
+    x, y = W / 2 + shake * math.sin(u * 95), 650 + shake * math.cos(u * 77)
+    sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(sh).rectangle((x - pic.width / 2 + 14, y - pic.height / 2 + 24, x + pic.width / 2 + 14, y + pic.height / 2 + 24), fill=(0, 0, 0, 190))
+    frame.alpha_composite(sh.filter(ImageFilter.GaussianBlur(26)))
+    frame.alpha_composite(pic, (int(x - pic.width / 2), int(y - pic.height / 2)))
+    slam = clamp((ti - 0.05) / 0.15)
+    poster(frame, (W / 2, 1120), name, fit(name, 150, 960), color if j == 1 else WHITE, slam, 1.5 - 0.5 * ease(slam), stroke=10, tilt=-3)
+    caption_line(frame, 1212, sub, clamp((ti - 0.6) / 0.2))
+    fl = 0.55 * (1 - clamp(u / 0.12)) + 0.6 * clamp((ti - (INTRO - 0.12)) / 0.12)
+    if fl > 0: frame.alpha_composite(Image.new("RGBA", (W, H), WHITE + (int(255 * min(fl, 1)),)))
+
+
+def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words=None, theme="glow", soon=""):
     """`was` is the old price of a price drop, which gets its own look: red, with the old price struck through.
-    `words` replaces the opening hook ("STILL AVAILABLE"); `theme` is one of THEMES, what's behind the card."""
+    `words` replaces the opening hook ("STILL AVAILABLE"); `theme` is one of THEMES, what's behind the card; `soon` is the
+    fighter's next fight ("Fights Saturday vs. X"), said under his name in the intro."""
     raw = cutout(front_path)
     color = RED if was else accent(raw)
     cw = round(raw.width * CH / raw.height)
@@ -448,15 +495,24 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
     rarity = hook(card)
     words, line, price = ("PRICE DROP" if was else words or rarity), label(card), (card.get("price") or "").replace(".00", "")
     top_size, name_size, sub_size = fit(words, 132, 930), fit(name, 112, 930), fit(name, 86, 860)
-    total = SECS + cue
-    sounds = [(at + cue, f, v) for at, f, v in SOUNDS if back or at not in (4.6, 7.0)]
+    intro = INTRO if card.get("player") else 0
+    fshots = fighter_shots(raw) if intro else None
+    sub = (soon or "").upper() or label(card)
+    total = intro + SECS + cue
+    sounds = (INTRO_SOUNDS if intro else []) + [(at + cue + intro, f, v) for at, f, v in SOUNDS if back or at not in (4.6, 7.0)]
     silent = out + ".video.mp4"
     ff = encoder(silent)
     shots = {6, 20, 80, 150, 165, 225, 262, 290, 420, 462}
     sheet = []
     for n in range(int(FPS * total)):
-        t = n / FPS - cue
+        t = n / FPS - cue - intro
         frame = bd.at(n / (FPS * total), n)       # whole turns, so the last frame meets the first
+        if n / FPS < intro:
+            intro_frame(frame, n / FPS, fshots, name, sub, color)
+            rgb = frame.convert("RGB")
+            ff.stdin.write(rgb.tobytes())
+            if stills and n in (4, 20, 36): sheet.append(rgb.resize((216, 384)))
+            continue
         if t < 0:
             # Before the song's good part: only the hook, breathing, and the card still hidden.
             poster(frame, (W / 2, 800), words, top_size, color, 1, 1 + 0.03 * math.sin(n / FPS * 4))
@@ -510,7 +566,7 @@ def make(card, front_path, back_path, out, cue=0.0, stills=None, was=None, words
         if fl: frame.alpha_composite(Image.new("RGBA", (W, H), WHITE + (int(255 * fl),)))
         rgb = frame.convert("RGB")
         ff.stdin.write(rgb.tobytes())
-        if stills and n - int(cue * FPS) in shots: sheet.append(rgb.resize((216, 384)))
+        if stills and n - int((cue + intro) * FPS) in shots: sheet.append(rgb.resize((216, 384)))
     finish(ff, silent, out, sounds, total)
     if stills:
         contact(sheet, stills)
@@ -556,8 +612,8 @@ def contact(sheet, path):
 
 
 def grid_of(n):
-    """Columns and rows for a collage of n cards (n is 4, 6, 9 or 12)."""
-    return {4: (2, 2), 6: (3, 2), 9: (3, 3)}.get(n, (4, 3))
+    """Columns and rows for a collage of n cards (1 to 4, 6, 9 or 12; fewer than 4 only for a fight-week post)."""
+    return {1: (1, 1), 2: (2, 1), 3: (3, 1), 4: (2, 2), 6: (3, 2), 9: (3, 3)}.get(n, (4, 3))
 
 
 def make_set(title, sub, items, out, count, cue=0.0, theme="glow", stills=None):

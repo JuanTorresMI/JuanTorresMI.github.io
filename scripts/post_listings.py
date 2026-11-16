@@ -3,6 +3,7 @@
 
   python3 scripts/post_listings.py post        posts the next card: a price drop, a sale, a set's collage, the dearest new card, an old one again
   python3 scripts/post_listings.py post "set:2025 Topps Chrome"    posts that set's collage now
+  python3 scripts/post_listings.py post fight   posts the fighters on the next UFC card now (or "winners", the last one's winners)
   python3 scripts/post_listings.py preview     prints every card's caption
   python3 scripts/post_listings.py check       signs in, prints the account's name (never the token) and the songs it would use
   python3 scripts/post_listings.py test DIR    draws the next Reel with its song's preview into DIR, and publishes nothing
@@ -88,21 +89,67 @@ def tag(words):
     return "#" + re.sub(r"[^A-Za-z0-9]", "", "".join(w[:1].upper() + w[1:] for w in words.split()))
 
 
+# Nov 16, 2026: a study of ~25 UFC card accounts found plain "card, price, link in bio" feeds get ~3 likes a post, and
+# what draws people in is a question, the fighter himself (tagged) and the hobby's own hashtags. So each caption asks
+# something, tags the fighter's own account when it's verified (_data/fighter_handles.json, checked with Business
+# Discovery: never a guess), and uses the tags those accounts share (#UFCCards #MMACards #TheHobby).
+HANDLES = os.path.join(ROOT, "_data", "fighter_handles.json")
+QUESTIONS = ["Stash or flip? 👀", "Keep it or sell it?", "Grade it or keep it raw?", "Where does this rank in your PC?", "Who's your favorite fighter to collect?",
+             "Would this go in your binder or a top loader?"]
+FIGHTS = {}      # folded fighter name: "Fights Saturday vs. Navajo Stirling" (fight_soon fills it each run)
+
+
+def handle_of(player):
+    import fight_week
+    for name, h in load(HANDLES, {}).items():
+        if player and fight_week.same(name, player):
+            return h
+    return None
+
+
+def fight_soon(player):
+    """"Fights Saturday vs. X" when the fighter is on a card in the next few days, else ""."""
+    import fight_week
+    return next((v for k, v in FIGHTS.items() if player and fight_week.same(k, player)), "")
+
+
+def hashtags(c, extra=()):
+    low = f"{c.get('name') or ''} {c.get('set') or ''}".lower()
+    tags = ([tag(c["player"])] if c.get("player") else []) + list(extra) + ["#UFCCards"] + [f"#{t}" for p, t in PRODUCTS if p in low][:1]
+    tags += ["#RookieCard"] if c.get("rookie") else ["#Autograph"] if c.get("auto") else ["#MMACards"]
+    return " ".join((tags + ["#TheHobby", "#UFC"])[:5])
+
+
 def caption(c, was=None, sold=False):
-    """The card's name, its price, and five hashtags at most; for a price drop, what it was; for a sale, a thank-you instead."""
+    """The card's name (and the fighter's own account), its price, a question, and five hashtags at most; for a price drop,
+    what it was; for a sale, a thank-you instead."""
     name = c["name"].strip()
     if c.get("player") and c["player"].lower() not in name.lower():
         name = f"{c['player']}: {name}"
-    tags = [tag(c["player"])] if c.get("player") else []
-    tags += ["#UFC", "#UFCCards"]
-    low = f"{name} {c.get('set') or ''}".lower()
-    tags += [f"#{t}" for p, t in PRODUCTS if p in low][:1]
-    tags += ["#Refractor"] if re.search("refractor", f"{name} {c.get('parallel') or ''}", re.I) else []
-    tags += ["#RookieCard"] if c.get("rookie") else ["#Autograph"] if c.get("auto") else ["#MMACards"]
+    h = handle_of(c.get("player"))
+    who = f"\n@{h}" if h else ""
+    soon = fight_soon(c.get("player"))
     if sold:
-        return f"SOLD: {name}\nThank you to the buyer. More UFC cards in the shop, link in bio\n\n{' '.join(tags[:5])}"
+        return f"SOLD: {name}{who}\nThank you to the buyer. More UFC cards in the shop, link in bio\n\n{hashtags(c)}"
     price = f"Price drop: was {was}, now {c['price']}" if was else c["price"]
-    return f"{name}\n{price} · shop link in bio\n\n{' '.join(tags[:5])}"
+    ask = f"{soon}: who are you picking?" if soon else QUESTIONS[int(c["id"]) % len(QUESTIONS)] if str(c.get("id", "")).isdigit() else QUESTIONS[0]
+    return f"{name}{who}\n{price} · shop link in bio\n\n{ask}\n\n{hashtags(c)}"
+
+
+def caption_fight(g):
+    """A fight-week or winners post: the event, each fighter's card and price, a question."""
+    e, names = g["event"], [f"{f} {c['price'].replace('.00', '')}" for f, c in g["picks"][:6]]
+    more = len(g["picks"]) - len(names)
+    event_tag = tag(re.sub(r"[^A-Za-z0-9 ]", "", e["name"].split(":")[0]))
+    if g["kind"] == "winners":
+        won = ", ".join(f for f, _ in g["picks"][:4])
+        head = f"Congrats to {won} at {e['name']}. Their cards are in the shop:"
+        ask = "Who impressed you most?"
+    else:
+        head = f"{g['when'].title()} at {e['name']}. Cards of the fighters, in the shop now:"
+        ask = "Who are you picking?"
+    lines = " · ".join(names) + (f" and {more} more" if more > 0 else "")
+    return f"{head}\n{lines}\nLink in bio\n\n{ask}\n\n{' '.join([event_tag, '#UFC', '#UFCCards', '#MMACards', '#TheHobby'])}"
 
 
 def caption_set(g):
@@ -287,9 +334,57 @@ def sets_due(cards, posted):
     return sorted(due, key=lambda g: (sum(worth(c) for c in g["cards"]), g["count"]), reverse=True)
 
 
+FIGHT_BEFORE_DAYS = 5      # the fighters on a card go out this many days before it at most
+WINNERS_DAYS = 3           # and the winners within this many days after
+FIGHT_MAX = 12
+
+
+def fight_posts(cards, posted, force=None):
+    """The fight-week posts due (Juan, Nov 16, 2026): before an event, a collage of the shop's cards of its fighters
+    ("fight-<event>"); after it, of its winners ("winners-<event>"). Any price: these are the fighters people are looking
+    up that week. Fills FIGHTS for the captions too. `force` ("fight" or "winners") takes the nearest one, posted or not."""
+    import fight_week
+    try:
+        evs = fight_week.events()
+    except Exception as e:
+        print(f"No UFC schedule this run ({e})")
+        return []
+    today = datetime.now(fight_week.ET).date()
+    ready = [{**c, "_worth": worth(c)} for c in cards if c.get("photo") and priced(c)]
+    out = []
+    for e in sorted(evs, key=lambda e: e["when"]):
+        days = (e["day"] - today).days
+        if not e["done"] and 0 <= days <= FIGHT_BEFORE_DAYS:
+            for b in e["bouts"]:
+                for i, f in enumerate(b["fighters"]):
+                    other = b["fighters"][1 - i] if len(b["fighters"]) == 2 else ""
+                    FIGHTS[f] = f"Fights {fight_week.day_word(e, today).title()}" + (f" vs. {other}" if other else "")
+            kind, names = "fight", [f for b in e["bouts"] for f in b["fighters"]]
+        elif e["done"] and 0 <= -days <= WINNERS_DAYS:
+            kind, names = "winners", [b["winner"] for b in e["bouts"] if b["winner"]]
+        else:
+            continue
+        key = f"{kind}-{e['id']}"
+        if (key in posted and force != kind) or (force and force != kind):
+            continue
+        picks = fight_week.cards_of(names, ready)[:FIGHT_MAX]
+        if not picks:
+            continue
+        when = fight_week.day_word(e, today)
+        head, main = fight_week.headline(e)
+        title = "WINNERS" if kind == "winners" else f"FIGHTING {when}" if when not in ("TONIGHT",) else "FIGHT NIGHT TONIGHT"
+        out.append({"id": key, "kind": kind, "name": title, "set": "", "player": "", "price": "", "event": e, "when": when, "picks": picks,
+                    "cards": [c for _, c in picks], "count": len(picks), "title": title, "sub": f"{head}  ·  {main}".upper()})
+    return out
+
+
 def next_up(cards, posted, prices, sold=()):
-    """What goes next, as (card, old price or None, why): a price drop, then a recent sale ("sold", kept in posted as
-    sold-<id>), then the dearest new card, then an old one again."""
+    """What goes next, as (card, old price or None, why): a fight-week post (the fighters on the next card, or the
+    winners), a price drop, then a recent sale ("sold", kept in posted as sold-<id>), a set's collage, the dearest new
+    card, then an old one again."""
+    fights = fight_posts(cards, posted)
+    if fights:
+        return fights[0], None, fights[0]["kind"]
     ready = [c for c in cards if c.get("photo") and priced(c)]
     drops = [c for c in ready if prices.get(str(c["id"])) and prices[str(c["id"])] >= MIN_POST * 100 and cents_of(c) <= prices[str(c["id"])] * (1 - DROP_FROM)]
     ready = [c for c in ready if worth(c) >= MIN_POST]
@@ -369,7 +464,7 @@ def test(folder, card=None, old=None):
     theme = pick_theme(load(POSTED, {}))
     print(f"{c['id']} ({why}, look {theme}): getting photos")
     draw(c, why, was, folder, os.path.join(folder, "next-reel.mp4"), CUES.get((song or {}).get("audio_id"), 0.0), theme, stills=os.path.join(folder, "frames.png"))
-    text = caption_set(c) if why == "set" else caption(c, was, why == "sold")
+    text = caption_of(c, was, why)
     with open(os.path.join(folder, "caption.txt"), "w", encoding="utf-8") as f:
         f.write(f"{text}\n\nSong: {song.get('title')} - {song.get('display_artist')}\n" if song else f"{text}\n\nNo song found.\n")
     print(f"{c['id']} ({why}, look {theme}): {c['name']} | song: {(song or {}).get('title')} - {(song or {}).get('display_artist')}")
@@ -386,6 +481,17 @@ def front_of(c, folder):
 def draw(c, why, was, folder, film, cue, theme, stills=None):
     """The Reel for a card or (why "set") a set's collage, into `film`."""
     import make_reel
+    if why in ("fight", "winners"):
+        items = []
+        for x in c["cards"]:
+            try:
+                items.append((x, front_of(x, folder)))
+            except urllib.error.HTTPError:
+                pass
+        items = items[:max([k for k in (1, 2, 3, 4, 6, 9, 12) if k <= len(items)], default=0)]
+        if not items:
+            raise RuntimeError(f"No photos for {c['name']}")
+        return make_reel.make_set(c["title"], c["sub"], items, film, c["count"], cue=cue, theme=theme, stills=stills)
     if why == "set":
         items = []
         for x in c["cards"]:
@@ -400,7 +506,11 @@ def draw(c, why, was, folder, film, cue, theme, stills=None):
         title = re.sub(r"\s*UFC$", "", c["name"]).upper()
         return make_reel.make_set(title, f"UFC  ·  {sub}", items, film, c["count"], cue=cue, theme=theme, stills=stills)
     front, back = photos_of(c, folder)
-    make_reel.make(c, front, back, film, cue=cue, stills=stills, was=was, words=WORDS.get(why), theme=theme)
+    make_reel.make(c, front, back, film, cue=cue, stills=stills, was=was, words=WORDS.get(why), theme=theme, soon=fight_soon(c.get("player")))
+
+
+def caption_of(c, was, why):
+    return caption_fight(c) if why in ("fight", "winners") else caption_set(c) if why == "set" else caption(c, was, why == "sold")
 
 
 def pick_theme(posted):
@@ -419,6 +529,10 @@ def choose(cards, posted, prices, card=None, old=None):
     sold = recent_sales()
     if not card:
         return next_up(cards, posted, prices, sold)
+    if str(card).lower() in ("fight", "winners"):
+        g = fight_posts(cards, posted, force=str(card).lower())
+        return (g[0], None, g[0]["kind"]) if g else (None, None, f"no {card} post: no UFC event near with the shop's fighters")
+    fight_posts(cards, {}, force="none")      # only to know who fights soon, for the caption
     if str(card).lower().startswith("set:"):
         want = card[4:].strip().lower()
         name = next((n for n in sorted({set_of(c) for c in cards}) if n.lower() == want), None) or \
@@ -455,7 +569,7 @@ def post(card=None, old=None):
     if not c:
         save(PRICES, prices)
         return print(f"Nothing to post: {why}.")
-    text = caption_set(c) if why == "set" else caption(c, was, why == "sold")
+    text = caption_of(c, was, why)
     if not (os.environ.get("IG_USER_ID") and os.environ.get("IG_ACCESS_TOKEN")):
         return print(f"No Instagram keys. Would post card {c['id']}:\n{text}")
     user, host = os.environ["IG_USER_ID"], account()[0]
@@ -477,7 +591,7 @@ def post(card=None, old=None):
         reel_url = f"{showcase_url()}/reel/{slug}.mp4"
         with open(film, "rb") as f:
             shelf("PUT", reel_url, f.read())
-        fields = {"media_type": "REELS", "video_url": reel_url, "caption": text, "share_to_feed": "true", "thumb_offset": str(int((cue + 11) * 1000))}
+        fields = {"media_type": "REELS", "video_url": reel_url, "caption": text, "share_to_feed": "true", "thumb_offset": str(int((cue + 11 + (make_reel.INTRO if c.get("player") and not c.get("cards") else 0)) * 1000))}
         if song:
             fields["audio_configuration"] = json.dumps({"audio_id": song["audio_id"], "audio_volume": 80, "video_volume": 100})
         try:
@@ -499,6 +613,7 @@ def post(card=None, old=None):
         time.sleep(5)
     media = graph(host, f"{user}/media_publish", creation_id=made).get("id")
     fb = to_facebook(reel_url, text)
+    story = to_story(host, user, reel_url)
     shelf("DELETE", reel_url)
     # When each one went out, and its id: what the search for the best time reads back.
     key = f"sold-{c['id']}" if why == "sold" else str(c["id"])     # a sale's Reel is its own entry: the card's for-sale one stays
@@ -508,16 +623,18 @@ def post(card=None, old=None):
                    "repeats": times, "song": song and song["audio_id"], "song_name": song and f"{song.get('title')} - {song.get('display_artist')}", "theme": theme}
     if fb:
         posted[key]["facebook"] = fb
-    if why == "set":
+    if story:
+        posted[key]["story"] = story
+    if c.get("cards"):
         posted[key]["cards"] = [x["id"] for x in c["cards"]]
-    if why not in ("sold", "set"):
+    if why not in ("sold", "set", "fight", "winners"):
         prices[str(c["id"])] = cents_of(c)    # the drop's been told: this is the new mark
     save(POSTED, posted)
     save(PRICES, prices)
     if song:
         save(SONGS, {**used_songs(), song["audio_id"]: posted[key]["at"]})
     try:
-        feed_add(host, media, c, "drop" if was else why)
+        feed_add(host, media, c, "drop" if was else "set" if c.get("cards") else why)
     except Exception as e:      # the post is out: the page can miss one
         print(f"Couldn't add it to the page: {e}")
     print(f"Posted {c['id']} ({why}, look {theme}): {c['name']}" + (f" with {posted[key]['song_name']}" if song else "") + (", and on Facebook" if fb else ""))
@@ -569,6 +686,38 @@ def to_facebook(video_url, text):
         print(f"Facebook refused the Reel ({e.code}): {json.load(e).get('error', {}).get('message', '')[:200]}")
     except Exception as e:
         print(f"Facebook post failed: {e}")
+    return None
+
+
+STORIES = os.path.join(ROOT, "_data", "social_stories.json")
+STORY_EVERY_H = 20         # one Story a day: the first Reel after this many hours goes to Stories too
+
+
+def to_story(host, user, video_url):
+    """The day's first Reel also as an Instagram Story (Juan, Nov 16, 2026: "daily stories would be good"), from the same
+    parked film, so the followers who skip the feed see it at the top of their app. At most one a day; a Story that fails
+    never stops the post. Returns the Story's id, or None."""
+    kept = load(STORIES, {})
+    if kept.get("at") and hours_since(kept["at"]) < STORY_EVERY_H:
+        return None
+    try:
+        made = graph(host, f"{user}/media", media_type="STORIES", video_url=video_url)["id"]
+        for _ in range(60):
+            state = graph(host, made, fields="status_code").get("status_code")
+            if state == "FINISHED":
+                break
+            if state == "ERROR":
+                print("Instagram couldn't process the Story")
+                return None
+            time.sleep(5)
+        sid = graph(host, f"{user}/media_publish", creation_id=made).get("id")
+        save(STORIES, {"at": datetime.now(timezone.utc).isoformat(timespec="minutes"), "media": sid, "count": kept.get("count", 0) + 1})
+        print(f"Posted as a Story too: {sid}")
+        return sid
+    except urllib.error.HTTPError as e:
+        print(f"Instagram refused the Story ({e.code}): {json.load(e).get('error', {}).get('message', '')[:200]}")
+    except Exception as e:
+        print(f"Story failed: {e}")
     return None
 
 

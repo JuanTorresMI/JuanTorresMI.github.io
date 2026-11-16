@@ -10,7 +10,8 @@ collected, or what it costs to run.
 Things waiting on a decision or on Juan, so they aren't lost:
 
 - **Instagram posting**: listed cards without a photo are skipped: add photos in the Card Tracker. Renew the
-  account's token by Dec 31, 2026: `IG_ACCESS_TOKEN` is a long-lived user token made Nov 1. Pick luvjjulio under Assets when making it, and extend it. `GH_DISPATCH_TOKEN`
+  account's token before Feb 14, 2027, when its data access lapses: `IG_ACCESS_TOKEN` is a user token made Nov 16 with the Page and insights
+  permissions (`pages_show_list`, `pages_read_engagement`, `pages_manage_posts`, `instagram_manage_insights`). Pick luvjjulio under Assets when making it, and extend it. `GH_DISPATCH_TOKEN`
   now starts the daily post too. TikTok isn't built: its API only posts privately until an app passes audit.
 - **Renew `GH_DISPATCH_TOKEN`** before it expires (set Oct 18, 2026; fine-grained, this repo only,
   Actions: read and write). Steps in worker/README.md, "Updating the pages". If it lapses, GitHub's
@@ -39,6 +40,22 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **More USDA boards** (Juan wants all of them): next are hogs (LM_HG217/218), lamb (LM_XL502) and cow
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
+
+## 2026-11-16 — Reels: fight week, a fighter intro, captions that ask, daily Stories
+
+A study of ~25 UFC card accounts through the Graph API found that plain "card, price, link in bio" feeds like ours get about
+3 likes a post, and that questions, the fighters themselves and the hobby's hashtags draw people in. So:
+
+- **Fight week** (`scripts/fight_week.py`, ESPN's public UFC scoreboard): up to 5 days before an event, a collage of the
+  shop's cards of the fighters on it ("FIGHTING SATURDAY", any price); up to 3 days after, one of the winners. They go
+  before everything else (`fight-<event>` / `winners-<event>` in `social_posted.json`; the workflow's `card` input takes
+  `fight` or `winners`). A card's caption says when its fighter fights next.
+- **The fighter intro**: a card Reel with a fighter opens with 1.6 seconds of hard cuts into the card's own photo, his name
+  slammed over them, then the card rises as before. Only the card's picture: no UFC footage, which Meta's copyright matching takes down.
+- **Captions** ask a question, tag the fighter's own account when it's verified (`_data/fighter_handles.json`, checked with
+  Business Discovery), and use #UFCCards #MMACards #TheHobby.
+- **Daily Stories**: the day's first Reel also goes to Stories (`_data/social_stories.json`).
+- The Facebook Page now gets every Reel: the token had no Page permissions until Nov 16, so none had gone there.
 
 ## 2026-11-08 — Reels: set collages, six looks, and Facebook
 

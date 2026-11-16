@@ -240,7 +240,7 @@ that grows without a trim and a CSV that keeps it.
   royalty-free library, never famous artists' songs; the workflow's `music` switch lists what a search finds, and a refused song posts
   without music. Instagram can't choose where a song
   starts: `CUES` holds the reveal until its good part. The film's words stay out of the top 14% and bottom 35%, and it loops: the
-  card leaves at the end and rises in at the start. The latest 12 are on `/mma-cards/` (`_data/social_feed.json`, `mma-cards/reels/`,
+  card leaves at the end and rises in at the start. Since Nov 16, 2026: fight-week collages come first (`scripts/fight_week.py` reads ESPN's public UFC scoreboard: the shop's cards of an event's fighters up to 5 days before, its winners up to 3 days after, `fight-<id>` / `winners-<id>`); a card Reel with a fighter opens with a 1.6-second fighter edit cut from the card's own photo (`make_reel.INTRO`; never UFC footage or event photos: Meta's copyright matching takes them down); captions ask a question and tag the fighter's own account only from `_data/fighter_handles.json` (verified with Business Discovery, never guessed); and the day's first Reel also goes to Stories (`to_story`, `_data/social_stories.json`). The latest 12 are on `/mma-cards/` (`_data/social_feed.json`, `mma-cards/reels/`,
   a local copy of each cover, since Instagram's addresses expire). Only listed cards ever go out: never live deals. The portfolio
   links out to this account and nothing in the JSON-LD connects them (see "The music page").
 - **`/blog/`**: renders the local posts in HTML and merges Substack's items by script, so the

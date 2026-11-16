@@ -27,7 +27,7 @@ on:
         type: boolean
         default: false
       card:
-        description: "Post this card id instead of the next one, or set:<name> for a set's collage (set:2025 Topps Chrome)"
+        description: "Post this card id instead of the next one, set:<name> for a set's collage (set:2025 Topps Chrome), or fight / winners for the UFC event's"
         type: string
         default: ""
       was:
@@ -114,6 +114,7 @@ jobs:
         if: ${{ !inputs.check && !inputs.test && !inputs.stats && inputs.music == '' }}
         run: |
           git add _data/social_posted.json _data/social_prices.json _data/social_songs.json
+          if [ -e _data/social_stories.json ]; then git add _data/social_stories.json; fi
           if [ -e _data/social_feed.json ]; then git add _data/social_feed.json mma-cards/reels; fi
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
