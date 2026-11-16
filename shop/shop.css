@@ -90,6 +90,7 @@ h2 { font: 400 clamp(36px, 8vw, 56px)/1 var(--display); letter-spacing: 0.02em; 
 .chip { padding: 3px 6px; border: 1px solid var(--gold-deep); color: var(--gold); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
 
 .more { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.btn span { margin: 0 0.3em; }
 .btn { display: inline-flex; align-items: center; min-height: 52px; padding: 0 24px; background: var(--gold); border: 2px solid var(--gold); color: var(--ink); font: 400 20px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; }
 .btn:hover { background: var(--white); border-color: var(--white); color: var(--ink); }
 .btn.ghost { background: transparent; border-color: var(--white); color: var(--white); }

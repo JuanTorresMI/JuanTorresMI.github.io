@@ -45,6 +45,8 @@ Things waiting on a decision or on Juan, so they aren't lost:
 
 Later the same day it became a page of its own (`_layouts/shop.html`, `shop/shop.css`), out of the portfolio's
 chrome: a fight-night bill in black, white and one gold ink, with Anton, the Reels' type, for names and prices.
+It counts every card for sale, any sport (the showcase's `totals.listed_all`), and `shop/shop.js` refreshes the count
+and the top cards from the shop itself on each visit, so a sold card is gone within the half hour.
 
 `/shop/` is the card shop's front door, built for the Instagram bio link and every Reel's "link in bio": the eBay
 store (JuanJulio MMA and Sports, with its buy-more deal) and CollX as two big tiles, Instagram and the Facebook
