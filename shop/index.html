@@ -1,88 +1,116 @@
 ---
-layout: default
+layout: shop
 title: JuanJulio Cards
 seo_title: "JuanJulio Cards · UFC and MMA Trading Cards for Sale on eBay and CollX"
 permalink: /shop/
-parent: /mma-cards/
 description: UFC and MMA trading cards for sale. Shop the JuanJulio MMA and Sports store on eBay or JuanJulio on CollX, and follow the new cards on Instagram.
 image: /assets/og/mma-cards.png
-image_alt: "MMA Card Shop, by Juan Torres. UFC cards for sale."
+image_alt: "JuanJulio Cards. UFC and MMA trading cards for sale."
 ---
 {%- comment -%}
-  The card shop's landing page (Juan, Nov 16, 2026: "a proper shop landing page for my eBay and collx"): the
-  address for Instagram's bio link and every Reel's "link in bio", so it's built for a phone first. The two
-  stores at the top, then the dearest cards with photos, the latest Reels, how buying works. A "work" page in
-  the boards' style (.rb .mc), with its own few rules under .sh in style.css. Cards and prices come from
-  site.data.live.cards, the daily copy of the showcase Worker (see /mma-cards/), so nothing here shows a cost or a
-  live deal. Prices shown are CollX's; eBay's are set separately, so the page says which.
+  The card shop's landing page (Juan, Nov 16, 2026: "a stand alone card page with a proper theme that fits the
+  niche"): the address for Instagram's bio link and every Reel's "link in bio", so it's built for a phone first.
+  One idea: a fight-night bill. Black, one gold ink, Anton for the names (the Reels' own type), Inter for the rest;
+  an octagon and the cage's fence behind the headline, and nothing else decorative. The two stores first, then the
+  dearest cards, the latest Reels, how buying works. Cards and prices come from site.data.live.cards, the daily
+  copy of the showcase Worker (see /mma-cards/), so nothing here shows a cost or a live deal. Prices shown are
+  CollX's; eBay's are set separately, so the page says which.
 {%- endcomment -%}
 {%- assign c = site.data.live.cards -%}
-<div class="rb mc sh">
-<header class="sh-head">
-  <p class="rb-family">Work · Card shop</p>
-  <h1>JuanJulio Cards</h1>
-  <p class="sh-sub">UFC and MMA trading cards: refractors, rookies, numbered parallels and autographs{% if c.stats.listed %}, {{ c.stats.listed }} for sale now{% endif %}.</p>
+<a class="skip" href="#cards">Skip to the cards</a>
+<header class="top">
+  <p class="mark">JuanJulio <b>Cards</b></p>
+  <p class="top-links"><a href="{{ site.ebay_store_url }}" rel="noopener">eBay</a>{% if c.shop_url %}<a href="{{ c.shop_url }}" rel="noopener">CollX</a>{% endif %}<a href="{{ site.instagram_url }}" rel="noopener">Instagram</a></p>
 </header>
 
-<nav class="sh-stores" aria-label="Where to buy">
-  <a class="sh-store sh-main" href="{{ site.ebay_store_url }}" rel="noopener">
-    <span class="sh-where">eBay</span>
-    <span class="sh-name">JuanJulio MMA and Sports</span>
-    <span class="sh-note">Buy more, save more: up to 15% off with more cards in the cart</span>
-  </a>
-  {%- if c.shop_url %}
-  <a class="sh-store" href="{{ c.shop_url }}" rel="noopener">
-    <span class="sh-where">CollX</span>
-    <span class="sh-name">JuanJulio</span>
-    <span class="sh-note">The same cards in the CollX app; make an offer on any of them</span>
-  </a>
-  {%- endif %}
-</nav>
-<p class="sh-follow"><a href="{{ site.instagram_url }}" rel="noopener">Instagram @luvjjulio</a><a href="{{ site.facebook_url }}" rel="noopener">Facebook</a></p>
+<main>
+<section class="hero">
+  <svg class="oct" viewBox="0 0 100 100" aria-hidden="true"><polygon points="29.3,2 70.7,2 98,29.3 98,70.7 70.7,98 29.3,98 2,70.7 2,29.3"/><polygon points="31,6 69,6 94,31 94,69 69,94 31,94 6,69 6,31"/></svg>
+  <div class="hero-words">
+    <p class="kicker">UFC · MMA trading cards</p>
+    <h1>JuanJulio <span>Cards</span></h1>
+    <p class="lede">Refractors, rookies, numbered parallels and autographs{% if c.stats.listed %}. <strong>{{ c.stats.listed }} cards</strong> for sale now{% endif %}.</p>
+    <div class="stores">
+      <a class="store main" href="{{ site.ebay_store_url }}" rel="noopener">
+        <span class="store-go">Shop on eBay</span>
+        <span class="store-note">Buy more, save more: up to 15% off</span>
+      </a>
+      {%- if c.shop_url %}
+      <a class="store" href="{{ c.shop_url }}" rel="noopener">
+        <span class="store-go">Shop on CollX</span>
+        <span class="store-note">Make an offer on any card</span>
+      </a>
+      {%- endif %}
+    </div>
+  </div>
+  <div class="fan" aria-hidden="true">
+    {%- assign n = 0 -%}
+    {%- for k in c.for_sale -%}
+      {%- if k.photo and n < 3 -%}
+        {%- assign n = n | plus: 1 %}
+    <img class="fan-{{ n }}" src="{{ k.photo }}" alt="" width="160" height="224">
+      {%- endif -%}
+    {%- endfor %}
+  </div>
+</section>
+
+<p class="band" aria-hidden="true"><span>Refractors</span><span>Rookies</span><span>Numbered</span><span>Autographs</span><span>Inserts</span></p>
 
 {%- if c.for_sale.size > 0 %}
-<section class="rb-sec" id="top-cards" aria-labelledby="top-h">
-  <h2 id="top-h">Top cards</h2>
-  <p class="mc-how">The dearest cards for sale. Prices are CollX’s as of {{ c.checked }}; eBay sets its own.</p>
-  <ul class="mc-grid">
+<section class="sec" id="cards" aria-labelledby="cards-h">
+  <header class="sec-head">
+    <h2 id="cards-h">Main card</h2>
+    <p>The top cards for sale. Prices are CollX’s as of {{ c.checked }}; eBay sets its own.</p>
+  </header>
+  <ul class="cards">
   {%- assign shown = 0 -%}
   {%- for k in c.for_sale -%}
     {%- if k.photo and shown < 8 -%}
     {%- assign shown = shown | plus: 1 %}
-    <li class="mc-card">
-      <a href="{{ site.ebay_store_url }}" rel="noopener"><img src="{{ k.photo }}" alt="{{ k.name | escape }}" loading="lazy" width="160" height="224"></a>
-      <p class="mc-name">{{ k.name }}</p>
-      <p class="mc-tags">{% if k.auto %}<span>Auto</span>{% endif %}{% if k.rookie %}<span>RC</span>{% endif %}{% if k.serial != "" %}<span>{{ k.serial }}</span>{% endif %}</p>
-      <p class="mc-price">{{ k.price }}</p>
+    <li>
+      <a class="card" href="{{ site.ebay_store_url }}" rel="noopener">
+        <img src="{{ k.photo }}" alt="{{ k.name | escape }}" loading="lazy" width="160" height="224">
+        <span class="card-who">{% if k.player and k.player != "" %}{{ k.player }}{% else %}{{ k.name | truncatewords: 3, "" }}{% endif %}</span>
+        <span class="card-what">{% if k.player and k.player != "" and k.set != "" %}{{ k.set }}{% if k.parallel != "" %} · {{ k.parallel }}{% endif %}{% else %}{{ k.name }}{% endif %}</span>
+        <span class="card-foot"><span class="card-price">{{ k.price | replace: ".00", "" }}</span>{% if k.serial != "" %}<span class="chip">{{ k.serial }}</span>{% endif %}{% if k.auto %}<span class="chip">Auto</span>{% endif %}{% if k.rookie %}<span class="chip">RC</span>{% endif %}</span>
+      </a>
     </li>
     {%- endif -%}
   {%- endfor %}
   </ul>
-  <p class="sh-more"><a class="rb-btn" href="{{ site.ebay_store_url }}" rel="noopener">See every card on eBay</a> <a href="/mma-cards/#for-sale">The full list here</a></p>
+  <p class="more"><a class="btn" href="{{ site.ebay_store_url }}" rel="noopener">See all {{ c.stats.listed }} cards on eBay</a>{% if c.shop_url %}<a class="btn ghost" href="{{ c.shop_url }}" rel="noopener">Or on CollX</a>{% endif %}</p>
 </section>
 {%- endif %}
 
 {%- if site.data.social_feed and site.data.social_feed.size > 0 %}
-<section class="rb-sec" id="reels" aria-labelledby="reels-h">
-  <h2 id="reels-h">Latest Reels</h2>
-  <ul class="mc-grid mc-reels sh-reels">
+<section class="sec" id="reels" aria-labelledby="reels-h">
+  <header class="sec-head">
+    <h2 id="reels-h">Latest Reels</h2>
+    <p>New cards, price drops and fight-week picks on <a href="{{ site.instagram_url }}" rel="noopener">@luvjjulio</a>.</p>
+  </header>
+  <ul class="reels">
     {%- for p in site.data.social_feed limit: 4 %}
-    <li class="mc-card">
-      <a href="{{ p.url }}" rel="noopener"><img src="/mma-cards/reels/{{ p.media }}.jpg" alt="Reel of {% if p.set %}the {% endif %}{{ p.title | escape }}{% if p.set %} cards{% endif %}" loading="lazy" width="360" height="640"></a>
-      <p class="mc-name"><a href="{{ p.url }}" rel="noopener">{{ p.name | escape }}</a></p>
-      <p class="mc-price">{{ p.price }}</p>
-    </li>
+    <li><a class="reel" href="{{ p.url }}" rel="noopener">
+      <img src="/mma-cards/reels/{{ p.media }}.jpg" alt="Reel of {% if p.set %}the {% endif %}{{ p.title | escape }}{% if p.set %} cards{% endif %}" loading="lazy" width="360" height="640">
+      <span class="card-who">{{ p.name | escape }}</span>
+      <span class="card-foot"><span class="card-price">{{ p.price }}</span>{% if p.drop %}<span class="chip">Price drop</span>{% endif %}{% if p.sold %}<span class="chip">Sold</span>{% endif %}</span>
+    </a></li>
     {%- endfor %}
   </ul>
 </section>
 {%- endif %}
 
-<section class="rb-sec" id="buying" aria-labelledby="buy-h">
-  <h2 id="buy-h">How buying works</h2>
-  <dl class="sh-faq">
-    <div><dt>eBay or CollX?</dt><dd>Either: most cards are on both. eBay takes cards, carts and offers the usual way, with eBay’s money-back guarantee; the store’s buy-more deal takes up to 15% off when you buy several. CollX is the card collectors’ app, where you can send an offer on any card.</dd></div>
-    <div><dt>Shipping</dt><dd>Cards under $20 ship in a plain envelope; $20 and up ship with tracking.</dd></div>
-    <div><dt>Looking for a fighter?</dt><dd>Search the eBay store by name, or send a message on <a href="{{ site.instagram_url }}" rel="noopener">Instagram</a>.</dd></div>
-  </dl>
+<section class="sec" id="buying" aria-labelledby="buy-h">
+  <header class="sec-head"><h2 id="buy-h">How buying works</h2></header>
+  <ol class="rules">
+    <li><h3>Pick a store</h3><p>Most cards are on both. eBay has carts, offers and its money-back guarantee, and the store’s buy-more deal takes up to 15% off when you buy several. CollX is the collectors’ app, where you can send an offer on any card.</p></li>
+    <li><h3>Shipping</h3><p>Cards under $20 ship in a plain envelope. Cards of $20 and up ship with tracking.</p></li>
+    <li><h3>Looking for a fighter?</h3><p>Search the eBay store by name, or send a message on <a href="{{ site.instagram_url }}" rel="noopener">Instagram</a>.</p></li>
+  </ol>
 </section>
-</div>
+</main>
+
+<footer class="foot">
+  <p class="mark">JuanJulio <b>Cards</b></p>
+  <p class="foot-links"><a href="{{ site.ebay_store_url }}" rel="noopener">eBay store</a>{% if c.shop_url %}<a href="{{ c.shop_url }}" rel="noopener">CollX</a>{% endif %}<a href="{{ site.instagram_url }}" rel="noopener">Instagram</a><a href="{{ site.facebook_url }}" rel="noopener">Facebook</a><a href="/mma-cards/">The numbers behind the shop</a></p>
+</footer>

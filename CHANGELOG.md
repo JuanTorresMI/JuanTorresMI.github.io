@@ -43,6 +43,9 @@ Things waiting on a decision or on Juan, so they aren't lost:
 
 ## 2026-11-16 — The shop's landing page
 
+Later the same day it became a page of its own (`_layouts/shop.html`, `shop/shop.css`), out of the portfolio's
+chrome: a fight-night bill in black, white and one gold ink, with Anton, the Reels' type, for names and prices.
+
 `/shop/` is the card shop's front door, built for the Instagram bio link and every Reel's "link in bio": the eBay
 store (JuanJulio MMA and Sports, with its buy-more deal) and CollX as two big tiles, Instagram and the Facebook
 Page, the eight dearest cards with photos, the latest four Reels, and how buying and shipping work. It reads the

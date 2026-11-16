@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{%- comment %}
+  The card shop's landing page (/shop/), a page of its own like the music page: no head.html, nav, footer or
+  style.css. Everything it needs is in shop/ (shop.css, icon.svg) plus the Anton and Inter fonts, so it can move to
+  its own domain. Its look is the Reels' and the thank-you note's: black, one gold ink, Anton.
+{% endcomment -%}
+{%- assign image = page.image | absolute_url -%}
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page.seo_title | default: page.title }}</title>
+<meta name="description" content="{{ page.description | escape }}">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a0a0d">
+<meta property="og:title" content="{{ page.seo_title | default: page.title | escape }}">
+<meta property="og:description" content="{{ page.description | escape }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta property="og:site_name" content="JuanJulio Cards">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="{{ image }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ page.image_alt | escape }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ page.seo_title | default: page.title | escape }}">
+<meta name="twitter:description" content="{{ page.description | escape }}">
+<meta name="twitter:image" content="{{ image }}">
+<meta name="twitter:image:alt" content="{{ page.image_alt | escape }}">
+<link rel="icon" type="image/svg+xml" href="/shop/icon.svg">
+<link rel="preload" href="/assets/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/shop/shop.css?v={{ site.time | date: '%s' }}">
+</head>
+<body>
+{{ content }}
+{% include analytics.html %}
+</body>
+</html>

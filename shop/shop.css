@@ -1,0 +1,123 @@
+/* JuanJulio Cards (/shop/): a page of its own (_layouts/shop.html), so its tokens live here, not in style.css.
+   One idea: a fight-night bill. Black, one gold ink, white. Anton (the Reels' type) for names and prices, Inter
+   for reading. The only decoration is the octagon and the cage's fence behind the headline. Phone first. */
+@font-face { font-family: "Anton"; font-style: normal; font-weight: 400; font-display: swap; src: url("/assets/fonts/anton.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("/assets/fonts/inter.woff2") format("woff2"); }
+
+:root {
+  --ink: #0a0a0d;        /* the page: the Reels' black */
+  --mat: #131318;        /* raised: cards, the band's neighbours */
+  --line: #2a2a31;
+  --white: #f6f4ee;
+  --soft: #b9b6ad;       /* reading text on black */
+  --gold: #e6b450;       /* the one ink */
+  --gold-deep: #b98a2c;
+  --display: "Anton", "Arial Narrow", sans-serif;
+  --text: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --pad: clamp(16px, 4vw, 40px);
+  --wide: 1120px;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--ink); color: var(--soft); font: 400 16px/1.55 var(--text); overflow-x: hidden; }
+a { color: var(--white); text-underline-offset: 3px; }
+a:hover { color: var(--gold); }
+a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+img { display: block; max-width: 100%; height: auto; }
+h1, h2, h3, p, ul, ol { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+.skip { position: absolute; left: -999px; }
+.skip:focus { left: 16px; top: 16px; z-index: 5; padding: 8px 12px; background: var(--gold); color: var(--ink); }
+
+/* The top line: the name, and the three ways in. */
+.top, .hero, .sec, .foot { max-width: var(--wide); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 16px; padding-bottom: 16px; }
+.mark { font: 400 20px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; color: var(--white); }
+.mark b { font-weight: 400; color: var(--gold); }
+.top-links { display: flex; gap: 20px; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.top-links a { text-decoration: none; color: var(--soft); padding: 8px 0; }
+.top-links a:hover { color: var(--gold); }
+
+/* The headline, over the cage. */
+.hero { position: relative; display: grid; gap: 40px; padding-top: 40px; padding-bottom: 56px; }
+.hero::before { content: ""; position: absolute; inset: 0 calc(50% - 50vw); z-index: -2; opacity: 0.5;
+  background: repeating-linear-gradient(45deg, transparent 0 27px, var(--line) 27px 28px), repeating-linear-gradient(-45deg, transparent 0 27px, var(--line) 27px 28px);
+  -webkit-mask-image: radial-gradient(ellipse 75% 85% at 70% 45%, #000 0, transparent 72%); mask-image: radial-gradient(ellipse 75% 85% at 70% 45%, #000 0, transparent 72%); }
+.oct { position: absolute; z-index: -1; right: -18%; top: 30%; width: min(110vw, 620px); fill: none; }
+.oct polygon:first-child { stroke: var(--gold); stroke-width: 0.9; }
+.oct polygon:last-child { stroke: var(--white); stroke-width: 0.25; opacity: 0.45; }
+.kicker { font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+h1 { margin-top: 12px; font: 400 clamp(64px, 19vw, 148px)/0.92 var(--display); letter-spacing: 0.005em; text-transform: uppercase; color: var(--white); }
+h1 span { display: block; color: var(--gold); }
+.lede { max-width: 30em; margin-top: 20px; font-size: 18px; line-height: 1.5; color: var(--soft); }
+.lede strong { font-weight: 600; color: var(--white); }
+.stores { display: grid; gap: 12px; margin-top: 28px; max-width: 520px; }
+.store { display: flex; flex-direction: column; gap: 2px; padding: 16px 20px; border: 2px solid var(--white); color: var(--white); text-decoration: none; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+.store-go { font: 400 28px/1.1 var(--display); letter-spacing: 0.03em; text-transform: uppercase; }
+.store-go::after { content: " →"; font-family: var(--text); font-weight: 600; }
+.store-note { font-size: 14px; }
+.store.main { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.store.main:hover { background: var(--white); border-color: var(--white); color: var(--ink); }
+.store:not(.main):hover { border-color: var(--gold); color: var(--gold); }
+
+/* Three of the top cards, fanned like a hand. */
+.fan { position: relative; height: clamp(250px, 68vw, 400px); margin: 0 auto; width: min(100%, 440px); }
+.fan img { position: absolute; left: 50%; bottom: 0; width: 46%; aspect-ratio: 5 / 7; object-fit: cover; border: 4px solid var(--white); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7); transform-origin: 50% 120%; }
+.fan-2 { transform: translateX(-50%) rotate(-14deg) translateX(-34%); }
+.fan-3 { transform: translateX(-50%) rotate(14deg) translateX(34%); }
+.fan-1 { transform: translateX(-50%) translateY(-6%); z-index: 1; }
+
+/* The bill's band: what's on the card, in the gold ink. */
+.band { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 0; padding: 10px var(--pad); background: var(--gold); color: var(--ink); font: 400 clamp(15px, 4vw, 22px)/1.2 var(--display); letter-spacing: 0.08em; text-transform: uppercase; }
+.band span + span::before { content: "·"; margin: 0 0.7em; }
+
+.sec { padding-top: 64px; }
+.sec-head { display: grid; gap: 8px; margin-bottom: 24px; padding-top: 16px; border-top: 2px solid var(--white); }
+h2 { font: 400 clamp(36px, 8vw, 56px)/1 var(--display); letter-spacing: 0.02em; text-transform: uppercase; color: var(--white); }
+.sec-head p { max-width: 40em; font-size: 15px; }
+
+/* A card for sale: the photo framed in white like the Reels', the fighter, the set, the price in gold. */
+.cards, .reels { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.card, .reel { display: flex; flex-direction: column; height: 100%; padding: 10px; background: var(--mat); border: 1px solid var(--line); color: var(--white); text-decoration: none; transition: border-color 0.15s, transform 0.15s; }
+.card:hover, .reel:hover { border-color: var(--gold); color: var(--white); transform: translateY(-3px); }
+.card img { width: 100%; aspect-ratio: 5 / 7; object-fit: cover; border: 3px solid var(--white); background: var(--line); }
+.reel img { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; background: var(--line); }
+.card-who { margin-top: 12px; font: 400 clamp(19px, 5vw, 24px)/1.08 var(--display); letter-spacing: 0.02em; text-transform: uppercase; overflow-wrap: anywhere; }
+.card-what { margin-top: 6px; font-size: 13px; line-height: 1.4; color: var(--soft); }
+.card-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: auto; padding-top: 12px; }
+.card-price { margin-right: auto; font: 400 26px/1 var(--display); color: var(--gold); }
+.chip { padding: 3px 6px; border: 1px solid var(--gold-deep); color: var(--gold); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+
+.more { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.btn { display: inline-flex; align-items: center; min-height: 52px; padding: 0 24px; background: var(--gold); border: 2px solid var(--gold); color: var(--ink); font: 400 20px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none; }
+.btn:hover { background: var(--white); border-color: var(--white); color: var(--ink); }
+.btn.ghost { background: transparent; border-color: var(--white); color: var(--white); }
+.btn.ghost:hover { border-color: var(--gold); color: var(--gold); background: transparent; }
+
+/* The rules, numbered like rounds. */
+.rules { display: grid; gap: 0; counter-reset: rule; }
+.rules li { counter-increment: rule; display: grid; grid-template-columns: 56px 1fr; gap: 4px 12px; padding: 20px 0; border-top: 1px solid var(--line); }
+.rules li:first-child { border-top: 0; padding-top: 0; }
+.rules li::before { content: counter(rule); grid-row: 1 / span 2; font: 400 48px/0.9 var(--display); color: var(--gold); }
+h3 { font: 400 22px/1.15 var(--display); letter-spacing: 0.03em; text-transform: uppercase; color: var(--white); }
+.rules p { max-width: 42em; }
+
+.foot { display: grid; gap: 16px; margin-top: 72px; padding-top: 24px; padding-bottom: 40px; border-top: 1px solid var(--line); }
+.foot-links { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 14px; }
+.foot-links a { color: var(--soft); }
+.foot-links a:hover { color: var(--gold); }
+
+@media (min-width: 720px) {
+  .cards, .reels { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .stores { grid-template-columns: 1fr 1fr; }
+  .rules { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .rules li, .rules li:first-child { border-top: 0; padding: 0; }
+}
+@media (min-width: 960px) {
+  .hero { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; padding-top: 56px; padding-bottom: 80px; }
+  h1 { font-size: clamp(96px, 11.5vw, 148px); }
+  .oct { right: -6%; top: 50%; transform: translateY(-50%); width: 600px; }
+  .fan { height: 440px; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
