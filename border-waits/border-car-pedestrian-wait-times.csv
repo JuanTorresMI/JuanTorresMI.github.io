@@ -112,8 +112,8 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 070801,canada,Alexandria Bay – Thousand Islands Bridge,car,SENTRI,Sunday,13,0.0,1,30,2026-11-16
 300401,canada,Blaine – Pacific Highway,car,standard,Monday,0,5.0,2,30,2026-11-16
 300401,canada,Blaine – Pacific Highway,car,standard,Monday,1,5.0,2,30,2026-11-16
-300401,canada,Blaine – Pacific Highway,car,standard,Monday,2,5.0,3,30,2026-11-16
-300401,canada,Blaine – Pacific Highway,car,standard,Monday,3,5.0,3,30,2026-11-16
+300401,canada,Blaine – Pacific Highway,car,standard,Monday,2,5.0,4,30,2026-11-16
+300401,canada,Blaine – Pacific Highway,car,standard,Monday,3,5.0,4,30,2026-11-16
 300401,canada,Blaine – Pacific Highway,car,standard,Monday,4,5.0,3,30,2026-11-16
 300401,canada,Blaine – Pacific Highway,car,standard,Monday,5,5.0,3,30,2026-11-16
 300401,canada,Blaine – Pacific Highway,car,standard,Monday,6,5.0,3,30,2026-11-16
@@ -276,7 +276,7 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 300401,canada,Blaine – Pacific Highway,car,standard,Sunday,19,20.0,2,30,2026-11-16
 300401,canada,Blaine – Pacific Highway,car,standard,Sunday,20,15.0,3,30,2026-11-16
 300401,canada,Blaine – Pacific Highway,car,standard,Sunday,21,5.0,2,30,2026-11-16
-300401,canada,Blaine – Pacific Highway,car,standard,Sunday,23,3.3,3,30,2026-11-16
+300401,canada,Blaine – Pacific Highway,car,standard,Sunday,23,2.5,4,30,2026-11-16
 300401,canada,Blaine – Pacific Highway,car,SENTRI,Monday,6,5.0,3,30,2026-11-16
 300401,canada,Blaine – Pacific Highway,car,SENTRI,Monday,7,5.0,3,30,2026-11-16
 300401,canada,Blaine – Pacific Highway,car,SENTRI,Monday,8,5.0,4,30,2026-11-16
@@ -395,7 +395,7 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 300401,canada,Blaine – Pacific Highway,car,Ready,Sunday,20,0.0,1,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,standard,Monday,0,5.0,2,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,standard,Monday,1,5.0,2,30,2026-11-16
-300402,canada,Blaine – Peace Arch,car,standard,Monday,2,5.0,3,30,2026-11-16
+300402,canada,Blaine – Peace Arch,car,standard,Monday,2,5.0,4,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,standard,Monday,3,5.0,3,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,standard,Monday,4,5.0,2,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,standard,Monday,5,5.0,4,30,2026-11-16
@@ -559,7 +559,7 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 300402,canada,Blaine – Peace Arch,car,standard,Sunday,19,50.0,3,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,standard,Sunday,20,55.0,2,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,standard,Sunday,21,42.5,2,30,2026-11-16
-300402,canada,Blaine – Peace Arch,car,standard,Sunday,23,3.3,3,30,2026-11-16
+300402,canada,Blaine – Peace Arch,car,standard,Sunday,23,2.5,4,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,SENTRI,Monday,6,5.0,3,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,SENTRI,Monday,7,5.0,3,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,SENTRI,Monday,8,5.0,4,30,2026-11-16
@@ -685,14 +685,14 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 300402,canada,Blaine – Peace Arch,car,SENTRI,Sunday,19,3.3,3,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,SENTRI,Sunday,20,5.0,2,30,2026-11-16
 300402,canada,Blaine – Peace Arch,car,SENTRI,Sunday,21,5.0,2,30,2026-11-16
-300402,canada,Blaine – Peace Arch,car,SENTRI,Sunday,23,3.3,3,30,2026-11-16
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,0,6.1,8,30,2026-11-16
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,1,10.0,4,30,2026-11-16
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,2,7.6,7,30,2026-11-16
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,3,0.5,6,30,2026-11-16
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,4,0.8,6,30,2026-11-16
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,5,0.8,6,30,2026-11-16
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,6,0.3,6,30,2026-11-16
+300402,canada,Blaine – Peace Arch,car,SENTRI,Sunday,23,2.5,4,30,2026-11-16
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,0,5.9,9,30,2026-11-16
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,1,8.0,6,30,2026-11-16
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,2,5.9,9,30,2026-11-16
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,3,0.4,8,30,2026-11-16
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,4,0.6,8,30,2026-11-16
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,5,0.6,8,30,2026-11-16
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,6,0.3,8,30,2026-11-16
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,7,1.5,6,30,2026-11-16
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,8,0.8,6,30,2026-11-16
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Monday,9,2.0,6,30,2026-11-16
@@ -854,7 +854,7 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Sunday,21,0.6,9,30,2026-11-16
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Sunday,22,0.0,8,30,2026-11-16
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,standard,Sunday,23,1.4,8,30,2026-11-16
-090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,SENTRI,Monday,6,0.0,4,30,2026-11-16
+090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,SENTRI,Monday,6,0.0,6,30,2026-11-16
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,SENTRI,Monday,7,0.0,2,30,2026-11-16
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,SENTRI,Monday,8,0.0,1,30,2026-11-16
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,SENTRI,Tuesday,6,0.0,4,30,2026-11-16
@@ -870,13 +870,13 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,SENTRI,Saturday,6,0.0,4,30,2026-11-16
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,SENTRI,Saturday,7,0.0,4,30,2026-11-16
 090104,canada,Buffalo/Niagara Falls – Lewiston Bridge,car,SENTRI,Saturday,8,0.0,2,30,2026-11-16
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,0,11.8,8,30,2026-11-16
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,1,5.3,4,30,2026-11-16
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,2,1.9,7,30,2026-11-16
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,3,3.5,6,30,2026-11-16
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,4,2.0,6,30,2026-11-16
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,5,3.2,5,30,2026-11-16
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,6,6.5,6,30,2026-11-16
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,0,11.7,9,30,2026-11-16
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,1,4.3,6,30,2026-11-16
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,2,1.7,9,30,2026-11-16
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,3,3.8,8,30,2026-11-16
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,4,2.0,8,30,2026-11-16
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,5,4.1,7,30,2026-11-16
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,6,6.0,8,30,2026-11-16
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,7,7.2,5,30,2026-11-16
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,8,8.7,6,30,2026-11-16
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Monday,9,12.2,6,30,2026-11-16
@@ -1038,8 +1038,8 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Sunday,21,3.2,9,30,2026-11-16
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Sunday,22,2.3,8,30,2026-11-16
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,standard,Sunday,23,3.3,8,30,2026-11-16
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,SENTRI,Monday,5,0.0,5,30,2026-11-16
-090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,SENTRI,Monday,6,0.2,6,30,2026-11-16
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,SENTRI,Monday,5,0.0,7,30,2026-11-16
+090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,SENTRI,Monday,6,0.1,8,30,2026-11-16
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,SENTRI,Monday,7,2.0,6,30,2026-11-16
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,SENTRI,Monday,8,3.7,6,30,2026-11-16
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,SENTRI,Monday,9,4.2,5,30,2026-11-16
@@ -1170,13 +1170,13 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,SENTRI,Sunday,21,0.3,9,30,2026-11-16
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,SENTRI,Sunday,22,0.1,7,30,2026-11-16
 090101,canada,Buffalo/Niagara Falls – Peace Bridge,car,SENTRI,Sunday,23,0.0,2,30,2026-11-16
-090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,0,6.5,8,30,2026-11-16
-090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,1,4.5,4,30,2026-11-16
-090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,2,1.1,7,30,2026-11-16
-090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,3,0.8,6,30,2026-11-16
-090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,4,1.0,6,30,2026-11-16
-090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,5,0.8,6,30,2026-11-16
-090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,6,4.3,6,30,2026-11-16
+090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,0,7.0,9,30,2026-11-16
+090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,1,5.0,6,30,2026-11-16
+090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,2,1.0,9,30,2026-11-16
+090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,3,0.6,8,30,2026-11-16
+090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,4,1.0,8,30,2026-11-16
+090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,5,1.5,8,30,2026-11-16
+090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,6,3.8,8,30,2026-11-16
 090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,7,6.7,6,30,2026-11-16
 090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,8,3.0,6,30,2026-11-16
 090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Monday,9,3.8,6,30,2026-11-16
@@ -1338,7 +1338,9 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Sunday,21,6.1,9,30,2026-11-16
 090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Sunday,22,4.6,8,30,2026-11-16
 090102,canada,Buffalo/Niagara Falls – Rainbow Bridge,car,standard,Sunday,23,3.0,8,30,2026-11-16
+011501,canada,Calais – Ferry Point,car,standard,Monday,1,0.0,1,30,2026-11-16
 011501,canada,Calais – Ferry Point,car,standard,Monday,3,0.0,1,30,2026-11-16
+011501,canada,Calais – Ferry Point,car,standard,Monday,6,0.0,1,30,2026-11-16
 011501,canada,Calais – Ferry Point,car,standard,Monday,7,0.0,1,30,2026-11-16
 011501,canada,Calais – Ferry Point,car,standard,Monday,8,0.0,1,30,2026-11-16
 011501,canada,Calais – Ferry Point,car,standard,Monday,9,0.0,1,30,2026-11-16
@@ -1438,12 +1440,12 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 011501,canada,Calais – Ferry Point,car,standard,Sunday,22,0.0,1,30,2026-11-16
 011501,canada,Calais – Ferry Point,car,standard,Sunday,23,0.0,1,30,2026-11-16
 011503,canada,Calais – International Avenue,car,standard,Monday,0,0.0,1,30,2026-11-16
-011503,canada,Calais – International Avenue,car,standard,Monday,1,0.0,1,30,2026-11-16
+011503,canada,Calais – International Avenue,car,standard,Monday,1,0.0,2,30,2026-11-16
 011503,canada,Calais – International Avenue,car,standard,Monday,2,0.0,1,30,2026-11-16
 011503,canada,Calais – International Avenue,car,standard,Monday,3,0.0,1,30,2026-11-16
 011503,canada,Calais – International Avenue,car,standard,Monday,4,0.0,2,30,2026-11-16
 011503,canada,Calais – International Avenue,car,standard,Monday,5,0.0,1,30,2026-11-16
-011503,canada,Calais – International Avenue,car,standard,Monday,6,0.0,1,30,2026-11-16
+011503,canada,Calais – International Avenue,car,standard,Monday,6,0.0,2,30,2026-11-16
 011503,canada,Calais – International Avenue,car,standard,Monday,7,0.0,3,30,2026-11-16
 011503,canada,Calais – International Avenue,car,standard,Monday,8,0.0,1,30,2026-11-16
 011503,canada,Calais – International Avenue,car,standard,Monday,9,1.7,3,30,2026-11-16
@@ -1645,12 +1647,12 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 011502,canada,Calais – Milltown,car,standard,Sunday,14,0.0,2,30,2026-11-16
 011502,canada,Calais – Milltown,car,standard,Sunday,15,0.0,1,30,2026-11-16
 011502,canada,Calais – Milltown,car,standard,Sunday,16,0.0,1,30,2026-11-16
-071201,canada,Champlain,car,standard,Monday,0,0.0,3,30,2026-11-16
-071201,canada,Champlain,car,standard,Monday,1,0.0,3,30,2026-11-16
+071201,canada,Champlain,car,standard,Monday,0,0.0,4,30,2026-11-16
+071201,canada,Champlain,car,standard,Monday,1,0.0,4,30,2026-11-16
 071201,canada,Champlain,car,standard,Monday,2,0.0,1,30,2026-11-16
 071201,canada,Champlain,car,standard,Monday,3,0.0,1,30,2026-11-16
-071201,canada,Champlain,car,standard,Monday,4,0.0,1,30,2026-11-16
-071201,canada,Champlain,car,standard,Monday,5,0.0,2,30,2026-11-16
+071201,canada,Champlain,car,standard,Monday,4,0.0,2,30,2026-11-16
+071201,canada,Champlain,car,standard,Monday,5,0.0,3,30,2026-11-16
 071201,canada,Champlain,car,standard,Monday,6,1.7,3,30,2026-11-16
 071201,canada,Champlain,car,standard,Monday,7,8.3,3,30,2026-11-16
 071201,canada,Champlain,car,standard,Monday,8,10.0,3,30,2026-11-16
@@ -1911,7 +1913,7 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 071201,canada,Champlain,car,SENTRI,Sunday,19,0.0,2,30,2026-11-16
 020901,canada,Derby Line,car,standard,Monday,1,0.0,1,30,2026-11-16
 020901,canada,Derby Line,car,standard,Monday,2,0.0,1,30,2026-11-16
-020901,canada,Derby Line,car,standard,Monday,3,0.0,1,30,2026-11-16
+020901,canada,Derby Line,car,standard,Monday,3,0.0,2,30,2026-11-16
 020901,canada,Derby Line,car,standard,Monday,4,0.0,2,30,2026-11-16
 020901,canada,Derby Line,car,standard,Monday,6,0.0,1,30,2026-11-16
 020901,canada,Derby Line,car,standard,Monday,7,0.0,1,30,2026-11-16
@@ -2011,12 +2013,12 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 020901,canada,Derby Line,car,standard,Sunday,20,1.3,4,30,2026-11-16
 020901,canada,Derby Line,car,standard,Sunday,23,0.0,3,30,2026-11-16
 380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,0,0.0,4,30,2026-11-16
-380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,1,0.0,3,30,2026-11-16
-380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,2,0.0,3,30,2026-11-16
-380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,3,0.0,4,30,2026-11-16
-380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,4,0.0,3,30,2026-11-16
-380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,5,0.0,3,30,2026-11-16
-380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,6,5.0,3,30,2026-11-16
+380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,1,0.0,4,30,2026-11-16
+380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,2,0.0,4,30,2026-11-16
+380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,3,0.0,5,30,2026-11-16
+380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,4,0.0,4,30,2026-11-16
+380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,5,0.0,4,30,2026-11-16
+380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,6,5.0,4,30,2026-11-16
 380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,7,5.0,3,30,2026-11-16
 380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,8,3.3,3,30,2026-11-16
 380001,canada,Detroit – Ambassador Bridge,car,standard,Monday,9,3.3,3,30,2026-11-16
@@ -2178,7 +2180,7 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 380001,canada,Detroit – Ambassador Bridge,car,standard,Sunday,21,1.0,5,30,2026-11-16
 380001,canada,Detroit – Ambassador Bridge,car,standard,Sunday,22,1.7,3,30,2026-11-16
 380001,canada,Detroit – Ambassador Bridge,car,standard,Sunday,23,0.0,4,30,2026-11-16
-380001,canada,Detroit – Ambassador Bridge,car,SENTRI,Monday,6,1.7,3,30,2026-11-16
+380001,canada,Detroit – Ambassador Bridge,car,SENTRI,Monday,6,2.5,4,30,2026-11-16
 380001,canada,Detroit – Ambassador Bridge,car,SENTRI,Monday,7,2.5,2,30,2026-11-16
 380001,canada,Detroit – Ambassador Bridge,car,SENTRI,Monday,8,3.3,3,30,2026-11-16
 380001,canada,Detroit – Ambassador Bridge,car,SENTRI,Monday,9,3.3,3,30,2026-11-16
@@ -2268,12 +2270,12 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 380001,canada,Detroit – Ambassador Bridge,car,SENTRI,Sunday,18,2.5,4,30,2026-11-16
 380001,canada,Detroit – Ambassador Bridge,car,SENTRI,Sunday,19,0.0,4,30,2026-11-16
 380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,0,0.0,4,30,2026-11-16
-380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,1,0.0,3,30,2026-11-16
-380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,2,0.0,3,30,2026-11-16
-380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,3,0.0,4,30,2026-11-16
-380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,4,0.0,3,30,2026-11-16
-380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,5,2.3,3,30,2026-11-16
-380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,6,6.7,3,30,2026-11-16
+380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,1,0.0,4,30,2026-11-16
+380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,2,0.0,4,30,2026-11-16
+380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,3,0.0,5,30,2026-11-16
+380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,4,0.0,4,30,2026-11-16
+380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,5,1.8,4,30,2026-11-16
+380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,6,6.3,4,30,2026-11-16
 380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,7,13.3,3,30,2026-11-16
 380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,8,6.7,3,30,2026-11-16
 380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Monday,9,3.3,3,30,2026-11-16
@@ -2436,7 +2438,7 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Sunday,22,5.0,3,30,2026-11-16
 380102,canada,Detroit – Gordie Howe International Bridge,car,standard,Sunday,23,0.0,4,30,2026-11-16
 380102,canada,Detroit – Gordie Howe International Bridge,car,SENTRI,Monday,5,0.0,1,30,2026-11-16
-380102,canada,Detroit – Gordie Howe International Bridge,car,SENTRI,Monday,6,1.7,3,30,2026-11-16
+380102,canada,Detroit – Gordie Howe International Bridge,car,SENTRI,Monday,6,2.5,4,30,2026-11-16
 380102,canada,Detroit – Gordie Howe International Bridge,car,SENTRI,Monday,7,3.3,3,30,2026-11-16
 380102,canada,Detroit – Gordie Howe International Bridge,car,SENTRI,Monday,8,6.7,3,30,2026-11-16
 380102,canada,Detroit – Gordie Howe International Bridge,car,SENTRI,Monday,9,3.3,3,30,2026-11-16
@@ -2614,12 +2616,12 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 380102,canada,Detroit – Gordie Howe International Bridge,pedestrian,standard,Sunday,18,0.0,1,30,2026-11-16
 380102,canada,Detroit – Gordie Howe International Bridge,pedestrian,standard,Sunday,19,0.0,2,30,2026-11-16
 380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,0,0.0,4,30,2026-11-16
-380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,1,0.0,3,30,2026-11-16
-380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,2,0.0,3,30,2026-11-16
-380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,3,0.0,4,30,2026-11-16
-380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,4,0.0,3,30,2026-11-16
-380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,5,0.0,3,30,2026-11-16
-380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,6,11.7,3,30,2026-11-16
+380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,1,0.0,4,30,2026-11-16
+380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,2,0.0,4,30,2026-11-16
+380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,3,0.0,5,30,2026-11-16
+380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,4,0.0,4,30,2026-11-16
+380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,5,0.0,4,30,2026-11-16
+380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,6,10.0,4,30,2026-11-16
 380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,7,7.3,3,30,2026-11-16
 380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,8,10.0,3,30,2026-11-16
 380002,canada,Detroit – Windsor Tunnel,car,standard,Monday,9,10.7,3,30,2026-11-16
@@ -2781,7 +2783,7 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 380002,canada,Detroit – Windsor Tunnel,car,standard,Sunday,21,4.0,5,30,2026-11-16
 380002,canada,Detroit – Windsor Tunnel,car,standard,Sunday,22,1.7,3,30,2026-11-16
 380002,canada,Detroit – Windsor Tunnel,car,standard,Sunday,23,1.3,4,30,2026-11-16
-380002,canada,Detroit – Windsor Tunnel,car,SENTRI,Monday,6,5.0,3,30,2026-11-16
+380002,canada,Detroit – Windsor Tunnel,car,SENTRI,Monday,6,5.0,4,30,2026-11-16
 380002,canada,Detroit – Windsor Tunnel,car,SENTRI,Monday,7,3.3,3,30,2026-11-16
 380002,canada,Detroit – Windsor Tunnel,car,SENTRI,Monday,8,3.3,3,30,2026-11-16
 380002,canada,Detroit – Windsor Tunnel,car,SENTRI,Monday,9,3.3,3,30,2026-11-16
@@ -3042,12 +3044,12 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 021201,canada,Highgate Springs,car,SENTRI,Saturday,23,0.0,1,30,2026-11-16
 021201,canada,Highgate Springs,car,SENTRI,Sunday,4,0.0,1,30,2026-11-16
 010601,canada,Houlton,car,standard,Monday,0,0.0,2,30,2026-11-16
-010601,canada,Houlton,car,standard,Monday,1,0.7,3,30,2026-11-16
-010601,canada,Houlton,car,standard,Monday,2,1.0,1,30,2026-11-16
-010601,canada,Houlton,car,standard,Monday,3,0.0,2,30,2026-11-16
-010601,canada,Houlton,car,standard,Monday,4,1.0,2,30,2026-11-16
-010601,canada,Houlton,car,standard,Monday,5,1.0,2,30,2026-11-16
-010601,canada,Houlton,car,standard,Monday,6,0.5,2,30,2026-11-16
+010601,canada,Houlton,car,standard,Monday,1,0.5,4,30,2026-11-16
+010601,canada,Houlton,car,standard,Monday,2,0.5,2,30,2026-11-16
+010601,canada,Houlton,car,standard,Monday,3,0.0,3,30,2026-11-16
+010601,canada,Houlton,car,standard,Monday,4,0.7,3,30,2026-11-16
+010601,canada,Houlton,car,standard,Monday,5,0.7,3,30,2026-11-16
+010601,canada,Houlton,car,standard,Monday,6,0.3,3,30,2026-11-16
 010601,canada,Houlton,car,standard,Monday,7,1.3,3,30,2026-11-16
 010601,canada,Houlton,car,standard,Monday,8,3.5,2,30,2026-11-16
 010601,canada,Houlton,car,standard,Monday,9,3.5,2,30,2026-11-16
@@ -3361,11 +3363,12 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 360401,canada,International Falls,car,standard,Sunday,22,0.0,3,30,2026-11-16
 360401,canada,International Falls,car,standard,Sunday,23,0.0,4,30,2026-11-16
 010401,canada,Jackman,car,standard,Monday,1,0.0,1,30,2026-11-16
-010401,canada,Jackman,car,standard,Monday,2,0.0,2,30,2026-11-16
+010401,canada,Jackman,car,standard,Monday,2,0.0,3,30,2026-11-16
 010401,canada,Jackman,car,standard,Monday,3,0.0,3,30,2026-11-16
-010401,canada,Jackman,car,standard,Monday,4,0.0,3,30,2026-11-16
+010401,canada,Jackman,car,standard,Monday,4,0.0,4,30,2026-11-16
 010401,canada,Jackman,car,standard,Monday,5,0.0,1,30,2026-11-16
-010401,canada,Jackman,car,standard,Monday,6,0.0,3,30,2026-11-16
+010401,canada,Jackman,car,standard,Monday,6,0.0,4,30,2026-11-16
+010401,canada,Jackman,car,standard,Monday,7,0.0,1,30,2026-11-16
 010401,canada,Jackman,car,standard,Monday,8,0.0,2,30,2026-11-16
 010401,canada,Jackman,car,standard,Monday,9,0.0,3,30,2026-11-16
 010401,canada,Jackman,car,standard,Monday,10,0.0,2,30,2026-11-16
@@ -3490,7 +3493,7 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 010401,canada,Jackman,car,standard,Saturday,21,0.0,3,30,2026-11-16
 010401,canada,Jackman,car,standard,Saturday,23,0.0,4,30,2026-11-16
 010401,canada,Jackman,car,standard,Sunday,1,0.0,1,30,2026-11-16
-010401,canada,Jackman,car,standard,Sunday,2,0.0,4,30,2026-11-16
+010401,canada,Jackman,car,standard,Sunday,2,0.0,5,30,2026-11-16
 010401,canada,Jackman,car,standard,Sunday,3,0.0,3,30,2026-11-16
 010401,canada,Jackman,car,standard,Sunday,4,0.0,3,30,2026-11-16
 010401,canada,Jackman,car,standard,Sunday,5,0.0,5,30,2026-11-16
@@ -3609,9 +3612,9 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 302301,canada,Lynden,car,standard,Sunday,18,10.0,3,30,2026-11-16
 302301,canada,Lynden,car,standard,Sunday,19,6.3,4,30,2026-11-16
 302301,canada,Lynden,car,standard,Sunday,20,3.3,3,30,2026-11-16
-302301,canada,Lynden,car,standard,Sunday,21,1.7,3,30,2026-11-16
-302301,canada,Lynden,car,standard,Sunday,22,2.5,2,30,2026-11-16
-302301,canada,Lynden,car,standard,Sunday,23,0.0,2,30,2026-11-16
+302301,canada,Lynden,car,standard,Sunday,21,1.3,4,30,2026-11-16
+302301,canada,Lynden,car,standard,Sunday,22,1.7,3,30,2026-11-16
+302301,canada,Lynden,car,standard,Sunday,23,0.0,3,30,2026-11-16
 302301,canada,Lynden,car,SENTRI,Monday,14,0.0,1,30,2026-11-16
 302301,canada,Lynden,car,SENTRI,Monday,15,0.0,1,30,2026-11-16
 302301,canada,Lynden,car,SENTRI,Monday,16,0.0,3,30,2026-11-16
@@ -3686,11 +3689,12 @@ port_number,border,crossing,mode,lane,weekday,hour_local,average_wait_min,readin
 302301,canada,Lynden,car,SENTRI,Sunday,18,1.7,3,30,2026-11-16
 302301,canada,Lynden,car,SENTRI,Sunday,19,1.3,4,30,2026-11-16
 L01901,canada,Madawaska,car,standard,Monday,0,0.0,2,30,2026-11-16
-L01901,canada,Madawaska,car,standard,Monday,1,0.3,3,30,2026-11-16
-L01901,canada,Madawaska,car,standard,Monday,3,0.0,2,30,2026-11-16
-L01901,canada,Madawaska,car,standard,Monday,4,1.0,2,30,2026-11-16
-L01901,canada,Madawaska,car,standard,Monday,5,0.5,2,30,2026-11-16
-L01901,canada,Madawaska,car,standard,Monday,6,1.0,2,30,2026-11-16
+L01901,canada,Madawaska,car,standard,Monday,1,0.3,4,30,2026-11-16
+L01901,canada,Madawaska,car,standard,Monday,2,0.0,1,30,2026-11-16
+L01901,canada,Madawaska,car,standard,Monday,3,0.0,3,30,2026-11-16
+L01901,canada,Madawaska,car,standard,Monday,4,0.7,3,30,2026-11-16
+L01901,canada,Madawaska,car,standard,Monday,5,0.3,3,30,2026-11-16
+L01901,canada,Madawaska,car,standard,Monday,6,0.7,3,30,2026-11-16
 L01901,canada,Madawaska,car,standard,Monday,7,1.7,3,30,2026-11-16
 L01901,canada,Madawaska,car,standard,Monday,8,1.0,2,30,2026-11-16
 L01901,canada,Madawaska,car,standard,Monday,9,1.0,2,30,2026-11-16
@@ -3852,10 +3856,10 @@ L01901,canada,Madawaska,car,standard,Sunday,22,0.5,4,30,2026-11-16
 L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 070401,canada,Massena,car,standard,Monday,2,0.0,3,30,2026-11-16
 070401,canada,Massena,car,standard,Monday,3,0.0,3,30,2026-11-16
-070401,canada,Massena,car,standard,Monday,4,0.0,3,30,2026-11-16
+070401,canada,Massena,car,standard,Monday,4,0.0,4,30,2026-11-16
 070401,canada,Massena,car,standard,Monday,5,0.0,3,30,2026-11-16
-070401,canada,Massena,car,standard,Monday,6,0.0,3,30,2026-11-16
-070401,canada,Massena,car,standard,Monday,7,0.0,2,30,2026-11-16
+070401,canada,Massena,car,standard,Monday,6,0.0,4,30,2026-11-16
+070401,canada,Massena,car,standard,Monday,7,0.0,3,30,2026-11-16
 070401,canada,Massena,car,standard,Monday,8,0.0,4,30,2026-11-16
 070401,canada,Massena,car,standard,Monday,9,0.0,3,30,2026-11-16
 070401,canada,Massena,car,standard,Monday,10,0.0,2,30,2026-11-16
@@ -4085,12 +4089,12 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 021101,canada,Norton,car,standard,Sunday,18,0.0,1,30,2026-11-16
 021101,canada,Norton,car,standard,Sunday,20,0.0,4,30,2026-11-16
 021101,canada,Norton,car,standard,Sunday,23,0.0,2,30,2026-11-16
-070101,canada,Ogdensburg,car,standard,Monday,2,0.0,2,30,2026-11-16
+070101,canada,Ogdensburg,car,standard,Monday,2,0.0,3,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Monday,3,0.0,4,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Monday,4,0.0,2,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Monday,5,0.0,3,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Monday,6,0.0,3,30,2026-11-16
-070101,canada,Ogdensburg,car,standard,Monday,7,0.0,3,30,2026-11-16
+070101,canada,Ogdensburg,car,standard,Monday,7,0.0,4,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Monday,8,0.0,4,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Monday,9,0.0,1,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Monday,10,0.0,1,30,2026-11-16
@@ -4208,9 +4212,9 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Saturday,23,0.0,4,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Sunday,2,0.0,3,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Sunday,3,0.0,3,30,2026-11-16
-070101,canada,Ogdensburg,car,standard,Sunday,4,0.0,2,30,2026-11-16
-070101,canada,Ogdensburg,car,standard,Sunday,5,0.0,4,30,2026-11-16
-070101,canada,Ogdensburg,car,standard,Sunday,6,0.0,2,30,2026-11-16
+070101,canada,Ogdensburg,car,standard,Sunday,4,0.0,3,30,2026-11-16
+070101,canada,Ogdensburg,car,standard,Sunday,5,0.0,5,30,2026-11-16
+070101,canada,Ogdensburg,car,standard,Sunday,6,0.0,3,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Sunday,7,0.0,5,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Sunday,8,0.0,3,30,2026-11-16
 070101,canada,Ogdensburg,car,standard,Sunday,9,0.0,1,30,2026-11-16
@@ -4371,12 +4375,13 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 340101,canada,Pembina,car,standard,Sunday,22,0.0,1,30,2026-11-16
 340101,canada,Pembina,car,standard,Sunday,23,0.0,1,30,2026-11-16
 340101,canada,Pembina,car,SENTRI,Monday,9,4.0,1,30,2026-11-16
-380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,0,0.0,3,30,2026-11-16
-380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,1,0.0,1,30,2026-11-16
+380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,0,0.0,4,30,2026-11-16
+380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,1,0.0,2,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,2,0.0,2,30,2026-11-16
-380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,3,0.0,1,30,2026-11-16
-380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,4,0.0,3,30,2026-11-16
-380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,6,0.0,3,30,2026-11-16
+380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,3,0.0,2,30,2026-11-16
+380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,4,0.0,4,30,2026-11-16
+380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,5,0.0,1,30,2026-11-16
+380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,6,0.0,4,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,7,0.0,2,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,8,0.0,2,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,standard,Monday,9,0.0,1,30,2026-11-16
@@ -4535,7 +4540,7 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,standard,Sunday,21,11.2,5,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,standard,Sunday,22,5.3,4,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,standard,Sunday,23,0.0,3,30,2026-11-16
-380201,canada,Port Huron – Bluewater Bridge,car,SENTRI,Monday,6,0.0,3,30,2026-11-16
+380201,canada,Port Huron – Bluewater Bridge,car,SENTRI,Monday,6,0.0,4,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,SENTRI,Monday,7,0.0,2,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,SENTRI,Monday,8,0.0,2,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,SENTRI,Monday,9,0.0,1,30,2026-11-16
@@ -4636,11 +4641,11 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,SENTRI,Sunday,20,0.0,4,30,2026-11-16
 380201,canada,Port Huron – Bluewater Bridge,car,SENTRI,Sunday,22,0.0,1,30,2026-11-16
 380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,1,0.0,1,30,2026-11-16
-380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,2,0.0,1,30,2026-11-16
+380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,2,0.0,2,30,2026-11-16
 380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,3,0.0,3,30,2026-11-16
 380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,5,0.0,1,30,2026-11-16
-380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,6,0.0,2,30,2026-11-16
-380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,7,0.0,2,30,2026-11-16
+380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,6,0.0,3,30,2026-11-16
+380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,7,0.0,3,30,2026-11-16
 380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,8,0.0,1,30,2026-11-16
 380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,9,0.0,2,30,2026-11-16
 380301,canada,Sault Ste. Marie – International Bridge - SSM,car,standard,Monday,10,0.0,2,30,2026-11-16
@@ -4859,9 +4864,9 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 300901,canada,Sumas,car,standard,Saturday,23,0.0,4,30,2026-11-16
 300901,canada,Sumas,car,standard,Sunday,0,0.0,1,30,2026-11-16
 300901,canada,Sumas,car,standard,Sunday,2,0.0,5,30,2026-11-16
-300901,canada,Sumas,car,standard,Sunday,3,0.0,1,30,2026-11-16
-300901,canada,Sumas,car,standard,Sunday,4,0.0,4,30,2026-11-16
-300901,canada,Sumas,car,standard,Sunday,5,0.0,1,30,2026-11-16
+300901,canada,Sumas,car,standard,Sunday,3,0.0,2,30,2026-11-16
+300901,canada,Sumas,car,standard,Sunday,4,0.0,5,30,2026-11-16
+300901,canada,Sumas,car,standard,Sunday,5,0.0,2,30,2026-11-16
 300901,canada,Sumas,car,standard,Sunday,6,0.0,3,30,2026-11-16
 300901,canada,Sumas,car,standard,Sunday,7,0.0,3,30,2026-11-16
 300901,canada,Sumas,car,standard,Sunday,8,15.0,2,30,2026-11-16
@@ -4902,11 +4907,11 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 300901,canada,Sumas,car,Ready,Sunday,16,0.0,2,30,2026-11-16
 300901,canada,Sumas,car,Ready,Sunday,18,0.0,1,30,2026-11-16
 300901,canada,Sumas,car,Ready,Sunday,19,0.0,1,30,2026-11-16
-331001,canada,Sweetgrass,car,standard,Monday,0,0.0,2,30,2026-11-16
-331001,canada,Sweetgrass,car,standard,Monday,1,1.7,3,30,2026-11-16
-331001,canada,Sweetgrass,car,standard,Monday,2,1.7,3,30,2026-11-16
-331001,canada,Sweetgrass,car,standard,Monday,3,0.0,2,30,2026-11-16
-331001,canada,Sweetgrass,car,standard,Monday,4,1.7,3,30,2026-11-16
+331001,canada,Sweetgrass,car,standard,Monday,0,1.7,3,30,2026-11-16
+331001,canada,Sweetgrass,car,standard,Monday,1,2.5,4,30,2026-11-16
+331001,canada,Sweetgrass,car,standard,Monday,2,2.5,4,30,2026-11-16
+331001,canada,Sweetgrass,car,standard,Monday,3,1.7,3,30,2026-11-16
+331001,canada,Sweetgrass,car,standard,Monday,4,2.5,4,30,2026-11-16
 331001,canada,Sweetgrass,car,standard,Monday,5,1.7,3,30,2026-11-16
 331001,canada,Sweetgrass,car,standard,Monday,6,2.5,2,30,2026-11-16
 331001,canada,Sweetgrass,car,standard,Monday,7,20.0,2,30,2026-11-16
@@ -5151,7 +5156,7 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 250201,mexico,Andrade,car,standard,Sunday,18,100.0,2,30,2026-11-16
 250201,mexico,Andrade,car,standard,Sunday,19,82.5,4,30,2026-11-16
 250201,mexico,Andrade,car,standard,Sunday,20,95.0,2,30,2026-11-16
-250201,mexico,Andrade,car,standard,Sunday,21,116.7,3,30,2026-11-16
+250201,mexico,Andrade,car,standard,Sunday,21,110.0,4,30,2026-11-16
 250201,mexico,Andrade,pedestrian,standard,Monday,6,11.7,3,30,2026-11-16
 250201,mexico,Andrade,pedestrian,standard,Monday,7,3.3,3,30,2026-11-16
 250201,mexico,Andrade,pedestrian,standard,Monday,8,3.3,3,30,2026-11-16
@@ -5263,12 +5268,12 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 250201,mexico,Andrade,pedestrian,standard,Sunday,18,0.0,2,30,2026-11-16
 250201,mexico,Andrade,pedestrian,standard,Sunday,19,0.0,4,30,2026-11-16
 250201,mexico,Andrade,pedestrian,standard,Sunday,20,0.0,2,30,2026-11-16
-250201,mexico,Andrade,pedestrian,standard,Sunday,21,0.0,3,30,2026-11-16
-535501,mexico,Brownsville – B&M,car,standard,Monday,1,55.0,2,30,2026-11-16
+250201,mexico,Andrade,pedestrian,standard,Sunday,21,0.0,4,30,2026-11-16
+535501,mexico,Brownsville – B&M,car,standard,Monday,1,66.7,3,30,2026-11-16
 535501,mexico,Brownsville – B&M,car,standard,Monday,2,31.7,3,30,2026-11-16
-535501,mexico,Brownsville – B&M,car,standard,Monday,3,25.0,2,30,2026-11-16
-535501,mexico,Brownsville – B&M,car,standard,Monday,4,43.3,3,30,2026-11-16
-535501,mexico,Brownsville – B&M,car,standard,Monday,5,65.0,3,30,2026-11-16
+535501,mexico,Brownsville – B&M,car,standard,Monday,3,21.7,3,30,2026-11-16
+535501,mexico,Brownsville – B&M,car,standard,Monday,4,40.0,4,30,2026-11-16
+535501,mexico,Brownsville – B&M,car,standard,Monday,5,60.0,4,30,2026-11-16
 535501,mexico,Brownsville – B&M,car,standard,Monday,6,100.0,3,30,2026-11-16
 535501,mexico,Brownsville – B&M,car,standard,Monday,7,90.0,3,30,2026-11-16
 535501,mexico,Brownsville – B&M,car,standard,Monday,8,70.0,3,30,2026-11-16
@@ -5694,11 +5699,11 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 535501,mexico,Brownsville – B&M,pedestrian,standard,Sunday,19,2.5,4,30,2026-11-16
 535501,mexico,Brownsville – B&M,pedestrian,standard,Sunday,20,1.2,5,30,2026-11-16
 535501,mexico,Brownsville – B&M,pedestrian,standard,Sunday,21,1.5,4,30,2026-11-16
-535504,mexico,Brownsville – Gateway,car,standard,Monday,1,32.5,2,30,2026-11-16
+535504,mexico,Brownsville – Gateway,car,standard,Monday,1,41.7,3,30,2026-11-16
 535504,mexico,Brownsville – Gateway,car,standard,Monday,2,8.0,2,30,2026-11-16
-535504,mexico,Brownsville – Gateway,car,standard,Monday,3,12.5,2,30,2026-11-16
-535504,mexico,Brownsville – Gateway,car,standard,Monday,4,31.7,3,30,2026-11-16
-535504,mexico,Brownsville – Gateway,car,standard,Monday,5,57.5,2,30,2026-11-16
+535504,mexico,Brownsville – Gateway,car,standard,Monday,3,15.0,3,30,2026-11-16
+535504,mexico,Brownsville – Gateway,car,standard,Monday,4,35.0,4,30,2026-11-16
+535504,mexico,Brownsville – Gateway,car,standard,Monday,5,48.3,3,30,2026-11-16
 535504,mexico,Brownsville – Gateway,car,standard,Monday,6,66.7,3,30,2026-11-16
 535504,mexico,Brownsville – Gateway,car,standard,Monday,7,88.3,3,30,2026-11-16
 535504,mexico,Brownsville – Gateway,car,standard,Monday,8,90.0,3,30,2026-11-16
@@ -6004,11 +6009,11 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 535504,mexico,Brownsville – Gateway,car,Ready,Sunday,21,88.3,3,30,2026-11-16
 535504,mexico,Brownsville – Gateway,car,Ready,Sunday,22,105.0,2,30,2026-11-16
 535504,mexico,Brownsville – Gateway,car,Ready,Sunday,23,90.0,2,30,2026-11-16
-535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,1,0.0,1,30,2026-11-16
+535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,1,0.0,2,30,2026-11-16
 535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,2,0.0,2,30,2026-11-16
-535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,3,0.0,1,30,2026-11-16
-535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,4,0.0,1,30,2026-11-16
-535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,5,5.0,1,30,2026-11-16
+535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,3,0.0,2,30,2026-11-16
+535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,4,0.0,2,30,2026-11-16
+535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,5,7.5,2,30,2026-11-16
 535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,6,23.3,3,30,2026-11-16
 535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,7,35.0,3,30,2026-11-16
 535504,mexico,Brownsville – Gateway,pedestrian,standard,Monday,8,51.7,3,30,2026-11-16
@@ -7654,8 +7659,8 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 250302,mexico,Calexico – West,car,standard,Sunday,19,142.5,4,30,2026-11-16
 250302,mexico,Calexico – West,car,standard,Sunday,20,160.0,4,30,2026-11-16
 250302,mexico,Calexico – West,car,standard,Sunday,21,162.5,4,30,2026-11-16
-250302,mexico,Calexico – West,car,standard,Sunday,22,156.7,3,30,2026-11-16
-250302,mexico,Calexico – West,car,standard,Sunday,23,150.0,3,30,2026-11-16
+250302,mexico,Calexico – West,car,standard,Sunday,22,162.5,4,30,2026-11-16
+250302,mexico,Calexico – West,car,standard,Sunday,23,157.5,4,30,2026-11-16
 250302,mexico,Calexico – West,car,SENTRI,Monday,0,5.0,4,30,2026-11-16
 250302,mexico,Calexico – West,car,SENTRI,Monday,1,5.0,3,30,2026-11-16
 250302,mexico,Calexico – West,car,SENTRI,Monday,2,5.0,3,30,2026-11-16
@@ -7822,8 +7827,8 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 250302,mexico,Calexico – West,car,SENTRI,Sunday,19,10.0,4,30,2026-11-16
 250302,mexico,Calexico – West,car,SENTRI,Sunday,20,8.8,4,30,2026-11-16
 250302,mexico,Calexico – West,car,SENTRI,Sunday,21,8.8,4,30,2026-11-16
-250302,mexico,Calexico – West,car,SENTRI,Sunday,22,5.0,3,30,2026-11-16
-250302,mexico,Calexico – West,car,SENTRI,Sunday,23,5.0,3,30,2026-11-16
+250302,mexico,Calexico – West,car,SENTRI,Sunday,22,5.0,4,30,2026-11-16
+250302,mexico,Calexico – West,car,SENTRI,Sunday,23,6.3,4,30,2026-11-16
 250302,mexico,Calexico – West,car,Ready,Monday,0,103.8,4,30,2026-11-16
 250302,mexico,Calexico – West,car,Ready,Monday,1,45.0,3,30,2026-11-16
 250302,mexico,Calexico – West,car,Ready,Monday,2,28.3,3,30,2026-11-16
@@ -7990,8 +7995,8 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 250302,mexico,Calexico – West,car,Ready,Sunday,19,142.5,4,30,2026-11-16
 250302,mexico,Calexico – West,car,Ready,Sunday,20,160.0,4,30,2026-11-16
 250302,mexico,Calexico – West,car,Ready,Sunday,21,162.5,4,30,2026-11-16
-250302,mexico,Calexico – West,car,Ready,Sunday,22,156.7,3,30,2026-11-16
-250302,mexico,Calexico – West,car,Ready,Sunday,23,150.0,3,30,2026-11-16
+250302,mexico,Calexico – West,car,Ready,Sunday,22,162.5,4,30,2026-11-16
+250302,mexico,Calexico – West,car,Ready,Sunday,23,157.5,4,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,standard,Monday,0,5.0,4,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,standard,Monday,1,5.0,3,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,standard,Monday,2,5.0,3,30,2026-11-16
@@ -8158,8 +8163,8 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,standard,Sunday,19,53.8,4,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,standard,Sunday,20,53.8,4,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,standard,Sunday,21,31.3,4,30,2026-11-16
-250302,mexico,Calexico – West,pedestrian,standard,Sunday,22,25.0,3,30,2026-11-16
-250302,mexico,Calexico – West,pedestrian,standard,Sunday,23,25.0,3,30,2026-11-16
+250302,mexico,Calexico – West,pedestrian,standard,Sunday,22,21.3,4,30,2026-11-16
+250302,mexico,Calexico – West,pedestrian,standard,Sunday,23,23.8,4,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,Ready,Monday,0,5.0,4,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,Ready,Monday,1,5.0,3,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,Ready,Monday,2,5.0,3,30,2026-11-16
@@ -8326,13 +8331,13 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,Ready,Sunday,19,53.8,4,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,Ready,Sunday,20,53.8,4,30,2026-11-16
 250302,mexico,Calexico – West,pedestrian,Ready,Sunday,21,31.3,4,30,2026-11-16
-250302,mexico,Calexico – West,pedestrian,Ready,Sunday,22,25.0,3,30,2026-11-16
-250302,mexico,Calexico – West,pedestrian,Ready,Sunday,23,25.0,3,30,2026-11-16
+250302,mexico,Calexico – West,pedestrian,Ready,Sunday,22,21.3,4,30,2026-11-16
+250302,mexico,Calexico – West,pedestrian,Ready,Sunday,23,23.8,4,30,2026-11-16
 240601,mexico,Columbus,car,standard,Monday,0,0.0,1,30,2026-11-16
-240601,mexico,Columbus,car,standard,Monday,2,0.0,3,30,2026-11-16
+240601,mexico,Columbus,car,standard,Monday,2,0.0,4,30,2026-11-16
 240601,mexico,Columbus,car,standard,Monday,3,0.0,1,30,2026-11-16
-240601,mexico,Columbus,car,standard,Monday,4,0.0,2,30,2026-11-16
-240601,mexico,Columbus,car,standard,Monday,5,3.3,3,30,2026-11-16
+240601,mexico,Columbus,car,standard,Monday,4,0.0,3,30,2026-11-16
+240601,mexico,Columbus,car,standard,Monday,5,3.8,4,30,2026-11-16
 240601,mexico,Columbus,car,standard,Monday,6,3.3,3,30,2026-11-16
 240601,mexico,Columbus,car,standard,Monday,7,10.0,1,30,2026-11-16
 240601,mexico,Columbus,car,standard,Monday,8,8.3,3,30,2026-11-16
@@ -8490,16 +8495,16 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240601,mexico,Columbus,car,standard,Sunday,20,10.0,4,30,2026-11-16
 240601,mexico,Columbus,car,standard,Sunday,21,8.8,4,30,2026-11-16
 240601,mexico,Columbus,car,standard,Sunday,22,5.5,4,30,2026-11-16
-240601,mexico,Columbus,car,standard,Sunday,23,5.0,3,30,2026-11-16
+240601,mexico,Columbus,car,standard,Sunday,23,4.3,4,30,2026-11-16
 240601,mexico,Columbus,car,Ready,Sunday,11,25.0,1,30,2026-11-16
 240601,mexico,Columbus,car,Ready,Sunday,13,15.0,1,30,2026-11-16
 240601,mexico,Columbus,car,Ready,Sunday,14,20.0,1,30,2026-11-16
 240601,mexico,Columbus,car,Ready,Sunday,15,15.0,1,30,2026-11-16
 240601,mexico,Columbus,pedestrian,standard,Monday,0,0.0,1,30,2026-11-16
-240601,mexico,Columbus,pedestrian,standard,Monday,2,0.0,3,30,2026-11-16
+240601,mexico,Columbus,pedestrian,standard,Monday,2,0.0,4,30,2026-11-16
 240601,mexico,Columbus,pedestrian,standard,Monday,3,0.0,1,30,2026-11-16
-240601,mexico,Columbus,pedestrian,standard,Monday,4,0.0,2,30,2026-11-16
-240601,mexico,Columbus,pedestrian,standard,Monday,5,0.0,3,30,2026-11-16
+240601,mexico,Columbus,pedestrian,standard,Monday,4,0.0,3,30,2026-11-16
+240601,mexico,Columbus,pedestrian,standard,Monday,5,0.0,4,30,2026-11-16
 240601,mexico,Columbus,pedestrian,standard,Monday,6,1.7,3,30,2026-11-16
 240601,mexico,Columbus,pedestrian,standard,Monday,7,5.0,1,30,2026-11-16
 240601,mexico,Columbus,pedestrian,standard,Monday,8,1.7,3,30,2026-11-16
@@ -8657,10 +8662,12 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240601,mexico,Columbus,pedestrian,standard,Sunday,20,0.5,4,30,2026-11-16
 240601,mexico,Columbus,pedestrian,standard,Sunday,21,0.5,4,30,2026-11-16
 240601,mexico,Columbus,pedestrian,standard,Sunday,22,0.3,4,30,2026-11-16
-240601,mexico,Columbus,pedestrian,standard,Sunday,23,0.0,3,30,2026-11-16
-230201,mexico,Del Rio,car,standard,Monday,2,2.5,2,30,2026-11-16
+240601,mexico,Columbus,pedestrian,standard,Sunday,23,0.3,4,30,2026-11-16
+230201,mexico,Del Rio,car,standard,Monday,1,45.0,1,30,2026-11-16
+230201,mexico,Del Rio,car,standard,Monday,2,18.3,3,30,2026-11-16
+230201,mexico,Del Rio,car,standard,Monday,3,10.0,1,30,2026-11-16
 230201,mexico,Del Rio,car,standard,Monday,4,0.0,2,30,2026-11-16
-230201,mexico,Del Rio,car,standard,Monday,5,40.0,2,30,2026-11-16
+230201,mexico,Del Rio,car,standard,Monday,5,31.7,3,30,2026-11-16
 230201,mexico,Del Rio,car,standard,Monday,6,46.7,3,30,2026-11-16
 230201,mexico,Del Rio,car,standard,Monday,7,26.7,3,30,2026-11-16
 230201,mexico,Del Rio,car,standard,Monday,8,33.3,3,30,2026-11-16
@@ -8921,9 +8928,11 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 230201,mexico,Del Rio,car,SENTRI,Sunday,20,45.0,2,30,2026-11-16
 230201,mexico,Del Rio,car,SENTRI,Sunday,21,15.0,3,30,2026-11-16
 230201,mexico,Del Rio,car,SENTRI,Sunday,23,0.0,2,30,2026-11-16
-230201,mexico,Del Rio,car,Ready,Monday,2,5.0,1,30,2026-11-16
+230201,mexico,Del Rio,car,Ready,Monday,1,45.0,1,30,2026-11-16
+230201,mexico,Del Rio,car,Ready,Monday,2,27.5,2,30,2026-11-16
+230201,mexico,Del Rio,car,Ready,Monday,3,10.0,1,30,2026-11-16
 230201,mexico,Del Rio,car,Ready,Monday,4,0.0,2,30,2026-11-16
-230201,mexico,Del Rio,car,Ready,Monday,5,40.0,2,30,2026-11-16
+230201,mexico,Del Rio,car,Ready,Monday,5,31.7,3,30,2026-11-16
 230201,mexico,Del Rio,car,Ready,Monday,6,46.7,3,30,2026-11-16
 230201,mexico,Del Rio,car,Ready,Monday,7,26.7,3,30,2026-11-16
 230201,mexico,Del Rio,car,Ready,Monday,8,33.3,3,30,2026-11-16
@@ -9069,10 +9078,10 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 230201,mexico,Del Rio,car,Ready,Sunday,21,45.0,3,30,2026-11-16
 230201,mexico,Del Rio,car,Ready,Sunday,23,37.5,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,0,1.0,2,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,1,1.0,2,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,2,1.0,2,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,3,1.0,2,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,4,10.0,2,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,1,2.3,3,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,2,1.7,3,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,3,4.0,3,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,4,11.7,3,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,5,22.5,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,6,27.5,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,standard,Monday,7,55.0,3,30,2026-11-16
@@ -9231,9 +9240,9 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,standard,Sunday,18,78.0,5,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,standard,Sunday,19,65.0,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,standard,Sunday,20,93.3,3,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),car,standard,Sunday,21,15.0,2,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),car,standard,Sunday,21,30.0,3,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,standard,Sunday,22,0.5,2,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),car,standard,Sunday,23,5.5,2,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),car,standard,Sunday,23,27.0,3,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,SENTRI,Monday,5,1.0,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,SENTRI,Monday,6,1.0,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,SENTRI,Monday,7,8.3,3,30,2026-11-16
@@ -9354,7 +9363,7 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,SENTRI,Sunday,18,5.6,5,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,SENTRI,Sunday,19,10.0,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,SENTRI,Sunday,20,6.0,3,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),car,SENTRI,Sunday,21,3.0,2,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),car,SENTRI,Sunday,21,3.7,3,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,SENTRI,Sunday,22,3.0,1,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,Ready,Monday,2,5.0,1,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,Ready,Monday,3,5.0,1,30,2026-11-16
@@ -9389,10 +9398,10 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,Ready,Sunday,5,1.0,1,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),car,Ready,Sunday,23,5.0,1,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,0,1.0,2,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,1,1.0,2,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,2,1.0,3,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,3,1.0,3,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,4,1.0,3,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,1,1.7,3,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,2,1.5,4,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,3,1.5,4,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,4,1.5,4,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,5,1.0,3,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,6,1.0,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Monday,7,18.3,3,30,2026-11-16
@@ -9552,9 +9561,9 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Sunday,18,5.8,5,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Sunday,19,4.0,2,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Sunday,20,3.0,3,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Sunday,21,3.0,2,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Sunday,21,3.0,3,30,2026-11-16
 260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Sunday,22,2.0,2,30,2026-11-16
-260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Sunday,23,1.0,3,30,2026-11-16
+260101,mexico,Douglas (Raul Hector Castro),pedestrian,standard,Sunday,23,1.5,4,30,2026-11-16
 230301,mexico,Eagle Pass – Bridge I,car,standard,Monday,7,30.0,1,30,2026-11-16
 230301,mexico,Eagle Pass – Bridge I,car,standard,Monday,8,30.0,1,30,2026-11-16
 230301,mexico,Eagle Pass – Bridge I,car,standard,Monday,9,60.0,1,30,2026-11-16
@@ -9703,12 +9712,12 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 230301,mexico,Eagle Pass – Bridge I,car,Ready,Sunday,20,132.0,5,30,2026-11-16
 230301,mexico,Eagle Pass – Bridge I,car,Ready,Sunday,21,127.5,4,30,2026-11-16
 230301,mexico,Eagle Pass – Bridge I,car,Ready,Sunday,22,116.3,4,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,0,152.5,2,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,1,102.0,3,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,2,40.5,4,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,3,15.5,2,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,4,25.0,3,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,5,45.0,2,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,0,103.3,3,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,1,77.8,4,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,2,33.4,5,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,3,17.0,3,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,4,33.8,4,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,5,50.0,3,30,2026-11-16
 230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,6,75.0,3,30,2026-11-16
 230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,7,60.0,3,30,2026-11-16
 230302,mexico,Eagle Pass – Bridge II,car,standard,Monday,8,60.0,3,30,2026-11-16
@@ -9871,12 +9880,12 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 230302,mexico,Eagle Pass – Bridge II,car,standard,Sunday,21,127.5,4,30,2026-11-16
 230302,mexico,Eagle Pass – Bridge II,car,standard,Sunday,22,90.0,4,30,2026-11-16
 230302,mexico,Eagle Pass – Bridge II,car,standard,Sunday,23,118.8,4,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,0,1.0,2,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,1,1.0,3,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,2,1.0,4,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,3,1.0,2,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,4,1.0,3,30,2026-11-16
-230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,5,1.0,2,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,0,1.0,3,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,1,1.0,4,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,2,1.0,5,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,3,1.0,3,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,4,1.0,4,30,2026-11-16
+230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,5,1.0,3,30,2026-11-16
 230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,6,1.0,3,30,2026-11-16
 230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,7,4.0,3,30,2026-11-16
 230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Monday,8,2.3,3,30,2026-11-16
@@ -10041,9 +10050,9 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 230302,mexico,Eagle Pass – Bridge II,car,SENTRI,Sunday,23,1.0,4,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Monday,0,47.5,2,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Monday,1,30.3,3,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Monday,2,33.3,3,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Monday,2,40.0,4,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Monday,3,42.5,2,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Monday,4,37.5,2,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Monday,4,41.7,3,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Monday,5,46.7,3,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Monday,6,72.0,1,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Monday,7,46.5,2,30,2026-11-16
@@ -10202,13 +10211,13 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Sunday,19,84.6,5,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Sunday,20,85.8,4,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Sunday,21,80.7,3,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Sunday,22,85.0,1,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Sunday,23,86.0,3,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Sunday,22,77.5,2,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),car,standard,Sunday,23,82.0,4,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Monday,0,44.0,2,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Monday,1,27.7,3,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Monday,2,29.3,3,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Monday,2,36.3,4,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Monday,3,37.5,2,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Monday,4,33.5,2,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Monday,4,37.3,3,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Monday,5,42.7,3,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Monday,6,70.0,1,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Monday,7,43.0,2,30,2026-11-16
@@ -10367,13 +10376,13 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Sunday,19,80.2,5,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Sunday,20,81.5,4,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Sunday,21,78.3,3,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Sunday,22,85.0,1,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Sunday,23,81.7,3,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Sunday,22,77.5,2,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),car,Ready,Sunday,23,77.5,4,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Monday,0,2.5,2,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Monday,1,1.7,3,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Monday,2,3.3,3,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Monday,2,3.8,4,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Monday,3,2.5,2,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Monday,4,2.5,2,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Monday,4,3.3,3,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Monday,5,4.3,3,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Monday,6,3.0,1,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Monday,7,6.5,2,30,2026-11-16
@@ -10532,8 +10541,8 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Sunday,19,13.4,5,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Sunday,20,14.5,4,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Sunday,21,14.0,3,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Sunday,22,3.0,1,30,2026-11-16
-240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Sunday,23,4.3,3,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Sunday,22,4.0,2,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,standard,Sunday,23,4.0,4,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,Ready,Monday,7,5.0,1,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,Ready,Monday,8,0.0,1,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,Ready,Monday,9,5.0,2,30,2026-11-16
@@ -10639,9 +10648,11 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,Ready,Sunday,19,8.5,2,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,Ready,Sunday,20,14.0,2,30,2026-11-16
 240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,Ready,Sunday,21,11.0,2,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,Ready,Sunday,22,5.0,1,30,2026-11-16
+240201,mexico,El Paso – Bridge of the Americas (BOTA),pedestrian,Ready,Sunday,23,3.0,1,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Monday,0,35.0,1,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Monday,1,75.0,1,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Monday,2,20.3,3,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Monday,1,45.0,2,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Monday,2,21.5,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Monday,5,58.3,3,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Monday,6,55.0,1,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Monday,7,74.0,3,30,2026-11-16
@@ -10798,10 +10809,10 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Sunday,20,75.0,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Sunday,21,80.5,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Sunday,22,84.0,2,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Sunday,23,75.5,2,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),car,standard,Sunday,23,75.3,3,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Monday,0,1.0,1,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Monday,1,1.0,1,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Monday,2,1.0,3,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Monday,1,1.0,2,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Monday,2,1.0,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Monday,5,1.7,3,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Monday,6,1.0,1,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Monday,7,3.7,3,30,2026-11-16
@@ -10958,10 +10969,10 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Sunday,20,4.5,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Sunday,21,3.5,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Sunday,22,4.0,3,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Sunday,23,1.0,3,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),car,SENTRI,Sunday,23,1.0,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Monday,0,25.0,1,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Monday,1,70.0,1,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Monday,2,12.7,3,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Monday,1,45.0,2,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Monday,2,14.5,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Monday,5,51.7,3,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Monday,6,50.0,1,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Monday,7,68.3,3,30,2026-11-16
@@ -11118,10 +11129,10 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Sunday,20,72.8,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Sunday,21,77.5,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Sunday,22,78.0,3,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Sunday,23,73.0,3,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),car,Ready,Sunday,23,72.8,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Monday,0,1.0,1,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Monday,1,1.0,1,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Monday,2,1.0,3,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Monday,1,1.0,2,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Monday,2,1.0,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Monday,5,25.0,3,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Monday,6,30.0,1,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Monday,7,35.0,3,30,2026-11-16
@@ -11278,10 +11289,10 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Sunday,20,19.3,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Sunday,21,5.3,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Sunday,22,3.7,3,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Sunday,23,3.3,3,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,standard,Sunday,23,2.8,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Monday,0,1.0,1,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Monday,1,1.0,1,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Monday,2,1.0,3,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Monday,1,1.0,2,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Monday,2,1.0,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Monday,5,18.3,3,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Monday,6,25.0,1,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Monday,7,26.7,3,30,2026-11-16
@@ -11436,7 +11447,7 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Sunday,20,16.8,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Sunday,21,4.0,4,30,2026-11-16
 240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Sunday,22,3.7,3,30,2026-11-16
-240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Sunday,23,2.7,3,30,2026-11-16
+240202,mexico,El Paso – Paso Del Norte (PDN),pedestrian,Ready,Sunday,23,2.3,4,30,2026-11-16
 240204,mexico,El Paso – Stanton DCL,car,standard,Monday,18,0.0,1,30,2026-11-16
 240204,mexico,El Paso – Stanton DCL,car,SENTRI,Monday,6,3.0,1,30,2026-11-16
 240204,mexico,El Paso – Stanton DCL,car,SENTRI,Monday,7,11.5,2,30,2026-11-16
@@ -11558,12 +11569,12 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240204,mexico,El Paso – Stanton DCL,car,SENTRI,Sunday,20,1.5,4,30,2026-11-16
 240204,mexico,El Paso – Stanton DCL,car,SENTRI,Sunday,21,1.0,4,30,2026-11-16
 240204,mexico,El Paso – Stanton DCL,car,SENTRI,Sunday,22,1.0,3,30,2026-11-16
-240204,mexico,El Paso – Stanton DCL,car,SENTRI,Sunday,23,1.0,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,0,1.0,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,1,1.3,4,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,2,1.0,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,3,1.0,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,4,1.0,3,30,2026-11-16
+240204,mexico,El Paso – Stanton DCL,car,SENTRI,Sunday,23,1.0,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,0,1.0,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,1,1.2,5,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,2,1.0,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,3,1.0,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,4,1.0,4,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,5,2.3,3,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,6,40.0,3,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,SENTRI,Monday,7,5.7,3,30,2026-11-16
@@ -11726,12 +11737,12 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,SENTRI,Sunday,20,12.0,3,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,SENTRI,Sunday,21,5.3,4,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,SENTRI,Sunday,22,5.3,4,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,SENTRI,Sunday,23,8.7,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,Ready,Monday,0,38.3,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,Ready,Monday,1,50.0,4,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,Ready,Monday,2,17.0,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,Ready,Monday,3,46.7,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,Ready,Monday,4,60.0,3,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,SENTRI,Sunday,23,6.8,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,Ready,Monday,0,43.8,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,Ready,Monday,1,51.0,5,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,Ready,Monday,2,25.3,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,Ready,Monday,3,47.5,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,Ready,Monday,4,58.8,4,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,Ready,Monday,5,45.3,3,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,Ready,Monday,6,36.7,3,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,Ready,Monday,7,40.0,3,30,2026-11-16
@@ -11894,12 +11905,12 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,Ready,Sunday,20,65.0,3,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,Ready,Sunday,21,71.3,4,30,2026-11-16
 240203,mexico,El Paso – Ysleta,car,Ready,Sunday,22,62.5,4,30,2026-11-16
-240203,mexico,El Paso – Ysleta,car,Ready,Sunday,23,63.3,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,0,0.7,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,1,0.8,4,30,2026-11-16
-240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,2,1.0,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,3,2.3,3,30,2026-11-16
-240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,4,1.0,3,30,2026-11-16
+240203,mexico,El Paso – Ysleta,car,Ready,Sunday,23,63.8,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,0,0.8,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,1,0.8,5,30,2026-11-16
+240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,2,1.0,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,3,2.0,4,30,2026-11-16
+240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,4,1.0,4,30,2026-11-16
 240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,5,11.7,3,30,2026-11-16
 240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,6,16.7,3,30,2026-11-16
 240203,mexico,El Paso – Ysleta,pedestrian,standard,Monday,7,7.3,3,30,2026-11-16
@@ -12062,7 +12073,7 @@ L01901,canada,Madawaska,car,standard,Sunday,23,0.0,2,30,2026-11-16
 240203,mexico,El Paso – Ysleta,pedestrian,standard,Sunday,20,16.7,3,30,2026-11-16
 240203,mexico,El Paso – Ysleta,pedestrian,standard,Sunday,21,10.3,4,30,2026-11-16
 240203,mexico,El Paso – Ysleta,pedestrian,standard,Sunday,22,12.5,4,30,2026-11-16
-240203,mexico,El Paso – Ysleta,pedestrian,standard,Sunday,23,3.7,3,30,2026-11-16
+240203,mexico,El Paso – Ysleta,pedestrian,standard,Sunday,23,3.0,4,30,2026-11-16
 l24501,mexico,Fort Hancock,car,standard,Monday,6,5.0,3,30,2026-11-16
 l24501,mexico,Fort Hancock,car,standard,Monday,7,8.3,3,30,2026-11-16
 l24501,mexico,Fort Hancock,car,standard,Monday,8,5.0,3,30,2026-11-16
@@ -12459,9 +12470,11 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 230503,mexico,Hidalgo/Pharr – Anzalduas International Bridge,car,Ready,Sunday,20,65.0,5,30,2026-11-16
 230503,mexico,Hidalgo/Pharr – Anzalduas International Bridge,car,Ready,Sunday,21,56.7,3,30,2026-11-16
 230503,mexico,Hidalgo/Pharr – Anzalduas International Bridge,car,Ready,Sunday,22,32.5,2,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Monday,0,45.0,1,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Monday,2,9.0,3,30,2026-11-16
-230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Monday,4,20.0,2,30,2026-11-16
-230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Monday,5,30.0,2,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Monday,3,40.0,1,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Monday,4,25.0,3,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Monday,5,35.0,3,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Monday,6,35.0,2,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Monday,7,45.0,2,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Monday,8,47.5,2,30,2026-11-16
@@ -12621,7 +12634,7 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Sunday,21,58.3,3,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Sunday,22,60.0,3,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,standard,Sunday,23,60.0,1,30,2026-11-16
-230501,mexico,Hidalgo/Pharr – Hidalgo,car,SENTRI,Monday,5,0.0,2,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,car,SENTRI,Monday,5,1.7,3,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,SENTRI,Monday,6,2.5,2,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,SENTRI,Monday,7,5.0,2,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,SENTRI,Monday,8,3.0,2,30,2026-11-16
@@ -12752,9 +12765,11 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,SENTRI,Sunday,21,2.3,3,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,SENTRI,Sunday,22,1.0,3,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,SENTRI,Sunday,23,1.0,1,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Monday,0,40.0,1,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Monday,2,20.0,1,30,2026-11-16
-230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Monday,4,15.0,2,30,2026-11-16
-230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Monday,5,25.0,2,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Monday,3,35.0,1,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Monday,4,20.0,3,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Monday,5,30.0,3,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Monday,6,30.0,2,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Monday,7,40.0,2,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Monday,8,42.5,2,30,2026-11-16
@@ -12913,9 +12928,11 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Sunday,21,53.3,3,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Sunday,22,55.0,3,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,car,Ready,Sunday,23,55.0,1,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,pedestrian,standard,Monday,0,5.0,1,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,pedestrian,standard,Monday,2,0.0,3,30,2026-11-16
-230501,mexico,Hidalgo/Pharr – Hidalgo,pedestrian,standard,Monday,4,0.0,2,30,2026-11-16
-230501,mexico,Hidalgo/Pharr – Hidalgo,pedestrian,standard,Monday,5,15.0,2,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,pedestrian,standard,Monday,3,2.0,1,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,pedestrian,standard,Monday,4,0.7,3,30,2026-11-16
+230501,mexico,Hidalgo/Pharr – Hidalgo,pedestrian,standard,Monday,5,21.7,3,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,pedestrian,standard,Monday,6,17.5,2,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,pedestrian,standard,Monday,7,27.5,2,30,2026-11-16
 230501,mexico,Hidalgo/Pharr – Hidalgo,pedestrian,standard,Monday,8,25.0,2,30,2026-11-16
@@ -13187,10 +13204,10 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,standard,Friday,8,30.0,1,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,0,0.0,2,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,1,0.0,1,30,2026-11-16
-230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,2,0.0,3,30,2026-11-16
+230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,2,0.0,4,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,3,0.0,2,30,2026-11-16
-230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,4,0.0,3,30,2026-11-16
-230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,5,0.0,3,30,2026-11-16
+230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,4,0.0,4,30,2026-11-16
+230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,5,0.0,4,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,6,0.0,1,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,7,21.7,3,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Monday,8,10.0,1,30,2026-11-16
@@ -13329,7 +13346,7 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Sunday,1,0.0,2,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Sunday,2,0.0,2,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Sunday,3,0.0,3,30,2026-11-16
-230401,mexico,Laredo – Bridge I,car,SENTRI,Sunday,4,0.0,3,30,2026-11-16
+230401,mexico,Laredo – Bridge I,car,SENTRI,Sunday,4,0.0,4,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Sunday,5,0.0,5,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Sunday,6,0.0,3,30,2026-11-16
 230401,mexico,Laredo – Bridge I,car,SENTRI,Sunday,7,0.0,3,30,2026-11-16
@@ -13482,10 +13499,10 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,standard,Sunday,23,0.0,4,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,0,0.0,2,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,1,0.0,1,30,2026-11-16
-230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,2,0.0,3,30,2026-11-16
+230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,2,0.0,4,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,3,0.0,2,30,2026-11-16
-230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,4,0.0,3,30,2026-11-16
-230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,5,0.0,3,30,2026-11-16
+230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,4,0.0,4,30,2026-11-16
+230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,5,0.0,4,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,6,0.0,1,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,7,8.3,3,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Monday,8,0.0,1,30,2026-11-16
@@ -13624,7 +13641,7 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Sunday,1,0.0,2,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Sunday,2,0.0,2,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Sunday,3,0.0,3,30,2026-11-16
-230401,mexico,Laredo – Bridge I,pedestrian,Ready,Sunday,4,0.0,3,30,2026-11-16
+230401,mexico,Laredo – Bridge I,pedestrian,Ready,Sunday,4,0.0,4,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Sunday,5,0.0,5,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Sunday,6,0.0,3,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Sunday,7,0.0,3,30,2026-11-16
@@ -13644,12 +13661,12 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Sunday,21,1.7,3,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Sunday,22,0.0,2,30,2026-11-16
 230401,mexico,Laredo – Bridge I,pedestrian,Ready,Sunday,23,0.0,4,30,2026-11-16
-230402,mexico,Laredo – Bridge II,car,standard,Monday,0,25.0,3,30,2026-11-16
+230402,mexico,Laredo – Bridge II,car,standard,Monday,0,25.0,4,30,2026-11-16
 230402,mexico,Laredo – Bridge II,car,standard,Monday,1,27.5,2,30,2026-11-16
-230402,mexico,Laredo – Bridge II,car,standard,Monday,2,0.0,3,30,2026-11-16
-230402,mexico,Laredo – Bridge II,car,standard,Monday,3,0.0,2,30,2026-11-16
-230402,mexico,Laredo – Bridge II,car,standard,Monday,4,0.0,3,30,2026-11-16
-230402,mexico,Laredo – Bridge II,car,standard,Monday,5,30.0,3,30,2026-11-16
+230402,mexico,Laredo – Bridge II,car,standard,Monday,2,0.0,4,30,2026-11-16
+230402,mexico,Laredo – Bridge II,car,standard,Monday,3,0.0,3,30,2026-11-16
+230402,mexico,Laredo – Bridge II,car,standard,Monday,4,0.0,4,30,2026-11-16
+230402,mexico,Laredo – Bridge II,car,standard,Monday,5,33.8,4,30,2026-11-16
 230402,mexico,Laredo – Bridge II,car,standard,Monday,6,15.0,1,30,2026-11-16
 230402,mexico,Laredo – Bridge II,car,standard,Monday,7,58.3,3,30,2026-11-16
 230402,mexico,Laredo – Bridge II,car,standard,Monday,8,45.0,1,30,2026-11-16
@@ -13808,12 +13825,12 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 230402,mexico,Laredo – Bridge II,car,standard,Sunday,21,61.7,3,30,2026-11-16
 230402,mexico,Laredo – Bridge II,car,standard,Sunday,22,60.0,2,30,2026-11-16
 230402,mexico,Laredo – Bridge II,car,standard,Sunday,23,33.8,4,30,2026-11-16
-230402,mexico,Laredo – Bridge II,car,Ready,Monday,0,21.7,3,30,2026-11-16
+230402,mexico,Laredo – Bridge II,car,Ready,Monday,0,21.3,4,30,2026-11-16
 230402,mexico,Laredo – Bridge II,car,Ready,Monday,1,25.0,2,30,2026-11-16
-230402,mexico,Laredo – Bridge II,car,Ready,Monday,2,0.0,3,30,2026-11-16
-230402,mexico,Laredo – Bridge II,car,Ready,Monday,3,0.0,2,30,2026-11-16
-230402,mexico,Laredo – Bridge II,car,Ready,Monday,4,0.0,3,30,2026-11-16
-230402,mexico,Laredo – Bridge II,car,Ready,Monday,5,25.0,3,30,2026-11-16
+230402,mexico,Laredo – Bridge II,car,Ready,Monday,2,0.0,4,30,2026-11-16
+230402,mexico,Laredo – Bridge II,car,Ready,Monday,3,0.0,3,30,2026-11-16
+230402,mexico,Laredo – Bridge II,car,Ready,Monday,4,0.0,4,30,2026-11-16
+230402,mexico,Laredo – Bridge II,car,Ready,Monday,5,28.8,4,30,2026-11-16
 230402,mexico,Laredo – Bridge II,car,Ready,Monday,6,10.0,1,30,2026-11-16
 230402,mexico,Laredo – Bridge II,car,Ready,Monday,7,53.3,3,30,2026-11-16
 230402,mexico,Laredo – Bridge II,car,Ready,Monday,8,40.0,1,30,2026-11-16
@@ -14891,10 +14908,10 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 260301,mexico,Naco,pedestrian,standard,Sunday,20,1.0,3,30,2026-11-16
 260301,mexico,Naco,pedestrian,standard,Sunday,21,1.0,4,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,standard,Monday,0,61.3,4,30,2026-11-16
-260401,mexico,Nogales – Deconcini,car,standard,Monday,1,30.0,3,30,2026-11-16
+260401,mexico,Nogales – Deconcini,car,standard,Monday,1,25.0,4,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,standard,Monday,2,21.7,3,30,2026-11-16
-260401,mexico,Nogales – Deconcini,car,standard,Monday,3,41.7,3,30,2026-11-16
-260401,mexico,Nogales – Deconcini,car,standard,Monday,4,76.7,3,30,2026-11-16
+260401,mexico,Nogales – Deconcini,car,standard,Monday,3,36.3,4,30,2026-11-16
+260401,mexico,Nogales – Deconcini,car,standard,Monday,4,72.5,4,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,standard,Monday,5,116.7,3,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,standard,Monday,6,126.7,3,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,standard,Monday,7,61.0,3,30,2026-11-16
@@ -15056,7 +15073,7 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,standard,Sunday,20,57.5,4,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,standard,Sunday,21,56.3,4,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,standard,Sunday,22,43.3,3,30,2026-11-16
-260401,mexico,Nogales – Deconcini,car,standard,Sunday,23,27.5,2,30,2026-11-16
+260401,mexico,Nogales – Deconcini,car,standard,Sunday,23,26.7,3,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,SENTRI,Monday,6,0.0,3,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,SENTRI,Monday,7,55.0,3,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,SENTRI,Monday,8,28.3,3,30,2026-11-16
@@ -15176,10 +15193,10 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,SENTRI,Sunday,22,0.0,3,30,2026-11-16
 260401,mexico,Nogales – Deconcini,car,SENTRI,Sunday,23,10.0,1,30,2026-11-16
 260401,mexico,Nogales – Deconcini,pedestrian,standard,Monday,0,2.5,4,30,2026-11-16
-260401,mexico,Nogales – Deconcini,pedestrian,standard,Monday,1,0.0,3,30,2026-11-16
+260401,mexico,Nogales – Deconcini,pedestrian,standard,Monday,1,0.0,4,30,2026-11-16
 260401,mexico,Nogales – Deconcini,pedestrian,standard,Monday,2,0.0,3,30,2026-11-16
-260401,mexico,Nogales – Deconcini,pedestrian,standard,Monday,3,0.0,3,30,2026-11-16
-260401,mexico,Nogales – Deconcini,pedestrian,standard,Monday,4,1.7,3,30,2026-11-16
+260401,mexico,Nogales – Deconcini,pedestrian,standard,Monday,3,0.0,4,30,2026-11-16
+260401,mexico,Nogales – Deconcini,pedestrian,standard,Monday,4,1.3,4,30,2026-11-16
 260401,mexico,Nogales – Deconcini,pedestrian,standard,Monday,5,33.3,3,30,2026-11-16
 260401,mexico,Nogales – Deconcini,pedestrian,standard,Monday,6,55.0,3,30,2026-11-16
 260401,mexico,Nogales – Deconcini,pedestrian,standard,Monday,7,43.3,3,30,2026-11-16
@@ -15341,7 +15358,7 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 260401,mexico,Nogales – Deconcini,pedestrian,standard,Sunday,20,1.3,4,30,2026-11-16
 260401,mexico,Nogales – Deconcini,pedestrian,standard,Sunday,21,8.8,4,30,2026-11-16
 260401,mexico,Nogales – Deconcini,pedestrian,standard,Sunday,22,10.0,3,30,2026-11-16
-260401,mexico,Nogales – Deconcini,pedestrian,standard,Sunday,23,10.0,2,30,2026-11-16
+260401,mexico,Nogales – Deconcini,pedestrian,standard,Sunday,23,6.7,3,30,2026-11-16
 260402,mexico,Nogales – Mariposa,car,standard,Monday,6,0.0,3,30,2026-11-16
 260402,mexico,Nogales – Mariposa,car,standard,Monday,7,58.3,3,30,2026-11-16
 260402,mexico,Nogales – Mariposa,car,standard,Monday,8,67.5,4,30,2026-11-16
@@ -15621,11 +15638,11 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 260403,mexico,Nogales – Morley Gate,pedestrian,standard,Sunday,14,6.0,5,30,2026-11-16
 260403,mexico,Nogales – Morley Gate,pedestrian,standard,Sunday,15,11.0,5,30,2026-11-16
 260403,mexico,Nogales – Morley Gate,pedestrian,standard,Sunday,16,0.0,1,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,standard,Monday,0,117.5,4,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,standard,Monday,1,71.7,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,standard,Monday,2,58.3,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,standard,Monday,3,56.7,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,standard,Monday,4,65.0,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,standard,Monday,0,114.0,5,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,standard,Monday,1,72.5,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,standard,Monday,2,58.8,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,standard,Monday,3,53.8,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,standard,Monday,4,63.8,4,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,standard,Monday,5,78.3,3,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,standard,Monday,6,90.0,3,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,standard,Monday,7,83.3,3,30,2026-11-16
@@ -15783,10 +15800,10 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,standard,Sunday,18,185.0,4,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,standard,Sunday,19,192.5,2,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,standard,Sunday,20,166.7,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,standard,Sunday,21,205.0,2,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,standard,Sunday,22,137.5,2,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,standard,Sunday,23,125.0,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,SENTRI,Monday,4,3.3,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,standard,Sunday,21,183.3,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,standard,Sunday,22,138.3,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,standard,Sunday,23,126.3,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,SENTRI,Monday,4,3.8,4,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,SENTRI,Monday,5,10.0,3,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,SENTRI,Monday,6,11.7,3,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,SENTRI,Monday,7,28.3,3,30,2026-11-16
@@ -15912,14 +15929,14 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,SENTRI,Sunday,18,43.8,4,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,SENTRI,Sunday,19,42.5,2,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,SENTRI,Sunday,20,36.7,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,SENTRI,Sunday,21,35.0,2,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,SENTRI,Sunday,22,20.0,2,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,SENTRI,Sunday,23,10.0,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,0,108.8,4,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,1,61.7,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,2,51.7,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,3,50.0,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,4,61.7,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,SENTRI,Sunday,21,36.7,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,SENTRI,Sunday,22,23.3,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,SENTRI,Sunday,23,11.3,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,0,105.0,5,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,1,61.3,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,2,51.3,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,3,48.8,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,4,61.3,4,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,5,75.0,3,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,6,86.7,3,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,Ready,Monday,7,95.0,3,30,2026-11-16
@@ -16077,14 +16094,14 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,Ready,Sunday,18,187.5,4,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,Ready,Sunday,19,190.0,2,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,car,Ready,Sunday,20,163.3,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,Ready,Sunday,21,200.0,2,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,Ready,Sunday,22,100.0,2,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,car,Ready,Sunday,23,116.7,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,0,2.5,4,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,1,0.0,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,2,0.0,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,3,13.3,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,4,30.0,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,Ready,Sunday,21,180.0,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,Ready,Sunday,22,113.3,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,car,Ready,Sunday,23,117.5,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,0,2.0,5,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,1,0.0,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,2,0.0,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,3,11.3,4,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,4,25.0,4,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,5,38.3,3,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,6,53.3,3,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Monday,7,80.0,3,30,2026-11-16
@@ -16242,15 +16259,15 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Sunday,18,75.0,4,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Sunday,19,45.0,2,30,2026-11-16
 250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Sunday,20,66.7,3,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Sunday,21,12.5,2,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Sunday,22,25.0,2,30,2026-11-16
-250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Sunday,23,1.7,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Sunday,21,21.7,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Sunday,22,26.7,3,30,2026-11-16
+250601,mexico,Otay Mesa – Passenger,pedestrian,standard,Sunday,23,2.5,4,30,2026-11-16
 240301,mexico,Presidio,car,standard,Monday,0,0.0,2,30,2026-11-16
-240301,mexico,Presidio,car,standard,Monday,1,0.0,2,30,2026-11-16
-240301,mexico,Presidio,car,standard,Monday,2,0.0,3,30,2026-11-16
-240301,mexico,Presidio,car,standard,Monday,3,0.0,3,30,2026-11-16
+240301,mexico,Presidio,car,standard,Monday,1,0.0,3,30,2026-11-16
+240301,mexico,Presidio,car,standard,Monday,2,0.0,4,30,2026-11-16
+240301,mexico,Presidio,car,standard,Monday,3,0.0,4,30,2026-11-16
 240301,mexico,Presidio,car,standard,Monday,4,0.0,3,30,2026-11-16
-240301,mexico,Presidio,car,standard,Monday,5,0.0,2,30,2026-11-16
+240301,mexico,Presidio,car,standard,Monday,5,0.0,3,30,2026-11-16
 240301,mexico,Presidio,car,standard,Monday,6,13.3,3,30,2026-11-16
 240301,mexico,Presidio,car,standard,Monday,7,22.0,4,30,2026-11-16
 240301,mexico,Presidio,car,standard,Monday,8,36.0,3,30,2026-11-16
@@ -16412,11 +16429,11 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 240301,mexico,Presidio,car,standard,Sunday,22,20.0,4,30,2026-11-16
 240301,mexico,Presidio,car,standard,Sunday,23,5.0,2,30,2026-11-16
 240301,mexico,Presidio,pedestrian,standard,Monday,0,0.0,2,30,2026-11-16
-240301,mexico,Presidio,pedestrian,standard,Monday,1,0.0,2,30,2026-11-16
-240301,mexico,Presidio,pedestrian,standard,Monday,2,0.0,3,30,2026-11-16
-240301,mexico,Presidio,pedestrian,standard,Monday,3,0.0,3,30,2026-11-16
+240301,mexico,Presidio,pedestrian,standard,Monday,1,0.0,3,30,2026-11-16
+240301,mexico,Presidio,pedestrian,standard,Monday,2,0.0,4,30,2026-11-16
+240301,mexico,Presidio,pedestrian,standard,Monday,3,0.0,4,30,2026-11-16
 240301,mexico,Presidio,pedestrian,standard,Monday,4,0.0,3,30,2026-11-16
-240301,mexico,Presidio,pedestrian,standard,Monday,5,0.0,2,30,2026-11-16
+240301,mexico,Presidio,pedestrian,standard,Monday,5,0.0,3,30,2026-11-16
 240301,mexico,Presidio,pedestrian,standard,Monday,6,0.0,3,30,2026-11-16
 240301,mexico,Presidio,pedestrian,standard,Monday,7,0.0,4,30,2026-11-16
 240301,mexico,Presidio,pedestrian,standard,Monday,8,0.0,3,30,2026-11-16
@@ -16577,11 +16594,11 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 240301,mexico,Presidio,pedestrian,standard,Sunday,21,0.0,4,30,2026-11-16
 240301,mexico,Presidio,pedestrian,standard,Sunday,22,0.0,4,30,2026-11-16
 240301,mexico,Presidio,pedestrian,standard,Sunday,23,0.0,2,30,2026-11-16
-230901,mexico,Progreso,car,standard,Monday,0,5.0,1,30,2026-11-16
-230901,mexico,Progreso,car,standard,Monday,1,5.0,1,30,2026-11-16
-230901,mexico,Progreso,car,standard,Monday,2,6.7,3,30,2026-11-16
-230901,mexico,Progreso,car,standard,Monday,3,2.5,2,30,2026-11-16
-230901,mexico,Progreso,car,standard,Monday,4,5.0,2,30,2026-11-16
+230901,mexico,Progreso,car,standard,Monday,0,5.0,2,30,2026-11-16
+230901,mexico,Progreso,car,standard,Monday,1,5.0,2,30,2026-11-16
+230901,mexico,Progreso,car,standard,Monday,2,6.3,4,30,2026-11-16
+230901,mexico,Progreso,car,standard,Monday,3,3.3,3,30,2026-11-16
+230901,mexico,Progreso,car,standard,Monday,4,6.7,3,30,2026-11-16
 230901,mexico,Progreso,car,standard,Monday,5,5.0,1,30,2026-11-16
 230901,mexico,Progreso,car,standard,Monday,6,40.0,2,30,2026-11-16
 230901,mexico,Progreso,car,standard,Monday,7,45.0,3,30,2026-11-16
@@ -17144,7 +17161,7 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 230701,mexico,Rio Grande City,car,standard,Sunday,19,20.0,2,30,2026-11-16
 230701,mexico,Rio Grande City,car,standard,Sunday,20,11.7,3,30,2026-11-16
 230701,mexico,Rio Grande City,car,standard,Sunday,21,6.7,3,30,2026-11-16
-230701,mexico,Rio Grande City,car,standard,Sunday,22,2.5,2,30,2026-11-16
+230701,mexico,Rio Grande City,car,standard,Sunday,22,1.7,3,30,2026-11-16
 231001,mexico,Roma,car,standard,Monday,0,0.0,1,30,2026-11-16
 231001,mexico,Roma,car,standard,Monday,1,0.0,1,30,2026-11-16
 231001,mexico,Roma,car,standard,Monday,2,0.0,1,30,2026-11-16
@@ -17289,12 +17306,12 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 231001,mexico,Roma,car,standard,Sunday,20,45.0,1,30,2026-11-16
 231001,mexico,Roma,car,standard,Sunday,21,5.0,1,30,2026-11-16
 231001,mexico,Roma,car,standard,Sunday,22,2.5,2,30,2026-11-16
-231001,mexico,Roma,car,standard,Sunday,23,1.5,2,30,2026-11-16
-260801,mexico,San Luis,car,standard,Monday,0,90.0,2,30,2026-11-16
-260801,mexico,San Luis,car,standard,Monday,1,42.5,2,30,2026-11-16
-260801,mexico,San Luis,car,standard,Monday,2,35.0,2,30,2026-11-16
-260801,mexico,San Luis,car,standard,Monday,3,50.0,2,30,2026-11-16
-260801,mexico,San Luis,car,standard,Monday,4,55.0,2,30,2026-11-16
+231001,mexico,Roma,car,standard,Sunday,23,1.0,3,30,2026-11-16
+260801,mexico,San Luis,car,standard,Monday,0,100.0,3,30,2026-11-16
+260801,mexico,San Luis,car,standard,Monday,1,68.3,3,30,2026-11-16
+260801,mexico,San Luis,car,standard,Monday,2,43.3,3,30,2026-11-16
+260801,mexico,San Luis,car,standard,Monday,3,63.3,3,30,2026-11-16
+260801,mexico,San Luis,car,standard,Monday,4,61.7,3,30,2026-11-16
 260801,mexico,San Luis,car,standard,Monday,5,45.0,1,30,2026-11-16
 260801,mexico,San Luis,car,standard,Monday,6,85.0,2,30,2026-11-16
 260801,mexico,San Luis,car,standard,Monday,7,55.0,2,30,2026-11-16
@@ -17455,12 +17472,12 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 260801,mexico,San Luis,car,standard,Sunday,20,88.3,3,30,2026-11-16
 260801,mexico,San Luis,car,standard,Sunday,21,85.0,3,30,2026-11-16
 260801,mexico,San Luis,car,standard,Sunday,22,75.0,3,30,2026-11-16
-260801,mexico,San Luis,car,standard,Sunday,23,86.7,3,30,2026-11-16
-260801,mexico,San Luis,car,SENTRI,Monday,0,5.0,2,30,2026-11-16
-260801,mexico,San Luis,car,SENTRI,Monday,1,5.0,2,30,2026-11-16
-260801,mexico,San Luis,car,SENTRI,Monday,2,5.0,2,30,2026-11-16
-260801,mexico,San Luis,car,SENTRI,Monday,3,5.0,2,30,2026-11-16
-260801,mexico,San Luis,car,SENTRI,Monday,4,5.0,2,30,2026-11-16
+260801,mexico,San Luis,car,standard,Sunday,23,95.0,4,30,2026-11-16
+260801,mexico,San Luis,car,SENTRI,Monday,0,6.7,3,30,2026-11-16
+260801,mexico,San Luis,car,SENTRI,Monday,1,5.0,3,30,2026-11-16
+260801,mexico,San Luis,car,SENTRI,Monday,2,5.0,3,30,2026-11-16
+260801,mexico,San Luis,car,SENTRI,Monday,3,5.0,3,30,2026-11-16
+260801,mexico,San Luis,car,SENTRI,Monday,4,6.7,3,30,2026-11-16
 260801,mexico,San Luis,car,SENTRI,Monday,5,5.0,1,30,2026-11-16
 260801,mexico,San Luis,car,SENTRI,Monday,6,10.0,2,30,2026-11-16
 260801,mexico,San Luis,car,SENTRI,Monday,7,27.5,2,30,2026-11-16
@@ -17621,12 +17638,12 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 260801,mexico,San Luis,car,SENTRI,Sunday,20,25.0,3,30,2026-11-16
 260801,mexico,San Luis,car,SENTRI,Sunday,21,20.0,3,30,2026-11-16
 260801,mexico,San Luis,car,SENTRI,Sunday,22,18.3,3,30,2026-11-16
-260801,mexico,San Luis,car,SENTRI,Sunday,23,31.7,3,30,2026-11-16
-260801,mexico,San Luis,pedestrian,standard,Monday,0,5.0,2,30,2026-11-16
-260801,mexico,San Luis,pedestrian,standard,Monday,1,5.0,2,30,2026-11-16
-260801,mexico,San Luis,pedestrian,standard,Monday,2,12.5,2,30,2026-11-16
-260801,mexico,San Luis,pedestrian,standard,Monday,3,15.0,2,30,2026-11-16
-260801,mexico,San Luis,pedestrian,standard,Monday,4,17.5,2,30,2026-11-16
+260801,mexico,San Luis,car,SENTRI,Sunday,23,25.0,4,30,2026-11-16
+260801,mexico,San Luis,pedestrian,standard,Monday,0,5.0,3,30,2026-11-16
+260801,mexico,San Luis,pedestrian,standard,Monday,1,8.3,3,30,2026-11-16
+260801,mexico,San Luis,pedestrian,standard,Monday,2,18.3,3,30,2026-11-16
+260801,mexico,San Luis,pedestrian,standard,Monday,3,15.0,3,30,2026-11-16
+260801,mexico,San Luis,pedestrian,standard,Monday,4,15.0,3,30,2026-11-16
 260801,mexico,San Luis,pedestrian,standard,Monday,5,5.0,1,30,2026-11-16
 260801,mexico,San Luis,pedestrian,standard,Monday,6,10.0,2,30,2026-11-16
 260801,mexico,San Luis,pedestrian,standard,Monday,7,12.5,2,30,2026-11-16
@@ -17787,10 +17804,10 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 260801,mexico,San Luis,pedestrian,standard,Sunday,20,31.7,3,30,2026-11-16
 260801,mexico,San Luis,pedestrian,standard,Sunday,21,23.3,3,30,2026-11-16
 260801,mexico,San Luis,pedestrian,standard,Sunday,22,23.3,3,30,2026-11-16
-260801,mexico,San Luis,pedestrian,standard,Sunday,23,4.0,3,30,2026-11-16
+260801,mexico,San Luis,pedestrian,standard,Sunday,23,4.3,4,30,2026-11-16
 250401,mexico,San Ysidro,car,standard,Monday,0,220.0,2,30,2026-11-16
-250401,mexico,San Ysidro,car,standard,Monday,1,127.5,2,30,2026-11-16
-250401,mexico,San Ysidro,car,standard,Monday,2,165.0,2,30,2026-11-16
+250401,mexico,San Ysidro,car,standard,Monday,1,100.0,3,30,2026-11-16
+250401,mexico,San Ysidro,car,standard,Monday,2,120.0,3,30,2026-11-16
 250401,mexico,San Ysidro,car,standard,Monday,3,200.0,1,30,2026-11-16
 250401,mexico,San Ysidro,car,standard,Monday,4,120.0,2,30,2026-11-16
 250401,mexico,San Ysidro,car,standard,Monday,5,142.5,2,30,2026-11-16
@@ -17947,11 +17964,11 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250401,mexico,San Ysidro,car,standard,Sunday,19,172.5,4,30,2026-11-16
 250401,mexico,San Ysidro,car,standard,Sunday,20,160.0,3,30,2026-11-16
 250401,mexico,San Ysidro,car,standard,Sunday,21,160.0,3,30,2026-11-16
-250401,mexico,San Ysidro,car,standard,Sunday,22,166.7,3,30,2026-11-16
+250401,mexico,San Ysidro,car,standard,Sunday,22,167.5,4,30,2026-11-16
 250401,mexico,San Ysidro,car,standard,Sunday,23,166.7,3,30,2026-11-16
 250401,mexico,San Ysidro,car,SENTRI,Monday,0,12.5,2,30,2026-11-16
-250401,mexico,San Ysidro,car,SENTRI,Monday,1,7.5,2,30,2026-11-16
-250401,mexico,San Ysidro,car,SENTRI,Monday,2,7.5,2,30,2026-11-16
+250401,mexico,San Ysidro,car,SENTRI,Monday,1,6.7,3,30,2026-11-16
+250401,mexico,San Ysidro,car,SENTRI,Monday,2,6.7,3,30,2026-11-16
 250401,mexico,San Ysidro,car,SENTRI,Monday,3,20.0,1,30,2026-11-16
 250401,mexico,San Ysidro,car,SENTRI,Monday,4,17.5,2,30,2026-11-16
 250401,mexico,San Ysidro,car,SENTRI,Monday,5,17.5,2,30,2026-11-16
@@ -18108,11 +18125,11 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250401,mexico,San Ysidro,car,SENTRI,Sunday,19,21.3,4,30,2026-11-16
 250401,mexico,San Ysidro,car,SENTRI,Sunday,20,20.0,3,30,2026-11-16
 250401,mexico,San Ysidro,car,SENTRI,Sunday,21,20.0,3,30,2026-11-16
-250401,mexico,San Ysidro,car,SENTRI,Sunday,22,23.3,3,30,2026-11-16
+250401,mexico,San Ysidro,car,SENTRI,Sunday,22,21.3,4,30,2026-11-16
 250401,mexico,San Ysidro,car,SENTRI,Sunday,23,16.7,3,30,2026-11-16
 250401,mexico,San Ysidro,car,Ready,Monday,0,200.0,2,30,2026-11-16
-250401,mexico,San Ysidro,car,Ready,Monday,1,120.0,2,30,2026-11-16
-250401,mexico,San Ysidro,car,Ready,Monday,2,137.5,2,30,2026-11-16
+250401,mexico,San Ysidro,car,Ready,Monday,1,90.0,3,30,2026-11-16
+250401,mexico,San Ysidro,car,Ready,Monday,2,101.7,3,30,2026-11-16
 250401,mexico,San Ysidro,car,Ready,Monday,3,180.0,1,30,2026-11-16
 250401,mexico,San Ysidro,car,Ready,Monday,4,115.0,2,30,2026-11-16
 250401,mexico,San Ysidro,car,Ready,Monday,5,125.0,2,30,2026-11-16
@@ -18269,11 +18286,11 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250401,mexico,San Ysidro,car,Ready,Sunday,19,145.0,4,30,2026-11-16
 250401,mexico,San Ysidro,car,Ready,Sunday,20,128.3,3,30,2026-11-16
 250401,mexico,San Ysidro,car,Ready,Sunday,21,135.0,3,30,2026-11-16
-250401,mexico,San Ysidro,car,Ready,Sunday,22,141.7,3,30,2026-11-16
+250401,mexico,San Ysidro,car,Ready,Sunday,22,142.5,4,30,2026-11-16
 250401,mexico,San Ysidro,car,Ready,Sunday,23,140.0,3,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,standard,Monday,0,5.0,2,30,2026-11-16
-250401,mexico,San Ysidro,pedestrian,standard,Monday,1,5.0,2,30,2026-11-16
-250401,mexico,San Ysidro,pedestrian,standard,Monday,2,5.0,2,30,2026-11-16
+250401,mexico,San Ysidro,pedestrian,standard,Monday,1,5.0,3,30,2026-11-16
+250401,mexico,San Ysidro,pedestrian,standard,Monday,2,5.0,3,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,standard,Monday,3,20.0,1,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,standard,Monday,4,20.0,2,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,standard,Monday,5,7.5,2,30,2026-11-16
@@ -18430,11 +18447,11 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,standard,Sunday,19,32.5,4,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,standard,Sunday,20,23.3,3,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,standard,Sunday,21,15.0,3,30,2026-11-16
-250401,mexico,San Ysidro,pedestrian,standard,Sunday,22,13.3,3,30,2026-11-16
+250401,mexico,San Ysidro,pedestrian,standard,Sunday,22,13.8,4,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,standard,Sunday,23,5.0,3,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,Ready,Monday,0,5.0,2,30,2026-11-16
-250401,mexico,San Ysidro,pedestrian,Ready,Monday,1,5.0,2,30,2026-11-16
-250401,mexico,San Ysidro,pedestrian,Ready,Monday,2,5.0,2,30,2026-11-16
+250401,mexico,San Ysidro,pedestrian,Ready,Monday,1,5.0,3,30,2026-11-16
+250401,mexico,San Ysidro,pedestrian,Ready,Monday,2,5.0,3,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,Ready,Monday,3,5.0,1,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,Ready,Monday,4,5.0,2,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,Ready,Monday,5,5.0,2,30,2026-11-16
@@ -18591,7 +18608,7 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,Ready,Sunday,19,13.8,4,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,Ready,Sunday,20,5.0,3,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,Ready,Sunday,21,5.0,3,30,2026-11-16
-250401,mexico,San Ysidro,pedestrian,Ready,Sunday,22,5.0,3,30,2026-11-16
+250401,mexico,San Ysidro,pedestrian,Ready,Sunday,22,7.5,4,30,2026-11-16
 250401,mexico,San Ysidro,pedestrian,Ready,Sunday,23,5.0,3,30,2026-11-16
 250409,mexico,San Ysidro – Cross Border Express,pedestrian,standard,Monday,1,0.0,1,30,2026-11-16
 250409,mexico,San Ysidro – Cross Border Express,pedestrian,standard,Monday,5,0.0,4,30,2026-11-16
@@ -18656,7 +18673,7 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250409,mexico,San Ysidro – Cross Border Express,pedestrian,standard,Sunday,13,0.0,5,30,2026-11-16
 250409,mexico,San Ysidro – Cross Border Express,pedestrian,standard,Sunday,15,0.0,1,30,2026-11-16
 250409,mexico,San Ysidro – Cross Border Express,pedestrian,standard,Sunday,21,0.0,5,30,2026-11-16
-250409,mexico,San Ysidro – Cross Border Express,pedestrian,standard,Sunday,23,0.0,3,30,2026-11-16
+250409,mexico,San Ysidro – Cross Border Express,pedestrian,standard,Sunday,23,0.0,4,30,2026-11-16
 250409,mexico,San Ysidro – Cross Border Express,pedestrian,Ready,Monday,1,0.0,1,30,2026-11-16
 250409,mexico,San Ysidro – Cross Border Express,pedestrian,Ready,Monday,5,0.0,3,30,2026-11-16
 250409,mexico,San Ysidro – Cross Border Express,pedestrian,Ready,Monday,6,0.0,1,30,2026-11-16
@@ -18720,7 +18737,7 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250409,mexico,San Ysidro – Cross Border Express,pedestrian,Ready,Sunday,13,1.0,5,30,2026-11-16
 250409,mexico,San Ysidro – Cross Border Express,pedestrian,Ready,Sunday,15,0.0,1,30,2026-11-16
 250409,mexico,San Ysidro – Cross Border Express,pedestrian,Ready,Sunday,21,0.0,5,30,2026-11-16
-250409,mexico,San Ysidro – Cross Border Express,pedestrian,Ready,Sunday,23,0.0,3,30,2026-11-16
+250409,mexico,San Ysidro – Cross Border Express,pedestrian,Ready,Sunday,23,0.0,4,30,2026-11-16
 250407,mexico,San Ysidro – PedWest,pedestrian,standard,Monday,6,30.0,1,30,2026-11-16
 250407,mexico,San Ysidro – PedWest,pedestrian,standard,Monday,7,20.0,3,30,2026-11-16
 250407,mexico,San Ysidro – PedWest,pedestrian,standard,Monday,8,22.8,4,30,2026-11-16
@@ -19289,7 +19306,7 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250501,mexico,Tecate,car,standard,Sunday,18,140.0,5,30,2026-11-16
 250501,mexico,Tecate,car,standard,Sunday,19,140.0,4,30,2026-11-16
 250501,mexico,Tecate,car,standard,Sunday,20,150.0,3,30,2026-11-16
-250501,mexico,Tecate,car,standard,Sunday,21,136.7,3,30,2026-11-16
+250501,mexico,Tecate,car,standard,Sunday,21,117.5,4,30,2026-11-16
 250501,mexico,Tecate,pedestrian,standard,Monday,6,30.0,3,30,2026-11-16
 250501,mexico,Tecate,pedestrian,standard,Monday,7,25.0,3,30,2026-11-16
 250501,mexico,Tecate,pedestrian,standard,Monday,8,6.7,3,30,2026-11-16
@@ -19401,4 +19418,4 @@ l24501,mexico,Fort Hancock,pedestrian,standard,Sunday,17,0.0,5,30,2026-11-16
 250501,mexico,Tecate,pedestrian,standard,Sunday,18,5.0,5,30,2026-11-16
 250501,mexico,Tecate,pedestrian,standard,Sunday,19,5.0,4,30,2026-11-16
 250501,mexico,Tecate,pedestrian,standard,Sunday,20,8.3,3,30,2026-11-16
-250501,mexico,Tecate,pedestrian,standard,Sunday,21,6.7,3,30,2026-11-16
+250501,mexico,Tecate,pedestrian,standard,Sunday,21,6.3,4,30,2026-11-16
