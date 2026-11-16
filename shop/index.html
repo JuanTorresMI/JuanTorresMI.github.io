@@ -13,8 +13,9 @@ image_alt: "JuanJulio Cards. UFC and MMA trading cards for sale."
   One idea: a fight-night bill. Black, one gold ink, Anton for the names (the Reels' own type), Inter for the rest;
   an octagon and the cage's fence behind the headline, and nothing else decorative. The two stores first, then the
   dearest cards, the latest Reels, how buying works. Cards and prices come from site.data.live.cards, the daily
-  copy of the showcase Worker (see /mma-cards/), so nothing here shows a cost or a live deal. Prices shown are
-  CollX's; eBay's are set separately, so the page says which.
+  copy of the showcase Worker (see /mma-cards/), so nothing here shows a cost or a live deal. Every word is for the
+  buyer (Juan, Nov 16: "make it for the consumer. Not for me"): nothing about how the shop is run, and no link to
+  /mma-cards/, which shows the business's own numbers.
 {%- endcomment -%}
 {%- assign c = site.data.live.cards -%}
 <a class="skip" href="#cards">Skip to the cards</a>
@@ -60,7 +61,7 @@ image_alt: "JuanJulio Cards. UFC and MMA trading cards for sale."
 <section class="sec" id="cards" aria-labelledby="cards-h">
   <header class="sec-head">
     <h2 id="cards-h">Main card</h2>
-    <p>The top cards for sale. Prices are CollX’s as of {{ c.checked }}; eBay sets its own.</p>
+    <p>The best cards in the shop right now.</p>
   </header>
   <ul class="cards">
   {%- assign shown = 0 -%}
@@ -103,14 +104,14 @@ image_alt: "JuanJulio Cards. UFC and MMA trading cards for sale."
 <section class="sec" id="buying" aria-labelledby="buy-h">
   <header class="sec-head"><h2 id="buy-h">How buying works</h2></header>
   <ol class="rules">
-    <li><h3>Pick a store</h3><p>Most cards are on both. eBay has carts, offers and its money-back guarantee, and the store’s buy-more deal takes up to 15% off when you buy several. CollX is the collectors’ app, where you can send an offer on any card.</p></li>
-    <li><h3>Shipping</h3><p>Cards under $20 ship in a plain envelope. Cards of $20 and up ship with tracking.</p></li>
-    <li><h3>Looking for a fighter?</h3><p>Search the eBay store by name, or send a message on <a href="{{ site.instagram_url }}" rel="noopener">Instagram</a>.</p></li>
+    <li><h3>Pick a store</h3><p>Buy on eBay with its money-back guarantee, and save up to 15% when you buy several cards. Or use the CollX app, where you can make an offer on any card.</p></li>
+    <li><h3>Shipping</h3><p>Orders ship by mail. Cards of $20 and up come with tracking.</p></li>
+    <li><h3>Looking for a fighter?</h3><p>Search the eBay store by name, or message us on <a href="{{ site.instagram_url }}" rel="noopener">Instagram</a>.</p></li>
   </ol>
 </section>
 </main>
 
 <footer class="foot">
   <p class="mark">JuanJulio <b>Cards</b></p>
-  <p class="foot-links"><a href="{{ site.ebay_store_url }}" rel="noopener">eBay store</a>{% if c.shop_url %}<a href="{{ c.shop_url }}" rel="noopener">CollX</a>{% endif %}<a href="{{ site.instagram_url }}" rel="noopener">Instagram</a><a href="{{ site.facebook_url }}" rel="noopener">Facebook</a><a href="/mma-cards/">The numbers behind the shop</a></p>
+  <p class="foot-links"><a href="{{ site.ebay_store_url }}" rel="noopener">eBay store</a>{% if c.shop_url %}<a href="{{ c.shop_url }}" rel="noopener">CollX</a>{% endif %}<a href="{{ site.instagram_url }}" rel="noopener">Instagram</a><a href="{{ site.facebook_url }}" rel="noopener">Facebook</a></p>
 </footer>
