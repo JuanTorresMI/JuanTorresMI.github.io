@@ -31,7 +31,7 @@ image_alt: "JuanJulio Cards. UFC and sports trading cards for sale."
   <div class="hero-words">
     <p class="kicker">UFC · MMA · Sports cards</p>
     <h1>JuanJulio <span>Cards</span></h1>
-    <p class="lede">UFC and MMA cards first, plus football, basketball and baseball: refractors, rookies, numbered parallels and autographs{% if total %}. <strong>{{ total }} cards</strong> for sale now{% endif %}.</p>
+    <p class="lede">UFC and MMA cards first, plus football, basketball and baseball: refractors, rookies, numbered parallels and autographs{% if total %}. <strong><span data-total>{{ total }}</span> cards</strong> for sale now{% endif %}.</p>
     <div class="stores">
       <a class="store main" href="{{ site.ebay_store_url }}" rel="noopener">
         <span class="store-go">Shop on eBay</span>
@@ -65,12 +65,12 @@ image_alt: "JuanJulio Cards. UFC and sports trading cards for sale."
     <h2 id="cards-h">Main card</h2>
     <p>The best cards in the shop right now.</p>
   </header>
-  <ul class="cards">
+  <ul class="cards" data-live="{{ site.cards_url }}" data-store="{{ site.ebay_store_url }}">
   {%- assign shown = 0 -%}
   {%- for k in c.for_sale -%}
     {%- if k.photo and shown < 8 -%}
     {%- assign shown = shown | plus: 1 %}
-    <li>
+    <li data-id="{{ k.id }}" data-price="{{ k.price | remove: "$" | remove: "," | times: 100 | round }}">
       <a class="card" href="{{ site.ebay_store_url }}" rel="noopener">
         <img src="{{ k.photo }}" alt="{{ k.name | escape }}" loading="lazy" width="160" height="224">
         <span class="card-who">{% if k.player and k.player != "" %}{{ k.player }}{% else %}{{ k.name | split: " 20" | first | truncatewords: 4, "" }}{% endif %}</span>
@@ -81,7 +81,7 @@ image_alt: "JuanJulio Cards. UFC and sports trading cards for sale."
     {%- endif -%}
   {%- endfor %}
   </ul>
-  <p class="more"><a class="btn" href="{{ site.ebay_store_url }}" rel="noopener">See all {{ total }} cards on eBay</a>{% if c.shop_url %}<a class="btn ghost" href="{{ c.shop_url }}" rel="noopener">Or on CollX</a>{% endif %}</p>
+  <p class="more"><a class="btn" href="{{ site.ebay_store_url }}" rel="noopener">See all <span data-total>{{ total }}</span> cards on eBay</a>{% if c.shop_url %}<a class="btn ghost" href="{{ c.shop_url }}" rel="noopener">Or on CollX</a>{% endif %}</p>
 </section>
 {%- endif %}
 
@@ -113,6 +113,7 @@ image_alt: "JuanJulio Cards. UFC and sports trading cards for sale."
 </section>
 </main>
 
+<script src="/shop/shop.js?v={{ site.time | date: '%s' }}" defer></script>
 <footer class="foot">
   <p class="mark">JuanJulio <b>Cards</b></p>
   <p class="foot-links"><a href="{{ site.ebay_store_url }}" rel="noopener">eBay store</a>{% if c.shop_url %}<a href="{{ c.shop_url }}" rel="noopener">CollX</a>{% endif %}<a href="{{ site.instagram_url }}" rel="noopener">Instagram</a><a href="{{ site.facebook_url }}" rel="noopener">Facebook</a></p>
