@@ -13335,3 +13335,66 @@ date,section,usda_description,name,imps,fat_limitation,primal,grade,low,high,wei
 2026-11-13,ground,Ground Beef 85%,"Ground beef, 85% lean",,,,,384.61,430.00,388.74,3.8874,8,28349
 2026-11-13,ground,Ground Beef 93%,"Ground beef, 93% lean",,,,,487.00,504.50,491.62,4.9162,3,10603
 2026-11-13,trim,Fresh 50% lean trimmings,Fresh 50% lean trimmings,,,,,83.00,120.00,90.08,0.9008,13,228768
+2026-11-16,cut,"Brisket, deckle-off, bnls (120 1)","Brisket, deckle off, boneless",120,1,brisket,choice,358.00,419.00,385.72,3.8572,27,38656
+2026-11-16,cut,"Brisket, deckle-off, bnls (120 1)","Brisket, deckle off, boneless",120,1,brisket,select,353.60,390.00,354.72,3.5472,4,55290
+2026-11-16,cut,"Brisket, point/off, bnls (120A 3)","Brisket flat, point off, boneless",120A,3,brisket,choice,624.00,710.00,661.35,6.6135,8,5345
+2026-11-16,cut,"Chuck, chuck tender (116B 1)",Chuck tender,116B,1,chuck,choice,367.00,445.95,384.05,3.8405,6,18509
+2026-11-16,cut,"Chuck, clod tender (114F 5)",Clod tender,114F,5,chuck,choice,661.00,787.00,676.02,6.7602,14,25078
+2026-11-16,cut,"Chuck, clod, arm roast (114E 3)",Clod arm roast,114E,3,chuck,choice,500.00,514.66,503.75,5.0375,4,31721
+2026-11-16,cut,"Chuck, clod, top blade (114D 3)",Top blade,114D,3,chuck,choice,585.00,685.70,611.88,6.1188,12,9928
+2026-11-16,cut,"Chuck, flap (116G 4)",Chuck flap,116G,4,chuck,choice,775.00,869.20,810.12,8.1012,23,85687
+2026-11-16,cut,"Chuck, flap (116G 4)",Chuck flap,116G,4,chuck,select,710.00,860.70,786.84,7.8684,8,12140
+2026-11-16,cut,"Chuck, roll, lxl, neck/off (116A 3)","Chuck roll, neck off",116A,3,chuck,choice,472.17,575.00,485.89,4.8589,51,777214
+2026-11-16,cut,"Chuck, roll, lxl, neck/off (116A 3)","Chuck roll, neck off",116A,3,chuck,select,508.00,555.00,516.82,5.1682,3,9889
+2026-11-16,cut,"Chuck, semi-bnls, neck/off (113C 1)","Chuck, semi-boneless, neck off",113C,1,chuck,choice,495.07,531.94,513.55,5.1355,7,4754
+2026-11-16,cut,"Chuck, short rib (130 4)",Chuck short rib,130,4,chuck,choice,586.00,640.00,613.88,6.1388,23,27560
+2026-11-16,cut,"Chuck, short rib (130 4)",Chuck short rib,130,4,chuck,select,595.00,611.75,605.73,6.0573,3,1183
+2026-11-16,cut,"Chuck, shoulder clod, trmd (114A 3)","Shoulder clod, trimmed",114A,3,chuck,choice,399.19,442.00,410.28,4.1028,36,343725
+2026-11-16,cut,"Chuck, shoulder clod, trmd (114A 3)","Shoulder clod, trimmed",114A,3,chuck,select,401.75,430.00,413.06,4.1306,3,4396
+2026-11-16,cut,"Flank, flank steak (193 4)",Flank steak,193,4,flank,choice,538.00,624.25,590.46,5.9046,22,47362
+2026-11-16,cut,"Loin, ball-tip, bnls, heavy (185B 1)","Ball tip, boneless, heavy",185B,1,loin,choice,460.00,549.25,471.81,4.7181,11,48697
+2026-11-16,cut,"Loin, ball-tip, bnls, heavy (185B 1)","Ball tip, boneless, heavy",185B,1,loin,select,470.00,490.00,477.38,4.7738,3,9663
+2026-11-16,cut,"Loin, bottom sirloin, flap (185A 4)",Bottom sirloin flap,185A,4,loin,choice,714.00,790.00,769.85,7.6985,7,23167
+2026-11-16,cut,"Loin, bottom sirloin, flap (185A 4)",Bottom sirloin flap,185A,4,loin,select,675.00,680.00,679.85,6.7985,3,3905
+2026-11-16,cut,"Loin, butt tender, trimmed (191A 4)","Butt tender, trimmed",191A,4,loin,choice,1550.00,1851.00,1797.70,17.9770,9,7905
+2026-11-16,cut,"Loin, short loin, 0x1 (174 3)","Short loin, 0x1",174,3,loin,choice,725.69,810.95,748.47,7.4847,16,117127
+2026-11-16,cut,"Loin, short loin, 0x1 (174 3)","Short loin, 0x1",174,3,loin,select,740.00,800.00,769.73,7.6973,5,1268
+2026-11-16,cut,"Loin, sirloin, tri-tip (185C 1)",Tri-tip,185C,1,loin,choice,447.50,494.25,456.45,4.5645,8,13945
+2026-11-16,cut,"Loin, sirloin, tri-tip (185C 1)",Tri-tip,185C,1,loin,select,404.00,448.00,417.54,4.1754,3,5114
+2026-11-16,cut,"Loin, sirloin, tri-tip, pld (185D 4)","Tri-tip, peeled",185D,4,loin,choice,676.00,739.25,703.65,7.0365,6,4264
+2026-11-16,cut,"Loin, strip, bnls, 0x1 (180 3)","Strip loin, boneless, 0x1",180,3,loin,choice,831.00,915.00,848.50,8.4850,21,80964
+2026-11-16,cut,"Loin, strip, bnls, 0x1 (180 3)","Strip loin, boneless, 0x1",180,3,loin,select,742.00,830.00,780.20,7.8020,7,7687
+2026-11-16,cut,"Loin, tndrloin, trmd, heavy (189A 4)","Tenderloin, trimmed, heavy",189A,4,loin,choice,1618.00,1813.00,1684.93,16.8493,15,18619
+2026-11-16,cut,"Loin, tndrloin, trmd, heavy (189A 4)","Tenderloin, trimmed, heavy",189A,4,loin,select,1450.00,1685.70,1614.70,16.1470,8,9401
+2026-11-16,cut,"Loin, top butt, bnls, heavy (184 1)","Top sirloin butt, boneless, heavy",184,1,loin,choice,494.13,545.00,503.46,5.0346,3,2102
+2026-11-16,cut,"Loin, top butt, bnls, heavy (184 1)","Top sirloin butt, boneless, heavy",184,1,loin,select,475.00,490.00,479.44,4.7944,5,5775
+2026-11-16,cut,"Loin, top butt, boneless (184 3)","Top sirloin butt, boneless",184,3,loin,choice,463.00,525.95,485.29,4.8529,20,50963
+2026-11-16,cut,"Loin, top butt, boneless (184 3)","Top sirloin butt, boneless",184,3,loin,select,457.09,526.85,484.66,4.8466,9,63856
+2026-11-16,cut,"Rib, ribeye, bnls, heavy (112A 3)","Ribeye, boneless, heavy",112A,3,rib,choice,1599.50,1671.09,1639.90,16.3990,13,21817
+2026-11-16,cut,"Rib, ribeye, bnls, heavy (112A 3)","Ribeye, boneless, heavy",112A,3,rib,select,1375.00,1525.00,1453.59,14.5359,6,5641
+2026-11-16,cut,"Rib, ribeye, lip-on, bn-in (109E 1)","Ribeye, lip-on, bone-in",109E,1,rib,choice,1385.74,1474.88,1396.51,13.9651,20,346219
+2026-11-16,cut,"Rib, ribeye, lip-on, bn-in (109E 1)","Ribeye, lip-on, bone-in",109E,1,rib,select,1265.95,1326.91,1288.19,12.8819,3,4563
+2026-11-16,cut,"Round, eye of round (171C 3)",Eye of round,171C,3,round,choice,388.00,446.68,397.26,3.9726,24,54366
+2026-11-16,cut,"Round, eye of round (171C 3)",Eye of round,171C,3,round,select,374.19,405.00,397.46,3.9746,5,12389
+2026-11-16,cut,"Round, knuckle, peeled (167A 4)","Knuckle, peeled",167A,4,round,choice,364.50,445.95,382.19,3.8219,21,57249
+2026-11-16,cut,"Round, knuckle, peeled (167A 4)","Knuckle, peeled",167A,4,round,select,374.00,411.85,385.98,3.8598,3,5093
+2026-11-16,cut,"Round, outside round (171B 3)",Outside round,171B,3,round,choice,348.00,385.95,357.51,3.5751,19,100580
+2026-11-16,cut,"Round, outside round (171B 3)",Outside round,171B,3,round,select,337.09,382.75,361.15,3.6115,6,29977
+2026-11-16,cut,"Round, top inside round (168 1)","Top inside round, fat limitation 1",168,1,round,choice,340.07,370.00,355.58,3.5558,5,19986
+2026-11-16,cut,"Round, top inside round (168 3)",Top inside round,168,3,round,choice,328.00,390.00,332.35,3.3235,38,553343
+2026-11-16,cut,"Round, top inside round (168 3)",Top inside round,168,3,round,select,343.00,364.00,351.38,3.5138,7,56910
+2026-11-16,cut,"Round, top inside, cap off (169A 5)","Top inside round, cap off",169A,5,round,choice,480.00,527.67,507.01,5.0701,5,37373
+2026-11-16,cut,"Round, top inside, denuded (169 5)","Top inside round, denuded",169,5,round,choice,394.50,439.00,407.58,4.0758,6,9892
+2026-11-16,cut,"Short Plate, short rib (123A 3)",Short plate short rib,123A,3,plate,choice,700.00,765.00,712.36,7.1236,17,46301
+2026-11-16,cut,"Short Plate, short rib (123A 3)",Short plate short rib,123A,3,plate,select,702.15,747.50,715.19,7.1519,6,15383
+2026-11-16,mixed,"121C 4 Plate, Outside Skirt",Outside skirt,121C,4,plate,,759.00,925.70,871.69,8.7169,15,22503
+2026-11-16,mixed,"121D 4 Plate, Inside Skirt",Inside skirt,121D,4,plate,,615.00,689.25,637.48,6.3748,11,47136
+2026-11-16,mixed,"121E 6 Plate, Outside Skirt, pld","Outside skirt, peeled",121E,6,plate,,1338.25,1425.00,1403.05,14.0305,7,6942
+2026-11-16,mixed,4 Cap and Wedge Meat,Cap and wedge meat,,4,,,434.00,493.50,462.52,4.6252,13,42627
+2026-11-16,mixed,4 Pectoral Meat,Pectoral meat,,4,,,430.00,490.00,448.59,4.4859,23,75503
+2026-11-16,ground,Ground Beef 73%,"Ground beef, 73% lean",,,,,225.07,277.00,246.37,2.4637,9,99952
+2026-11-16,ground,Ground Beef 81%,"Ground beef, 81% lean",,,,,283.00,344.50,305.13,3.0513,28,185585
+2026-11-16,ground,Ground Beef 85%,"Ground beef, 85% lean",,,,,382.00,406.90,385.34,3.8534,12,123516
+2026-11-16,ground,Ground Beef 93%,"Ground beef, 93% lean",,,,,484.00,495.00,486.27,4.8627,3,9924
+2026-11-16,ground,Ground Beef Chuck,Ground chuck,,,,,365.45,381.00,367.20,3.6720,4,6484
+2026-11-16,trim,Fresh 50% lean trimmings,Fresh 50% lean trimmings,,,,,78.00,118.60,91.59,0.9159,22,544692
