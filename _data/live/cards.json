@@ -1,24 +1,24 @@
 {
- "updated": "2026-11-18T04:42:24.622Z",
- "checked": "Nov 17, 2026",
+ "updated": "2026-11-18T11:48:40.568Z",
+ "checked": "Nov 18, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
   "cards": "706",
-  "listed": "678",
-  "listed_all": "825",
-  "sold": "14",
-  "revenue": "$92",
-  "profit": "$20",
+  "listed": "677",
+  "listed_all": "824",
+  "sold": "15",
+  "revenue": "$95",
+  "profit": "$21",
   "margin": "22%",
-  "days": "13 days",
+  "days": "14 days",
   "sell_through": "2%"
  },
  "months": [
   {
    "month": "Nov 2026",
-   "sales": "13",
-   "revenue": "$76",
-   "profit": "$18"
+   "sales": "14",
+   "revenue": "$78",
+   "profit": "$19"
   },
   {
    "month": "Oct 2026",
@@ -976,19 +976,6 @@
    "photo": "/mma-cards/photos/430.webp",
    "price": "$1.80",
    "listed": "Nov 3, 2026"
-  },
-  {
-   "id": 681,
-   "name": "2023 Panini Prizm UFC #180 Mackenzie Dern, Ice Prizms",
-   "player": "Mackenzie Dern",
-   "set": "2023 Panini Prizm UFC",
-   "parallel": "Ice Prizms",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/681.webp",
-   "price": "$1.80",
-   "listed": "Nov 6, 2026"
   },
   {
    "id": 154,
@@ -8845,6 +8832,21 @@
  ],
  "sold": [
   {
+   "id": 681,
+   "name": "2023 Panini Prizm UFC #180 Mackenzie Dern, Ice Prizms",
+   "player": "Mackenzie Dern",
+   "set": "2023 Panini Prizm UFC",
+   "parallel": "Ice Prizms",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/681.webp",
+   "price": "$1.80",
+   "month": "Nov 2026",
+   "days": "25 days",
+   "where": "eBay"
+  },
+  {
    "id": 113,
    "name": "Demetrious Johnson 2026 Champions Collection UFC Gold Ink On-Card Auto - PSA In the Presence",
    "player": "Demetrious Johnson",
@@ -9057,14 +9059,14 @@
  ],
  "scanner": {
   "calls": "4,025",
-  "asks": "114,622",
-  "finds": "659",
+  "asks": "115,134",
+  "finds": "660",
   "bought": "17",
   "under": "59%",
   "kinds": [
    {
     "what": "underpriced against other listings",
-    "n": "304"
+    "n": "305"
    },
    {
     "what": "under the max for its search",
