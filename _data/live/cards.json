@@ -1,23 +1,23 @@
 {
- "updated": "2026-11-19T11:48:36.794Z",
+ "updated": "2026-11-19T21:19:14.678Z",
  "checked": "Nov 19, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
   "cards": "706",
   "listed": "677",
-  "listed_all": "824",
-  "sold": "15",
-  "revenue": "$95",
+  "listed_all": "1,262",
+  "sold": "16",
+  "revenue": "$97",
   "profit": "$21",
   "margin": "22%",
-  "days": "14 days",
+  "days": "15 days",
   "sell_through": "2%"
  },
  "months": [
   {
    "month": "Nov 2026",
-   "sales": "14",
-   "revenue": "$78",
+   "sales": "15",
+   "revenue": "$79",
    "profit": "$19"
   },
   {
@@ -30,10 +30,10 @@
  "for_sale": [
   {
    "id": 144,
-   "name": "2024 Topps Knockout UFC - Lights Gold Islam Makhachev #LTS-1",
-   "player": "UFC 108",
-   "set": "",
-   "parallel": "",
+   "name": "2024 Topps Knockout UFC #LTS-1 Islam Makhachev, Gold",
+   "player": "Islam Makhachev",
+   "set": "2024 Topps Knockout UFC",
+   "parallel": "Gold",
    "serial": "",
    "rookie": false,
    "auto": false,
@@ -147,13 +147,13 @@
   },
   {
    "id": 722,
-   "name": "2025 Topps Finest UFC - Showstoppers Autographs Tatsuro Taira #SSA-TT",
-   "player": "UFC 108",
-   "set": "",
+   "name": "2025 Topps Finest UFC #SSA-TT Tatsuro Taira, Auto",
+   "player": "Tatsuro Taira",
+   "set": "2025 Topps Finest UFC",
    "parallel": "",
    "serial": "",
    "rookie": false,
-   "auto": false,
+   "auto": true,
    "photo": "/mma-cards/photos/722.webp",
    "price": "$20.00",
    "listed": "Nov 13, 2026"
@@ -183,6 +183,19 @@
    "photo": "/mma-cards/photos/6.webp",
    "price": "$11.00",
    "listed": "Oct 30, 2026"
+  },
+  {
+   "id": 707,
+   "name": "2023 Panini Prizm UFC #103 Bo Nickal, RC",
+   "player": "Bo Nickal",
+   "set": "2023 Panini Prizm UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": true,
+   "auto": false,
+   "photo": "/mma-cards/photos/707.webp",
+   "price": "$9.00",
+   "listed": "Nov 19, 2026"
   },
   {
    "id": 756,
@@ -3565,19 +3578,6 @@
    "listed": "Nov 3, 2026"
   },
   {
-   "id": 283,
-   "name": "2025 Stadium Club UFC #138 Dustin Poirier",
-   "player": "Dustin Poirier",
-   "set": "2025 Stadium Club UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/283.webp",
-   "price": "$1.12",
-   "listed": "Nov 3, 2026"
-  },
-  {
    "id": 375,
    "name": "2025 Stadium Club UFC #192 Jiri Prochazka",
    "player": "Jiri Prochazka",
@@ -4332,19 +4332,6 @@
    "listed": "Nov 2, 2026"
   },
   {
-   "id": 195,
-   "name": "2026 Topps Chrome UFC #193 Andre Lima, RC",
-   "player": "Andre Lima",
-   "set": "2026 Topps Chrome UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": true,
-   "auto": false,
-   "photo": "/mma-cards/photos/195.webp",
-   "price": "$0.99",
-   "listed": "Nov 3, 2026"
-  },
-  {
    "id": 730,
    "name": "2022 Donruss UFC #182 Tanner Boser",
    "player": "Tanner Boser",
@@ -4692,6 +4679,19 @@
    "rookie": true,
    "auto": false,
    "photo": "/mma-cards/photos/176.webp",
+   "price": "$0.89",
+   "listed": "Nov 3, 2026"
+  },
+  {
+   "id": 195,
+   "name": "2026 Topps Chrome UFC #193 Andre Lima, RC",
+   "player": "Andre Lima",
+   "set": "2026 Topps Chrome UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": true,
+   "auto": false,
+   "photo": "/mma-cards/photos/195.webp",
    "price": "$0.89",
    "listed": "Nov 3, 2026"
   },
@@ -5892,19 +5892,6 @@
    "listed": "Nov 5, 2026"
   },
   {
-   "id": 2,
-   "name": "2025 Stadium Club UFC #18 Manel Kape",
-   "player": "Manel Kape",
-   "set": "2025 Stadium Club UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/2.webp",
-   "price": "$0.64",
-   "listed": "Oct 30, 2026"
-  },
-  {
    "id": 219,
    "name": "2025 Stadium Club UFC #147 Gilbert Burns",
    "player": "Gilbert Burns",
@@ -6865,6 +6852,19 @@
    "photo": "/mma-cards/photos/409.webp",
    "price": "$0.53",
    "listed": "Nov 3, 2026"
+  },
+  {
+   "id": 2,
+   "name": "2025 Stadium Club UFC #18 Manel Kape",
+   "player": "Manel Kape",
+   "set": "2025 Stadium Club UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/2.webp",
+   "price": "$0.50",
+   "listed": "Oct 30, 2026"
   },
   {
    "id": 118,
@@ -8832,6 +8832,21 @@
  ],
  "sold": [
   {
+   "id": 283,
+   "name": "2025 Stadium Club UFC #138 Dustin Poirier",
+   "player": "Dustin Poirier",
+   "set": "2025 Stadium Club UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/283.webp",
+   "price": "$1.12",
+   "month": "Nov 2026",
+   "days": "24 days",
+   "where": "eBay"
+  },
+  {
    "id": 681,
    "name": "2023 Panini Prizm UFC #180 Mackenzie Dern, Ice Prizms",
    "player": "Mackenzie Dern",
@@ -9059,18 +9074,18 @@
  ],
  "scanner": {
   "calls": "4,189",
-  "asks": "117,038",
-  "finds": "678",
+  "asks": "117,530",
+  "finds": "687",
   "bought": "17",
   "under": "59%",
   "kinds": [
    {
     "what": "underpriced against other listings",
-    "n": "311"
+    "n": "319"
    },
    {
     "what": "under the max for its search",
-    "n": "221"
+    "n": "222"
    },
    {
     "what": "a lot cheap per card",
@@ -9087,6 +9102,66 @@
   ]
  },
  "finds": [
+  {
+   "found": "Nov 5, 2026",
+   "title": "Topps 2026 Chrome UFC Charles Oliveira Chrome Lineage Auto Refractor",
+   "image": "https://i.ebayimg.com/images/g/u~QAAeSwYKZq7ONu/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$59.00",
+   "worth": "$101.00",
+   "under": "42%",
+   "lot": null,
+   "basis": "6 listings: the same card",
+   "buying": "Buy It Now"
+  },
+  {
+   "found": "Nov 5, 2026",
+   "title": "Topps Knockout UFC 2026 Seok Hyeon Ko RC Auto KOA-SKO /299 MMA Card",
+   "image": "https://i.ebayimg.com/images/g/2Z0AAeSwAHxq7NIH/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$9.00",
+   "worth": "$29.00",
+   "under": "69%",
+   "lot": null,
+   "basis": "5 listings: the same card",
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Nov 5, 2026",
+   "title": "2026 Stadium Club UFC Kayla Harrison Base Autograph Variation #BAV-KHN",
+   "image": "https://i.ebayimg.com/images/g/EikAAeSw-Udq7LFF/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$14.00",
+   "worth": "$31.49",
+   "under": "56%",
+   "lot": null,
+   "basis": "6 listings: the same card",
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Nov 5, 2026",
+   "title": "2026 Topps Chrome UFC Gold Refractor Alex Pereira 39/50 #90",
+   "image": "https://i.ebayimg.com/images/g/K1sAAeSwvBxqHReP/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$3.24",
+   "worth": "$79.00",
+   "under": "96%",
+   "lot": null,
+   "basis": "9 listings: the same card",
+   "buying": "Auction"
+  },
+  {
+   "found": "Nov 5, 2026",
+   "title": "2024 Topps Finest UFC Red Shimmer Refractor Joe Pyfer #FA-JPR Auto 02l5",
+   "image": "https://i.ebayimg.com/images/g/QL4AAeSw6otq7I0L/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$21.62",
+   "worth": "$43.67",
+   "under": "50%",
+   "lot": null,
+   "basis": "4 listings: the same card",
+   "buying": "Buy It Now"
+  },
   {
    "found": "Nov 5, 2026",
    "title": "2024 Topps Finest UFC #71 Yair Rodríguez /75",
@@ -9386,66 +9461,6 @@
    "lot": null,
    "basis": "6 similar listings: same fighter, same product autos unnumbered",
    "buying": "Auction"
-  },
-  {
-   "found": "Nov 3, 2026",
-   "title": "Bulk Lot of 900+ UFC Trading Cards (Prizm, Select, Donruss)",
-   "image": "https://i.ebayimg.com/images/g/vZ0AAeSwMcFq6mr~/s-l225.jpg",
-   "how": "a UFC lot, priced per card",
-   "cost": "$73.00",
-   "worth": null,
-   "under": null,
-   "lot": "900 cards, $0.08 each",
-   "basis": null,
-   "buying": "Buy It Now"
-  },
-  {
-   "found": "Nov 3, 2026",
-   "title": "Topps 2024 UFC Noche Diego Lopes MMA RC Auto /25 RARE",
-   "image": "https://i.ebayimg.com/images/g/VmMAAeSw82Rq6mJS/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$4.99",
-   "worth": null,
-   "under": null,
-   "lot": null,
-   "basis": null,
-   "buying": "Auction"
-  },
-  {
-   "found": "Nov 3, 2026",
-   "title": "Topps 2025 Stadium Club UFC Ailin Perez #93 Rookie Hard Signed Auto JSA CS50214",
-   "image": "https://i.ebayimg.com/images/g/PygAAeSwxDtq6mLM/s-l225.jpg",
-   "how": "the any-UFC sweep",
-   "cost": "$14.00",
-   "worth": "$28.99",
-   "under": "52%",
-   "lot": null,
-   "basis": "3 listings: the same card",
-   "buying": "Best Offer"
-  },
-  {
-   "found": "Nov 3, 2026",
-   "title": "2026 Topps Knockout UFC Joanna Jedrzejczyk Auto /299",
-   "image": "https://i.ebayimg.com/images/g/dfAAAeSwHS5q6lWo/s-l225.jpg",
-   "how": "the any-UFC sweep",
-   "cost": "$19.00",
-   "worth": "$33.99",
-   "under": "44%",
-   "lot": null,
-   "basis": "3 listings: the same card",
-   "buying": "Best Offer"
-  },
-  {
-   "found": "Nov 3, 2026",
-   "title": "Topps 2026 Stadium Club UFC Joanna Jedrzejczyk BAV-JJK Auto /50 Variation",
-   "image": "https://i.ebayimg.com/images/g/VzgAAeSwGstq6jra/s-l225.jpg",
-   "how": "the any-UFC sweep",
-   "cost": "$16.50",
-   "worth": "$41.00",
-   "under": "60%",
-   "lot": null,
-   "basis": "4 similar listings: same fighter, stadium club autos /26-75",
-   "buying": "Buy It Now"
   }
  ]
 }
