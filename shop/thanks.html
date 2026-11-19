@@ -1,0 +1,75 @@
+---
+layout: shop
+title: Thanks for your order · JuanJulio Cards
+permalink: /shop/thanks/
+description: Thanks for buying from JuanJulio Cards. Leave feedback, follow along for new cards, and shop the rest of the store.
+image: /assets/og/mma-cards.png
+image_alt: "JuanJulio Cards. UFC and sports trading cards for sale."
+noindex: true
+sitemap: false
+---
+{%- comment -%}
+  Where the QR sticker on the back of each envelope goes (Juan, Nov 18, 2026): a buyer who just opened a card. Thanks,
+  the coupon when there is one (`shop_coupon` in _config.yml), a feedback link, the stores and the top cards. Out of
+  search, since it's for buyers holding an envelope; Cloudflare Web Analytics counting its views counts the scans.
+  Words for the buyer only, like /shop/.
+{%- endcomment -%}
+{%- assign c = site.data.live.cards -%}
+{%- assign k = site.shop_coupon -%}
+<header class="top">
+  <p class="mark"><a href="/shop/">JuanJulio <b>Cards</b></a></p>
+  <p class="top-links"><a href="{{ site.ebay_store_url }}" rel="noopener">eBay</a><a href="{{ site.instagram_url }}" rel="noopener">Instagram</a></p>
+</header>
+
+<main>
+<section class="hero thanks">
+  <div class="hero-words">
+    <p class="kicker">Thanks for your order</p>
+    <h1>Thank <span>you</span></h1>
+    <p class="lede">Hope the card made it safe and you love it. Every order helps a small shop keep going.</p>
+    {%- if k.code != "" %}
+    <div class="coupon">
+      <p class="coupon-what">{{ k.offer }}</p>
+      <p class="coupon-code">Code <strong>{{ k.code }}</strong></p>
+      <p class="coupon-how">Enter it at checkout in the JuanJulio eBay store{% if k.ends != "" %}. Good through {{ k.ends }}{% endif %}.</p>
+      <a class="btn" href="{% if k.url != "" %}{{ k.url }}{% else %}{{ site.ebay_store_url }}{% endif %}" rel="noopener">Use it on eBay</a>
+    </div>
+    {%- else %}
+    <div class="stores">
+      <a class="store main" href="{{ site.ebay_store_url }}" rel="noopener">
+        <span class="store-go">Shop on eBay</span>
+        <span class="store-note">Buy more, save more: up to 15% off</span>
+      </a>
+    </div>
+    {%- endif %}
+  </div>
+</section>
+
+<section class="sec" id="next" aria-labelledby="next-h">
+  <header class="sec-head"><h2 id="next-h">One more thing</h2></header>
+  <ol class="rules">
+    <li><h3>Leave feedback</h3><p>Happy with your card? A few words on eBay help other collectors find us. <a href="https://www.ebay.com/mye/myebay/purchase" rel="noopener">Your eBay purchases</a></p></li>
+    <li><h3>Something wrong?</h3><p>Message us on eBay or <a href="{{ site.instagram_url }}" rel="noopener">Instagram</a> before anything else, and we'll make it right.</p></li>
+    <li><h3>Follow along</h3><p>New cards, price drops and fight-week picks on <a href="{{ site.instagram_url }}" rel="noopener">@luvjjulio</a>.</p></li>
+  </ol>
+</section>
+
+{%- if c.for_sale.size > 0 %}
+<section class="sec" id="cards" aria-labelledby="cards-h">
+  <header class="sec-head">
+    <h2 id="cards-h">Up next</h2>
+    <p>Some of the best cards in the shop right now.</p>
+  </header>
+  <ul class="cards" data-live="{{ site.cards_url }}" data-store="{{ site.ebay_store_url }}">
+  {%- include shop-cards.html limit=4 %}
+  </ul>
+  <p class="more"><a class="btn" href="{{ site.ebay_store_url }}" rel="noopener">See every card on eBay</a><a class="btn ghost" href="/shop/">The shop</a></p>
+</section>
+{%- endif %}
+</main>
+
+<script src="/shop/shop.js?v={{ site.time | date: '%s' }}" defer></script>
+<footer class="foot">
+  <p class="mark">JuanJulio <b>Cards</b></p>
+  <p class="foot-links"><a href="{{ site.ebay_store_url }}" rel="noopener">eBay store</a>{% if c.shop_url %}<a href="{{ c.shop_url }}" rel="noopener">CollX</a>{% endif %}<a href="{{ site.instagram_url }}" rel="noopener">Instagram</a><a href="{{ site.facebook_url }}" rel="noopener">Facebook</a></p>
+</footer>

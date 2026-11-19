@@ -41,6 +41,15 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-11-18 — A thank-you page for the envelope stickers
+
+`/shop/thanks/` is where the QR sticker on the back of each envelope goes: thanks, a feedback link, how to reach
+the shop if something's wrong, the top four cards and the stores. It is out of search (`noindex`, no sitemap), so
+its views in Cloudflare Web Analytics are the stickers' scans. A coupon Juan makes in Seller Hub shows there once
+`shop_coupon` in `_config.yml` has its code and link (10% off $10 and up held a profit on every one of 4,000
+simulated orders on the live singles, with the store deal's 15% under it). The card list both shop pages show is
+now one include, `_includes/shop-cards.html`.
+
 ## 2026-11-16 — The shop's landing page
 
 Later the same day it became a page of its own (`_layouts/shop.html`, `shop/shop.css`), out of the portfolio's
