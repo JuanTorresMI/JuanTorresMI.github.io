@@ -133,10 +133,10 @@ facebook_url: "https://www.facebook.com/profile.php?id=1436824466179904"
 # (Marketing → Coupons) shows there once its code is filled in: `code`, `url` (the coupon's eBay link), `offer`
 # ("10% off orders of $10 or more") and `ends` ("Feb 28, 2027"). Empty code: the page shows no coupon.
 shop_coupon:
-  code: ""
+  code: "SHOPJULIO"
   url: ""
   offer: "10% off orders of $10 or more"
-  ends: ""
+  ends: "Jan 1, 2027"
 # The private Card Tracker (its own repo, JuanTorresMI/card-tracker), linked from the home page's Dev tools; it sits behind Cloudflare Access.
 card_tracker_url: https://ledger-q7m3.5342543fsd.workers.dev/
 # The family label on /watching/.
