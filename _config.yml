@@ -129,6 +129,14 @@ instagram_url: "https://www.instagram.com/luvjjulio/"
 # The card shop's own storefronts, on the shop's landing page (/shop/, the address for Instagram's bio link).
 ebay_store_url: "https://www.ebay.com/str/juanjuliommaandsports"
 facebook_url: "https://www.facebook.com/profile.php?id=1436824466179904"
+# The thank-you page the envelope stickers' QR code opens (/shop/thanks/). A coupon Juan makes in eBay's Seller Hub
+# (Marketing → Coupons) shows there once its code is filled in: `code`, `url` (the coupon's eBay link), `offer`
+# ("10% off orders of $10 or more") and `ends` ("Feb 28, 2027"). Empty code: the page shows no coupon.
+shop_coupon:
+  code: ""
+  url: ""
+  offer: "10% off orders of $10 or more"
+  ends: ""
 # The private Card Tracker (its own repo, JuanTorresMI/card-tracker), linked from the home page's Dev tools; it sits behind Cloudflare Access.
 card_tracker_url: https://ledger-q7m3.5342543fsd.workers.dev/
 # The family label on /watching/.

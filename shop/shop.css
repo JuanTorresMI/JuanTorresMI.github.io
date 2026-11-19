@@ -68,6 +68,15 @@ h1 span { display: block; color: var(--gold); }
 .fan-3 { transform: translateX(-50%) rotate(14deg) translateX(34%); }
 .fan-1 { transform: translateX(-50%) translateY(-6%); z-index: 1; }
 
+/* /shop/thanks/: the hero without the fan of cards, and the coupon as a gold-ruled ticket. */
+.mark a { color: inherit; text-decoration: none; }
+.coupon { display: grid; gap: 8px; justify-items: start; max-width: 520px; margin-top: 28px; padding: 20px; border: 2px dashed var(--gold); }
+.coupon-what { font: 400 clamp(26px, 7vw, 34px)/1.05 var(--display); letter-spacing: 0.02em; text-transform: uppercase; color: var(--white); }
+.coupon-code { font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; }
+.coupon-code strong { font: 400 28px/1 var(--display); letter-spacing: 0.08em; color: var(--gold); }
+.coupon-how { font-size: 14px; }
+.coupon .btn { margin-top: 8px; }
+
 /* The bill's band: what's on the card, in the gold ink. */
 .band { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 0; padding: 10px var(--pad); background: var(--gold); color: var(--ink); font: 400 clamp(15px, 4vw, 22px)/1.2 var(--display); letter-spacing: 0.08em; text-transform: uppercase; }
 .band span + span::before { content: "·"; margin: 0 0.7em; }
@@ -117,6 +126,7 @@ h3 { font: 400 22px/1.15 var(--display); letter-spacing: 0.03em; text-transform:
 }
 @media (min-width: 960px) {
   .hero { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; padding-top: 56px; padding-bottom: 80px; }
+  .hero.thanks { grid-template-columns: minmax(0, 1fr); }
   h1 { font-size: clamp(96px, 11.5vw, 148px); }
   .oct { width: 128%; }
   .fan { height: 440px; width: 100%; }

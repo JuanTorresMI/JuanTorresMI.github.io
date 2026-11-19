@@ -66,20 +66,7 @@ image_alt: "JuanJulio Cards. UFC and sports trading cards for sale."
     <p>The best cards in the shop right now.</p>
   </header>
   <ul class="cards" data-live="{{ site.cards_url }}" data-store="{{ site.ebay_store_url }}">
-  {%- assign shown = 0 -%}
-  {%- for k in c.for_sale -%}
-    {%- if k.photo and shown < 8 -%}
-    {%- assign shown = shown | plus: 1 %}
-    <li data-id="{{ k.id }}" data-price="{{ k.price | remove: "$" | remove: "," | times: 100 | round }}">
-      <a class="card" href="{{ site.ebay_store_url }}" rel="noopener">
-        <img src="{{ k.photo }}" alt="{{ k.name | escape }}" loading="lazy" width="160" height="224">
-        <span class="card-who">{% if k.player and k.player != "" %}{{ k.player }}{% else %}{{ k.name | split: " 20" | first | truncatewords: 4, "" }}{% endif %}</span>
-        <span class="card-what">{% if k.player and k.player != "" and k.set != "" %}{{ k.set }}{% if k.parallel != "" %} · {{ k.parallel }}{% endif %}{% else %}{{ k.name }}{% endif %}</span>
-        <span class="card-foot"><span class="card-price">{{ k.price | replace: ".00", "" }}</span>{% if k.serial != "" %}<span class="chip">{{ k.serial }}</span>{% endif %}{% if k.auto %}<span class="chip">Auto</span>{% endif %}{% if k.rookie %}<span class="chip">RC</span>{% endif %}</span>
-      </a>
-    </li>
-    {%- endif -%}
-  {%- endfor %}
+  {%- include shop-cards.html limit=8 %}
   </ul>
   <p class="more"><a class="btn" href="{{ site.ebay_store_url }}" rel="noopener">See all <span data-total>{{ total }}</span> cards on eBay</a>{% if c.shop_url %}<a class="btn ghost" href="{{ c.shop_url }}" rel="noopener">Or on CollX</a>{% endif %}</p>
 </section>
