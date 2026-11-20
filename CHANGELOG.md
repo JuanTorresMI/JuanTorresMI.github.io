@@ -50,7 +50,7 @@ Things waiting on a decision or on Juan, so they aren't lost:
   address sits behind Cloudflare Access. Never rename or delete `promo-buy-more.png`: the store's live order discounts
   point at it.
 - Same evening: the covers, discount pictures and video rendered again for the store deal as it now stands (10/15/20% off
-  2/3/4+ cards, 60¢ each extra card). The figures now come from one line in the Card Tracker (`src/store-art.js`), which
+  2/3/4+ cards, 50¢ each extra card once envelopes took 24 cards). The figures now come from one line in the Card Tracker (`src/store-art.js`), which
   warns when the deal drifts from the art.
 
 ## 2026-11-18 — A thank-you page for the envelope stickers
