@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-20T11:48:42+00:00",
+ "generated": "2026-11-20T21:19:22+00:00",
  "latest_week": "2026-11-16",
  "week": "week of Nov 9, 2026",
  "week_es": "semana del 9 nov 2026",
@@ -7,9 +7,9 @@
  "week_end": "Nov 15, 2026",
  "week_start_es": "9 nov 2026",
  "week_end_es": "15 nov 2026",
- "latest_day": "2026-11-19",
- "day": "Thu, Nov 19",
- "day_es": "jue 19 nov",
+ "latest_day": "2026-11-20",
+ "day": "Fri, Nov 20",
+ "day_es": "vie 20 nov",
  "first": "Dec 30, 2019",
  "first_es": "30 dic 2019",
  "first_iso": "2020-01-06",
@@ -20,13 +20,13 @@
   "dressed": "$336.82",
   "dressed_chg": "−$1.57",
   "head": "38,243",
-  "day_live": "$212.92",
-  "day_dressed": "$337.42",
-  "day": "Thu, Nov 19",
-  "day_es": "jue 19 nov"
+  "day_live": "$215.08",
+  "day_dressed": "$337.21",
+  "day": "Fri, Nov 20",
+  "day_es": "vie 20 nov"
  },
- "summary": "In the week of Nov 9 to Nov 15, 2026, packers paid $214.43 per hundredweight for live steers in the 5-area market (−$1.00 from the week before) and $336.82 for dressed steers, delivered (−$1.57). USDA counted 38,243 head of steers and heifers bought on negotiated cash deals that week. So far this week, the latest daily report (Thursday, November 19) has live steers at $212.92.",
- "summary_es": "En la semana del 9 nov al 15 nov 2026, los empacadores pagaron $214.43 por quintal (cwt) por novillos en pie en el mercado de 5 áreas (−$1.00 frente a la semana anterior) y $336.82 por novillos en canal, entregados (−$1.57). El USDA contó 38,243 cabezas de novillos y vaquillas compradas en tratos negociados de contado esa semana. En lo que va de esta semana, el último reporte diario (jueves 19 de noviembre) tiene los novillos en pie a $212.92.",
+ "summary": "In the week of Nov 9 to Nov 15, 2026, packers paid $214.43 per hundredweight for live steers in the 5-area market (−$1.00 from the week before) and $336.82 for dressed steers, delivered (−$1.57). USDA counted 38,243 head of steers and heifers bought on negotiated cash deals that week. So far this week, the latest daily report (Friday, November 20) has live steers at $215.08 and dressed at $337.21.",
+ "summary_es": "En la semana del 9 nov al 15 nov 2026, los empacadores pagaron $214.43 por quintal (cwt) por novillos en pie en el mercado de 5 áreas (−$1.00 frente a la semana anterior) y $336.82 por novillos en canal, entregados (−$1.57). El USDA contó 38,243 cabezas de novillos y vaquillas compradas en tratos negociados de contado esa semana. En lo que va de esta semana, el último reporte diario (viernes 20 de noviembre) tiene los novillos en pie a $215.08 y en canal a $337.21.",
  "steer_live": {
   "current": true,
   "iso": "2026-11-16",
@@ -231,6 +231,15 @@
  },
  "days": [
   {
+   "day": "Fri, Nov 20",
+   "day_es": "vie 20 nov",
+   "live": "$215.08",
+   "live_head": "6,575",
+   "dressed": "$337.21",
+   "dressed_head": "592",
+   "head": "9,731"
+  },
+  {
    "day": "Thu, Nov 19",
    "day_es": "jue 19 nov",
    "live": "$212.92",
@@ -310,15 +319,6 @@
    "dressed": "$339.16",
    "dressed_head": "1,456",
    "head": "11,953"
-  },
-  {
-   "day": "Wed, Nov 4",
-   "day_es": "mié 4 nov",
-   "live": "$217.26",
-   "live_head": "9,039",
-   "dressed": "$339.97",
-   "dressed_head": "11,678",
-   "head": "27,765"
   }
  ],
  "regions": [
@@ -1003,8 +1003,8 @@
    "file": "fed-cattle-5-area-daily.csv",
    "label": "The 5-area daily report, every business day since 2020",
    "label_es": "El reporte diario de 5 áreas, cada día hábil desde 2020",
-   "rows": "32,977",
-   "kb": "2,252"
+   "rows": "32,997",
+   "kb": "2,253"
   }
  ],
  "tool": {
