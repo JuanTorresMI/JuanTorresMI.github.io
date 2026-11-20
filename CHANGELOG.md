@@ -41,6 +41,15 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-11-20 — The eBay store's pictures and video, served from the shop
+
+- `shop/ebay/` holds the eBay store's theme, rendered in the Card Tracker (`scripts/ebay-brand/`, its README's "The eBay
+  store's look"): three store covers, three 1000x1000 discount pictures, the featured-category tiles, the logo and the
+  24-second store video. Static files only, no page links them; Jekyll copies them as they are.
+- They're here for a reason: eBay fetches a discount's picture by link (`promotionImageUrl`), and the Card Tracker's own
+  address sits behind Cloudflare Access. Never rename or delete `promo-buy-more.png`: the store's live order discounts
+  point at it.
+
 ## 2026-11-18 — A thank-you page for the envelope stickers
 
 `/shop/thanks/` is where the QR sticker on the back of each envelope goes: thanks, a feedback link, how to reach
