@@ -1,36 +1,36 @@
 {
  "ready": true,
- "generated": "2026-11-21T03:47:11.362Z",
- "checked": "Nov 20, 10 PM (Michigan time)",
+ "generated": "2026-11-21T11:47:11.362Z",
+ "checked": "Nov 21, 6 AM (Michigan time)",
  "today": "Nov 21, 2026",
  "meters": [
   {
    "what": "Worker requests",
-   "used": "680",
-   "left": "99,320",
+   "used": "1,010",
+   "left": "98,990",
    "limit": "100,000 a day",
-   "pct": "0.7%",
-   "w": 0.7
+   "pct": "1.0%",
+   "w": 1.0
   },
   {
    "what": "Database rows read",
-   "used": "2,995,017",
-   "left": "2,004,983",
+   "used": "6,144,015",
+   "left": "0",
    "limit": "5,000,000 a day",
-   "pct": "60%",
-   "w": 59.9
+   "pct": "123%",
+   "w": 100
   },
   {
    "what": "Database rows written",
-   "used": "13,967",
-   "left": "86,033",
+   "used": "26,779",
+   "left": "73,221",
    "limit": "100,000 a day",
-   "pct": "14%",
-   "w": 14.0
+   "pct": "27%",
+   "w": 26.8
   },
   {
    "what": "Database storage, as Cloudflare counts it",
-   "used": "104 MB",
+   "used": "105 MB",
    "left": "4.9 GB",
    "limit": "5.0 GB",
    "pct": "2.1%",
@@ -46,22 +46,22 @@
   },
   {
    "what": "CPU, the slowest 1% of runs",
-   "used": "212 ms",
-   "left": "over by 202 ms",
+   "used": "722 ms",
+   "left": "over by 712 ms",
    "limit": "10 ms a run",
-   "pct": "2115%",
+   "pct": "7225%",
    "w": 100
   }
  ],
  "days": [
   {
    "day": "Sat, Nov 21",
-   "requests": "680",
+   "requests": "1,010",
    "errors": "0",
-   "rows_read": "2,995,017",
-   "rows_written": "13,967",
+   "rows_read": "6,144,015",
+   "rows_written": "26,779",
    "cpu50": "2.7 ms",
-   "cpu": "212 ms"
+   "cpu": "722 ms"
   },
   {
    "day": "Fri, Nov 20",
@@ -326,11 +326,11 @@
   }
  ],
  "stamp": {
-  "requests": "680",
-  "requests_left": "99,320",
-  "rows_read": "2,995,017",
-  "rows_written": "13,967",
-  "size": "104 MB",
+  "requests": "1,010",
+  "requests_left": "98,990",
+  "rows_read": "6,144,015",
+  "rows_written": "26,779",
+  "size": "105 MB",
   "cpu": "2.7 ms"
  },
  "errors_30": "0",
