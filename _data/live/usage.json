@@ -1,36 +1,36 @@
 {
  "ready": true,
- "generated": "2026-11-24T11:47:11.362Z",
- "checked": "Nov 24, 6 AM (Michigan time)",
+ "generated": "2026-11-24T20:47:11.000Z",
+ "checked": "Nov 24, 3 PM (Michigan time)",
  "today": "Nov 24, 2026",
  "meters": [
   {
    "what": "Worker requests",
-   "used": "990",
-   "left": "99,010",
+   "used": "1,800",
+   "left": "98,200",
    "limit": "100,000 a day",
-   "pct": "1.0%",
-   "w": 1.0
+   "pct": "1.8%",
+   "w": 1.8
   },
   {
    "what": "Database rows read",
-   "used": "6,491,980",
+   "used": "12,237,894",
    "left": "0",
    "limit": "5,000,000 a day",
-   "pct": "130%",
+   "pct": "245%",
    "w": 100
   },
   {
    "what": "Database rows written",
-   "used": "23,475",
-   "left": "76,525",
+   "used": "45,450",
+   "left": "54,550",
    "limit": "100,000 a day",
-   "pct": "23%",
-   "w": 23.5
+   "pct": "45%",
+   "w": 45.5
   },
   {
    "what": "Database storage, as Cloudflare counts it",
-   "used": "110 MB",
+   "used": "111 MB",
    "left": "4.9 GB",
    "limit": "5.0 GB",
    "pct": "2.2%",
@@ -38,30 +38,30 @@
   },
   {
    "what": "CPU, a typical run (median)",
-   "used": "8.2 ms",
-   "left": "1.8 ms to spare",
+   "used": "3.8 ms",
+   "left": "6.2 ms to spare",
    "limit": "10 ms a run",
-   "pct": "82%",
-   "w": 82.1
+   "pct": "38%",
+   "w": 37.6
   },
   {
    "what": "CPU, the slowest 1% of runs",
-   "used": "1051 ms",
-   "left": "over by 1041 ms",
+   "used": "916 ms",
+   "left": "over by 906 ms",
    "limit": "10 ms a run",
-   "pct": "10508%",
+   "pct": "9162%",
    "w": 100
   }
  ],
  "days": [
   {
    "day": "Tue, Nov 24",
-   "requests": "990",
+   "requests": "1,800",
    "errors": "0",
-   "rows_read": "6,491,980",
-   "rows_written": "23,475",
-   "cpu50": "8.2 ms",
-   "cpu": "1051 ms"
+   "rows_read": "12,237,894",
+   "rows_written": "45,450",
+   "cpu50": "3.8 ms",
+   "cpu": "916 ms"
   },
   {
    "day": "Mon, Nov 23",
@@ -326,12 +326,12 @@
   }
  ],
  "stamp": {
-  "requests": "990",
-  "requests_left": "99,010",
-  "rows_read": "6,491,980",
-  "rows_written": "23,475",
-  "size": "110 MB",
-  "cpu": "8.2 ms"
+  "requests": "1,800",
+  "requests_left": "98,200",
+  "rows_read": "12,237,894",
+  "rows_written": "45,450",
+  "size": "111 MB",
+  "cpu": "3.8 ms"
  },
  "errors_30": "0",
  "cpu_over": true,
