@@ -1,11 +1,11 @@
 {
- "updated": "2026-11-24T21:19:32.514Z",
- "checked": "Nov 24, 2026",
+ "updated": "2026-11-25T05:40:27.383Z",
+ "checked": "Nov 25, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
   "cards": "707",
   "listed": "673",
-  "listed_all": "1,816",
+  "listed_all": "1,815",
   "sold": "21",
   "revenue": "$135",
   "profit": "$30",
@@ -9096,15 +9096,15 @@
   }
  ],
  "scanner": {
-  "calls": "4,245",
-  "asks": "125,650",
-  "finds": "917",
+  "calls": "4,280",
+  "asks": "126,372",
+  "finds": "921",
   "bought": "18",
   "under": "58%",
   "kinds": [
    {
     "what": "underpriced against other listings",
-    "n": "534"
+    "n": "535"
    },
    {
     "what": "under the max for its search",
@@ -9112,11 +9112,15 @@
    },
    {
     "what": "a lot cheap per card",
-    "n": "83"
+    "n": "84"
    },
    {
     "what": "unpriced",
     "n": "77"
+   },
+   {
+    "what": "lead",
+    "n": "2"
    },
    {
     "what": "maybe",
@@ -9125,6 +9129,42 @@
   ]
  },
  "finds": [
+  {
+   "found": "Nov 11, 2026",
+   "title": "Topps 2025 Topps Now UFC Charles Oliveira #34 UFC Fight Night /50",
+   "image": "https://i.ebayimg.com/images/g/LVAAAeSwSMRq4VpY/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$33.99",
+   "worth": "$90.47",
+   "under": "62%",
+   "lot": null,
+   "basis": "est. from 7 asks for similar cards · confidence 1 of 5",
+   "buying": "Auction"
+  },
+  {
+   "found": "Nov 11, 2026",
+   "title": "Topps 2024 Chrome UFC Amanda Nunes #15 Blue Wave Refractor /75",
+   "image": "https://i.ebayimg.com/images/g/z4sAAeSwmxNq86nl/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$8.50",
+   "worth": "$21.72",
+   "under": "61%",
+   "lot": null,
+   "basis": "est. from 1 sale of similar cards, 13 asks for similar cards, your price for similar cards · confidence 2 of 5",
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Nov 10, 2026",
+   "title": "2026 Topps Chrome UFC Charles Oliveira Green Refractor /99",
+   "image": "https://i.ebayimg.com/images/g/z-MAAeSwF9Fq84lH/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$11.00",
+   "worth": "$24.06",
+   "under": "54%",
+   "lot": null,
+   "basis": "est. from 1 ask for this card, 1 sale of similar cards, 12 asks for similar cards · confidence 3 of 5",
+   "buying": "Best Offer"
+  },
   {
    "found": "Nov 10, 2026",
    "title": "DAN HOOKER 2022 Prizm UFC Orange Prizm 28/99",
@@ -9448,42 +9488,6 @@
    "lot": null,
    "basis": null,
    "buying": "Best Offer"
-  },
-  {
-   "found": "Nov 8, 2026",
-   "title": "2026 TOPPS UFC KNOCKOUTS Mario Pinto Numbered 89 of 125. ROOKIE Card. Mint",
-   "image": "https://i.ebayimg.com/images/g/nIYAAeSw3nlqTwuX/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$24.00",
-   "worth": null,
-   "under": null,
-   "lot": null,
-   "basis": null,
-   "buying": "Auction"
-  },
-  {
-   "found": "Nov 8, 2026",
-   "title": "Topps 2025 Stadium Club UFC Special Forces Ian Machado Garry Black #SF-6 /99",
-   "image": "https://i.ebayimg.com/images/g/CWoAAeSwAVhqefwX/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$13.00",
-   "worth": null,
-   "under": null,
-   "lot": null,
-   "basis": null,
-   "buying": "Auction"
-  },
-  {
-   "found": "Nov 8, 2026",
-   "title": "Diego Lopes 2026 Topps UFC Freedom 250 #UD-26 Purple Dollar /75",
-   "image": "https://i.ebayimg.com/images/g/UH0AAeSwGNdq7RD7/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$21.50",
-   "worth": null,
-   "under": null,
-   "lot": null,
-   "basis": null,
-   "buying": "Auction"
   }
  ]
 }
