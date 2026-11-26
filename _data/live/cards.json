@@ -1,23 +1,23 @@
 {
- "updated": "2026-11-26T11:49:03.381Z",
+ "updated": "2026-11-26T22:35:23.419Z",
  "checked": "Nov 26, 2026",
  "shop_url": "https://share.collx.app/JuanJulio",
  "stats": {
   "cards": "707",
-  "listed": "674",
-  "listed_all": "2,177",
-  "sold": "21",
-  "revenue": "$135",
-  "profit": "$30",
+  "listed": "673",
+  "listed_all": "2,176",
+  "sold": "22",
+  "revenue": "$137",
+  "profit": "$31",
   "margin": "22%",
-  "days": "17 days",
+  "days": "18 days",
   "sell_through": "3%"
  },
  "months": [
   {
    "month": "Nov 2026",
-   "sales": "20",
-   "revenue": "$116",
+   "sales": "21",
+   "revenue": "$117",
    "profit": "$28"
   },
   {
@@ -7166,19 +7166,6 @@
    "listed": "Nov 5, 2026"
   },
   {
-   "id": 670,
-   "name": "2021 Panini Chronicles UFC #31 Jorge Masvidal",
-   "player": "Jorge Masvidal",
-   "set": "2021 Panini Chronicles UFC",
-   "parallel": "",
-   "serial": "",
-   "rookie": false,
-   "auto": false,
-   "photo": "/mma-cards/photos/670.webp",
-   "price": "$0.39",
-   "listed": "Nov 5, 2026"
-  },
-  {
    "id": 727,
    "name": "2022 Donruss UFC #34 Mackenzie Dern",
    "player": "Mackenzie Dern",
@@ -8793,6 +8780,21 @@
  ],
  "sold": [
   {
+   "id": 670,
+   "name": "2021 Panini Chronicles UFC #31 Jorge Masvidal",
+   "player": "Jorge Masvidal",
+   "set": "2021 Panini Chronicles UFC",
+   "parallel": "",
+   "serial": "",
+   "rookie": false,
+   "auto": false,
+   "photo": "/mma-cards/photos/670.webp",
+   "price": "$0.99",
+   "month": "Nov 2026",
+   "days": "29 days",
+   "where": "eBay"
+  },
+  {
    "id": 114,
    "name": "Laura Sanko 2026 Champions Collection UFC Gold Ink On-Card Auto - PSA In the Presence",
    "player": "Laura Sanko",
@@ -9110,22 +9112,22 @@
  ],
  "scanner": {
   "calls": "4,280",
-  "asks": "132,748",
-  "finds": "941",
-  "bought": "18",
+  "asks": "134,588",
+  "finds": "921",
+  "bought": "16",
   "under": "58%",
   "kinds": [
    {
     "what": "underpriced against other listings",
-    "n": "535"
+    "n": "527"
    },
    {
     "what": "under the max for its search",
-    "n": "222"
+    "n": "213"
    },
    {
     "what": "a lot cheap per card",
-    "n": "86"
+    "n": "78"
    },
    {
     "what": "unpriced",
@@ -9133,7 +9135,7 @@
    },
    {
     "what": "lead",
-    "n": "20"
+    "n": "25"
    },
    {
     "what": "maybe",
@@ -9144,6 +9146,66 @@
  "finds": [
   {
    "found": "Nov 12, 2026",
+   "title": "Brandon Moreno Panini 2023 Donruss Optic UFC Opti-Graphs Auto OG-BMR PSA 9 Pop 3",
+   "image": "https://i.ebayimg.com/images/g/ykIAAeSwJEdq9iaQ/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$46.41",
+   "worth": null,
+   "under": null,
+   "lot": null,
+   "basis": null,
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Nov 12, 2026",
+   "title": "Diego Lopes 2026 Topps Stadium Club Chrome UFC Triumvirates /50 Insert TV-48",
+   "image": "https://i.ebayimg.com/images/g/nbEAAeSwZmhq7QvK/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$54.00",
+   "worth": null,
+   "under": null,
+   "lot": null,
+   "basis": null,
+   "buying": "Auction"
+  },
+  {
+   "found": "Nov 12, 2026",
+   "title": "Topps 2024 Midnight UFC MMA Glimmer Graphs Yan Xiaonan Auto #GG-YXN",
+   "image": "https://i.ebayimg.com/images/g/3hEAAeSwOiRq9gjX/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$14.00",
+   "worth": "$26.67",
+   "under": "48%",
+   "lot": null,
+   "basis": "est. from 2 asks for this card, 3 asks for similar cards · confidence 3 of 5",
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Nov 12, 2026",
+   "title": "Topps 2026 Midnight UFC Mario Pinto Rookie Relic Auto #RRA-MP /99",
+   "image": "https://i.ebayimg.com/images/g/UL4AAeSwJEdq9fFT/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$21.00",
+   "worth": null,
+   "under": null,
+   "lot": null,
+   "basis": null,
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Nov 12, 2026",
+   "title": "Ian Machado Garry 2025 UFC Topps Now #43 UFC Fight Night Gold Foil 39/50 Card",
+   "image": "https://i.ebayimg.com/images/g/TkMAAeSwz9Zpb-J4/s-l225.jpg",
+   "how": "the fight-card hunt list",
+   "cost": "$74.00",
+   "worth": "$39.49",
+   "under": "-87%",
+   "lot": null,
+   "basis": "est. from 2 asks for this card · confidence 2 of 5",
+   "buying": "Auction"
+  },
+  {
+   "found": "Nov 12, 2026",
    "title": "Topps 2026 UFC Knockout Valentina Shevchenko Tier 1 Dual Relic Auto TOA-VS /299",
    "image": "https://i.ebayimg.com/images/g/g9UAAeSwo3Rq9Zlj/s-l225.jpg",
    "how": "the any-UFC sweep",
@@ -9152,6 +9214,18 @@
    "under": "44%",
    "lot": null,
    "basis": "est. from 1 ask for this card, 1 sale of similar cards, 5 asks for similar cards · confidence 3 of 5",
+   "buying": "Best Offer"
+  },
+  {
+   "found": "Nov 12, 2026",
+   "title": "Topps 2026 Chrome UFC Autographs Lone'er Kavanagh Rookie Auto #BAV-LK",
+   "image": "https://i.ebayimg.com/images/g/uMwAAeSwQrtq9WoC/s-l225.jpg",
+   "how": "the any-UFC sweep",
+   "cost": "$24.00",
+   "worth": "$34.09",
+   "under": "30%",
+   "lot": null,
+   "basis": "est. from 8 asks for this card, 1 sale of similar cards, 4 asks for similar cards · confidence 3 of 5",
    "buying": "Best Offer"
   },
   {
@@ -9429,78 +9503,6 @@
    "lot": null,
    "basis": null,
    "buying": "Buy It Now"
-  },
-  {
-   "found": "Nov 8, 2026",
-   "title": "Wild Card 2026 Matte Metal Israel Adesanya UFC MMA #250 Serial Numbered 1/10",
-   "image": "https://i.ebayimg.com/images/g/i20AAeSw6pVq6RzD/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$18.00",
-   "worth": null,
-   "under": null,
-   "lot": null,
-   "basis": null,
-   "buying": "Best Offer"
-  },
-  {
-   "found": "Nov 8, 2026",
-   "title": "Wild Card Matte Metal Israel Adesanya Autograph UFC MMA Card #8/8 Serial #/8",
-   "image": "https://i.ebayimg.com/images/g/eMMAAeSw65pqHHnL/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$14.00",
-   "worth": null,
-   "under": null,
-   "lot": null,
-   "basis": null,
-   "buying": "Best Offer"
-  },
-  {
-   "found": "Nov 8, 2026",
-   "title": "Ian Machado Garry 2024 Topps Royalty UFC #PGS-IMG Pursuit of Greatness Auto /99",
-   "image": "https://i.ebayimg.com/images/g/3RIAAeSwrjlq6NYx/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$14.50",
-   "worth": null,
-   "under": null,
-   "lot": null,
-   "basis": null,
-   "buying": "Auction"
-  },
-  {
-   "found": "Nov 8, 2026",
-   "title": "Ian Machado Garry - 2025 Stadium Club UFC Turquoise Foil #114 /99",
-   "image": "https://i.ebayimg.com/images/g/skUAAeSw6B5pv0GX/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$13.99",
-   "worth": null,
-   "under": null,
-   "lot": null,
-   "basis": null,
-   "buying": "Buy It Now"
-  },
-  {
-   "found": "Nov 8, 2026",
-   "title": "2020 Topps UFC Israel Adesanya #75 08ue",
-   "image": "https://i.ebayimg.com/images/g/KD8AAeSwIt5q17cB/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$10.13",
-   "worth": null,
-   "under": null,
-   "lot": null,
-   "basis": null,
-   "buying": "Buy It Now"
-  },
-  {
-   "found": "Nov 8, 2026",
-   "title": "2022 Donruss UFC - Magicians Israel Adesanya #5 Holo Purple Laser /99",
-   "image": "https://i.ebayimg.com/images/g/DSIAAeSw7GNq4qpu/s-l225.jpg",
-   "how": "the fight-card hunt list",
-   "cost": "$9.20",
-   "worth": null,
-   "under": null,
-   "lot": null,
-   "basis": null,
-   "buying": "Best Offer"
   }
  ]
 }
