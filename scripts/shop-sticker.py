@@ -54,6 +54,11 @@ def fit(draw, text, name, size, width, weight=None):
     return font(name, 8, weight)
 
 
+def octagon(cx, cy, r):
+    import math
+    return [(cx + r * math.cos(math.radians(22.5 + 45 * i)), cy + r * math.sin(math.radians(22.5 + 45 * i))) for i in range(8)]
+
+
 def qr_image(url):
     q = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=5, border=2)
     q.add_data(url)
@@ -73,9 +78,15 @@ def sticker(cfg):
 
     # Stacked like the first stickers: the name reversed out of a black band, the QR code filling the middle, the offer
     # and the stores under it.
-    band = 30
-    d.rectangle([x0, y0, x1, y0 + band], fill=0)
-    name = fit(d, "JUANJULIO CARDS", "anton.woff2", 26, x1 - x0 - 12)
+    # The band is cut like the cage (an octagon stretched wide), with a small octagon each side of the name: the shop
+    # page's octagon, in the one ink a thermal printer has.
+    band, cut = 30, 9
+    d.polygon([(x0 + cut, y0), (x1 - cut, y0), (x1, y0 + cut), (x1, y0 + band - cut), (x1 - cut, y0 + band), (x0 + cut, y0 + band),
+               (x0, y0 + band - cut), (x0, y0 + cut)], fill=0)
+    for cx in (x0 + 20, x1 - 20):
+        d.polygon(octagon(cx, y0 + band / 2, 8), outline=1, width=2)
+        d.polygon(octagon(cx, y0 + band / 2, 3), fill=1)
+    name = fit(d, "JUANJULIO CARDS", "anton.woff2", 26, x1 - x0 - 64)
     d.text(((x0 + x1) / 2, y0 + band / 2 + 1), "JUANJULIO CARDS", font=name, fill=1, anchor="mm")
 
     if code and off:
@@ -94,7 +105,14 @@ def sticker(cfg):
     top, bottom = y0 + band, y1 - h2 - 5 - h1
     if qr.height > bottom - top:
         sys.exit(f"QR code is {qr.height} px, the sticker has {bottom - top}: shorten the address or make the sticker taller")
-    img.paste(qr, ((w - qr.width) // 2, top + (bottom - top - qr.height) // 2))
+    qx, qy = (w - qr.width) // 2, top + (bottom - top - qr.height) // 2
+    img.paste(qr, (qx, qy))
+    # Corner brackets round the code, like a fight-night camera's frame; far enough out to leave its quiet zone white.
+    g, arm, t = 6, 20, 3
+    for cx, cy, sx, sy in ((qx - g, qy - g, 1, 1), (qx + qr.width + g, qy - g, -1, 1), (qx - g, qy + qr.height + g, 1, -1),
+                           (qx + qr.width + g, qy + qr.height + g, -1, -1)):
+        d.line([(cx, cy), (cx + sx * arm, cy)], fill=0, width=t)
+        d.line([(cx, cy), (cx, cy + sy * arm)], fill=0, width=t)
     return img
 
 
