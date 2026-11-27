@@ -13,6 +13,9 @@ Things waiting on a decision or on Juan, so they aren't lost:
   account's token before Feb 14, 2027, when its data access lapses: `IG_ACCESS_TOKEN` is a user token made Nov 16 with the Page and insights
   permissions (`pages_show_list`, `pages_read_engagement`, `pages_manage_posts`, `instagram_manage_insights`). Pick luvjjulio under Assets when making it, and extend it. `GH_DISPATCH_TOKEN`
   now starts the daily post too. TikTok isn't built: its API only posts privately until an app passes audit.
+- **Meta catalog**: in Commerce Manager, add a catalog (Ecommerce), a data feed with a scheduled daily fetch of
+  `https://card-showcase.5342543fsd.workers.dev/catalog.tsv`, and connect it to the JuanJulio Facebook Page and @luvjjulio.
+  Instagram product tags on Reels need Instagram Shopping approved first; the posts could then tag each card.
 - **Renew `GH_DISPATCH_TOKEN`** before it expires (set Oct 18, 2026; fine-grained, this repo only,
   Actions: read and write). Steps in worker/README.md, "Updating the pages". If it lapses, GitHub's
   backup schedule keeps the pages updating, hours late, and the button hides itself.
@@ -40,6 +43,14 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - **More USDA boards** (Juan wants all of them): next are hogs (LM_HG217/218), lamb (LM_XL502) and cow
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
+
+## 2026-11-27 — Facebook posts link each card's eBay listing; a Meta catalog feed
+
+- The Reels' Facebook copy now links the card's own eBay listing in place of "link in bio" (links work in Facebook
+  captions, not Instagram's), and the eBay store for sales, sets and fight-week posts (`facebook_caption` in
+  `scripts/post_listings.py`). The showcase sends each card's eBay address (`ebay`), and the snapshot keeps it.
+- The showcase Worker serves `/catalog.tsv`, every eBay single as a Meta catalog product linked to its listing, for the
+  Facebook Page's shop and Instagram product tags. Setting it up in Commerce Manager is Juan's step (open item).
 
 ## 2026-11-26 — CollX on the thank-you page, and a sticker sheet for the thermal printer
 

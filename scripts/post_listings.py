@@ -162,6 +162,19 @@ def caption_set(g):
             "\nShop link in bio\n\n" + " ".join(tags[:5]))
 
 
+def facebook_caption(c, text, why):
+    """The Facebook copy of a caption: links are clickable there (not on Instagram), so "link in bio" becomes the card's own
+    eBay listing (the showcase's `ebay`), or the eBay store for a sale, a set or a fight-week post."""
+    if c.get("ebay") and why != "sold":
+        text = text.replace(" · shop link in bio", f"\nBuy it on eBay: {c['ebay']}")
+    with open(os.path.join(ROOT, "_config.yml"), encoding="utf-8") as f:
+        store = re.search(r'^ebay_store_url:\s*"([^"]+)"', f.read(), re.M)
+    if not store:
+        return text
+    text = text.replace("in the shop, link in bio", f"on eBay: {store.group(1)}")
+    return re.sub(r"(?i)(shop )?link in bio", f"Shop on eBay: {store.group(1)}", text)
+
+
 def showcase_url():
     with open(os.path.join(ROOT, "_config.yml"), encoding="utf-8") as f:
         return os.environ.get("CARDS_URL") or re.search(r'^cards_url:\s*"([^"]+)"', f.read(), re.M).group(1)
@@ -612,7 +625,7 @@ def post(card=None, old=None):
             sys.exit(f"Instagram couldn't process card {c['id']}.")
         time.sleep(5)
     media = graph(host, f"{user}/media_publish", creation_id=made).get("id")
-    fb = to_facebook(reel_url, text)
+    fb = to_facebook(reel_url, facebook_caption(c, text, why))
     story = to_story(host, user, reel_url)
     shelf("DELETE", reel_url)
     # When each one went out, and its id: what the search for the best time reads back.

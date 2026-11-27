@@ -233,7 +233,10 @@ that grows without a trim and a CSV that keeps it.
   `social_posted.json`; the workflow's `card` input takes `set:<name>`). Behind the card each Reel takes one of `make_reel.THEMES`
   in turn (glow, octagon, spotlight, comic, retro, holo); the layout and safe areas are the same in all. Every Reel also goes to
   the Facebook Page (`to_facebook`, Pages' Reels API, without the song), since Instagram's "share to Facebook" skips API posts:
-  `FB_PAGE_ID` and `FB_PAGE_TOKEN` secrets, else the Instagram token's own Pages; `check` says which. The `stats` switch on the workflow
+  `FB_PAGE_ID` and `FB_PAGE_TOKEN` secrets, else the Instagram token's own Pages; `check` says which. Links work in Facebook
+  captions (not Instagram's), so the Facebook copy (`facebook_caption`) swaps "link in bio" for the card's own eBay listing
+  (the showcase's `ebay` on each card for sale) or, for a sale, set or fight post, the eBay store. The showcase also serves
+  `/catalog.tsv`, every eBay single as a Meta catalog feed for the Facebook Page's shop (card-tracker README, "The public showcase"). The `stats` switch on the workflow
   prints each Reel's likes and comments (views, reach and saves need the token's `instagram_manage_insights` permission). Never edit those files by hand. The film
   is drawn in the run and parked in R2 only while Instagram fetches it (the showcase's `/reel/`, secret `SOCIAL_KEY`): a direct
   upload loses the song. It has card sounds (`scripts/sfx`, CC0) and a song Instagram attaches, in turn by `_data/social_songs.json`:
