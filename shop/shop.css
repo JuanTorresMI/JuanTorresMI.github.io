@@ -115,6 +115,10 @@ h3 { font: 400 22px/1.15 var(--display); letter-spacing: 0.03em; text-transform:
 
 /* /shop/cart/: the cards a Facebook or Instagram shop cart named, one row each, the photo beside the name like a bout
    on the bill, each row its own eBay listing. */
+.cart-hero { padding-top: 16px; padding-bottom: 8px; }
+.cart-hero h1 { font-size: clamp(56px, 15vw, 112px); }
+.cart-hero .lede { margin-top: 12px; font-size: 16px; }
+.cart-sec { padding-top: 24px; }
 .cart { display: grid; gap: 12px; }
 .cart-wait, .cart-none { padding: 20px; border: 1px solid var(--line); background: var(--mat); }
 .line { display: grid; grid-template-columns: clamp(96px, 28vw, 132px) minmax(0, 1fr); gap: 16px; padding: 12px; background: var(--mat); border: 1px solid var(--line);
