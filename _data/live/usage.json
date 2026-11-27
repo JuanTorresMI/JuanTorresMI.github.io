@@ -1,32 +1,32 @@
 {
  "ready": true,
- "generated": "2026-11-27T04:47:11.000Z",
- "checked": "Nov 26, 11 PM (Michigan time)",
+ "generated": "2026-11-27T11:47:11.000Z",
+ "checked": "Nov 27, 6 AM (Michigan time)",
  "today": "Nov 27, 2026",
  "meters": [
   {
    "what": "Worker requests",
-   "used": "200",
-   "left": "99,800",
+   "used": "350",
+   "left": "99,650",
    "limit": "100,000 a day",
-   "pct": "0.2%",
-   "w": 0.2
+   "pct": "0.4%",
+   "w": 0.4
   },
   {
    "what": "Database rows read",
-   "used": "6,382,018",
+   "used": "12,936,287",
    "left": "0",
    "limit": "5,000,000 a day",
-   "pct": "128%",
+   "pct": "259%",
    "w": 100
   },
   {
    "what": "Database rows written",
-   "used": "22,088",
-   "left": "77,912",
+   "used": "37,549",
+   "left": "62,451",
    "limit": "100,000 a day",
-   "pct": "22%",
-   "w": 22.1
+   "pct": "38%",
+   "w": 37.5
   },
   {
    "what": "Database storage, as Cloudflare counts it",
@@ -38,30 +38,30 @@
   },
   {
    "what": "CPU, a typical run (median)",
-   "used": "8.0 ms",
-   "left": "2.0 ms to spare",
+   "used": "256 ms",
+   "left": "over by 246 ms",
    "limit": "10 ms a run",
-   "pct": "80%",
-   "w": 80.2
+   "pct": "2557%",
+   "w": 100
   },
   {
    "what": "CPU, the slowest 1% of runs",
-   "used": "318 ms",
-   "left": "over by 308 ms",
+   "used": "975 ms",
+   "left": "over by 965 ms",
    "limit": "10 ms a run",
-   "pct": "3178%",
+   "pct": "9749%",
    "w": 100
   }
  ],
  "days": [
   {
    "day": "Fri, Nov 27",
-   "requests": "200",
+   "requests": "350",
    "errors": "0",
-   "rows_read": "6,382,018",
-   "rows_written": "22,088",
-   "cpu50": "8.0 ms",
-   "cpu": "318 ms"
+   "rows_read": "12,936,287",
+   "rows_written": "37,549",
+   "cpu50": "256 ms",
+   "cpu": "975 ms"
   },
   {
    "day": "Thu, Nov 26",
@@ -326,12 +326,12 @@
   }
  ],
  "stamp": {
-  "requests": "200",
-  "requests_left": "99,800",
-  "rows_read": "6,382,018",
-  "rows_written": "22,088",
+  "requests": "350",
+  "requests_left": "99,650",
+  "rows_read": "12,936,287",
+  "rows_written": "37,549",
   "size": "119 MB",
-  "cpu": "8.0 ms"
+  "cpu": "256 ms"
  },
  "errors_30": "0",
  "cpu_over": true,
