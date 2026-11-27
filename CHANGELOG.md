@@ -47,7 +47,7 @@ Things waiting on a decision or on Juan, so they aren't lost:
 coupon works) and a CollX one, plus CollX in the top links, the "more cards" row and the help line. The coupon ticket
 no longer has its own button; the eBay store button under it says the code works there.
 
-`scripts/shop-sticker.py` draws the stickers: eight 2 x 1.5 in stickers on one 4x6 label for the Rongta thermal
+`scripts/shop-sticker.py` draws the stickers: twelve stickers (about 1.33 x 1.5 in) on one 4x6 label for the Rongta thermal
 printer, at its 203 dpi in pure black and white (grey speckles on thermal paper), with dashed cut lines. The QR code
 opens `/shop/thanks/`; the offer and code come from `shop_coupon`, and with no code the sticker says thank you
 instead. It writes `print/sticker-sheet.png` and `.pdf` (`print/` is ignored and out of the build).
