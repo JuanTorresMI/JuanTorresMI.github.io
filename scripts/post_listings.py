@@ -225,6 +225,25 @@ def tag_existing(arg):
     """`tag` switch: "<media id>:<card id>[,<card id>...]" tags a Reel that's already up with those cards. Posts nothing."""
     media, _, ids = (arg or "").partition(":")
     host = account()[0]
+    if media == "probe" and host:
+        # A photo post's container with the card tagged, never published (it expires on its own): whether Instagram takes
+        # this card's tag at all, apart from Reels.
+        user = os.environ["IG_USER_ID"]
+        tags = product_tags(host, user, {"cards": [{"id": ids.strip()}]}, "new")
+        if not tags:
+            sys.exit("No product to tag.")
+        one_tag = json.dumps([{**t, "x": 0.5, "y": 0.5} for t in json.loads(tags)])
+        try:
+            made = graph(host, f"{user}/media", image_url=f"{showcase_url()}/photo/{ids.strip()}-full.jpg", caption="probe", product_tags=one_tag)
+            print(f"Photo container with the tag: accepted ({made.get('id')}), not published")
+        except urllib.error.HTTPError as e:
+            print(f"Photo container with the tag: refused ({e.code}): {why_not(e)}")
+        try:
+            hits = read(host, f"{user}/catalog_product_search", catalog_id=CATALOG["id"], q=f"JJ-{ids.strip()}").get("data", [])
+            print("Product: " + json.dumps([{k: h.get(k) for k in ("product_id", "retailer_id", "review_status", "is_checkout_flow")} for h in hits]))
+        except Exception as e:
+            print(f"Product lookup failed: {e}")
+        return
     if not (media and ids and host):
         sys.exit("Use <media id>:<card id>, and a working token.")
     tags = product_tags(host, os.environ["IG_USER_ID"], {"cards": [{"id": i.strip()} for i in ids.split(",") if i.strip()]}, "new")
