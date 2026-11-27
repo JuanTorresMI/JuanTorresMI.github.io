@@ -270,6 +270,14 @@ def check():
         sys.exit(1)
     page, _, why = facebook_page()
     print(f"Facebook: posting to {why} ({page})" if page else f"Facebook: not posting, {why}")
+    try:
+        perms = read(host, "me/permissions").get("data", [])
+        print("Token permissions: " + ", ".join(sorted(p["permission"] for p in perms if p.get("status") == "granted")))
+        missing = {"instagram_shopping_tag_products", "catalog_management"} - {p["permission"] for p in perms if p.get("status") == "granted"}
+        if missing:
+            print("Missing for product tags: " + ", ".join(sorted(missing)))
+    except urllib.error.HTTPError as e:
+        print(f"Couldn't read the token's permissions ({e.code}): {why_not(e)}")
     cards = listings()
     if cards:
         tags = product_tags(host, os.environ["IG_USER_ID"], cards[0], "new")
