@@ -135,8 +135,8 @@ facebook_url: "https://www.facebook.com/profile.php?id=1436824466179904"
 # The CollX rating on the shop pages (_includes/shop-rep.html), typed in by hand from the CollX app: stars like "5.0" and
 # reviews like "12 reviews". Leave stars empty to hide it.
 collx_rating:
-  stars: ""
-  reviews: ""
+  stars: "5.0"
+  reviews: "4 reviews"
 shop_coupon:
   code: "SHOPJULIO"
   url: ""
