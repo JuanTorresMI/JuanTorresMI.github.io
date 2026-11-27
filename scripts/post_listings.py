@@ -276,6 +276,16 @@ def check():
         missing = {"instagram_shopping_tag_products", "catalog_management"} - {p["permission"] for p in perms if p.get("status") == "granted"}
         if missing:
             print("Missing for product tags: " + ", ".join(sorted(missing)))
+        # Which businesses, catalogs and accounts each tagging permission was granted for (the token's own granular
+        # scopes): a catalog or business left unticked when the token was made blocks tags with "Cannot Tag Product".
+        tok = os.environ["IG_ACCESS_TOKEN"]
+        dbg = read(host, "debug_token", input_token=tok).get("data", {})
+        for g in dbg.get("granular_scopes", []):
+            if g.get("scope") in ("catalog_management", "instagram_shopping_tag_products", "business_management", "instagram_basic"):
+                print(f"Scope {g['scope']}: " + (", ".join(g.get("target_ids") or []) or "all"))
+        me = read(host, os.environ["IG_USER_ID"], fields="shopping_product_tag_eligibility,available_catalogs")
+        print("Tag eligibility: " + str(me.get("shopping_product_tag_eligibility")) + "; catalogs: " +
+              ", ".join(f"{x.get('catalog_id')} ({x.get('catalog_name')})" for x in (me.get("available_catalogs") or {}).get("data", [])))
     except urllib.error.HTTPError as e:
         print(f"Couldn't read the token's permissions ({e.code}): {why_not(e)}")
     cards = listings()
