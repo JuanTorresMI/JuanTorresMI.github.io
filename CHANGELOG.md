@@ -51,6 +51,9 @@ Things waiting on a decision or on Juan, so they aren't lost:
   `scripts/post_listings.py`). The showcase sends each card's eBay address (`ebay`), and the snapshot keeps it.
 - The showcase Worker serves `/catalog.tsv`, every eBay single as a Meta catalog product linked to its listing, for the
   Facebook Page's shop and Instagram product tags. Setting it up in Commerce Manager is Juan's step (open item).
+- The shop's checkout (`/checkout` on the Worker, the Meta checkout URL) sends one card straight to its eBay listing and
+  a cart of several to `/shop/cart/`, a page in the shop's look: each card's photo, name, price and quantity, each linked
+  to its eBay listing, with the coupon when there is one.
 
 ## 2026-11-26 — CollX on the thank-you page, and a sticker sheet for the thermal printer
 

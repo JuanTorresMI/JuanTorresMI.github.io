@@ -113,6 +113,25 @@ h2 { font: 400 clamp(36px, 8vw, 56px)/1 var(--display); letter-spacing: 0.02em; 
 h3 { font: 400 22px/1.15 var(--display); letter-spacing: 0.03em; text-transform: uppercase; color: var(--white); }
 .rules p { max-width: 42em; }
 
+/* /shop/cart/: the cards a Facebook or Instagram shop cart named, one row each, the photo beside the name like a bout
+   on the bill, each row its own eBay listing. */
+.cart { display: grid; gap: 12px; }
+.cart-wait, .cart-none { padding: 20px; border: 1px solid var(--line); background: var(--mat); }
+.line { display: grid; grid-template-columns: clamp(96px, 28vw, 132px) minmax(0, 1fr); gap: 16px; padding: 12px; background: var(--mat); border: 1px solid var(--line);
+  color: var(--white); text-decoration: none; transition: border-color 0.15s, transform 0.15s; }
+.line:hover { border-color: var(--gold); color: var(--white); transform: translateY(-2px); }
+.line img, .line-nopic { width: 100%; aspect-ratio: 5 / 7; object-fit: cover; border: 3px solid var(--white); background: var(--line); }
+.line-nopic { display: grid; place-items: center; font: 400 28px/1 var(--display); color: var(--gold); }
+.line-info { display: flex; flex-direction: column; min-width: 0; }
+.line .card-who { margin-top: 2px; }
+.line .card-foot { margin-top: 12px; padding-top: 0; }
+.chip.qty { border-color: var(--white); color: var(--white); }
+.line-go { align-self: flex-start; margin-top: auto; padding: 10px 14px 9px; background: var(--gold); color: var(--ink); font: 400 17px/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; }
+.line-go::after { content: " →"; font-family: var(--text); font-weight: 600; }
+.line:hover .line-go { background: var(--white); }
+.cart-sum { font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+.cart-sec .coupon { margin-top: 24px; }
+
 .foot { display: grid; gap: 16px; margin-top: 72px; padding-top: 24px; padding-bottom: 40px; border-top: 1px solid var(--line); }
 .foot-links { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 14px; }
 .foot-links a { color: var(--soft); }
@@ -123,6 +142,7 @@ h3 { font: 400 22px/1.15 var(--display); letter-spacing: 0.03em; text-transform:
   .stores { grid-template-columns: 1fr 1fr; }
   .rules { grid-template-columns: repeat(3, 1fr); gap: 32px; }
   .rules li, .rules li:first-child { border-top: 0; padding: 0; }
+  .cart { grid-template-columns: 1fr 1fr; gap: 16px; }
 }
 @media (min-width: 960px) {
   .hero { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; padding-top: 56px; padding-bottom: 80px; }

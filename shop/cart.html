@@ -1,0 +1,56 @@
+---
+layout: shop
+title: Your cards · JuanJulio Cards
+permalink: /shop/cart/
+description: The cards you picked in the JuanJulio Cards shop on Facebook or Instagram, each with its eBay listing.
+image: /assets/og/mma-cards.png
+image_alt: "JuanJulio Cards. UFC and sports trading cards for sale."
+noindex: true
+sitemap: false
+---
+{%- comment -%}
+  Where the Facebook and Instagram shop sends a cart of two or more cards (the showcase Worker's /checkout, Meta's
+  checkout URL; one card goes straight to its eBay listing). Each card is its own eBay listing, so this shows the cards
+  picked, in the shop's look, each linked to its listing: shop/cart.js reads them from the Worker's /cart.json, with the
+  same `products` the address carries. Without JavaScript, or for a cart whose cards have sold, the store link stands.
+  Words for the buyer only, like /shop/. Out of search.
+{%- endcomment -%}
+{%- assign c = site.data.live.cards -%}
+{%- assign k = site.shop_coupon -%}
+<header class="top">
+  <p class="mark"><a href="/shop/">JuanJulio <b>Cards</b></a></p>
+  <p class="top-links"><a href="{{ site.ebay_store_url }}" rel="noopener">eBay</a>{% if c.shop_url %}<a href="{{ c.shop_url }}" rel="noopener">CollX</a>{% endif %}<a href="{{ site.instagram_url }}" rel="noopener">Instagram</a></p>
+</header>
+
+<main>
+<section class="hero thanks">
+  <div class="hero-words">
+    <p class="kicker">Your picks</p>
+    <h1>Your <span>cards</span></h1>
+    <p class="lede">Every card is its own eBay listing. Open each one, add it to your eBay cart, and they ship together in one envelope.</p>
+  </div>
+</section>
+
+<section class="sec cart-sec" aria-labelledby="cart-h">
+  <header class="sec-head">
+    <h2 id="cart-h">In your cart</h2>
+    <p class="cart-sum" data-sum hidden></p>
+  </header>
+  <ol class="cart" data-cart="{{ site.cards_url }}" data-store="{{ site.ebay_store_url }}" data-code="{{ k.code }}">
+    <li class="cart-wait">Getting your cards…</li>
+  </ol>
+  <noscript><p class="cart-none">Your cards are in the <a href="{{ site.ebay_store_url }}" rel="noopener">JuanJulio Cards eBay store</a>.</p></noscript>
+  <div class="coupon" data-coupon hidden>
+    <p class="coupon-what">{{ k.offer }}</p>
+    <p class="coupon-code">Code <strong data-coupon-code>{{ k.code }}</strong></p>
+    <p class="coupon-how">Enter it at eBay checkout{% if k.ends != "" %}. Good through {{ k.ends }}{% endif %}.</p>
+  </div>
+  <p class="more"><a class="btn ghost" href="{{ site.ebay_store_url }}" rel="noopener">See every card on eBay</a></p>
+</section>
+</main>
+
+<script src="/shop/cart.js?v={{ site.time | date: '%s' }}" defer></script>
+<footer class="foot">
+  <p class="mark">JuanJulio <b>Cards</b></p>
+  <p class="foot-links"><a href="{{ site.ebay_store_url }}" rel="noopener">eBay store</a>{% if c.shop_url %}<a href="{{ c.shop_url }}" rel="noopener">CollX</a>{% endif %}<a href="{{ site.instagram_url }}" rel="noopener">Instagram</a><a href="{{ site.facebook_url }}" rel="noopener">Facebook</a></p>
+</footer>
