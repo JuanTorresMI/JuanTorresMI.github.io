@@ -186,7 +186,10 @@ def product_tags(host, user, c, why):
         for x in cards:
             sku = f"JJ-{x['id']}"
             hits = read(host, f"{user}/catalog_product_search", catalog_id=CATALOG["id"], q=sku).get("data", [])
-            pid = next((str(h["product_id"]) for h in hits if h.get("retailer_id") == sku), None)
+            hit = next((h for h in hits if h.get("retailer_id") == sku), None)
+            pid = hit and str(hit["product_id"])
+            if hit and hit.get("review_status") != "approved":
+                print(f"Product tags: {sku} is {hit.get('review_status')} in the shop (only approved tags show)")
             if pid and all(t["product_id"] != pid for t in tags):
                 tags.append({"product_id": pid})
         print(f"Product tags: {len(tags)} of {len(cards)} card(s) found in the shop")
@@ -196,6 +199,37 @@ def product_tags(host, user, c, why):
     except Exception as e:
         print(f"Product tags skipped: {e}")
     return None
+
+
+def why_not(e):
+    """Instagram's whole reason for refusing a call: message, subcode and the user-facing text, which "Invalid parameter" hides."""
+    err = json.load(e).get("error", {})
+    return " · ".join(str(x) for x in (err.get("message"), err.get("error_subcode"), err.get("error_user_title"), err.get("error_user_msg")) if x)[:400]
+
+
+def tag_media(host, media, tags):
+    """Tags a published Reel's products (Instagram's POST /{media}/product_tags): when the container wouldn't take them,
+    and for the `tag` switch. Returns True when Instagram says it worked."""
+    data = urllib.parse.urlencode({"updated_tags": tags, "access_token": os.environ["IG_ACCESS_TOKEN"]}).encode()
+    try:
+        with urllib.request.urlopen(urllib.request.Request(f"{host}/{media}/product_tags", data=data, method="POST"), timeout=60) as r:
+            ok = bool(json.load(r).get("success"))
+        print(f"Tagged Reel {media}: {'done' if ok else 'Instagram said no'}")
+        return ok
+    except urllib.error.HTTPError as e:
+        print(f"Instagram refused tagging Reel {media} ({e.code}): {why_not(e)}")
+        return False
+
+
+def tag_existing(arg):
+    """`tag` switch: "<media id>:<card id>[,<card id>...]" tags a Reel that's already up with those cards. Posts nothing."""
+    media, _, ids = (arg or "").partition(":")
+    host = account()[0]
+    if not (media and ids and host):
+        sys.exit("Use <media id>:<card id>, and a working token.")
+    tags = product_tags(host, os.environ["IG_USER_ID"], {"cards": [{"id": i.strip()} for i in ids.split(",") if i.strip()]}, "new")
+    if not tags or not tag_media(host, media, tags):
+        sys.exit(1)
 
 
 def facebook_caption(c, text, why):
@@ -650,17 +684,17 @@ def post(card=None, old=None):
         tags = product_tags(host, user, c, why)
         if tags:
             fields["product_tags"] = tags
-        made = None
+        made, tag_after = None, None
         for _ in range(3):
             try:
                 made = graph(host, f"{user}/media", **fields)["id"]
                 break
             except urllib.error.HTTPError as e:
-                said = json.load(e).get("error", {}).get("message", "")[:200]
+                said = why_not(e)
                 if "product_tags" in fields:
-                    # Tags it won't take (a permission, a product under review): the Reel still goes out, untagged.
-                    print(f"Instagram refused the product tags ({e.code}): {said}. Posting without them.")
-                    fields.pop("product_tags"); tags = None
+                    # Tags the container won't take: the Reel goes out, and they're added once it's published.
+                    print(f"Instagram refused the product tags on the container ({e.code}): {said}. Tagging after publishing.")
+                    tag_after = fields.pop("product_tags"); tags = None
                 elif song:
                     # A song Instagram no longer offers apps: the post goes out with the card's own sounds, and the song is named in the log.
                     print(f"Instagram refused the song {song['title']} ({e.code}): {said}. Posting without it.")
@@ -678,6 +712,8 @@ def post(card=None, old=None):
             sys.exit(f"Instagram couldn't process card {c['id']}.")
         time.sleep(5)
     media = graph(host, f"{user}/media_publish", creation_id=made).get("id")
+    if tag_after and media and tag_media(host, media, tag_after):
+        tags = tag_after
     fb = to_facebook(reel_url, facebook_caption(c, text, why))
     story = to_story(host, user, reel_url)
     shelf("DELETE", reel_url)
@@ -873,6 +909,8 @@ if __name__ == "__main__":
         stats()
     elif what == "backfill":
         feed_backfill()
+    elif what == "tag":
+        tag_existing(sys.argv[2] if len(sys.argv) > 2 else "")
     elif what == "test":
         test(*sys.argv[2:5])
     else:
