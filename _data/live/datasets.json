@@ -1,17 +1,17 @@
 {
- "generated": "2026-11-27T11:50:47+00:00",
- "rows": 814013,
- "rows_fmt": "814,013",
+ "generated": "2026-11-27T19:42:48+00:00",
+ "rows": 814120,
+ "rows_fmt": "814,120",
  "files": 33,
- "all_rows_fmt": "1,538,368",
+ "all_rows_fmt": "1,539,210",
  "all_files": 59,
  "datasets": [
   {
    "slug": "usda-hog-prices",
-   "rows": 114335,
-   "rows_fmt": "114,335",
+   "rows": 114358,
+   "rows_fmt": "114,358",
    "first": "2020-01-02",
-   "newest": "2026-11-25",
+   "newest": "2026-11-27",
    "files": [
     {
      "rows": 63324,
@@ -57,9 +57,9 @@
      "size": "0.7 MB"
     },
     {
-     "rows": 14072,
+     "rows": 14080,
      "first": "2020-01-02",
-     "newest": "2026-11-25",
+     "newest": "2026-11-27",
      "columns": [
       "report_date",
       "for_date_begin",
@@ -77,18 +77,18 @@
       "loineye_area",
       "avg_lean_percent"
      ],
-     "bytes": 1588100,
+     "bytes": 1588998,
      "file": "slaughtered-barrows-gilts",
      "url": "/data/usda-hog-prices/slaughtered-barrows-gilts.csv",
      "report": 2511,
      "code": "LM_HG201",
-     "rows_fmt": "14,072",
+     "rows_fmt": "14,080",
      "size": "1.6 MB"
     },
     {
-     "rows": 1759,
+     "rows": 1760,
      "first": "2020-01-02",
-     "newest": "2026-11-25",
+     "newest": "2026-11-27",
      "columns": [
       "report_date",
       "for_date_begin",
@@ -100,45 +100,45 @@
       "wtd_avg_base",
       "wtd_avg_net_price"
      ],
-     "bytes": 108005,
+     "bytes": 108066,
      "file": "hog-carcass-measurements",
      "url": "/data/usda-hog-prices/hog-carcass-measurements.csv",
      "report": 2511,
      "code": "LM_HG201",
-     "rows_fmt": "1,759",
+     "rows_fmt": "1,760",
      "size": "0.1 MB"
     },
     {
-     "rows": 24626,
+     "rows": 24640,
      "first": "2020-01-02",
-     "newest": "2026-11-25",
+     "newest": "2026-11-27",
      "columns": [
       "report_date",
       "for_date_begin",
       "delivery_date",
       "head_count"
      ],
-     "bytes": 974320,
+     "bytes": 974874,
      "file": "scheduled-swine-14-day",
      "url": "/data/usda-hog-prices/scheduled-swine-14-day.csv",
      "report": 2511,
      "code": "LM_HG201",
-     "rows_fmt": "24,626",
+     "rows_fmt": "24,640",
      "size": "1.0 MB"
     }
    ]
   },
   {
    "slug": "usda-sow-boar-prices",
-   "rows": 127848,
-   "rows_fmt": "127,848",
+   "rows": 127932,
+   "rows_fmt": "127,932",
    "first": "2020-12-07",
-   "newest": "2026-11-25",
+   "newest": "2026-11-27",
    "files": [
     {
-     "rows": 127848,
+     "rows": 127932,
      "first": "2020-12-07",
-     "newest": "2026-11-25",
+     "newest": "2026-11-27",
      "columns": [
       "section",
       "report_date",
@@ -152,12 +152,12 @@
       "avg_weight",
       "total_head"
      ],
-     "bytes": 17193567,
+     "bytes": 17204756,
      "file": "sow-boar-prices-by-region",
      "url": "/data/usda-sow-boar-prices/sow-boar-prices-by-region.csv",
      "report": 3452,
      "code": "LM_HG234",
-     "rows_fmt": "127,848",
+     "rows_fmt": "127,932",
      "size": "17.2 MB"
     }
    ]
@@ -1367,10 +1367,10 @@
   },
   {
    "slug": "fed-cattle-prices",
-   "rows": 88698,
-   "rows_fmt": "88,698",
+   "rows": 88725,
+   "rows_fmt": "88,725",
    "first": "2020-01-02",
-   "newest": "2026-11-25",
+   "newest": "2026-11-27",
    "files": [
     {
      "file": "fed-cattle-weekly",
@@ -1403,10 +1403,10 @@
     {
      "file": "fed-cattle-5-area-daily",
      "url": "/fed-cattle-prices/fed-cattle-5-area-daily.csv",
-     "rows": 33038,
-     "rows_fmt": "33,038",
+     "rows": 33065,
+     "rows_fmt": "33,065",
      "first": "2020-01-02",
-     "newest": "2026-11-25",
+     "newest": "2026-11-27",
      "columns": [
       "date",
       "class",
@@ -1421,7 +1421,7 @@
       "price_high",
       "weighted_average"
      ],
-     "bytes": 2309886,
+     "bytes": 2311815,
      "size": "2.3 MB"
     }
    ]
@@ -1458,16 +1458,16 @@
   },
   {
    "slug": "border-truck-waits",
-   "rows": 108437,
-   "rows_fmt": "108,437",
+   "rows": 108703,
+   "rows_fmt": "108,703",
    "first": "2026-09-13",
    "newest": "2026-11-27",
    "files": [
     {
      "file": "border-truck-wait-readings-2026",
      "url": "/border-waits/border-truck-wait-readings-2026.csv",
-     "rows": 37605,
-     "rows_fmt": "37,605",
+     "rows": 37866,
+     "rows_fmt": "37,866",
      "first": "2026-09-13",
      "newest": "2026-11-27",
      "columns": [
@@ -1479,14 +1479,14 @@
       "fast_lanes_open",
       "source"
      ],
-     "bytes": 1433292,
+     "bytes": 1443200,
      "size": "1.4 MB"
     },
     {
      "file": "border-truck-wait-times",
      "url": "/border-waits/border-truck-wait-times.csv",
-     "rows": 6114,
-     "rows_fmt": "6,114",
+     "rows": 6119,
+     "rows_fmt": "6,119",
      "first": "",
      "newest": "",
      "columns": [
@@ -1501,7 +1501,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 463320,
+     "bytes": 463642,
      "size": "0.5 MB"
     },
     {
@@ -1527,16 +1527,16 @@
   },
   {
    "slug": "border-car-pedestrian-waits",
-   "rows": 200485,
-   "rows_fmt": "200,485",
+   "rows": 200927,
+   "rows_fmt": "200,927",
    "first": "2026-09-13",
    "newest": "2026-11-27",
    "files": [
     {
      "file": "border-car-pedestrian-wait-readings-2026",
      "url": "/border-waits/border-car-pedestrian-wait-readings-2026.csv",
-     "rows": 69099,
-     "rows_fmt": "69,099",
+     "rows": 69531,
+     "rows_fmt": "69,531",
      "first": "2026-09-13",
      "newest": "2026-11-27",
      "columns": [
@@ -1554,14 +1554,14 @@
       "pedestrian_ready_lanes_open",
       "source"
      ],
-     "bytes": 3205681,
+     "bytes": 3225618,
      "size": "3.2 MB"
     },
     {
      "file": "border-car-pedestrian-wait-times",
      "url": "/border-waits/border-car-pedestrian-wait-times.csv",
-     "rows": 19571,
-     "rows_fmt": "19,571",
+     "rows": 19581,
+     "rows_fmt": "19,581",
      "first": "",
      "newest": "",
      "columns": [
@@ -1577,7 +1577,7 @@
       "window_days",
       "as_of"
      ],
-     "bytes": 1589599,
+     "bytes": 1590329,
      "size": "1.6 MB"
     },
     {
