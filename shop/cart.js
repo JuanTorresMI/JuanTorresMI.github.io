@@ -31,6 +31,13 @@
   fetch(base + "/cart.json?products=" + encodeURIComponent(q.get("products"))).then(function (r) {
     if (!r.ok) throw new Error(r.status); return r.json();
   }).then(function (d) {
+    var f = d.feedback, a = document.querySelector("[data-rep-ebay]");
+    if (a && f && f.score >= 0) {
+      if (f.url) a.href = f.url;
+      var p = a.querySelector("[data-rep-pct]"), n = a.querySelector("[data-rep-n]");
+      if (p && f.positive != null) p.textContent = f.positive + "% positive";
+      if (n) n.textContent = f.score.toLocaleString("en-US") + (f.score === 1 ? " rating" : " ratings");
+    }
     var items = d.items || [];
     if (!items.length) return none();
     list.textContent = "";

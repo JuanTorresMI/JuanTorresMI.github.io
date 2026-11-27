@@ -1,0 +1,17 @@
+{%- comment %}
+  The shop's ratings line, under the store buttons on /shop/ and the cart page: eBay feedback from the snapshot (card-tracker
+  src/ebay-reputation.js reads it from eBay every 6 hours; shop.js and cart.js swap in the live numbers) and the CollX rating
+  from `collx_rating` in _config.yml, typed in by hand (CollX allows no automatic reading). Either one only when it's known.
+{% endcomment -%}
+{%- assign fb = site.data.live.cards.feedback -%}
+{%- assign cr = site.collx_rating -%}
+{%- if fb or cr.stars != "" %}
+<p class="rep">
+  {%- if fb %}
+  <a class="rep-item" data-rep-ebay href="{{ fb.url | default: site.ebay_store_url }}" rel="noopener"><span class="rep-where">eBay</span> <b data-rep-pct>{% if fb.positive %}{{ fb.positive }} positive{% endif %}</b> <span data-rep-n>{{ fb.ratings }}</span></a>
+  {%- endif %}
+  {%- if cr.stars != "" %}
+  <a class="rep-item" href="{{ site.data.live.cards.shop_url | default: '#' }}" rel="noopener"><span class="rep-where">CollX</span> <b>★ {{ cr.stars }}</b> <span>{{ cr.reviews }}</span></a>
+  {%- endif %}
+</p>
+{%- endif %}

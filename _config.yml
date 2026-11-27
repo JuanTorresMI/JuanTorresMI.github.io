@@ -132,6 +132,11 @@ facebook_url: "https://www.facebook.com/profile.php?id=1436824466179904"
 # The thank-you page the envelope stickers' QR code opens (/shop/thanks/). A coupon Juan makes in eBay's Seller Hub
 # (Marketing → Coupons) shows there once its code is filled in: `code`, `url` (the coupon's eBay link), `offer`
 # ("10% off orders of $10 or more") and `ends` ("Feb 28, 2027"). Empty code: the page shows no coupon.
+# The CollX rating on the shop pages (_includes/shop-rep.html), typed in by hand from the CollX app: stars like "5.0" and
+# reviews like "12 reviews". Leave stars empty to hide it.
+collx_rating:
+  stars: ""
+  reviews: ""
 shop_coupon:
   code: "SHOPJULIO"
   url: ""

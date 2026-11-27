@@ -113,6 +113,13 @@ h2 { font: 400 clamp(36px, 8vw, 56px)/1 var(--display); letter-spacing: 0.02em; 
 h3 { font: 400 22px/1.15 var(--display); letter-spacing: 0.03em; text-transform: uppercase; color: var(--white); }
 .rules p { max-width: 42em; }
 
+/* The ratings line: eBay feedback and the CollX rating, small, under the store buttons. */
+.rep { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 14px; }
+.rep-item { display: inline-flex; align-items: baseline; gap: 6px; color: var(--soft); text-decoration: none; }
+.rep-item b { font-weight: 600; color: var(--gold); }
+.rep-where { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white); }
+.rep-item:hover span { color: var(--gold); }
+
 /* /shop/cart/: the cards a Facebook or Instagram shop cart named, one row each, the photo beside the name like a bout
    on the bill, each row its own eBay listing. */
 .cart-hero { padding-top: 16px; padding-bottom: 8px; }

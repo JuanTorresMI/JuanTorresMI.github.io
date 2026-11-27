@@ -3078,6 +3078,10 @@ def cards(base):
               "basis": f.get("basis"), "buying": f["buying"]} for f in d["finds"]]
     return {
         "updated": d["updated"], "checked": full_date(when(d["updated"])), "shop_url": d["shop_url"],
+        # The shop's eBay feedback (card-tracker src/ebay-reputation.js), for /shop/'s ratings line.
+        "feedback": {"score": fmt(d["feedback"]["score"]), "ratings": plural(d["feedback"]["score"], "rating", "ratings"),
+                     "positive": f"{d['feedback']['positive']:g}%" if d["feedback"].get("positive") is not None else None,
+                     "url": d["feedback"].get("url")} if d.get("feedback") else None,
         "stats": {"cards": fmt(t["cards"]), "listed": fmt(t["listed"]), "listed_all": fmt(t.get("listed_all") or t["listed"]), "sold": fmt(t["sold"]), "revenue": usd_cents(t["revenue"], whole=True),
                   "profit": usd_cents(t["net_profit"], whole=True) if t["net_profit"] is not None else None, "margin": pct(t["margin"]) if t["margin"] is not None else None,
                   "days": "—" if t["avg_days_to_sell"] is None else f"{round(t['avg_days_to_sell'])} days", "sell_through": pct(t["sell_through"])},

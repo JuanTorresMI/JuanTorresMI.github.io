@@ -8,8 +8,18 @@
   var base = list.getAttribute("data-live"), store = list.getAttribute("data-store"), max = list.children.length || 8;
   var money = function (cents) { var d = cents / 100; return "$" + (cents % 100 ? d.toFixed(2) : d.toLocaleString("en-US")); };
   var el = function (tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  // The ratings line's eBay feedback, live (_includes/shop-rep.html renders the snapshot's).
+  var rep = function (f) {
+    var a = document.querySelector("[data-rep-ebay]");
+    if (!a || !f || !(f.score >= 0)) return;
+    if (f.url) a.href = f.url;
+    var p = a.querySelector("[data-rep-pct]"), n = a.querySelector("[data-rep-n]");
+    if (p && f.positive != null) p.textContent = f.positive + "% positive";
+    if (n) n.textContent = f.score.toLocaleString("en-US") + (f.score === 1 ? " rating" : " ratings");
+  };
 
   fetch(base + "/showcase.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (d) {
+    rep(d.feedback);
     var total = d.totals && (d.totals.listed_all || d.totals.listed);
     if (total) document.querySelectorAll("[data-total]").forEach(function (n) { n.textContent = total.toLocaleString("en-US"); });
 

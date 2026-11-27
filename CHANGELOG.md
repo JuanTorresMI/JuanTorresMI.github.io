@@ -54,6 +54,9 @@ Things waiting on a decision or on Juan, so they aren't lost:
 - The shop's checkout (`/checkout` on the Worker, the Meta checkout URL) sends one card straight to its eBay listing and
   a cart of several to `/shop/cart/`, a page in the shop's look: each card's photo, name, price and quantity, each linked
   to its eBay listing, with the coupon when there is one.
+- /shop/ and the cart page show the shop's ratings: eBay feedback (positive % and count, read from eBay every 6 hours) and
+  the CollX rating (typed into `collx_rating` in `_config.yml`). Meta's shop reviews are product reviews, so seller
+  feedback stays off them.
 
 ## 2026-11-26 — CollX on the thank-you page, and a sticker sheet for the thermal printer
 
