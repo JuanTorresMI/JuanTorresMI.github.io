@@ -41,6 +41,17 @@ Things waiting on a decision or on Juan, so they aren't lost:
   beef (LM_XB405) from the keyless datamart, then MyMarketNews reports (terminal markets, eggs, grain).
   CLAUDE.md, "A new USDA board", is the checklist.
 
+## 2026-11-26 — CollX on the thank-you page, and a sticker sheet for the thermal printer
+
+`/shop/thanks/` (the envelope stickers' QR code) now offers both stores, like `/shop/`: the eBay button (where the
+coupon works) and a CollX one, plus CollX in the top links, the "more cards" row and the help line. The coupon ticket
+no longer has its own button; the eBay store button under it says the code works there.
+
+`scripts/shop-sticker.py` draws the stickers: eight 2 x 1.5 in stickers on one 4x6 label for the Rongta thermal
+printer, at its 203 dpi in pure black and white (grey speckles on thermal paper), with dashed cut lines. The QR code
+opens `/shop/thanks/`; the offer and code come from `shop_coupon`, and with no code the sticker says thank you
+instead. It writes `print/sticker-sheet.png` and `.pdf` (`print/` is ignored and out of the build).
+
 ## 2026-11-20 — The eBay store's pictures and video, served from the shop
 
 - `shop/ebay/` holds the eBay store's theme, rendered in the Card Tracker (`scripts/ebay-brand/`, its README's "The eBay

@@ -154,6 +154,7 @@ tv_label: The living room TV
 exclude:
   - worker/
   - scripts/
+  - print/
   - node_modules/
   - vendor/
   - "*.docx"
