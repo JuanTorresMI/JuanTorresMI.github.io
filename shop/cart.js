@@ -48,6 +48,7 @@
       info.appendChild(el("span", "card-what", c.player && c.set ? c.set + (c.parallel ? " · " + c.parallel : "") : c.title));
       foot.appendChild(el("span", "card-price", money(c.price)));
       if (c.qty > 1) foot.appendChild(el("span", "chip qty", "× " + c.qty));
+      if (c.asked > c.qty) foot.appendChild(el("span", "chip qty", c.qty === 1 ? "Only 1 left" : "Only " + c.qty + " left"));
       if (c.serial) foot.appendChild(el("span", "chip", c.serial));
       if (c.auto) foot.appendChild(el("span", "chip", "Auto"));
       if (c.rookie) foot.appendChild(el("span", "chip", "RC"));
