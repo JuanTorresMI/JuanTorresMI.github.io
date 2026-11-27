@@ -162,6 +162,42 @@ def caption_set(g):
             "\nShop link in bio\n\n" + " ".join(tags[:5]))
 
 
+CATALOG = {}      # the shop's catalog id, looked up once a run
+
+
+def product_tags(host, user, c, why):
+    """The Reel's cards as Instagram Shopping product tags (JSON for the container's product_tags), or None. The shop's
+    catalog is the showcase Worker's /catalog.tsv, where each card is the product with Content ID JJ-<card id>; a Reel
+    tags its card, a set or fight-week collage up to 30 of its cards. A sale's Reel tags nothing (the card is gone).
+    Needs the account's Instagram Shop and a token with instagram_shopping_tag_products; without them the Reel goes out
+    untagged, as before."""
+    if why == "sold":
+        return None
+    try:
+        if "id" not in CATALOG:
+            me = read(host, user, fields="shopping_product_tag_eligibility,available_catalogs")
+            cats = (me.get("available_catalogs") or {}).get("data") or []
+            CATALOG["id"] = cats[0].get("catalog_id") if me.get("shopping_product_tag_eligibility") and cats else None
+            if not CATALOG["id"]:
+                print("Product tags: the account can't tag products yet (no approved shop or catalog)")
+        if not CATALOG["id"]:
+            return None
+        tags, cards = [], (c.get("cards") or [c])[:30]
+        for x in cards:
+            sku = f"JJ-{x['id']}"
+            hits = read(host, f"{user}/catalog_product_search", catalog_id=CATALOG["id"], q=sku).get("data", [])
+            pid = next((str(h["product_id"]) for h in hits if h.get("retailer_id") == sku), None)
+            if pid and all(t["product_id"] != pid for t in tags):
+                tags.append({"product_id": pid})
+        print(f"Product tags: {len(tags)} of {len(cards)} card(s) found in the shop")
+        return json.dumps(tags) if tags else None
+    except urllib.error.HTTPError as e:
+        print(f"Product tags skipped ({e.code}): {json.load(e).get('error', {}).get('message', '')[:200]}")
+    except Exception as e:
+        print(f"Product tags skipped: {e}")
+    return None
+
+
 def facebook_caption(c, text, why):
     """The Facebook copy of a caption: links are clickable there (not on Instagram), so "link in bio" becomes the card's own
     eBay listing (the showcase's `ebay`), or the eBay store for a sale, a set or a fight-week post."""
@@ -200,6 +236,10 @@ def check():
         sys.exit(1)
     page, _, why = facebook_page()
     print(f"Facebook: posting to {why} ({page})" if page else f"Facebook: not posting, {why}")
+    cards = listings()
+    if cards:
+        tags = product_tags(host, os.environ["IG_USER_ID"], cards[0], "new")
+        print(f"Instagram Shopping: card {cards[0]['id']} would be tagged" if tags else "Instagram Shopping: Reels go out without product tags")
     trending()
 
 
@@ -607,15 +647,28 @@ def post(card=None, old=None):
         fields = {"media_type": "REELS", "video_url": reel_url, "caption": text, "share_to_feed": "true", "thumb_offset": str(int((cue + 11 + (make_reel.INTRO if c.get("player") and not c.get("cards") else 0)) * 1000))}
         if song:
             fields["audio_configuration"] = json.dumps({"audio_id": song["audio_id"], "audio_volume": 80, "video_volume": 100})
-        try:
-            made = graph(host, f"{user}/media", **fields)["id"]
-        except urllib.error.HTTPError as e:
-            if not song:
-                raise
-            # A song Instagram no longer offers apps: the post goes out with the card's own sounds, and the song is named in the log.
-            print(f"Instagram refused the song {song['title']} ({e.code}): {json.load(e).get('error', {}).get('message', '')[:160]}. Posting without it.")
-            fields.pop("audio_configuration"); song = None
-            made = graph(host, f"{user}/media", **fields)["id"]
+        tags = product_tags(host, user, c, why)
+        if tags:
+            fields["product_tags"] = tags
+        made = None
+        for _ in range(3):
+            try:
+                made = graph(host, f"{user}/media", **fields)["id"]
+                break
+            except urllib.error.HTTPError as e:
+                said = json.load(e).get("error", {}).get("message", "")[:200]
+                if "product_tags" in fields:
+                    # Tags it won't take (a permission, a product under review): the Reel still goes out, untagged.
+                    print(f"Instagram refused the product tags ({e.code}): {said}. Posting without them.")
+                    fields.pop("product_tags"); tags = None
+                elif song:
+                    # A song Instagram no longer offers apps: the post goes out with the card's own sounds, and the song is named in the log.
+                    print(f"Instagram refused the song {song['title']} ({e.code}): {said}. Posting without it.")
+                    fields.pop("audio_configuration"); song = None
+                else:
+                    sys.exit(f"Instagram refused the Reel ({e.code}): {said}")
+        if not made:
+            sys.exit("Instagram refused the Reel.")
     print("Instagram is processing it")
     for _ in range(60):
         state = graph(host, made, fields="status_code").get("status_code")
@@ -634,6 +687,8 @@ def post(card=None, old=None):
     times = repeats(posted.get(key)) + 1 if why == "again" else 0 if why in ("drop", "new") or was else repeats(posted.get(key))
     posted[key] = {"date": date.today().isoformat(), "at": datetime.now(timezone.utc).isoformat(timespec="minutes"), "media": media, "kind": why,
                    "repeats": times, "song": song and song["audio_id"], "song_name": song and f"{song.get('title')} - {song.get('display_artist')}", "theme": theme}
+    if tags:
+        posted[key]["tags"] = len(json.loads(tags))
     if fb:
         posted[key]["facebook"] = fb
     if story:
